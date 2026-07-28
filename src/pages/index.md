@@ -8,4 +8,4 @@ sidebar_position: 1
 
 Technical writer specialising in developer documentation, APIs, payment integrations, and developer experience.
 
-View my portfolio [here](../docs/)
+Browse the portfolio using the navigation menu.
