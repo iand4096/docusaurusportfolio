@@ -2,9 +2,10 @@
 title: AMX User Manual
 ---
 
-I created this first version of this user manual entirely myself for the AMX Composer Digital Signage product for the new web-based version of the application - version 5. The content was primarily created as HTML help bundled with the software but using the single sourcing capabilities of Madcap Flare I was able to create a secondary output, the PDF version of this content, with a small loss of quality due to the limitations of Madcap's CSS for PDF at the time as it was a new feature of the application.
+I authored the original user documentation for version 5 of AMX Composer, the web-based content-management application for the AMX Inspired Signage platform.
 
- This is the only version of the content available without purchasing the application.
+The guide explains the product’s architecture and content model and supports administrators, managers, editors and content creators. It covers the complete digital-signage workflow, including creating messages from templates, managing playlists, scheduling and approving content, publishing to networked display players, configuring users and permissions, and generating playback reports. It also includes system-setup guidance, media specifications, error messages, troubleshooting information and advanced playlist concepts.
 
-View [here](https://www.amx.com/en/site_elements/reference-guide-composer-5-4-desktop-edition)  on AMX's web site.
+The documentation was primarily delivered as context-sensitive HTML help bundled with the application. Using MadCap Flare’s single-sourcing capabilities, I also produced the 109-page PDF reference guide from the same source content. The PDF is the only version available without access to the application.
 
+View the manual on the [AMX website](https://www.amx.com/en/site_elements/reference-guide-composer-5-4-desktop-edition)
