@@ -2,18 +2,22 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 
-// This runs in Node.js - Don't use client-side code here (browser APIs, JSX...)
+// This file runs in Node.js.
+// Do not use browser APIs or JSX here.
 
 const config: Config = {
-  title: 'Ian Drewett Portfolio Site',
-  tagline: 'Docusaurus',
+  title: 'Ian Drewett | Technical Writing Portfolio',
+
+  tagline:
+    'Technical writer specialising in API documentation, payment integrations, and developer experience',
+
   favicon: 'img/favicon.ico',
 
-  // Future flags, see https://docusaurus.io/docs/api/docusaurus-config#future
   future: {
-    v4: true, // Improve compatibility with the upcoming Docusaurus v4
+    v4: true,
   },
 
+  // GitHub Pages deployment
   url: 'https://iand4096.github.io',
   baseUrl: '/docusaurusportfolio/',
 
@@ -21,12 +25,8 @@ const config: Config = {
   projectName: 'docusaurusportfolio',
 
   trailingSlash: false,
-
   onBrokenLinks: 'throw',
 
-  // Even if you don't use internationalization, you can use this field to set
-  // useful metadata like html lang. For example, if your site is Chinese, you
-  // may want to replace "en" with "zh-Hans".
   i18n: {
     defaultLocale: 'en',
     locales: ['en'],
@@ -38,26 +38,25 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+
+          // No editUrl:
+          // portfolio visitors do not need "Edit this page" links.
         },
+
         blog: {
           showReadingTime: true,
+
           feedOptions: {
             type: ['rss', 'atom'],
             xslt: true,
           },
-          // Please change this to your repo.
-          // Remove this to remove the "edit this page" links.
-          editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
-          // Useful options to enforce blogging best practices
+
+          // No editUrl here either.
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
         },
+
         theme: {
           customCss: './src/css/custom.css',
         },
@@ -66,72 +65,71 @@ const config: Config = {
   ],
 
   themeConfig: {
-    // Replace with your project's social card
-    image: 'img/docusaurus-social-card.jpg',
     colorMode: {
       respectPrefersColorScheme: true,
     },
+
     navbar: {
       title: 'Ian Drewett',
-      logo: {
-        alt: 'My Site Logo',
-        src: 'img/logo.svg',
-      },
+
+      // Do not use the default Docusaurus logo.
+      // Add a logo property later only if you create your own logo.
+
       items: [
         {
           type: 'docSidebar',
           sidebarId: 'tutorialSidebar',
           position: 'left',
-          label: 'Portfolio',
+          label: 'Case studies',
         },
         {
-          href: 'https://github.com/facebook/docusaurus',
+          href: 'https://www.linkedin.com/in/ian-drewett/',
+          label: 'LinkedIn',
+          position: 'right',
+        },
+        {
+          href: 'https://github.com/iand4096/docusaurusportfolio',
           label: 'GitHub',
           position: 'right',
         },
       ],
     },
+
     footer: {
       style: 'dark',
+
       links: [
         {
-          title: 'Docs',
+          title: 'Portfolio',
           items: [
             {
-              label: 'Portfolio',
+              label: 'Home',
               to: '/',
             },
-          ],
-        },
-        {
-          title: 'Community',
-          items: [
             {
-              label: 'Stack Overflow',
-              href: 'https://stackoverflow.com/questions/tagged/docusaurus',
-            },
-            {
-              label: 'Discord',
-              href: 'https://discordapp.com/invite/docusaurus',
-            },
-            {
-              label: 'X',
-              href: 'https://x.com/docusaurus',
+              label: 'Case studies',
+              to: '/docs/Intro',
             },
           ],
         },
         {
-          title: 'More',
+          title: 'Professional profiles',
           items: [
+            {
+              label: 'LinkedIn',
+              href: 'https://www.linkedin.com/in/ian-drewett/',
+            },
             {
               label: 'GitHub',
-              href: 'https://github.com/facebook/docusaurus',
+              href: 'https://github.com/iand4096/docusaurusportfolio',
             },
           ],
         },
       ],
-      copyright: `Copyright © ${new Date().getFullYear()} My Project, Inc. Built with Docusaurus.`,
+
+      copyright: `Copyright © ${new Date().getFullYear()} Ian Drewett. Built with Docusaurus.`,
     },
+
     prism: {
       theme: prismThemes.github,
       darkTheme: prismThemes.dracula,
