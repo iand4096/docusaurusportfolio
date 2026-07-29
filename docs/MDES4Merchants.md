@@ -2,7 +2,7 @@
 title: MDES for Merchants
 ---
 
-The MDES for Merchants Use Case Guide explains how merchants can use the Mastercard Digital Enablement API to tokenize payment cards and securely store tokens instead of payment card numbers (Primary Account Numbers, or PANs). Token's continue to work even if cards are replaced or lost
+The MDES for Merchants Use Case Guide explains how merchants can use the Mastercard Digital Enablement API to tokenize payment cards and securely store tokens instead of payment card numbers (Primary Account Numbers, or PANs). Tokens also continue to work even if cards are replaced or lost making them particularly suitable for subscription payments.
 
 The Digital Enablement API is built on, and provides access to, MDES (Mastercard Digital Enablement Service), Mastercard's card tokenization platform, which was originally developed to support Apple Pay.
 

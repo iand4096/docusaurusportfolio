@@ -6,11 +6,9 @@ hide_table_of_contents: true
 
 # Ian Drewett
 
-Technical writer specialising in API documentation, payment integrations,
-developer experience, and complex software documentation.
+Technical writer specialising in API documentation, developer experience, and complex software documentation in regulated industries such as Finance, Fintech and Payments.
 
-I create and validate documentation that helps developers integrate with
-APIs and enables users to work effectively with technically complex products.
+I create and validate documentation that helps developers create secure, user friendly API integrations.
 
 ## Selected work
 
@@ -46,11 +44,8 @@ Developer documentation for a browser-based payment integration.
 - API and developer documentation
 - OpenAPI reference documentation
 - Test integrations and executable validation
-- Payments and tokenisation
 - Docs as code
 - MadCap Flare and single-sourcing
-- PlantUML sequence diagrams
-- HTML-to-Markdown migration
 
 ## Professional profile
 
