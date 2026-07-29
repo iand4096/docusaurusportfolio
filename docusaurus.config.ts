@@ -70,7 +70,7 @@ const config: Config = {
     },
 
     navbar: {
-      title: 'Ian Drewett',
+      title: 'Home',
 
       // Do not use the default Docusaurus logo.
       // Add a logo property later only if you create your own logo.
@@ -105,10 +105,6 @@ const config: Config = {
             {
               label: 'Home',
               to: '/',
-            },
-            {
-              label: 'Case studies',
-              to: '/docs/Intro',
             },
           ],
         },
