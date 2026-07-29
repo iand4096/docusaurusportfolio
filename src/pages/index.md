@@ -12,8 +12,6 @@ developer experience, and complex software documentation.
 I create and validate documentation that helps developers integrate with
 APIs and enables users to work effectively with technically complex products.
 
-[Explore the case studies](/docs/Intro)
-
 ## Selected work
 
 ### MDES for Merchants
