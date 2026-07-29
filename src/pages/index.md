@@ -12,6 +12,13 @@ I create and validate documentation that helps developers create secure, user fr
 
 ## Selected work
 
+### AMX Composer
+
+User and administration documentation for a web-based digital-signage
+content-management application.
+
+[Read the case study](/docs/AMXInspiredSignageComposer)
+
 ### MDES for Merchants
 
 A use-case guide explaining how merchants can use Mastercard Digital
@@ -25,13 +32,6 @@ Integration documentation supported by working test integrations, sequence
 diagrams, and API-reference validation.
 
 [Read the case study](/docs/MasterpassMerchantIntegrationGuide)
-
-### AMX Composer
-
-User and administration documentation for a web-based digital-signage
-content-management application.
-
-[Read the case study](/docs/AMXInspiredSignageComposer)
 
 ### Paysafe.js
 
