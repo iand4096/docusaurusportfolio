@@ -1,4 +1,8 @@
-## Ian Drewett
+---
+title: Ian Drewett
+slug: /
+sidebar_position: 1
+---
 
 Technical writer specialising in developer documentation, APIs, payment integrations, and developer experience.
 
