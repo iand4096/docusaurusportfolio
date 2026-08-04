@@ -52,6 +52,8 @@ I have published 131 posts on the MadCap Flare user forum under the username **i
 * CMS integration
 * Technical troubleshooting
 
+See this post where I suggested a workaround to a long running Flare issue - [how to do code syntax highlighting in both HTML and PDF output](https://forums.madcapsoftware.com/viewtopic.php?p=99025&hilit=iand#p99025)
+
 This experience demonstrates a strong command of Flare fundamentals and expert-level capability in advanced publishing, integration and documentation-platform workflows.
 
 ## Flare Automation, Integration and Migration {/* #automation */}
