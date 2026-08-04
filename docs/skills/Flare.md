@@ -12,28 +12,58 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 I have strong knowledge of Flare fundamentals, including:
 
+<table>
+<tbody>
+<tr>
+<td>
+
 * Topic-based authoring
 * Tables of contents (TOCs)
 * Targets and build configurations
 * Applying and maintaining stylesheets and templates
 * Snippets and variables
+
+</td>
+<td>
+
 * Hyperlinks and cross-references
 * Conditional text
 * Tables and images
 * HTML and PDF publishing
 
+</td>
+</tr>
+</tbody>
+</table>
+
 ## Advanced Flare Experience
 
 My advanced Flare experience includes:
+
+<table>
+<tbody>
+<tr>
+<td>
 
 * Conditional single-sourcing across products, platforms and outputs
 * Multi-product and multi-platform documentation
 * Custom CSS, XML and output-template development
 * Cross-project linking
+
+</td>
+<td>
+
 * Git-based collaboration
 * Continuous integration
 * CMS and search integration
 * Complex output troubleshooting
+
+</td>
+</tr>
+</tbody>
+</table>
+
+
 
 I applied these capabilities to the automation, integration and migration projects described in the [Flare Automation, Integration and Migration](#automation) section.
 
@@ -45,7 +75,7 @@ One example is my proposed workaround for a long-running Flare limitation: [how 
 
 ## Flare Automation, Integration and Migration {/* #automation */}
 
-At Paysafe, I integrated Flare with development, publishing and review systems as part of a broader documentation toolchain used to manage all of the non API reference documentation on the launch version of the [Paysafe Developer Centre](developer.paysafe.com).
+At Paysafe, I integrated Flare with development, publishing and review systems as part of a broader documentation toolchain used to manage all of the non API reference documentation on the launch version of the [Paysafe Developer Centre](https://developer.paysafe.com).
 
 My work included:
 
