@@ -6,14 +6,14 @@ sidebar_position: 3
 
 # MadCap Flare
 
-I am a MadCap Flare specialist with nearly eight years of hands-on experience creating, maintaining and publishing HTML and PDF documentation at AMX, Monitise, and Paysafe.
+I am a MadCap Flare specialist with nearly eight years of experience creating, maintaining and publishing HTML and PDF documentation at AMX, Monitise, and Paysafe.
 
 ## Core Flare Skills
 
 I have strong knowledge of Flare fundamentals, including:
 
 * Topic-based authoring
-* Tables of contents
+* Tables of contents (TOCs)
 * Targets and build configurations
 * Stylesheets and templates
 * Snippets and variables
@@ -51,6 +51,7 @@ I have published 131 posts on the MadCap Flare user forum under the username **i
 * Developer portals
 * CMS integration
 * Technical troubleshooting
+* Workarounds for Flare limitations
 
 See this post where I suggested a workaround to a long running Flare issue - [how to do code syntax highlighting in both HTML and PDF output](https://forums.madcapsoftware.com/viewtopic.php?p=99025&hilit=iand#p99025)
 
