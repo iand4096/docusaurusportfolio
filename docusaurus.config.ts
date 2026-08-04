@@ -38,12 +38,26 @@ const config: Config = {
   },
 
   stylesheets: [
-  {
-    href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
-  },
-],
+    {
+      href: 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css',
+    },
+  ],
 
   themes: ['@docusaurus/theme-mermaid'],
+
+  plugins: [
+  [
+    '@docusaurus/plugin-client-redirects',
+    {
+      redirects: [
+        {
+          from: '/docs/AMXInspiredSignageComposer',
+          to: '/docs/case-studies/AMXInspiredSignageComposer',
+        },
+      ],
+    },
+  ],
+],
 
   presets: [
     [
@@ -85,10 +99,8 @@ const config: Config = {
       },
 
       options: {
-        // Increase text size throughout Mermaid diagrams.
         fontSize: 22,
 
-        // Additional flowchart settings.
         flowchart: {
           useMaxWidth: true,
           htmlLabels: true,
@@ -103,10 +115,16 @@ const config: Config = {
 
       items: [
         {
-          type: 'docSidebar',
-          sidebarId: 'tutorialSidebar',
-          position: 'left',
           label: 'Case studies',
+          to: '/docs/case-studies/AMXInspiredSignageComposer',
+          position: 'left',
+          activeBasePath: '/docs/case-studies',
+        },
+        {
+          label: 'Skills',
+          to: '/docs/skills',
+          position: 'left',
+          activeBasePath: '/docs',
         },
         {
           href: 'https://www.linkedin.com/in/ian-drewett/',
@@ -131,6 +149,14 @@ const config: Config = {
             {
               label: 'Home',
               to: '/',
+            },
+            {
+              label: 'Case studies',
+              to: '/docs/case-studies/AMXInspiredSignageComposer',
+            },
+            {
+              label: 'Skills',
+              to: '/docs/skills',
             },
           ],
         },

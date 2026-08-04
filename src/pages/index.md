@@ -17,27 +17,27 @@ I create and validate documentation that helps developers build secure, user fri
 User and administration documentation for a web-based digital-signage
 content-management application.
 
-[Read the case study](/docs/AMXInspiredSignageComposer)
+[Read the case study](/docs/case-studies/AMXInspiredSignageComposer)
 
 ### MDES for Merchants
 
 A use-case guide explaining how merchants can use Mastercard Digital
 Enablement API to tokenise card-on-file payment credentials.
 
-[Read the case study](/docs/MDES4Merchants)
+[Read the case study](/docs/case-studies/MDES4Merchants)
 
 ### Masterpass merchant integrations
 
 Integration documentation supported by working test integrations, sequence
 diagrams, and API-reference validation.
 
-[Read the case study](/docs/MasterpassMerchantIntegrationGuide)
+[Read the case study](/docs/case-studies/MasterpassMerchantIntegrationGuide)
 
 ### Paysafe.js
 
 Developer documentation for a browser-based payment integration.
 
-[Read the case study](/docs/PaysafeDeveloperJS)
+[Read the case study](/docs/case-studies/PaysafeDeveloperJS)
 
 ## Technical capabilities
 
