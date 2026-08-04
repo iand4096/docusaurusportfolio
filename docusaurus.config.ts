@@ -32,7 +32,7 @@ const config: Config = {
     locales: ['en'],
   },
 
-  // Mermaid support
+  // Enable Mermaid diagrams in Markdown and MDX files.
   markdown: {
     mermaid: true,
   },
@@ -76,6 +76,19 @@ const config: Config = {
       theme: {
         light: 'neutral',
         dark: 'dark',
+      },
+
+      options: {
+        // Increase text size throughout Mermaid diagrams.
+        fontSize: 22,
+
+        // Additional flowchart settings.
+        flowchart: {
+          useMaxWidth: true,
+          htmlLabels: true,
+          nodeSpacing: 40,
+          rankSpacing: 50,
+        },
       },
     },
 
