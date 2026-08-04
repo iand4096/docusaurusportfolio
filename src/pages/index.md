@@ -6,9 +6,9 @@ hide_table_of_contents: true
 
 # Ian Drewett
 
-Technical writer specialising in API documentation, developer experience, and complex software documentation in regulated industries such as Finance, Fintech and Payments.
+Technical writer specialising in API documentation, user guides, developer experience, and complex software documentation in regulated industries such as Finance, Fintech and Payments.
 
-I create and validate documentation that helps developers create secure, user friendly API integrations.
+I create and validate documentation that helps developers build secure, user friendly, and robust API integrations.
 
 ## Selected work
 
@@ -22,7 +22,7 @@ content-management application.
 ### MDES for Merchants
 
 A use-case guide explaining how merchants can use Mastercard Digital
-Enablement Service to tokenise card-on-file payment credentials.
+Enablement API to tokenise card-on-file payment credentials.
 
 [Read the case study](/docs/MDES4Merchants)
 
@@ -43,9 +43,9 @@ Developer documentation for a browser-based payment integration.
 
 - API and developer documentation
 - OpenAPI reference documentation
-- Test integrations and executable validation
-- Docs as code
-- MadCap Flare and single-sourcing
+- Test integrations and validation using Python / Flask, Scala, Java, etc.
+- Docs as code - Led the development of a custom internal static site generator based on the doc-as-code methodolgy for Morgan Stanley. Experienced with MkDocs.
+- MadCap Flare and single-sourcing specialist. 131 posts on the Flare forum.
 
 ## Professional profile
 
