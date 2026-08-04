@@ -26,6 +26,9 @@ flowchart LR
 
 The documentation was primarily delivered as context-sensitive HTML help bundled with the application. Using MadCap Flare’s single-sourcing capabilities, I also produced a 109-page PDF manual from the same source content. The PDF is the only version available without purchasing the application. 
 
+:::note[Published guide]
+
 View the finished manual on the [AMX website](https://www.amx.com/en/site_elements/reference-guide-composer-5-4-desktop-edition)
 
 
+:::
