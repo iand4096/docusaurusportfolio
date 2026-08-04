@@ -65,7 +65,7 @@ My work included:
   1. Queried the Jira REST API for tickets tagged to a specific release
   1. Extracted and transformed issue data
   1. Parsed and generated Flare-compatible XHTML
-  1. Created consistently structured release documentation from these tickets using predefined template
+  1. Created consistently structured release documentation from these tickets using a predefined template topic
 
 * **Building a **Flare post-build automation workflow** that:
 
