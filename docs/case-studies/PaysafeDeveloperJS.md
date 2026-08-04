@@ -8,4 +8,8 @@ I also built the original CodePen examples and an interactive **Try Now** demons
 
 The current guide has since been expanded by other contributors to cover features including 3D Secure, Google Pay, Apple Pay and Instant Withdrawal.
 
-View the guide on the [Paysafe developer centre](https://developer.paysafe.com/en/api-docs/paysafe-js/overview/) 
+:::note[Published guide]
+
+View the guide on the [Paysafe Developer Centre](https://developer.paysafe.com/en/api-docs/paysafe-js/overview/) 
+
+:::

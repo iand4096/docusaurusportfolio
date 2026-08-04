@@ -35,9 +35,7 @@ My advanced Flare experience includes:
 * CMS and search integration
 * Complex output troubleshooting
 
-At Paysafe, I helped design and implement a Git-based documentation toolchain centred on MadCap Flare and migrated developer documentation from Confluence into Flare. This provided the 
-
-I also built extensive automation around Flare, see the dedicated section below.
+At Paysafe, I helped design and implement a Git-based documentation toolchain centred on MadCap Flare and migrated developer documentation from Confluence into Flare using custom scripts. See the dedicated section below for more [details](#automation)
 
 ## Flare Community Experience
 
@@ -56,26 +54,26 @@ I have published 131 posts on the MadCap Flare user forum under the username **i
 
 This experience demonstrates a strong command of Flare fundamentals and expert-level capability in advanced publishing, integration and documentation-platform workflows.
 
-## Flare Automation, Integration and Migration
+## Flare Automation, Integration and Migration {/* #automation */}
 
 I extended MadCap Flare through custom automation, external integrations and publishing workflows.
 
 My work included:
 
-* Developing a C# release-notes tool that:
+* **Developing a C# release-notes tool** that:
 
   1. Queried the Jira REST API for tickets tagged to a specific release
   1. Extracted and transformed issue data
   1. Parsed and generated Flare-compatible XHTML
   1. Created consistently structured release documentation from these tickets using predefined template
 
-* Building a Flare post-build automation workflow that:
+* **Building a **Flare post-build automation workflow** that:
 
   * Published generated HTML output to a cloud based hosting platform - PythonAnywhere
   * Integrated Hypothes.is with the hosted documentation allowing product specialists and SMEs to annotate rendered pages directly
 
 
-* Migrating developer documentation from Confluence to MadCap Flare, including:
+* **Migrating developer documentation from Confluence to MadCap Flare**, including:
 
   * Extracting and restructuring legacy content. Cleaning spurious attributes and tags.
   * Converting content into Flare-compatible topics
