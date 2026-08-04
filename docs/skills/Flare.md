@@ -67,7 +67,7 @@ My work included:
   1. Parsed and generated Flare-compatible XHTML
   1. Created consistently structured release documentation from these tickets using a predefined template topic
 
-* **Building a **Flare post-build automation workflow** that:
+* **Building a Flare post-build automation workflow** that:
 
   * Published generated HTML output to a cloud based hosting platform - PythonAnywhere
   * Integrated Hypothes.is with the hosted documentation allowing product specialists and SMEs to annotate rendered pages directly
