@@ -32,15 +32,19 @@ const config: Config = {
     locales: ['en'],
   },
 
+  // Mermaid support
+  markdown: {
+    mermaid: true,
+  },
+
+  themes: ['@docusaurus/theme-mermaid'],
+
   presets: [
     [
       'classic',
       {
         docs: {
           sidebarPath: './sidebars.ts',
-
-          // No editUrl:
-          // portfolio visitors do not need "Edit this page" links.
         },
 
         blog: {
@@ -51,7 +55,6 @@ const config: Config = {
             xslt: true,
           },
 
-          // No editUrl here either.
           onInlineTags: 'warn',
           onInlineAuthors: 'warn',
           onUntruncatedBlogPosts: 'warn',
@@ -69,11 +72,15 @@ const config: Config = {
       respectPrefersColorScheme: true,
     },
 
+    mermaid: {
+      theme: {
+        light: 'neutral',
+        dark: 'dark',
+      },
+    },
+
     navbar: {
       title: 'Home',
-
-      // Do not use the default Docusaurus logo.
-      // Add a logo property later only if you create your own logo.
 
       items: [
         {
