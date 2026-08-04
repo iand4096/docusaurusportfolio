@@ -9,19 +9,20 @@ The guide explains the product’s architecture and content model and supports a
 The following diagram shows a high level summary of the content flow:
 
 ```mermaid
-flowchart TB
-    USERS["Users<br/>Administrators, managers,<br/>editors and content creators"]
-
-    COMPOSER["AMX Inspired Composer<br/>Create and manage signage content"]
-
-    PLAYERS["Inspired Players<br/>Receive published content"]
-
-    SCREENS["Display screens<br/>Content viewed by the audience"]
+flowchart LR
+    USERS["fa:fa-users<br/>Users"]
+    COMPOSER["fa:fa-pen-to-square<br/>AMX Inspired Composer"]
+    PLAYERS["fa:fa-server<br/>Inspired Players"]
+    SCREENS["fa:fa-display<br/>Display screens"]
 
     USERS --> COMPOSER
-    COMPOSER -->|"Publish content"| PLAYERS
+    COMPOSER -->|"Publish"| PLAYERS
     PLAYERS --> SCREENS
+
+    classDef large font-size:20px,padding:18px;
+    class USERS,COMPOSER,PLAYERS,SCREENS large;
 ```
+
 
 The documentation was primarily delivered as context-sensitive HTML help bundled with the application. Using MadCap Flare’s single-sourcing capabilities, I also produced a 109-page PDF manual from the same source content. The PDF is the only version available without purchasing the application. View the manual on the [AMX website](https://www.amx.com/en/site_elements/reference-guide-composer-5-4-desktop-edition)
 
