@@ -39,23 +39,11 @@ At Paysafe, I helped design and implement a Git-based documentation toolchain ce
 
 ## Flare Community Experience
 
-I have published 131 posts on the MadCap Flare user forum under the username **iand** covering topics such as:
+I have published 131 posts on the MadCap Flare user forum under the username **iand**, contributing answers, troubleshooting guidance and practical workarounds for other Flare users.
 
-* Flare configuration
-* Conditional publishing
-* CSS customisation
-* PDF output
-* Hyperlinks and cross-references
-* Git integration
-* Review workflows
-* Developer portals
-* CMS integration
-* Technical troubleshooting
-* Workarounds for Flare limitations
+These contributions draw on the authoring, publishing, customisation and integration experience described in the [Core Flare Skills](#core-flare-skills), [Advanced Flare Experience](#advanced-flare-experience) and [Flare Automation, Integration and Migration](#automation) sections.
 
-See this post where I suggested a workaround to a long running Flare issue - [how to do code syntax highlighting in both HTML and PDF output](https://forums.madcapsoftware.com/viewtopic.php?p=99025&hilit=iand#p99025)
-
-This experience demonstrates a strong command of Flare fundamentals and expert-level capability in advanced publishing, integration and documentation-platform workflows.
+One example is my proposed workaround for a long-standing Flare limitation: [how to support code syntax highlighting in both HTML and PDF output](https://forums.madcapsoftware.com/viewtopic.php?p=99025&hilit=iand#p99025).
 
 ## Flare Automation, Integration and Migration {/* #automation */}
 
