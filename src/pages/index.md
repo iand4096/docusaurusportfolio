@@ -44,7 +44,7 @@ Developer documentation for a browser-based payment integration.
 - API and developer documentation
 - OpenAPI reference documentation
 - Test integrations and validation using Python / Flask, Scala, Java, etc.
-- Docs as code - Led the development of a custom internal static site generator based on the doc-as-code methodolgy for Morgan Stanley. Experienced with MkDocs.
+- Docs as code - Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs.
 - MadCap Flare and single-sourcing specialist. 131 posts on the Flare forum.
 
 ## Professional profile

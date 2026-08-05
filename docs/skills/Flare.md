@@ -12,7 +12,7 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 I have strong knowledge of Flare fundamentals, including:
 
-<table>
+<table className="borderlessTable">
 <tbody>
 <tr>
 <td>
@@ -96,4 +96,3 @@ My work included:
   * Extracting, cleaning and restructuring legacy Confluence content into Flare-compatible XHTML topics
   * Applying templates, styles and information architecture
   * Preserving links and reusable content where possible
-
