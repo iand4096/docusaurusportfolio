@@ -28,3 +28,27 @@
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 }
+
+.markdown table.borderlessTable {
+  display: table;
+  width: 100%;
+  border: 0;
+  border-collapse: collapse;
+}
+
+.markdown table.borderlessTable tr,
+.markdown table.borderlessTable td {
+  border: 0;
+  background: transparent;
+}
+
+.markdown table.borderlessTable td {
+  width: 50%;
+  padding: 0 2rem 0 0;
+  vertical-align: top;
+}
+
+/* Remove the default bottom margin from the final list. */
+.markdown table.borderlessTable ul {
+  margin-bottom: 0;
+}
