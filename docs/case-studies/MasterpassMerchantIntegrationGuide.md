@@ -25,7 +25,7 @@ I created detailed sequence diagrams using PlantUML to show the order of interac
 
 When I found errors or omissions in the API reference, I corrected the underlying OpenAPI definitions as well as the related guide content. I also reviewed and updated the Masterpass mobile SDK documentation to keep it aligned with the main merchant integration guidance.
 
-Brightspot made structured authoring, content reuse, version control, and technical review difficult. Working with another new technical writer, I advocated for a docs-as-code alternative. Together, we specified the requirements for the first version of the new platform and tested its authoring and publishing workflow.
+Brightspot made structured authoring, content reuse, version control, and technical review difficult. Working with another technical writer who joined at the same time, I advocated for a docs-as-code alternative. Together, we specified the requirements for the first version of the new platform and tested its authoring and publishing workflow.
 
 ## Deliverables
 
@@ -34,7 +34,7 @@ Brightspot made structured authoring, content reuse, version control, and techni
 * PlantUML sequence diagrams illustrating the interactions within each checkout flow.
 * Corrections and improvements to the OpenAPI-based API reference.
 * Updated Masterpass mobile SDK integration guides.
-* Requirements and testing feedback for Mastercard’s first docs-as-code developer-documentation platform.
+* Requirements and testing feedback for Mastercard’s first docs-as-code developer-documentation platform with features such as conditional text and content re-use.
 
 :::note[Published guide]
 

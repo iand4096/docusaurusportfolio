@@ -12,6 +12,8 @@ const sidebars: SidebarsConfig = {
     'skills/index',
     'skills/DocsAsCode',
     'skills/Flare',
+    'skills/GovernanceDocs',
+    'skills/APIDocumentation',
   ],
 };
 

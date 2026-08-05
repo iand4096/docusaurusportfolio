@@ -6,7 +6,7 @@ title: MDES for Merchants
 
 ## Project overview
 
-I wrote the first version of the **MDES for Merchants Use Case Guide** while working at Mastercard. The guide explains how merchants can use the Mastercard Digital Enablement API to replace payment card numbers—Primary Account Numbers, or PANs—with securely stored payment tokens.
+I wrote the first version of the **MDES for Merchants Use Case Guide** while working at Mastercard. The guide explains how merchants can use the Mastercard Digital Enablement API to replace payment card numbers - Primary Account Numbers, or PANs - with securely stored payment tokens.
 
 Unlike card numbers, tokens can continue to work when the underlying card is replaced or reported lost, making them particularly useful for recurring and subscription payments.
 
