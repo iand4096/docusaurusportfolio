@@ -64,6 +64,6 @@ The guide established the foundation for the current Paysafe.js documentation, w
 ## What I would change
 
 * I would maintain the examples alongside the documentation source rather than on a separate platform such as CodePen. This would make them easier to version, review, test, and migrate with the guide.
-* I would introduce automated checks to confirm that the examples continued to work with each supported version of Paysafe.js.
+* I would introduce automated checks to confirm that the examples continue to work with each supported version of Paysafe.js.
 * I would add a sequence diagram showing how sensitive payment details passed directly from the Paysafe-hosted fields to Paysafe, while only the resulting token was returned to the merchant.
 * I would also include a companion diagram showing how the merchant’s server could use that token to submit a payment through the server-side API.

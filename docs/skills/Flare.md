@@ -88,8 +88,8 @@ My work included:
 
 * **Building a Flare post-build automation workflow** that:
 
-  * Published generated HTML output to the cloud-based hosting platform PythonAnywhere
-  * Integrated Hypothes.is with the hosted documentation, allowing product specialists and subject-matter experts to annotate rendered pages directly
+  * Automatically published generated HTML output to the cloud-based hosting platform [PythonAnywhere](https://en.wikipedia.org/wiki/PythonAnywhere) for review.
+  * Integrated [Hypothes.is](https://h.readthedocs.io/projects/client/en/latest/publishers/embedding.html) with the hosted documentation, allowing product specialists and subject-matter experts to annotate rendered pages directly. You can see Hypothes.is in action [here](https://hyp.is/0K4rskZkEeyeeCv6boS4Zg/h.readthedocs.io/en/latest/developing/administration/); all text highlighted in yellow has annotations.
 
 * **Migrating developer documentation from Confluence to MadCap Flare**, including:
 
