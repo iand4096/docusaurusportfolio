@@ -1,6 +1,6 @@
 ---
 
-title: MDES for Merchants
+title: MDES for Merchants Guide
 
 ---
 

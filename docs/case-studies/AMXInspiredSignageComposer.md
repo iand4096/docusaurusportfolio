@@ -54,7 +54,7 @@ View the finished PDF manual on the [AMX website](https://www.amx.com/en/site_el
 
 The HTML help and PDF manual were successfully released with the product and received positive internal feedback from the developers and product manager.
 
-## What I Learned
+## What I would change
 
 * The PDF manual did not include a linked, page-numbered table of contents because I was unable to resolve an issue with Flare’s print output before the release deadline. I would now test print-navigation requirements earlier and allow more time to address output-specific issues.
 * I would include the glossary from the HTML help in the PDF manual so that readers could access definitions without using the application.

@@ -8,7 +8,7 @@ hide_table_of_contents: true
 
 Technical writer specialising in API documentation, user guides, developer experience, and complex software documentation in regulated industries such as Finance, Fintech and Payments.
 
-I create and validate documentation that helps developers build secure, user friendly, and robust API integrations.
+I create and validate documentation that helps developers build secure, user-friendly, and robust API integrations.
 
 ## Selected work
 
@@ -46,6 +46,11 @@ Developer documentation for a browser-based payment integration.
 - Test integrations and validation using Python / Flask, Scala, Java, etc.
 - Docs as code - Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs.
 - MadCap Flare and single-sourcing specialist. 131 posts on the Flare forum.
+
+
+## Skills
+
+see the [Skills](/docs/skills) section of this portfolio
 
 ## Professional profile
 
