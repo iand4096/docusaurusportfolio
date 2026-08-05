@@ -40,7 +40,7 @@ I have strong knowledge of Flare fundamentals, including:
 
 My advanced Flare experience includes:
 
-<table>
+<table className="borderlessTable">
 <tbody>
 <tr>
 <td>

@@ -4,7 +4,7 @@ slug: /docsascode
 sidebar_position: 2
 ---
 
-# Docs-as-Code Skills Profile
+# Docs-as-Code
 
 I have extensive experience creating documentation in Markdown and designing, owning and extending docs-as-code platforms, migration tooling and automated publishing workflows.
 
@@ -36,8 +36,9 @@ I have extensive experience creating documentation in Markdown and designing, ow
 
 ### Static Site Generators
 
-* Built test sites with MkDocs, including modifying and extending the platform and compiling C++ plugins
-* Built my portfolio site with Docusaurus
+* Built an extensive test site with MkDocs as part of a work pilot. Migrated 400 pages of documentation to MkDocs format for the pilot. This work included modifying and extending a number of existing MkDocs plugins and recompiling them where necessary as C++ binaries. This work was ulitmately abandoned in favor of creating a custom static site generator.
+* Built the curernt portfolio site with Docusaurus.
+* Designed and led the delivery of a custom static site generator.
 
 ### Testing and Continuous Improvement
 
