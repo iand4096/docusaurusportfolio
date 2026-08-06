@@ -15,9 +15,15 @@
   --ifm-color-primary-lightest: #3cad6e;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+
+  /* Documentation links */
+  --docs-link-color: #0066cc;
+  --docs-link-hover-color: #004c99;
+  --docs-link-hover-background: #eaf4ff;
+  --docs-link-focus-color: #ffbf47;
 }
 
-/* For readability concerns, you should choose a lighter palette in dark mode. */
+/* For readability concerns, use a lighter palette in dark mode. */
 [data-theme='dark'] {
   --ifm-color-primary: #25c2a0;
   --ifm-color-primary-dark: #21af90;
@@ -27,6 +33,12 @@
   --ifm-color-primary-lighter: #32d8b4;
   --ifm-color-primary-lightest: #4fddbf;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
+
+  /* Documentation links */
+  --docs-link-color: #79bfff;
+  --docs-link-hover-color: #acd7ff;
+  --docs-link-hover-background: #17324d;
+  --docs-link-focus-color: #ffd166;
 }
 
 .markdown table.borderlessTable {
@@ -51,4 +63,104 @@
 /* Remove the default bottom margin from the final list. */
 .markdown table.borderlessTable ul {
   margin-bottom: 0;
+}
+
+/* -------------------------------------------------
+   Clear link styling in documentation content
+   ------------------------------------------------- */
+
+/*
+ * Excludes heading permalink/hash icons and anchors styled as buttons.
+ */
+.theme-doc-markdown
+  a:not(.hash-link):not(.button):not(.card):not(.no-link-highlight) {
+  color: var(--docs-link-color);
+  font-weight: 500;
+  text-decoration-line: underline;
+  text-decoration-thickness: 0.09em;
+  text-decoration-skip-ink: auto;
+  text-underline-offset: 0.18em;
+  transition:
+    color 120ms ease,
+    background-color 120ms ease,
+    text-decoration-thickness 120ms ease;
+}
+
+.theme-doc-markdown
+  a:not(.hash-link):not(.button):not(.card):not(.no-link-highlight):hover {
+  color: var(--docs-link-hover-color);
+  background-color: var(--docs-link-hover-background);
+  text-decoration-thickness: 0.16em;
+}
+
+.theme-doc-markdown
+  a:not(.hash-link):not(.button):not(.card):not(.no-link-highlight):focus-visible {
+  border-radius: 2px;
+  outline: 3px solid var(--docs-link-focus-color);
+  outline-offset: 2px;
+}
+
+/*
+ * Prevent links inside code elements from inheriting the heavier link style.
+ */
+.theme-doc-markdown code a {
+  font-weight: inherit;
+  text-decoration-thickness: auto;
+}
+
+/* -------------------------------------------------
+   External-link icon
+   ------------------------------------------------- */
+
+/*
+ * Docusaurus normally adds target="_blank" to external Markdown links.
+ * Add class="no-external-icon" to suppress the icon on a specific link.
+ */
+.theme-doc-markdown
+  a[href^='http'][target='_blank']:not(.hash-link):not(.button):not(
+    .no-external-icon
+  )::after {
+  display: inline-block;
+  width: 0.78em;
+  height: 0.78em;
+  margin-inline-start: 0.25em;
+  background-color: currentColor;
+  content: '';
+  vertical-align: 0.02em;
+
+  -webkit-mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7ZM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7Z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+
+  mask:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7ZM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7Z'/%3E%3C/svg%3E")
+    center / contain no-repeat;
+}
+
+/*
+ * Keep the icon attached to the final word when a link wraps.
+ */
+.theme-doc-markdown
+  a[href^='http'][target='_blank']:not(.hash-link):not(.button):not(
+    .no-external-icon
+  )::after {
+  white-space: nowrap;
+}
+
+/*
+ * Do not show an external-link icon on linked images.
+ */
+.theme-doc-markdown
+  a[href^='http'][target='_blank']:has(> img)::after {
+  display: none;
+}
+
+/*
+ * Respect reduced-motion preferences.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .theme-doc-markdown
+    a:not(.hash-link):not(.button):not(.card):not(.no-link-highlight) {
+    transition: none;
+  }
 }
