@@ -63,6 +63,8 @@ I create and validate documentation that helps developers build secure, user-fri
 
 </div>
 
+
+
 ## Technical capabilities
 
 - API and developer documentation

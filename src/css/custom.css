@@ -281,3 +281,197 @@
     min-height: auto;
   }
 }
+
+/* Skills landing-page cards */
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 300px), 1fr)
+  );
+  align-items: stretch;
+  gap: 1.5rem;
+  width: 100%;
+  margin-top: 1.5rem;
+  padding-bottom: 4rem;
+}
+
+.skill-card,
+.skill-card:link,
+.skill-card:visited,
+.skill-card:hover,
+.skill-card:active {
+  display: flex;
+  flex-direction: column;
+
+  min-width: 0;
+  width: 100%;
+  min-height: 370px;
+  box-sizing: border-box;
+  padding: 1.5rem;
+
+  color: var(--ifm-font-color-base);
+  text-decoration: none !important;
+
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 16px;
+
+  box-shadow:
+    0 4px 12px rgb(0 0 0 / 5%),
+    0 14px 32px rgb(0 0 0 / 6%);
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.skill-card:hover {
+  color: var(--ifm-font-color-base);
+  text-decoration: none !important;
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-4px);
+
+  box-shadow:
+    0 8px 18px rgb(0 0 0 / 8%),
+    0 18px 40px rgb(0 0 0 / 10%);
+}
+
+/* Remove inherited anchor styling from everything inside the card. */
+.skill-card *,
+.skill-card:hover *,
+.skill-card:visited * {
+  color: inherit;
+  text-decoration: none !important;
+}
+
+.skill-card:focus-visible {
+  outline: 3px solid var(--ifm-color-primary);
+  outline-offset: 4px;
+}
+
+.skill-card h2 {
+  margin: 0 0 0.75rem;
+  color: var(--ifm-heading-color);
+  font-size: 1.35rem;
+  line-height: 1.3;
+}
+
+.skill-card h2,
+.skill-card div,
+.skill-card li,
+.skill-card span {
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
+}
+
+.skill-card__tag {
+  display: block;
+  margin-bottom: 0.65rem;
+
+  color: var(--ifm-color-primary) !important;
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.055em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.skill-card__description {
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.skill-card__highlights {
+  margin: 0 0 1.25rem;
+  padding-left: 1.25rem;
+}
+
+.skill-card__highlights li {
+  margin-bottom: 0.35rem;
+  line-height: 1.5;
+}
+
+.skill-card__link {
+  display: block;
+  margin-top: auto;
+  color: var(--ifm-color-primary) !important;
+  font-weight: 700;
+  text-decoration: none !important;
+}
+
+[data-theme='dark'] .skill-card {
+  box-shadow:
+    0 4px 12px rgb(0 0 0 / 20%),
+    0 16px 36px rgb(0 0 0 / 18%);
+}
+
+@media screen and (max-width: 700px) {
+  .skills-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .skill-card {
+    min-height: auto;
+  }
+}
+
+/* Use normal body text inside skill cards. */
+.skill-card__description,
+.skill-card__highlights,
+.skill-card__highlights li {
+  color: var(--ifm-font-color-base) !important;
+  text-decoration: none !important;
+}
+
+/* Keep only the category tag and call to action blue. */
+.skill-card__tag,
+.skill-card__link {
+  color: var(--ifm-color-primary) !important;
+}
+
+/* Keep the heading in the normal heading colour. */
+.skill-card h2 {
+  color: var(--ifm-heading-color) !important;
+}
+
+/* Reset the full-card link to normal text colours. */
+.theme-doc-markdown a.skill-card,
+.theme-doc-markdown a.skill-card:link,
+.theme-doc-markdown a.skill-card:visited,
+.theme-doc-markdown a.skill-card:hover,
+.theme-doc-markdown a.skill-card:active {
+  color: var(--ifm-font-color-base) !important;
+  text-decoration: none !important;
+}
+
+/* Description and bullet text */
+.theme-doc-markdown a.skill-card .skill-card__description,
+.theme-doc-markdown a.skill-card .skill-card__highlights,
+.theme-doc-markdown a.skill-card .skill-card__highlights li {
+  color: var(--ifm-font-color-base) !important;
+  text-decoration: none !important;
+}
+
+/* Bullet markers */
+.theme-doc-markdown a.skill-card .skill-card__highlights li::marker {
+  color: var(--ifm-font-color-base);
+}
+
+/* Heading */
+.theme-doc-markdown a.skill-card h2 {
+  color: var(--ifm-heading-color) !important;
+  text-decoration: none !important;
+}
+
+/* Only these elements remain blue */
+.theme-doc-markdown a.skill-card .skill-card__tag,
+.theme-doc-markdown a.skill-card .skill-card__link {
+  color: var(--ifm-color-primary) !important;
+}
