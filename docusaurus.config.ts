@@ -45,7 +45,7 @@ const config: Config = {
 
   themes: ['@docusaurus/theme-mermaid'],
 
-  plugins: [
+plugins: [
   [
     '@docusaurus/plugin-client-redirects',
     {
@@ -53,8 +53,12 @@ const config: Config = {
         {
           from: '/docs/AMXInspiredSignageComposer',
           to: '/docs/case-studies/AMXInspiredSignageComposer',
+        },
+        {
           from: '/docs/MasterpassMerchantIntegrationGuide',
           to: '/docs/case-studies/MasterpassMerchantIntegrationGuide',
+        },
+        {
           from: '/docs/MDES4Merchants',
           to: '/docs/case-studies/MDES4Merchants',
         },
