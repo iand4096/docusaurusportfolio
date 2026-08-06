@@ -165,3 +165,119 @@
     transition: none;
   }
 }
+
+* Portfolio cards */
+
+/* Responsive portfolio-card grid */
+
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(
+    auto-fit,
+    minmax(min(100%, 300px), 1fr)
+  );
+  gap: 1.5rem;
+  width: 100%;
+  margin: 1.5rem 0 4rem;
+}
+
+.theme-doc-markdown .portfolio-grid {
+  padding-bottom: 4rem;
+}
+
+.theme-doc-markdown .portfolio-grid + * {
+  margin-top: 4rem !important;
+}
+
+
+.portfolio-card {
+  display: flex;
+  flex-direction: column;
+
+  /* Prevent grid items from expanding beyond their columns */
+  min-width: 0;
+  width: 100%;
+  min-height: 260px;
+  box-sizing: border-box;
+
+  padding: 1.4rem;
+
+  color: inherit;
+  text-decoration: none;
+
+  background: var(--ifm-background-surface-color);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 16px;
+
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+.portfolio-card:hover {
+  color: inherit;
+  text-decoration: none;
+  border-color: var(--ifm-color-primary);
+  transform: translateY(-4px);
+  box-shadow: 0 10px 30px rgb(0 0 0 / 10%);
+}
+
+.portfolio-card h3,
+.portfolio-card p,
+.portfolio-card span {
+  /* Wrap long words, URLs and technical terms */
+  min-width: 0;
+  max-width: 100%;
+  overflow-wrap: anywhere;
+  word-break: normal;
+  white-space: normal;
+}
+
+.portfolio-card h3 {
+  margin: 0 0 0.65rem;
+  color: var(--ifm-heading-color);
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+
+.portfolio-card p {
+  flex-grow: 1;
+  margin: 0 0 1rem;
+  line-height: 1.6;
+}
+
+.card-tag {
+  display: block;
+  margin-bottom: 0.65rem;
+
+  color: var(--ifm-color-primary);
+  font-size: 0.72rem;
+  font-weight: 750;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.card-link {
+  display: block;
+  margin-top: auto;
+  color: var(--ifm-color-primary);
+  font-weight: 700;
+}
+
+.portfolio-card:focus-visible {
+  outline: 3px solid var(--ifm-color-primary);
+  outline-offset: 3px;
+}
+
+@media screen and (max-width: 640px) {
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .portfolio-card {
+    min-height: auto;
+  }
+}

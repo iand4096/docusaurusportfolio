@@ -4,6 +4,9 @@ description: Ian Drewett's technical-writing portfolio, featuring API documentat
 hide_table_of_contents: true
 ---
 
+import Link from '@docusaurus/Link';
+
+
 # Ian Drewett
 
 Technical writer specialising in API documentation, user guides, developer experience, and complex software documentation in regulated industries such as Finance, Fintech and Payments.
@@ -12,32 +15,53 @@ I create and validate documentation that helps developers build secure, user-fri
 
 ## Selected work
 
-### AMX Composer
+<div className="portfolio-grid">
 
-User and administration documentation for a web-based digital-signage
-content-management application.
+  <Link
+    className="portfolio-card"
+    to="/docs/case-studies/AMXInspiredSignageComposer"
+    aria-label="Read the AMX Composer case study"
+  >
+    <span className="card-tag">User documentation · Single sourcing · MadCap Flare</span>
+    <h3>AMX Composer</h3>
+    <p>User and administration documentation for a web-based digital-signage content-management application.</p>
+    <span className="card-link">Read case study →</span>
+  </Link>
 
-[Read the case study](/docs/case-studies/AMXInspiredSignageComposer)
+  <Link
+    className="portfolio-card"
+    to="/docs/case-studies/MDES4Merchants"
+    aria-label="Read the MDES for Merchants case study"
+  >
+    <span className="card-tag">REST APIs · OAuth · Encryption · Payments</span>
+    <h3>MDES for Merchants</h3>
+    <p>A use-case guide explaining how merchants can use the Mastercard Digital Enablement API to tokenise card-on-file payment credentials.</p>
+    <span className="card-link">Read case study →</span>
+  </Link>
 
-### MDES for Merchants
+  <Link
+    className="portfolio-card"
+    to="/docs/case-studies/MasterpassMerchantIntegrationGuide"
+    aria-label="Read the Masterpass merchant integrations case study"
+  >
+    <span className="card-tag">API validation · Python · Sequence diagrams</span>
+    <h3>Masterpass merchant integrations</h3>
+    <p>Integration documentation supported by working test integrations, sequence diagrams and API-reference validation.</p>
+    <span className="card-link">Read case study →</span>
+  </Link>
 
-A use-case guide explaining how merchants can use Mastercard Digital
-Enablement API to tokenise card-on-file payment credentials.
+  <Link
+    className="portfolio-card"
+    to="/docs/case-studies/PaysafeDeveloperJS"
+    aria-label="Read the Paysafe.js case study"
+  >
+    <span className="card-tag">JavaScript SDK · Browser integration · Payments</span>
+    <h3>Paysafe.js</h3>
+    <p>Developer documentation for a browser-based payment integration, including interactive examples and implementation guidance.</p>
+    <span className="card-link">Read case study →</span>
+  </Link>
 
-[Read the case study](/docs/case-studies/MDES4Merchants)
-
-### Masterpass merchant integrations
-
-Integration documentation supported by working test integrations, sequence
-diagrams, and API-reference validation.
-
-[Read the case study](/docs/case-studies/MasterpassMerchantIntegrationGuide)
-
-### Paysafe.js
-
-Developer documentation for a browser-based payment integration.
-
-[Read the case study](/docs/case-studies/PaysafeDeveloperJS)
+</div>
 
 ## Technical capabilities
 
