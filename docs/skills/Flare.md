@@ -73,6 +73,8 @@ I have published 131 posts on the MadCap Flare user forum under the username **i
 
 One example is my proposed workaround for a long-running Flare limitation: [how to support code syntax highlighting in both HTML and PDF output](https://forums.madcapsoftware.com/viewtopic.php?p=99025&hilit=iand#p99025).
 
+See all posts [](https://forums.madcapsoftware.com/search.php?st=0&sk=t&sd=d&sr=posts&author_id=7956)
+
 ## Flare Automation, Integration and Migration {/* #automation */}
 
 At Paysafe, I integrated Flare with development, publishing and review systems as part of a broader documentation toolchain used to manage all of the non API reference documentation on the launch version of the [Paysafe Developer Centre](https://developer.paysafe.com).
