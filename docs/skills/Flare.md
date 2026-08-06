@@ -45,7 +45,7 @@ My advanced Flare experience includes:
 <tr>
 <td>
 
-* Conditional single-sourcing across products, platforms and outputs
+* Conditional single-sourcing across products, platforms and output
 * Multi-product and multi-platform documentation
 * Custom CSS, XML and output-template development
 * Cross-project linking
@@ -62,8 +62,6 @@ My advanced Flare experience includes:
 </tr>
 </tbody>
 </table>
-
-
 
 I applied these capabilities to the automation, integration and migration projects described in the [Flare Automation, Integration and Migration](#automation) section.
 
