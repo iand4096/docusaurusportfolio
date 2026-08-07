@@ -7,9 +7,9 @@ hide_table_of_contents: true
 import Link from '@docusaurus/Link';
 
 
-# Ian Drewett
+# Ian Drewett MSc Computer Science
 
-Technical writer specialising in API documentation, user guides, developer experience, and complex software documentation in regulated industries such as Finance, Fintech and Payments.
+Technical writer specialising in API documentation, user guides, developer experience, and complex software documentation in regulated industries such as Finance, Fintech and Payments. I have also worked in Digital Signage / Audio Video, CAD / Virtual Reality, 2D / 3D Graphics, and Semiconductors. I was a C / C++ developer at the beginning of my career before moving into Technical Documentation.
 
 I create and validate documentation that helps developers build secure, user-friendly, and robust API integrations.
 
