@@ -80,4 +80,23 @@ Explore my technical-writing, documentation-engineering, governance, structured-
     <span className="skill-card__link">Explore skills →</span>
   </Link>
 
+  <Link
+  className="skill-card"
+  to="/docs/informationarch"
+  aria-label="Explore my information architecture skills"
+>
+  <span className="skill-card__tag">Content structure</span>
+  <h2>Information Architecture</h2>
+  <div className="skill-card__description">
+    Designing scalable documentation structures, navigation models, metadata, content inventories and search experiences for complex technical content.
+  </div>
+  <ul className="skill-card__highlights">
+    <li>400-page site IA redesign</li>
+    <li>Graphviz-based learning paths</li>
+    <li>900-page content inventory</li>
+    <li>Metadata strategy for RAG search</li>
+  </ul>
+  <span className="skill-card__link">Explore skills →</span>
+</Link>
+
 </div>
