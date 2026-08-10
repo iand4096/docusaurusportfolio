@@ -68,13 +68,13 @@ Senior Technical Writer with a software-engineering background, specialising in 
 - API and developer documentation
 - OpenAPI reference documentation
 - Test integrations and validation using Python / Flask, Scala, Java, etc.
-- Docs-as-code - Docs-as-code: Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs and Docusaurus.
+- Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs and Docusaurus.
 - MadCap Flare and single-sourcing specialist. 131 posts on the Flare forum.
 
 
 ## Skills
 
-see the [Skills](/docs/skills) section of this portfolio
+See the [Skills](/docs/skills) section of this portfolio.
 
 ## Professional profile
 
