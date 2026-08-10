@@ -1,10 +1,10 @@
 name: Documentation QA
 
 on:
-  # Allow the workflow to be run manually from the Actions tab.
+  # Allow manual runs from the GitHub Actions tab.
   workflow_dispatch:
 
-  # Run after documentation-related changes are pushed to main.
+  # Run when documentation or QA tooling changes on main.
   push:
     branches:
       - main
@@ -15,8 +15,8 @@ on:
       - "requirements-doc-review.txt"
       - ".github/workflows/docs-review.yml"
 
-  # Run when a pull request targeting main changes documentation
-  # or the documentation-review tooling.
+  # Run for pull requests targeting main when documentation
+  # or QA tooling changes.
   pull_request:
     branches:
       - main
@@ -27,12 +27,12 @@ on:
       - "requirements-doc-review.txt"
       - ".github/workflows/docs-review.yml"
 
-# The documentation checker only needs read access to the repository.
+# The documentation QA workflow only needs repository read access.
 permissions:
   contents: read
 
-# If several commits are pushed quickly to the same branch/PR,
-# cancel the older QA run to avoid unnecessary API calls.
+# If several commits are pushed quickly, cancel the older QA run
+# to avoid unnecessary API usage.
 concurrency:
   group: docs-review-${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
@@ -43,9 +43,6 @@ jobs:
 
     # Do not run the secret-backed AI review for pull requests
     # originating from forks.
-    #
-    # Forked pull_request workflows do not receive repository secrets
-    # anyway, but this avoids starting a job that cannot use the API.
     if: >
       github.event_name != 'pull_request' ||
       github.event.pull_request.head.repo.full_name == github.repository
@@ -53,8 +50,16 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ------------------------------------------------------------
+      # Repository
+      # ------------------------------------------------------------
+
       - name: Check out repository
         uses: actions/checkout@v5
+
+      # ------------------------------------------------------------
+      # Python
+      # ------------------------------------------------------------
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -66,16 +71,24 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-doc-review.txt
 
-      - name: Verify DeepSeek API key is available
+      # ------------------------------------------------------------
+      # Secret check
+      # ------------------------------------------------------------
+
+      - name: Verify DeepSeek API key
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
           if [ -z "$DEEPSEEK_API_KEY" ]; then
-            echo "DEEPSEEK_API_KEY repository secret is not configured."
+            echo "::error::DEEPSEEK_API_KEY repository secret is not configured."
             exit 1
           fi
 
           echo "DeepSeek API key is configured."
+
+      # ------------------------------------------------------------
+      # Documentation QA
+      # ------------------------------------------------------------
 
       - name: Run documentation QA
         env:
@@ -89,10 +102,15 @@ jobs:
             --fail-medium 5 \
             --fail-api-errors 0
 
-      # Upload the reports even when the QA step fails because of
-      # high/medium findings. This lets you inspect what caused
-      # the workflow to fail.
+      # ------------------------------------------------------------
+      # Upload reports
+      #
+      # always() means this still runs when the QA command returns
+      # exit code 1 because a threshold was exceeded.
+      # ------------------------------------------------------------
+
       - name: Upload documentation review report
+        id: upload-report
         if: always()
         uses: actions/upload-artifact@v7
         with:
@@ -101,3 +119,44 @@ jobs:
             ai-doc-review.html
             ai-doc-review.json
           if-no-files-found: warn
+
+      # ------------------------------------------------------------
+      # GitHub Actions summary
+      #
+      # This puts an obvious report link on the workflow-run page,
+      # instead of requiring you to open the upload-artifact step.
+      # ------------------------------------------------------------
+
+      - name: Add QA report to workflow summary
+        if: always()
+        shell: bash
+        run: |
+          {
+            echo "## Documentation QA"
+            echo ""
+            echo "### Generated reports"
+            echo ""
+            echo "- \`ai-doc-review.html\` — human-readable QA report"
+            echo "- \`ai-doc-review.json\` — structured QA results"
+            echo ""
+
+            if [ -n "${{ steps.upload-report.outputs.artifact-url }}" ]; then
+              echo "### Download"
+              echo ""
+              echo "[Download documentation-review artifact](${{ steps.upload-report.outputs.artifact-url }})"
+              echo ""
+            else
+              echo "> No documentation-review artifact was created."
+              echo ""
+              echo "Check the workflow logs to determine why the report files were not generated."
+            fi
+
+            echo ""
+            echo "### CI thresholds"
+            echo ""
+            echo "| Finding | Allowed |"
+            echo "|---|---:|"
+            echo "| High severity | 0 |"
+            echo "| Medium severity | 5 |"
+            echo "| API/check errors | 0 |"
+          } >> "$GITHUB_STEP_SUMMARY"

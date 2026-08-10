@@ -2,836 +2,283 @@
 <html lang="en-GB">
 <head>
     <meta charset="utf-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1"
-    >
-
-    <title>AI documentation review</title>
-
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Documentation QA report</title>
     <style>
         :root {
+            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
             color-scheme: light dark;
-            font-family:
-                Inter,
-                ui-sans-serif,
-                system-ui,
-                -apple-system,
-                BlinkMacSystemFont,
-                "Segoe UI",
-                sans-serif;
         }
 
         body {
             margin: 0;
             background: #f5f7fa;
-            color: #1f2937;
+            color: #111827;
         }
 
         main {
-            max-width: 1600px;
+            max-width: 1800px;
             margin: 0 auto;
             padding: 32px;
         }
 
-        h1 {
-            margin: 0 0 8px;
-            font-size: 30px;
-        }
+        h1 { margin-bottom: 6px; }
+        h2 { margin-top: 32px; }
 
         .subtitle {
-            margin: 0 0 24px;
-            color: #4b5563;
+            margin-top: 0;
+            color: #6b7280;
         }
 
-        .summary {
+        .cards {
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
-            margin-bottom: 24px;
+            margin: 24px 0;
         }
 
-        .summary-card {
-            min-width: 150px;
-            padding: 16px 18px;
+        .card {
+            min-width: 135px;
+            padding: 14px 16px;
+            background: #fff;
             border: 1px solid #d1d5db;
             border-radius: 10px;
-            background: #ffffff;
         }
 
-        .summary-card strong {
+        .card strong {
             display: block;
-            margin-bottom: 4px;
             font-size: 22px;
         }
 
-        .summary-card span {
+        .card span {
             color: #6b7280;
-            font-size: 14px;
+            font-size: 13px;
+        }
+
+        .ci-box {
+            padding: 14px 16px;
+            border-radius: 10px;
+            margin: 18px 0 24px;
+            border: 1px solid;
+        }
+
+        .ci-pass {
+            background: #ecfdf5;
+            border-color: #10b981;
+            color: #065f46;
+        }
+
+        .ci-fail {
+            background: #fef2f2;
+            border-color: #ef4444;
+            color: #991b1b;
+        }
+
+        .filters {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 14px;
+        }
+
+        select {
+            padding: 7px 9px;
+            border-radius: 7px;
+            border: 1px solid #d1d5db;
         }
 
         .table-wrap {
             overflow-x: auto;
+            background: #fff;
             border: 1px solid #d1d5db;
             border-radius: 10px;
-            background: #ffffff;
         }
 
         table {
             width: 100%;
-            min-width: 1200px;
+            min-width: 1500px;
             border-collapse: collapse;
         }
 
-        th,
-        td {
-            padding: 12px 14px;
-            border-bottom: 1px solid #e5e7eb;
+        th, td {
+            padding: 11px 12px;
             text-align: left;
             vertical-align: top;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+            line-height: 1.45;
         }
 
         th {
             position: sticky;
             top: 0;
             background: #f9fafb;
-            color: #4b5563;
-            font-size: 13px;
+            font-size: 12px;
             text-transform: uppercase;
             letter-spacing: 0.04em;
-        }
-
-        td {
-            font-size: 14px;
-            line-height: 1.5;
         }
 
         code {
             white-space: pre-wrap;
             overflow-wrap: anywhere;
-            font-family:
-                "SFMono-Regular",
-                Consolas,
-                "Liberation Mono",
-                monospace;
             font-size: 12px;
         }
 
         .badge {
             display: inline-block;
-            padding: 3px 8px;
+            padding: 2px 7px;
             border-radius: 999px;
-            font-size: 12px;
             font-weight: 700;
+            font-size: 11px;
             text-transform: uppercase;
         }
 
-        .high-badge {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .medium-badge {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .low-badge {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .error-badge {
-            background: #f3f4f6;
-            color: #374151;
-        }
-
-        tr.high td:first-child {
-            border-left: 4px solid #dc2626;
-        }
-
-        tr.medium td:first-child {
-            border-left: 4px solid #d97706;
-        }
-
-        tr.low td:first-child {
-            border-left: 4px solid #2563eb;
-        }
-
-        tr.error td:first-child {
-            border-left: 4px solid #6b7280;
-        }
-
-        .empty-state {
-            padding: 32px;
-            text-align: center;
-            color: #4b5563;
-        }
+        .severity-high { background: #fee2e2; color: #991b1b; }
+        .severity-medium { background: #fef3c7; color: #92400e; }
+        .severity-low { background: #dbeafe; color: #1e40af; }
+        .confidence-high { background: #dcfce7; color: #166534; }
+        .confidence-medium { background: #fef3c7; color: #92400e; }
+        .confidence-low { background: #f3f4f6; color: #4b5563; }
+        .source-static { background: #ede9fe; color: #5b21b6; }
+        .source-ai { background: #e0f2fe; color: #075985; }
+        .empty-state { text-align: center; padding: 30px; color: #6b7280; }
 
         @media (prefers-color-scheme: dark) {
-            body {
-                background: #111827;
-                color: #f3f4f6;
-            }
-
-            .subtitle,
-            .summary-card span {
-                color: #9ca3af;
-            }
-
-            .summary-card,
-            .table-wrap {
-                background: #1f2937;
-                border-color: #374151;
-            }
-
-            th {
-                background: #111827;
-                color: #d1d5db;
-            }
-
-            th,
-            td {
-                border-bottom-color: #374151;
-            }
+            body { background: #111827; color: #f3f4f6; }
+            .card, .table-wrap { background: #1f2937; border-color: #374151; }
+            th { background: #111827; }
+            th, td { border-bottom-color: #374151; }
+            .subtitle, .card span { color: #9ca3af; }
         }
     </style>
 </head>
-
 <body>
-    <main>
-        <h1>AI documentation review</h1>
-
-        <p class="subtitle">
-            Site-wide review
-        </p>
-
-        <div class="summary">
-
-            <div class="summary-card">
-                <strong>25</strong>
-                <span>files reviewed</span>
-            </div>
-
-            <div class="summary-card">
-                <strong>19</strong>
-                <span>issues found</span>
-            </div>
-
-            <div class="summary-card">
-                <strong>0</strong>
-                <span>API errors</span>
-            </div>
-
-        </div>
-
-        <div class="table-wrap">
-
-            <table>
-
-                <thead>
-                    <tr>
-                        <th>File</th>
-                        <th>Severity</th>
-                        <th>Category</th>
-                        <th>Line</th>
-                        <th>Original</th>
-                        <th>Issue</th>
-                        <th>Suggestion</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/AMXInspiredSignageComposer.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            structure
-                        </td>
-
-                        <td>
-                            5
-                        </td>
-
-                        <td>
-                            <code>## Project overview</code>
-                        </td>
-
-                        <td>
-                            All case studies use &#x27;Project overview&#x27; as the first heading, but the content under it varies significantly. For example, AMXInspiredSignageComposer includes a Mermaid diagram, while others do not. This inconsistency in how project context is introduced could be improved by standardising the type of information provided (e.g., product, audience, author&#x27;s role).
-                        </td>
-
-                        <td>
-                            Consider adding a consistent set of subheadings or a brief &#x27;Role&#x27; statement in each case study&#x27;s overview to make it easier for readers to compare projects.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/AMXInspiredSignageComposer.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            portfolio
-                        </td>
-
-                        <td>
-                            7
-                        </td>
-
-                        <td>
-                            <code>I was tasked with working with the developers and product manager to create the user documentation for version 5 of AMX Composer</code>
-                        </td>
-
-                        <td>
-                            This states the author&#x27;s task but not the specific contribution (e.g., &#x27;I wrote&#x27;, &#x27;I created&#x27;). It is less direct than other case studies.
-                        </td>
-
-                        <td>
-                            Rephrase to explicitly state the author&#x27;s contribution, such as &#x27;I wrote the user documentation for version 5 of AMX Composer&#x27;.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/AMXInspiredSignageComposer.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            portfolio
-                        </td>
-
-                        <td>
-                            28
-                        </td>
-
-                        <td>
-                            <code>This work required a practical understanding of TCP/IP networking, player configuration, device connectivity, and troubleshooting networked digital-signage systems.</code>
-                        </td>
-
-                        <td>
-                            This sentence focuses on the technology rather than the documentation work. The case study could better highlight what was documented and the challenges of documenting it.
-                        </td>
-
-                        <td>
-                            Replace or supplement this sentence with a description of the documentation challenges, such as audience complexity or single-sourcing requirements.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/AMXInspiredSignageComposer.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            repetition
-                        </td>
-
-                        <td>
-                            41
-                        </td>
-
-                        <td>
-                            <code>I created a single-source MadCap Flare project using reusable content, conditional text, separate build targets, and separate source TOCs.</code>
-                        </td>
-
-                        <td>
-                            The description of using MadCap Flare for single-sourcing is repeated in the Flare tool page (docs/tools/Flare.md) and the case study. This repetition could be reduced by linking to the tool page.
-                        </td>
-
-                        <td>
-                            In the case study, link to the Flare tool page for details on Flare skills, and keep the case study focused on the project-specific application.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/MDES4Merchants.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            structure
-                        </td>
-
-                        <td>
-                            7
-                        </td>
-
-                        <td>
-                            <code>## Project overview</code>
-                        </td>
-
-                        <td>
-                            The case studies vary in how they describe the author&#x27;s contribution. For example, MDES4Merchants clearly states &#x27;I wrote the first version&#x27;, while MasterpassMerchantIntegrationGuide says &#x27;I maintained and updated&#x27;. This inconsistency makes it harder to assess the author&#x27;s role across projects.
-                        </td>
-
-                        <td>
-                            Ensure each case study explicitly states the author&#x27;s primary contribution (e.g., &#x27;wrote&#x27;, &#x27;rewrote&#x27;, &#x27;maintained&#x27;) in the overview or a dedicated &#x27;My role&#x27; section.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/MDES4Merchants.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            portfolio
-                        </td>
-
-                        <td>
-                            9
-                        </td>
-
-                        <td>
-                            <code>I wrote the first version of the **MDES for Merchants Use Case Guide** while working at Mastercard.</code>
-                        </td>
-
-                        <td>
-                            This clearly states the author&#x27;s contribution, but other case studies (e.g., AMXInspiredSignageComposer) do not. This inconsistency weakens the portfolio&#x27;s ability to show the author&#x27;s role.
-                        </td>
-
-                        <td>
-                            Ensure every case study explicitly states the author&#x27;s primary contribution in the overview or a dedicated section.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/MDES4Merchants.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            repetition
-                        </td>
-
-                        <td>
-                            13
-                        </td>
-
-                        <td>
-                            <code>The published guide has since received minor updates from other contributors.</code>
-                        </td>
-
-                        <td>
-                            The phrase &#x27;has since received minor updates from other contributors&#x27; appears in multiple case studies (MDES4Merchants, MasterpassMerchantIntegrationGuide, PaysafeDeveloperJS). This repetition adds little value and could be consolidated or removed.
-                        </td>
-
-                        <td>
-                            Consider removing this sentence from case studies or replacing it with a more specific note about the current state of the documentation, such as a link or version information.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/MDES4Merchants.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            repetition
-                        </td>
-
-                        <td>
-                            25
-                        </td>
-
-                        <td>
-                            <code>I created custom test code in Python using the Requests library and open-source cryptography libraries.</code>
-                        </td>
-
-                        <td>
-                            The use of Python for testing is also mentioned in the Programming and Automation tool page (docs/tools/ProgrammingAutomation.md). This repetition could be reduced by linking to the tool page.
-                        </td>
-
-                        <td>
-                            In the case study, link to the Programming and Automation tool page for details on programming skills, and keep the case study focused on the project-specific application.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/MasterpassMerchantIntegrationGuide.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            portfolio
-                        </td>
-
-                        <td>
-                            9
-                        </td>
-
-                        <td>
-                            <code>My main contribution was to build test integrations for each checkout flow and use the results to improve the accuracy and clarity of the documentation.</code>
-                        </td>
-
-                        <td>
-                            This clearly states the author&#x27;s contribution, but other case studies (e.g., AMXInspiredSignageComposer) do not. This inconsistency weakens the portfolio&#x27;s ability to show the author&#x27;s role.
-                        </td>
-
-                        <td>
-                            Ensure every case study explicitly states the author&#x27;s primary contribution in the overview or a dedicated section.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/MasterpassMerchantIntegrationGuide.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            repetition
-                        </td>
-
-                        <td>
-                            11
-                        </td>
-
-                        <td>
-                            <code>The content has received minor updates from other contributors since I left Mastercard but remains substantially the same.</code>
-                        </td>
-
-                        <td>
-                            Similar to MDES4Merchants and PaysafeDeveloperJS, this sentence repeats the same idea of minor updates by others. This repetition across case studies is unnecessary.
-                        </td>
-
-                        <td>
-                            Remove or rephrase this sentence to focus on the author&#x27;s original contribution rather than subsequent minor updates.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/MasterpassMerchantIntegrationGuide.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            repetition
-                        </td>
-
-                        <td>
-                            24
-                        </td>
-
-                        <td>
-                            <code>I created detailed sequence diagrams using PlantUML to show the order of interactions between the merchant, the customer, and Masterpass.</code>
-                        </td>
-
-                        <td>
-                            The use of PlantUML for sequence diagrams is also mentioned in the Diagramming tool page (docs/tools/Diagramming.md). This repetition could be reduced by linking to the tool page.
-                        </td>
-
-                        <td>
-                            In the case study, link to the Diagramming tool page for details on diagramming skills, and keep the case study focused on the project-specific application.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/PaysafeDeveloperJS.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            structure
-                        </td>
-
-                        <td>
-                            7
-                        </td>
-
-                        <td>
-                            <code>I was tasked with creating the first version of the **Paysafe.js Developer Guide** for the newly released Paysafe.js product.</code>
-                        </td>
-
-                        <td>
-                            This case study clearly states the author&#x27;s role, but others like MasterpassMerchantIntegrationGuide are less explicit. This inconsistency affects the portfolio&#x27;s ability to communicate the author&#x27;s contributions.
-                        </td>
-
-                        <td>
-                            Add a clear statement of the author&#x27;s role in each case study, such as &#x27;I wrote&#x27;, &#x27;I maintained&#x27;, or &#x27;I contributed to&#x27;.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/PaysafeDeveloperJS.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            portfolio
-                        </td>
-
-                        <td>
-                            7
-                        </td>
-
-                        <td>
-                            <code>I was tasked with creating the first version of the **Paysafe.js Developer Guide** for the newly released Paysafe.js product.</code>
-                        </td>
-
-                        <td>
-                            This clearly states the author&#x27;s contribution, but other case studies (e.g., AMXInspiredSignageComposer) do not. This inconsistency weakens the portfolio&#x27;s ability to show the author&#x27;s role.
-                        </td>
-
-                        <td>
-                            Ensure every case study explicitly states the author&#x27;s primary contribution in the overview or a dedicated section.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/PaysafeDeveloperJS.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            repetition
-                        </td>
-
-                        <td>
-                            15
-                        </td>
-
-                        <td>
-                            <code>The guide has since been expanded by other contributors to cover features including 3D Secure, Google Pay, Apple Pay, and Instant Withdrawal.</code>
-                        </td>
-
-                        <td>
-                            This repeats the pattern of noting that others have updated the guide. While it provides specific features, the general idea of &#x27;updated by others&#x27; is repeated across case studies.
-                        </td>
-
-                        <td>
-                            Consider removing this sentence or integrating the information into the &#x27;Outcome&#x27; section without the generic &#x27;updated by others&#x27; phrasing.
-                        </td>
-                    </tr>
-                    
-                    <tr class="medium">
-                        <td>docs/case-studies/PaysafeDeveloperJS.md</td>
-
-                        <td>
-                            <span class="badge medium-badge">
-                                medium
-                            </span>
-                        </td>
-
-                        <td>
-                            repetition
-                        </td>
-
-                        <td>
-                            32
-                        </td>
-
-                        <td>
-                            <code>I built CodePen examples so developers could inspect and modify working integrations without first creating a complete local project.</code>
-                        </td>
-
-                        <td>
-                            The use of CodePen for examples is not repeated elsewhere, but the general pattern of building test integrations is repeated across case studies. This repetition could be reduced by linking to the relevant skill pages.
-                        </td>
-
-                        <td>
-                            In the case study, link to the Technical Validation and Testing skill page for details on testing approach, and keep the case study focused on the project-specific application.
-                        </td>
-                    </tr>
-                    
-                    <tr class="low">
-                        <td>docs/case-studies/AMXInspiredSignageComposer.md</td>
-
-                        <td>
-                            <span class="badge low-badge">
-                                low
-                            </span>
-                        </td>
-
-                        <td>
-                            diagram
-                        </td>
-
-                        <td>
-                            13
-                        </td>
-
-                        <td>
-                            <code>```mermaid
-flowchart LR
-    USERS[&quot;fa:fa-users&lt;br/&gt;Users&quot;]
-    COMPOSER[&quot;fa:fa-pen-to-square&lt;br/&gt;AMX Inspired Composer&quot;]
-    PLAYERS[&quot;fa:fa-server&lt;br/&gt;Inspired Players&quot;]
-    SCREENS[&quot;fa:fa-display&lt;br/&gt;Display screens&quot;]
-
-    USERS --&gt; COMPOSER
-    COMPOSER --&gt;|&quot;Publish&quot;| PLAYERS
-    PLAYERS --&gt; SCREENS
-
-    classDef large font-size:20px,padding:18px;
-    class USERS,COMPOSER,PLAYERS,SCREENS large;
-```</code>
-                        </td>
-
-                        <td>
-                            This diagram is a simple flow that could be described in prose. It does not add significant value and may be unnecessary.
-                        </td>
-
-                        <td>
-                            Consider removing the diagram or replacing it with a more detailed diagram that shows the documentation structure or workflow.
-                        </td>
-                    </tr>
-                    
-                    <tr class="low">
-                        <td>docs/case-studies/AMXInspiredSignageComposer.md</td>
-
-                        <td>
-                            <span class="badge low-badge">
-                                low
-                            </span>
-                        </td>
-
-                        <td>
-                            other
-                        </td>
-
-                        <td>
-                            64
-                        </td>
-
-                        <td>
-                            <code>Take advantage of modern automated proofreading tools like [Vale](https://github.com/vale-cli/vale) and [LanguageTool](https://github.com/languagetool-org/languagetool)</code>
-                        </td>
-
-                        <td>
-                            This sentence is incomplete (missing a period) and is a minor issue, but it also appears in a similar form in other case studies (e.g., MDES4Merchants mentions &#x27;If security restrictions allowed&#x27;). This pattern of &#x27;What I would change&#x27; could be more specific.
-                        </td>
-
-                        <td>
-                            Complete the sentence and ensure each &#x27;What I would change&#x27; item is specific to the project.
-                        </td>
-                    </tr>
-                    
-                    <tr class="low">
-                        <td>docs/case-studies/MasterpassMerchantIntegrationGuide.md</td>
-
-                        <td>
-                            <span class="badge low-badge">
-                                low
-                            </span>
-                        </td>
-
-                        <td>
-                            diagram
-                        </td>
-
-                        <td>
-                            24
-                        </td>
-
-                        <td>
-                            <code>I created detailed sequence diagrams using PlantUML to show the order of interactions between the merchant, the customer, and Masterpass.</code>
-                        </td>
-
-                        <td>
-                            The case study mentions sequence diagrams but does not include them. Including an example diagram would strengthen the portfolio by showing the actual work.
-                        </td>
-
-                        <td>
-                            Add an example sequence diagram to the case study to demonstrate the author&#x27;s diagramming skills.
-                        </td>
-                    </tr>
-                    
-                    <tr class="low">
-                        <td>docs/case-studies/PaysafeDeveloperJS.md</td>
-
-                        <td>
-                            <span class="badge low-badge">
-                                low
-                            </span>
-                        </td>
-
-                        <td>
-                            diagram
-                        </td>
-
-                        <td>
-                            68
-                        </td>
-
-                        <td>
-                            <code>Add a sequence diagram showing how sensitive payment details passed directly from the Paysafe-hosted fields to Paysafe, while only the resulting token was returned to the merchant.</code>
-                        </td>
-
-                        <td>
-                            The author suggests adding a sequence diagram in &#x27;What I would change&#x27;, which indicates that the current case study lacks a diagram that would improve comprehension.
-                        </td>
-
-                        <td>
-                            Consider adding the suggested sequence diagram to the case study to illustrate the tokenisation flow.
-                        </td>
-                    </tr>
-                    
-                </tbody>
-
-            </table>
-
-        </div>
-
-    </main>
+<main>
+    <h1>Documentation QA report</h1>
+    <p class="subtitle">
+        Mode: per-page ·
+        Checks: Mermaid opportunities only ·
+        Model: deepseek-v4-flash
+    </p>
+
+    <div class="cards">
+        <div class="card"><strong>25</strong><span>files reviewed</span></div>
+        <div class="card"><strong>1</strong><span>total issues</span></div>
+        <div class="card"><strong>0</strong><span>high</span></div>
+        <div class="card"><strong>0</strong><span>medium</span></div>
+        <div class="card"><strong>1</strong><span>low</span></div>
+        <div class="card"><strong>0</strong><span>API/check errors</span></div>
+    </div>
+
+    <div class="ci-box ci-pass">
+        <strong>CI threshold result: PASS</strong><br>
+        All configured thresholds are satisfied.<br>
+        Thresholds: high &gt; 0,
+        medium &gt; 5,
+        API/check errors &gt; 0.
+    </div>
+
+    <h2>Issues</h2>
+
+    <div class="filters">
+        <label>
+            Severity
+            <select id="severityFilter">
+                <option value="">All</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+        </label>
+
+        <label>
+            Source
+            <select id="sourceFilter">
+                <option value="">All</option>
+                <option value="static">Static</option>
+                <option value="ai">AI</option>
+            </select>
+        </label>
+    </div>
+
+    <div class="table-wrap">
+        <table id="issuesTable">
+            <thead>
+                <tr>
+                    <th>File</th>
+                    <th>Line</th>
+                    <th>Severity</th>
+                    <th>Confidence</th>
+                    <th>Type</th>
+                    <th>Category</th>
+                    <th>Source</th>
+                    <th>Original</th>
+                    <th>Issue</th>
+                    <th>Suggestion</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            <tr
+                data-severity="low"
+                data-source="ai"
+                data-category="diagram"
+            >
+                <td>docs/case-studies/PaysafeDeveloperJS.md</td>
+                <td>68</td>
+                <td><span class="badge severity-low">low</span></td>
+                <td><span class="badge confidence-medium">medium</span></td>
+                <td>diagram</td>
+                <td>diagram</td>
+                <td><span class="badge source-ai">ai</span></td>
+                <td><code>Add a sequence diagram showing how sensitive payment details passed directly from the Paysafe-hosted fields to Paysafe, while only the resulting token was returned to the merchant.</code></td>
+                <td>The text explicitly suggests adding a sequence diagram, which would clarify the flow of sensitive data and token return.</td>
+                <td>Add a Mermaid sequenceDiagram showing the merchant&#x27;s page, Paysafe-hosted iframe, and Paysafe backend, with the user entering card details into the iframe, data sent directly to Paysafe, and a token returned to the merchant.</td>
+            </tr>
+            
+            </tbody>
+        </table>
+    </div>
+
+    <h2>API/check errors</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Check</th>
+                    <th>File</th>
+                    <th>Error</th>
+                </tr>
+            </thead>
+            <tbody>
+                
+            <tr>
+                <td colspan="3" class="empty-state">No API or check errors.</td>
+            </tr>
+            
+            </tbody>
+        </table>
+    </div>
+</main>
+
+<script>
+    const severityFilter = document.getElementById('severityFilter');
+    const sourceFilter = document.getElementById('sourceFilter');
+
+    function applyFilters() {
+        const severity = severityFilter.value;
+        const source = sourceFilter.value;
+        const rows = document.querySelectorAll('#issuesTable tbody tr[data-severity]');
+
+        for (const row of rows) {
+            const severityMatch = !severity || row.dataset.severity === severity;
+            const sourceMatch = !source || row.dataset.source === source;
+            row.style.display = severityMatch && sourceMatch ? '' : 'none';
+        }
+    }
+
+    severityFilter.addEventListener('change', applyFilters);
+    sourceFilter.addEventListener('change', applyFilters);
+</script>
 </body>
 </html>
