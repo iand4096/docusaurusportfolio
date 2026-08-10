@@ -62,3 +62,4 @@ The result is an easily maintained portfolio that demonstrates a modern docs-as-
 * Add Vale for deterministic style and terminology checking.
 * Add a glossary implemented as a set of Markdown files containing terms and definitions.
 * Use the glossary entries to provide hover tooltips when defined terms appear elsewhere in the documentation.
+* Add a dashboard showing stats such as the number of errors recorded by the quality checker over time.
