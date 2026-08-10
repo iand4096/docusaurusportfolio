@@ -46,7 +46,7 @@ jobs:
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
         run: |
-          python scripts/docusaurus_ai_doc_review.py \
+          python scripts/ai_docs_review.py \
             --ci \
             --mode per-page \
             --filter full \
