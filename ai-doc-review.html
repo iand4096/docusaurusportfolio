@@ -1,0 +1,1107 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+
+<head>
+<meta charset="utf-8">
+<title>AI Documentation Review</title>
+
+<style>
+body {
+    font-family: system-ui, sans-serif;
+    max-width: 1600px;
+    margin: 40px auto;
+    padding: 0 24px;
+    line-height: 1.5;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border-bottom: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+    vertical-align: top;
+}
+
+th {
+    background: #f3f3f3;
+}
+
+.high {
+    background: #ffe8e8;
+}
+
+.medium {
+    background: #fff5dc;
+}
+
+.low {
+    background: #f4f8ff;
+}
+
+.error {
+    background: #eee;
+}
+
+.summary {
+    margin-bottom: 30px;
+}
+
+code {
+    white-space: pre-wrap;
+    font-family: Consolas, monospace;
+}
+</style>
+</head>
+
+<body>
+
+<h1>AI Documentation Review</h1>
+
+<div class="summary">
+    <strong>25</strong> files reviewed<br>
+    <strong>72</strong> potential issues identified
+</div>
+
+<table>
+
+<thead>
+<tr>
+    <th>File</th>
+    <th>Severity</th>
+    <th>Line</th>
+    <th>Original text</th>
+    <th>Issue</th>
+    <th>Suggested change</th>
+</tr>
+</thead>
+
+<tbody>
+
+                <tr class="medium">
+                    <td>docs\case-studies\AMXInspiredSignageComposer.md</td>
+                    <td>medium</td>
+                    <td>47</td>
+                    <td>
+                        <code>The primary output - two different context-sensitive HTML help bundles accessible within the application with the specific version determined by the user&#x27;s role - either end user or administrator.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The sentence is long and the dash usage is confusing. The phrase &#x27;with the specific version determined by the user&#x27;s role&#x27; is awkward and could be clearer.
+                    </td>
+                    <td>The primary output: two context-sensitive HTML help bundles accessible within the application, with the version determined by the user&#x27;s role (end user or administrator).</td>
+                </tr>
+            
+                <tr class="medium">
+                    <td>docs\case-studies\AMXInspiredSignageComposer.md</td>
+                    <td>medium</td>
+                    <td>48</td>
+                    <td>
+                        <code>A secondary output - a PDF print administrator manual containing the same content as the help bundles in Print form.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The phrase &#x27;in Print form&#x27; is awkward and the dash usage is inconsistent with the previous bullet. Also, &#x27;Print&#x27; should not be capitalised.
+                    </td>
+                    <td>A secondary output: a PDF administrator manual containing the same content as the help bundles in print form.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\case-studies\AMXInspiredSignageComposer.md</td>
+                    <td>low</td>
+                    <td>47</td>
+                    <td>
+                        <code>The primary output - two different context-sensitive HTML help bundles accessible within the application with the specific version determined by the user&#x27;s role - either end user or administrator.</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The dash usage is inconsistent with the next bullet, which uses a hyphen. For consistency, use the same punctuation style.
+                    </td>
+                    <td>Use a colon or em dash consistently in both bullets.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\case-studies\MasterpassMerchantIntegrationGuide.md</td>
+                    <td>low</td>
+                    <td>41</td>
+                    <td>
+                        <code>Search for **&quot;Masterpass Merchant Integration Guide”** to view the current publication.</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        Mismatched quotation marks: the opening quote is straight double quote, but the closing quote is a right double quotation mark. This can cause confusion.
+                    </td>
+                    <td>Use consistent straight double quotes: Search for **&quot;Masterpass Merchant Integration Guide&quot;** to view the current publication.</td>
+                </tr>
+            
+                <tr class="medium">
+                    <td>docs\case-studies\MDES4Merchants.md</td>
+                    <td>medium</td>
+                    <td>55</td>
+                    <td>
+                        <code>This was orginally ommited due to the burden of mantaining this security critical code in multiple target languages using approved cryptography libraries.</code>
+                    </td>
+                    <td>
+                        <strong>grammar</strong><br>
+                        Spelling errors: &#x27;orginally&#x27; should be &#x27;originally&#x27;, &#x27;ommited&#x27; should be &#x27;omitted&#x27;, &#x27;mantaining&#x27; should be &#x27;maintaining&#x27;.
+                    </td>
+                    <td>This was originally omitted due to the burden of maintaining this security-critical code in multiple target languages using approved cryptography libraries.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\case-studies\PaysafeDeveloperJS.md</td>
+                    <td>low</td>
+                    <td>9</td>
+                    <td>
+                        <code>The library then returns a token that the merchant could use to make a payment request.</code>
+                    </td>
+                    <td>
+                        <strong>grammar</strong><br>
+                        Tense inconsistency: &#x27;returns&#x27; (present) followed by &#x27;could&#x27; (past).
+                    </td>
+                    <td>The library then returns a token that the merchant can use to make a payment request.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\case-studies\PaysafeDeveloperJS.md</td>
+                    <td>low</td>
+                    <td>13</td>
+                    <td>
+                        <code>I also created the original CodePen examples and an interactive inline **Try Now** demonstration that allowed developers to explore the integration step by step.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The phrase &#x27;interactive inline&#x27; is slightly redundant; &#x27;inline&#x27; already implies it is within the documentation.
+                    </td>
+                    <td>I also created the original CodePen examples and an interactive **Try Now** demonstration that allowed developers to explore the integration step by step.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\case-studies\PaysafeDeveloperJS.md</td>
+                    <td>low</td>
+                    <td>28</td>
+                    <td>
+                        <code>I structured the guide around the developer’s end-to-end integration workflow rather than documenting the JavaScript API operation by operation.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The phrase &#x27;operation by operation&#x27; is a bit awkward; consider &#x27;operation-by-operation&#x27; or &#x27;by individual operation&#x27;.
+                    </td>
+                    <td>I structured the guide around the developer’s end-to-end integration workflow rather than documenting the JavaScript API operation by operation.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\case-studies\PaysafeDeveloperJS.md</td>
+                    <td>low</td>
+                    <td>32</td>
+                    <td>
+                        <code>I built CodePen examples so developers could inspect and modify working integrations without first creating a complete local project.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The phrase &#x27;complete local project&#x27; is clear but could be simplified to &#x27;local project&#x27;.
+                    </td>
+                    <td>I built CodePen examples so developers could inspect and modify working integrations without first creating a local project.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\case-studies\PaysafeDeveloperJS.md</td>
+                    <td>low</td>
+                    <td>42</td>
+                    <td>
+                        <code>An interactive **Try Now** product demonstration inline within the documentation that guided developers through the integration.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The phrase &#x27;inline within the documentation&#x27; is redundant; &#x27;inline&#x27; already implies that.
+                    </td>
+                    <td>An interactive **Try Now** product demonstration that guided developers through the integration.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\case-studies\PaysafeDeveloperJS.md</td>
+                    <td>low</td>
+                    <td>59</td>
+                    <td>
+                        <code>The interactive inline demo within the documentation showcased the product and provided a way for developers to quickly test the integration flow with an example token.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The phrase &#x27;interactive inline demo within the documentation&#x27; is redundant; &#x27;inline&#x27; already implies it is within the documentation.
+                    </td>
+                    <td>The interactive demo within the documentation showcased the product and provided a way for developers to quickly test the integration flow with an example token.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\APIandWebSecurity.md</td>
+                    <td>low</td>
+                    <td>19</td>
+                    <td>
+                        <code>Authorisation</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        British English uses &#x27;authorisation&#x27; with &#x27;s&#x27;, but the term &#x27;Authorization&#x27; appears in the title and elsewhere. Ensure consistent spelling.
+                    </td>
+                    <td>Use &#x27;Authorisation&#x27; consistently throughout, or change to &#x27;Authorization&#x27; if American English is preferred.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\APIandWebSecurity.md</td>
+                    <td>low</td>
+                    <td>19</td>
+                    <td>
+                        <code>Authorisation</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The term &#x27;Authorisation&#x27; is spelled with &#x27;s&#x27; here, but &#x27;Authorization&#x27; is used in the title and other places. Inconsistent terminology.
+                    </td>
+                    <td>Standardize on one spelling, preferably &#x27;Authorisation&#x27; for British English.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\APIDocumentation.md</td>
+                    <td>low</td>
+                    <td>36</td>
+                    <td>
+                        <code>exponential back off</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The term &#x27;back off&#x27; is typically written as &#x27;backoff&#x27; in technical documentation.
+                    </td>
+                    <td>exponential backoff</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\APIDocumentation.md</td>
+                    <td>low</td>
+                    <td>58</td>
+                    <td>
+                        <code>multistep API workflows</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The term &#x27;multistep&#x27; is used here, but elsewhere &#x27;multi-step&#x27; is used (line 47). For consistency, use the same hyphenation.
+                    </td>
+                    <td>multi-step API workflows</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>25</td>
+                    <td>
+                        <code>Served as product owner, creator and contributor for **Codetreedocs**, a custom Scala-based Markdown documentation platform and static site generator with IDE-based live preview.</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The sentence ends with a period after the bold text, but the period is outside the bold formatting. This is a minor punctuation inconsistency.
+                    </td>
+                    <td>Move the period inside the bold formatting: &#x27;...live preview**.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>27</td>
+                    <td>
+                        <code>Created documentation standards, contributor guidance, training and video tutorials</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...video tutorials.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>26</td>
+                    <td>
+                        <code>Helped grow a docs-as-code developer portal from 700 to 3,200 pages</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...3,200 pages.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>31</td>
+                    <td>
+                        <code>Managed documentation in Git repositories and a large Git monorepo</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...Git monorepo.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>32</td>
+                    <td>
+                        <code>Supported versioning, developer contributions, review, traceability and audit workflows</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...audit workflows.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>33</td>
+                    <td>
+                        <code>Managed a Jenkins-based CI/CD publishing pipeline</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...publishing pipeline.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>34</td>
+                    <td>
+                        <code>Improved publishing speed and maintainability through automated build processes</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...build processes.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>38</td>
+                    <td>
+                        <code>Developed Python and Scala migration tools to convert approximately 900 pages from Sphinx and TWiki into an extended Markdown format</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...Markdown format.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>39</td>
+                    <td>
+                        <code>Used custom code and Java and Python libraries to parse HTML and convert it into Markdown</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...into Markdown.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>40</td>
+                    <td>
+                        <code>Preserved document structure, internal links, formatting and reusable content during migrations</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...during migrations.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>41</td>
+                    <td>
+                        <code>Implemented conversion logic that combined Markdown with embedded HTML where Markdown alone could not preserve the original structures; for example, to support complex tables containing multi-line cell content</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...cell content.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>42</td>
+                    <td>
+                        <code>Used page-view analytics to prioritise content for migration, restructuring or retirement</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...or retirement.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>46</td>
+                    <td>
+                        <code>Extended Markdown parsers to support requirements beyond standard Markdown syntax such as PlantUML, Mermaid, C4 Architecture diagrams, content reuse, and code sample injection</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...sample injection.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>47</td>
+                    <td>
+                        <code>Tested and refined generated Markdown to ensure correct rendering and maintainability</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...and maintainability.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>51</td>
+                    <td>
+                        <code>Built an extensive test site with MkDocs as part of a work pilot. Migrated 400 pages of documentation to MkDocs format for the pilot. This work included modifying and extending a number of existing MkDocs plugins and recompiling them where necessary as C++ binaries. This work was ultimately abandoned in favor of creating a custom static site generator.</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point is a single sentence but contains multiple sentences. It is acceptable, but the bullet point ends with a period, which is consistent. No issue.
+                    </td>
+                    <td></td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>52</td>
+                    <td>
+                        <code>Built the current portfolio site with Docusaurus.</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point ends with a period, which is consistent. No issue.
+                    </td>
+                    <td></td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>53</td>
+                    <td>
+                        <code>Designed and led the delivery of a custom static site generator.</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point ends with a period, which is consistent. No issue.
+                    </td>
+                    <td></td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>57</td>
+                    <td>
+                        <code>Tested generated sites, publishing pipelines and migrated content</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...migrated content.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>58</td>
+                    <td>
+                        <code>Validated code examples and documentation output</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...documentation output.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>59</td>
+                    <td>
+                        <code>Diagnosed conversion, rendering and link-integrity problems</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...link-integrity problems.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>60</td>
+                    <td>
+                        <code>Used AI-assisted development tools to automate repetitive documentation work and enhance platform functionality</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The bullet point lacks a final period, while other bullet points in the same section end with periods. This is inconsistent punctuation.
+                    </td>
+                    <td>Add a period at the end: &#x27;...platform functionality.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>18</td>
+                    <td>
+                        <code># Docs-as-Code</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The heading uses &#x27;Docs-as-Code&#x27; with hyphens, while the title in the front matter is &#x27;Docs as Code&#x27; without hyphens. This is inconsistent terminology.
+                    </td>
+                    <td>Change the heading to &#x27;Docs as Code&#x27; to match the title, or update the title to &#x27;Docs-as-Code&#x27;.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>20</td>
+                    <td>
+                        <code>docs-as-code platforms</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The term &#x27;docs-as-code&#x27; is used with hyphens, while the title uses &#x27;Docs as Code&#x27; without hyphens. This is inconsistent terminology.
+                    </td>
+                    <td>Consider using &#x27;docs as code&#x27; without hyphens for consistency, or use hyphens consistently throughout.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>21</td>
+                    <td>
+                        <code>docs-as-code sites</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The term &#x27;docs-as-code&#x27; is used with hyphens, while the title uses &#x27;Docs as Code&#x27; without hyphens. This is inconsistent terminology.
+                    </td>
+                    <td>Consider using &#x27;docs as code&#x27; without hyphens for consistency, or use hyphens consistently throughout.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>26</td>
+                    <td>
+                        <code>docs-as-code developer portal</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The term &#x27;docs-as-code&#x27; is used with hyphens, while the title uses &#x27;Docs as Code&#x27; without hyphens. This is inconsistent terminology.
+                    </td>
+                    <td>Consider using &#x27;docs as code&#x27; without hyphens for consistency, or use hyphens consistently throughout.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocsAsCode.md</td>
+                    <td>low</td>
+                    <td>62</td>
+                    <td>
+                        <code>docs-as-code platforms</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The term &#x27;docs-as-code&#x27; is used with hyphens, while the title uses &#x27;Docs as Code&#x27; without hyphens. This is inconsistent terminology.
+                    </td>
+                    <td>Consider using &#x27;docs as code&#x27; without hyphens for consistency, or use hyphens consistently throughout.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocumentationEngineering.md</td>
+                    <td>low</td>
+                    <td>38</td>
+                    <td>
+                        <code>Codetreedocs</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The term &#x27;Codetreedocs&#x27; is used without explanation or capitalisation consistency. It appears to be a product name, but it is not introduced or defined.
+                    </td>
+                    <td>Consider introducing it as &#x27;Codetreedocs&#x27; (a custom documentation platform) or provide a brief description on first use.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocumentationEngineering.md</td>
+                    <td>low</td>
+                    <td>68</td>
+                    <td>
+                        <code>Codetreedocs</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The term &#x27;Codetreedocs&#x27; is used again, but it is not capitalised consistently with the earlier mention on line 38. Consistency in capitalisation would improve clarity.
+                    </td>
+                    <td>Use a consistent capitalisation, e.g., &#x27;CodeTreeDocs&#x27; or &#x27;Codetreedocs&#x27;, throughout the document.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocumentationEngineering.md</td>
+                    <td>low</td>
+                    <td>80</td>
+                    <td>
+                        <code>trail diagrams</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The term &#x27;trail diagrams&#x27; is used without explanation. It may be unclear to readers what these are.
+                    </td>
+                    <td>Consider adding a brief explanation, e.g., &#x27;trail diagrams (visual paths through related documentation)&#x27;.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocumentationEngineering.md</td>
+                    <td>low</td>
+                    <td>126</td>
+                    <td>
+                        <code>OCR</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The abbreviation &#x27;OCR&#x27; is used without expansion. It may be unfamiliar to some readers.
+                    </td>
+                    <td>Spell out &#x27;optical character recognition (OCR)&#x27; on first use.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\DocumentationEngineering.md</td>
+                    <td>low</td>
+                    <td>130</td>
+                    <td>
+                        <code>RAG-based documentation search</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The term &#x27;RAG-based&#x27; is used without explanation. It may be unclear to readers unfamiliar with the acronym.
+                    </td>
+                    <td>Consider expanding &#x27;RAG&#x27; (retrieval-augmented generation) or providing a brief explanation.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\GovernanceDocs.md</td>
+                    <td>low</td>
+                    <td>36</td>
+                    <td>
+                        <code>##  Governance Workflow Automation</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        Heading has two spaces after the hash symbols, inconsistent with other headings.
+                    </td>
+                    <td>## Governance Workflow Automation</td>
+                </tr>
+            
+                <tr class="medium">
+                    <td>docs\skills\InformationArchitecture.md</td>
+                    <td>medium</td>
+                    <td>20</td>
+                    <td>
+                        <code>Analyzing competitor developer portals and contributed to the content and information-architecture strategy for a new group Developer Center for Paysafe following the merger of Skrill and Optimal Payments.</code>
+                    </td>
+                    <td>
+                        <strong>grammar</strong><br>
+                        The subject &#x27;Analyzing&#x27; does not agree with the verb &#x27;contributed&#x27;. The sentence is missing a subject for &#x27;contributed&#x27;.
+                    </td>
+                    <td>Analyzed competitor developer portals and contributed to the content and information-architecture strategy for a new group Developer Center for Paysafe following the merger of Skrill and Optimal Payments.</td>
+                </tr>
+            
+                <tr class="medium">
+                    <td>docs\skills\InformationArchitecture.md</td>
+                    <td>medium</td>
+                    <td>23</td>
+                    <td>
+                        <code>Consolidating legacy documentation into a structured Git monorepo and extended Markdown content model, improving content organisation, governance, ownership, version control and maintainability across a large documentation estate.</code>
+                    </td>
+                    <td>
+                        <strong>grammar</strong><br>
+                        The phrase &#x27;and extended Markdown content model&#x27; is ambiguous; it could be read as a verb phrase. The intended meaning is likely &#x27;and an extended Markdown content model&#x27;.
+                    </td>
+                    <td>Consolidating legacy documentation into a structured Git monorepo and an extended Markdown content model, improving content organisation, governance, ownership, version control and maintainability across a large documentation estate.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\InformationArchitecture.md</td>
+                    <td>low</td>
+                    <td>19</td>
+                    <td>
+                        <code>helping developers move through complex technical subject areas more intuitively especially for topics that spanned multiple subject areas.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The phrase &#x27;especially for topics that spanned multiple subject areas&#x27; is redundant because &#x27;complex technical subject areas&#x27; already implies multiple areas. Also, a comma is needed before &#x27;especially&#x27;.
+                    </td>
+                    <td>helping developers move through complex technical subject areas more intuitively, especially when topics spanned multiple areas.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>8</td>
+                    <td>
+                        <code>financial-services, payments, mobile, and API platforms</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The hyphen in &#x27;financial-services&#x27; is inconsistent with the same phrase used later in the document without a hyphen.
+                    </td>
+                    <td>Consider using &#x27;financial services&#x27; without a hyphen for consistency.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>17</td>
+                    <td>
+                        <code>financial-services, payments, mobile, and API platforms</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The hyphen in &#x27;financial-services&#x27; is inconsistent with the same phrase used later in the document without a hyphen.
+                    </td>
+                    <td>Consider using &#x27;financial services&#x27; without a hyphen for consistency.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>23</td>
+                    <td>
+                        <code>Python, Flask, Java, Postman, Curl, and Insomnia</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The capitalization of &#x27;Curl&#x27; is inconsistent with common usage; typically it is &#x27;curl&#x27;.
+                    </td>
+                    <td>Change &#x27;Curl&#x27; to &#x27;curl&#x27; for consistency with standard naming.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>37</td>
+                    <td>
+                        <code>Jira-Based Defect Management</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The hyphen in &#x27;Jira-Based&#x27; is inconsistent with the same term used elsewhere in the document without a hyphen.
+                    </td>
+                    <td>Consider using &#x27;Jira Based&#x27; or &#x27;Jira-based&#x27; consistently.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>39</td>
+                    <td>
+                        <code>Security-Focused Testing</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The hyphen in &#x27;Security-Focused&#x27; is inconsistent with the same term used elsewhere in the document without a hyphen.
+                    </td>
+                    <td>Consider using &#x27;Security Focused&#x27; or &#x27;Security-focused&#x27; consistently.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>41</td>
+                    <td>
+                        <code>Sandbox vs Production Validation</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The abbreviation &#x27;vs&#x27; is used here, but elsewhere the full word &#x27;versus&#x27; is used. Consider using &#x27;versus&#x27; for consistency.
+                    </td>
+                    <td>Change &#x27;vs&#x27; to &#x27;versus&#x27;.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>43</td>
+                    <td>
+                        <code>Testing Across Restricted Corporate Environments</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The hyphen in &#x27;Testing Across&#x27; is not present; the phrase is not hyphenated. This is fine, but the heading style is inconsistent with other headings that use hyphens.
+                    </td>
+                    <td>No change needed, but consider standardizing heading punctuation.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>45</td>
+                    <td>
+                        <code>Cloud-Based Integration Testing</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The hyphen in &#x27;Cloud-Based&#x27; is inconsistent with the same term used elsewhere in the document without a hyphen.
+                    </td>
+                    <td>Consider using &#x27;Cloud Based&#x27; or &#x27;Cloud-based&#x27; consistently.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>47</td>
+                    <td>
+                        <code>Test Automation and Reusable Test Integrations</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The phrase &#x27;Test Automation&#x27; is not hyphenated, but similar compound modifiers are hyphenated elsewhere. This is acceptable, but consider consistency.
+                    </td>
+                    <td>No change needed, but consider standardizing compound modifiers.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\skills\TechnicalValidationTesting.md</td>
+                    <td>low</td>
+                    <td>49</td>
+                    <td>
+                        <code>Testing as Part of Technical Writing</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The phrase &#x27;Technical Writing&#x27; is capitalized, but elsewhere &#x27;technical-writing&#x27; is hyphenated and lowercase. Consider consistency.
+                    </td>
+                    <td>Use &#x27;technical writing&#x27; consistently.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\tools\ContainersAndCloudNative.md</td>
+                    <td>low</td>
+                    <td>8</td>
+                    <td>
+                        <code>Practical experience using Docker, Linux, networking and hosted environments for documentation platforms, API testing and CI troubleshooting.</code>
+                    </td>
+                    <td>
+                        <strong>other</strong><br>
+                        The phrase &#x27;hosted environments&#x27; is used, but later the term &#x27;cloud-hosted environments&#x27; is used. Consider consistent terminology.
+                    </td>
+                    <td>Consider using &#x27;cloud-hosted environments&#x27; consistently, e.g., &#x27;Practical experience using Docker, Linux, networking and cloud-hosted environments for documentation platforms, API testing and CI troubleshooting.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\tools\ContainersAndCloudNative.md</td>
+                    <td>low</td>
+                    <td>19</td>
+                    <td>
+                        <code>Practical experience using **Docker, Linux, networking and cloud-hosted environments** for documentation platforms and API integration testing, with basic exposure to Kubernetes.</code>
+                    </td>
+                    <td>
+                        <strong>other</strong><br>
+                        The phrase &#x27;API integration testing&#x27; is used here, but earlier in the document &#x27;API testing&#x27; is used. Consider consistent terminology.
+                    </td>
+                    <td>Consider using &#x27;API testing&#x27; consistently, e.g., &#x27;for documentation platforms and API testing, with basic exposure to Kubernetes.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\tools\Diagramming.md</td>
+                    <td>low</td>
+                    <td>53</td>
+                    <td>
+                        <code>Earlier-career experience using CAD software such as CATIA, providing some familiarity with engineering drawing and 3D design environments</code>
+                    </td>
+                    <td>
+                        <strong>punctuation</strong><br>
+                        The sentence ends without a period, and the phrase &#x27;Earlier-career&#x27; is awkwardly hyphenated.
+                    </td>
+                    <td>Add a period at the end and consider rephrasing to &#x27;Earlier in my career, I used CAD software such as CATIA, providing some familiarity with engineering drawing and 3D design environments.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\tools\DocusaurusAndMkdocs.md</td>
+                    <td>low</td>
+                    <td>39</td>
+                    <td>
+                        <code>Search Integration and Optimization</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The heading uses title case while other list items use sentence case, which is inconsistent.
+                    </td>
+                    <td>Change to &#x27;Search integration and optimization&#x27; for consistency.</td>
+                </tr>
+            
+                <tr class="medium">
+                    <td>docs\tools\Flare.md</td>
+                    <td>medium</td>
+                    <td>73</td>
+                    <td>
+                        <code>See all posts [](https://forums.madcapsoftware.com/search.php?st=0&amp;sk=t&amp;sd=d&amp;sr=posts&amp;author_id=7956)</code>
+                    </td>
+                    <td>
+                        <strong>unfinished</strong><br>
+                        The link text is missing; the sentence reads &#x27;See all posts []&#x27;.
+                    </td>
+                    <td>Add descriptive link text, e.g., &#x27;See all posts on the MadCap Flare user forum&#x27;.</td>
+                </tr>
+            
+                <tr class="medium">
+                    <td>docs\tools\Flare.md</td>
+                    <td>medium</td>
+                    <td>86</td>
+                    <td>
+                        <code>**Developing Scripts to Migrate developer documentation from Confluence to MadCap Flare**</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        Inconsistent capitalisation: &#x27;Scripts&#x27; and &#x27;Migrate&#x27; are capitalised mid-sentence, while other bullet items use sentence case.
+                    </td>
+                    <td>Change to &#x27;Developing scripts to migrate developer documentation from Confluence to MadCap Flare&#x27;.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\tools\Flare.md</td>
+                    <td>low</td>
+                    <td>84</td>
+                    <td>
+                        <code>You can see Hypothes.is in action [here](https://hyp.is/0K4rskZkEeyeeCv6boS4Zg/h.readthedocs.io/en/latest/developing/administration/); all text highlighted in yellow has annotations.</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The link text &#x27;here&#x27; is vague; consider using more descriptive text.
+                    </td>
+                    <td>Change to &#x27;You can see Hypothes.is in action on this example page; all text highlighted in yellow has annotations.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\tools\GitContinousIntegration.md</td>
+                    <td>low</td>
+                    <td>8</td>
+                    <td>
+                        <code>Git and CI/CD</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The tag uses &#x27;CI/CD&#x27; while the title uses &#x27;Continuous Integration&#x27;. Consider using consistent terminology.
+                    </td>
+                    <td>Use &#x27;Git and Continuous Integration&#x27; or &#x27;Git and CI/CD&#x27; consistently.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\tools\GitContinousIntegration.md</td>
+                    <td>low</td>
+                    <td>17</td>
+                    <td>
+                        <code>Git, GitHub, GitHub Actions and Jenkins</code>
+                    </td>
+                    <td>
+                        <strong>consistency</strong><br>
+                        The heading lists tools but the description mentions &#x27;CI/CD&#x27; as well. Ensure consistent terminology.
+                    </td>
+                    <td>Consider &#x27;Git, GitHub, GitHub Actions, and Jenkins&#x27; or include CI/CD if needed.</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>docs\tools\OpenAPIandAPITools.md</td>
+                    <td>low</td>
+                    <td>20</td>
+                    <td>
+                        <code>Used **reusable schemas, definitions and components** to reduce duplication and simplify long-term maintenance.</code>
+                    </td>
+                    <td>
+                        <strong>grammar</strong><br>
+                        The verb &#x27;Used&#x27; is missing a subject; it should be &#x27;Used&#x27; as a past participle in a bullet list, but the sentence is incomplete without a subject. However, in bullet lists, it&#x27;s common to omit the subject. This is acceptable. No issue.
+                    </td>
+                    <td></td>
+                </tr>
+            
+                <tr class="error">
+                    <td>docs\tools\ProgrammingAutomation.md</td>
+                    <td>API error</td>
+                    <td>-</td>
+                    <td></td>
+                    <td>Expecting &#x27;,&#x27; delimiter: line 121 column 76 (char 6838)</td>
+                    <td></td>
+                </tr>
+            
+                <tr class="medium">
+                    <td>src\pages\index.md</td>
+                    <td>medium</td>
+                    <td>71</td>
+                    <td>
+                        <code>Docs as code - Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs.</code>
+                    </td>
+                    <td>
+                        <strong>grammar</strong><br>
+                        The phrase &#x27;Docs as code&#x27; is used as a heading-like fragment but is part of a bullet item. It should be capitalized consistently and the sentence structure is awkward. Also, &#x27;Docs as code&#x27; is a term that should be consistent with the earlier use of &#x27;docs-as-code&#x27; in the introduction.
+                    </td>
+                    <td>Change to &#x27;Docs-as-code: Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs.&#x27;</td>
+                </tr>
+            
+                <tr class="low">
+                    <td>src\pages\index.md</td>
+                    <td>low</td>
+                    <td>77</td>
+                    <td>
+                        <code>see the [Skills](/docs/skills) section of this portfolio</code>
+                    </td>
+                    <td>
+                        <strong>clarity</strong><br>
+                        The sentence starts with a lowercase &#x27;see&#x27; and lacks a full stop. It is a fragment and should be a complete sentence.
+                    </td>
+                    <td>Change to &#x27;See the [Skills](/docs/skills) section of this portfolio.&#x27;</td>
+                </tr>
+            
+</tbody>
+
+</table>
+
+</body>
+</html>

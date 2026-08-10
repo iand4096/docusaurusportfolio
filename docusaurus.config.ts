@@ -62,6 +62,10 @@ plugins: [
           from: '/docs/MDES4Merchants',
           to: '/docs/case-studies/MDES4Merchants',
         },
+         {
+          from: '/docs/skills/flare',
+          to: '/docs/tools/flare',
+        },
       ],
     },
   ],
@@ -131,6 +135,12 @@ plugins: [
         {
           label: 'Skills',
           to: '/docs/skills',
+          position: 'left',
+          activeBasePath: '/docs',
+        },
+            {
+          label: 'Tools',
+          to: '/docs/tools',
           position: 'left',
           activeBasePath: '/docs',
         },

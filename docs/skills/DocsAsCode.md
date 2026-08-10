@@ -1,12 +1,24 @@
 ---
-title: Docs as Code
+title: Docs-as-Code
+sidebar_position: 5
 slug: /docsascode
-sidebar_position: 2
+sidebar_custom_props:
+  skillCard:
+    tag: Documentation engineering
+    description: Documentation-platform ownership, Markdown, Git, CI/CD, static-site generators, parser extensions and large-scale content migration.
+    highlights:
+      - Custom Scala documentation platform
+      - Python and Scala migration tooling
+      - Jenkins publishing workflows
+      - PlantUML, Mermaid and C4 support
+    ariaLabel: Explore my docs-as-code skills
 ---
+
 
 # Docs-as-Code
 
 I have extensive experience creating documentation in Markdown and designing, owning and extending docs-as-code platforms, migration tooling and automated publishing workflows.
+I understand and can solve the issues involved with scaling docs-as-code sites to large numbers of pages.
 
 ### Documentation Platform Ownership
 
@@ -26,7 +38,7 @@ I have extensive experience creating documentation in Markdown and designing, ow
 * Developed Python and Scala migration tools to convert approximately 900 pages from Sphinx and TWiki into an extended Markdown format
 * Used custom code and Java and Python libraries to parse HTML and convert it into Markdown
 * Preserved document structure, internal links, formatting and reusable content during migrations
-* Implemented conversion logic that combined Markdown with embedded HTML where Markdown alone could not preserve the original structures; for example, to support complex tables containing multiline cell content
+* Implemented conversion logic that combined Markdown with embedded HTML where Markdown alone could not preserve the original structures; for example, to support complex tables containing multi-line cell content
 * Used page-view analytics to prioritise content for migration, restructuring or retirement
 
 ### Markdown and Parser Engineering
@@ -36,7 +48,7 @@ I have extensive experience creating documentation in Markdown and designing, ow
 
 ### Static Site Generators
 
-* Built an extensive test site with MkDocs as part of a work pilot. Migrated 400 pages of documentation to MkDocs format for the pilot. This work included modifying and extending a number of existing MkDocs plugins and recompiling them where necessary as C++ binaries. This work was ultimately abandoned in favor of creating a custom static site generator.
+* Built an extensive test site with MkDocs as part of a work pilot. Migrated 400 pages of documentation to MkDocs format for the pilot. This work included modifying and extending a number of existing MkDocs plugins and recompiling them where necessary as C++ binaries. This work was ultimately abandoned in favour of creating a custom static site generator.
 * Built the current portfolio site with Docusaurus.
 * Designed and led the delivery of a custom static site generator.
 

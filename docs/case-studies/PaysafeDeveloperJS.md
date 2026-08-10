@@ -6,7 +6,7 @@ title: Paysafe.js Developer Guide
 
 I was tasked with creating the first version of the **Paysafe.js Developer Guide** for the newly released Paysafe.js product.
 
-Paysafe.js allows merchants to add customisable payment forms to their websites while reducing their PCI DSS scope. Sensitive card details are collected through secure fields hosted by Paysafe in iframes, preventing the merchant’s systems from handling the card data directly. The library then returns a token that the merchant could use to make a payment request.
+Paysafe.js allows merchants to add customisable payment forms to their websites while reducing their PCI DSS scope. Sensitive card details are collected through secure fields hosted by Paysafe in iframes, preventing the merchant’s systems from handling the card data directly. The library then returns a token that the merchant can use to make a payment request.
 
 The original guide explained both this product model and the core integration workflow, from loading and configuring the JavaScript library to collecting payment details and receiving a token.
 

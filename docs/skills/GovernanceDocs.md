@@ -1,7 +1,17 @@
 ---
-title: Governance Documentation
+title: Documentation Governance
+sidebar_position: 7
 slug: /governancedocs
-sidebar_position: 4
+sidebar_custom_props:
+  skillCard:
+    tag: Content operations
+    description: Standards, review processes, ownership models, quality controls and governance practices for large documentation estates.
+    highlights:
+      - Documentation standards and templates
+      - Review and approval workflows
+      - Content ownership and lifecycle management
+      - Quality, consistency and compliance controls
+    ariaLabel: Explore my documentation-governance skills
 ---
 
 I have considerable experience creating and maintaining software architecture-governance documentation for complex financial systems. My work combined accurate meeting records, architecture diagrams, action tracking, metadata governance and workflow automation.

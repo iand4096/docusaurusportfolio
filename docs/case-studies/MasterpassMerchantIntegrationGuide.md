@@ -38,7 +38,7 @@ Brightspot made structured authoring, content reuse, version control, and techni
 
 :::note[Published guide]
 
-The guide is publicly available on Mastercard Developers. A direct link is omitted to comply with the site’s linking terms. Search for **"Masterpass Merchant Integration Guide”** to view the current publication.
+The guide is publicly available on Mastercard Developers. A direct link is omitted to comply with the site’s linking terms. Search for **"Masterpass Merchant Integration Guide"** to view the current publication.
 
 :::
 

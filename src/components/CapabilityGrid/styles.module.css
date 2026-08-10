@@ -1,0 +1,97 @@
+.grid {
+  margin: 1.5rem 0;
+}
+
+/* Main grid */
+.grid > ul {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+
+  column-gap: 2rem;
+  row-gap: 1.25rem;
+
+  margin: 0;
+  padding: 0;
+
+  list-style: none;
+}
+
+.grid > ul > li {
+  margin: 0;
+  padding: 0;
+}
+
+.grid > ul > li > p {
+  margin: 0;
+}
+
+/* Standard capability heading */
+.grid > ul > li > p > strong:first-child {
+  display: inline-block;
+  margin-bottom: 0.25rem;
+
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+
+/* ========================================
+   Marketing/checklist variant
+   ======================================== */
+
+.grid[data-variant='checklist'] > ul {
+  row-gap: 1.25rem;
+  align-items: start;
+}
+
+.grid[data-variant='checklist'] > ul > li {
+  position: relative;
+  align-self: start;
+
+  /*
+   * Reserve enough space for the tick without
+   * affecting its actual horizontal position.
+   */
+  padding-right: 2.25rem;
+
+  font-size: 1.15rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+/* Green tick */
+.grid[data-variant='checklist'] > ul > li::after {
+  content: '\2713';
+
+  position: absolute;
+
+  /*
+   * JS sets --check-x to the right edge of
+   * the longest rendered line of text.
+   */
+  left: calc(var(--check-x) + 0.4rem);
+
+  /*
+   * Vertically centre against the complete
+   * one-line or multi-line capability.
+   */
+  top: 50%;
+  transform: translateY(-50%);
+
+  color: var(--ifm-color-success);
+
+  font-size: 1.4em;
+  font-weight: 800;
+  line-height: 1;
+
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Show only after its position has been calculated */
+.grid[data-variant='checklist']
+  > ul
+  > li[data-check-measured='true']::after {
+  opacity: 1;
+}

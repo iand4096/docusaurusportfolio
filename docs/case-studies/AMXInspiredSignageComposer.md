@@ -45,7 +45,7 @@ This approach produced audience-specific help without requiring separate documen
 ## Deliverables
 
 * The primary output - two different context-sensitive HTML help bundles accessible within the application with the specific version determined by the user's role - either end user or administrator. 
-* A secondary output - a PDF print administrator manual containing the same content as the help bundles in Print form. This PDF is the only version available without purchasing the application.
+* A secondary output - a PDF administrator manual containing the same content as the help bundles in print form.. This PDF is the only version available without purchasing the application.
 
 :::note[Published guide]
 

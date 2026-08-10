@@ -9,9 +9,7 @@ import Link from '@docusaurus/Link';
 
 # Ian Drewett MSc Computer Science
 
-Technical writer specialising in API documentation, user guides, developer experience, and complex software documentation in regulated industries such as Finance, Fintech and Payments. I have also worked in Digital Signage / Audio Video, CAD / Virtual Reality, 2D / 3D Graphics, and Semiconductors. I was a C / C++ developer at the beginning of my career before moving into Technical Documentation.
-
-I create and validate documentation that helps developers build secure, user-friendly, and robust API integrations.
+Senior Technical Writer with a software-engineering background, specialising in complex enterprise technology, developer platforms, API documentation and documentation governance within regulated environments. Experienced in docs-as-code, CI/CD, architecture governance, secure systems and technical documentation for both software and networked products.
 
 ## Selected work
 
@@ -70,7 +68,7 @@ I create and validate documentation that helps developers build secure, user-fri
 - API and developer documentation
 - OpenAPI reference documentation
 - Test integrations and validation using Python / Flask, Scala, Java, etc.
-- Docs as code - Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs.
+- Docs-as-code - Docs-as-code: Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs and Docusaurus.
 - MadCap Flare and single-sourcing specialist. 131 posts on the Flare forum.
 
 
