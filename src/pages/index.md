@@ -7,13 +7,24 @@ hide_table_of_contents: true
 import Link from '@docusaurus/Link';
 
 
-# Ian Drewett MSc Computer Science
+# Ian Drewett M.Sc. Computer Science
 
 Senior Technical Writer with a software-engineering background, specialising in complex enterprise technology, developer platforms, API documentation and documentation governance within regulated environments. Experienced in docs-as-code, CI/CD, architecture governance, secure systems and technical documentation for both software and networked products.
 
 ## Selected work
 
 <div className="portfolio-grid">
+
+<Link
+    className="portfolio-card"
+    to="/docs/case-studies/DocusaurusPortfolio"
+    aria-label="Read the Docusaurus case study"
+  >
+    <span className="card-tag">Git · AI Quality Checks · Github Actions</span>
+    <h3>Docusaurus</h3>
+    <p>An example documentation site built in Markdown using Docusaurus with automated quality checks using AI and GitHub Actions.</p>
+    <span className="card-link">Read case study →</span>
+  </Link>
 
   <Link
     className="portfolio-card"

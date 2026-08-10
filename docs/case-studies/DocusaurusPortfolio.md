@@ -1,6 +1,6 @@
 ---
 title: Docusaurus Portfolio
-
+sidebar_position: 6
 ---
 
 ## Project overview
