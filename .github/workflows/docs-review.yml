@@ -1,0 +1,65 @@
+name: Documentation QA
+
+on:
+  workflow_dispatch:
+
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/**/*.md"
+      - "docs/**/*.mdx"
+      - "scripts/ai_docs_review.py"
+
+  pull_request:
+    paths:
+      - "docs/**/*.md"
+      - "docs/**/*.mdx"
+      - "scripts/ai_docs_review.py"
+
+permissions:
+  contents: read
+
+jobs:
+  docs-review:
+    # Do not run the secret-backed AI review for PRs from forks.
+    if: >
+      github.event_name != 'pull_request' ||
+      github.event.pull_request.head.repo.full_name == github.repository
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.12"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install -r requirements-doc-review.txt
+
+      - name: Run documentation QA
+        env:
+          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        run: |
+          python scripts/docusaurus_ai_doc_review.py \
+            --ci \
+            --mode per-page \
+            --filter full \
+            --fail-high 0 \
+            --fail-medium 5 \
+            --fail-api-errors 0
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: documentation-review
+          path: |
+            ai-doc-review.html
+            ai-doc-review.json
+          if-no-files-found: warn
