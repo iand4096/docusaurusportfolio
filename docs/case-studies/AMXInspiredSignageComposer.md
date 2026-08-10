@@ -44,8 +44,8 @@ This approach produced audience-specific help without requiring separate documen
 
 ## Deliverables
 
-* The primary output - two different context-sensitive HTML help bundles accessible within the application with the specific version determined by the user's role - either end user or administrator. 
-* A secondary output - a PDF administrator manual containing the same content as the help bundles in print form.. This PDF is the only version available without purchasing the application.
+* The primary output: two different context-sensitive HTML help bundles accessible within the application with the specific version determined by the user's role - either end user or administrator. 
+* A secondary output: a PDF administrator manual containing the same content as the help bundles in print form. This PDF is the only version available without purchasing the application.
 
 :::note[Published guide]
 
@@ -60,5 +60,5 @@ The HTML help and PDF manual were successfully released with the product and rec
 ## What I would change
 
 * The PDF manual did not include a linked, page-numbered table of contents because I was unable to resolve an issue with Flare’s print output before the release deadline. I would now test print-navigation requirements earlier and allow more time to address output-specific issues.
-* I would include the glossary from the HTML help in the PDF manual so that readers could access definitions without using the application.
-* Take advantage of modern automated proof-reading tools like [Vale](https://github.com/vale-cli/vale) and [LanguageTool](https://github.com/languagetool-org/languagetool)
+* Include the glossary from the HTML help in the PDF manual so that readers could access definitions without using the application.
+* Take advantage of modern automated proofreading tools like [Vale](https://github.com/vale-cli/vale) and [LanguageTool](https://github.com/languagetool-org/languagetool)

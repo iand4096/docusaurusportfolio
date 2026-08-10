@@ -50,4 +50,4 @@ The guide is publicly available on Mastercard Developers. A direct link is omitt
 
 ## What I would change
 
-I would move the documentation to a docs-as-code workflow earlier in the project to reduce the time spent working around the limitations of the Brightspot CMS.
+* Move the documentation to a docs-as-code workflow earlier in the project to reduce the time spent working around the limitations of the Brightspot CMS.

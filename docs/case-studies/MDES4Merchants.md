@@ -40,7 +40,7 @@ Two internal deliverables provided to the product manager and other technical wr
 
 :::note[Published guide]
 
-The guide is publicly available on Mastercard Developers. A direct link is omitted to comply with the site’s linking terms. Search for **"MDES for Merchants Use Case Guide”** to view the current publication.
+The guide is publicly available on Mastercard Developers. A direct link is omitted to comply with the site’s linking terms. Search for **"MDES for Merchants Use Case Guide"** to view the current publication.
 
 :::
 
@@ -52,4 +52,4 @@ The investigation required to produce the guide also led to extensive improvemen
 
 ## What I would change
 
-If security restrictions allowed, I would provide developers with public runnable examples demonstrating authentication, encryption, decryption, and webhook handling. This was orginally ommited due to the burden of mantaining this security critical code in multiple target languages using approved cryptography libraries.
+If security restrictions allowed, I would provide developers with public runnable examples demonstrating authentication, encryption, decryption, and webhook handling. This was originally omitted due to the burden of maintaining this security critical code in multiple target languages using approved cryptography libraries.
