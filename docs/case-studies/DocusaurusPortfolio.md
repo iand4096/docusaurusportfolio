@@ -50,7 +50,7 @@ I also created reusable components for presenting skills, tools, and marketing-s
 ## Deliverables
 
 * This site: a Docusaurus portfolio published on GitHub Pages.
-* A QA report for the current site: [Documentation QA report](../../qa/).
+* A QA report for the current site: [Documentation QA report](pathname:///qa/).
 * A link from the portfolio to the GitHub repository used to build and deploy it.
 
 ## Outcome
