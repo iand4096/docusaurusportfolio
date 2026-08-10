@@ -11,7 +11,7 @@ sidebar_custom_props:
       - Mastercard field-level encryption validation
       - Secure webhook and callback integration testing
       - Security-focused API documentation and gap analysis
-    ariaLabel: Explore my API and application security skills
+    ariaLabel: Explore my API and Web security skills
 ---
 
 Strong practical understanding of APIs, web applications, and integration security gained through hands-on development, testing, and documentation of financial-services and payment platforms at Mastercard, Morgan Stanley, Paysafe, and other organisations.
@@ -44,7 +44,4 @@ Strong practical understanding of APIs, web applications, and integration securi
 
 * **Security Documentation Gap Analysis:** Experienced in identifying discrepancies between implemented security behaviour and existing documentation. At Mastercard, I used working encryption/decryption integrations to uncover gaps in the **MDES for Merchants** encryption documentation and improve the guidance provided to external developers.
 
-### Relevant Technologies
-
-**OAuth 1.0 · mTLS · PKI · JOSE · JWT · Digital Signatures · Public/Private Key Cryptography · Symmetric Encryption · Field-Level Encryption · HSMs · Key Rotation · HTTPS/TLS · Webhooks · REST APIs · API Credentials and Tokens · OWASP Web/API Security · Postman · Insomnia · Python/Flask · Java · JavaScript · Node.js**
 
