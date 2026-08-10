@@ -61,11 +61,7 @@ plugins: [
         {
           from: '/docs/MDES4Merchants',
           to: '/docs/case-studies/MDES4Merchants',
-        },
-         {
-          from: '/docs/skills/flare',
-          to: '/docs/tools/flare',
-        },
+        }
       ],
     },
   ],
