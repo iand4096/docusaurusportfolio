@@ -42,6 +42,6 @@ Strong practical understanding of APIs, web applications, and integration securi
 
 * **Security-Focused Technical Documentation:** Able to translate complex security mechanisms into accurate developer-facing guidance covering authentication, encryption, certificate configuration, signing, secure request construction, key handling, and troubleshooting. At Mastercard, used working integration code to verify security behaviour rather than relying solely on specifications or engineering descriptions.
 
-* **Security Documentation Gap Analysis:** Experienced in identifying discrepancies between implemented security behaviour and existing documentation. At Mastercard, I used working encryption/decryption integrations to uncover gaps in the **MDES for Merchants** encryption documentation and improve the guidance provided to external developers.
+* **Security Gap Analysis:** Experienced in identifying discrepancies between implemented security behaviour and existing documentation / API behaviour. While implementing and testing an early Click to Pay integration, I noticed that security-relevant information was being passed in custom HTTP headers. I knew that Mastercard's OAuth 1 signing protected the request URI and signed parameters/body, but not custom headers, so those values relied entirely on TLS for integrity. I raised that with the API team and the API design was changed.”
 
 

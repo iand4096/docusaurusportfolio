@@ -15,31 +15,56 @@ sidebar_custom_props:
     ariaLabel: Explore my programming and automation skills
 ---
 
+## Programming and Automation
 
 ### Python
 
-* Strong **Python** skills, with several thousand lines of code written across documentation tooling, API integrations, migration utilities and automation.
-* Built **Flask** applications with URL endpoints, parameterised pages using **Jinja templates**, and payment/integration forms.
-* Used **Requests** and related libraries to call REST APIs, handle authentication, submit requests and process **JSON and XML** responses.
-* Built sandbox integrations to test payment APIs, authentication, encryption, webhooks and asynchronous workflows.
-* Developed scripts to migrate and transform large documentation sets, including conversion into Markdown-based formats.
-* Used Python for data processing and analysis, including **Pandas**, as well as JSON/YAML parsing and generation.
-* Modified Python-based documentation plugins and tooling where existing functionality did not meet requirements.
+* Strong practical **Python** experience across documentation tooling, content migration, API integrations, data processing and workflow automation.
+* Developed scripts to migrate and transform large documentation sets into **Markdown-based formats**, initially using regex replacement lambdas and later class-based handlers as transformation logic became more complex.
+* Used **`pathlib`** to reconstruct documentation links following migration and restructuring, including conversion of absolute paths to relative links and re-linking moved content.
+* Extended an existing **MkDocs** plugin to support additional **Graphviz** diagram-generation modes, including hyperlink-enabled diagrams, using Python `subprocess` to invoke Graphviz.
+* Used **Requests** and authentication libraries to integrate with REST and HTTP APIs, construct authenticated requests, submit payloads, and parse **JSON and XML** responses.
+* Built sandbox integrations for testing payment and API workflows, including authentication, encryption, webhooks and asynchronous processing.
+* Built **Flask** applications with URL endpoints, parameterised pages using **Jinja** templates, and forms for integration and payment testing.
+* Used **Pandas**, JSON and YAML processing, and Excel generation for structured data transformation and reporting, including workbooks containing generated hyperlinks.
+* Added validation, exception handling and structured logging to migration and integration tooling to diagnose failures and support reliable processing.
+* Debugged Python applications, scripts and integrations using IDE debugging, logging, runtime inspection and API diagnostics.
 
-### Other Programming Languages
+### Scala
 
-* **Scala:** Used for scripting, data processing and working with structured formats such as JSON and YAML.
-* **Java:** Built API and sandbox integrations, including full-stack examples used to validate developer documentation.
-* **JavaScript / Node.js:** Used for documentation-site development, React/JSX components and modification of Insomnia authentication plugins.
-* **C / C++ / C#:** Programming experience providing a broader understanding of compiled languages, memory, types and object-oriented development.
-* Comfortable reading and understanding code across multiple languages when documenting or troubleshooting engineering systems.
+* Used **Scala** for scripting, data processing and transformation of structured formats such as JSON and YAML.
+* Worked with strongly typed data models and **case classes** for structured application and content data.
+* Modified and extended **AST-based parsing and transformation code** to introduce new documentation features, including support for **PlantUML blocks**.
+* Worked with existing parser and transformation architectures rather than relying solely on string or regex-based processing.
+
+### Java
+
+* Built **Java** API and sandbox integrations used to test and validate developer documentation and integration workflows.
+* Developed working examples that exercised real API behaviour rather than documenting interfaces only from specifications.
+
+### JavaScript / Node.js
+
+* Used JavaScript, jQuery, AJAX, HTML, CSS and SCSS/Sass to build and extend interactive documentation-portal features, including user-feedback submission, page ratings, syntax-highlighted code examples and expandable hierarchical navigation.
+* Developed browser-based test integrations using asynchronous requests to submit data and process responses.
+* Worked with React/JSX components and modified Insomnia authentication plugins for API tooling and integration testing.
+* Used SCSS/Sass, CSS and client-side scripting to customise documentation-site layout, styling, behaviour and interaction beyond standard theme capabilities.
+
+### C, C++ and C#
+
+* **C:** Modified and extended an existing cross-platform 3D graphics application, using matrix mathematics for graphics transformations and callback-based programming for responsive UI behaviour across Windows and Unix environments.
+* **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing.
+* **C#:** Developed tooling to recursively parse, traverse and modify **MadCap Flare XHTML** content.
 
 ### Automation and Scripting
 
-* Automate repetitive documentation, migration, build and validation tasks using **Python, Bash and PowerShell**.
-* Comfortable working from the **Unix/Linux command line** and using and combining tools such as **grep, sed, find, pipes and redirection**.
-* Use shell scripts and command-line tools for file processing, repository operations, build tasks and bulk content changes.
+* Automate documentation migration, validation, build and publishing tasks using **Python, Bash and PowerShell**.
+* Comfortable working from the **Unix/Linux command line**, combining tools such as `grep`, `sed`, `find`, pipes and redirection for repository and content-processing tasks.
+* Use shell scripts and command-line utilities for bulk file processing, repository maintenance, build tasks and documentation transformations.
 * Experience with **Windows command-line and PowerShell** automation.
-* Build automation into documentation workflows through **GitHub Actions and Jenkins-based CI pipelines**.
-* Use scripting to reduce manual work in areas such as content migration, validation, transformation and publishing.
+* Integrated documentation workflows with **GitHub Actions** and **Jenkins** CI pipelines to automate build, validation and publishing activities.
+* Use scripting and automation to reduce manual effort in content migration, transformation, link maintenance, validation and publishing.
 
+### Systems Programming and Debugging
+
+* Background in **C and assembly-language programming**, including kernel and device-driver development.
+* Experience with low-level systems debugging, including kernel and driver diagnostics, memory inspection and runtime analysis.
