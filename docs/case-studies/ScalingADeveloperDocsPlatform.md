@@ -61,7 +61,7 @@ As the platform matured, I contributed directly to its codebase and used agentic
 
 ## Outcome
 
-Codetreedocs grew from approximately **700 pages to more than 3,200 pages over three years**, supported by contributions from both technical writers and the wider engineering community.
+Codetreedocs grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of engineering practice rather than something maintained only by a central documentation team.
 
