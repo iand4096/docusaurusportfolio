@@ -9,11 +9,24 @@ import Link from '@docusaurus/Link';
 
 # Ian Drewett M.Sc. Computer Science
 
-Senior Technical Writer with a software-engineering background, specialising in complex enterprise technology, developer platforms, API documentation and documentation governance within regulated environments. Experienced in docs-as-code, CI/CD, architecture governance, secure systems and technical documentation for both software and networked products.
+Principal Technical Writer with a software-engineering background, specialising in complex enterprise technology, developer platforms, API documentation, documentation strategy, and documentation governance within regulated environments. Experienced in docs-as-code, CI/CD, architecture governance, API and web security, and technical documentation for both software and networked hardware.
 
 ## Selected work
 
 <div className="portfolio-grid">
+
+<Link
+  className="portfolio-card"
+  to="/docs/case-studies/scalingdeveloperdocs"
+  aria-label="Read the Scaling an Enterprise Developer Documentation Platform case study"
+>
+  <span className="card-tag">Docs-as-Code · Developer Portal · Platform Strategy</span>
+  <h3>Scaling an Enterprise Developer Documentation Platform</h3>
+  <p>
+    How I led the design and evolution of a large-scale internal docs-as-code platform and developer portal supporting approximately 1,200 developers.
+  </p>
+  <span className="card-link">Read case study →</span>
+</Link>
 
 <Link
     className="portfolio-card"
@@ -76,12 +89,10 @@ Senior Technical Writer with a software-engineering background, specialising in 
 
 ## Technical capabilities
 
-- API and developer documentation
+- API, SDK and other developer documentation
 - OpenAPI reference documentation
 - Test integrations and validation using Python / Flask, Scala, Java, etc.
-- Led the development of Codetreedocs, a custom internal docs-as-code platform, as product owner, solution designer, tester and QA lead, working with a separate engineering team that implemented the core software. Experienced with MkDocs and Docusaurus.
-- MadCap Flare and single-sourcing specialist. 131 posts on the Flare forum.
-
+- Led the design and evolution of Codetreedocs, a custom, large-scale docs-as-code platform and developer portal, owning product direction, requirements, solution design, testing, and quality. Initially partnered with a dedicated engineering team on implementation, then contributed directly to the codebase to extend the platform and resolve issues that emerged as it scaled. Experienced with MkDocs and Docusaurus.
 
 ## Skills
 

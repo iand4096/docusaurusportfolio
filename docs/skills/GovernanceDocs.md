@@ -25,7 +25,6 @@ My experience includes:
 * Creating Jira tickets for agreed follow-up actions
 * Applying approval-status and other required metadata so documents appeared correctly in the central governance portal
 * Maintaining accurate, traceable documentation throughout the review and approval lifecycle
-* Architecture Diagrams and Architecture as Code
 
 ## Architecture Diagrams and Architecture as Code
 

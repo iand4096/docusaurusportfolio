@@ -32,3 +32,4 @@ Masterpass
 OpenAPI-based
 Paysafe-hosted
 Drewett
+Optimus

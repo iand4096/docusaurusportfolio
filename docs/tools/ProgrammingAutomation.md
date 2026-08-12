@@ -17,6 +17,11 @@ sidebar_custom_props:
 
 ## Programming and Automation
 
+
+### Engineering background
+
+Spent approximately five years as a C/C++ software engineer specialising in 2D/3D graphics, GIS, CAD/VR systems, and graphics device drivers, including work at STMicroelectronics. Wrote cross-platform code for Windows and Unix.
+
 ### Python
 
 * Strong practical **Python** experience across documentation tooling, content migration, API integrations, data processing and workflow automation.
@@ -26,20 +31,21 @@ sidebar_custom_props:
 * Used Requests and authentication libraries to integrate with REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authenticated requests, JSON payloads, and JSON/XML responses.
 * Built Flask applications with GET and POST endpoints, query parameters, form handling and Jinja-rendered pages for API, sandbox and payment-integration testing.
 * Built sandbox integrations for testing payment and API workflows, including authentication, encryption, webhooks and asynchronous processing.
-* Used **Pandas**, JSON and YAML processing, and Excel generation for structured data transformation and reporting, including workbooks containing generated hyperlinks.
+* Used **Pandas**, JSON and YAML processing, and Excel generation for structured data transformation and reporting, including Excel workbooks containing generated hyperlinks.
 * Added validation, exception handling and structured logging to migration and integration tooling to diagnose failures and support reliable processing.
-* Debugged Python applications, scripts and integrations using IDE debugging, logging, runtime inspection and API diagnostics.
+* Debugged Python applications, scripts and integrations using IDE debugging, logging and runtime inspection.
 
 ### Scala
 
 * Used **Scala** for scripting, data processing and transformation of structured formats such as JSON and YAML.
-* Modified and extended **AST-based parsing and transformation code** to introduce new documentation features, including support for **PlantUML blocks**.
-* Worked with existing parser and transformation architectures rather than relying solely on string or regex-based processing.
+* Modified and extended **AST-based parsing code** to introduce new documentation features, including support for **PlantUML blocks**.
+* Worked with existing parser architectures rather than relying solely on string or regex-based processing.
+* Developed IntelliJ plugins including one that allowed developers to create learning paths, consisting of tree-like hyperlinked topic navigation diagrams from selected content files.
 
 ### Java
 
 * Built **Java** API and sandbox integrations used to test and validate developer documentation and integration workflows.
-* Developed working examples that exercised real API behaviour rather than documenting interfaces only from specifications.
+* Developed working examples that exercised real API behaviour rather than documenting only from specifications.
 
 ### JavaScript / Node.js
 
@@ -51,8 +57,12 @@ sidebar_custom_props:
 ### C, C++ and C#
 
 * **C:** Modified and extended an existing cross-platform 3D graphics CAD application, using matrix mathematics for graphics transformations and callback-based event handling for responsive UI behaviour across Windows and Unix environments.
-* **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing.
-* **C#:** Developed tooling to recursively parse, traverse and modify **MadCap Flare XHTML** content.
+* **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing using C++ 98/03.
+
+
+- **C:** Modified and extended an existing cross-platform 3D graphics CAD application, using matrix mathematics for graphics transformations and callback-based event handling for responsive UI behaviour across Windows and Unix environments.
+- **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing.
+- **C#:** Developed tooling to automate release-note generation from a tagged set of JIRA tickets. Integrated with the JIRA REST API to retrieve ticket details, then used XML parsing and transformation logic to populate a MadCap Flare XHTML template and generate the final release-note document.
 
 ### Automation and Scripting
 
