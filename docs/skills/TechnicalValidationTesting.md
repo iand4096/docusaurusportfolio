@@ -14,7 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my software testing and QA skills
 ---
 
-Strong practical experience in **software testing, technical validation, and integration testing**, developed alongside technical-writing responsibilities across financial-services, payments, mobile, and API platforms. Experienced in using testing not only to verify software behaviour, but also to validate documentation, uncover integration issues, identify security concerns, and improve product readiness.
+Strong practical experience in **software testing, technical validation, and integration testing**, developed in my early career as a software engineer subsequently and alongside technical-writing responsibilities across financial-services, payments, mobile, and API platforms. Experienced in using testing not only to verify software behaviour, but also to validate documentation, uncover integration issues, identify security concerns, and improve product readiness.
 
 ## Software, Integration and End-to-End Testing
 

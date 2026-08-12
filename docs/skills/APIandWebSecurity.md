@@ -38,7 +38,3 @@ Strong practical understanding of API and web application security gained throug
 * Translate complex security mechanisms into accurate developer guidance covering authentication, encryption, certificates, signing, key handling, secure request construction, and troubleshooting.
 * At Mastercard, validated security behaviour using working integrations rather than relying solely on specifications or engineering descriptions.
 * Identified a security weakness in an early **Click to Pay** integration where security-relevant values were passed in custom HTTP headers that were not covered by Mastercard's OAuth 1 request signing. Raised the issue with the API team, resulting in a change to the API design.
-
-This version reduces **14 bullets to 9**, while preserving the strongest keywords for CV screening: **OAuth, mTLS, PKI, JWT, JOSE, TLS, encryption, HSM, OWASP, webhooks, API security, and security testing**.
-
-I would particularly keep the **Click to Pay example** separate. It is much stronger than a generic “security awareness” bullet because it demonstrates that you actually identified a security-design issue and influenced the resulting API design.
