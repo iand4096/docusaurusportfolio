@@ -14,46 +14,35 @@ sidebar_custom_props:
     ariaLabel: Explore my technical diagramming skills
 ---
 
-Experienced in creating **technical diagrams and visual explanations** to communicate software architecture, system behaviour, API interactions, data flows, object relationships, and complex technical concepts to developer and engineering audiences.
+Strong practical experience creating and maintaining **technical diagrams, architecture visuals, process flows, and developer-facing graphics** to support API documentation, system documentation, tutorials, learning materials, and docs-as-code environments. Experienced selecting the appropriate diagram type, level of abstraction, and tooling for the intended audience.
 
-* **Technical Diagramming:** Create clear technical diagrams to complement developer documentation, architecture documentation, API guides, system documentation, tutorials, and learning materials. Experienced selecting the appropriate diagram type and level of abstraction for the intended audience.
+## Architecture, Sequence and Structural Diagrams
 
-* **Architecture Diagrams:** Create **system and software architecture diagrams** showing applications, services, APIs, infrastructure, external dependencies, system boundaries, and relationships between components. Use diagrams to make complex platforms easier to understand and navigate.
+* Create **system and software architecture diagrams** showing applications, services, APIs, infrastructure, external dependencies, system boundaries, and component relationships.
+* Create **sequence diagrams** to explain interactions between clients, APIs, authentication services, backend systems, payment platforms, webhooks, and other components across multi-step workflows.
+* Create **class, structural, flow, and process diagrams** to document software design, interfaces, object relationships, integration processes, decision paths, onboarding journeys, and operational procedures.
+* Familiar with the **C4 model**, including system context, container, component, and relationship views at different levels of architectural abstraction.
 
-* **Sequence Diagrams:** Create **sequence diagrams** to explain interactions between clients, APIs, backend services, authentication services, payment systems, webhooks, and other components over time. Particularly useful for documenting multi-step API and integration workflows.
+## Diagrams as Code and Docs-as-Code
 
-* **Class and Structural Diagrams:** Create **class diagrams and related structural diagrams** to explain software components, interfaces, object relationships, inheritance, and other aspects of application design where these provide useful context for developers.
+* Strong advocate for **text-based, version-controlled diagrams** that can be maintained alongside documentation and source code.
+* Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-based approaches** for producing reproducible architecture, sequence, class, flow, and developer-focused diagrams.
+* Maintain diagram source alongside Markdown documentation in **Git-based docs-as-code environments**, keeping visual content reviewable, reproducible, and aligned with the documentation it supports.
+* Prefer source-controlled diagram definitions over manually maintained binary assets where practical, reducing maintenance effort as systems and terminology evolve.
 
-* **C4 Modelling:** Familiar with the **C4 model** for documenting software architecture at different levels of abstraction, including system context, containers, components, and relationships between systems.
+## Graphviz and Documentation Navigation
 
-* **Flow and Process Diagrams:** Create flowcharts and process diagrams for technical procedures, decision paths, integration processes, onboarding journeys, and operational workflows.
+* Advanced practical experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams** providing structured learning paths through related developer documentation.
+* Used diagrams as an **interactive navigation mechanism**, not simply as illustrations, helping developers understand relationships between technical topics and follow recommended paths through large documentation sets.
 
-* **Diagrams as Code:** Strong advocate for **text-based, version-controlled diagrams** that can be maintained alongside documentation and source code. Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-based approaches** for creating reproducible technical diagrams.
+## Visual Tools, SVG and Supporting Graphics
 
-* **Graphviz and DOT:** Advanced practical use of **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley for generating hyperlinked **“trail diagrams”** that provided structured learning paths through related developer documentation.
+* Experienced with **Microsoft Visio, Adobe Illustrator, and Inkscape** for diagrams requiring greater graphical control than diagrams-as-code tools provide.
+* Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. Prefer vector formats where possible because they support scalable output and efficient bulk relabelling or terminology updates.
+* Create and annotate **screenshots and UI visuals** for tutorials, walkthroughs, troubleshooting material, and other documentation where visual guidance is more effective than text alone.
 
-* **Documentation Navigation Visualisation:** Used diagrams not simply as illustrations but as an interactive documentation-navigation mechanism, connecting related technical topics and helping developers understand suggested paths through large documentation sets.
+## Diagram Maintenance and Audience-Focused Visualisation
 
-* **PlantUML and Mermaid:** Use **PlantUML and Mermaid** to create maintainable diagrams directly from text definitions, including sequence diagrams, architecture diagrams, class diagrams, flowcharts, and other developer-focused visuals.
-
-* **Traditional Diagramming Tools:** Experienced with graphical diagramming and illustration tools including **Microsoft Visio, Adobe Illustrator, and Inkscape**, allowing diagrams to be created or refined where greater visual control is required than diagrams-as-code tools provide.
-
-* **SVG and Web Graphics:** Comfortable working with **SVG** for scalable technical graphics and web-based documentation, including editing and incorporating vector diagrams into documentation sites. I promote SVG and vector graphics for ease of relabelling many diagrams in a single pass.
-
-* **Screenshots and Annotated Visuals:** Use screenshot and image-capture tools to create supporting UI documentation, tutorials, walkthroughs, and troubleshooting material. Able to combine screenshots with annotations and explanatory graphics where visual guidance is more effective than text alone.
-
-* **Docs-as-Code Integration:** Experienced maintaining diagram source alongside Markdown documentation in **Git-based docs-as-code environments**, helping keep diagrams reviewable, reproducible, maintainable, and aligned with the technical content they support.
-
-* **Diagram Maintainability:** Prefer diagrams that can be updated efficiently as systems evolve. Where appropriate, use source-controlled diagram definitions rather than manually maintained binary image files, reducing the effort required to keep large documentation sets current.
-
-* **Audience-Appropriate Visualisation:** Adapt diagrams for different audiences, from high-level architectural overviews for users who need system context to detailed sequence and component diagrams for developers implementing integrations.
-
-* **OCR and Legacy Diagram Maintenance:** Used OCR tools to rapidly identify outdated terminology embedded in raster screenshots and diagrams across a large set of pages, then manually edited the visual assets to bring them up to date.
-
-* **Additional Visual/Engineering Tools:** Earlier-career experience using CAD software such as CATIA, providing some familiarity with engineering drawing and 3D design environments
-
-
-
-
-
-
+* Adapt diagrams to different audiences, from **high-level architectural overviews** to detailed sequence, component, and integration diagrams for developers.
+* Experienced maintaining large sets of legacy visual assets, including using **OCR to identify outdated terminology** in raster screenshots and diagrams before updating the affected graphics.
+* Earlier-career experience with **CAD software including CATIA**, providing additional familiarity with engineering drawing and 3D design environments.

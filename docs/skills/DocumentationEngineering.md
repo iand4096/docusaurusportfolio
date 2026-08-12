@@ -87,8 +87,6 @@ At Morgan Stanley, I developed migration scripts and later an IDE-based migratio
 
 I used site analytics to prioritise which content should be migrated first.
 
-Earlier in my career, I also automated migration of REST API documentation into Apiary and migrated FrameMaker and Word documentation into MadCap Flare.
-
 ## Tooling and Automation
 
 I regularly build small tools and scripts to remove repetitive documentation work.
@@ -123,7 +121,7 @@ I have used:
 * Documentation analytics
 * User feedback
 
-I have also used OCR to identify obsolete terminology embedded in legacy raster diagrams and screenshots so that visual documentation could be updated.
+I have also used OCR libraries to identify obsolete terminology embedded in legacy raster diagrams and screenshots across a large documentation set to identify the diagrams to update.
 
 ## Search and Retrieval
 

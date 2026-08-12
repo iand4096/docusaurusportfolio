@@ -14,34 +14,31 @@ sidebar_custom_props:
     ariaLabel: Explore my API and Web security skills
 ---
 
-Strong practical understanding of APIs, web applications, and integration security gained through hands-on development, testing, and documentation of financial-services and payment platforms at Mastercard, Morgan Stanley, Paysafe, and other organisations.
+## API Authentication, Cryptography and Transport Security
 
-* **API Authentication and Authorisation:** Experience documenting, implementing, and testing secure API authentication flows, including **OAuth 1.0**, signed API requests, credential management, and token-based authentication. Built working sandbox integrations to validate authentication behaviour and identify gaps in developer documentation.
+Strong practical understanding of API and web application security gained through hands-on development, testing, and documentation of financial-services and payment platforms at Mastercard, Morgan Stanley, Paysafe, and other organisations.
 
-* **mTLS, PKI and Certificate-Based Security:** Practical knowledge of **mutual TLS (mTLS)**, **Public Key Infrastructure (PKI)**, X.509 certificates, public/private key cryptography, certificate-based client authentication, and secure communication between API consumers and financial-services platforms.
+* Experience with **OAuth 1.0, token-based authentication, signed API requests, API credentials, mTLS, PKI, X.509 certificates, HTTPS/TLS, and certificate-based client authentication**.
+* Knowledge of **JOSE, JWT, digital signatures, symmetric and asymmetric encryption**, message integrity, trust chains, and secure transmission of structured data.
+* Familiar with secure handling of **API keys, secrets, certificates, tokens, and cryptographic keys**, including **HSM-based key management** and key rotation.
 
-* **JOSE, JWT and Cryptographic API Standards:** Knowledge of **JOSE** technologies and **JSON Web Tokens (JWT)**, including their use in API authentication, signing, encryption, integrity verification, and secure transmission of structured data.
+## Encryption and Secure API Integration
 
-* **Digital Signatures and Message Integrity:** Experience with public/private key cryptography and **digital signatures** for authenticating requests, verifying message integrity, and protecting high-value payment and financial API transactions.
+* Hands-on experience implementing and documenting **field-level encryption** for Mastercard APIs. Developed cloud-hosted Python encryption and decryption integrations to validate actual API behaviour and identify gaps in developer documentation.
+* Built full-stack sandbox integrations using **Python/Flask, Java, JavaScript, and Node.js**, providing practical understanding of security boundaries between browsers, backend services, and external APIs.
+* Built and tested **webhook and asynchronous callback** integrations, including Mastercard payment and tokenisation workflows, with attention to endpoint authentication, request validation, integrity checking, HTTPS, and replay protection.
 
-* **Field-Level Encryption:** Hands-on experience implementing and documenting **field-level encryption** for Mastercard APIs. Developed cloud-hosted Python encryption and decryption integrations to validate real API behaviour and used the results to identify and resolve gaps in Mastercard developer documentation.
+## Secure API and Web Application Testing
 
-* **Encryption and Key Management:** Understanding of symmetric and asymmetric encryption, encryption/decryption workflows, secure key handling, **HSM-based key management**, and key-rotation processes, developed through work on payment, banking, and mobile-commerce systems.
+* Used **Postman, Insomnia, Python, Java, and custom integration code** to test authentication, encryption, REST APIs, error handling, webhooks, and end-to-end integration flows.
+* Practical awareness of common **OWASP web application and API security risks**, including injection, cross-site scripting, authentication and access-control weaknesses, insecure configuration, sensitive-data exposure, and untrusted input, reinforced through regular web-security training at Morgan Stanley.
 
-* **HTTPS and TLS:** Good understanding of **HTTPS/TLS**, transport encryption, certificate validation, trust chains, secure client/server communication, and the distinction between transport-level security and application-level encryption.
+## Security Documentation and Gap Analysis
 
-* **Webhooks and Callback Security:** Built and tested integrations using **webhooks and asynchronous callbacks**, including Mastercard payment and tokenisation workflows. Familiar with the security considerations around callback endpoints, request validation, authentication, integrity checking, HTTPS, and preventing unauthorised or replayed requests.
+* Translate complex security mechanisms into accurate developer guidance covering authentication, encryption, certificates, signing, key handling, secure request construction, and troubleshooting.
+* At Mastercard, validated security behaviour using working integrations rather than relying solely on specifications or engineering descriptions.
+* Identified a security weakness in an early **Click to Pay** integration where security-relevant values were passed in custom HTTP headers that were not covered by Mastercard's OAuth 1 request signing. Raised the issue with the API team, resulting in a change to the API design.
 
-* **Browser and Server-Side Integration Security:** Experience developing full-stack sandbox integrations using **Python/Flask, Java, JavaScript, and Node.js**, providing practical understanding of the security boundaries between browsers, web applications, backend services, and external APIs.
+This version reduces **14 bullets to 9**, while preserving the strongest keywords for CV screening: **OAuth, mTLS, PKI, JWT, JOSE, TLS, encryption, HSM, OWASP, webhooks, API security, and security testing**.
 
-* **API Credential and Token Security:** Familiar with secure handling of **API keys, secrets, certificates, access credentials, and authentication tokens**, including avoiding credential exposure in source code, documentation, logs, examples, and client-side applications.
-
-* **OWASP and Web Application Security:** Practical awareness of common **OWASP web application and API security risks**, reinforced through regular web-security training at Morgan Stanley. Familiar with security concerns including injection attacks, cross-site scripting, authentication and access-control weaknesses, insecure configuration, sensitive-data exposure, and risks associated with untrusted input.
-
-* **Secure API Testing:** Used **Postman, Insomnia, Python, Java, and custom integration code** to test REST APIs, authentication, encryption, error handling, webhook behaviour, and end-to-end integration flows before documenting them.
-
-* **Security-Focused Technical Documentation:** Able to translate complex security mechanisms into accurate developer-facing guidance covering authentication, encryption, certificate configuration, signing, secure request construction, key handling, and troubleshooting. At Mastercard, used working integration code to verify security behaviour rather than relying solely on specifications or engineering descriptions.
-
-* **Security Gap Analysis:** Experienced in identifying discrepancies between implemented security behaviour and existing documentation / API behaviour. While implementing and testing an early Click to Pay integration, I noticed that security-relevant information was being passed in custom HTTP headers. I knew that Mastercard's OAuth 1 signing protected the request URI and signed parameters/body, but not custom headers, so those values relied entirely on TLS for integrity. I raised that with the API team and the API design was changed.”
-
-
+I would particularly keep the **Click to Pay example** separate. It is much stronger than a generic “security awareness” bullet because it demonstrates that you actually identified a security-design issue and influenced the resulting API design.

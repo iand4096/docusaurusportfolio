@@ -23,9 +23,9 @@ sidebar_custom_props:
 * Developed scripts to migrate and transform large documentation sets into **Markdown-based formats**, initially using regex replacement lambdas and later class-based handlers as transformation logic became more complex.
 * Used **`pathlib`** to reconstruct documentation links following migration and restructuring, including conversion of absolute paths to relative links and re-linking moved content.
 * Extended an existing **MkDocs** plugin to support additional **Graphviz** diagram-generation modes, including hyperlink-enabled diagrams, using Python `subprocess` to invoke Graphviz.
-* Used **Requests** and authentication libraries to integrate with REST and HTTP APIs, construct authenticated requests, submit payloads, and parse **JSON and XML** responses.
+* Used Requests and authentication libraries to integrate with REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authenticated requests, JSON payloads, and JSON/XML responses.
+* Built Flask applications with GET and POST endpoints, query parameters, form handling and Jinja-rendered pages for API, sandbox and payment-integration testing.
 * Built sandbox integrations for testing payment and API workflows, including authentication, encryption, webhooks and asynchronous processing.
-* Built **Flask** applications with URL endpoints, parameterised pages using **Jinja** templates, and forms for integration and payment testing.
 * Used **Pandas**, JSON and YAML processing, and Excel generation for structured data transformation and reporting, including workbooks containing generated hyperlinks.
 * Added validation, exception handling and structured logging to migration and integration tooling to diagnose failures and support reliable processing.
 * Debugged Python applications, scripts and integrations using IDE debugging, logging, runtime inspection and API diagnostics.
@@ -33,7 +33,6 @@ sidebar_custom_props:
 ### Scala
 
 * Used **Scala** for scripting, data processing and transformation of structured formats such as JSON and YAML.
-* Worked with strongly typed data models and **case classes** for structured application and content data.
 * Modified and extended **AST-based parsing and transformation code** to introduce new documentation features, including support for **PlantUML blocks**.
 * Worked with existing parser and transformation architectures rather than relying solely on string or regex-based processing.
 
@@ -51,7 +50,7 @@ sidebar_custom_props:
 
 ### C, C++ and C#
 
-* **C:** Modified and extended an existing cross-platform 3D graphics application, using matrix mathematics for graphics transformations and callback-based programming for responsive UI behaviour across Windows and Unix environments.
+* **C:** Modified and extended an existing cross-platform 3D graphics CAD application, using matrix mathematics for graphics transformations and callback-based event handling for responsive UI behaviour across Windows and Unix environments.
 * **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing.
 * **C#:** Developed tooling to recursively parse, traverse and modify **MadCap Flare XHTML** content.
 
