@@ -23,7 +23,7 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 * Led a project to migrate a large internal documentation platform to **Docker**, working with a software engineer from a digital-modernisation team.
 * Defined documentation-platform requirements and helped migrate the publishing environment to **Nginx running in Docker**.
 * Identified a build-performance issue caused by copying approximately **3,000 generated documentation pages into the container**.
-* Proposed serving the generated documentation from an attached filesystem instead, reducing build time by approximately **15 minutes**.
+* Proposed serving the generated documentation from an attached file system instead, reducing build time by approximately **15 minutes**.
 * Troubleshot containerised documentation builds.
 
 ### Cloud-Hosted Integration Testing

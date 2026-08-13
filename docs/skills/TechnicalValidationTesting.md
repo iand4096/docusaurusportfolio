@@ -35,6 +35,8 @@ Strong practical experience in **software testing, technical validation, and int
 * Applied a **test-driven approach to technical writing**, using working software and integration code to verify technical claims before publication and uncover undocumented behaviour, incomplete guidance, authentication and encryption issues, and discrepancies between specifications and actual implementation.
 * Evaluated developer tools and workflows from a usability perspective, identifying confusing behaviour, unclear error messages, workflow friction, and opportunities to improve the **developer experience**.
 
+* Analysed complex Scala implementation code to reconstruct undocumented API behaviour where original Subject Matter Experts were no longer available, then validated the resulting understanding before publication.
+
 ## Sandbox, Network and Cloud-Based Testing
 
 * Strong understanding of differences between **sandbox and production environments**, including mocked behaviour, test-data constraints, configuration differences, and assumptions that can affect testing and documentation accuracy.

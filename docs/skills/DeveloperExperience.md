@@ -15,7 +15,7 @@ sidebar_custom_props:
 
 ## Developer Experience and Developer Portals
 
-I have designed, developed, launched, and scaled developer documentation platforms and portals across financial services, payments, and enterprise software. My work combines documentation strategy, information architecture, docs-as-code, developer tooling, analytics, and hands-on technical implementation.S
+I have designed, developed, launched, and scaled developer documentation platforms and portals across financial services, payments, and enterprise software. My work combines documentation strategy, information architecture, docs-as-code, developer tooling, analytics, and hands-on technical implementation.
 
 ### Codetreedocs
 
