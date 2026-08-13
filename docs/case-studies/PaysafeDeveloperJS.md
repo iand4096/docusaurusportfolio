@@ -1,5 +1,6 @@
 ---
 title: Paysafe.js Developer Guide
+sidebar_position: 3
 ---
 
 ## Project overview

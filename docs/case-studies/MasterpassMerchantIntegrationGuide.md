@@ -1,5 +1,6 @@
 ---
 title: Masterpass Integration Guide
+sidebar_position: 4
 ---
 
 ## Project overview

@@ -1,6 +1,7 @@
 ---
 title: Scaling an Enterprise Developer Docs Platform
 slug: /case-studies/scalingdeveloperdocs
+sidebar_position: 1
 sidebar_custom_props:
   caseStudyCard:
     tag: Docs-as-Code · Developer Portal
