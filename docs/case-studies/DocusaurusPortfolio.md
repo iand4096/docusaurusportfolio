@@ -5,7 +5,7 @@ sidebar_position: 6
 
 ## Project overview
 
-I created this portfolio in Docusaurus to learn the platform and showcase my documentation engineering skills.
+I designed and built this portfolio as a production-style Docusaurus documentation site, using it to demonstrate documentation engineering, docs-as-code workflows, React/MDX customisation, automated QA, and CI/CD.
 
 The portfolio includes:
 
@@ -32,8 +32,7 @@ It also features:
 
 The project gave me an opportunity to:
 
-* Learn Docusaurus, React, and JSX
-* Learn how to create and configure GitHub Actions workflows
+* Learn Docusaurus, React + JSX, and how to create and configure GitHub Actions workflows
 * Write detailed case studies for a technical portfolio
 * Integrate the DeepSeek API into an automated documentation QA process
 

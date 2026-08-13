@@ -124,7 +124,7 @@ plugins: [
       items: [
         {
           label: 'Case studies',
-          to: '/docs/case-studies/AMXInspiredSignageComposer',
+          to: '/docs/case-studies/scalingdeveloperdocs',
           position: 'left',
           activeBasePath: '/docs/case-studies',
         },
@@ -166,7 +166,7 @@ plugins: [
             },
             {
               label: 'Case studies',
-              to: '/docs/case-studies/AMXInspiredSignageComposer',
+              to: '/docs/case-studies/scalingdeveloperdocs',
             },
             {
               label: 'Skills',

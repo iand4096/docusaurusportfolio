@@ -28,28 +28,6 @@ Principal Technical Writer with a software-engineering background, specialising 
   <span className="card-link">Read case study →</span>
 </Link>
 
-<Link
-    className="portfolio-card"
-    to="/docs/case-studies/DocusaurusPortfolio"
-    aria-label="Read the Docusaurus case study"
-  >
-    <span className="card-tag">Git · AI Quality Checks · Github Actions</span>
-    <h3>Docusaurus</h3>
-    <p>An example documentation site built in Markdown using Docusaurus with automated quality checks using AI and GitHub Actions.</p>
-    <span className="card-link">Read case study →</span>
-  </Link>
-
-  <Link
-    className="portfolio-card"
-    to="/docs/case-studies/AMXInspiredSignageComposer"
-    aria-label="Read the AMX Composer case study"
-  >
-    <span className="card-tag">User documentation · Single sourcing · MadCap Flare</span>
-    <h3>AMX Composer</h3>
-    <p>User and administration documentation for a web-based digital-signage content-management application.</p>
-    <span className="card-link">Read case study →</span>
-  </Link>
-
   <Link
     className="portfolio-card"
     to="/docs/case-studies/MDES4Merchants"
@@ -58,6 +36,17 @@ Principal Technical Writer with a software-engineering background, specialising 
     <span className="card-tag">REST APIs · OAuth · Encryption · Payments</span>
     <h3>MDES for Merchants</h3>
     <p>A use-case guide explaining how merchants can use the Mastercard Digital Enablement API to tokenise card-on-file payment credentials.</p>
+    <span className="card-link">Read case study →</span>
+  </Link>
+
+  <Link
+    className="portfolio-card"
+    to="/docs/case-studies/PaysafeDeveloperJS"
+    aria-label="Read the Paysafe.js case study"
+  >
+    <span className="card-tag">JavaScript SDK · Browser integration · Payments</span>
+    <h3>Paysafe.js</h3>
+    <p>Developer documentation for a browser-based payment integration, including interactive examples and implementation guidance.</p>
     <span className="card-link">Read case study →</span>
   </Link>
 
@@ -72,14 +61,14 @@ Principal Technical Writer with a software-engineering background, specialising 
     <span className="card-link">Read case study →</span>
   </Link>
 
-  <Link
+    <Link
     className="portfolio-card"
-    to="/docs/case-studies/PaysafeDeveloperJS"
-    aria-label="Read the Paysafe.js case study"
+    to="/docs/case-studies/AMXInspiredSignageComposer"
+    aria-label="Read the AMX Composer case study"
   >
-    <span className="card-tag">JavaScript SDK · Browser integration · Payments</span>
-    <h3>Paysafe.js</h3>
-    <p>Developer documentation for a browser-based payment integration, including interactive examples and implementation guidance.</p>
+    <span className="card-tag">User documentation · Single sourcing · MadCap Flare</span>
+    <h3>AMX Composer</h3>
+    <p>User and administration documentation for a web-based digital-signage content-management application.</p>
     <span className="card-link">Read case study →</span>
   </Link>
 
