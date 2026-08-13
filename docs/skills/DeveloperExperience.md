@@ -1,5 +1,5 @@
 ---
-title: Developer Experience and Dev Portals
+title: Developer Experience and Developer Portals
 slug: /devexperience
 sidebar_custom_props:
   skillCard:

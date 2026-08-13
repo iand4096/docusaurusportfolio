@@ -1,6 +1,6 @@
 ---
 title: AI & Documentation
-sidebar_position: 2
+sidebar_position: 10
 slug: /aianddocs
 sidebar_custom_props:
   skillCard:

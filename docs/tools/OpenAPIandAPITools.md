@@ -1,6 +1,6 @@
 ---
 title: OpenAPI and API tools
-sidebar_position: 8
+sidebar_position: 2
 slug: /openapitools
 sidebar_custom_props:
   skillCard:

@@ -1,6 +1,6 @@
 ---
 title: AI and Dev Tools
-sidebar_position: 2
+sidebar_position: 6
 slug: /aianddevtools
 sidebar_custom_props:
   skillCard:

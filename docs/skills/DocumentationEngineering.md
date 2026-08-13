@@ -1,6 +1,6 @@
 ---
 title: Documentation Engineering
-sidebar_position: 6
+sidebar_position: 4
 slug: /documentationeng
 sidebar_custom_props:
   skillCard:

@@ -1,6 +1,6 @@
 ---
 title: API Documentation
-sidebar_position: 4
+sidebar_position: 3
 slug: /apidocumentation
 sidebar_custom_props:
   skillCard:

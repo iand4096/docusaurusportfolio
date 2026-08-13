@@ -1,6 +1,6 @@
 ---
 title: Containers and Cloud
-sidebar_position: 3
+sidebar_position: 9
 slug: /containersandcloud
 sidebar_custom_props:
   skillCard:

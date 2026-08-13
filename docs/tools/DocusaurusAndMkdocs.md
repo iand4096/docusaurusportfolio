@@ -1,6 +1,6 @@
 ---
 title: Static Site Generators and Docs Platforms
-sidebar_position: 5
+sidebar_position: 4
 slug: /staticsitedocsplatforms
 sidebar_custom_props:
   skillCard:

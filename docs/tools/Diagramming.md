@@ -1,6 +1,6 @@
 ---
 title: Diagramming and Technical Visualisation
-sidebar_position: 4
+sidebar_position: 7
 slug: /diagramsandvisuals
 sidebar_custom_props:
   skillCard:

@@ -1,6 +1,6 @@
 ---
 title: Git and Continuous Integration
-sidebar_position: 7
+sidebar_position: 3
 slug: /gitandci
 sidebar_custom_props:
   skillCard:

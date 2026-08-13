@@ -1,6 +1,6 @@
 ---
 title: API and Web Security
-sidebar_position: 3
+sidebar_position: 7
 slug: /apiwebsecurity
 sidebar_custom_props:
   skillCard:

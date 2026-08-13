@@ -1,6 +1,6 @@
 ---
 title:  Programming and Automation
-sidebar_position: 9
+sidebar_position: 5
 slug: /programming
 sidebar_custom_props:
   skillCard:
