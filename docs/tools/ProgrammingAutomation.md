@@ -56,10 +56,6 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 
 ### C, C++ and C#
 
-* **C:** Modified and extended an existing cross-platform 3D graphics CAD application, using matrix mathematics for graphics transformations and callback-based event handling for responsive UI behaviour across Windows and Unix environments.
-* **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing using C++ 98/03.
-
-
 - **C:** Modified and extended an existing cross-platform 3D graphics CAD application, using matrix mathematics for graphics transformations and callback-based event handling for responsive UI behaviour across Windows and Unix environments.
 - **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing.
 - **C#:** Developed tooling to automate release-note generation from a tagged set of JIRA tickets. Integrated with the JIRA REST API to retrieve ticket details, then used XML parsing and transformation logic to populate a MadCap Flare XHTML template and generate the final release-note document.

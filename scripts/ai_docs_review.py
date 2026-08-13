@@ -213,7 +213,7 @@ def parse_model_json(model_output):
 
 
 def request_review(system_prompt, user_prompt, api_key):
-    """Send one review request to the chat-completions API."""
+    """Send a review request, retrying once if the model returns invalid JSON."""
 
     payload = {
         "model": MODEL,
@@ -226,20 +226,44 @@ def request_review(system_prompt, user_prompt, api_key):
         ],
     }
 
-    response = requests.post(
-        API_URL,
-        headers={
-            "Authorization": f"Bearer {api_key}",
-            "Content-Type": "application/json",
-        },
-        json=payload,
-        timeout=180,
-    )
+    last_error = None
 
-    response.raise_for_status()
-    result = response.json()
-    model_output = result["choices"][0]["message"]["content"]
-    return parse_model_json(model_output)
+    for attempt in range(2):
+        response = requests.post(
+            API_URL,
+            headers={
+                "Authorization": f"Bearer {api_key}",
+                "Content-Type": "application/json",
+            },
+            json=payload,
+            timeout=180,
+        )
+
+        response.raise_for_status()
+        result = response.json()
+        model_output = result["choices"][0]["message"]["content"]
+
+        try:
+            return parse_model_json(model_output)
+        except json.JSONDecodeError as error:
+            last_error = error
+
+            if attempt == 0:
+                payload["messages"] = [
+                    {"role": "system", "content": system_prompt},
+                    {"role": "user", "content": user_prompt},
+                    {
+                        "role": "user",
+                        "content": (
+                            "Your previous response was not valid JSON. "
+                            "Return the review again as strictly valid JSON only. "
+                            "Ensure all strings are correctly escaped and all "
+                            "commas, quotes, brackets and braces are valid."
+                        ),
+                    },
+                ]
+
+    raise last_error
 
 
 def find_source_line(content, original, preferred_line=None):
@@ -1100,7 +1124,31 @@ class LinkCheck(BaseCheck):
         match = re.match(r"^(\S+)(?:\s+[\"'].*[\"'])?$", target)
         return match.group(1) if match else target
 
+    @staticmethod
+    def _skip_target(target):
+        """Return True when a target should not be checked as a local file."""
 
+        target = target.strip()
+
+        if not target:
+            return True
+
+        # Fragment-only links point to the current page, not to another file.
+        if target.startswith("#"):
+            return True
+
+        parsed = urlsplit(target)
+
+        # Any explicit URI scheme is outside the local filesystem check.
+        # This covers HTTP(S), mailto, tel, data, ftp, javascript, and others.
+        if parsed.scheme:
+            return True
+
+        # Protocol-relative URLs such as //example.com/path are also external.
+        if parsed.netloc:
+            return True
+
+        return False
 
     @staticmethod
     def _candidate_paths(source_path, target):
