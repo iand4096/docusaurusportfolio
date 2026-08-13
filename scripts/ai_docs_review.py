@@ -1100,35 +1100,7 @@ class LinkCheck(BaseCheck):
         match = re.match(r"^(\S+)(?:\s+[\"'].*[\"'])?$", target)
         return match.group(1) if match else target
 
-    @staticmethod
-    def _skip_target(target):
-        stripped = target.strip()
 
-        if not stripped:
-            return True
-
-        if stripped.startswith("#"):
-            return True
-
-        if stripped.startswith("{") or stripped.startswith("require("):
-            return True
-
-        parsed = urlsplit(stripped)
-
-        if parsed.scheme in {
-            "http",
-            "https",
-            "mailto",
-            "tel",
-            "data",
-            "javascript",
-        }:
-            return True
-
-        if stripped.startswith("//"):
-            return True
-
-        return False
 
     @staticmethod
     def _candidate_paths(source_path, target):
