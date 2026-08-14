@@ -39,7 +39,7 @@ exceptions:
   - 'C\+\+'
   - 'C#'
   - Paysafe Developer Centre
-  - 
+  - Mastercard Developers
 
 action:
   name: replace

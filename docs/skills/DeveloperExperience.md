@@ -14,7 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my developer experience and developer portal skills
 ---
 
-## Developer Experience and Developer Portals
+## Developer experience and developer portals
 
 I have designed, developed, launched, and scaled developer documentation platforms and portals across financial services, payments, and enterprise software. My work combines documentation strategy, information architecture, docs-as-code, developer tooling, analytics, and hands-on technical implementation.
 
@@ -43,7 +43,7 @@ At Paysafe, I was responsible for the launch of the first version of the **Paysa
 
 I analysed competitor portals, worked with the web development team on the new site, and helped introduce a Git and CI-based documentation workflow. I later led the technical authoring team responsible for API and SDK documentation.
 
-### Mastercard Developers TEST
+### Mastercard Developers
 
 At Mastercard, I created developer-facing API and SDK documentation for products published through **Mastercard Developers**.
 
