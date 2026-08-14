@@ -18,11 +18,11 @@ npm install
 npm run start
 ```
 
-## QA Report for site
+## QA Site Report
 
-QA Report generated using [DeepSeek AI](scripts/ai_docs_review.py). See output at https://iand4096.github.io/docusaurusportfolio/qa/
+A QA Report is generated using [DeepSeek AI](scripts/ai_docs_review.py) for every change to the site. See output at https://iand4096.github.io/docusaurusportfolio/qa/
 
-The report script **ai_docs_review.py** review a Docusaurus documentation/technical-writing portfolio and produce both human-readable and machine-readable QA results. 
+The report script **ai_docs_review.py** review a Docusaurus documentation/technical-writing portfolio and produce both human-readable and machine-readable QA results.
 
 It provides a documentation QA pipeline for a technical-writing portfolio that combines conservative LLM editorial analysis with deterministic accessibility/link checks, validates AI findings against the source, produces HTML/JSON reports, and can block CI when serious documentation problems are found.
 
