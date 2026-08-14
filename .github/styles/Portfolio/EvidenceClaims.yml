@@ -1,0 +1,15 @@
+extends: existence
+message: "Consider supporting '%s' with a specific outcome, example, or metric."
+level: suggestion
+scope: text
+ignorecase: true
+
+tokens:
+  - significant
+  - significantly
+  - substantial
+  - substantially
+  - dramatic
+  - dramatically
+  - considerable
+  - considerably

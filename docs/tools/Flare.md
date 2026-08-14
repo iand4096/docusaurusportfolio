@@ -18,7 +18,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 I am a MadCap Flare specialist with nearly eight years of experience using Flare at AMX, Monitise and Paysafe.
 
-## Core Flare Skills
+## Core flare skills
 
 
 <CapabilityGrid variant="checklist">
@@ -36,7 +36,7 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 </CapabilityGrid>
 
 
-## Advanced Flare Skills
+## Advanced flare skills
 
 <CapabilityGrid>
 
@@ -64,7 +64,7 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 I applied these capabilities to the automation, integration and migration projects described in the [Flare Automation, Integration and Migration](#automation) section.
 
-## Flare Community Contributions
+## Flare community contributions
 
 I have published 131 posts on the MadCap Flare user forum under the username **iand**, contributing answers, troubleshooting guidance and practical workarounds for other Flare users.
 
@@ -72,7 +72,7 @@ One example is my proposed workaround for a long-running Flare limitation: [how 
 
 See all [posts](https://forums.madcapsoftware.com/search.php?st=0&sk=t&sd=d&sr=posts&author_id=7956)
 
-## Flare Automation, Integration and Migration {/* #automation */}
+## Flare automation, integration and migration {/* #automation */}
 
 At Paysafe, I integrated Flare with development, publishing and review systems as part of a broader documentation tool chain used to manage all the non API reference documentation on the launch version of the [Paysafe Developer Centre](https://developer.paysafe.com).
 

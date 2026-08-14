@@ -14,7 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my documentation platform engineering skills
 ---
 
-## Static Site Generators and Documentation Platforms
+## Static site generators and documentation platforms
 
 ### Docusaurus
 
@@ -26,12 +26,11 @@ sidebar_custom_props:
 
 ### MkDocs
 
-* Used **MkDocs and plugins** to recreate functionality from a large internal TWiki documentation site.
-* Modified plugin Python code to add unsupported features.
+* Used **MkDocs and plugins** to recreate functionality from a large internal TWiki documentation site as a pilot project.
+* Integrated multiple plugins to support the advanced features from the TWiki site and modified plugin Python code to add the remaining unsupported features.
 * Recompiled modified plugins as standalone executables for deployment.
-* Integrated and maintained multiple plugins as part of a larger documentation platform.
 
-### Documentation Platform Engineering
+### Documentation platform engineering
 
 * Selecting static site generators based on documentation, scale and extensibility requirements.
 * Scaling documentation sites to **thousands of pages**.

@@ -14,7 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my AI for documentation skills
 ---
 
-## AI for Documentation
+## AI for documentation
 
 Practical experience applying AI to documentation engineering, content creation, retrieval, automation and developer workflows, with a strong emphasis on validation and human oversight.
 
@@ -25,5 +25,3 @@ Practical experience applying AI to documentation engineering, content creation,
 * **LLM-Assisted Documentation:** Used AI for grammar checking, documentation analysis, diagrams as code, content transformation and code generation, while treating generated output as requiring verification.
 * **Local AI and Privacy:** Installed and used a local Whisper speech-to-text model where privacy was important, generating draft meeting transcripts for human review and correction.
 * **Model Context Protocol:** Built experimental MCP servers using FastMCP and explored using MCP to expose documentation-quality tools, such as link checking to AI assistants.
-
-

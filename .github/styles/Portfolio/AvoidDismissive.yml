@@ -1,0 +1,12 @@
+extends: existence
+message: "Consider removing '%s'; describe the actual effort or requirement instead."
+level: suggestion
+scope: text
+ignorecase: true
+
+tokens:
+  - obviously
+  - simply
+  - trivially
+  - easily
+  - straightforward

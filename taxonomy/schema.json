@@ -1,0 +1,228 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://iand4096.github.io/docusaurusportfolio/taxonomy/schema-v2.json",
+  "title": "Docusaurus portfolio taxonomy v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["version", "governance", "technology_kinds", "dimensions"],
+  "properties": {
+    "version": {
+      "const": 2
+    },
+    "governance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "taxonomy_owner",
+        "ai_proposals_require_pr_review",
+        "default_review"
+      ],
+      "properties": {
+        "taxonomy_owner": {
+          "type": "string",
+          "minLength": 1
+        },
+        "ai_proposals_require_pr_review": {
+          "const": true
+        },
+        "default_review": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "technology_kinds": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/technologyKind"
+      }
+    },
+    "dimensions": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "content_types",
+        "audiences",
+        "topics",
+        "technologies",
+        "lifecycle"
+      ],
+      "properties": {
+        "content_types": {"$ref": "#/$defs/dimension"},
+        "audiences": {"$ref": "#/$defs/dimension"},
+        "topics": {"$ref": "#/$defs/dimension"},
+        "technologies": {"$ref": "#/$defs/dimension"},
+        "lifecycle": {"$ref": "#/$defs/dimension"}
+      }
+    }
+  },
+  "$defs": {
+    "technologyKind": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "description"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "cardinalityOverride": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "minProperties": 1
+    },
+    "dimension": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "description",
+        "metadata_field",
+        "required",
+        "multiple",
+        "min",
+        "max",
+        "docusaurus_tags",
+        "ai_managed",
+        "terms"
+      ],
+      "properties": {
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "metadata_field": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9_]*$"
+        },
+        "required": {
+          "type": "boolean"
+        },
+        "multiple": {
+          "type": "boolean"
+        },
+        "min": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "max": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "constraints_by_type": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/cardinalityOverride"
+          }
+        },
+        "docusaurus_tags": {
+          "type": "boolean"
+        },
+        "ai_managed": {
+          "type": "boolean"
+        },
+        "terms": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/term"
+          }
+        }
+      }
+    },
+    "term": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "description", "governance"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "kind": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "parent": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "governance": {
+          "$ref": "#/$defs/termGovernance"
+        }
+      }
+    },
+    "termGovernance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "introduced", "source", "review"],
+      "properties": {
+        "status": {
+          "enum": ["active", "deprecated"]
+        },
+        "introduced": {
+          "type": "string",
+          "format": "date",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+        },
+        "source": {
+          "enum": [
+            "initial-taxonomy",
+            "ai-proposed",
+            "human-proposed",
+            "policy-seeded",
+            "migration"
+          ]
+        },
+        "review": {
+          "type": "string",
+          "minLength": 1
+        },
+        "replaced_by": {
+          "type": "string",
+          "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        },
+        "deprecation_reason": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    }
+  }
+}

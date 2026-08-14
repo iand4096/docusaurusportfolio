@@ -7,7 +7,7 @@ sidebar_custom_props:
     tag: API specifications
     description: Creating and maintaining OpenAPI specifications, API collections, structured data and validation workflows for developer documentation and integration testing.
     highlights:
-      - Swagger 2.0 / OpenAPI 2.0 and OpenAPI 3.0
+      - Swagger 2.0 / OpenAPI 2.0
       - Postman and Insomnia collections
       - Custom authentication and encryption plugins
       - JSON and YAML automation with Python and Scala
@@ -16,10 +16,13 @@ sidebar_custom_props:
 
 ## OpenAPI, Postman, Insomnia, cURL
 
-* Maintained **Swagger 2.0 / OpenAPI 2.0 and OpenAPI 3.0 specifications** for developer documentation.
-* Used **reusable schemas, definitions and components** to reduce duplication and simplify long-term maintenance.
-* Created and maintained **Postman and Insomnia collections** for API examples, validation and developer use.
-* Used **Postman, Insomnia and cURL** for ad hoc API testing, troubleshooting and verification of documented behaviour.
-* Modified **Node.js plugins for Insomnia** to support custom authentication and encryption/decryption workflows.
-* Used **JSON and YAML** extensively for API specifications, configuration, documentation metadata and Markdown front matter.
-* Wrote **Python and Scala** code to call authenticated REST APIs, process API responses, and generate, parse and transform JSON and YAML programmatically.
+* Maintained **Swagger 2.0 / OpenAPI 2.0 specifications** covering HTTP methods, status codes, headers, query and path parameters, request and response bodies, and authentication, supporting automated generation of developer-facing API reference documentation.
+* Designed reusable OpenAPI definitions using **`$ref`, shared schemas, parameters, responses and security definitions** to reduce duplication and maintain consistency across large API specifications.
+* Created and maintained **Postman and Insomnia collections** containing executable API requests, authentication configuration and representative examples for documentation, validation and developer use.
+* Used **Postman, Insomnia and cURL** to execute authenticated API requests, validate documented examples, troubleshoot API request and response issues, and verify documented behaviour against live API responses.
+* Modified **JavaScript/Node.js plugins for Insomnia** to support custom authentication and encryption/decryption workflows required to test APIs with non-standard security requirements.
+* Used **JSON and YAML** extensively for OpenAPI specifications, application and tooling configuration, documentation metadata and Markdown front matter.
+* Developed **Python and Scala** utilities to call authenticated REST APIs, process API responses, and programmatically generate, parse and transform JSON and YAML.
+* Reviewed API contracts against implemented REST behaviour, identifying discrepancies in parameters, schemas, status codes, authentication and API responses, and working with engineers to resolve issues and update the specification and documentation.
+
+

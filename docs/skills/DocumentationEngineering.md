@@ -31,7 +31,7 @@ This includes:
 
 At Morgan Stanley, I helped grow an internal documentation site from approximately **700 to 3,200 pages**, with engineering contributions eventually adding around **100 pages per week**.
 
-## CI/CD and Publishing
+## CI/CD and publishing
 
 I have worked with both **Jenkins and GitHub Actions** to automate documentation builds and publishing.
 
@@ -39,7 +39,7 @@ At Morgan Stanley, I helped develop and operate a Jenkins-based publishing pipel
 
 I am comfortable reading CI pipelines, diagnosing build issues and identifying improvements to documentation publishing workflows.
 
-## Static-Site Generators
+## Static-site generators
 
 I have worked with:
 

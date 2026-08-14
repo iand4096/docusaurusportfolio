@@ -1,0 +1,947 @@
+{
+  "generatedFrom": "taxonomy/taxonomy.yml",
+  "taxonomyVersion": 2,
+  "customTaxonomy": [
+    {
+      "id": "content_types",
+      "options": [
+        "case-study",
+        "landing-page",
+        "skill",
+        "tool"
+      ]
+    },
+    {
+      "id": "audiences",
+      "options": [
+        "developers",
+        "documentation-managers",
+        "system-administrators",
+        "technical-writers"
+      ]
+    },
+    {
+      "id": "topics",
+      "options": [
+        "api-documentation",
+        "api-security",
+        "developer-experience",
+        "docs-as-code",
+        "documentation-engineering",
+        "documentation-governance",
+        "information-architecture",
+        "payments",
+        "technical-validation",
+        "technical-writing"
+      ]
+    },
+    {
+      "id": "technologies",
+      "options": [
+        "3d-secure",
+        "adobe-illustrator",
+        "agentic-ai",
+        "amp",
+        "amx-composer",
+        "apple-pay",
+        "brightspot-cms",
+        "c4-model",
+        "catia",
+        "claude",
+        "codepen",
+        "codetreedocs",
+        "confluence",
+        "curl",
+        "deepseek-api",
+        "digital-enablement-api",
+        "docker",
+        "docusaurus",
+        "fastmcp",
+        "finos-calm",
+        "flask",
+        "flexsearch",
+        "git",
+        "github",
+        "github-actions",
+        "github-copilot",
+        "github-pages",
+        "google-pay",
+        "graphviz",
+        "home-assistant",
+        "hsm",
+        "https",
+        "hypothesis",
+        "inkscape",
+        "insomnia",
+        "intellij-idea",
+        "jenkins",
+        "jetty",
+        "jinja",
+        "jira",
+        "jose",
+        "json",
+        "jsx",
+        "jwt",
+        "kubernetes",
+        "languagetool",
+        "ldap",
+        "linux",
+        "madcap-flare",
+        "markdown",
+        "masterpass",
+        "mcp",
+        "mdes",
+        "mdx",
+        "mermaid",
+        "mkdocs",
+        "mtls",
+        "nginx",
+        "oauth",
+        "ocr",
+        "openssl",
+        "openwrt",
+        "owasp",
+        "paysafe-js",
+        "pci-dss",
+        "pki",
+        "plantuml",
+        "postman",
+        "proxmox",
+        "pycharm",
+        "pythonanywhere",
+        "rag",
+        "react",
+        "requests",
+        "rest",
+        "saq-a",
+        "spec-driven-development",
+        "sphinx",
+        "tcp-ip",
+        "tls",
+        "twiki",
+        "typescript",
+        "vale",
+        "visio",
+        "vs-code",
+        "whisper",
+        "wireshark",
+        "x509",
+        "xml",
+        "yaml"
+      ]
+    },
+    {
+      "id": "lifecycle",
+      "options": [
+        "archived",
+        "current",
+        "historical"
+      ]
+    }
+  ],
+  "contentTypes": [
+    {
+      "name": "default",
+      "pageBundle": false,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "slug",
+          "required": false
+        },
+        {
+          "title": "Sidebar position",
+          "name": "sidebar_position",
+          "type": "number",
+          "required": false
+        },
+        {
+          "title": "Content Types",
+          "name": "type",
+          "type": "taxonomy",
+          "taxonomyId": "content_types",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Audiences",
+          "name": "audiences",
+          "type": "taxonomy",
+          "taxonomyId": "audiences",
+          "required": true,
+          "taxonomyLimit": 3
+        },
+        {
+          "title": "Topics",
+          "name": "topics",
+          "type": "taxonomy",
+          "taxonomyId": "topics",
+          "required": true,
+          "taxonomyLimit": 5
+        },
+        {
+          "title": "Technologies",
+          "name": "technologies",
+          "type": "taxonomy",
+          "taxonomyId": "technologies",
+          "required": false,
+          "taxonomyLimit": 50
+        },
+        {
+          "title": "Lifecycle",
+          "name": "lifecycle",
+          "type": "taxonomy",
+          "taxonomyId": "lifecycle",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Docusaurus tags (derived)",
+          "name": "tags",
+          "type": "list",
+          "hidden": true,
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "case-study",
+      "pageBundle": false,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "slug",
+          "required": false
+        },
+        {
+          "title": "Sidebar position",
+          "name": "sidebar_position",
+          "type": "number",
+          "required": false
+        },
+        {
+          "title": "Content Types",
+          "name": "type",
+          "type": "taxonomy",
+          "taxonomyId": "content_types",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Audiences",
+          "name": "audiences",
+          "type": "taxonomy",
+          "taxonomyId": "audiences",
+          "required": true,
+          "taxonomyLimit": 3
+        },
+        {
+          "title": "Topics",
+          "name": "topics",
+          "type": "taxonomy",
+          "taxonomyId": "topics",
+          "required": true,
+          "taxonomyLimit": 5
+        },
+        {
+          "title": "Technologies",
+          "name": "technologies",
+          "type": "taxonomy",
+          "taxonomyId": "technologies",
+          "required": false,
+          "taxonomyLimit": 15
+        },
+        {
+          "title": "Lifecycle",
+          "name": "lifecycle",
+          "type": "taxonomy",
+          "taxonomyId": "lifecycle",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Docusaurus tags (derived)",
+          "name": "tags",
+          "type": "list",
+          "hidden": true,
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "landing-page",
+      "pageBundle": false,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "slug",
+          "required": false
+        },
+        {
+          "title": "Sidebar position",
+          "name": "sidebar_position",
+          "type": "number",
+          "required": false
+        },
+        {
+          "title": "Content Types",
+          "name": "type",
+          "type": "taxonomy",
+          "taxonomyId": "content_types",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Audiences",
+          "name": "audiences",
+          "type": "taxonomy",
+          "taxonomyId": "audiences",
+          "required": true,
+          "taxonomyLimit": 3
+        },
+        {
+          "title": "Topics",
+          "name": "topics",
+          "type": "taxonomy",
+          "taxonomyId": "topics",
+          "required": true,
+          "taxonomyLimit": 5
+        },
+        {
+          "title": "Technologies",
+          "name": "technologies",
+          "type": "taxonomy",
+          "taxonomyId": "technologies",
+          "required": false,
+          "taxonomyLimit": 50
+        },
+        {
+          "title": "Lifecycle",
+          "name": "lifecycle",
+          "type": "taxonomy",
+          "taxonomyId": "lifecycle",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Docusaurus tags (derived)",
+          "name": "tags",
+          "type": "list",
+          "hidden": true,
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "skill",
+      "pageBundle": false,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "slug",
+          "required": false
+        },
+        {
+          "title": "Sidebar position",
+          "name": "sidebar_position",
+          "type": "number",
+          "required": false
+        },
+        {
+          "title": "Content Types",
+          "name": "type",
+          "type": "taxonomy",
+          "taxonomyId": "content_types",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Audiences",
+          "name": "audiences",
+          "type": "taxonomy",
+          "taxonomyId": "audiences",
+          "required": true,
+          "taxonomyLimit": 3
+        },
+        {
+          "title": "Topics",
+          "name": "topics",
+          "type": "taxonomy",
+          "taxonomyId": "topics",
+          "required": true,
+          "taxonomyLimit": 5
+        },
+        {
+          "title": "Technologies",
+          "name": "technologies",
+          "type": "taxonomy",
+          "taxonomyId": "technologies",
+          "required": false,
+          "taxonomyLimit": 20
+        },
+        {
+          "title": "Lifecycle",
+          "name": "lifecycle",
+          "type": "taxonomy",
+          "taxonomyId": "lifecycle",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Docusaurus tags (derived)",
+          "name": "tags",
+          "type": "list",
+          "hidden": true,
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "tool",
+      "pageBundle": false,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "slug",
+          "required": false
+        },
+        {
+          "title": "Sidebar position",
+          "name": "sidebar_position",
+          "type": "number",
+          "required": false
+        },
+        {
+          "title": "Content Types",
+          "name": "type",
+          "type": "taxonomy",
+          "taxonomyId": "content_types",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Audiences",
+          "name": "audiences",
+          "type": "taxonomy",
+          "taxonomyId": "audiences",
+          "required": true,
+          "taxonomyLimit": 3
+        },
+        {
+          "title": "Topics",
+          "name": "topics",
+          "type": "taxonomy",
+          "taxonomyId": "topics",
+          "required": true,
+          "taxonomyLimit": 5
+        },
+        {
+          "title": "Technologies",
+          "name": "technologies",
+          "type": "taxonomy",
+          "taxonomyId": "technologies",
+          "required": false,
+          "taxonomyLimit": 40
+        },
+        {
+          "title": "Lifecycle",
+          "name": "lifecycle",
+          "type": "taxonomy",
+          "taxonomyId": "lifecycle",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": true
+        },
+        {
+          "title": "Docusaurus tags (derived)",
+          "name": "tags",
+          "type": "list",
+          "hidden": true,
+          "required": false
+        }
+      ]
+    }
+  ],
+  "docusaurusTags": [
+    "3d-secure",
+    "adobe-illustrator",
+    "agentic-ai",
+    "amp",
+    "amx-composer",
+    "api-documentation",
+    "api-security",
+    "apple-pay",
+    "brightspot-cms",
+    "c4-model",
+    "catia",
+    "claude",
+    "codepen",
+    "codetreedocs",
+    "confluence",
+    "curl",
+    "deepseek-api",
+    "developer-experience",
+    "digital-enablement-api",
+    "docker",
+    "docs-as-code",
+    "documentation-engineering",
+    "documentation-governance",
+    "docusaurus",
+    "fastmcp",
+    "finos-calm",
+    "flask",
+    "flexsearch",
+    "git",
+    "github",
+    "github-actions",
+    "github-copilot",
+    "github-pages",
+    "google-pay",
+    "graphviz",
+    "home-assistant",
+    "hsm",
+    "https",
+    "hypothesis",
+    "information-architecture",
+    "inkscape",
+    "insomnia",
+    "intellij-idea",
+    "jenkins",
+    "jetty",
+    "jinja",
+    "jira",
+    "jose",
+    "json",
+    "jsx",
+    "jwt",
+    "kubernetes",
+    "languagetool",
+    "ldap",
+    "linux",
+    "madcap-flare",
+    "markdown",
+    "masterpass",
+    "mcp",
+    "mdes",
+    "mdx",
+    "mermaid",
+    "mkdocs",
+    "mtls",
+    "nginx",
+    "oauth",
+    "ocr",
+    "openssl",
+    "openwrt",
+    "owasp",
+    "payments",
+    "paysafe-js",
+    "pci-dss",
+    "pki",
+    "plantuml",
+    "postman",
+    "proxmox",
+    "pycharm",
+    "pythonanywhere",
+    "rag",
+    "react",
+    "requests",
+    "rest",
+    "saq-a",
+    "spec-driven-development",
+    "sphinx",
+    "tcp-ip",
+    "technical-validation",
+    "technical-writing",
+    "tls",
+    "twiki",
+    "typescript",
+    "vale",
+    "visio",
+    "vs-code",
+    "whisper",
+    "wireshark",
+    "x509",
+    "xml",
+    "yaml"
+  ],
+  "technologyKinds": {
+    "programming-language": {
+      "label": "Programming language",
+      "description": "A general-purpose or domain-specific programming language."
+    },
+    "shell-scripting": {
+      "label": "Shell and scripting",
+      "description": "A shell, command language, or scripting environment used for automation."
+    },
+    "markup-content-language": {
+      "label": "Markup and content language",
+      "description": "A markup, content, or document syntax used to author structured text."
+    },
+    "framework": {
+      "label": "Framework",
+      "description": "A software framework that provides reusable structure for applications or tooling."
+    },
+    "library": {
+      "label": "Library",
+      "description": "A reusable software library or package."
+    },
+    "runtime": {
+      "label": "Runtime",
+      "description": "A runtime environment used to execute software."
+    },
+    "standard-specification": {
+      "label": "Standard or specification",
+      "description": "A formal technical standard, specification, or interoperable data definition."
+    },
+    "protocol": {
+      "label": "Protocol",
+      "description": "A technical communication, security, or directory protocol."
+    },
+    "api-tool": {
+      "label": "API tool",
+      "description": "A tool used to design, document, test, inspect, or work with APIs."
+    },
+    "documentation-platform": {
+      "label": "Documentation platform",
+      "description": "A documentation site generator or platform used to publish technical content."
+    },
+    "authoring-tool": {
+      "label": "Authoring tool",
+      "description": "A specialised application used to author or manage technical documentation."
+    },
+    "documentation-qa-tool": {
+      "label": "Documentation QA tool",
+      "description": "A deterministic spelling, grammar, prose, style, or documentation-quality tool."
+    },
+    "cms-wiki": {
+      "label": "CMS or wiki",
+      "description": "A content-management or wiki platform used to create and maintain content."
+    },
+    "developer-platform": {
+      "label": "Developer platform",
+      "description": "A hosted or local platform that supports software development workflows."
+    },
+    "developer-tool": {
+      "label": "Developer tool",
+      "description": "A general-purpose software-development tool not better represented by another kind."
+    },
+    "ide-editor": {
+      "label": "IDE or editor",
+      "description": "An integrated development environment or source-code editor."
+    },
+    "testing-debugging-tool": {
+      "label": "Testing or debugging tool",
+      "description": "A tool used to test, debug, inspect, or diagnose software systems."
+    },
+    "network-analysis-tool": {
+      "label": "Network analysis tool",
+      "description": "A tool used to inspect, capture, or analyse network traffic and protocols."
+    },
+    "ci-cd-automation": {
+      "label": "CI/CD and automation",
+      "description": "A continuous-integration, delivery, deployment, or build-automation technology."
+    },
+    "version-control": {
+      "label": "Version control",
+      "description": "A version-control technology or source-management system."
+    },
+    "container-platform": {
+      "label": "Container and orchestration platform",
+      "description": "A containerisation, orchestration, or workload-management platform."
+    },
+    "infrastructure-platform": {
+      "label": "Infrastructure platform",
+      "description": "A virtualisation, infrastructure, or systems-management platform."
+    },
+    "operating-system-firmware": {
+      "label": "Operating system or firmware",
+      "description": "An operating system, operating-system family, or device firmware platform."
+    },
+    "server-networking": {
+      "label": "Server and networking software",
+      "description": "A web server, application server, reverse proxy, or related networking technology."
+    },
+    "cloud-hosting-platform": {
+      "label": "Cloud or hosting platform",
+      "description": "A hosted development, deployment, or static-site platform."
+    },
+    "diagramming-visualisation": {
+      "label": "Diagramming and visualisation",
+      "description": "A tool or language used to create diagrams, charts, or technical visualisations."
+    },
+    "modelling-methodology": {
+      "label": "Modelling methodology",
+      "description": "A technical modelling notation, method, or structured architecture-modelling approach."
+    },
+    "architecture-style": {
+      "label": "Architecture style",
+      "description": "A reusable software or systems architecture style used in technical work."
+    },
+    "technical-technique": {
+      "label": "Technical technique",
+      "description": "A reusable technical technique or capability that is materially demonstrated."
+    },
+    "security-cryptography": {
+      "label": "Security and cryptography",
+      "description": "A security, cryptography, identity, or trust technology not better represented as a protocol."
+    },
+    "ai-ml-tool": {
+      "label": "AI or ML tool",
+      "description": "An AI/ML model, assistant, API, platform, or development tool."
+    },
+    "data-analysis-tool": {
+      "label": "Data and analysis tool",
+      "description": "A data-processing, analysis, search, indexing, or data-oriented technology."
+    },
+    "design-graphics-tool": {
+      "label": "Design and graphics tool",
+      "description": "A graphics, illustration, or visual-design application used in technical work."
+    },
+    "engineering-design-tool": {
+      "label": "Engineering design tool",
+      "description": "A CAD, engineering, or product-design application."
+    },
+    "collaboration-project-tool": {
+      "label": "Collaboration and project tool",
+      "description": "A collaboration, annotation, issue-tracking, or project-management tool."
+    },
+    "software-platform": {
+      "label": "Software platform",
+      "description": "A reusable software product or application platform not better represented by another kind."
+    }
+  },
+  "technologyTermsByKind": {
+    "programming-language": [
+      "jsx",
+      "typescript"
+    ],
+    "shell-scripting": [],
+    "markup-content-language": [
+      "json",
+      "markdown",
+      "mdx",
+      "xml",
+      "yaml"
+    ],
+    "framework": [
+      "fastmcp",
+      "flask"
+    ],
+    "library": [
+      "flexsearch",
+      "jinja",
+      "paysafe-js",
+      "react",
+      "requests"
+    ],
+    "runtime": [],
+    "standard-specification": [
+      "finos-calm",
+      "jose",
+      "jwt",
+      "owasp",
+      "pci-dss",
+      "saq-a",
+      "x509"
+    ],
+    "protocol": [
+      "3d-secure",
+      "https",
+      "ldap",
+      "mcp",
+      "oauth",
+      "tcp-ip",
+      "tls"
+    ],
+    "api-tool": [
+      "digital-enablement-api",
+      "insomnia",
+      "postman"
+    ],
+    "documentation-platform": [
+      "codetreedocs",
+      "docusaurus",
+      "mkdocs",
+      "sphinx"
+    ],
+    "authoring-tool": [
+      "madcap-flare"
+    ],
+    "documentation-qa-tool": [
+      "languagetool",
+      "vale"
+    ],
+    "cms-wiki": [
+      "brightspot-cms",
+      "confluence",
+      "twiki"
+    ],
+    "developer-platform": [
+      "codepen",
+      "github"
+    ],
+    "developer-tool": [
+      "curl"
+    ],
+    "ide-editor": [
+      "intellij-idea",
+      "pycharm",
+      "vs-code"
+    ],
+    "testing-debugging-tool": [],
+    "network-analysis-tool": [
+      "wireshark"
+    ],
+    "ci-cd-automation": [
+      "github-actions",
+      "jenkins"
+    ],
+    "version-control": [
+      "git"
+    ],
+    "container-platform": [
+      "docker",
+      "kubernetes"
+    ],
+    "infrastructure-platform": [
+      "proxmox"
+    ],
+    "operating-system-firmware": [
+      "linux",
+      "openwrt"
+    ],
+    "server-networking": [
+      "jetty",
+      "nginx"
+    ],
+    "cloud-hosting-platform": [
+      "github-pages",
+      "pythonanywhere"
+    ],
+    "diagramming-visualisation": [
+      "graphviz",
+      "mermaid",
+      "plantuml",
+      "visio"
+    ],
+    "modelling-methodology": [
+      "c4-model"
+    ],
+    "architecture-style": [
+      "rest"
+    ],
+    "technical-technique": [
+      "ocr",
+      "rag",
+      "spec-driven-development"
+    ],
+    "security-cryptography": [
+      "hsm",
+      "mtls",
+      "openssl",
+      "pki"
+    ],
+    "ai-ml-tool": [
+      "agentic-ai",
+      "amp",
+      "claude",
+      "deepseek-api",
+      "github-copilot",
+      "whisper"
+    ],
+    "data-analysis-tool": [],
+    "design-graphics-tool": [
+      "adobe-illustrator",
+      "inkscape"
+    ],
+    "engineering-design-tool": [
+      "catia"
+    ],
+    "collaboration-project-tool": [
+      "hypothesis",
+      "jira"
+    ],
+    "software-platform": [
+      "amx-composer",
+      "apple-pay",
+      "google-pay",
+      "home-assistant",
+      "masterpass",
+      "mdes"
+    ]
+  }
+}

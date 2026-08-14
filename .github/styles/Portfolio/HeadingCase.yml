@@ -1,0 +1,45 @@
+extends: capitalization
+message: "Use sentence case for headings."
+level: warning
+scope: heading
+match: $sentence
+
+exceptions:
+  - I
+  - API
+  - APIs
+  - SDK
+  - SDKs
+  - OpenAPI
+  - Docusaurus
+  - GitHub
+  - GitHub Actions
+  - JavaScript
+  - JSON
+  - YAML
+  - REST
+  - HTTP
+  - HTTPS
+  - URL
+  - URLs
+  - 'Node\.js'
+  - Postman
+  - Insomnia
+  - cURL
+  - Markdown
+  - MDX
+  - Python
+  - Scala
+  - AI
+  - MkDocs
+  - 'CI/CD'
+  - CI
+  - CD
+  - C
+  - 'C\+\+'
+  - 'C#'
+  - Paysafe Developer Centre
+  - 
+
+action:
+  name: replace

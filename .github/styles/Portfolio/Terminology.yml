@@ -1,0 +1,17 @@
+extends: substitution
+message: "Use '%s' instead of '%s'."
+level: warning
+ignorecase: true
+swap:
+  'open[\s-]?api': OpenAPI
+  'node[.]?js': Node.js
+  'java[\s-]?script': JavaScript
+  'github': GitHub
+  'github actions': GitHub Actions
+  'docusaurus': Docusaurus
+  'markdown': Markdown
+  'postman': Postman
+  'insomnia': Insomnia
+  'curl': cURL
+  'json': JSON
+  'yaml': YAML

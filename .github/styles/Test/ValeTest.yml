@@ -1,0 +1,6 @@
+extends: existence
+message: "Vale VS Code test succeeded."
+level: warning
+ignorecase: false
+tokens:
+  - VALE_TEST

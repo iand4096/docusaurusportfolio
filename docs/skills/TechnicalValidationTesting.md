@@ -20,7 +20,7 @@ Strong practical experience in **software testing, technical validation, and int
 
 * Hands-on experience with **software testing, black-box testing, component testing, smoke testing, release testing, and usability testing** across applications, APIs, backend services, developer tools, and documentation platforms.
 * Tested complete workflows spanning **client applications, APIs, authentication, encryption, backend services, and asynchronous callbacks**, using realistic integration scenarios to verify behaviour from the developer or customer perspective.
-* Built working integrations against **sandbox and production-like environments** using **Python, Flask, Java, Postman, Curl, and Insomnia** to validate API behaviour, authentication flows, encryption, error handling, webhooks, and integration accuracy.
+* Built working integrations against **sandbox and production-like environments** using **Python, Flask, Java, Postman, cURL, and Insomnia** to validate API behaviour, authentication flows, encryption, error handling, webhooks, and integration accuracy.
 * Took on dedicated **QA responsibilities for a struggling software project** alongside documentation duties, helping identify and resolve defects and move the product towards a stable, releasable state.
 
 ## Defect Investigation and Release Readiness
@@ -35,7 +35,7 @@ Strong practical experience in **software testing, technical validation, and int
 * Applied a **test-driven approach to technical writing**, using working software and integration code to verify technical claims before publication and uncover undocumented behaviour, incomplete guidance, authentication and encryption issues, and discrepancies between specifications and actual implementation.
 * Evaluated developer tools and workflows from a usability perspective, identifying confusing behaviour, unclear error messages, workflow friction, and opportunities to improve the **developer experience**.
 
-* Analysed complex Scala implementation code to reconstruct undocumented API behaviour where original Subject Matter Experts were no longer available, then validated the resulting understanding before publication.
+* Analysed complex Scala implementation code to reconstruct undocumented API behaviour where original Subject-Matter Experts were no longer available, then validated the resulting understanding before publication.
 
 ## Sandbox, Network and Cloud-Based Testing
 

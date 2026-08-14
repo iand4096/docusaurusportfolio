@@ -14,14 +14,14 @@ sidebar_custom_props:
     ariaLabel: Explore my API-documentation skills
 ---
 
-## API Documentation and Integration Experience
+## API documentation and integration experience
 
 Substantial experience creating API and SDK documentation for financial-services and payments platforms at Morgan Stanley, Mastercard and Paysafe, supported by a strong software-development background. This includes validating APIs directly, reproducing integration scenarios, identifying implementation risks and producing documentation grounded in real developer workflows.
 
 Former C/C++ developer with strong Python skills and practical experience in Java, Node.js, browser-based development, authentication, cryptography and API testing. The result is developer documentation that supports secure, usable and robust API integrations.
 
 
-### API and SDK Documentation
+### API and SDK documentation
 
 My experience includes:
 
@@ -35,7 +35,7 @@ My experience includes:
 * Explaining API and web-security requirements to developer audiences
 * Documenting resilience patterns such as exponential back off
 
-### Integration Development and Validation
+### Integration development and validation
 
 I have built full-stack test integrations to verify API behaviour before publication, including:
 
@@ -48,7 +48,7 @@ I have built full-stack test integrations to verify API behaviour before publica
 
 These integrations allowed me to compare the documentation with actual API behaviour, identify missing or ambiguous instructions and improve the accuracy of published guidance.
 
-### API Testing and Developer Tooling
+### API testing and developer tooling
 
 My testing and tooling experience includes:
 
@@ -72,7 +72,7 @@ I have implemented and documented security mechanisms including:
 
 I have written Python code to process certificates, encrypt and decrypt payloads, create and validate tokens and test secure API integrations in sandbox environments.
 
-### Technical-Writing Approach
+### Technical-writing approach
 
 My development background allows me to work as both a technical writer and an integration tester. Rather than relying solely on specifications or subject-matter expert interviews, I build representative implementations, test edge cases, trace authentication and data flows and verify that developers can complete the documented task successfully.
 

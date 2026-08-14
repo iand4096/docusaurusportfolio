@@ -1,0 +1,1169 @@
+# Canonical controlled vocabulary for portfolio metadata.
+# AI may propose changes, but only reviewed repository changes adopt them.
+
+version: 2
+governance:
+  taxonomy_owner: repository reviewers
+  ai_proposals_require_pr_review: true
+  default_review: annual
+technology_kinds:
+  programming-language:
+    label: Programming language
+    description: A general-purpose or domain-specific programming language.
+  shell-scripting:
+    label: Shell and scripting
+    description: A shell, command language, or scripting environment used for automation.
+  markup-content-language:
+    label: Markup and content language
+    description: A markup, content, or document syntax used to author structured text.
+  framework:
+    label: Framework
+    description: A software framework that provides reusable structure for applications or tooling.
+  library:
+    label: Library
+    description: A reusable software library or package.
+  runtime:
+    label: Runtime
+    description: A runtime environment used to execute software.
+  standard-specification:
+    label: Standard or specification
+    description: A formal technical standard, specification, or interoperable data definition.
+  protocol:
+    label: Protocol
+    description: A technical communication, security, or directory protocol.
+  api-tool:
+    label: API tool
+    description: A tool used to design, document, test, inspect, or work with APIs.
+  documentation-platform:
+    label: Documentation platform
+    description: A documentation site generator or platform used to publish technical content.
+  authoring-tool:
+    label: Authoring tool
+    description: A specialised application used to author or manage technical documentation.
+  documentation-qa-tool:
+    label: Documentation QA tool
+    description: A deterministic spelling, grammar, prose, style, or documentation-quality tool.
+  cms-wiki:
+    label: CMS or wiki
+    description: A content-management or wiki platform used to create and maintain content.
+  developer-platform:
+    label: Developer platform
+    description: A hosted or local platform that supports software development workflows.
+  developer-tool:
+    label: Developer tool
+    description: A general-purpose software-development tool not better represented by another kind.
+  ide-editor:
+    label: IDE or editor
+    description: An integrated development environment or source-code editor.
+  testing-debugging-tool:
+    label: Testing or debugging tool
+    description: A tool used to test, debug, inspect, or diagnose software systems.
+  network-analysis-tool:
+    label: Network analysis tool
+    description: A tool used to inspect, capture, or analyse network traffic and protocols.
+  ci-cd-automation:
+    label: CI/CD and automation
+    description: A continuous-integration, delivery, deployment, or build-automation technology.
+  version-control:
+    label: Version control
+    description: A version-control technology or source-management system.
+  container-platform:
+    label: Container and orchestration platform
+    description: A containerisation, orchestration, or workload-management platform.
+  infrastructure-platform:
+    label: Infrastructure platform
+    description: A virtualisation, infrastructure, or systems-management platform.
+  operating-system-firmware:
+    label: Operating system or firmware
+    description: An operating system, operating-system family, or device firmware platform.
+  server-networking:
+    label: Server and networking software
+    description: A web server, application server, reverse proxy, or related networking technology.
+  cloud-hosting-platform:
+    label: Cloud or hosting platform
+    description: A hosted development, deployment, or static-site platform.
+  diagramming-visualisation:
+    label: Diagramming and visualisation
+    description: A tool or language used to create diagrams, charts, or technical visualisations.
+  modelling-methodology:
+    label: Modelling methodology
+    description: A technical modelling notation, method, or structured architecture-modelling 
+      approach.
+  architecture-style:
+    label: Architecture style
+    description: A reusable software or systems architecture style used in technical work.
+  technical-technique:
+    label: Technical technique
+    description: A reusable technical technique or capability that is materially demonstrated.
+  security-cryptography:
+    label: Security and cryptography
+    description: A security, cryptography, identity, or trust technology not better represented as a
+      protocol.
+  ai-ml-tool:
+    label: AI or ML tool
+    description: An AI/ML model, assistant, API, platform, or development tool.
+  data-analysis-tool:
+    label: Data and analysis tool
+    description: A data-processing, analysis, search, indexing, or data-oriented technology.
+  design-graphics-tool:
+    label: Design and graphics tool
+    description: A graphics, illustration, or visual-design application used in technical work.
+  engineering-design-tool:
+    label: Engineering design tool
+    description: A CAD, engineering, or product-design application.
+  collaboration-project-tool:
+    label: Collaboration and project tool
+    description: A collaboration, annotation, issue-tracking, or project-management tool.
+  software-platform:
+    label: Software platform
+    description: A reusable software product or application platform not better represented by 
+      another kind.
+dimensions:
+  content_types:
+    description: The structural or editorial type of the content.
+    metadata_field: type
+    required: true
+    multiple: false
+    min: 1
+    max: 1
+    docusaurus_tags: false
+    ai_managed: true
+    terms:
+      case-study:
+        label: Case study
+        description: A documented example of work, approach and outcomes.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      landing-page:
+        label: Landing page
+        description: A page that introduces a section and provides navigation to its contents.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      skill:
+        label: Skill
+        description: A page describing a professional capability or area of expertise.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      tool:
+        label: Tool
+        description: A page describing a tool or technology used in technical writing or 
+          documentation engineering.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+  audiences:
+    description: Audiences for whom the content is materially relevant.
+    metadata_field: audiences
+    required: true
+    multiple: true
+    min: 1
+    max: 3
+    docusaurus_tags: false
+    ai_managed: true
+    terms:
+      developers:
+        label: Developers
+        description: Software developers who consume APIs, SDKs, and developer documentation.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      documentation-managers:
+        label: Documentation managers
+        description: Managers and leads responsible for documentation strategy and teams.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      system-administrators:
+        label: System administrators
+        description: Administrators who manage systems, networks, or platforms.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      technical-writers:
+        label: Technical writers
+        description: Professionals who create and maintain technical documentation.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+  topics:
+    description: Reusable subject areas substantially covered by the content.
+    metadata_field: topics
+    required: true
+    multiple: true
+    min: 1
+    max: 5
+    docusaurus_tags: true
+    ai_managed: true
+    terms:
+      api-documentation:
+        label: API documentation
+        description: Creation and maintenance of documentation for application programming 
+          interfaces.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      api-security:
+        label: API security
+        description: Security mechanisms and practices for APIs, including authentication, 
+          encryption, and webhooks.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      developer-experience:
+        label: Developer experience
+        description: Design and improvement of developer portals, documentation, and tooling for 
+          developers.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      docs-as-code:
+        label: Docs-as-code
+        description: Approach of treating documentation as code, using version control, CI/CD, and 
+          automation.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      documentation-engineering:
+        label: Documentation engineering
+        description: Application of software engineering techniques to documentation creation and 
+          maintenance.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      documentation-governance:
+        label: Documentation governance
+        description: Processes and standards for managing documentation quality, metadata, and 
+          lifecycle.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      information-architecture:
+        label: Information architecture
+        description: Organisation and structure of information to improve findability and usability.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      payments:
+        label: Payments
+        description: Payment systems, digital wallets, tokenisation, and related financial 
+          technology.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      technical-validation:
+        label: Technical validation
+        description: Testing and validation of technical content and integrations.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      technical-writing:
+        label: Technical writing
+        description: The practice of creating technical documentation and content.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+  technologies:
+    description: Technologies, standards, tools, platforms, technical methods and techniques 
+      materially used, documented or demonstrated.
+    metadata_field: technologies
+    required: false
+    multiple: true
+    min: 0
+    max: 50
+    docusaurus_tags: true
+    ai_managed: true
+    constraints_by_type:
+      case-study:
+        min: 0
+        max: 15
+      skill:
+        min: 0
+        max: 20
+      tool:
+        min: 0
+        max: 40
+    terms:
+      3d-secure:
+        label: 3D Secure
+        description: A security protocol for online card payments.
+        kind: protocol
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      adobe-illustrator:
+        label: Adobe Illustrator
+        description: A vector graphics editor.
+        kind: design-graphics-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      agentic-ai:
+        label: Agentic AI
+        description: AI systems that can act autonomously.
+        kind: ai-ml-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      amp:
+        label: Amp
+        description: An AI coding tool.
+        kind: ai-ml-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      amx-composer:
+        label: AMX Composer
+        description: A content management application for digital signage.
+        kind: software-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      apple-pay:
+        label: Apple Pay
+        description: A mobile payment service by Apple.
+        kind: software-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      brightspot-cms:
+        label: Brightspot CMS
+        description: A content management system.
+        kind: cms-wiki
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      c4-model:
+        label: C4 model
+        description: A modelling methodology for software architecture.
+        kind: modelling-methodology
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      catia:
+        label: CATIA
+        description: A CAD software.
+        kind: engineering-design-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      claude:
+        label: Claude
+        description: An AI assistant.
+        kind: ai-ml-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      codepen:
+        label: CodePen
+        description: An online code editor and community.
+        kind: developer-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      codetreedocs:
+        label: Codetreedocs
+        description: A custom internal docs-as-code platform.
+        kind: documentation-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      confluence:
+        label: Confluence
+        description: A collaboration and documentation platform.
+        kind: cms-wiki
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      curl:
+        label: cURL
+        description: A command-line tool for transferring data with URLs.
+        kind: developer-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      deepseek-api:
+        label: DeepSeek API
+        description: An AI API used for documentation quality checks.
+        kind: ai-ml-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      digital-enablement-api:
+        label: Digital Enablement API
+        description: Mastercard API for tokenisation.
+        kind: api-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      docker:
+        label: Docker
+        description: A containerisation platform.
+        kind: container-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      docusaurus:
+        label: Docusaurus
+        description: A static site generator for building documentation websites.
+        kind: documentation-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      fastmcp:
+        label: FastMCP
+        description: A framework for building MCP servers.
+        kind: framework
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      finos-calm:
+        label: FINOS CALM
+        description: An architecture-as-code standard.
+        kind: standard-specification
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      flask:
+        label: Flask
+        description: A Python web framework.
+        kind: framework
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      flexsearch:
+        label: FlexSearch
+        description: A JavaScript search library.
+        kind: library
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      git:
+        label: Git
+        description: A distributed version control system.
+        kind: version-control
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      github:
+        label: GitHub
+        description: A hosting platform for Git repositories.
+        kind: developer-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      github-actions:
+        label: GitHub Actions
+        description: A CI/CD platform integrated with GitHub.
+        kind: ci-cd-automation
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      github-copilot:
+        label: GitHub Copilot
+        description: An AI pair programmer.
+        kind: ai-ml-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      github-pages:
+        label: GitHub Pages
+        description: A static site hosting service from GitHub.
+        kind: cloud-hosting-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      google-pay:
+        label: Google Pay
+        description: A digital wallet platform by Google.
+        kind: software-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      graphviz:
+        label: Graphviz
+        description: A graph visualisation software.
+        kind: diagramming-visualisation
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      home-assistant:
+        label: Home Assistant
+        description: An open-source home automation platform.
+        kind: software-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      hsm:
+        label: HSM
+        description: Hardware Security Module.
+        kind: security-cryptography
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      https:
+        label: HTTPS
+        description: HTTP over TLS.
+        kind: protocol
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      hypothesis:
+        label: Hypothes.is
+        description: A web annotation tool.
+        kind: collaboration-project-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      inkscape:
+        label: Inkscape
+        description: A vector graphics editor.
+        kind: design-graphics-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      insomnia:
+        label: Insomnia
+        description: An API client and testing tool.
+        kind: api-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      intellij-idea:
+        label: IntelliJ IDEA
+        description: An integrated development environment.
+        kind: ide-editor
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      jenkins:
+        label: Jenkins
+        description: A CI/CD automation server.
+        kind: ci-cd-automation
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      jetty:
+        label: Jetty
+        description: A Java HTTP server and servlet container.
+        kind: server-networking
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      jinja:
+        label: Jinja
+        description: A templating engine for Python.
+        kind: library
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      jira:
+        label: Jira
+        description: An issue tracking and project management tool.
+        kind: collaboration-project-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      jose:
+        label: JOSE
+        description: JSON Object Signing and Encryption standards.
+        kind: standard-specification
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      json:
+        label: JSON
+        description: JavaScript Object Notation.
+        kind: markup-content-language
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      jsx:
+        label: JSX
+        description: A syntax extension for JavaScript used with React.
+        kind: programming-language
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      jwt:
+        label: JWT
+        description: JSON Web Token, a standard for secure token-based authentication.
+        kind: standard-specification
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      kubernetes:
+        label: Kubernetes
+        description: A container orchestration platform.
+        kind: container-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      languagetool:
+        label: LanguageTool
+        description: A grammar and style checker.
+        kind: documentation-qa-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      ldap:
+        label: LDAP
+        description: Lightweight Directory Access Protocol.
+        kind: protocol
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      linux:
+        label: Linux
+        description: An open-source operating system kernel.
+        kind: operating-system-firmware
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      madcap-flare:
+        label: MadCap Flare
+        description: A help authoring tool for creating documentation.
+        kind: authoring-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      markdown:
+        label: Markdown
+        description: A lightweight markup language for formatting text.
+        kind: markup-content-language
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      masterpass:
+        label: Masterpass
+        description: A digital wallet service by Mastercard.
+        kind: software-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      mcp:
+        label: MCP
+        description: Model Context Protocol.
+        kind: protocol
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      mdes:
+        label: MDES
+        description: Mastercard Digital Enablement Service.
+        kind: software-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      mdx:
+        label: MDX
+        description: An extension of Markdown that allows embedding JSX components.
+        kind: markup-content-language
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      mermaid:
+        label: Mermaid
+        description: A JavaScript-based diagramming and charting tool.
+        kind: diagramming-visualisation
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      mkdocs:
+        label: MkDocs
+        description: A static site generator for project documentation.
+        kind: documentation-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      mtls:
+        label: mTLS
+        description: Mutual TLS authentication.
+        kind: security-cryptography
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      nginx:
+        label: Nginx
+        description: A web server and reverse proxy.
+        kind: server-networking
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      oauth:
+        label: OAuth
+        description: An open standard for access delegation.
+        kind: protocol
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      ocr:
+        label: OCR
+        description: Optical Character Recognition.
+        kind: technical-technique
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      openssl:
+        label: OpenSSL
+        description: A cryptography library and toolkit.
+        kind: security-cryptography
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      openwrt:
+        label: OpenWrt
+        description: A Linux-based firmware for routers.
+        kind: operating-system-firmware
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      owasp:
+        label: OWASP
+        description: Open Web Application Security Project.
+        kind: standard-specification
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      paysafe-js:
+        label: Paysafe.js
+        description: A JavaScript library for payment integration.
+        kind: library
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      pci-dss:
+        label: PCI DSS
+        description: Payment Card Industry Data Security Standard.
+        kind: standard-specification
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      pki:
+        label: PKI
+        description: Public Key Infrastructure.
+        kind: security-cryptography
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      plantuml:
+        label: PlantUML
+        description: A tool for creating UML diagrams from text.
+        kind: diagramming-visualisation
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      postman:
+        label: Postman
+        description: An API testing and development tool.
+        kind: api-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      proxmox:
+        label: Proxmox
+        description: A virtualization platform.
+        kind: infrastructure-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      pycharm:
+        label: PyCharm
+        description: An IDE for Python development.
+        kind: ide-editor
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      pythonanywhere:
+        label: PythonAnywhere
+        description: A cloud hosting platform for Python applications.
+        kind: cloud-hosting-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      rag:
+        label: RAG
+        description: Retrieval-Augmented Generation.
+        kind: technical-technique
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      react:
+        label: React
+        description: A JavaScript library for building user interfaces.
+        kind: library
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      requests:
+        label: Requests
+        description: A Python library for making HTTP requests.
+        kind: library
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      rest:
+        label: REST
+        description: An architectural style for designing networked applications.
+        kind: architecture-style
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      saq-a:
+        label: SAQ A
+        description: Self-Assessment Questionnaire A for PCI DSS.
+        kind: standard-specification
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      spec-driven-development:
+        label: Spec-driven development
+        description: A development approach using specifications.
+        kind: technical-technique
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      sphinx:
+        label: Sphinx
+        description: A documentation generator.
+        kind: documentation-platform
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      tcp-ip:
+        label: TCP/IP
+        description: The Internet protocol suite.
+        kind: protocol
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      tls:
+        label: TLS
+        description: Transport Layer Security protocol.
+        kind: protocol
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      twiki:
+        label: TWiki
+        description: A wiki platform.
+        kind: cms-wiki
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      typescript:
+        label: TypeScript
+        description: A typed superset of JavaScript.
+        kind: programming-language
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      vale:
+        label: Vale
+        description: A documentation linter and style checker.
+        kind: documentation-qa-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      visio:
+        label: Microsoft Visio
+        description: A diagramming application.
+        kind: diagramming-visualisation
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      vs-code:
+        label: VS Code
+        description: A source code editor.
+        kind: ide-editor
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      whisper:
+        label: Whisper
+        description: A speech-to-text model.
+        kind: ai-ml-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      wireshark:
+        label: Wireshark
+        description: A network protocol analyzer.
+        kind: network-analysis-tool
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      x509:
+        label: X.509
+        description: A standard for public key certificates.
+        kind: standard-specification
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      xml:
+        label: XML
+        description: Extensible Markup Language.
+        kind: markup-content-language
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+      yaml:
+        label: YAML
+        description: A human-readable data serialization format.
+        kind: markup-content-language
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: initial-taxonomy
+          review: annual
+  lifecycle:
+    description: The publication lifecycle state of the content.
+    metadata_field: lifecycle
+    required: true
+    multiple: false
+    min: 1
+    max: 1
+    docusaurus_tags: false
+    ai_managed: false
+    terms:
+      current:
+        label: Current
+        description: Content that represents current practice, capability or portfolio material.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: policy-seeded
+          review: annual
+      historical:
+        label: Historical
+        description: Content intentionally retained as a historical example or past project.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: policy-seeded
+          review: annual
+      archived:
+        label: Archived
+        description: Content retained for record purposes but no longer treated as active portfolio 
+          material.
+        governance:
+          status: active
+          introduced: '2026-08-14'
+          source: policy-seeded
+          review: annual

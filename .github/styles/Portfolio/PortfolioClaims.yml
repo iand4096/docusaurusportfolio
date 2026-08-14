@@ -1,0 +1,11 @@
+extends: existence
+message: "Replace '%s' with a specific action describing what you contributed."
+level: suggestion
+ignorecase: true
+tokens:
+  - '\bresponsible for\b'
+  - '\bworked on\b'
+  - '\binvolved in\b'
+  - '\bhelped with\b'
+  - '\bhelped to\b'
+  - '\bparticipated in\b'

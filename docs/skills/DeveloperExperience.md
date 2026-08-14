@@ -1,6 +1,7 @@
 ---
 title: Developer Experience and Developer Portals
 slug: /devexperience
+sidebar_position: 2
 sidebar_custom_props:
   skillCard:
     tag: Developer experience
@@ -42,7 +43,7 @@ At Paysafe, I was responsible for the launch of the first version of the **Paysa
 
 I analysed competitor portals, worked with the web development team on the new site, and helped introduce a Git and CI-based documentation workflow. I later led the technical authoring team responsible for API and SDK documentation.
 
-### Mastercard Developers
+### Mastercard Developers TEST
 
 At Mastercard, I created developer-facing API and SDK documentation for products published through **Mastercard Developers**.
 

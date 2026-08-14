@@ -1,7 +1,17 @@
 {
   "ltex.language": "en-GB",
+
   "ltex.enabled": [
     "markdown",
     "mdx"
-  ]
+  ],
+
+  "ltex.configurationTarget": {
+    "dictionary": "workspaceFolderExternalFile",
+    "disabledRules": "workspaceFolderExternalFile",
+    "hiddenFalsePositives": "workspaceFolderExternalFile"
+  },
+
+  "vale.valeCLI.minAlertLevel": "suggestion",
+  "chat.disableAIFeatures": true
 }

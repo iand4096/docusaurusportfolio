@@ -14,7 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my AI and developer tooling skills
 ---
 
-## AI and Developer Tools
+## AI and developer tools
 
 Practical experience using AI and developer tooling to improve documentation engineering, software development and technical-content workflows.
 

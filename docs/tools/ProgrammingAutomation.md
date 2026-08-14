@@ -15,7 +15,7 @@ sidebar_custom_props:
     ariaLabel: Explore my programming and automation skills
 ---
 
-## Programming and Automation
+## Programming and automation
 
 
 ### Engineering background
@@ -60,7 +60,7 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 - **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing.
 - **C#:** Developed tooling to automate release-note generation from a tagged set of JIRA tickets. Integrated with the JIRA REST API to retrieve ticket details, then used XML parsing and transformation logic to populate a MadCap Flare XHTML template and generate the final release-note document.
 
-### Automation and Scripting
+### Automation and scripting
 
 * Automate documentation migration, validation, build and publishing tasks using **Python, Bash and PowerShell**.
 * Comfortable working from the **Unix/Linux command line**, combining tools such as `grep`, `sed`, `find`, pipes and redirection for repository and content-processing tasks.
@@ -69,7 +69,7 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 * Integrated documentation workflows with **GitHub Actions** and **Jenkins** CI pipelines to automate build, validation and publishing activities.
 * Use scripting and automation to reduce manual effort in content migration, transformation, link maintenance, validation and publishing.
 
-### Systems Programming and Debugging
+### Systems programming and debugging
 
 * Background in **C and assembly-language programming**, including kernel and device-driver development.
 * Experience with low-level systems debugging, including kernel and driver diagnostics, memory inspection and runtime analysis.

@@ -1,0 +1,1 @@
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QI have published 131 posts on the MadCap Flare user forum under the username iand, contributing answers, troubleshooting guidance and practical workarounds for other Flare users.\\E$"}

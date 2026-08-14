@@ -28,7 +28,7 @@ I have led documentation teams, platforms, and strategy across financial service
 ### Leadership and team development
 
 * Recruited, managed, and mentored technical writers producing API, SDK, and integration documentation.
-* Led technical-authoring teams responsible for public developer documentation.
+* Led technical-authoring teams and mixed groups of writers and engineers responsible for public and internal developer portals.
 * Established review processes, documentation standards, and shared working practices.
 * Encouraged writers to test APIs and SDKs directly and build working integrations to improve technical accuracy.
 * Worked to increase engineering ownership of documentation rather than relying entirely on a central documentation team.
