@@ -1,0 +1,191 @@
+{
+  "fingerprint": "a3ae162ac1aa07bd3dd85a7ce43e960474ea4d0aeab0d15ff455087aba6f6950",
+  "label": "extract-tech-006-ScalingADeveloperDocsPlatform",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "codetreedocs",
+        "label": "Codetreedocs",
+        "description": "A custom internal docs-as-code platform and developer portal.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The document describes leading the design and evolution of Codetreedocs, a custom internal docs-as-code platform."
+          }
+        ]
+      },
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The platform uses Git-based publishing workflow and documentation stored in Git within a monorepo."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting plain text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Documentation is Markdown-based and stored in Git."
+          }
+        ]
+      },
+      {
+        "id": "jenkins",
+        "label": "Jenkins",
+        "description": "An open-source automation server for CI/CD.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Jenkins-based documentation build and publishing pipelines are a key element."
+          }
+        ]
+      },
+      {
+        "id": "intellij",
+        "label": "IntelliJ",
+        "description": "An integrated development environment for Java and other languages.",
+        "kind": "ide-editor",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "An IntelliJ plugin provides live documentation preview."
+          }
+        ]
+      },
+      {
+        "id": "diagrams-as-code",
+        "label": "Diagrams-as-code",
+        "description": "A technique for creating diagrams using textual definitions.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Support for diagrams-as-code, including software architecture diagrams, is a key element."
+          }
+        ]
+      },
+      {
+        "id": "twiki",
+        "label": "TWiki",
+        "description": "A web-based collaboration platform and wiki.",
+        "kind": "cms-wiki",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Legacy documentation was fragmented across TWiki and Sphinx; migration scripts converted approximately 900 legacy TWiki pages."
+          }
+        ]
+      },
+      {
+        "id": "sphinx",
+        "label": "Sphinx",
+        "description": "A documentation generator for Python projects.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Legacy documentation was fragmented across TWiki and Sphinx; tooling was written to migrate documentation from Sphinx."
+          }
+        ]
+      },
+      {
+        "id": "docker",
+        "label": "Docker",
+        "description": "A platform for developing, shipping, and running applications in containers.",
+        "kind": "container-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The platform was migrated to the firm's strategic Docker-based web-hosting environment."
+          }
+        ]
+      },
+      {
+        "id": "vale",
+        "label": "Vale",
+        "description": "A linter for prose that checks style and consistency.",
+        "kind": "documentation-qa-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Vale is mentioned as a tool to add automated quality checks to documentation pull requests."
+          }
+        ]
+      },
+      {
+        "id": "languagetool",
+        "label": "LanguageTool",
+        "description": "An open-source proofreading tool for grammar and style.",
+        "kind": "documentation-qa-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "LanguageTool is mentioned as a tool to add automated quality checks to documentation pull requests."
+          }
+        ]
+      },
+      {
+        "id": "agentic-ai-tools",
+        "label": "Agentic AI tools",
+        "description": "AI tools that can autonomously perform tasks.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Agentic AI tools were used to accelerate platform enhancements and repetitive documentation tasks."
+          }
+        ]
+      },
+      {
+        "id": "spec-driven-development",
+        "label": "Spec-driven development",
+        "description": "A development technique where specifications drive implementation.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Spec-driven development techniques were used to accelerate platform enhancements."
+          }
+        ]
+      }
+    ]
+  }
+}

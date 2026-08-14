@@ -96,6 +96,10 @@ DEFAULT_TECHNOLOGY_KINDS: dict[str, dict[str, str]] = {
         "label": "Markup and content language",
         "description": "A markup, content, or document syntax used to author structured text.",
     },
+    "data-format": {
+        "label": "Data format",
+        "description": "A structured data serialisation or interchange format such as JSON, YAML, or XML.",
+    },
     "framework": {
         "label": "Framework",
         "description": "A software framework that provides reusable structure for applications or tooling.",
@@ -119,6 +123,10 @@ DEFAULT_TECHNOLOGY_KINDS: dict[str, dict[str, str]] = {
     "api-tool": {
         "label": "API tool",
         "description": "A tool used to design, document, test, inspect, or work with APIs.",
+    },
+    "payment-technology": {
+        "label": "Payment technology",
+        "description": "A payment-specific technical product, wallet integration, tokenisation technology, checkout technology, or payment platform used in implementation work.",
     },
     "documentation-platform": {
         "label": "Documentation platform",

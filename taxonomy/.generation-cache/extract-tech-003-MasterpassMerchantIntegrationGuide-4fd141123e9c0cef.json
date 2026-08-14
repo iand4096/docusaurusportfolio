@@ -1,0 +1,95 @@
+{
+  "fingerprint": "4fd141123e9c0cef877ae525cfbe8c89d56d5835e46a59d577bd6bcb79171587",
+  "label": "extract-tech-003-MasterpassMerchantIntegrationGuide",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "masterpass",
+        "label": "Masterpass",
+        "description": "A digital wallet and checkout technology that enables merchants to integrate wallet-based payment flows.",
+        "kind": "payment-technology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The document is about maintaining and updating the Masterpass Merchant Integration Guide, including building test integrations for Masterpass checkout flows."
+          }
+        ]
+      },
+      {
+        "id": "openapi",
+        "label": "OpenAPI",
+        "description": "A specification for describing, producing, consuming, and visualizing RESTful APIs.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "Swagger"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The author corrected the OpenAPI definitions underlying the API reference and used OpenAPI format for the API reference."
+          }
+        ]
+      },
+      {
+        "id": "plantuml",
+        "label": "PlantUML",
+        "description": "A diagramming tool that uses a simple text language to create UML diagrams, including sequence diagrams.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The author created detailed sequence diagrams using PlantUML to illustrate checkout flow interactions."
+          }
+        ]
+      },
+      {
+        "id": "brightspot",
+        "label": "Brightspot",
+        "description": "A content management system (CMS) used for marketing-focused content, not designed for structured technical documentation.",
+        "kind": "cms-wiki",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The author maintained developer documentation in Brightspot and worked around its limitations."
+          }
+        ]
+      },
+      {
+        "id": "docs-as-code",
+        "label": "Docs-as-code",
+        "description": "A methodology that treats documentation as code, using version control and developer workflows.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The author advocated for and specified requirements for a docs-as-code platform, and tested its authoring and publishing workflow."
+          }
+        ]
+      },
+      {
+        "id": "mastercard-developers",
+        "label": "Mastercard Developers",
+        "description": "A developer platform for Mastercard APIs and documentation.",
+        "kind": "developer-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The guide is published on Mastercard Developers, and the author worked within that platform context."
+          }
+        ]
+      }
+    ]
+  }
+}

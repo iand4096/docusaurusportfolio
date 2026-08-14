@@ -1,0 +1,113 @@
+{
+  "fingerprint": "db54d6aa2644f37ec1a3ff0fe03c2c5e6eaaeee18d567889c1de05f495f36997",
+  "label": "extract-tech-014-GovernanceDocs",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "c4-model",
+        "label": "C4 model",
+        "description": "A notation for modelling software architecture using context, containers, components, and code diagrams.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [
+          "C4"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document describes building a documentation-platform plugin for embedding C4 architecture diagrams in Markdown."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting plain text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document mentions embedding C4 diagrams in Markdown and storing diagram definitions as text alongside documentation."
+          }
+        ]
+      },
+      {
+        "id": "jira",
+        "label": "Jira",
+        "description": "A project tracking and issue management tool.",
+        "kind": "collaboration-project-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document states that Jira tickets were created for agreed follow-up actions."
+          }
+        ]
+      },
+      {
+        "id": "ldap",
+        "label": "LDAP",
+        "description": "A directory service protocol for querying and modifying directory data.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "Lightweight Directory Access Protocol"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document mentions using LDAP directory lookups to populate attendee details and meeting metadata."
+          }
+        ]
+      },
+      {
+        "id": "whisper",
+        "label": "Whisper",
+        "description": "A speech-to-text model used to generate transcripts from audio.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document describes a pilot using an approved internal Whisper speech-to-text model to generate draft transcripts from meeting recordings."
+          }
+        ]
+      },
+      {
+        "id": "finos-calm",
+        "label": "FINOS CALM",
+        "description": "A standard for representing software architectures in structured, machine-readable formats.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "CALM"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document mentions exploring FINOS CALM as an emerging architecture-as-code standard."
+          }
+        ]
+      },
+      {
+        "id": "architecture-as-code",
+        "label": "Architecture as code",
+        "description": "A technical technique for managing architecture definitions as version-controlled code.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document describes storing diagram definitions as text alongside documentation, allowing version control and audit."
+          }
+        ]
+      }
+    ]
+  }
+}

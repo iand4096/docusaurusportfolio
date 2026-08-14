@@ -1,0 +1,867 @@
+{
+  "fingerprint": "ef1427ba4942e512d679d4f3012779b40a8440093153472a011cabd2f6bd0867",
+  "label": "extract-tech-026-ProgrammingAutomation",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "c",
+        "label": "C",
+        "description": "A general-purpose programming language used for systems programming and graphics applications.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes modifying a cross-platform 3D graphics CAD application in C and mentions C and assembly-language programming for kernel and device-driver development."
+          }
+        ]
+      },
+      {
+        "id": "cpp",
+        "label": "C++",
+        "description": "A general-purpose programming language with object-oriented features, used for graphics and application development.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [
+          "C++"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document states several years of C++ development experience, including Visual C++ and use of STL containers and data structures."
+          }
+        ]
+      },
+      {
+        "id": "csharp",
+        "label": "C#",
+        "description": "A general-purpose programming language developed by Microsoft, used for tooling and automation.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [
+          "C#"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes developing tooling in C# to automate release-note generation from JIRA tickets, integrating with the JIRA REST API and XML parsing."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language used for scripting, automation, and data processing.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document extensively describes Python experience across documentation tooling, content migration, API integrations, data processing, and workflow automation."
+          }
+        ]
+      },
+      {
+        "id": "scala",
+        "label": "Scala",
+        "description": "A general-purpose programming language that combines object-oriented and functional programming, used for scripting and data processing.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes using Scala for scripting, data processing, and extending AST-based parsing code to support PlantUML blocks."
+          }
+        ]
+      },
+      {
+        "id": "javascript",
+        "label": "JavaScript",
+        "description": "A scripting language for web pages and interactive features.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [
+          "JS"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes using JavaScript, jQuery, AJAX, HTML, CSS, and SCSS/Sass to build interactive documentation-portal features."
+          }
+        ]
+      },
+      {
+        "id": "bash",
+        "label": "Bash",
+        "description": "A Unix shell and command language used for scripting and automation.",
+        "kind": "shell-scripting",
+        "parent": null,
+        "aliases": [
+          "Bourne Again Shell"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Bash for automation of documentation migration, validation, build, and publishing tasks."
+          }
+        ]
+      },
+      {
+        "id": "powershell",
+        "label": "PowerShell",
+        "description": "A task automation and configuration management framework from Microsoft, consisting of a command-line shell and scripting language.",
+        "kind": "shell-scripting",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions experience with Windows command-line and PowerShell automation."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting plain text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes migrating documentation sets into Markdown-based formats and using Markdown for documentation."
+          }
+        ]
+      },
+      {
+        "id": "html",
+        "label": "HTML",
+        "description": "The standard markup language for creating web pages.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [
+          "HyperText Markup Language"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using HTML to build interactive documentation-portal features."
+          }
+        ]
+      },
+      {
+        "id": "css",
+        "label": "CSS",
+        "description": "A style sheet language used for describing the presentation of a document written in HTML.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [
+          "Cascading Style Sheets"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using CSS to customise documentation-site layout and styling."
+          }
+        ]
+      },
+      {
+        "id": "scss",
+        "label": "SCSS/Sass",
+        "description": "A CSS preprocessor that extends CSS with variables, nesting, and mixins.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [
+          "Sass"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using SCSS/Sass to customise documentation-site styling."
+          }
+        ]
+      },
+      {
+        "id": "json",
+        "label": "JSON",
+        "description": "A lightweight data-interchange format.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [
+          "JavaScript Object Notation"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with JSON payloads and responses in API integrations and using JSON processing in Python and Scala."
+          }
+        ]
+      },
+      {
+        "id": "yaml",
+        "label": "YAML",
+        "description": "A human-readable data serialization format.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [
+          "YAML Ain't Markup Language"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using YAML processing in Python and Scala for structured data transformation."
+          }
+        ]
+      },
+      {
+        "id": "xml",
+        "label": "XML",
+        "description": "A markup language for encoding documents in a format that is both human-readable and machine-readable.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [
+          "Extensible Markup Language"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using XML parsing and transformation logic in C# and working with XML responses in API integrations."
+          }
+        ]
+      },
+      {
+        "id": "flask",
+        "label": "Flask",
+        "description": "A micro web framework for Python.",
+        "kind": "framework",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes building Flask applications with GET and POST endpoints, query parameters, form handling, and Jinja-rendered pages."
+          }
+        ]
+      },
+      {
+        "id": "react",
+        "label": "React",
+        "description": "A JavaScript library for building user interfaces.",
+        "kind": "library",
+        "parent": "javascript",
+        "aliases": [
+          "React.js",
+          "ReactJS"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with React/JSX components for documentation-portal features."
+          }
+        ]
+      },
+      {
+        "id": "jquery",
+        "label": "jQuery",
+        "description": "A fast, small, and feature-rich JavaScript library.",
+        "kind": "library",
+        "parent": "javascript",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using jQuery for interactive documentation-portal features."
+          }
+        ]
+      },
+      {
+        "id": "pathlib",
+        "label": "pathlib",
+        "description": "A Python library for object-oriented filesystem paths.",
+        "kind": "library",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using pathlib to reconstruct documentation links following migration and restructuring."
+          }
+        ]
+      },
+      {
+        "id": "pandas",
+        "label": "Pandas",
+        "description": "A Python library for data manipulation and analysis.",
+        "kind": "library",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Pandas for structured data transformation and reporting."
+          }
+        ]
+      },
+      {
+        "id": "requests",
+        "label": "Requests",
+        "description": "A Python HTTP library for making API requests.",
+        "kind": "library",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Requests and authentication libraries to integrate with REST and HTTP APIs."
+          }
+        ]
+      },
+      {
+        "id": "jinja",
+        "label": "Jinja",
+        "description": "A templating engine for Python.",
+        "kind": "library",
+        "parent": "python",
+        "aliases": [
+          "Jinja2"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions Jinja-rendered pages in Flask applications."
+          }
+        ]
+      },
+      {
+        "id": "nodejs",
+        "label": "Node.js",
+        "description": "A JavaScript runtime built on Chrome's V8 JavaScript engine.",
+        "kind": "runtime",
+        "parent": "javascript",
+        "aliases": [
+          "Node"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using JavaScript/Node.js for building interactive documentation-portal features and browser-based test integrations."
+          }
+        ]
+      },
+      {
+        "id": "rest",
+        "label": "REST",
+        "description": "An architectural style for designing networked applications.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [
+          "Representational State Transfer"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions integrating with REST and HTTP APIs using GET/POST methods, query parameters, headers, and status codes."
+          }
+        ]
+      },
+      {
+        "id": "http",
+        "label": "HTTP",
+        "description": "The Hypertext Transfer Protocol used for communication on the web.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "Hypertext Transfer Protocol"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with HTTP APIs, including GET/POST methods, headers, and status codes."
+          }
+        ]
+      },
+      {
+        "id": "jira-rest-api",
+        "label": "JIRA REST API",
+        "description": "The REST API for JIRA, used to interact with JIRA issues and projects programmatically.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [
+          "Jira API"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes integrating with the JIRA REST API to retrieve ticket details for release-note generation."
+          }
+        ]
+      },
+      {
+        "id": "mkdocs",
+        "label": "MkDocs",
+        "description": "A static site generator for project documentation written in Markdown.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions extending an existing MkDocs plugin to support additional Graphviz diagram-generation modes."
+          }
+        ]
+      },
+      {
+        "id": "graphviz",
+        "label": "Graphviz",
+        "description": "A graph visualization tool that uses DOT language for diagrams.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Graphviz for diagram generation, including hyperlink-enabled diagrams, invoked via Python subprocess."
+          }
+        ]
+      },
+      {
+        "id": "plantuml",
+        "label": "PlantUML",
+        "description": "A tool for creating UML diagrams from plain text descriptions.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions extending AST-based parsing code to support PlantUML blocks in Scala."
+          }
+        ]
+      },
+      {
+        "id": "intellij",
+        "label": "IntelliJ",
+        "description": "An integrated development environment for Java and other languages.",
+        "kind": "ide-editor",
+        "parent": null,
+        "aliases": [
+          "IntelliJ IDEA"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions developing IntelliJ plugins, indicating use of the IntelliJ platform."
+          }
+        ]
+      },
+      {
+        "id": "insomnia",
+        "label": "Insomnia",
+        "description": "An API client for testing and debugging REST and GraphQL APIs.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions modifying Insomnia authentication plugins for API tooling and integration testing."
+          }
+        ]
+      },
+      {
+        "id": "github-actions",
+        "label": "GitHub Actions",
+        "description": "A CI/CD and automation platform integrated with GitHub.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions integrating documentation workflows with GitHub Actions CI pipelines."
+          }
+        ]
+      },
+      {
+        "id": "jenkins",
+        "label": "Jenkins",
+        "description": "An open-source automation server for CI/CD.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions integrating documentation workflows with Jenkins CI pipelines."
+          }
+        ]
+      },
+      {
+        "id": "visual-cpp",
+        "label": "Visual C++",
+        "description": "Microsoft's C++ compiler and development environment.",
+        "kind": "developer-tool",
+        "parent": "cpp",
+        "aliases": [
+          "MSVC"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Visual C++ as part of C++ development experience."
+          }
+        ]
+      },
+      {
+        "id": "stl",
+        "label": "STL",
+        "description": "The Standard Template Library for C++, providing containers and algorithms.",
+        "kind": "library",
+        "parent": "cpp",
+        "aliases": [
+          "Standard Template Library"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions use of STL containers and data structures in C++ development."
+          }
+        ]
+      },
+      {
+        "id": "madcap-flare",
+        "label": "MadCap Flare",
+        "description": "A technical authoring and publishing tool for documentation.",
+        "kind": "authoring-tool",
+        "parent": null,
+        "aliases": [
+          "Flare"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using a MadCap Flare XHTML template to generate release notes."
+          }
+        ]
+      },
+      {
+        "id": "xhtml",
+        "label": "XHTML",
+        "description": "A markup language that combines HTML and XML.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [
+          "Extensible Hypertext Markup Language"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using a MadCap Flare XHTML template for release-note generation."
+          }
+        ]
+      },
+      {
+        "id": "unix",
+        "label": "Unix",
+        "description": "A family of multitasking, multi-user computer operating systems.",
+        "kind": "operating-system-firmware",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions writing cross-platform code for Windows and Unix, and working from the Unix/Linux command line."
+          }
+        ]
+      },
+      {
+        "id": "linux",
+        "label": "Linux",
+        "description": "An open-source Unix-like operating system.",
+        "kind": "operating-system-firmware",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working from the Unix/Linux command line."
+          }
+        ]
+      },
+      {
+        "id": "windows",
+        "label": "Windows",
+        "description": "A family of operating systems developed by Microsoft.",
+        "kind": "operating-system-firmware",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions writing cross-platform code for Windows and Unix, and experience with Windows command-line and PowerShell automation."
+          }
+        ]
+      },
+      {
+        "id": "grep",
+        "label": "grep",
+        "description": "A command-line utility for searching text patterns.",
+        "kind": "developer-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using grep as part of Unix/Linux command-line tools for content processing."
+          }
+        ]
+      },
+      {
+        "id": "sed",
+        "label": "sed",
+        "description": "A stream editor for filtering and transforming text.",
+        "kind": "developer-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using sed as part of Unix/Linux command-line tools for content processing."
+          }
+        ]
+      },
+      {
+        "id": "find",
+        "label": "find",
+        "description": "A command-line utility for searching files in a directory hierarchy.",
+        "kind": "developer-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using find as part of Unix/Linux command-line tools for repository and content-processing tasks."
+          }
+        ]
+      },
+      {
+        "id": "regex",
+        "label": "Regular expressions",
+        "description": "A sequence of characters that define a search pattern.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "regex",
+          "regexp"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using regex replacement lambdas in Python for content transformation."
+          }
+        ]
+      },
+      {
+        "id": "ast",
+        "label": "Abstract Syntax Tree (AST)",
+        "description": "A tree representation of the syntactic structure of source code.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "AST"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions modifying and extending AST-based parsing code in Scala."
+          }
+        ]
+      },
+      {
+        "id": "ajax",
+        "label": "AJAX",
+        "description": "A technique for creating asynchronous web applications.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "Asynchronous JavaScript and XML"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using AJAX for interactive documentation-portal features."
+          }
+        ]
+      },
+      {
+        "id": "webhooks",
+        "label": "Webhooks",
+        "description": "A method for one system to send real-time data to another via HTTP callbacks.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions building sandbox integrations for testing payment and API workflows, including webhooks."
+          }
+        ]
+      },
+      {
+        "id": "encryption",
+        "label": "Encryption",
+        "description": "The process of encoding information to protect it from unauthorized access.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions building sandbox integrations that include encryption."
+          }
+        ]
+      },
+      {
+        "id": "assembly",
+        "label": "Assembly language",
+        "description": "A low-level programming language that is closely related to machine code.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [
+          "asm"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions background in C and assembly-language programming, including kernel and device-driver development."
+          }
+        ]
+      },
+      {
+        "id": "kernel",
+        "label": "Kernel",
+        "description": "The core component of an operating system that manages system resources.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions kernel and device-driver development in C and assembly."
+          }
+        ]
+      },
+      {
+        "id": "device-driver",
+        "label": "Device driver",
+        "description": "Software that allows the operating system to communicate with hardware devices.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions graphics device drivers and kernel/device-driver development."
+          }
+        ]
+      },
+      {
+        "id": "cad",
+        "label": "CAD",
+        "description": "Computer-aided design software used for creating precise drawings and models.",
+        "kind": "engineering-design-tool",
+        "parent": null,
+        "aliases": [
+          "Computer-Aided Design"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with CAD/VR systems and modifying a 3D graphics CAD application."
+          }
+        ]
+      },
+      {
+        "id": "gis",
+        "label": "GIS",
+        "description": "Geographic information system for capturing, storing, and analyzing spatial data.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [
+          "Geographic Information System"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions specialising in GIS as part of engineering background."
+          }
+        ]
+      },
+      {
+        "id": "vr",
+        "label": "VR",
+        "description": "Virtual reality technology for simulated environments.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [
+          "Virtual Reality"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with CAD/VR systems."
+          }
+        ]
+      },
+      {
+        "id": "excel",
+        "label": "Excel",
+        "description": "A spreadsheet application by Microsoft, used for data analysis and reporting.",
+        "kind": "data-analysis-tool",
+        "parent": null,
+        "aliases": [
+          "Microsoft Excel"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Excel generation for structured data transformation and reporting, including workbooks with hyperlinks."
+          }
+        ]
+      },
+      {
+        "id": "jira",
+        "label": "JIRA",
+        "description": "A project management and issue tracking tool.",
+        "kind": "collaboration-project-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using JIRA tickets for release-note generation."
+          }
+        ]
+      },
+      {
+        "id": "stmicroelectronics",
+        "label": "STMicroelectronics",
+        "description": "A multinational electronics and semiconductor manufacturer.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions work at STMicroelectronics as an employer, but this is not a technology. However, the context of graphics device drivers may imply use of their platforms, but it is not a technology used. Excluded."
+          }
+        ]
+      }
+    ]
+  }
+}

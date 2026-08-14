@@ -1,0 +1,371 @@
+{
+  "fingerprint": "a3601b5c3b4dafdf72a439ea38626855f8891f81318bcb17da9ab3b65ca0909c",
+  "label": "extract-tech-022-Flare",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "madcap-flare",
+        "label": "MadCap Flare",
+        "description": "A help authoring tool and documentation platform for topic-based authoring, single-sourcing, and multi-channel publishing.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [
+          "Flare"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document is a detailed account of the author's extensive experience with MadCap Flare, including core and advanced skills, community contributions, and automation/integration projects."
+          }
+        ]
+      },
+      {
+        "id": "html",
+        "label": "HTML",
+        "description": "The standard markup language for creating web pages and web applications.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions publishing HTML output from Flare and integrating with hosting platforms, and the author's work with Flare-compatible XHTML topics."
+          }
+        ]
+      },
+      {
+        "id": "xhtml",
+        "label": "XHTML",
+        "description": "A stricter, XML-based version of HTML used for structured content.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document explicitly mentions generating Flare-compatible XHTML topics and parsing/generating XHTML in the C# release-notes tool."
+          }
+        ]
+      },
+      {
+        "id": "css",
+        "label": "CSS",
+        "description": "A stylesheet language used for describing the presentation of a document written in HTML or XML.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists custom CSS as an advanced Flare skill and mentions applying stylesheets and templates."
+          }
+        ]
+      },
+      {
+        "id": "xml",
+        "label": "XML",
+        "description": "A markup language that defines rules for encoding documents in a format that is both human-readable and machine-readable.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions custom XML development as part of Flare customisation and Flare-compatible XHTML topics."
+          }
+        ]
+      },
+      {
+        "id": "csharp",
+        "label": "C#",
+        "description": "A general-purpose, multi-paradigm programming language developed by Microsoft.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [
+          "C#"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document describes building a C# release-notes tool that queries Jira REST API and generates Flare-compatible XHTML."
+          }
+        ]
+      },
+      {
+        "id": "jira-rest-api",
+        "label": "Jira REST API",
+        "description": "The REST API for Atlassian Jira, used to interact with Jira issues and projects programmatically.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [
+          "Jira API"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions querying the Jira REST API for tickets tagged to a release in the C# release-notes tool."
+          }
+        ]
+      },
+      {
+        "id": "pythonanywhere",
+        "label": "PythonAnywhere",
+        "description": "A cloud-based hosting platform for Python applications and static sites.",
+        "kind": "cloud-hosting-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions automatically publishing generated HTML output to PythonAnywhere for review."
+          }
+        ]
+      },
+      {
+        "id": "hypothesis",
+        "label": "Hypothes.is",
+        "description": "An open-source annotation tool that allows users to annotate web pages.",
+        "kind": "collaboration-project-tool",
+        "parent": null,
+        "aliases": [
+          "Hypothesis"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document describes integrating Hypothes.is with hosted documentation for annotation by subject-matter experts."
+          }
+        ]
+      },
+      {
+        "id": "confluence",
+        "label": "Confluence",
+        "description": "A collaboration and wiki platform by Atlassian used for team documentation and knowledge management.",
+        "kind": "cms-wiki",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions developing scripts to migrate developer documentation from Confluence to MadCap Flare."
+          }
+        ]
+      },
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system for tracking changes in source code during software development.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists Git-based collaboration as an advanced Flare skill and mentions version control and CI."
+          }
+        ]
+      },
+      {
+        "id": "continuous-integration",
+        "label": "Continuous Integration",
+        "description": "A software development practice where code changes are automatically built, tested, and prepared for release.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "CI"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions continuous integration as part of version control and CI in Flare workflows."
+          }
+        ]
+      },
+      {
+        "id": "topic-based-authoring",
+        "label": "Topic-based authoring",
+        "description": "A modular approach to writing documentation where content is organized into topics that can be reused across outputs.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists topic-based authoring as a core Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "single-sourcing",
+        "label": "Single-sourcing",
+        "description": "A documentation technique that uses a single source of content to generate multiple outputs or formats.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists advanced single-sourcing as an advanced Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "conditional-text",
+        "label": "Conditional text",
+        "description": "A feature in documentation tools that allows content to be included or excluded based on conditions.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists conditional text as a core Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "snippets-and-variables",
+        "label": "Snippets and variables",
+        "description": "Reusable content fragments and placeholders in documentation tools.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists snippets and variables as a core Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "cross-references",
+        "label": "Cross-references",
+        "description": "Links within documentation that point to other sections or topics.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists hyperlinks and cross-references as a core Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "tables-of-contents",
+        "label": "Tables of contents",
+        "description": "A hierarchical list of topics or sections in a document.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "TOC"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists tables of contents as a core Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "targets-and-build-configurations",
+        "label": "Targets and build configurations",
+        "description": "Settings in Flare that define how output is generated for different formats or audiences.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists targets and build configurations as a core Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "pdf-publishing",
+        "label": "PDF publishing",
+        "description": "The process of generating PDF documents from source content.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists HTML and PDF publishing as a core Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "cms-integration",
+        "label": "CMS integration",
+        "description": "Integrating a documentation tool with a content management system.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists CMS and search integration as an advanced Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "search-integration",
+        "label": "Search integration",
+        "description": "Integrating search functionality into documentation outputs.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists CMS and search integration as an advanced Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "output-troubleshooting",
+        "label": "Output troubleshooting",
+        "description": "Diagnosing and resolving issues with generated documentation outputs.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists complex output troubleshooting as an advanced Flare skill."
+          }
+        ]
+      },
+      {
+        "id": "post-build-automation",
+        "label": "Post-build automation",
+        "description": "Automating tasks that run after the documentation build process.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document describes building a Flare post-build automation workflow."
+          }
+        ]
+      },
+      {
+        "id": "migration-scripts",
+        "label": "Migration scripts",
+        "description": "Scripts used to migrate content from one system to another.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions developing scripts to migrate documentation from Confluence to Flare."
+          }
+        ]
+      }
+    ]
+  }
+}

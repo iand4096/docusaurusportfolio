@@ -1,0 +1,157 @@
+{
+  "fingerprint": "cf6abf5bb7bcc5f3274fe41282c413473dc235e6b84d2c32044acd6bf74e7218",
+  "label": "extract-tech-004-MDES4Merchants",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language used to create custom test code.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author created custom test code in Python to validate the integration."
+          }
+        ]
+      },
+      {
+        "id": "requests",
+        "label": "Requests",
+        "description": "A Python HTTP library used to send API requests and inspect responses.",
+        "kind": "library",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author used the Requests library to send API requests and inspect responses."
+          }
+        ]
+      },
+      {
+        "id": "flask",
+        "label": "Flask",
+        "description": "A Python web framework used to build a cloud-hosted application for receiving webhooks.",
+        "kind": "framework",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author developed a cloud-hosted Flask application to receive webhook notifications."
+          }
+        ]
+      },
+      {
+        "id": "pythonanywhere",
+        "label": "PythonAnywhere",
+        "description": "A cloud hosting platform for Python applications.",
+        "kind": "cloud-hosting-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The Flask application was hosted on PythonAnywhere to provide a public endpoint."
+          }
+        ]
+      },
+      {
+        "id": "oauth-1-0",
+        "label": "OAuth 1.0",
+        "description": "An authentication protocol used for API security.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "OAuth 1.0a"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author generated OAuth 1.0 authentication data for API requests."
+          }
+        ]
+      },
+      {
+        "id": "field-level-encryption",
+        "label": "Field-level encryption",
+        "description": "A security technique that encrypts individual data fields.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [
+          "FLE"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author encrypted and decrypted protected fields using cryptography libraries."
+          }
+        ]
+      },
+      {
+        "id": "openapi",
+        "label": "OpenAPI",
+        "description": "A specification for describing REST APIs.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "Swagger"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author corrected and improved the API reference documentation in OpenAPI schema format."
+          }
+        ]
+      },
+      {
+        "id": "mastercard-digital-enablement-api",
+        "label": "Mastercard Digital Enablement API",
+        "description": "An API providing access to MDES for card tokenisation.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [
+          "MDES API"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author tested and documented the Mastercard Digital Enablement API."
+          }
+        ]
+      },
+      {
+        "id": "webhooks",
+        "label": "Webhooks",
+        "description": "Asynchronous HTTP notifications used to notify about events.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author received and validated asynchronous webhook notifications during testing."
+          }
+        ]
+      },
+      {
+        "id": "cryptography-libraries",
+        "label": "Cryptography libraries",
+        "description": "Open-source libraries used for encryption and decryption.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author used open-source cryptography libraries to encrypt and decrypt fields."
+          }
+        ]
+      }
+    ]
+  }
+}

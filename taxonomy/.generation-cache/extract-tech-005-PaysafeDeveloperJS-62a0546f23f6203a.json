@@ -1,0 +1,219 @@
+{
+  "fingerprint": "62a0546f23f6203a3bd5574f0715cdd992b9cdce14be22adb9f69ef5f3a24700",
+  "label": "extract-tech-005-PaysafeDeveloperJS",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "paysafe-js",
+        "label": "Paysafe.js",
+        "description": "A JavaScript library that allows merchants to add customisable payment forms to their websites while reducing PCI DSS scope by collecting sensitive card details through hosted fields in iframes and returning a token.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The document is a developer guide for Paysafe.js, explaining its hosted-field architecture, tokenisation model, and integration workflow."
+          }
+        ]
+      },
+      {
+        "id": "javascript",
+        "label": "JavaScript",
+        "description": "A programming language used to implement client-side web functionality, including the Paysafe.js library and its integration examples.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide documents the JavaScript library Paysafe.js and its browser-based integration, including loading and configuring the library."
+          }
+        ]
+      },
+      {
+        "id": "html",
+        "label": "HTML",
+        "description": "The standard markup language for creating web pages, used in the CodePen examples and the interactive demonstration.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The CodePen examples and interactive Try Now demonstration involve HTML for structuring the payment forms."
+          }
+        ]
+      },
+      {
+        "id": "css",
+        "label": "CSS",
+        "description": "A stylesheet language used for styling web pages, including the styling of payment forms in the examples.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide includes styling guidance for the payment forms, and the CodePen examples would use CSS."
+          }
+        ]
+      },
+      {
+        "id": "codepen",
+        "label": "CodePen",
+        "description": "An online code editor and community for front-end development, used to create and share working examples.",
+        "kind": "developer-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The author created original CodePen examples for developers to inspect and modify working integrations."
+          }
+        ]
+      },
+      {
+        "id": "iframe",
+        "label": "iframe",
+        "description": "An HTML element that embeds another document within the current page, used by Paysafe.js to host secure fields.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The document explains that sensitive card details are collected through secure fields hosted by Paysafe in iframes."
+          }
+        ]
+      },
+      {
+        "id": "tokenisation",
+        "label": "Tokenisation",
+        "description": "The process of replacing sensitive data with a non-sensitive token, used in the Paysafe.js integration to return a token to the merchant.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide explains the tokenisation model and how the library returns a token for payment requests."
+          }
+        ]
+      },
+      {
+        "id": "pci-dss",
+        "label": "PCI DSS",
+        "description": "The Payment Card Industry Data Security Standard, a set of security standards for organisations that handle cardholder data.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The document discusses how Paysafe.js reduces PCI DSS scope and supports SAQ A compliance."
+          }
+        ]
+      },
+      {
+        "id": "saq-a",
+        "label": "SAQ A",
+        "description": "A PCI DSS Self-Assessment Questionnaire for merchants that outsource cardholder data processing to third parties.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide explains that the iframe-based fields support SAQ A compliance."
+          }
+        ]
+      },
+      {
+        "id": "3d-secure",
+        "label": "3D Secure",
+        "description": "A security protocol for authenticating online card payments, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide has since been expanded to cover 3D Secure, indicating it is a relevant technology in the context of Paysafe.js."
+          }
+        ]
+      },
+      {
+        "id": "google-pay",
+        "label": "Google Pay",
+        "description": "A digital wallet and payment service by Google, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide has since been expanded to cover Google Pay, indicating it is a relevant payment method in the context of Paysafe.js."
+          }
+        ]
+      },
+      {
+        "id": "apple-pay",
+        "label": "Apple Pay",
+        "description": "A digital wallet and payment service by Apple, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide has since been expanded to cover Apple Pay, indicating it is a relevant payment method in the context of Paysafe.js."
+          }
+        ]
+      },
+      {
+        "id": "instant-withdrawal",
+        "label": "Instant Withdrawal",
+        "description": "A payment feature allowing immediate withdrawal of funds, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide has since been expanded to cover Instant Withdrawal, indicating it is a relevant payment feature in the context of Paysafe.js."
+          }
+        ]
+      },
+      {
+        "id": "api-reference",
+        "label": "API reference",
+        "description": "Documentation that describes the endpoints, parameters, and usage of an API, delivered as part of the guide.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The deliverables include API reference documentation for Paysafe.js."
+          }
+        ]
+      },
+      {
+        "id": "try-now-demo",
+        "label": "Try Now demonstration",
+        "description": "An interactive inline demonstration that allows developers to explore the integration step by step.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The author developed an interactive Try Now demonstration within the documentation."
+          }
+        ]
+      }
+    ]
+  }
+}

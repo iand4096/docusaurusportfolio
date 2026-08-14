@@ -1,0 +1,188 @@
+{
+  "fingerprint": "c80062e8540076bad36e6e9634ebc4e7be5c7db1fd4be322a865b9d84e04ea9d",
+  "label": "extract-tech-020-Diagramming",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "c4-model",
+        "label": "C4 model",
+        "description": "A modelling methodology for visualising software architecture at different levels of abstraction.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document states familiarity with the C4 model and its system context, container, component, and relationship views."
+          }
+        ]
+      },
+      {
+        "id": "plantuml",
+        "label": "PlantUML",
+        "description": "A text-based diagramming tool that generates UML and other diagrams from plain text.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists PlantUML among diagrams-as-code tools used for reproducible diagrams."
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "label": "Mermaid",
+        "description": "A JavaScript-based diagramming and charting tool that renders diagrams from Markdown-like text.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Mermaid among diagrams-as-code tools used for reproducible diagrams."
+          }
+        ]
+      },
+      {
+        "id": "graphviz-dot",
+        "label": "Graphviz/DOT",
+        "description": "A graph visualization tool and DOT language for describing and rendering graphs.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [
+          "Graphviz",
+          "DOT"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Graphviz/DOT among diagrams-as-code tools and describes advanced practical experience, including developing an internal Graphviz-based tool at Morgan Stanley."
+          }
+        ]
+      },
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system used for source and documentation management.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document mentions maintaining diagram source alongside Markdown documentation in Git-based docs-as-code environments."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting plain text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document mentions maintaining diagram source alongside Markdown documentation."
+          }
+        ]
+      },
+      {
+        "id": "microsoft-visio",
+        "label": "Microsoft Visio",
+        "description": "A diagramming and vector graphics application for creating professional diagrams.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [
+          "Visio"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Microsoft Visio among tools used for diagrams requiring greater graphical control."
+          }
+        ]
+      },
+      {
+        "id": "adobe-illustrator",
+        "label": "Adobe Illustrator",
+        "description": "A vector graphics editor used for creating and editing illustrations and diagrams.",
+        "kind": "design-graphics-tool",
+        "parent": null,
+        "aliases": [
+          "Illustrator"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Adobe Illustrator among tools used for diagrams requiring greater graphical control."
+          }
+        ]
+      },
+      {
+        "id": "inkscape",
+        "label": "Inkscape",
+        "description": "An open-source vector graphics editor.",
+        "kind": "design-graphics-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Inkscape among tools used for diagrams requiring greater graphical control."
+          }
+        ]
+      },
+      {
+        "id": "svg",
+        "label": "SVG",
+        "description": "Scalable Vector Graphics, an XML-based vector image format.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [
+          "Scalable Vector Graphics"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document describes creating, editing, and integrating SVG and other vector graphics into web-based documentation."
+          }
+        ]
+      },
+      {
+        "id": "ocr",
+        "label": "OCR",
+        "description": "Optical character recognition technology used to extract text from images.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "Optical Character Recognition"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document mentions using OCR to identify outdated terminology in raster screenshots and diagrams."
+          }
+        ]
+      },
+      {
+        "id": "catia",
+        "label": "CATIA",
+        "description": "A multi-platform CAD/CAM/CAE software suite for engineering and 3D design.",
+        "kind": "engineering-design-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document mentions earlier-career experience with CAD software including CATIA."
+          }
+        ]
+      }
+    ]
+  }
+}

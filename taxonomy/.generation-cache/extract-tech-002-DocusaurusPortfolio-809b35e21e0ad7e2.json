@@ -1,0 +1,177 @@
+{
+  "fingerprint": "809b35e21e0ad7e22a15af880bad09a9d6580b6fc924cae49447cc16100c5c09",
+  "label": "extract-tech-002-DocusaurusPortfolio",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A documentation site generator used to build and publish the portfolio.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document describes building the portfolio as a Docusaurus documentation site."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language used for authoring content.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions extensive Markdown content and Markdown-first authoring."
+          }
+        ]
+      },
+      {
+        "id": "mdx",
+        "label": "MDX",
+        "description": "A format that combines Markdown with JSX for embedding React components.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions React/MDX customisation and using MDX for content."
+          }
+        ]
+      },
+      {
+        "id": "react",
+        "label": "React",
+        "description": "A JavaScript library for building user interfaces.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document describes creating React and JSX components for the site."
+          }
+        ]
+      },
+      {
+        "id": "jsx",
+        "label": "JSX",
+        "description": "A syntax extension for JavaScript used with React to describe UI components.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions React and JSX components."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language used for the QA script.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions a Python script that calls the DeepSeek API."
+          }
+        ]
+      },
+      {
+        "id": "requests",
+        "label": "Requests",
+        "description": "A Python HTTP library used to call the DeepSeek REST API.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions using the requests library to call the DeepSeek API."
+          }
+        ]
+      },
+      {
+        "id": "deepseek-api",
+        "label": "DeepSeek API",
+        "description": "A REST API for AI-powered quality checks on documentation.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document describes integrating the DeepSeek API into the QA workflow."
+          }
+        ]
+      },
+      {
+        "id": "github-actions",
+        "label": "GitHub Actions",
+        "description": "A CI/CD platform used to automate QA and deployment workflows.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document describes GitHub Actions workflows for QA and deployment."
+          }
+        ]
+      },
+      {
+        "id": "github-pages",
+        "label": "GitHub Pages",
+        "description": "A hosting service for static sites, used to publish the portfolio.",
+        "kind": "cloud-hosting-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions deploying the site to GitHub Pages."
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "label": "Mermaid",
+        "description": "A diagramming and charting tool that uses text-based definitions.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions a simple Mermaid diagram."
+          }
+        ]
+      },
+      {
+        "id": "vale",
+        "label": "Vale",
+        "description": "A linter for prose that checks style and terminology.",
+        "kind": "documentation-qa-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions adding Vale as a future improvement."
+          }
+        ]
+      }
+    ]
+  }
+}

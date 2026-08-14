@@ -1,0 +1,153 @@
+{
+  "fingerprint": "24796a2075ded2fbb5bf72942c1dd3cc740b351a5cbc7b1d49bb75e8891a091b",
+  "label": "extract-tech-007-AIandDocumentation",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "ai-assisted-authoring",
+        "label": "AI-Assisted Authoring",
+        "description": "Using AI to create initial documentation structures and skeleton content from source material.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document describes using AI to create initial documentation structures and skeleton content from Jira tickets and SME information."
+          }
+        ]
+      },
+      {
+        "id": "ai-coding-tools",
+        "label": "AI Coding Tools",
+        "description": "AI tools used to generate code, often in spec-driven development workflows.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions using AI coding tools and spec-driven development to extend documentation-platform functionality."
+          }
+        ]
+      },
+      {
+        "id": "retrieval-augmented-generation",
+        "label": "Retrieval-Augmented Generation (RAG)",
+        "description": "A technique combining retrieval of relevant documents with generative AI to produce responses.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "RAG"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document describes practical understanding of RAG concepts, including using metadata and document lifecycle status to prevent deprecated API documentation from being recommended."
+          }
+        ]
+      },
+      {
+        "id": "llm-assisted-documentation",
+        "label": "LLM-Assisted Documentation",
+        "description": "Using large language models for grammar checking, analysis, diagram generation, content transformation, and code generation.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document states using AI for grammar checking, documentation analysis, diagrams as code, content transformation, and code generation."
+          }
+        ]
+      },
+      {
+        "id": "whisper",
+        "label": "Whisper",
+        "description": "A speech-to-text model by OpenAI, used locally for privacy.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions installing and using a local Whisper speech-to-text model for privacy-sensitive meeting transcripts."
+          }
+        ]
+      },
+      {
+        "id": "model-context-protocol",
+        "label": "Model Context Protocol (MCP)",
+        "description": "A protocol for exposing tools and context to AI assistants.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "MCP"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document describes building experimental MCP servers and using MCP to expose documentation-quality tools to AI assistants."
+          }
+        ]
+      },
+      {
+        "id": "fastmcp",
+        "label": "FastMCP",
+        "description": "A framework for building Model Context Protocol servers.",
+        "kind": "framework",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions building experimental MCP servers using FastMCP."
+          }
+        ]
+      },
+      {
+        "id": "jira",
+        "label": "Jira",
+        "description": "A project tracking and issue management tool.",
+        "kind": "collaboration-project-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions using Jira tickets as source material for AI-assisted authoring."
+          }
+        ]
+      },
+      {
+        "id": "diagrams-as-code",
+        "label": "Diagrams as Code",
+        "description": "A technique for creating diagrams using code or text-based definitions.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions using AI for diagrams as code."
+          }
+        ]
+      },
+      {
+        "id": "spec-driven-development",
+        "label": "Spec-Driven Development",
+        "description": "A development methodology where specifications define the expected behavior before implementation.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions using spec-driven development with AI coding tools."
+          }
+        ]
+      }
+    ]
+  }
+}

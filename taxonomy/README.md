@@ -1,20 +1,46 @@
-# Taxonomy v2 — typed technologies
+# Taxonomy v2 — improved extraction and AI classification
 
-This package upgrades the portfolio taxonomy model so a large career technology vocabulary remains useful rather than becoming one flat list.
+This package keeps the v2 taxonomy schema but strengthens both initial corpus
+extraction and ongoing DeepSeek metadata classification.
 
-## What changed
+The design goal is a broad, reviewable technology vocabulary suitable for a
+long technical-writing/programming career, while keeping deterministic
+repository state authoritative.
 
-Taxonomy v2 adds:
+## What changed in this package
 
-- a controlled `technology_kinds` catalogue;
-- a required `kind` on every **active** technology term;
-- explicit DeepSeek rules that exclude companies, employers, clients, customers and corporate entities from technologies;
-- support for technical methods such as modelling methodologies, architecture styles and technical techniques;
-- content-type-specific cardinality limits, so the overall taxonomy can contain hundreds of technologies while individual pages remain selective;
-- a deterministic technology audit command;
-- a migration script for an existing taxonomy v1.
+Compared with the earlier v2 scripts:
 
-Front matter stays simple. Documents still reference technology IDs:
+- technology extraction now runs **once per document** with a high-recall prompt;
+- content type, audience and topic discovery remains batch-based;
+- a second **technology coverage-audit pass** asks DeepSeek specifically what
+  the first extractor missed;
+- deterministic coverage warnings flag likely omissions of foundational terms
+  such as Python, Java, JavaScript, C++, C#, Node.js and OpenAPI;
+- consolidation is explicitly forbidden from treating foundational technologies
+  as duplicates of their frameworks/libraries/tools;
+- validated foundational candidates are deterministically restored if the
+  consolidation pass still drops them;
+- company/employer/client/entity exclusion is enforced both in prompts and in
+  deterministic validation;
+- the technology-kind catalogue now also includes `data-format` and
+  `payment-technology`;
+- `taxonomy_ai.py` resolves existing terms by ID, label or alias;
+- duplicate AI proposals for terms that already exist are folded into ordinary
+  metadata instead of failing the document;
+- AI evidence hints are verified against the real source document and exact
+  source excerpts are recovered deterministically;
+- a bad taxonomy proposal is dropped with a warning instead of invalidating the
+  whole document classification;
+- unknown optional AI metadata values are dropped with a warning;
+- over-cardinality AI metadata is trimmed deterministically;
+- accepted new proposals are added to the proposing document's metadata even if
+  the model forgot to repeat the new ID in its metadata array;
+- only document-level classification failures block `--apply`.
+
+## Canonical model
+
+Front matter remains simple:
 
 ```yaml
 technologies:
@@ -23,7 +49,7 @@ technologies:
   - docusaurus
 ```
 
-The taxonomy contains the classification detail:
+The taxonomy carries the subclass information:
 
 ```yaml
 technology_kinds:
@@ -31,9 +57,17 @@ technology_kinds:
     label: Programming language
     description: A general-purpose or domain-specific programming language.
 
+  data-format:
+    label: Data format
+    description: A structured data serialisation or interchange format.
+
+  payment-technology:
+    label: Payment technology
+    description: A payment-specific technical product or platform.
+
   documentation-platform:
     label: Documentation platform
-    description: A documentation site generator or platform used to publish technical content.
+    description: A documentation site generator or publishing platform.
 
 # ...
 
@@ -65,27 +99,162 @@ dimensions:
           review: annual
 ```
 
-The global `max` applies to broad/other page types. `constraints_by_type` overrides it for known content types. This is deliberately different from limiting the total number of terms in the taxonomy.
+The limits above apply to **one document**, not to the number of technologies
+allowed in the career taxonomy. The taxonomy can contain hundreds of approved
+technology terms if the corpus supports them.
 
-## Existing taxonomy: recommended migration
+## Recommended workflow: regenerate the initial taxonomy
 
-If you already have `taxonomy/taxonomy.yml` version 1, copy these files into your repository first:
+Because the earlier extractor omitted foundational terms before they ever
+reached consolidation, regenerate rather than manually patching the old output.
 
-```text
-scripts/taxonomy.py
-scripts/taxonomy_ai.py
-scripts/upgrade_taxonomy.py
-taxonomy/schema.json
-requirements-doc-review.txt
-```
-
-From PowerShell at the repository root:
+Copy these package files over the corresponding files in your repository, then
+run from the repository root:
 
 ```powershell
 python -m pip install -r requirements-doc-review.txt
 $env:DEEPSEEK_API_KEY = "your-key"
 
-# 1. Review how every existing technology will be typed.
+python scripts/generate_taxonomy.py --force
+```
+
+The generator now performs:
+
+```text
+Markdown/MDX corpus
+      |
+      +--> batch content-type/audience/topic discovery
+      |
+      +--> per-document HIGH-RECALL technology extraction
+      |
+      +--> repository technology coverage audit
+      |
+      +--> deterministic foundational coverage warnings
+      |
+      +--> repository-wide consolidation
+      |
+      +--> deterministic foundational-term restoration
+      |
+      +--> schema + semantic validation
+      |
+      +--> taxonomy/taxonomy.yml
+      +--> taxonomy/taxonomy-generation.json
+      +--> docs/tags.yml
+      +--> .frontmatter/generated-taxonomy.json
+```
+
+The default model split is:
+
+- extraction: `deepseek-v4-flash`;
+- coverage audit: `deepseek-v4-flash`;
+- consolidation: `deepseek-v4-pro`.
+
+Because technology extraction is now per-document, the bootstrap run makes more
+API calls than the earlier batch-only generator. For 29 Markdown/MDX files,
+expect roughly 29 technology-extraction calls plus the non-technology batch
+call(s), coverage-audit batch call(s), and one consolidation call. This is an
+intentional one-off bootstrap trade-off for substantially better recall.
+
+You can override all three with the backward-compatible `--model` option:
+
+```powershell
+python scripts/generate_taxonomy.py --force --model deepseek-v4-pro
+```
+
+Or override them independently:
+
+```powershell
+python scripts/generate_taxonomy.py --force `
+  --extraction-model deepseek-v4-flash `
+  --coverage-model deepseek-v4-flash `
+  --consolidation-model deepseek-v4-pro
+```
+
+Review `taxonomy/taxonomy-generation.json`, especially:
+
+```text
+per_document_technology_counts
+coverage_audit_additions
+coverage_warnings
+rejected_technology_candidates
+restored_foundational_candidates
+```
+
+A non-empty `coverage_warnings` array means a known foundational technology
+appeared in the corpus but still did not resolve to an extracted candidate and
+should be reviewed before adopting the taxonomy.
+
+## Ongoing DeepSeek metadata classification
+
+After reviewing the regenerated taxonomy:
+
+```powershell
+python scripts/taxonomy_ai.py --all
+```
+
+The classifier is now intentionally tolerant of normal LLM variation.
+
+For example, if the taxonomy contains:
+
+```yaml
+openapi-specification:
+  label: OpenAPI
+  aliases:
+    - OpenAPI specification
+```
+
+and the model returns:
+
+```json
+"technologies": ["openapi"]
+```
+
+`taxonomy_ai.py` resolves the value to the canonical repository ID rather than
+rejecting the whole document.
+
+Likewise, if DeepSeek proposes `masterpass` as a new term but `masterpass`
+already exists, the proposal is folded into the existing term and reported as a
+normalisation note instead of a failure.
+
+### Evidence handling
+
+New proposals use AI `evidence_hints`, but the stored/report evidence is always
+recovered from the real Markdown/MDX source. The script tries, in order:
+
+1. exact evidence-hint matches;
+2. case-insensitive exact matches;
+3. label/alias matches;
+4. deterministic token-overlap matching against source sentences/lines.
+
+If no source evidence can be verified, **that proposal alone is dropped**. The
+rest of the document classification remains usable.
+
+### Review before applying
+
+Review:
+
+```text
+taxonomy/taxonomy-ai-suggestions.md
+taxonomy/taxonomy-ai-suggestions.json
+```
+
+Then:
+
+```powershell
+python scripts/taxonomy_ai.py --all --apply
+
+git diff
+```
+
+`--apply` is refused only when one or more documents had no usable
+classification. Proposal-level warnings are advisory and do not block the
+successful documents.
+
+## Existing v1 taxonomy migration
+
+If you need to upgrade a version-1 taxonomy instead of regenerating it:
+
+```powershell
 python scripts/upgrade_taxonomy.py
 ```
 
@@ -96,87 +265,15 @@ taxonomy/taxonomy-v2-upgrade.md
 taxonomy/taxonomy-v2-upgrade.json
 ```
 
-The report deliberately separates genuine technologies/methods from organisations.
-
-When satisfied:
+Then:
 
 ```powershell
-# 2. Apply the taxonomy-only migration.
 python scripts/upgrade_taxonomy.py --apply
-
-git diff
 ```
 
-`--apply`:
-
-- changes `version: 1` to `version: 2`;
-- adds the `technology_kinds` catalogue;
-- adds `kind` to genuine technology terms;
-- marks organisation/entity terms as deprecated rather than silently deleting them;
-- adds content-type-specific technology limits when matching content types exist;
-- regenerates `docs/tags.yml` and `.frontmatter/generated-taxonomy.json`;
-- does **not** rewrite document metadata.
-
-Documents that still reference newly deprecated company/entity terms will then be intentionally invalid. Use the ordinary AI classifier to propose corrected document metadata:
-
-```powershell
-# 3. Review reclassification against the cleaned v2 taxonomy.
-python scripts/taxonomy_ai.py --all
-
-# 4. After reviewing the report, apply to the working tree.
-python scripts/taxonomy_ai.py --all --apply
-
-git diff
-
-# 5. Deterministic gate.
-python scripts/taxonomy.py check --all
-```
-
-## New portfolio / regenerate from the corpus
-
-For a fresh taxonomy:
-
-```powershell
-$env:DEEPSEEK_API_KEY = "your-key"
-python scripts/generate_taxonomy.py
-```
-
-The generator uses two passes: batch evidence extraction followed by repository-wide consolidation. It deliberately tells DeepSeek that a long-career portfolio may have a large technology vocabulary and that one-document technologies can be retained when materially demonstrated.
-
-It writes:
-
-```text
-taxonomy/taxonomy.yml
-taxonomy/taxonomy-generation.json
-docs/tags.yml
-.frontmatter/generated-taxonomy.json
-```
-
-Review those files before applying AI-generated front matter.
-
-## Ongoing metadata and taxonomy proposals
-
-```powershell
-# One document
-python scripts/taxonomy_ai.py docs/tools/OpenAPIandAPITools.md
-
-# Changed documents
-python scripts/taxonomy_ai.py --changed-base origin/main
-
-# Whole corpus
-python scripts/taxonomy_ai.py --all
-```
-
-DeepSeek may propose a new technology term, but every proposal must include an approved `kind`:
-
-```yaml
-new-tool:
-  label: New Tool
-  description: A developer tool used to inspect API behaviour.
-  kind: api-tool
-```
-
-A company/entity-like technology proposal is rejected before it can be applied.
+The upgrade script uses the same controlled technology-kind catalogue, marks
+organisation/entity terms as deprecated rather than silently deleting them,
+and regenerates the derived Docusaurus/Front Matter files.
 
 ## Deterministic checks
 
@@ -184,53 +281,65 @@ A company/entity-like technology proposal is rejected before it can be applied.
 # Taxonomy + all docs
 python scripts/taxonomy.py check --all
 
-# Only taxonomy/schema/generated-file state
+# Taxonomy/schema/generated-file state only
 python scripts/taxonomy.py check --taxonomy-only
 
-# Changed docs in CI/local PR workflow
+# Changed docs
 python scripts/taxonomy.py check --changed-base origin/main
 
-# Regenerate Docusaurus/Front Matter derived files
+# Regenerate derived Docusaurus/Front Matter files
 python scripts/taxonomy.py generate
 
-# Synchronise Docusaurus front-matter tags
+# Synchronise Docusaurus tags from governed metadata
 python scripts/taxonomy.py sync --all
 
-# Summarise technologies by subclass and flag organisation-like descriptions
+# Group technologies by subclass and flag suspicious organisation-like terms
 python scripts/taxonomy.py audit-technologies
-
-# Optional strict audit exit code
-python scripts/taxonomy.py audit-technologies --strict
 ```
+
+These commands never call an LLM and are suitable for blocking CI.
 
 ## Technology subclasses
 
-The seed catalogue covers categories such as:
+The seed catalogue includes:
 
-- programming languages;
-- shell/scripting;
-- markup/content languages;
-- frameworks and libraries;
-- runtimes;
-- standards/specifications and protocols;
-- API tools;
-- documentation platforms and authoring tools;
-- documentation QA tools;
-- CMS/wiki systems;
-- developer platforms/tools and IDEs;
-- testing/debugging and network analysis;
-- CI/CD, version control, containers and infrastructure;
-- operating systems/firmware and server/networking technologies;
-- cloud/hosting platforms;
+- programming language;
+- shell and scripting;
+- markup/content language;
+- data format;
+- framework;
+- library;
+- runtime;
+- standard/specification;
+- protocol;
+- API tool;
+- payment technology;
+- documentation platform;
+- authoring tool;
+- documentation QA tool;
+- CMS/wiki;
+- developer platform/tool;
+- IDE/editor;
+- testing/debugging;
+- network analysis;
+- CI/CD and automation;
+- version control;
+- containers/orchestration;
+- infrastructure;
+- operating system/firmware;
+- server/networking;
+- cloud/hosting;
 - diagramming/visualisation;
-- modelling methodologies;
-- architecture styles;
-- technical techniques;
+- modelling methodology;
+- architecture style;
+- technical technique;
 - security/cryptography;
-- AI/ML tools;
-- data/analysis tools;
-- design/graphics and engineering-design tools;
-- collaboration/project tools;
-- general software platforms.
+- AI/ML tool;
+- data/analysis tool;
+- design/graphics;
+- engineering design;
+- collaboration/project tooling;
+- general software platform.
 
-The catalogue is broad by design. It gives deterministic structure without erasing the breadth expected from a long technical career.
+The catalogue is broad by design. It gives the technology history useful
+structure without collapsing 25 years of experience into a short flat list.

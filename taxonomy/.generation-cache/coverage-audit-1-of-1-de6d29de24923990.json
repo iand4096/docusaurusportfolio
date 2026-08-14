@@ -1,0 +1,250 @@
+{
+  "fingerprint": "de6d29de2492399017b4d9b5d3a264de692f4e0be64db9acdab7fee8b3d081ec",
+  "label": "coverage-audit-1-of-1",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "insomnia",
+        "label": "Insomnia",
+        "kind": "api-tool",
+        "aliases": []
+      },
+      {
+        "id": "mutual-tls",
+        "label": "Mutual TLS",
+        "kind": "protocol",
+        "aliases": [
+          "mTLS"
+        ]
+      },
+      {
+        "id": "scala",
+        "label": "Scala",
+        "kind": "programming-language",
+        "aliases": []
+      },
+      {
+        "id": "jquery",
+        "label": "jQuery",
+        "kind": "library",
+        "aliases": []
+      },
+      {
+        "id": "ajax",
+        "label": "AJAX",
+        "kind": "technical-technique",
+        "aliases": [
+          "Asynchronous JavaScript and XML"
+        ]
+      },
+      {
+        "id": "scss",
+        "label": "SCSS/Sass",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Sass"
+        ]
+      },
+      {
+        "id": "pathlib",
+        "label": "pathlib",
+        "kind": "library",
+        "aliases": []
+      },
+      {
+        "id": "pandas",
+        "label": "Pandas",
+        "kind": "library",
+        "aliases": []
+      },
+      {
+        "id": "excel",
+        "label": "Excel",
+        "kind": "data-analysis-tool",
+        "aliases": [
+          "Microsoft Excel"
+        ]
+      },
+      {
+        "id": "subprocess",
+        "label": "subprocess",
+        "kind": "library",
+        "aliases": []
+      },
+      {
+        "id": "ast",
+        "label": "Abstract Syntax Tree (AST)",
+        "kind": "technical-technique",
+        "aliases": [
+          "AST"
+        ]
+      },
+      {
+        "id": "visual-cpp",
+        "label": "Visual C++",
+        "kind": "developer-tool",
+        "aliases": [
+          "MSVC"
+        ]
+      },
+      {
+        "id": "stl",
+        "label": "STL",
+        "kind": "library",
+        "aliases": [
+          "Standard Template Library"
+        ]
+      },
+      {
+        "id": "assembly",
+        "label": "Assembly language",
+        "kind": "programming-language",
+        "aliases": [
+          "asm"
+        ]
+      },
+      {
+        "id": "kernel",
+        "label": "Kernel",
+        "kind": "technical-technique",
+        "aliases": []
+      },
+      {
+        "id": "device-driver",
+        "label": "Device driver",
+        "kind": "technical-technique",
+        "aliases": []
+      },
+      {
+        "id": "cad",
+        "label": "CAD",
+        "kind": "engineering-design-tool",
+        "aliases": [
+          "Computer-Aided Design"
+        ]
+      },
+      {
+        "id": "gis",
+        "label": "GIS",
+        "kind": "software-platform",
+        "aliases": [
+          "Geographic Information System"
+        ]
+      },
+      {
+        "id": "vr",
+        "label": "VR",
+        "kind": "software-platform",
+        "aliases": [
+          "Virtual Reality"
+        ]
+      },
+      {
+        "id": "grep",
+        "label": "grep",
+        "kind": "developer-tool",
+        "aliases": []
+      },
+      {
+        "id": "sed",
+        "label": "sed",
+        "kind": "developer-tool",
+        "aliases": []
+      },
+      {
+        "id": "find",
+        "label": "find",
+        "kind": "developer-tool",
+        "aliases": []
+      },
+      {
+        "id": "regex",
+        "label": "Regular expressions",
+        "kind": "technical-technique",
+        "aliases": [
+          "regex",
+          "regexp"
+        ]
+      },
+      {
+        "id": "windows",
+        "label": "Windows",
+        "kind": "operating-system-firmware",
+        "aliases": []
+      },
+      {
+        "id": "unix",
+        "label": "Unix",
+        "kind": "operating-system-firmware",
+        "aliases": []
+      },
+      {
+        "id": "typescript",
+        "label": "TypeScript",
+        "kind": "programming-language",
+        "aliases": []
+      },
+      {
+        "id": "npm",
+        "label": "npm",
+        "kind": "developer-tool",
+        "aliases": []
+      },
+      {
+        "id": "cli",
+        "label": "CLI",
+        "kind": "developer-tool",
+        "aliases": []
+      },
+      {
+        "id": "accessibility-check",
+        "label": "AccessibilityCheck",
+        "kind": "technical-technique",
+        "aliases": []
+      },
+      {
+        "id": "link-check",
+        "label": "LinkCheck",
+        "kind": "technical-technique",
+        "aliases": []
+      },
+      {
+        "id": "oauth",
+        "label": "OAuth",
+        "kind": "protocol",
+        "aliases": []
+      },
+      {
+        "id": "api-documentation",
+        "label": "API documentation",
+        "kind": "technical-technique",
+        "aliases": []
+      },
+      {
+        "id": "developer-portal",
+        "label": "Developer portal",
+        "kind": "developer-platform",
+        "aliases": []
+      },
+      {
+        "id": "sequence-diagrams",
+        "label": "Sequence diagrams",
+        "kind": "diagramming-visualisation",
+        "aliases": []
+      },
+      {
+        "id": "api-validation",
+        "label": "API validation",
+        "kind": "testing-debugging-tool",
+        "aliases": []
+      },
+      {
+        "id": "payment-integration",
+        "label": "Payment integration",
+        "kind": "payment-technology",
+        "aliases": []
+      }
+    ]
+  }
+}

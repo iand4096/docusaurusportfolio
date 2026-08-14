@@ -1,0 +1,170 @@
+{
+  "fingerprint": "95570d5f7fc43b669e7e979b7989ec7168038df69c3e46a52b600e61392e227f",
+  "label": "extract-tech-025-OpenAPIandAPITools",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "openapi",
+        "label": "OpenAPI",
+        "description": "A specification for describing REST APIs.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "Swagger 2.0",
+          "OpenAPI 2.0"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Maintained Swagger 2.0 / OpenAPI 2.0 specifications and designed reusable definitions using $ref, shared schemas, parameters, responses, and security definitions."
+          }
+        ]
+      },
+      {
+        "id": "postman",
+        "label": "Postman",
+        "description": "An API development and testing tool.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Created and maintained Postman collections and used Postman to execute authenticated API requests, validate examples, and troubleshoot issues."
+          }
+        ]
+      },
+      {
+        "id": "insomnia",
+        "label": "Insomnia",
+        "description": "An API client and design tool.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Created and maintained Insomnia collections and used Insomnia to execute authenticated API requests, validate examples, and troubleshoot issues."
+          }
+        ]
+      },
+      {
+        "id": "curl",
+        "label": "cURL",
+        "description": "A command-line tool for transferring data with URLs.",
+        "kind": "developer-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Used cURL to execute authenticated API requests, validate documented examples, and troubleshoot API request and response issues."
+          }
+        ]
+      },
+      {
+        "id": "javascript",
+        "label": "JavaScript",
+        "description": "A programming language commonly used for web development.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Modified JavaScript/Node.js plugins for Insomnia to support custom authentication and encryption/decryption workflows."
+          }
+        ]
+      },
+      {
+        "id": "node-js",
+        "label": "Node.js",
+        "description": "A JavaScript runtime environment.",
+        "kind": "runtime",
+        "parent": null,
+        "aliases": [
+          "Node.js"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Modified JavaScript/Node.js plugins for Insomnia, indicating use of the Node.js runtime."
+          }
+        ]
+      },
+      {
+        "id": "json",
+        "label": "JSON",
+        "description": "A lightweight data-interchange format.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Used JSON extensively for OpenAPI specifications, configuration, documentation metadata, and programmatic generation and parsing."
+          }
+        ]
+      },
+      {
+        "id": "yaml",
+        "label": "YAML",
+        "description": "A human-readable data serialization language.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Used YAML extensively for OpenAPI specifications, configuration, documentation metadata, and programmatic generation and parsing."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Developed Python utilities to call authenticated REST APIs, process API responses, and programmatically generate, parse and transform JSON and YAML."
+          }
+        ]
+      },
+      {
+        "id": "scala",
+        "label": "Scala",
+        "description": "A general-purpose programming language that runs on the JVM.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Developed Scala utilities to call authenticated REST APIs, process API responses, and programmatically generate, parse and transform JSON and YAML."
+          }
+        ]
+      },
+      {
+        "id": "rest",
+        "label": "REST",
+        "description": "An architectural style for designing networked applications.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [
+          "REST API"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Reviewed API contracts against implemented REST behaviour and called authenticated REST APIs."
+          }
+        ]
+      }
+    ]
+  }
+}

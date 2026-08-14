@@ -1,0 +1,393 @@
+{
+  "fingerprint": "11f8c14e929aa5eb4844e20deec1f2bf86586353da6c4e8b9218b0069abb2b4e",
+  "label": "consolidate-technologies-chunk-4-of-4",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "terms": {
+      "defect-tracking": {
+        "label": "Defect tracking",
+        "description": "The process of identifying, documenting, and managing defects.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "defect-tracking"
+        ]
+      },
+      "developer-experience-evaluation": {
+        "label": "Developer experience evaluation",
+        "description": "Assessing developer tools and workflows from a usability perspective.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "developer-experience-evaluation"
+        ]
+      },
+      "device-driver": {
+        "label": "Device driver",
+        "description": "Software that allows the operating system to communicate with hardware devices.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "device-driver"
+        ]
+      },
+      "diagram-generation": {
+        "label": "Diagram generation",
+        "description": "Automatically generating diagrams from documentation data.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "diagram-generation"
+        ]
+      },
+      "diagrams-as-code": {
+        "label": "Diagrams-as-code",
+        "description": "A technique for creating diagrams using textual definitions.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "diagrams-as-code"
+        ]
+      },
+      "encryption-decryption-integrations": {
+        "label": "Encryption/decryption integrations",
+        "description": "Technical integrations involving encryption and decryption, created to test real API and asynchronous processing behaviour.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "encryption-decryption-integrations",
+          "encryption-testing"
+        ]
+      },
+      "end-to-end-testing": {
+        "label": "End-to-end testing",
+        "description": "Testing complete workflows from start to finish to verify system behaviour.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "end-to-end-testing"
+        ]
+      },
+      "exponential-backoff": {
+        "label": "Exponential backoff",
+        "description": "A resilience pattern for retrying operations with increasing delays.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "exponential-backoff"
+        ]
+      },
+      "front-matter-processing": {
+        "label": "Front-matter processing",
+        "description": "Processing YAML or TOML front matter in Markdown files.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "front-matter-processing"
+        ]
+      },
+      "iframe": {
+        "label": "iframe",
+        "description": "An HTML element that embeds another document within the current page, used by Paysafe.js to host secure fields.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "iframe"
+        ]
+      },
+      "integration-testing": {
+        "label": "Integration testing",
+        "description": "Testing interactions between integrated components or systems.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "integration-testing"
+        ]
+      },
+      "intellij-plugin-development": {
+        "label": "IntelliJ plugin development",
+        "description": "The practice of creating plugins for IntelliJ-based IDEs.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "intellij-plugin-development"
+        ]
+      },
+      "kernel": {
+        "label": "Kernel",
+        "description": "The core component of an operating system that manages system resources.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "kernel"
+        ]
+      },
+      "link-check": {
+        "label": "LinkCheck",
+        "description": "A static check for broken local links and assets.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "link-check"
+        ]
+      },
+      "metadata-filtering": {
+        "label": "Metadata-based filtering",
+        "description": "Using metadata to filter search results and improve retrieval quality.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "metadata-filtering"
+        ]
+      },
+      "migration-scripts": {
+        "label": "Migration scripts",
+        "description": "Scripts used to migrate content from one system to another.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "migration-scripts"
+        ]
+      },
+      "output-troubleshooting": {
+        "label": "Output troubleshooting",
+        "description": "Diagnosing and resolving issues with generated documentation outputs.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "output-troubleshooting"
+        ]
+      },
+      "pdf-publishing": {
+        "label": "PDF publishing",
+        "description": "The process of generating PDF documents from source content.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "pdf-publishing"
+        ]
+      },
+      "post-build-automation": {
+        "label": "Post-build automation",
+        "description": "Automating tasks that run after the documentation build process.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "post-build-automation"
+        ]
+      },
+      "rag": {
+        "label": "RAG (Retrieval-Augmented Generation)",
+        "description": "A technique combining retrieval with generative AI for search and question answering.",
+        "kind": "technical-technique",
+        "aliases": [
+          "Retrieval-Augmented Generation"
+        ],
+        "source_ids": [
+          "rag",
+          "retrieval-augmented-generation"
+        ]
+      },
+      "regex": {
+        "label": "Regular expressions",
+        "description": "A sequence of characters that define a search pattern.",
+        "kind": "technical-technique",
+        "aliases": [
+          "regex",
+          "regexp"
+        ],
+        "source_ids": [
+          "regex"
+        ]
+      },
+      "release-testing": {
+        "label": "Release testing",
+        "description": "Testing performed to ensure a product is ready for release.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "release-testing"
+        ]
+      },
+      "sandbox-testing": {
+        "label": "Sandbox testing",
+        "description": "Testing in a sandbox environment that mimics production but with mocked behaviour and constraints.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "sandbox-testing"
+        ]
+      },
+      "sdk-documentation": {
+        "label": "SDK documentation",
+        "description": "The practice of documenting software development kits.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "sdk-documentation"
+        ]
+      },
+      "search-integration": {
+        "label": "Search integration",
+        "description": "Integrating search functionality into documentation sites.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "search-integration"
+        ]
+      },
+      "single-sourcing": {
+        "label": "Single-sourcing",
+        "description": "A documentation technique that uses a single source of content to generate multiple outputs or formats.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "single-sourcing"
+        ]
+      },
+      "smoke-testing": {
+        "label": "Smoke testing",
+        "description": "Preliminary testing to check whether the basic functionality works.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "smoke-testing"
+        ]
+      },
+      "snippets-and-variables": {
+        "label": "Snippets and variables",
+        "description": "Reusable content fragments and placeholders in documentation tools.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "snippets-and-variables"
+        ]
+      },
+      "spec-driven-development": {
+        "label": "Spec-driven development",
+        "description": "A development technique where specifications drive implementation.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "spec-driven-development"
+        ]
+      },
+      "spidering": {
+        "label": "Spidering",
+        "description": "Automated crawling of web links to map content relationships.",
+        "kind": "technical-technique",
+        "aliases": [
+          "web crawling"
+        ],
+        "source_ids": [
+          "spidering"
+        ]
+      },
+      "static-site-generator": {
+        "label": "Static Site Generator",
+        "description": "A tool that generates a static website from templates and content.",
+        "kind": "technical-technique",
+        "aliases": [
+          "SSG"
+        ],
+        "source_ids": [
+          "static-site-generator"
+        ]
+      },
+      "tables-of-contents": {
+        "label": "Tables of contents",
+        "description": "A hierarchical list of topics or sections in a document.",
+        "kind": "technical-technique",
+        "aliases": [
+          "TOC"
+        ],
+        "source_ids": [
+          "tables-of-contents"
+        ]
+      },
+      "targets-and-build-configurations": {
+        "label": "Targets and build configurations",
+        "description": "Settings in Flare that define how output is generated for different formats or audiences.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "targets-and-build-configurations"
+        ]
+      },
+      "test-automation": {
+        "label": "Test automation",
+        "description": "Using scripts and tools to automate repeated testing tasks.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "test-automation"
+        ]
+      },
+      "tokenisation": {
+        "label": "Tokenisation",
+        "description": "The process of replacing sensitive data with a non-sensitive token, used in the Paysafe.js integration to return a token to the merchant.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "tokenisation"
+        ]
+      },
+      "topic-based-authoring": {
+        "label": "Topic-based authoring",
+        "description": "A modular approach to writing documentation where content is organized into topics that can be reused across outputs.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "topic-based-authoring"
+        ]
+      },
+      "try-now-demo": {
+        "label": "Try Now demonstration",
+        "description": "An interactive inline demonstration that allows developers to explore the integration step by step.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "try-now-demo"
+        ]
+      },
+      "usability-testing": {
+        "label": "Usability testing",
+        "description": "Testing to evaluate how user-friendly a product is.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "usability-testing"
+        ]
+      },
+      "webhook-integrations": {
+        "label": "Webhook integrations",
+        "description": "Integrations that handle asynchronous callbacks via webhooks, used to test API and processing behaviour.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "webhook-integrations",
+          "webhook-testing",
+          "webhooks"
+        ]
+      },
+      "api-validation": {
+        "label": "API validation",
+        "description": "The process of testing and verifying API behavior.",
+        "kind": "testing-debugging-tool",
+        "aliases": [],
+        "source_ids": [
+          "api-validation"
+        ]
+      },
+      "git": {
+        "label": "Git",
+        "description": "A distributed version control system.",
+        "kind": "version-control",
+        "aliases": [],
+        "source_ids": [
+          "git"
+        ]
+      }
+    }
+  }
+}

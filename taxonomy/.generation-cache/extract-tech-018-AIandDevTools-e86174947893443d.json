@@ -1,0 +1,169 @@
+{
+  "fingerprint": "e86174947893443ddce0aafb1a25d71d9bed1ab3b25f2559ca809bf13c072765",
+  "label": "extract-tech-018-AIandDevTools",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for creating formatted text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document describes creating requirements in Markdown as part of a spec-driven development workflow."
+          }
+        ]
+      },
+      {
+        "id": "claude",
+        "label": "Claude",
+        "description": "An AI assistant developed by Anthropic, used for coding and documentation tasks.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document lists Claude among AI coding tools used for development, debugging, refactoring, and documentation-platform work."
+          }
+        ]
+      },
+      {
+        "id": "github-copilot",
+        "label": "GitHub Copilot",
+        "description": "An AI-powered code completion tool.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document lists GitHub Copilot among AI coding tools used for development, debugging, refactoring, and documentation-platform work."
+          }
+        ]
+      },
+      {
+        "id": "amp",
+        "label": "Amp",
+        "description": "An AI coding tool (likely referring to Amp, an AI pair programmer).",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document lists Amp among AI coding tools used for development, debugging, refactoring, and documentation-platform work."
+          }
+        ]
+      },
+      {
+        "id": "model-context-protocol",
+        "label": "Model Context Protocol",
+        "description": "A protocol for exposing tools and context to AI assistants.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "MCP"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document describes building experimental Model Context Protocol servers using FastMCP."
+          }
+        ]
+      },
+      {
+        "id": "fastmcp",
+        "label": "FastMCP",
+        "description": "A Python framework for building Model Context Protocol servers.",
+        "kind": "framework",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document explicitly mentions using FastMCP to build experimental MCP servers."
+          }
+        ]
+      },
+      {
+        "id": "retrieval-augmented-generation",
+        "label": "Retrieval-Augmented Generation",
+        "description": "A technique that combines retrieval of relevant documents with generative AI.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "RAG"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document describes practical understanding of RAG concepts, including using metadata and document lifecycle status to prevent deprecated API documentation from being recommended."
+          }
+        ]
+      },
+      {
+        "id": "intellij-idea",
+        "label": "IntelliJ IDEA",
+        "description": "An integrated development environment for Java and other languages.",
+        "kind": "ide-editor",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document states extensive experience working with IntelliJ IDEA."
+          }
+        ]
+      },
+      {
+        "id": "pycharm",
+        "label": "PyCharm",
+        "description": "An integrated development environment for Python.",
+        "kind": "ide-editor",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document states extensive experience working with PyCharm."
+          }
+        ]
+      },
+      {
+        "id": "vs-code",
+        "label": "VS Code",
+        "description": "A source-code editor developed by Microsoft.",
+        "kind": "ide-editor",
+        "parent": null,
+        "aliases": [
+          "Visual Studio Code"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document states extensive experience working with VS Code."
+          }
+        ]
+      },
+      {
+        "id": "intellij-plugin-development",
+        "label": "IntelliJ plugin development",
+        "description": "The practice of creating plugins for IntelliJ-based IDEs.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document mentions creating IntelliJ IDE plugins."
+          }
+        ]
+      }
+    ]
+  }
+}

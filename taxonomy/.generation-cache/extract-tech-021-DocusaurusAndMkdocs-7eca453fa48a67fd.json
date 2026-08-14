@@ -1,0 +1,269 @@
+{
+  "fingerprint": "7eca453fa48a67fdb77efde7205209846a03e9ee3d728cc9827b6701046033e2",
+  "label": "extract-tech-021-DocusaurusAndMkdocs",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A static site generator for documentation websites.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states the portfolio was built using Docusaurus."
+          }
+        ]
+      },
+      {
+        "id": "mdx",
+        "label": "MDX",
+        "description": "A format that combines Markdown and JSX for rich content.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document lists MDX as a technology used in building the portfolio."
+          }
+        ]
+      },
+      {
+        "id": "react",
+        "label": "React",
+        "description": "A JavaScript library for building user interfaces.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document lists React as a technology used in building the portfolio."
+          }
+        ]
+      },
+      {
+        "id": "jsx",
+        "label": "JSX",
+        "description": "A syntax extension for JavaScript used with React.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document lists JSX as a technology used in building the portfolio."
+          }
+        ]
+      },
+      {
+        "id": "javascript",
+        "label": "JavaScript",
+        "description": "A programming language for web development.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document lists JavaScript as a technology used in building the portfolio and for search integration."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting plain text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions creating components driven by Markdown content and generating cards from Markdown front matter."
+          }
+        ]
+      },
+      {
+        "id": "github-actions",
+        "label": "GitHub Actions",
+        "description": "A CI/CD and automation platform for GitHub repositories.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states GitHub Actions was used for automated builds and deployment."
+          }
+        ]
+      },
+      {
+        "id": "github-pages",
+        "label": "GitHub Pages",
+        "description": "A static site hosting service from GitHub.",
+        "kind": "cloud-hosting-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states deployment was to GitHub Pages."
+          }
+        ]
+      },
+      {
+        "id": "ltex",
+        "label": "LTeX+",
+        "description": "A language tool for spelling and grammar checking in VS Code.",
+        "kind": "documentation-qa-tool",
+        "parent": null,
+        "aliases": [
+          "LTeX+"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states LTeX+ was used in VS Code for spelling and grammar checking."
+          }
+        ]
+      },
+      {
+        "id": "vs-code",
+        "label": "VS Code",
+        "description": "A source-code editor from Microsoft.",
+        "kind": "ide-editor",
+        "parent": null,
+        "aliases": [
+          "Visual Studio Code"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions using LTeX+ in VS Code."
+          }
+        ]
+      },
+      {
+        "id": "mkdocs",
+        "label": "MkDocs",
+        "description": "A static site generator for project documentation.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states MkDocs was used to recreate functionality from a TWiki site."
+          }
+        ]
+      },
+      {
+        "id": "mkdocs-plugins",
+        "label": "MkDocs plugins",
+        "description": "Extensions for MkDocs to add features.",
+        "kind": "library",
+        "parent": "mkdocs",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states multiple plugins were integrated to support advanced features."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states plugin Python code was modified."
+          }
+        ]
+      },
+      {
+        "id": "twiki",
+        "label": "TWiki",
+        "description": "A wiki platform for enterprise collaboration.",
+        "kind": "cms-wiki",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions a large internal TWiki documentation site that was recreated."
+          }
+        ]
+      },
+      {
+        "id": "flexsearch",
+        "label": "FlexSearch",
+        "description": "A JavaScript library for full-text search.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions using FlexSearch for client-side search."
+          }
+        ]
+      },
+      {
+        "id": "rag",
+        "label": "RAG",
+        "description": "Retrieval-augmented generation, an AI technique for information retrieval.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [
+          "Retrieval-Augmented Generation"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions working with RAG-based retrieval."
+          }
+        ]
+      },
+      {
+        "id": "webmaps",
+        "label": "Webmaps",
+        "description": "Generated webmaps for search indexing.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions generating webmaps and metadata for search."
+          }
+        ]
+      },
+      {
+        "id": "static-site-generator",
+        "label": "Static site generator",
+        "description": "A tool that generates a static website from templates and content.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [
+          "SSG"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document discusses selecting and extending static site generators, and custom static site generators."
+          }
+        ]
+      }
+    ]
+  }
+}

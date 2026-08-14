@@ -1,0 +1,389 @@
+{
+  "fingerprint": "06171f02a70c6a86298385116749e1cc6bb6bfa22840e86139e16bf6ad4b3efb",
+  "label": "extract-tech-028-index",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A documentation site generator used to build and publish the portfolio site.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page imports '@docusaurus/Link' and is part of a Docusaurus site, demonstrating use of Docusaurus."
+          }
+        ]
+      },
+      {
+        "id": "docs-as-code",
+        "label": "Docs-as-code",
+        "description": "A methodology for treating documentation like code, using version control and CI/CD.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes experience with docs-as-code platforms and lists it as a technical capability."
+          }
+        ]
+      },
+      {
+        "id": "ci-cd",
+        "label": "CI/CD",
+        "description": "Continuous integration and continuous delivery practices used in documentation workflows.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions experience with CI/CD in the context of documentation engineering."
+          }
+        ]
+      },
+      {
+        "id": "openapi",
+        "label": "OpenAPI",
+        "description": "A specification for describing REST APIs.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists OpenAPI reference documentation as a technical capability."
+          }
+        ]
+      },
+      {
+        "id": "rest-api",
+        "label": "REST API",
+        "description": "An architectural style for designing networked applications.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions REST APIs in the context of MDES for Merchants and API documentation."
+          }
+        ]
+      },
+      {
+        "id": "oauth",
+        "label": "OAuth",
+        "description": "An open standard for access delegation, commonly used for API authentication.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists OAuth as a tag for the MDES for Merchants case study."
+          }
+        ]
+      },
+      {
+        "id": "encryption",
+        "label": "Encryption",
+        "description": "The process of encoding information to protect it from unauthorized access.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists encryption as a tag for the MDES for Merchants case study."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions Python as a technology used for test integrations and validation."
+          }
+        ]
+      },
+      {
+        "id": "flask",
+        "label": "Flask",
+        "description": "A micro web framework for Python.",
+        "kind": "framework",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions Flask as part of the Python/Flask stack for test integrations."
+          }
+        ]
+      },
+      {
+        "id": "scala",
+        "label": "Scala",
+        "description": "A general-purpose programming language that runs on the JVM.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists Scala as a technology used for test integrations and validation."
+          }
+        ]
+      },
+      {
+        "id": "java",
+        "label": "Java",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists Java as a technology used for test integrations and validation."
+          }
+        ]
+      },
+      {
+        "id": "javascript",
+        "label": "JavaScript",
+        "description": "A programming language commonly used for web development.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions a JavaScript SDK for Paysafe.js, indicating use of JavaScript."
+          }
+        ]
+      },
+      {
+        "id": "sdk",
+        "label": "SDK",
+        "description": "A software development kit providing tools and libraries for building applications.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists SDK documentation as a technical capability and mentions a JavaScript SDK."
+          }
+        ]
+      },
+      {
+        "id": "api-documentation",
+        "label": "API documentation",
+        "description": "The practice of creating documentation for APIs.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists API documentation as a technical capability and describes API documentation work."
+          }
+        ]
+      },
+      {
+        "id": "developer-portal",
+        "label": "Developer portal",
+        "description": "A platform for developers to access documentation, APIs, and tools.",
+        "kind": "developer-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes leading the design of a developer portal and lists it as a capability."
+          }
+        ]
+      },
+      {
+        "id": "codetreedocs",
+        "label": "Codetreedocs",
+        "description": "A custom docs-as-code platform and developer portal.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions leading the design and evolution of Codetreedocs."
+          }
+        ]
+      },
+      {
+        "id": "mkdocs",
+        "label": "MkDocs",
+        "description": "A static site generator for project documentation.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists MkDocs as a technology the author is experienced with."
+          }
+        ]
+      },
+      {
+        "id": "madcap-flare",
+        "label": "MadCap Flare",
+        "description": "A help authoring tool for creating documentation.",
+        "kind": "authoring-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists MadCap Flare as a tag for the AMX Composer case study."
+          }
+        ]
+      },
+      {
+        "id": "single-sourcing",
+        "label": "Single sourcing",
+        "description": "A documentation technique that reuses content from a single source.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists single sourcing as a tag for the AMX Composer case study."
+          }
+        ]
+      },
+      {
+        "id": "sequence-diagrams",
+        "label": "Sequence diagrams",
+        "description": "A type of UML diagram showing interactions between objects in time order.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions sequence diagrams as part of the Masterpass case study."
+          }
+        ]
+      },
+      {
+        "id": "api-validation",
+        "label": "API validation",
+        "description": "The process of testing and verifying API behavior.",
+        "kind": "testing-debugging-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions API-reference validation as part of the Masterpass case study."
+          }
+        ]
+      },
+      {
+        "id": "payment-integration",
+        "label": "Payment integration",
+        "description": "The process of integrating payment processing into applications.",
+        "kind": "payment-technology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes payment integrations in the MDES and Paysafe.js case studies."
+          }
+        ]
+      },
+      {
+        "id": "tokenisation",
+        "label": "Tokenisation",
+        "description": "The process of replacing sensitive data with unique identification symbols.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions tokenising card-on-file payment credentials in the MDES case study."
+          }
+        ]
+      },
+      {
+        "id": "mastercard-digital-enablement-api",
+        "label": "Mastercard Digital Enablement API",
+        "description": "An API for tokenising payment credentials.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [
+          "MDES"
+        ],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes the MDES for Merchants case study using this API."
+          }
+        ]
+      },
+      {
+        "id": "paysafe-js",
+        "label": "Paysafe.js",
+        "description": "A JavaScript SDK for browser-based payment integration.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes the Paysafe.js case study."
+          }
+        ]
+      },
+      {
+        "id": "amx-composer",
+        "label": "AMX Composer",
+        "description": "A web-based digital-signage content-management application.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes the AMX Composer case study."
+          }
+        ]
+      },
+      {
+        "id": "masterpass",
+        "label": "Masterpass",
+        "description": "A digital payment service.",
+        "kind": "payment-technology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes the Masterpass merchant integrations case study."
+          }
+        ]
+      }
+    ]
+  }
+}

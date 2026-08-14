@@ -1,0 +1,107 @@
+{
+  "fingerprint": "13b6f4d8c7c7b729e5380ee9493cbcce9a69ac6f011ce801790bb6507a298465",
+  "label": "extract-tech-013-DocumentationLeadership",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "codetreedocs",
+        "label": "Codetreedocs",
+        "description": "A large-scale internal docs-as-code platform and developer portal.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document describes leading the design and evolution of Codetreedocs, a large-scale internal docs-as-code platform and developer portal."
+          }
+        ]
+      },
+      {
+        "id": "docs-as-code",
+        "label": "Docs-as-code",
+        "description": "A methodology for treating documentation as code, using version control and CI/CD workflows.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions docs-as-code adoption and designing Git- and CI-based documentation workflows."
+          }
+        ]
+      },
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions designing Git-based documentation workflows."
+          }
+        ]
+      },
+      {
+        "id": "ci-cd",
+        "label": "CI/CD",
+        "description": "Continuous integration and continuous delivery/deployment practices and tools.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions designing CI-based documentation workflows and using automation."
+          }
+        ]
+      },
+      {
+        "id": "docker",
+        "label": "Docker",
+        "description": "A containerisation platform.",
+        "kind": "container-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions moving documentation infrastructure onto Docker-based hosting."
+          }
+        ]
+      },
+      {
+        "id": "ide",
+        "label": "IDE",
+        "description": "Integrated development environment used for authoring and live-preview tooling.",
+        "kind": "ide-editor",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions delivering IDE-based documentation authoring and live-preview tooling."
+          }
+        ]
+      },
+      {
+        "id": "ai-assisted-workflows",
+        "label": "AI-assisted workflows",
+        "description": "Use of artificial intelligence to assist in documentation production and maintenance.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions introducing automation and AI-assisted workflows to make documentation production and maintenance more scalable."
+          }
+        ]
+      }
+    ]
+  }
+}

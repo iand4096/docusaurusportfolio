@@ -1,0 +1,125 @@
+{
+  "fingerprint": "487dd0e7dc459e1b64bba6b7c9b2cd3ae9d40705c46af6e867b116524ffe7256",
+  "label": "extract-tech-001-AMXInspiredSignageComposer",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "amx-composer",
+        "label": "AMX Composer",
+        "description": "A content-management application for the AMX Digital Signage platform.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [
+          "Composer 5"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document is a case study about writing user documentation for AMX Composer 5, a content-management application for digital signage."
+          }
+        ]
+      },
+      {
+        "id": "madcap-flare",
+        "label": "MadCap Flare",
+        "description": "A single-source documentation authoring tool used to create HTML help and PDF outputs.",
+        "kind": "authoring-tool",
+        "parent": null,
+        "aliases": [
+          "Flare"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document states that a single-source MadCap Flare project was created using reusable content, conditional text, separate build targets, and separate source TOCs."
+          }
+        ]
+      },
+      {
+        "id": "html",
+        "label": "HTML",
+        "description": "HyperText Markup Language, used for the online help output.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document mentions producing context-sensitive HTML help bundles and using cross-references rather than HTML-only hyperlinks."
+          }
+        ]
+      },
+      {
+        "id": "pdf",
+        "label": "PDF",
+        "description": "Portable Document Format, used for the printable manual output.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document describes producing a PDF administrator manual as a secondary output."
+          }
+        ]
+      },
+      {
+        "id": "tcp-ip",
+        "label": "TCP/IP",
+        "description": "Transmission Control Protocol/Internet Protocol, the networking protocol suite.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document states that the work required a practical understanding of TCP/IP networking."
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "label": "Mermaid",
+        "description": "A diagramming and charting tool that uses text-based definitions.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document includes a Mermaid flowchart diagram showing the content flow."
+          }
+        ]
+      },
+      {
+        "id": "vale",
+        "label": "Vale",
+        "description": "A command-line linter for prose, used for automated proofreading.",
+        "kind": "documentation-qa-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document mentions Vale as a modern automated proofreading tool that could be used."
+          }
+        ]
+      },
+      {
+        "id": "languagetool",
+        "label": "LanguageTool",
+        "description": "An open-source proofreading tool for grammar and style.",
+        "kind": "documentation-qa-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document mentions LanguageTool as a modern automated proofreading tool that could be used."
+          }
+        ]
+      }
+    ]
+  }
+}

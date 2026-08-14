@@ -1,0 +1,129 @@
+{
+  "fingerprint": "581ed950df6b5df8eb9195b6bb1315cd9d6c2e5bdce95718edd812d245dd5121",
+  "label": "consolidate-content_types-chunk-1-of-1",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "terms": {
+      "api-reference": {
+        "label": "API Reference",
+        "description": "Reference documentation describing the endpoints, parameters, authentication, and responses of an API.",
+        "aliases": [],
+        "source_ids": [
+          "api-reference"
+        ]
+      },
+      "architecture-documentation": {
+        "label": "Architecture Documentation",
+        "description": "Documentation that describes the architecture of a system, including diagrams and design decisions.",
+        "aliases": [],
+        "source_ids": [
+          "architecture-documentation"
+        ]
+      },
+      "case-study": {
+        "label": "Case Study",
+        "description": "A narrative account of a documentation project, including challenges, approach, deliverables, and outcomes.",
+        "aliases": [],
+        "source_ids": [
+          "case-study"
+        ]
+      },
+      "conceptual-guide": {
+        "label": "Conceptual Guide",
+        "description": "Documentation that explains concepts, architecture, and background information to help readers understand a product or technology.",
+        "aliases": [],
+        "source_ids": [
+          "conceptual-guide"
+        ]
+      },
+      "developer-guide": {
+        "label": "Developer Guide",
+        "description": "Documentation aimed at developers, providing conceptual and procedural information for building with a product or API.",
+        "aliases": [],
+        "source_ids": [
+          "developer-guide"
+        ]
+      },
+      "governance-record": {
+        "label": "Governance Record",
+        "description": "Documentation that records decisions, actions, and attendees for governance processes.",
+        "aliases": [],
+        "source_ids": [
+          "governance-record"
+        ]
+      },
+      "integration-guide": {
+        "label": "Integration Guide",
+        "description": "Documentation that explains how to integrate a product or service with other systems, often including workflows and code examples.",
+        "aliases": [],
+        "source_ids": [
+          "integration-guide"
+        ]
+      },
+      "portfolio-page": {
+        "label": "Portfolio Page",
+        "description": "A page in a portfolio that presents the author's work, skills, or tools.",
+        "aliases": [],
+        "source_ids": [
+          "portfolio-page"
+        ]
+      },
+      "qa-report": {
+        "label": "QA Report",
+        "description": "A report that presents the results of quality assurance checks on documentation.",
+        "aliases": [],
+        "source_ids": [
+          "qa-report"
+        ]
+      },
+      "release-notes": {
+        "label": "Release Notes",
+        "description": "Documentation that describes the changes, new features, and fixes in a software release.",
+        "aliases": [],
+        "source_ids": [
+          "release-notes"
+        ]
+      },
+      "sdk-documentation": {
+        "label": "SDK Documentation",
+        "description": "Documentation that explains how to use a software development kit, including installation, configuration, and usage.",
+        "aliases": [],
+        "source_ids": [
+          "sdk-documentation"
+        ]
+      },
+      "skill-page": {
+        "label": "Skill Page",
+        "description": "A page that describes a specific skill or capability.",
+        "aliases": [],
+        "source_ids": [
+          "skill-page"
+        ]
+      },
+      "tool-page": {
+        "label": "Tool Page",
+        "description": "A page that describes a specific tool or technology used in documentation work.",
+        "aliases": [],
+        "source_ids": [
+          "tool-page"
+        ]
+      },
+      "tutorial": {
+        "label": "Tutorial",
+        "description": "Step-by-step instructional content that guides users through a task or process.",
+        "aliases": [],
+        "source_ids": [
+          "tutorial"
+        ]
+      },
+      "user-guide": {
+        "label": "User Guide",
+        "description": "Documentation that provides instructions for end users on how to use a product or system.",
+        "aliases": [],
+        "source_ids": [
+          "user-guide"
+        ]
+      }
+    }
+  }
+}

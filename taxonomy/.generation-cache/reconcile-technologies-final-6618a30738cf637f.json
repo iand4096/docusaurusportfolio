@@ -1,0 +1,2051 @@
+{
+  "fingerprint": "6618a30738cf637f52906867492ee56871da051b024265d1a770d57c5748f2a7",
+  "label": "reconcile-technologies-final",
+  "model": "deepseek-v4-pro",
+  "result": {
+    "terms": {
+      "agentic-ai-tools": {
+        "label": "Agentic AI tools",
+        "description": "AI tools that can autonomously perform tasks.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "agentic-ai-tools"
+        ]
+      },
+      "ai-assisted-authoring": {
+        "label": "AI-assisted authoring",
+        "description": "Using AI to create initial documentation structures and skeleton content from source material.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-authoring"
+        ]
+      },
+      "ai-assisted-development-tools": {
+        "label": "AI-assisted development tools",
+        "description": "Tools that use artificial intelligence to assist with software development tasks.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-development-tools"
+        ]
+      },
+      "ai-assisted-documentation": {
+        "label": "AI-assisted documentation workflows",
+        "description": "Using AI to assist in documentation creation and maintenance.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-documentation"
+        ]
+      },
+      "ai-assisted-workflows": {
+        "label": "AI-assisted workflows",
+        "description": "Use of artificial intelligence to assist in documentation production and maintenance.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-workflows"
+        ]
+      },
+      "ai-coding-tools": {
+        "label": "AI coding tools",
+        "description": "AI tools used to generate code, often in spec-driven development workflows.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-coding-tools"
+        ]
+      },
+      "amp": {
+        "label": "Amp",
+        "description": "An AI coding tool (likely referring to Amp, an AI pair programmer).",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "amp"
+        ]
+      },
+      "claude": {
+        "label": "Claude",
+        "description": "An AI assistant developed by Anthropic, used for coding and documentation tasks.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "claude"
+        ]
+      },
+      "deepseek-ai": {
+        "label": "DeepSeek AI",
+        "description": "An AI model used for editorial review in the QA script.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "deepseek-ai"
+        ]
+      },
+      "deepseek-api": {
+        "label": "DeepSeek API",
+        "description": "A REST API for AI-powered quality checks on documentation.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "deepseek-api"
+        ]
+      },
+      "github-copilot": {
+        "label": "GitHub Copilot",
+        "description": "An AI-powered code completion tool.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "github-copilot"
+        ]
+      },
+      "llm-assisted-documentation": {
+        "label": "LLM-assisted documentation",
+        "description": "Using large language models for grammar checking, analysis, diagram generation, content transformation, and code generation.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "llm-assisted-documentation"
+        ]
+      },
+      "whisper": {
+        "label": "Whisper",
+        "description": "A speech-to-text model by OpenAI, used locally for privacy.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "whisper"
+        ]
+      },
+      "curl": {
+        "label": "cURL",
+        "description": "A command-line tool for transferring data with URLs, used to test APIs and integrations.",
+        "kind": "api-tool",
+        "aliases": [],
+        "source_ids": [
+          "curl"
+        ]
+      },
+      "jira-rest-api": {
+        "label": "Jira REST API",
+        "description": "The REST API for Atlassian Jira, used to interact with Jira issues and projects programmatically.",
+        "kind": "api-tool",
+        "aliases": [
+          "Jira API"
+        ],
+        "source_ids": [
+          "jira-rest-api"
+        ]
+      },
+      "mastercard-digital-enablement-api": {
+        "label": "Mastercard Digital Enablement API",
+        "description": "An API providing access to MDES for card tokenisation.",
+        "kind": "api-tool",
+        "aliases": [
+          "MDES",
+          "MDES API"
+        ],
+        "source_ids": [
+          "mastercard-digital-enablement-api"
+        ]
+      },
+      "postman": {
+        "label": "Postman",
+        "description": "An API testing and development tool.",
+        "kind": "api-tool",
+        "aliases": [],
+        "source_ids": [
+          "postman"
+        ]
+      },
+      "swagger": {
+        "label": "Swagger",
+        "description": "A suite of tools for implementing the OpenAPI specification.",
+        "kind": "api-tool",
+        "aliases": [
+          "OpenAPI 2.0",
+          "Swagger",
+          "Swagger 2.0"
+        ],
+        "source_ids": [
+          "openapi",
+          "swagger"
+        ]
+      },
+      "monorepo": {
+        "label": "Monorepo",
+        "description": "A repository strategy that stores multiple projects in a single repository.",
+        "kind": "architecture-style",
+        "aliases": [],
+        "source_ids": [
+          "monorepo"
+        ]
+      },
+      "rest": {
+        "label": "REST",
+        "description": "An architectural style for distributed systems.",
+        "kind": "architecture-style",
+        "aliases": [
+          "Representational State Transfer",
+          "REST API",
+          "RESTful"
+        ],
+        "source_ids": [
+          "rest",
+          "rest-api",
+          "rest-apis"
+        ]
+      },
+      "madcap-flare": {
+        "label": "MadCap Flare",
+        "description": "A single-source documentation authoring tool used to create HTML help and PDF outputs.",
+        "kind": "authoring-tool",
+        "aliases": [
+          "Flare"
+        ],
+        "source_ids": [
+          "madcap-flare"
+        ]
+      },
+      "ci-cd": {
+        "label": "CI/CD",
+        "description": "Continuous integration and continuous delivery/deployment practices and tools.",
+        "kind": "ci-cd-automation",
+        "aliases": [],
+        "source_ids": [
+          "ci-cd"
+        ]
+      },
+      "github-actions": {
+        "label": "GitHub Actions",
+        "description": "A CI/CD platform used to automate QA and deployment workflows.",
+        "kind": "ci-cd-automation",
+        "aliases": [],
+        "source_ids": [
+          "github-actions"
+        ]
+      },
+      "jenkins": {
+        "label": "Jenkins",
+        "description": "An open-source automation server for CI/CD.",
+        "kind": "ci-cd-automation",
+        "aliases": [],
+        "source_ids": [
+          "jenkins"
+        ]
+      },
+      "cloud-hosted-test-environments": {
+        "label": "Cloud-hosted test environments",
+        "description": "Cloud-based environments used to overcome network restrictions and validate externally accessible integrations.",
+        "kind": "cloud-hosting-platform",
+        "aliases": [],
+        "source_ids": [
+          "cloud-hosted-test-environments"
+        ]
+      },
+      "github-pages": {
+        "label": "GitHub Pages",
+        "description": "A hosting service for static sites, used to publish the portfolio.",
+        "kind": "cloud-hosting-platform",
+        "aliases": [],
+        "source_ids": [
+          "github-pages"
+        ]
+      },
+      "pythonanywhere": {
+        "label": "PythonAnywhere",
+        "description": "A cloud hosting platform for Python applications.",
+        "kind": "cloud-hosting-platform",
+        "aliases": [],
+        "source_ids": [
+          "pythonanywhere"
+        ]
+      },
+      "brightspot": {
+        "label": "Brightspot",
+        "description": "A content management system (CMS) used for marketing-focused content, not designed for structured technical documentation.",
+        "kind": "cms-wiki",
+        "aliases": [],
+        "source_ids": [
+          "brightspot"
+        ]
+      },
+      "confluence": {
+        "label": "Confluence",
+        "description": "A collaboration and wiki platform by Atlassian used for team documentation and knowledge management.",
+        "kind": "cms-wiki",
+        "aliases": [],
+        "source_ids": [
+          "confluence"
+        ]
+      },
+      "twiki": {
+        "label": "TWiki",
+        "description": "A web-based collaboration platform and wiki.",
+        "kind": "cms-wiki",
+        "aliases": [],
+        "source_ids": [
+          "twiki"
+        ]
+      },
+      "wiki": {
+        "label": "Wiki",
+        "description": "A collaborative content management system.",
+        "kind": "cms-wiki",
+        "aliases": [],
+        "source_ids": [
+          "wiki"
+        ]
+      },
+      "hypothesis": {
+        "label": "Hypothes.is",
+        "description": "An open-source annotation tool that allows users to annotate web pages.",
+        "kind": "collaboration-project-tool",
+        "aliases": [
+          "Hypothesis"
+        ],
+        "source_ids": [
+          "hypothesis"
+        ]
+      },
+      "jira": {
+        "label": "Jira",
+        "description": "A project tracking and issue management tool.",
+        "kind": "collaboration-project-tool",
+        "aliases": [],
+        "source_ids": [
+          "jira"
+        ]
+      },
+      "docker": {
+        "label": "Docker",
+        "description": "A platform for developing, shipping, and running applications in containers.",
+        "kind": "container-platform",
+        "aliases": [],
+        "source_ids": [
+          "docker"
+        ]
+      },
+      "kubernetes": {
+        "label": "Kubernetes",
+        "description": "An open-source container orchestration platform.",
+        "kind": "container-platform",
+        "aliases": [],
+        "source_ids": [
+          "kubernetes"
+        ]
+      },
+      "analytics": {
+        "label": "Analytics",
+        "description": "Tools and techniques for measuring and analysing user behaviour.",
+        "kind": "data-analysis-tool",
+        "aliases": [],
+        "source_ids": [
+          "analytics"
+        ]
+      },
+      "excel": {
+        "label": "Excel",
+        "description": "A spreadsheet application by Microsoft, used for data analysis and reporting.",
+        "kind": "data-analysis-tool",
+        "aliases": [
+          "Microsoft Excel"
+        ],
+        "source_ids": [
+          "excel"
+        ]
+      },
+      "site-analytics": {
+        "label": "Site analytics",
+        "description": "Using analytics data to inform documentation decisions.",
+        "kind": "data-analysis-tool",
+        "aliases": [],
+        "source_ids": [
+          "site-analytics"
+        ]
+      },
+      "json": {
+        "label": "JSON",
+        "description": "A lightweight data-interchange format.",
+        "kind": "data-format",
+        "aliases": [
+          "JavaScript Object Notation"
+        ],
+        "source_ids": [
+          "json"
+        ]
+      },
+      "metadata": {
+        "label": "Metadata",
+        "description": "Data about data, used for filtering and search in documentation systems.",
+        "kind": "data-format",
+        "aliases": [],
+        "source_ids": [
+          "metadata"
+        ]
+      },
+      "pdf": {
+        "label": "PDF",
+        "description": "Portable Document Format, used for the printable manual output.",
+        "kind": "data-format",
+        "aliases": [],
+        "source_ids": [
+          "pdf"
+        ]
+      },
+      "svg": {
+        "label": "SVG",
+        "description": "Scalable Vector Graphics, an XML-based vector image format.",
+        "kind": "data-format",
+        "aliases": [
+          "Scalable Vector Graphics"
+        ],
+        "source_ids": [
+          "svg"
+        ]
+      },
+      "webmaps": {
+        "label": "Webmaps",
+        "description": "Generated webmaps for search indexing.",
+        "kind": "data-format",
+        "aliases": [],
+        "source_ids": [
+          "webmaps"
+        ]
+      },
+      "yaml": {
+        "label": "YAML",
+        "description": "A human-readable data serialization language.",
+        "kind": "data-format",
+        "aliases": [
+          "YAML Ain't Markup Language"
+        ],
+        "source_ids": [
+          "yaml"
+        ]
+      },
+      "adobe-illustrator": {
+        "label": "Adobe Illustrator",
+        "description": "A vector graphics editor used for creating and editing illustrations and diagrams.",
+        "kind": "design-graphics-tool",
+        "aliases": [
+          "Illustrator"
+        ],
+        "source_ids": [
+          "adobe-illustrator"
+        ]
+      },
+      "inkscape": {
+        "label": "Inkscape",
+        "description": "An open-source vector graphics editor.",
+        "kind": "design-graphics-tool",
+        "aliases": [],
+        "source_ids": [
+          "inkscape"
+        ]
+      },
+      "codepen": {
+        "label": "CodePen",
+        "description": "An online code editor and community for front-end development, used to create and share working examples.",
+        "kind": "developer-platform",
+        "aliases": [],
+        "source_ids": [
+          "codepen"
+        ]
+      },
+      "developer-portal": {
+        "label": "Developer portal",
+        "description": "A platform for developers to access documentation, APIs, and tools.",
+        "kind": "developer-platform",
+        "aliases": [],
+        "source_ids": [
+          "developer-portal"
+        ]
+      },
+      "github": {
+        "label": "GitHub",
+        "description": "A web-based platform for hosting Git repositories and collaborating on software development.",
+        "kind": "developer-platform",
+        "aliases": [],
+        "source_ids": [
+          "github"
+        ]
+      },
+      "mastercard-developers": {
+        "label": "Mastercard Developers",
+        "description": "A developer platform for Mastercard APIs and documentation.",
+        "kind": "developer-platform",
+        "aliases": [],
+        "source_ids": [
+          "mastercard-developers"
+        ]
+      },
+      "cli": {
+        "label": "CLI",
+        "description": "A command-line interface for running the QA script.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "cli"
+        ]
+      },
+      "find": {
+        "label": "find",
+        "description": "A command-line utility for searching files in a directory hierarchy.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "find"
+        ]
+      },
+      "grep": {
+        "label": "grep",
+        "description": "A command-line utility for searching text patterns.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "grep"
+        ]
+      },
+      "ide-plugin": {
+        "label": "IDE plugin",
+        "description": "A plugin for an integrated development environment providing live preview and migration tools.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "ide-plugin"
+        ]
+      },
+      "npm": {
+        "label": "npm",
+        "description": "A package manager for JavaScript and Node.js.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "npm"
+        ]
+      },
+      "sed": {
+        "label": "sed",
+        "description": "A stream editor for filtering and transforming text.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "sed"
+        ]
+      },
+      "visual-cpp": {
+        "label": "Visual C++",
+        "description": "Microsoft's C++ compiler and development environment.",
+        "kind": "developer-tool",
+        "aliases": [
+          "MSVC"
+        ],
+        "source_ids": [
+          "visual-cpp"
+        ]
+      },
+      "graphviz": {
+        "label": "Graphviz",
+        "description": "A graph visualization tool used for generating diagrams.",
+        "kind": "diagramming-visualisation",
+        "aliases": [
+          "DOT",
+          "Graphviz"
+        ],
+        "source_ids": [
+          "graphviz",
+          "graphviz-dot"
+        ]
+      },
+      "mermaid": {
+        "label": "Mermaid",
+        "description": "A diagramming and charting tool that uses text-based definitions.",
+        "kind": "diagramming-visualisation",
+        "aliases": [],
+        "source_ids": [
+          "mermaid"
+        ]
+      },
+      "microsoft-visio": {
+        "label": "Microsoft Visio",
+        "description": "A diagramming and vector graphics application for creating professional diagrams.",
+        "kind": "diagramming-visualisation",
+        "aliases": [
+          "Visio"
+        ],
+        "source_ids": [
+          "microsoft-visio"
+        ]
+      },
+      "plantuml": {
+        "label": "PlantUML",
+        "description": "A diagramming tool that uses a simple text language to create UML diagrams, including sequence diagrams.",
+        "kind": "diagramming-visualisation",
+        "aliases": [],
+        "source_ids": [
+          "plantuml"
+        ]
+      },
+      "sequence-diagrams": {
+        "label": "Sequence diagrams",
+        "description": "A type of UML diagram showing interactions between objects in time order.",
+        "kind": "diagramming-visualisation",
+        "aliases": [],
+        "source_ids": [
+          "sequence-diagrams"
+        ]
+      },
+      "api-reference": {
+        "label": "API reference",
+        "description": "Documentation that describes the endpoints, parameters, and usage of an API, delivered as part of the guide.",
+        "kind": "documentation-platform",
+        "aliases": [],
+        "source_ids": [
+          "api-reference"
+        ]
+      },
+      "docusaurus": {
+        "label": "Docusaurus",
+        "description": "A documentation site generator used to build and publish the portfolio.",
+        "kind": "documentation-platform",
+        "aliases": [],
+        "source_ids": [
+          "docusaurus"
+        ]
+      },
+      "mkdocs": {
+        "label": "MkDocs",
+        "description": "A static site generator for project documentation written in Python.",
+        "kind": "documentation-platform",
+        "aliases": [],
+        "source_ids": [
+          "mkdocs"
+        ]
+      },
+      "sphinx": {
+        "label": "Sphinx",
+        "description": "A documentation generator for Python projects.",
+        "kind": "documentation-platform",
+        "aliases": [],
+        "source_ids": [
+          "sphinx"
+        ]
+      },
+      "grammar-checking": {
+        "label": "Automated grammar checking",
+        "description": "Using automated tools to check grammar and spelling in documentation.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "grammar-checking"
+        ]
+      },
+      "languagetool": {
+        "label": "LanguageTool",
+        "description": "An open-source proofreading tool for grammar and style.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "languagetool"
+        ]
+      },
+      "link-validation": {
+        "label": "Link and build validation",
+        "description": "Validating links and builds in documentation.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "link-validation"
+        ]
+      },
+      "ltex": {
+        "label": "LTeX+",
+        "description": "A language tool for spelling and grammar checking in VS Code.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "ltex"
+        ]
+      },
+      "vale": {
+        "label": "Vale",
+        "description": "A command-line linter for prose, used for automated proofreading.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "vale"
+        ]
+      },
+      "cad": {
+        "label": "CAD",
+        "description": "Computer-aided design software used for creating precise drawings and models.",
+        "kind": "engineering-design-tool",
+        "aliases": [
+          "Computer-Aided Design"
+        ],
+        "source_ids": [
+          "cad"
+        ]
+      },
+      "catia": {
+        "label": "CATIA",
+        "description": "A multi-platform CAD/CAM/CAE software suite for engineering and 3D design.",
+        "kind": "engineering-design-tool",
+        "aliases": [],
+        "source_ids": [
+          "catia"
+        ]
+      },
+      "fastmcp": {
+        "label": "FastMCP",
+        "description": "A framework for building Model Context Protocol servers.",
+        "kind": "framework",
+        "aliases": [],
+        "source_ids": [
+          "fastmcp"
+        ]
+      },
+      "flask": {
+        "label": "Flask",
+        "description": "A Python web framework used to build a cloud-hosted application for receiving webhooks.",
+        "kind": "framework",
+        "aliases": [],
+        "source_ids": [
+          "flask"
+        ]
+      },
+      "ide": {
+        "label": "IDE",
+        "description": "Integrated development environment used for authoring and live-preview tooling.",
+        "kind": "ide-editor",
+        "aliases": [],
+        "source_ids": [
+          "ide"
+        ]
+      },
+      "intellij": {
+        "label": "IntelliJ",
+        "description": "An integrated development environment for Java and other languages.",
+        "kind": "ide-editor",
+        "aliases": [
+          "IntelliJ IDEA"
+        ],
+        "source_ids": [
+          "intellij",
+          "intellij-idea"
+        ]
+      },
+      "pycharm": {
+        "label": "PyCharm",
+        "description": "An integrated development environment for Python.",
+        "kind": "ide-editor",
+        "aliases": [],
+        "source_ids": [
+          "pycharm"
+        ]
+      },
+      "vs-code": {
+        "label": "VS Code",
+        "description": "A source-code editor developed by Microsoft.",
+        "kind": "ide-editor",
+        "aliases": [
+          "Visual Studio Code"
+        ],
+        "source_ids": [
+          "vs-code"
+        ]
+      },
+      "proxmox": {
+        "label": "Proxmox",
+        "description": "An open-source virtualisation management platform.",
+        "kind": "infrastructure-platform",
+        "aliases": [],
+        "source_ids": [
+          "proxmox"
+        ]
+      },
+      "cryptography-libraries": {
+        "label": "Cryptography libraries",
+        "description": "Open-source libraries used for encryption and decryption.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "cryptography-libraries"
+        ]
+      },
+      "flexsearch": {
+        "label": "FlexSearch",
+        "description": "A JavaScript library for full-text search.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "flexsearch"
+        ]
+      },
+      "jinja": {
+        "label": "Jinja",
+        "description": "A templating engine for Python.",
+        "kind": "library",
+        "aliases": [
+          "Jinja2"
+        ],
+        "source_ids": [
+          "jinja"
+        ]
+      },
+      "jquery": {
+        "label": "jQuery",
+        "description": "A fast, small, and feature-rich JavaScript library.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "jquery"
+        ]
+      },
+      "mkdocs-plugins": {
+        "label": "MkDocs plugins",
+        "description": "Extensions for MkDocs to add features.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "mkdocs-plugins"
+        ]
+      },
+      "ocr": {
+        "label": "OCR libraries",
+        "description": "Optical character recognition libraries used to extract text from images.",
+        "kind": "library",
+        "aliases": [
+          "OCR",
+          "Optical Character Recognition"
+        ],
+        "source_ids": [
+          "ocr"
+        ]
+      },
+      "pandas": {
+        "label": "Pandas",
+        "description": "A Python library for data manipulation and analysis.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "pandas"
+        ]
+      },
+      "pathlib": {
+        "label": "pathlib",
+        "description": "A Python library for object-oriented filesystem paths.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "pathlib"
+        ]
+      },
+      "paysafe-js": {
+        "label": "Paysafe.js",
+        "description": "A JavaScript library that allows merchants to add customisable payment forms to their websites while reducing PCI DSS scope by collecting sensitive card details through hosted fields in iframes and returning a token.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "paysafe-js"
+        ]
+      },
+      "react": {
+        "label": "React",
+        "description": "A JavaScript library for building user interfaces.",
+        "kind": "library",
+        "aliases": [
+          "React.js",
+          "ReactJS"
+        ],
+        "source_ids": [
+          "react"
+        ]
+      },
+      "requests": {
+        "label": "Requests",
+        "description": "A Python HTTP library used to call the DeepSeek REST API.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "requests"
+        ]
+      },
+      "stl": {
+        "label": "STL",
+        "description": "The Standard Template Library for C++, providing containers and algorithms.",
+        "kind": "library",
+        "aliases": [
+          "Standard Template Library"
+        ],
+        "source_ids": [
+          "stl"
+        ]
+      },
+      "css": {
+        "label": "CSS",
+        "description": "A stylesheet language used for styling web pages, including the styling of payment forms in the examples.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Cascading Style Sheets"
+        ],
+        "source_ids": [
+          "css"
+        ]
+      },
+      "html": {
+        "label": "HTML",
+        "description": "HyperText Markup Language, used for the online help output.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "HyperText Markup Language"
+        ],
+        "source_ids": [
+          "html"
+        ]
+      },
+      "markdown": {
+        "label": "Markdown",
+        "description": "A lightweight markup language used for authoring content.",
+        "kind": "markup-content-language",
+        "aliases": [],
+        "source_ids": [
+          "markdown"
+        ]
+      },
+      "mdx": {
+        "label": "MDX",
+        "description": "A format that combines Markdown with JSX for embedding React components.",
+        "kind": "markup-content-language",
+        "aliases": [],
+        "source_ids": [
+          "mdx"
+        ]
+      },
+      "scss": {
+        "label": "SCSS/Sass",
+        "description": "A CSS preprocessor that extends CSS with variables, nesting, and mixins.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Sass"
+        ],
+        "source_ids": [
+          "scss"
+        ]
+      },
+      "xhtml": {
+        "label": "XHTML",
+        "description": "A stricter, XML-based version of HTML used for structured content.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Extensible Hypertext Markup Language"
+        ],
+        "source_ids": [
+          "xhtml"
+        ]
+      },
+      "xml": {
+        "label": "XML",
+        "description": "A markup language that defines rules for encoding documents in a format that is both human-readable and machine-readable.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Extensible Markup Language"
+        ],
+        "source_ids": [
+          "xml"
+        ]
+      },
+      "c4-architecture-diagrams": {
+        "label": "C4 Architecture Diagrams",
+        "description": "A modelling methodology for visualising software architecture.",
+        "kind": "modelling-methodology",
+        "aliases": [
+          "C4",
+          "C4 model"
+        ],
+        "source_ids": [
+          "c4-architecture-diagrams",
+          "c4-model"
+        ]
+      },
+      "docs-as-code": {
+        "label": "Docs-as-code",
+        "description": "A methodology that treats documentation as code, using version control and developer workflows.",
+        "kind": "modelling-methodology",
+        "aliases": [],
+        "source_ids": [
+          "docs-as-code"
+        ]
+      },
+      "test-driven-technical-writing": {
+        "label": "Test-driven technical writing",
+        "description": "A methodology of using working software and integration code to verify technical claims before publication.",
+        "kind": "modelling-methodology",
+        "aliases": [],
+        "source_ids": [
+          "test-driven-technical-writing"
+        ]
+      },
+      "wireshark": {
+        "label": "Wireshark",
+        "description": "A network protocol analyser used for troubleshooting and analysis.",
+        "kind": "network-analysis-tool",
+        "aliases": [],
+        "source_ids": [
+          "wireshark"
+        ]
+      },
+      "linux": {
+        "label": "Linux",
+        "description": "An open-source Unix-like operating system family.",
+        "kind": "operating-system-firmware",
+        "aliases": [
+          "Unix"
+        ],
+        "source_ids": [
+          "linux",
+          "unix"
+        ]
+      },
+      "openwrt": {
+        "label": "OpenWrt",
+        "description": "An open-source firmware for routers and embedded devices.",
+        "kind": "operating-system-firmware",
+        "aliases": [],
+        "source_ids": [
+          "openwrt"
+        ]
+      },
+      "windows": {
+        "label": "Windows",
+        "description": "A family of operating systems developed by Microsoft.",
+        "kind": "operating-system-firmware",
+        "aliases": [],
+        "source_ids": [
+          "windows"
+        ]
+      },
+      "apple-pay": {
+        "label": "Apple Pay",
+        "description": "A digital wallet and payment service by Apple, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "apple-pay"
+        ]
+      },
+      "click-to-pay": {
+        "label": "Click to Pay",
+        "description": "A payment checkout technology by Mastercard.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "click-to-pay"
+        ]
+      },
+      "google-pay": {
+        "label": "Google Pay",
+        "description": "A digital wallet and payment service by Google, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "google-pay"
+        ]
+      },
+      "instant-withdrawal": {
+        "label": "Instant Withdrawal",
+        "description": "A payment feature allowing immediate withdrawal of funds, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "instant-withdrawal"
+        ]
+      },
+      "masterpass": {
+        "label": "Masterpass",
+        "description": "A digital wallet and checkout technology that enables merchants to integrate wallet-based payment flows.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "masterpass"
+        ]
+      },
+      "payment-integration": {
+        "label": "Payment integration",
+        "description": "The process of integrating payment processing into applications.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "payment-integration"
+        ]
+      },
+      "assembly": {
+        "label": "Assembly language",
+        "description": "A low-level programming language that is closely related to machine code.",
+        "kind": "programming-language",
+        "aliases": [
+          "asm"
+        ],
+        "source_ids": [
+          "assembly"
+        ]
+      },
+      "c": {
+        "label": "C",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "c"
+        ]
+      },
+      "c-plus-plus": {
+        "label": "C++",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "aliases": [
+          "C/C++"
+        ],
+        "source_ids": [
+          "c-plus-plus",
+          "cpp"
+        ]
+      },
+      "csharp": {
+        "label": "C#",
+        "description": "A general-purpose, multi-paradigm programming language developed by Microsoft.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "csharp"
+        ]
+      },
+      "java": {
+        "label": "Java",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "java"
+        ]
+      },
+      "javascript": {
+        "label": "JavaScript",
+        "description": "A scripting language for web development.",
+        "kind": "programming-language",
+        "aliases": [
+          "JS"
+        ],
+        "source_ids": [
+          "javascript"
+        ]
+      },
+      "jsx": {
+        "label": "JSX",
+        "description": "A syntax extension for JavaScript used with React to describe UI components.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "jsx"
+        ]
+      },
+      "python": {
+        "label": "Python",
+        "description": "A general-purpose programming language used for the QA script.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "python"
+        ]
+      },
+      "scala": {
+        "label": "Scala",
+        "description": "A general-purpose programming language that combines object-oriented and functional programming.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "scala"
+        ]
+      },
+      "typescript": {
+        "label": "TypeScript",
+        "description": "A typed superset of JavaScript.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "typescript"
+        ]
+      },
+      "3d-secure": {
+        "label": "3D Secure",
+        "description": "A security protocol for authenticating online card payments, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "protocol",
+        "aliases": [],
+        "source_ids": [
+          "3d-secure"
+        ]
+      },
+      "http": {
+        "label": "HTTP",
+        "description": "The Hypertext Transfer Protocol used for communication on the web.",
+        "kind": "protocol",
+        "aliases": [
+          "Hypertext Transfer Protocol"
+        ],
+        "source_ids": [
+          "http"
+        ]
+      },
+      "https-tls": {
+        "label": "HTTPS/TLS",
+        "description": "Secure communication protocols for transport layer security.",
+        "kind": "protocol",
+        "aliases": [
+          "HTTPS",
+          "TLS"
+        ],
+        "source_ids": [
+          "https-tls"
+        ]
+      },
+      "ldap": {
+        "label": "LDAP",
+        "description": "A directory service protocol for querying and modifying directory data.",
+        "kind": "protocol",
+        "aliases": [
+          "Lightweight Directory Access Protocol"
+        ],
+        "source_ids": [
+          "ldap"
+        ]
+      },
+      "model-context-protocol": {
+        "label": "Model Context Protocol (MCP)",
+        "description": "A protocol for exposing tools and context to AI assistants.",
+        "kind": "protocol",
+        "aliases": [
+          "MCP"
+        ],
+        "source_ids": [
+          "model-context-protocol"
+        ]
+      },
+      "oauth": {
+        "label": "OAuth",
+        "description": "An open standard for access delegation, commonly used for API authentication.",
+        "kind": "protocol",
+        "aliases": [],
+        "source_ids": [
+          "oauth"
+        ]
+      },
+      "oauth-1-0": {
+        "label": "OAuth 1.0",
+        "description": "An authentication protocol used for API security.",
+        "kind": "protocol",
+        "aliases": [
+          "OAuth 1",
+          "OAuth 1.0a",
+          "OAuth1"
+        ],
+        "source_ids": [
+          "oauth-1-0"
+        ]
+      },
+      "tcp-ip": {
+        "label": "TCP/IP",
+        "description": "Transmission Control Protocol/Internet Protocol, the networking protocol suite.",
+        "kind": "protocol",
+        "aliases": [],
+        "source_ids": [
+          "tcp-ip"
+        ]
+      },
+      "node-js": {
+        "label": "Node.js",
+        "description": "A JavaScript runtime for server-side applications.",
+        "kind": "runtime",
+        "aliases": [
+          "Node"
+        ],
+        "source_ids": [
+          "node-js",
+          "nodejs"
+        ]
+      },
+      "digital-signatures": {
+        "label": "Digital signatures",
+        "description": "Cryptographic technique for verifying data integrity and authenticity.",
+        "kind": "security-cryptography",
+        "aliases": [],
+        "source_ids": [
+          "digital-signatures"
+        ]
+      },
+      "encryption": {
+        "label": "Encryption",
+        "description": "The process of encoding information to protect it from unauthorized access.",
+        "kind": "security-cryptography",
+        "aliases": [
+          "encryption"
+        ],
+        "source_ids": [
+          "encryption",
+          "symmetric-asymmetric-encryption"
+        ]
+      },
+      "field-level-encryption": {
+        "label": "Field-level encryption",
+        "description": "A security technique that encrypts individual data fields.",
+        "kind": "security-cryptography",
+        "aliases": [
+          "FLE"
+        ],
+        "source_ids": [
+          "field-level-encryption"
+        ]
+      },
+      "hsm": {
+        "label": "HSM",
+        "description": "Hardware Security Module for secure key management.",
+        "kind": "security-cryptography",
+        "aliases": [
+          "Hardware Security Module"
+        ],
+        "source_ids": [
+          "hsm"
+        ]
+      },
+      "openssl": {
+        "label": "OpenSSL",
+        "description": "A cryptography toolkit implementing SSL/TLS.",
+        "kind": "security-cryptography",
+        "aliases": [],
+        "source_ids": [
+          "openssl"
+        ]
+      },
+      "pki": {
+        "label": "PKI",
+        "description": "Public Key Infrastructure for managing digital certificates and keys.",
+        "kind": "security-cryptography",
+        "aliases": [
+          "Public Key Infrastructure"
+        ],
+        "source_ids": [
+          "pki"
+        ]
+      },
+      "request-signing": {
+        "label": "Request signing",
+        "description": "A technique for authenticating requests via digital signatures.",
+        "kind": "security-cryptography",
+        "aliases": [],
+        "source_ids": [
+          "request-signing"
+        ]
+      },
+      "jetty": {
+        "label": "Jetty",
+        "description": "A Java HTTP server and servlet container.",
+        "kind": "server-networking",
+        "aliases": [],
+        "source_ids": [
+          "jetty"
+        ]
+      },
+      "nginx": {
+        "label": "Nginx",
+        "description": "A web server and reverse proxy used to serve web content.",
+        "kind": "server-networking",
+        "aliases": [],
+        "source_ids": [
+          "nginx"
+        ]
+      },
+      "bash": {
+        "label": "Bash",
+        "description": "A Unix shell and command language used for scripting and automation.",
+        "kind": "shell-scripting",
+        "aliases": [
+          "Bourne Again Shell"
+        ],
+        "source_ids": [
+          "bash"
+        ]
+      },
+      "powershell": {
+        "label": "PowerShell",
+        "description": "A task automation and configuration management framework from Microsoft, consisting of a command-line shell and scripting language.",
+        "kind": "shell-scripting",
+        "aliases": [],
+        "source_ids": [
+          "powershell"
+        ]
+      },
+      "amx-composer": {
+        "label": "AMX Composer",
+        "description": "A content-management application for the AMX Digital Signage platform.",
+        "kind": "software-platform",
+        "aliases": [
+          "Composer 5"
+        ],
+        "source_ids": [
+          "amx-composer"
+        ]
+      },
+      "codetreedocs": {
+        "label": "Codetreedocs",
+        "description": "A custom internal docs-as-code platform and developer portal.",
+        "kind": "software-platform",
+        "aliases": [],
+        "source_ids": [
+          "codetreedocs"
+        ]
+      },
+      "gis": {
+        "label": "GIS",
+        "description": "Geographic information system for capturing, storing, and analyzing spatial data.",
+        "kind": "software-platform",
+        "aliases": [
+          "Geographic Information System"
+        ],
+        "source_ids": [
+          "gis"
+        ]
+      },
+      "home-assistant": {
+        "label": "Home Assistant",
+        "description": "An open-source home automation platform.",
+        "kind": "software-platform",
+        "aliases": [],
+        "source_ids": [
+          "home-assistant"
+        ]
+      },
+      "sdk": {
+        "label": "SDK",
+        "description": "A set of tools and libraries for building applications for a specific platform.",
+        "kind": "software-platform",
+        "aliases": [],
+        "source_ids": [
+          "sdk"
+        ]
+      },
+      "vr": {
+        "label": "VR",
+        "description": "Virtual reality technology for simulated environments.",
+        "kind": "software-platform",
+        "aliases": [
+          "Virtual Reality"
+        ],
+        "source_ids": [
+          "vr"
+        ]
+      },
+      "finos-calm": {
+        "label": "FINOS CALM",
+        "description": "A standard for representing software architectures in structured, machine-readable formats.",
+        "kind": "standard-specification",
+        "aliases": [
+          "CALM"
+        ],
+        "source_ids": [
+          "finos-calm"
+        ]
+      },
+      "jose": {
+        "label": "JOSE",
+        "description": "JSON Object Signing and Encryption framework for securing JSON data.",
+        "kind": "standard-specification",
+        "aliases": [
+          "JSON Object Signing and Encryption"
+        ],
+        "source_ids": [
+          "jose"
+        ]
+      },
+      "jwt": {
+        "label": "JWT",
+        "description": "JSON Web Token, a compact token format for authentication and claims.",
+        "kind": "standard-specification",
+        "aliases": [
+          "JSON Web Token"
+        ],
+        "source_ids": [
+          "jwt"
+        ]
+      },
+      "owasp": {
+        "label": "OWASP",
+        "description": "Open Web Application Security Project, providing security guidance and risk lists.",
+        "kind": "standard-specification",
+        "aliases": [
+          "Open Web Application Security Project"
+        ],
+        "source_ids": [
+          "owasp"
+        ]
+      },
+      "pci-dss": {
+        "label": "PCI DSS",
+        "description": "The Payment Card Industry Data Security Standard, a set of security standards for organisations that handle cardholder data.",
+        "kind": "standard-specification",
+        "aliases": [],
+        "source_ids": [
+          "pci-dss"
+        ]
+      },
+      "saq-a": {
+        "label": "SAQ A",
+        "description": "A PCI DSS Self-Assessment Questionnaire for merchants that outsource cardholder data processing to third parties.",
+        "kind": "standard-specification",
+        "aliases": [],
+        "source_ids": [
+          "saq-a"
+        ]
+      },
+      "x-509-certificates": {
+        "label": "X.509 certificates",
+        "description": "Standard format for public key certificates used in TLS and authentication.",
+        "kind": "standard-specification",
+        "aliases": [
+          "X.509"
+        ],
+        "source_ids": [
+          "x-509-certificates"
+        ]
+      },
+      "ast": {
+        "label": "Abstract Syntax Tree (AST)",
+        "description": "A tree representation of the syntactic structure of source code.",
+        "kind": "technical-technique",
+        "aliases": [
+          "AST"
+        ],
+        "source_ids": [
+          "ast"
+        ]
+      },
+      "accessibility-check": {
+        "label": "AccessibilityCheck",
+        "description": "A static check for accessibility issues in documentation.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "accessibility-check"
+        ]
+      },
+      "ajax": {
+        "label": "AJAX",
+        "description": "A technique for creating asynchronous web applications.",
+        "kind": "technical-technique",
+        "aliases": [
+          "Asynchronous JavaScript and XML"
+        ],
+        "source_ids": [
+          "ajax"
+        ]
+      },
+      "api-documentation": {
+        "label": "API documentation",
+        "description": "The practice of creating documentation for APIs.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "api-documentation"
+        ]
+      },
+      "api-testing": {
+        "label": "API testing",
+        "description": "The practice of testing API endpoints and integrations.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "api-testing"
+        ]
+      },
+      "architecture-as-code": {
+        "label": "Architecture as code",
+        "description": "A technical technique for managing architecture definitions as version-controlled code.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "architecture-as-code"
+        ]
+      },
+      "authentication-testing": {
+        "label": "Authentication testing",
+        "description": "Testing authentication flows to ensure they work correctly and securely.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "authentication-testing"
+        ]
+      },
+      "landing-page-generation": {
+        "label": "Automated landing-page generation",
+        "description": "Automatically generating landing pages from documentation data.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "landing-page-generation"
+        ]
+      },
+      "black-box-testing": {
+        "label": "Black-box testing",
+        "description": "A software testing method that verifies behaviour without examining internal implementation.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "black-box-testing"
+        ]
+      },
+      "cms-integration": {
+        "label": "CMS integration",
+        "description": "Integrating a documentation tool with a content management system.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "cms-integration"
+        ]
+      },
+      "component-testing": {
+        "label": "Component testing",
+        "description": "Testing individual components of a system in isolation.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "component-testing"
+        ]
+      },
+      "conditional-text": {
+        "label": "Conditional text",
+        "description": "A feature in documentation tools that allows content to be included or excluded based on conditions.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "conditional-text"
+        ]
+      },
+      "content-inventory": {
+        "label": "Content inventory",
+        "description": "A systematic process of cataloguing and analysing content assets.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "content-inventory"
+        ]
+      },
+      "continuous-integration": {
+        "label": "Continuous Integration",
+        "description": "A software development practice where code changes are automatically built, tested, and prepared for release.",
+        "kind": "technical-technique",
+        "aliases": [
+          "CI"
+        ],
+        "source_ids": [
+          "continuous-integration"
+        ]
+      },
+      "cross-references": {
+        "label": "Cross-references",
+        "description": "Links within documentation that point to other sections or topics.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "cross-references"
+        ]
+      },
+      "defect-tracking": {
+        "label": "Defect tracking",
+        "description": "The process of identifying, documenting, and managing defects.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "defect-tracking"
+        ]
+      },
+      "developer-experience-evaluation": {
+        "label": "Developer experience evaluation",
+        "description": "Assessing developer tools and workflows from a usability perspective.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "developer-experience-evaluation"
+        ]
+      },
+      "device-driver": {
+        "label": "Device driver",
+        "description": "Software that allows the operating system to communicate with hardware devices.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "device-driver"
+        ]
+      },
+      "diagram-generation": {
+        "label": "Diagram generation",
+        "description": "Automatically generating diagrams from documentation data.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "diagram-generation"
+        ]
+      },
+      "diagrams-as-code": {
+        "label": "Diagrams-as-code",
+        "description": "A technique for creating diagrams using textual definitions.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "diagrams-as-code"
+        ]
+      },
+      "encryption-decryption-integrations": {
+        "label": "Encryption/decryption integrations",
+        "description": "Technical integrations involving encryption and decryption, created to test real API and asynchronous processing behaviour.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "encryption-decryption-integrations",
+          "encryption-testing"
+        ]
+      },
+      "end-to-end-testing": {
+        "label": "End-to-end testing",
+        "description": "Testing complete workflows from start to finish to verify system behaviour.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "end-to-end-testing"
+        ]
+      },
+      "exponential-backoff": {
+        "label": "Exponential backoff",
+        "description": "A resilience pattern for retrying operations with increasing delays.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "exponential-backoff"
+        ]
+      },
+      "front-matter-processing": {
+        "label": "Front-matter processing",
+        "description": "Processing YAML or TOML front matter in Markdown files.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "front-matter-processing"
+        ]
+      },
+      "iframe": {
+        "label": "iframe",
+        "description": "An HTML element that embeds another document within the current page, used by Paysafe.js to host secure fields.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "iframe"
+        ]
+      },
+      "integration-testing": {
+        "label": "Integration testing",
+        "description": "Testing interactions between integrated components or systems.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "integration-testing"
+        ]
+      },
+      "intellij-plugin-development": {
+        "label": "IntelliJ plugin development",
+        "description": "The practice of creating plugins for IntelliJ-based IDEs.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "intellij-plugin-development"
+        ]
+      },
+      "kernel": {
+        "label": "Kernel",
+        "description": "The core component of an operating system that manages system resources.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "kernel"
+        ]
+      },
+      "link-check": {
+        "label": "LinkCheck",
+        "description": "A static check for broken local links and assets.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "link-check"
+        ]
+      },
+      "metadata-filtering": {
+        "label": "Metadata-based filtering",
+        "description": "Using metadata to filter search results and improve retrieval quality.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "metadata-filtering"
+        ]
+      },
+      "migration-scripts": {
+        "label": "Migration scripts",
+        "description": "Scripts used to migrate content from one system to another.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "migration-scripts"
+        ]
+      },
+      "output-troubleshooting": {
+        "label": "Output troubleshooting",
+        "description": "Diagnosing and resolving issues with generated documentation outputs.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "output-troubleshooting"
+        ]
+      },
+      "pdf-publishing": {
+        "label": "PDF publishing",
+        "description": "The process of generating PDF documents from source content.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "pdf-publishing"
+        ]
+      },
+      "post-build-automation": {
+        "label": "Post-build automation",
+        "description": "Automating tasks that run after the documentation build process.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "post-build-automation"
+        ]
+      },
+      "rag": {
+        "label": "RAG (Retrieval-Augmented Generation)",
+        "description": "A technique combining retrieval with generative AI for search and question answering.",
+        "kind": "technical-technique",
+        "aliases": [
+          "Retrieval-Augmented Generation"
+        ],
+        "source_ids": [
+          "rag",
+          "retrieval-augmented-generation"
+        ]
+      },
+      "regex": {
+        "label": "Regular expressions",
+        "description": "A sequence of characters that define a search pattern.",
+        "kind": "technical-technique",
+        "aliases": [
+          "regex",
+          "regexp"
+        ],
+        "source_ids": [
+          "regex"
+        ]
+      },
+      "release-testing": {
+        "label": "Release testing",
+        "description": "Testing performed to ensure a product is ready for release.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "release-testing"
+        ]
+      },
+      "sandbox-testing": {
+        "label": "Sandbox testing",
+        "description": "Testing in a sandbox environment that mimics production but with mocked behaviour and constraints.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "sandbox-testing"
+        ]
+      },
+      "sdk-documentation": {
+        "label": "SDK documentation",
+        "description": "The practice of documenting software development kits.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "sdk-documentation"
+        ]
+      },
+      "search-integration": {
+        "label": "Search integration",
+        "description": "Integrating search functionality into documentation sites.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "search-integration"
+        ]
+      },
+      "single-sourcing": {
+        "label": "Single-sourcing",
+        "description": "A documentation technique that uses a single source of content to generate multiple outputs or formats.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "single-sourcing"
+        ]
+      },
+      "smoke-testing": {
+        "label": "Smoke testing",
+        "description": "Preliminary testing to check whether the basic functionality works.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "smoke-testing"
+        ]
+      },
+      "snippets-and-variables": {
+        "label": "Snippets and variables",
+        "description": "Reusable content fragments and placeholders in documentation tools.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "snippets-and-variables"
+        ]
+      },
+      "spec-driven-development": {
+        "label": "Spec-driven development",
+        "description": "A development technique where specifications drive implementation.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "spec-driven-development"
+        ]
+      },
+      "spidering": {
+        "label": "Spidering",
+        "description": "Automated crawling of web links to map content relationships.",
+        "kind": "technical-technique",
+        "aliases": [
+          "web crawling"
+        ],
+        "source_ids": [
+          "spidering"
+        ]
+      },
+      "static-site-generator": {
+        "label": "Static Site Generator",
+        "description": "A tool that generates a static website from templates and content.",
+        "kind": "technical-technique",
+        "aliases": [
+          "SSG"
+        ],
+        "source_ids": [
+          "static-site-generator"
+        ]
+      },
+      "tables-of-contents": {
+        "label": "Tables of contents",
+        "description": "A hierarchical list of topics or sections in a document.",
+        "kind": "technical-technique",
+        "aliases": [
+          "TOC"
+        ],
+        "source_ids": [
+          "tables-of-contents"
+        ]
+      },
+      "targets-and-build-configurations": {
+        "label": "Targets and build configurations",
+        "description": "Settings in Flare that define how output is generated for different formats or audiences.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "targets-and-build-configurations"
+        ]
+      },
+      "test-automation": {
+        "label": "Test automation",
+        "description": "Using scripts and tools to automate repeated testing tasks.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "test-automation"
+        ]
+      },
+      "tokenisation": {
+        "label": "Tokenisation",
+        "description": "The process of replacing sensitive data with a non-sensitive token, used in the Paysafe.js integration to return a token to the merchant.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "tokenisation"
+        ]
+      },
+      "topic-based-authoring": {
+        "label": "Topic-based authoring",
+        "description": "A modular approach to writing documentation where content is organized into topics that can be reused across outputs.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "topic-based-authoring"
+        ]
+      },
+      "try-now-demo": {
+        "label": "Try Now demonstration",
+        "description": "An interactive inline demonstration that allows developers to explore the integration step by step.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "try-now-demo"
+        ]
+      },
+      "usability-testing": {
+        "label": "Usability testing",
+        "description": "Testing to evaluate how user-friendly a product is.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "usability-testing"
+        ]
+      },
+      "webhook-integrations": {
+        "label": "Webhook integrations",
+        "description": "Integrations that handle asynchronous callbacks via webhooks, used to test API and processing behaviour.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "webhook-integrations",
+          "webhook-testing",
+          "webhooks"
+        ]
+      },
+      "api-validation": {
+        "label": "API validation",
+        "description": "The process of testing and verifying API behavior.",
+        "kind": "testing-debugging-tool",
+        "aliases": [],
+        "source_ids": [
+          "api-validation"
+        ]
+      },
+      "git": {
+        "label": "Git",
+        "description": "A distributed version control system.",
+        "kind": "version-control",
+        "aliases": [],
+        "source_ids": [
+          "git"
+        ]
+      }
+    }
+  }
+}

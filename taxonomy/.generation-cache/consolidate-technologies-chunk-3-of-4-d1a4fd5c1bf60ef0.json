@@ -1,0 +1,588 @@
+{
+  "fingerprint": "d1a4fd5c1bf60ef05325c27721f9086df8b9ed2b74663f9f55a79542e06c6f71",
+  "label": "consolidate-technologies-chunk-3-of-4",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "terms": {
+      "c-plus-plus": {
+        "label": "C++",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "aliases": [
+          "C/C++"
+        ],
+        "source_ids": [
+          "c-plus-plus",
+          "cpp"
+        ]
+      },
+      "csharp": {
+        "label": "C#",
+        "description": "A general-purpose, multi-paradigm programming language developed by Microsoft.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "csharp"
+        ]
+      },
+      "java": {
+        "label": "Java",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "java"
+        ]
+      },
+      "javascript": {
+        "label": "JavaScript",
+        "description": "A scripting language for web development.",
+        "kind": "programming-language",
+        "aliases": [
+          "JS"
+        ],
+        "source_ids": [
+          "javascript"
+        ]
+      },
+      "jsx": {
+        "label": "JSX",
+        "description": "A syntax extension for JavaScript used with React to describe UI components.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "jsx"
+        ]
+      },
+      "python": {
+        "label": "Python",
+        "description": "A general-purpose programming language used for the QA script.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "python"
+        ]
+      },
+      "scala": {
+        "label": "Scala",
+        "description": "A general-purpose programming language that combines object-oriented and functional programming.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "scala"
+        ]
+      },
+      "typescript": {
+        "label": "TypeScript",
+        "description": "A typed superset of JavaScript.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "typescript"
+        ]
+      },
+      "3d-secure": {
+        "label": "3D Secure",
+        "description": "A security protocol for authenticating online card payments, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "protocol",
+        "aliases": [],
+        "source_ids": [
+          "3d-secure"
+        ]
+      },
+      "http": {
+        "label": "HTTP",
+        "description": "The Hypertext Transfer Protocol used for communication on the web.",
+        "kind": "protocol",
+        "aliases": [
+          "Hypertext Transfer Protocol"
+        ],
+        "source_ids": [
+          "http"
+        ]
+      },
+      "https-tls": {
+        "label": "HTTPS/TLS",
+        "description": "Secure communication protocols for transport layer security.",
+        "kind": "protocol",
+        "aliases": [
+          "HTTPS",
+          "TLS"
+        ],
+        "source_ids": [
+          "https-tls"
+        ]
+      },
+      "ldap": {
+        "label": "LDAP",
+        "description": "A directory service protocol for querying and modifying directory data.",
+        "kind": "protocol",
+        "aliases": [
+          "Lightweight Directory Access Protocol"
+        ],
+        "source_ids": [
+          "ldap"
+        ]
+      },
+      "model-context-protocol": {
+        "label": "Model Context Protocol (MCP)",
+        "description": "A protocol for exposing tools and context to AI assistants.",
+        "kind": "protocol",
+        "aliases": [
+          "MCP"
+        ],
+        "source_ids": [
+          "model-context-protocol"
+        ]
+      },
+      "oauth": {
+        "label": "OAuth",
+        "description": "An open standard for access delegation, commonly used for API authentication.",
+        "kind": "protocol",
+        "aliases": [],
+        "source_ids": [
+          "oauth"
+        ]
+      },
+      "oauth-1-0": {
+        "label": "OAuth 1.0",
+        "description": "An authentication protocol used for API security.",
+        "kind": "protocol",
+        "aliases": [
+          "OAuth 1",
+          "OAuth 1.0a",
+          "OAuth1"
+        ],
+        "source_ids": [
+          "oauth-1-0"
+        ]
+      },
+      "tcp-ip": {
+        "label": "TCP/IP",
+        "description": "Transmission Control Protocol/Internet Protocol, the networking protocol suite.",
+        "kind": "protocol",
+        "aliases": [],
+        "source_ids": [
+          "tcp-ip"
+        ]
+      },
+      "node-js": {
+        "label": "Node.js",
+        "description": "A JavaScript runtime for server-side applications.",
+        "kind": "runtime",
+        "aliases": [
+          "Node"
+        ],
+        "source_ids": [
+          "node-js",
+          "nodejs"
+        ]
+      },
+      "digital-signatures": {
+        "label": "Digital signatures",
+        "description": "Cryptographic technique for verifying data integrity and authenticity.",
+        "kind": "security-cryptography",
+        "aliases": [],
+        "source_ids": [
+          "digital-signatures"
+        ]
+      },
+      "encryption": {
+        "label": "Encryption",
+        "description": "The process of encoding information to protect it from unauthorized access.",
+        "kind": "security-cryptography",
+        "aliases": [],
+        "source_ids": [
+          "encryption"
+        ]
+      },
+      "field-level-encryption": {
+        "label": "Field-level encryption",
+        "description": "A security technique that encrypts individual data fields.",
+        "kind": "security-cryptography",
+        "aliases": [
+          "FLE"
+        ],
+        "source_ids": [
+          "field-level-encryption"
+        ]
+      },
+      "hsm": {
+        "label": "HSM",
+        "description": "Hardware Security Module for secure key management.",
+        "kind": "security-cryptography",
+        "aliases": [
+          "Hardware Security Module"
+        ],
+        "source_ids": [
+          "hsm"
+        ]
+      },
+      "openssl": {
+        "label": "OpenSSL",
+        "description": "A cryptography toolkit implementing SSL/TLS.",
+        "kind": "security-cryptography",
+        "aliases": [],
+        "source_ids": [
+          "openssl"
+        ]
+      },
+      "pki": {
+        "label": "PKI",
+        "description": "Public Key Infrastructure for managing digital certificates and keys.",
+        "kind": "security-cryptography",
+        "aliases": [
+          "Public Key Infrastructure"
+        ],
+        "source_ids": [
+          "pki"
+        ]
+      },
+      "request-signing": {
+        "label": "Request signing",
+        "description": "A technique for authenticating requests via digital signatures.",
+        "kind": "security-cryptography",
+        "aliases": [],
+        "source_ids": [
+          "request-signing"
+        ]
+      },
+      "symmetric-asymmetric-encryption": {
+        "label": "Symmetric and asymmetric encryption",
+        "description": "Encryption techniques using shared or public/private keys.",
+        "kind": "security-cryptography",
+        "aliases": [
+          "encryption"
+        ],
+        "source_ids": [
+          "symmetric-asymmetric-encryption"
+        ]
+      },
+      "jetty": {
+        "label": "Jetty",
+        "description": "A Java HTTP server and servlet container.",
+        "kind": "server-networking",
+        "aliases": [],
+        "source_ids": [
+          "jetty"
+        ]
+      },
+      "nginx": {
+        "label": "Nginx",
+        "description": "A web server and reverse proxy used to serve web content.",
+        "kind": "server-networking",
+        "aliases": [],
+        "source_ids": [
+          "nginx"
+        ]
+      },
+      "bash": {
+        "label": "Bash",
+        "description": "A Unix shell and command language used for scripting and automation.",
+        "kind": "shell-scripting",
+        "aliases": [
+          "Bourne Again Shell"
+        ],
+        "source_ids": [
+          "bash"
+        ]
+      },
+      "powershell": {
+        "label": "PowerShell",
+        "description": "A task automation and configuration management framework from Microsoft, consisting of a command-line shell and scripting language.",
+        "kind": "shell-scripting",
+        "aliases": [],
+        "source_ids": [
+          "powershell"
+        ]
+      },
+      "amx-composer": {
+        "label": "AMX Composer",
+        "description": "A content-management application for the AMX Digital Signage platform.",
+        "kind": "software-platform",
+        "aliases": [
+          "Composer 5"
+        ],
+        "source_ids": [
+          "amx-composer"
+        ]
+      },
+      "codetreedocs": {
+        "label": "Codetreedocs",
+        "description": "A custom internal docs-as-code platform and developer portal.",
+        "kind": "software-platform",
+        "aliases": [],
+        "source_ids": [
+          "codetreedocs"
+        ]
+      },
+      "gis": {
+        "label": "GIS",
+        "description": "Geographic information system for capturing, storing, and analyzing spatial data.",
+        "kind": "software-platform",
+        "aliases": [
+          "Geographic Information System"
+        ],
+        "source_ids": [
+          "gis"
+        ]
+      },
+      "home-assistant": {
+        "label": "Home Assistant",
+        "description": "An open-source home automation platform.",
+        "kind": "software-platform",
+        "aliases": [],
+        "source_ids": [
+          "home-assistant"
+        ]
+      },
+      "sdk": {
+        "label": "SDK",
+        "description": "A set of tools and libraries for building applications for a specific platform.",
+        "kind": "software-platform",
+        "aliases": [],
+        "source_ids": [
+          "sdk"
+        ]
+      },
+      "vr": {
+        "label": "VR",
+        "description": "Virtual reality technology for simulated environments.",
+        "kind": "software-platform",
+        "aliases": [
+          "Virtual Reality"
+        ],
+        "source_ids": [
+          "vr"
+        ]
+      },
+      "finos-calm": {
+        "label": "FINOS CALM",
+        "description": "A standard for representing software architectures in structured, machine-readable formats.",
+        "kind": "standard-specification",
+        "aliases": [
+          "CALM"
+        ],
+        "source_ids": [
+          "finos-calm"
+        ]
+      },
+      "jose": {
+        "label": "JOSE",
+        "description": "JSON Object Signing and Encryption framework for securing JSON data.",
+        "kind": "standard-specification",
+        "aliases": [
+          "JSON Object Signing and Encryption"
+        ],
+        "source_ids": [
+          "jose"
+        ]
+      },
+      "jwt": {
+        "label": "JWT",
+        "description": "JSON Web Token, a compact token format for authentication and claims.",
+        "kind": "standard-specification",
+        "aliases": [
+          "JSON Web Token"
+        ],
+        "source_ids": [
+          "jwt"
+        ]
+      },
+      "openapi": {
+        "label": "OpenAPI",
+        "description": "A specification for describing, producing, consuming, and visualizing RESTful APIs.",
+        "kind": "standard-specification",
+        "aliases": [
+          "OpenAPI 2.0",
+          "Swagger",
+          "Swagger 2.0"
+        ],
+        "source_ids": [
+          "openapi"
+        ]
+      },
+      "owasp": {
+        "label": "OWASP",
+        "description": "Open Web Application Security Project, providing security guidance and risk lists.",
+        "kind": "standard-specification",
+        "aliases": [
+          "Open Web Application Security Project"
+        ],
+        "source_ids": [
+          "owasp"
+        ]
+      },
+      "pci-dss": {
+        "label": "PCI DSS",
+        "description": "The Payment Card Industry Data Security Standard, a set of security standards for organisations that handle cardholder data.",
+        "kind": "standard-specification",
+        "aliases": [],
+        "source_ids": [
+          "pci-dss"
+        ]
+      },
+      "saq-a": {
+        "label": "SAQ A",
+        "description": "A PCI DSS Self-Assessment Questionnaire for merchants that outsource cardholder data processing to third parties.",
+        "kind": "standard-specification",
+        "aliases": [],
+        "source_ids": [
+          "saq-a"
+        ]
+      },
+      "x-509-certificates": {
+        "label": "X.509 certificates",
+        "description": "Standard format for public key certificates used in TLS and authentication.",
+        "kind": "standard-specification",
+        "aliases": [
+          "X.509"
+        ],
+        "source_ids": [
+          "x-509-certificates"
+        ]
+      },
+      "ast": {
+        "label": "Abstract Syntax Tree (AST)",
+        "description": "A tree representation of the syntactic structure of source code.",
+        "kind": "technical-technique",
+        "aliases": [
+          "AST"
+        ],
+        "source_ids": [
+          "ast"
+        ]
+      },
+      "accessibility-check": {
+        "label": "AccessibilityCheck",
+        "description": "A static check for accessibility issues in documentation.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "accessibility-check"
+        ]
+      },
+      "ajax": {
+        "label": "AJAX",
+        "description": "A technique for creating asynchronous web applications.",
+        "kind": "technical-technique",
+        "aliases": [
+          "Asynchronous JavaScript and XML"
+        ],
+        "source_ids": [
+          "ajax"
+        ]
+      },
+      "api-documentation": {
+        "label": "API documentation",
+        "description": "The practice of creating documentation for APIs.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "api-documentation"
+        ]
+      },
+      "api-testing": {
+        "label": "API testing",
+        "description": "The practice of testing API endpoints and integrations.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "api-testing"
+        ]
+      },
+      "architecture-as-code": {
+        "label": "Architecture as code",
+        "description": "A technical technique for managing architecture definitions as version-controlled code.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "architecture-as-code"
+        ]
+      },
+      "authentication-testing": {
+        "label": "Authentication testing",
+        "description": "Testing authentication flows to ensure they work correctly and securely.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "authentication-testing"
+        ]
+      },
+      "landing-page-generation": {
+        "label": "Automated landing-page generation",
+        "description": "Automatically generating landing pages from documentation data.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "landing-page-generation"
+        ]
+      },
+      "black-box-testing": {
+        "label": "Black-box testing",
+        "description": "A software testing method that verifies behaviour without examining internal implementation.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "black-box-testing"
+        ]
+      },
+      "cms-integration": {
+        "label": "CMS integration",
+        "description": "Integrating a documentation tool with a content management system.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "cms-integration"
+        ]
+      },
+      "component-testing": {
+        "label": "Component testing",
+        "description": "Testing individual components of a system in isolation.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "component-testing"
+        ]
+      },
+      "conditional-text": {
+        "label": "Conditional text",
+        "description": "A feature in documentation tools that allows content to be included or excluded based on conditions.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "conditional-text"
+        ]
+      },
+      "content-inventory": {
+        "label": "Content inventory",
+        "description": "A systematic process of cataloguing and analysing content assets.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "content-inventory"
+        ]
+      },
+      "continuous-integration": {
+        "label": "Continuous Integration",
+        "description": "A software development practice where code changes are automatically built, tested, and prepared for release.",
+        "kind": "technical-technique",
+        "aliases": [
+          "CI"
+        ],
+        "source_ids": [
+          "continuous-integration"
+        ]
+      },
+      "cross-references": {
+        "label": "Cross-references",
+        "description": "Links within documentation that point to other sections or topics.",
+        "kind": "technical-technique",
+        "aliases": [],
+        "source_ids": [
+          "cross-references"
+        ]
+      }
+    }
+  }
+}

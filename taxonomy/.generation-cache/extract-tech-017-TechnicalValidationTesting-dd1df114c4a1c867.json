@@ -1,0 +1,389 @@
+{
+  "fingerprint": "dd1df114c4a1c8677da00d0e07d9b7384ed3713d77e152cac27f155a8a00af97",
+  "label": "extract-tech-017-TechnicalValidationTesting",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language used for building integrations and validation scripts.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Python is explicitly listed as a tool used to validate API behaviour and build integrations."
+          }
+        ]
+      },
+      {
+        "id": "flask",
+        "label": "Flask",
+        "description": "A micro web framework for Python used to create test applications and integrations.",
+        "kind": "framework",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Flask is explicitly mentioned as a technology used to validate API behaviour and build integrations."
+          }
+        ]
+      },
+      {
+        "id": "java",
+        "label": "Java",
+        "description": "A general-purpose programming language used for building integrations and validation code.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Java is explicitly listed as a tool used to validate API behaviour and build integrations."
+          }
+        ]
+      },
+      {
+        "id": "postman",
+        "label": "Postman",
+        "description": "An API client and testing tool used to validate API behaviour and integration accuracy.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Postman is explicitly mentioned as a tool used to validate API behaviour and integration accuracy."
+          }
+        ]
+      },
+      {
+        "id": "curl",
+        "label": "cURL",
+        "description": "A command-line tool for transferring data with URLs, used to test APIs and integrations.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [
+          "curl"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "cURL is explicitly listed as a tool used to validate API behaviour and integration accuracy."
+          }
+        ]
+      },
+      {
+        "id": "insomnia",
+        "label": "Insomnia",
+        "description": "An API client and testing tool used to validate API behaviour and integration accuracy.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Insomnia is explicitly mentioned as a tool used to validate API behaviour and integration accuracy."
+          }
+        ]
+      },
+      {
+        "id": "jira",
+        "label": "Jira",
+        "description": "An issue and project tracking tool used to raise and manage defects.",
+        "kind": "collaboration-project-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Jira is explicitly mentioned as the tool used to raise and manage defects."
+          }
+        ]
+      },
+      {
+        "id": "scala",
+        "label": "Scala",
+        "description": "A general-purpose programming language; the author analysed Scala implementation code to reconstruct API behaviour.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document states the author analysed complex Scala implementation code to reconstruct undocumented API behaviour."
+          }
+        ]
+      },
+      {
+        "id": "cloud-hosted-test-environments",
+        "label": "Cloud-hosted test environments",
+        "description": "Cloud-based environments used to overcome network restrictions and validate externally accessible integrations.",
+        "kind": "cloud-hosting-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes using cloud-hosted test environments to overcome internal network restrictions and validate integrations."
+          }
+        ]
+      },
+      {
+        "id": "encryption-decryption-integrations",
+        "label": "Encryption/decryption integrations",
+        "description": "Technical integrations involving encryption and decryption, created to test real API and asynchronous processing behaviour.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions creating cloud-hosted encryption/decryption integrations to test real API behaviour."
+          }
+        ]
+      },
+      {
+        "id": "webhook-integrations",
+        "label": "Webhook integrations",
+        "description": "Integrations that handle asynchronous callbacks via webhooks, used to test API and processing behaviour.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions creating cloud-hosted webhook integrations to test real API and asynchronous processing behaviour."
+          }
+        ]
+      },
+      {
+        "id": "test-driven-technical-writing",
+        "label": "Test-driven technical writing",
+        "description": "A methodology of using working software and integration code to verify technical claims before publication.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes applying a test-driven approach to technical writing, using working software to verify claims."
+          }
+        ]
+      },
+      {
+        "id": "black-box-testing",
+        "label": "Black-box testing",
+        "description": "A software testing method that verifies behaviour without examining internal implementation.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists black-box testing as a hands-on testing experience."
+          }
+        ]
+      },
+      {
+        "id": "component-testing",
+        "label": "Component testing",
+        "description": "Testing individual components of a system in isolation.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists component testing as a hands-on testing experience."
+          }
+        ]
+      },
+      {
+        "id": "smoke-testing",
+        "label": "Smoke testing",
+        "description": "Preliminary testing to check whether the basic functionality works.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists smoke testing as a hands-on testing experience."
+          }
+        ]
+      },
+      {
+        "id": "release-testing",
+        "label": "Release testing",
+        "description": "Testing performed to ensure a product is ready for release.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists release testing as a hands-on testing experience."
+          }
+        ]
+      },
+      {
+        "id": "usability-testing",
+        "label": "Usability testing",
+        "description": "Testing to evaluate how user-friendly a product is.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists usability testing as a hands-on testing experience."
+          }
+        ]
+      },
+      {
+        "id": "end-to-end-testing",
+        "label": "End-to-end testing",
+        "description": "Testing complete workflows from start to finish to verify system behaviour.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes testing complete workflows spanning client applications, APIs, and backend services."
+          }
+        ]
+      },
+      {
+        "id": "integration-testing",
+        "label": "Integration testing",
+        "description": "Testing interactions between integrated components or systems.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes building working integrations and validating API behaviour, which is integration testing."
+          }
+        ]
+      },
+      {
+        "id": "api-testing",
+        "label": "API testing",
+        "description": "Testing application programming interfaces to verify behaviour, authentication, and error handling.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes validating API behaviour, authentication flows, encryption, error handling, and webhooks."
+          }
+        ]
+      },
+      {
+        "id": "authentication-testing",
+        "label": "Authentication testing",
+        "description": "Testing authentication flows to ensure they work correctly and securely.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions validating authentication flows as part of API testing."
+          }
+        ]
+      },
+      {
+        "id": "encryption-testing",
+        "label": "Encryption testing",
+        "description": "Testing encryption mechanisms to ensure data is protected correctly.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions validating encryption as part of API testing and creating encryption/decryption integrations."
+          }
+        ]
+      },
+      {
+        "id": "webhook-testing",
+        "label": "Webhook testing",
+        "description": "Testing webhook callbacks and asynchronous processing.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions validating webhooks and creating webhook integrations."
+          }
+        ]
+      },
+      {
+        "id": "sandbox-testing",
+        "label": "Sandbox testing",
+        "description": "Testing in a sandbox environment that mimics production but with mocked behaviour and constraints.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes strong understanding of sandbox and production environments and using sandbox environments for testing."
+          }
+        ]
+      },
+      {
+        "id": "defect-tracking",
+        "label": "Defect tracking",
+        "description": "The process of identifying, documenting, and managing defects.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes identifying, reproducing, documenting, and tracking defects."
+          }
+        ]
+      },
+      {
+        "id": "test-automation",
+        "label": "Test automation",
+        "description": "Using scripts and tools to automate repeated testing tasks.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes developing scripts and reusable integration code to make validation more efficient."
+          }
+        ]
+      },
+      {
+        "id": "developer-experience-evaluation",
+        "label": "Developer experience evaluation",
+        "description": "Assessing developer tools and workflows from a usability perspective.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes evaluating developer tools and workflows from a usability perspective."
+          }
+        ]
+      }
+    ]
+  }
+}

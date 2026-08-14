@@ -1,0 +1,419 @@
+{
+  "fingerprint": "67b828afadead69660aacc4c04ed597a4624ad13ac794033c582c13563f09588",
+  "label": "extract-tech-012-DocumentationEngineering",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system used for documentation source control.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes extensive Git-based workflows, branching, pull requests, rebasing, and merge conflict resolution."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for authoring documentation.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes Markdown and MDX authoring, custom Markdown extensions, and Markdown-based platforms."
+          }
+        ]
+      },
+      {
+        "id": "mdx",
+        "label": "MDX",
+        "description": "A format that combines Markdown with JSX for interactive documentation.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document explicitly mentions MDX authoring."
+          }
+        ]
+      },
+      {
+        "id": "jenkins",
+        "label": "Jenkins",
+        "description": "An open-source automation server used for CI/CD pipelines.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes developing and operating a Jenkins-based publishing pipeline for Codetreedocs."
+          }
+        ]
+      },
+      {
+        "id": "github-actions",
+        "label": "GitHub Actions",
+        "description": "A CI/CD and automation platform integrated with GitHub.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document states that GitHub Actions automatically builds and publishes the Docusaurus portfolio."
+          }
+        ]
+      },
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A static-site generator for documentation websites.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions using Docusaurus for a portfolio and building/publishing it with GitHub Actions."
+          }
+        ]
+      },
+      {
+        "id": "mkdocs",
+        "label": "MkDocs",
+        "description": "A static-site generator for Markdown documentation.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists MkDocs as a static-site generator used and mentions modifying Python-based MkDocs plugins."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions Python migration scripts, Python-based MkDocs plugins, and Python test applications."
+          }
+        ]
+      },
+      {
+        "id": "java",
+        "label": "Java",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions Java test applications for API testing and validation."
+          }
+        ]
+      },
+      {
+        "id": "react",
+        "label": "React",
+        "description": "A JavaScript library for building user interfaces.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions using React components in the Docusaurus portfolio to turn Markdown data into visual layouts."
+          }
+        ]
+      },
+      {
+        "id": "postman",
+        "label": "Postman",
+        "description": "An API development and testing tool.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists Postman as a tool used for API testing and validation."
+          }
+        ]
+      },
+      {
+        "id": "insomnia",
+        "label": "Insomnia",
+        "description": "An API client and testing tool.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists Insomnia as a tool used for API testing and validation."
+          }
+        ]
+      },
+      {
+        "id": "graphviz",
+        "label": "Graphviz",
+        "description": "A graph visualization tool used for generating diagrams.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions creating Graphviz-based tooling for generating hyperlinked trail diagrams."
+          }
+        ]
+      },
+      {
+        "id": "ocr",
+        "label": "OCR libraries",
+        "description": "Optical character recognition libraries used to extract text from images.",
+        "kind": "library",
+        "parent": null,
+        "aliases": [
+          "OCR"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions using OCR libraries to identify obsolete terminology in legacy raster diagrams."
+          }
+        ]
+      },
+      {
+        "id": "rag",
+        "label": "RAG (Retrieval-Augmented Generation)",
+        "description": "A technique combining retrieval with generative AI for search and question answering.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "Retrieval-Augmented Generation"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions RAG-based documentation search and identifying retrieval problems in AI-generated answers."
+          }
+        ]
+      },
+      {
+        "id": "ide-plugin",
+        "label": "IDE plugin",
+        "description": "A plugin for an integrated development environment providing live preview and migration tools.",
+        "kind": "developer-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes an IDE plugin with live preview for Codetreedocs and an IDE-based migration tool."
+          }
+        ]
+      },
+      {
+        "id": "static-site-generator",
+        "label": "Custom static-site generator",
+        "description": "A custom-built static-site generator for documentation.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions custom Markdown-based static-site generators and a custom platform (Codetreedocs) that includes a static-site generator."
+          }
+        ]
+      },
+      {
+        "id": "codetreedocs",
+        "label": "Codetreedocs",
+        "description": "A custom Markdown-based documentation platform developed at Morgan Stanley.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes Codetreedocs as a custom documentation platform with static-site generation, IDE plugin, Git source control, Jenkins publishing, and search."
+          }
+        ]
+      },
+      {
+        "id": "search-integration",
+        "label": "Search integration",
+        "description": "Integrating search functionality into documentation sites.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions integrating search into large documentation sites, including JavaScript-based and RAG-based search."
+          }
+        ]
+      },
+      {
+        "id": "metadata-filtering",
+        "label": "Metadata-based filtering",
+        "description": "Using metadata to filter search results and improve retrieval quality.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes proposing metadata-based filtering to improve search quality for AI-generated answers."
+          }
+        ]
+      },
+      {
+        "id": "site-analytics",
+        "label": "Site analytics",
+        "description": "Using analytics data to inform documentation decisions.",
+        "kind": "data-analysis-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions using site analytics to prioritise content migration."
+          }
+        ]
+      },
+      {
+        "id": "grammar-checking",
+        "label": "Automated grammar checking",
+        "description": "Using automated tools to check grammar and spelling in documentation.",
+        "kind": "documentation-qa-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists automated grammar checking as a validation technique."
+          }
+        ]
+      },
+      {
+        "id": "link-validation",
+        "label": "Link and build validation",
+        "description": "Validating links and builds in documentation.",
+        "kind": "documentation-qa-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions link and build validation as part of validation and quality."
+          }
+        ]
+      },
+      {
+        "id": "front-matter-processing",
+        "label": "Front-matter processing",
+        "description": "Processing YAML or TOML front matter in Markdown files.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists front-matter processing as an example of tooling and automation."
+          }
+        ]
+      },
+      {
+        "id": "landing-page-generation",
+        "label": "Automated landing-page generation",
+        "description": "Automatically generating landing pages from documentation data.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists automated landing-page generation as an example of tooling and automation."
+          }
+        ]
+      },
+      {
+        "id": "diagram-generation",
+        "label": "Diagram generation",
+        "description": "Automatically generating diagrams from documentation data.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists diagram generation as an example of tooling and automation."
+          }
+        ]
+      },
+      {
+        "id": "ai-assisted-documentation",
+        "label": "AI-assisted documentation workflows",
+        "description": "Using AI to assist in documentation creation and maintenance.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists AI-assisted documentation workflows as an example of tooling and automation."
+          }
+        ]
+      },
+      {
+        "id": "monorepo",
+        "label": "Monorepo",
+        "description": "A repository strategy that stores multiple projects in a single repository.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions large documentation repositories and monorepos."
+          }
+        ]
+      },
+      {
+        "id": "docs-as-code",
+        "label": "Docs-as-Code",
+        "description": "A methodology that applies software engineering practices to documentation.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document is about documentation engineering and explicitly describes docs-as-code practices."
+          }
+        ]
+      }
+    ]
+  }
+}

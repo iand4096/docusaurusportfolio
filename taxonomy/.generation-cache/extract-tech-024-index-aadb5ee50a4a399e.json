@@ -1,0 +1,23 @@
+{
+  "fingerprint": "aadb5ee50a4a399eda6e39cbee6af281a52cd013f574f3dedb225e78c41c3833",
+  "label": "extract-tech-024-index",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A documentation site generator used to create and publish technical documentation.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/index.md",
+            "reason": "The page imports a Docusaurus component (ToolsGrid) and is part of a Docusaurus site."
+          }
+        ]
+      }
+    ]
+  }
+}

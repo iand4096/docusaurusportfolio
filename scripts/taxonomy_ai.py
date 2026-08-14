@@ -1,11 +1,20 @@
 #!/usr/bin/env python3
 """DeepSeek-assisted metadata classification and taxonomy-gap suggestions.
 
-AI output is advisory by default. It never controls deterministic CI success.
+AI output is advisory by default. Deterministic repository state remains the
+source of truth and the only basis for blocking CI.
 
-Taxonomy v2 understands technology subclasses (`kind`) and a long-career
-portfolio model: the technology vocabulary may be broad, while each individual
-page is kept selective through global and content-type-specific cardinality.
+This version is deliberately tolerant at the AI boundary:
+
+- Existing terms are resolved by ID, label or alias rather than requiring the
+  model to reproduce repository IDs perfectly.
+- A proposal that resolves to an existing term is folded into normal metadata
+  instead of failing the document.
+- Proposal evidence is verified/recovered from the actual document text.
+- One invalid proposal is dropped with a warning; it does not invalidate the
+  rest of the document classification.
+- Over-cardinality AI selections are trimmed deterministically with a warning.
+  Under-cardinality required metadata still fails the document classification.
 
 Examples:
 
@@ -13,10 +22,10 @@ Examples:
   python scripts/taxonomy_ai.py --changed-base origin/main
   python scripts/taxonomy_ai.py --all --apply
 
-When --apply is used, proposed terms are added to taxonomy/taxonomy.yml with
-`source: ai-proposed`, metadata is written to document front matter, and
-derived Docusaurus/Front Matter files are regenerated. Nothing is committed or
-pushed; the git diff remains the human approval surface.
+When --apply is used, accepted proposed terms are added to
+taxonomy/taxonomy.yml with `source: ai-proposed`, metadata is written to the
+selected documents, and derived Docusaurus/Front Matter files are regenerated.
+Nothing is committed or pushed; `git diff` remains the human approval surface.
 """
 
 from __future__ import annotations
@@ -30,7 +39,7 @@ import sys
 import time
 from datetime import date
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterable
 
 import requests
 from ruamel.yaml import YAML
@@ -59,8 +68,9 @@ CORE RULES:
 - Select only values materially supported by the supplied document.
 - Prefer precise metadata over indiscriminate tagging.
 - Respect global and content-type-specific cardinality constraints.
-- For an existing term, return its exact ID.
-- Never silently invent an ID and use it as an existing term.
+- Prefer exact existing IDs, but deterministic tooling will also resolve labels
+  and aliases if necessary.
+- Never silently invent an ID and use it as though it already exists.
 - Lifecycle is policy-controlled: choose an existing lifecycle value and never
   propose a lifecycle term.
 - A new term may be proposed only in a dimension marked ai_managed=true.
@@ -68,10 +78,12 @@ CORE RULES:
 TECHNOLOGY POLICY:
 
 - The technology vocabulary is intentionally broad because the portfolio spans
-  a long career. Do not remove or avoid a legitimate technology merely because
-  it is historical or appears in only one document.
+  a long career. Historical technologies are valid professional evidence.
 - A technology must be materially used, documented, implemented, tested,
   explained or demonstrated by the page.
+- Foundational and specialised technologies are distinct capabilities. For
+  example Python + Flask, JavaScript + React, OpenAPI + Postman, Git + GitHub
+  Actions may all be selected together when supported.
 - Every technology term has a controlled `kind`. New technology proposals MUST
   use one of the supplied technology kind IDs.
 - Companies, employers, clients, customers, consultancies, manufacturers,
@@ -81,22 +93,22 @@ TECHNOLOGY POLICY:
   was performed for that company.
 - A software product/platform sharing a company/brand name can be a technology
   only when the document is materially about using that product/platform.
-- Reusable technical methods are allowed when an existing kind such as
+- Reusable technical methods are allowed when a supplied kind such as
   modelling-methodology, architecture-style or technical-technique applies.
 
 TAXONOMY EXPANSION HAS A HIGH BAR. Propose a new term only when:
 
 1. The concept is substantively present in this document.
 2. No existing term accurately represents it.
-3. The concept is reusable and is reasonably likely to classify other content,
-   OR it is significant evidence of genuine professional technology experience.
+3. The concept is reusable and reasonably likely to classify other content, OR
+   it is significant evidence of genuine professional technology experience.
 4. It is meaningfully distinct from existing terms and aliases.
 5. It is not merely a project/client/employer/company name or passing mention.
 
-For every proposed term provide a concise rationale and one or more short exact
-source excerpts as evidence. Evidence must occur verbatim in DOCUMENT CONTENT.
-Use a stable lower-case kebab-case ID. A parent is optional and must refer to an
-existing or simultaneously proposed term in the same dimension.
+For each proposed term provide a concise rationale plus `evidence_hints`:
+short phrases identifying where the evidence appears. They do not need to be
+perfect quotations; deterministic tooling will locate and preserve the exact
+source text. Do not invent evidence that is absent from the document.
 
 Return exactly this top-level JSON shape:
 
@@ -124,16 +136,22 @@ Return exactly this top-level JSON shape:
       "kind": "developer-tool",
       "parent": null,
       "aliases": [],
-      "reason": "Why the existing vocabulary is insufficient and this is genuine technical experience.",
-      "evidence": ["exact excerpt from the document"]
+      "reason": "Why the existing vocabulary is insufficient.",
+      "evidence_hints": ["phrase identifying the relevant source evidence"]
     }
   ]
 }
 
-For proposals outside the technologies dimension, omit `kind`. Use an empty
-proposed_taxonomy_terms array when the existing taxonomy is sufficient. Do not
-include Markdown fences or commentary.
+For proposals outside technologies, omit `kind`. Use an empty proposal array
+when the existing taxonomy is sufficient. Do not include Markdown fences or
+commentary.
 """
+
+STOPWORDS = {
+    "a", "an", "and", "are", "as", "at", "be", "by", "for", "from", "in",
+    "is", "it", "of", "on", "or", "that", "the", "this", "to", "used", "using",
+    "with", "was", "were", "into", "through", "tool", "technology", "platform",
+}
 
 
 def parse_args() -> argparse.Namespace:
@@ -155,7 +173,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="Apply suggestions to the working tree; review and commit the diff manually",
+        help="Apply accepted suggestions to the working tree; review and commit the diff manually",
     )
     return parser.parse_args()
 
@@ -208,6 +226,11 @@ def request_json(
                 json=payload,
                 timeout=240,
             )
+            if response.status_code == 429 or response.status_code >= 500:
+                raise requests.HTTPError(
+                    f"DeepSeek returned HTTP {response.status_code}: {response.text[:500]}",
+                    response=response,
+                )
             response.raise_for_status()
             result = response.json()
             content = result["choices"][0]["message"]["content"]
@@ -299,6 +322,344 @@ def active_term_ids(dimension: dict[str, Any]) -> set[str]:
     return set(taxonomy_tools.active_terms(dimension))
 
 
+def normalise_lookup(value: str) -> str:
+    text = value.casefold().strip()
+    text = text.replace("++", " plus plus ").replace("#", " sharp ")
+    text = re.sub(r"[^a-z0-9]+", " ", text)
+    return " ".join(text.split())
+
+
+def build_term_index(dimension: dict[str, Any]) -> dict[str, set[str]]:
+    index: dict[str, set[str]] = {}
+    for term_id, term in taxonomy_tools.active_terms(dimension).items():
+        names = [term_id, term["label"], *term.get("aliases", [])]
+        for name in names:
+            key = normalise_lookup(name)
+            if key:
+                index.setdefault(key, set()).add(term_id)
+    return index
+
+
+def resolve_existing_term(value: str, dimension: dict[str, Any]) -> tuple[str | None, str | None]:
+    active = taxonomy_tools.active_terms(dimension)
+    if value in active:
+        return value, "exact-id"
+
+    key = normalise_lookup(value)
+    matches = build_term_index(dimension).get(key, set())
+    if len(matches) == 1:
+        return next(iter(matches)), "label-or-alias"
+    if len(matches) > 1:
+        return None, "ambiguous"
+    return None, None
+
+
+def resolve_proposal_term(value: str, proposals: Iterable[dict[str, Any]]) -> str | None:
+    key = normalise_lookup(value)
+    matches: set[str] = set()
+    for proposal in proposals:
+        names = [proposal["id"], proposal["label"], *proposal.get("aliases", [])]
+        if any(normalise_lookup(name) == key for name in names):
+            matches.add(proposal["id"])
+    if len(matches) == 1:
+        return next(iter(matches))
+    return None
+
+
+def clean_aliases(value: Any, label: str) -> list[str]:
+    if not isinstance(value, list):
+        return []
+    return sorted(
+        {
+            item.strip()
+            for item in value
+            if isinstance(item, str)
+            and item.strip()
+            and item.strip().casefold() != label.casefold()
+        },
+        key=str.casefold,
+    )
+
+
+def organisation_like_signals(description: str) -> list[str]:
+    return [
+        name
+        for name, pattern in taxonomy_tools.ORGANISATION_LIKE_DESCRIPTION_PATTERNS
+        if pattern.search(description)
+    ]
+
+
+def sentence_or_line_chunks(text: str) -> list[str]:
+    chunks: list[str] = []
+    for line in text.splitlines():
+        stripped = line.strip()
+        if not stripped:
+            continue
+        for sentence in re.split(r"(?<=[.!?])\s+", stripped):
+            sentence = sentence.strip()
+            if sentence:
+                chunks.append(sentence)
+    return chunks
+
+
+def tokenise(value: str) -> set[str]:
+    return {
+        token
+        for token in re.findall(r"[A-Za-z0-9+#.]+", value.casefold())
+        if len(token) >= 2 and token not in STOPWORDS
+    }
+
+
+def exact_case_insensitive_excerpt(document_text: str, needle: str) -> str | None:
+    if not needle.strip():
+        return None
+    match = re.search(re.escape(needle.strip()), document_text, re.IGNORECASE)
+    if not match:
+        return None
+    start = max(
+        document_text.rfind("\n", 0, match.start()) + 1,
+        document_text.rfind(". ", 0, match.start()) + 2,
+    )
+    line_end = document_text.find("\n", match.end())
+    sentence_end = document_text.find(". ", match.end())
+    ends = [end for end in (line_end, sentence_end + 1 if sentence_end >= 0 else -1) if end >= 0]
+    end = min(ends) if ends else min(len(document_text), match.end() + 220)
+    excerpt = document_text[start:end].strip()
+    return excerpt[:400] if excerpt else document_text[match.start():match.end()]
+
+
+def recover_evidence(
+    document_text: str,
+    *,
+    label: str,
+    aliases: list[str],
+    term_id: str,
+    hints: list[str],
+    max_items: int = 3,
+) -> list[str]:
+    evidence: list[str] = []
+
+    # 1. Preserve model evidence when it is already exact.
+    for hint in hints:
+        if hint and hint in document_text:
+            evidence.append(hint.strip())
+        elif hint:
+            excerpt = exact_case_insensitive_excerpt(document_text, hint)
+            if excerpt:
+                evidence.append(excerpt)
+        if len(evidence) >= max_items:
+            return list(dict.fromkeys(evidence))[:max_items]
+
+    # 2. Search canonical names/aliases and preserve actual source context.
+    name_needles = [label, *aliases, term_id.replace("-", " ")]
+    for needle in name_needles:
+        excerpt = exact_case_insensitive_excerpt(document_text, needle)
+        if excerpt:
+            evidence.append(excerpt)
+        if len(evidence) >= max_items:
+            return list(dict.fromkeys(evidence))[:max_items]
+
+    # 3. Deterministic token-overlap recovery for paraphrased evidence hints.
+    chunks = sentence_or_line_chunks(document_text)
+    best: list[tuple[float, str]] = []
+    for hint in hints:
+        hint_tokens = tokenise(hint)
+        if not hint_tokens:
+            continue
+        for chunk in chunks:
+            chunk_tokens = tokenise(chunk)
+            if not chunk_tokens:
+                continue
+            overlap = len(hint_tokens & chunk_tokens)
+            if not overlap:
+                continue
+            score = overlap / len(hint_tokens)
+            # Require two shared meaningful tokens where possible, or a very
+            # strong match for a one-token hint.
+            if overlap >= 2 or score >= 0.8:
+                best.append((score, chunk[:400]))
+    for _score, chunk in sorted(best, key=lambda item: (-item[0], len(item[1]))):
+        evidence.append(chunk)
+        if len(list(dict.fromkeys(evidence))) >= max_items:
+            break
+
+    return list(dict.fromkeys(evidence))[:max_items]
+
+
+def proposal_existing_match(
+    raw: dict[str, Any],
+    dimension: dict[str, Any],
+) -> tuple[str | None, str | None]:
+    probes = []
+    for key in ("id", "label"):
+        value = raw.get(key)
+        if isinstance(value, str) and value.strip():
+            probes.append(value.strip())
+    aliases = raw.get("aliases", [])
+    if isinstance(aliases, list):
+        probes.extend(item.strip() for item in aliases if isinstance(item, str) and item.strip())
+
+    for probe in probes:
+        resolved, method = resolve_existing_term(probe, dimension)
+        if resolved:
+            return resolved, method
+    return None, None
+
+
+def validate_one_proposal(
+    raw: Any,
+    *,
+    taxonomy: dict[str, Any],
+    document_text: str,
+) -> tuple[dict[str, Any] | None, dict[str, Any] | None, str | None]:
+    """Return (accepted proposal, warning, folded_existing_id)."""
+
+    if not isinstance(raw, dict):
+        return None, {"code": "invalid-proposal", "message": "Proposal is not an object."}, None
+
+    dimensions = taxonomy["dimensions"]
+    kind_ids = set(taxonomy["technology_kinds"])
+    dimension_id = raw.get("dimension")
+    term_id = raw.get("id")
+    label = raw.get("label")
+    description = raw.get("description")
+    kind = raw.get("kind")
+    parent = raw.get("parent")
+    aliases = raw.get("aliases", [])
+    reason = raw.get("reason")
+
+    if dimension_id not in dimensions:
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"Proposal uses unknown dimension {dimension_id!r}.",
+        }, None
+    dimension = dimensions[dimension_id]
+    if not dimension["ai_managed"]:
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"AI may not propose terms in {dimension_id!r}.",
+        }, None
+
+    existing_id, match_method = proposal_existing_match(raw, dimension)
+    if existing_id:
+        return None, {
+            "code": "folded-existing-proposal",
+            "message": (
+                f"Proposal {dimension_id}.{term_id or label!s} resolves to existing term "
+                f"{existing_id!r}; reused the existing term instead of proposing a duplicate."
+            ),
+            "dimension": dimension_id,
+            "existing_id": existing_id,
+            "match_method": match_method,
+        }, existing_id
+
+    if not isinstance(term_id, str) or not TERM_ID_RE.fullmatch(term_id):
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"Invalid proposed term ID {term_id!r}.",
+        }, None
+    if not isinstance(label, str) or not label.strip():
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"Proposal {dimension_id}.{term_id} has no label.",
+        }, None
+    if not isinstance(description, str) or not description.strip():
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"Proposal {dimension_id}.{term_id} has no description.",
+        }, None
+
+    if dimension_id == "technologies":
+        if not isinstance(kind, str) or kind not in kind_ids:
+            return None, {
+                "code": "invalid-technology-kind",
+                "message": (
+                    f"Technology proposal {term_id!r} does not use an approved technology kind."
+                ),
+            }, None
+        signals = organisation_like_signals(description)
+        if signals:
+            return None, {
+                "code": "organisation-like-technology",
+                "message": (
+                    f"Dropped technology proposal {term_id!r}: description looks organisation-like "
+                    f"({', '.join(signals)})."
+                ),
+            }, None
+    elif kind is not None:
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"Proposal {dimension_id}.{term_id} must not contain kind.",
+        }, None
+
+    if parent is not None and not isinstance(parent, str):
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"Proposal {dimension_id}.{term_id} has invalid parent.",
+        }, None
+    if not isinstance(aliases, list) or not all(isinstance(item, str) for item in aliases):
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"Proposal {dimension_id}.{term_id} aliases must be strings.",
+        }, None
+    if not isinstance(reason, str) or not reason.strip():
+        return None, {
+            "code": "invalid-proposal",
+            "message": f"Proposal {dimension_id}.{term_id} has no rationale.",
+        }, None
+
+    clean_alias_list = clean_aliases(aliases, label.strip())
+    raw_hints = raw.get("evidence_hints", raw.get("evidence", []))
+    hints = (
+        [item.strip() for item in raw_hints if isinstance(item, str) and item.strip()]
+        if isinstance(raw_hints, list)
+        else []
+    )
+    evidence = recover_evidence(
+        document_text,
+        label=label.strip(),
+        aliases=clean_alias_list,
+        term_id=term_id,
+        hints=hints,
+    )
+    if not evidence:
+        return None, {
+            "code": "unverified-evidence",
+            "message": (
+                f"Dropped proposal {dimension_id}.{term_id}: no exact source evidence could be "
+                "recovered from the document."
+            ),
+        }, None
+
+    proposal: dict[str, Any] = {
+        "dimension": dimension_id,
+        "id": term_id,
+        "label": label.strip(),
+        "description": description.strip(),
+        "parent": parent,
+        "aliases": clean_alias_list,
+        "reason": reason.strip(),
+        "evidence": evidence,
+        "evidence_hints": hints,
+    }
+    if dimension_id == "technologies":
+        proposal["kind"] = kind
+    return proposal, None, None
+
+
+def dedupe_preserve_order(values: list[str]) -> tuple[list[str], bool]:
+    seen: set[str] = set()
+    result: list[str] = []
+    had_duplicates = False
+    for value in values:
+        if value in seen:
+            had_duplicates = True
+            continue
+        seen.add(value)
+        result.append(value)
+    return result, had_duplicates
+
+
 def validate_ai_result(
     result: dict[str, Any],
     taxonomy: dict[str, Any],
@@ -310,167 +671,239 @@ def validate_ai_result(
     if not isinstance(metadata, dict):
         raise ValueError("metadata must be an object")
     if not isinstance(reasons, dict):
-        raise ValueError("selection_reasons must be an object")
+        reasons = {}
     if not isinstance(raw_proposals, list):
         raise ValueError("proposed_taxonomy_terms must be an array")
 
     dimensions = taxonomy["dimensions"]
-    kind_ids = set(taxonomy["technology_kinds"])
+    warnings: list[dict[str, Any]] = []
     proposals: list[dict[str, Any]] = []
-    proposed_ids: dict[str, set[str]] = {dimension_id: set() for dimension_id in dimensions}
+    folded_existing: dict[str, set[str]] = {dimension_id: set() for dimension_id in dimensions}
 
+    # Validate proposals individually. A bad proposal is advisory noise, not a
+    # reason to discard otherwise valid document metadata.
     for raw in raw_proposals:
-        if not isinstance(raw, dict):
-            raise ValueError("each proposed taxonomy term must be an object")
-        dimension_id = raw.get("dimension")
-        term_id = raw.get("id")
-        label = raw.get("label")
-        description = raw.get("description")
-        kind = raw.get("kind")
-        parent = raw.get("parent")
-        aliases = raw.get("aliases", [])
-        reason = raw.get("reason")
-        evidence = raw.get("evidence")
-
-        if dimension_id not in dimensions:
-            raise ValueError(f"proposal uses unknown dimension {dimension_id!r}")
-        dimension = dimensions[dimension_id]
-        if not dimension["ai_managed"]:
-            raise ValueError(f"AI may not propose terms in {dimension_id!r}")
-        if not isinstance(term_id, str) or not TERM_ID_RE.fullmatch(term_id):
-            raise ValueError(f"invalid proposed term ID {term_id!r}")
-        if term_id in dimension["terms"]:
-            raise ValueError(f"proposed term {dimension_id}.{term_id} already exists")
-        if not isinstance(label, str) or not label.strip():
-            raise ValueError(f"proposal {dimension_id}.{term_id} needs a label")
-        if not isinstance(description, str) or not description.strip():
-            raise ValueError(f"proposal {dimension_id}.{term_id} needs a description")
-
-        if dimension_id == "technologies":
-            if not isinstance(kind, str) or kind not in kind_ids:
-                raise ValueError(
-                    f"technology proposal {term_id!r} must use one approved technology kind"
-                )
-            signals = [
-                name
-                for name, pattern in taxonomy_tools.ORGANISATION_LIKE_DESCRIPTION_PATTERNS
-                if pattern.search(description)
-            ]
-            if signals:
-                raise ValueError(
-                    f"technology proposal {term_id!r} looks organisation-like "
-                    f"({', '.join(signals)}); do not create company/employer/client technologies"
-                )
-        elif kind is not None:
-            raise ValueError(f"proposal {dimension_id}.{term_id} must not contain kind")
-
-        if parent is not None and not isinstance(parent, str):
-            raise ValueError(f"proposal {dimension_id}.{term_id} has invalid parent")
-        if not isinstance(aliases, list) or not all(isinstance(item, str) for item in aliases):
-            raise ValueError(f"proposal {dimension_id}.{term_id} aliases must be strings")
-        if not isinstance(reason, str) or not reason.strip():
-            raise ValueError(f"proposal {dimension_id}.{term_id} needs a reason")
-        if not isinstance(evidence, list) or not evidence or not all(
-            isinstance(item, str) and item.strip() for item in evidence
-        ):
-            raise ValueError(f"proposal {dimension_id}.{term_id} needs evidence")
-        for excerpt in evidence:
-            if excerpt not in document_text:
-                raise ValueError(
-                    f"proposal {dimension_id}.{term_id} evidence is not an exact document excerpt"
-                )
-
-        label_cf = label.strip().casefold()
-        existing_names = {term["label"].strip().casefold() for term in dimension["terms"].values()}
-        existing_names.update(
-            alias.strip().casefold()
-            for term in dimension["terms"].values()
-            for alias in term.get("aliases", [])
+        proposal, warning, folded_id = validate_one_proposal(
+            raw, taxonomy=taxonomy, document_text=document_text
         )
-        if label_cf in existing_names:
-            raise ValueError(
-                f"proposal {dimension_id}.{term_id} duplicates an existing label or alias"
-            )
+        if warning:
+            warnings.append(warning)
+        if proposal:
+            proposals.append(proposal)
+        if folded_id and isinstance(raw, dict) and raw.get("dimension") in dimensions:
+            folded_existing[raw["dimension"]].add(folded_id)
 
-        proposal: dict[str, Any] = {
-            "dimension": dimension_id,
-            "id": term_id,
-            "label": label.strip(),
-            "description": description.strip(),
-            "parent": parent,
-            "aliases": sorted(
-                {
-                    item.strip()
-                    for item in aliases
-                    if item.strip() and item.strip().casefold() != label_cf
-                },
-                key=str.casefold,
-            ),
-            "reason": reason.strip(),
-            "evidence": [item.strip() for item in evidence],
-        }
-        if dimension_id == "technologies":
-            proposal["kind"] = kind
-        proposals.append(proposal)
-        proposed_ids[dimension_id].add(term_id)
+    proposed_by_dimension: dict[str, list[dict[str, Any]]] = {
+        dimension_id: [] for dimension_id in dimensions
+    }
+    for proposal in proposals:
+        proposed_by_dimension[proposal["dimension"]].append(proposal)
 
+    # Parent validation is per proposal and non-fatal. Drop only proposals with
+    # unresolved parents.
+    accepted_proposals: list[dict[str, Any]] = []
+    proposed_ids_all = {
+        dimension_id: {proposal["id"] for proposal in items}
+        for dimension_id, items in proposed_by_dimension.items()
+    }
     for proposal in proposals:
         parent = proposal.get("parent")
-        if not parent:
-            continue
-        dimension_id = proposal["dimension"]
-        if parent not in dimensions[dimension_id]["terms"] and parent not in proposed_ids[dimension_id]:
-            raise ValueError(
-                f"proposal {dimension_id}.{proposal['id']} uses unknown parent {parent!r}"
-            )
+        if parent:
+            dimension_id = proposal["dimension"]
+            resolved_parent, _ = resolve_existing_term(parent, dimensions[dimension_id])
+            if resolved_parent:
+                proposal["parent"] = resolved_parent
+            elif parent not in proposed_ids_all[dimension_id]:
+                warnings.append(
+                    {
+                        "code": "unknown-proposal-parent",
+                        "message": (
+                            f"Dropped proposal {dimension_id}.{proposal['id']}: parent {parent!r} "
+                            "does not resolve to an existing or simultaneously proposed term."
+                        ),
+                    }
+                )
+                continue
+        accepted_proposals.append(proposal)
+    proposals = accepted_proposals
+    proposed_by_dimension = {dimension_id: [] for dimension_id in dimensions}
+    for proposal in proposals:
+        proposed_by_dimension[proposal["dimension"]].append(proposal)
 
-    # Validate type first because other dimensions may use content-type-specific limits.
+    # Content type first because it determines per-type cardinality limits.
     type_dimension = dimensions["content_types"]
     type_field = type_dimension["metadata_field"]
-    type_value = metadata.get(type_field)
-    if not isinstance(type_value, str):
-        raise ValueError(f"metadata.{type_field} must be a single ID")
-    allowed_types = active_term_ids(type_dimension) | proposed_ids["content_types"]
-    if type_value not in allowed_types:
-        raise ValueError(f"metadata.{type_field} uses undeclared ID {type_value!r}")
+    raw_type = metadata.get(type_field)
+    if not isinstance(raw_type, str):
+        raise ValueError(f"metadata.{type_field} must be a single ID or label")
+    type_value, method = resolve_existing_term(raw_type, type_dimension)
+    if not type_value:
+        type_value = resolve_proposal_term(raw_type, proposed_by_dimension["content_types"])
+        method = "proposed-term" if type_value else method
+    if not type_value:
+        raise ValueError(f"metadata.{type_field} does not resolve to a declared/proposed content type: {raw_type!r}")
+    if method != "exact-id":
+        warnings.append(
+            {
+                "code": "canonicalised-metadata",
+                "message": f"Resolved metadata.{type_field} {raw_type!r} to canonical ID {type_value!r}.",
+            }
+        )
 
     clean_metadata: dict[str, Any] = {}
     for dimension_id, dimension in dimensions.items():
         field = dimension["metadata_field"]
-        value = metadata.get(field)
+        raw_value = metadata.get(field)
 
-        if dimension["multiple"]:
-            values = clean_string_list(value)
-            if values is None:
-                raise ValueError(f"metadata.{field} must be an array of IDs")
+        if dimension_id == "content_types":
+            raw_values = [type_value]
+        elif dimension["multiple"]:
+            raw_values = clean_string_list(raw_value)
+            if raw_values is None:
+                if dimension["required"]:
+                    raise ValueError(f"metadata.{field} must be an array of IDs/labels")
+                raw_values = []
+                warnings.append(
+                    {
+                        "code": "invalid-optional-metadata",
+                        "message": f"Ignored malformed optional metadata.{field}; expected an array.",
+                    }
+                )
         else:
-            if not isinstance(value, str):
-                raise ValueError(f"metadata.{field} must be a single ID")
-            values = [value]
+            if isinstance(raw_value, str):
+                raw_values = [raw_value]
+            elif dimension["required"]:
+                raise ValueError(f"metadata.{field} must be a single ID or label")
+            else:
+                raw_values = []
+
+        resolved_values: list[str] = []
+        if dimension_id == "content_types":
+            resolved_values = [type_value]
+        else:
+            for raw_item in raw_values:
+                resolved, resolve_method = resolve_existing_term(raw_item, dimension)
+                if not resolved:
+                    resolved = resolve_proposal_term(raw_item, proposed_by_dimension[dimension_id])
+                    if resolved:
+                        resolve_method = "proposed-term"
+                if not resolved:
+                    # If a proposal was folded into an existing term, the raw
+                    # metadata may still contain the proposed ID/label. Attempt
+                    # to map it through the folded existing set by normalised
+                    # comparison against the original raw proposals.
+                    folded_match = None
+                    for raw_proposal in raw_proposals:
+                        if not isinstance(raw_proposal, dict) or raw_proposal.get("dimension") != dimension_id:
+                            continue
+                        probes = [raw_proposal.get("id"), raw_proposal.get("label")]
+                        if any(
+                            isinstance(probe, str)
+                            and normalise_lookup(probe) == normalise_lookup(raw_item)
+                            for probe in probes
+                        ):
+                            folded_match, _ = proposal_existing_match(raw_proposal, dimension)
+                            if folded_match:
+                                break
+                    resolved = folded_match
+                    if resolved:
+                        resolve_method = "folded-existing-proposal"
+
+                if not resolved:
+                    warnings.append(
+                        {
+                            "code": "unknown-metadata-term",
+                            "message": f"Dropped unresolved metadata.{field} value {raw_item!r}.",
+                        }
+                    )
+                    continue
+                resolved_values.append(resolved)
+                if resolve_method != "exact-id":
+                    warnings.append(
+                        {
+                            "code": "canonicalised-metadata",
+                            "message": f"Resolved metadata.{field} {raw_item!r} to canonical ID {resolved!r}.",
+                        }
+                    )
+
+            # Folded duplicate proposals are genuine existing selections. Add
+            # them if the model proposed them but omitted them from metadata.
+            for folded_id in sorted(folded_existing[dimension_id]):
+                if folded_id not in resolved_values:
+                    resolved_values.append(folded_id)
+                    warnings.append(
+                        {
+                            "code": "folded-existing-proposal",
+                            "message": f"Added existing term {folded_id!r} to metadata.{field} from a redundant AI proposal.",
+                        }
+                    )
+
+            # An accepted new proposal is, by definition, materially evidenced
+            # by this document. For multi-valued dimensions, include it in the
+            # document metadata even if the model forgot to repeat its new ID
+            # in the metadata array.
+            if dimension["multiple"]:
+                for proposal in proposed_by_dimension[dimension_id]:
+                    proposal_id = proposal["id"]
+                    if proposal_id not in resolved_values:
+                        resolved_values.append(proposal_id)
+                        warnings.append(
+                            {
+                                "code": "added-proposed-term-to-metadata",
+                                "message": f"Added proposed term {proposal_id!r} to metadata.{field} because the proposal has verified document evidence.",
+                            }
+                        )
+
+        resolved_values, had_duplicates = dedupe_preserve_order(resolved_values)
+        if had_duplicates:
+            warnings.append(
+                {
+                    "code": "duplicate-metadata",
+                    "message": f"Removed duplicate IDs from metadata.{field}.",
+                }
+            )
 
         minimum, maximum = taxonomy_tools.effective_limits(dimension, type_value)
-        if len(values) < minimum or len(values) > maximum:
-            raise ValueError(
-                f"metadata.{field} violates cardinality {minimum}..{maximum} "
-                f"for content type {type_value!r}"
+        if len(resolved_values) > maximum:
+            original_count = len(resolved_values)
+            resolved_values = resolved_values[:maximum]
+            warnings.append(
+                {
+                    "code": "trimmed-cardinality",
+                    "message": (
+                        f"Trimmed metadata.{field} from {original_count} to {maximum} values to satisfy "
+                        f"cardinality for content type {type_value!r}."
+                    ),
+                }
             )
-        if len(values) != len(set(values)):
-            raise ValueError(f"metadata.{field} contains duplicate IDs")
+        if len(resolved_values) < minimum:
+            raise ValueError(
+                f"metadata.{field} has {len(resolved_values)} valid value(s) after canonicalisation; "
+                f"minimum is {minimum} for content type {type_value!r}"
+            )
 
-        allowed = active_term_ids(dimension) | proposed_ids[dimension_id]
-        unknown = [term_id for term_id in values if term_id not in allowed]
-        if unknown:
-            raise ValueError(f"metadata.{field} uses undeclared IDs: {unknown!r}")
+        clean_metadata[field] = resolved_values if dimension["multiple"] else resolved_values[0]
 
-        clean_metadata[field] = values if dimension["multiple"] else values[0]
+    clean_reasons: dict[str, str] = {}
+    for dimension in dimensions.values():
+        field = dimension["metadata_field"]
         reason = reasons.get(field)
-        if not isinstance(reason, str) or not reason.strip():
-            raise ValueError(f"selection_reasons.{field} must be a concise string")
+        if isinstance(reason, str) and reason.strip():
+            clean_reasons[field] = reason.strip()
+        else:
+            clean_reasons[field] = "AI classification; no rationale supplied."
+            warnings.append(
+                {
+                    "code": "missing-rationale",
+                    "message": f"selection_reasons.{field} was missing; retained the classification without a rationale.",
+                }
+            )
 
     return {
         "metadata": clean_metadata,
-        "selection_reasons": {field: reasons[field].strip() for field in clean_metadata},
+        "selection_reasons": clean_reasons,
         "proposed_taxonomy_terms": proposals,
+        "warnings": warnings,
     }
 
 
@@ -494,8 +927,9 @@ def make_user_prompt(
     )
 
 
-def merge_global_proposals(results: list[dict[str, Any]]) -> list[dict[str, Any]]:
+def merge_global_proposals(results: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[str]]:
     merged: dict[tuple[str, str], dict[str, Any]] = {}
+    warnings: list[str] = []
     for result in results:
         file_path = result["file"]
         for proposal in result["proposed_taxonomy_terms"]:
@@ -509,12 +943,14 @@ def merge_global_proposals(results: list[dict[str, Any]]) -> list[dict[str, Any]
 
             comparable_keys = ["label", "description", "kind", "parent", "aliases"]
             if any(existing.get(name) != proposal.get(name) for name in comparable_keys):
-                raise ValueError(f"conflicting AI proposals for {key[0]}.{key[1]} across documents")
+                warnings.append(
+                    f"Conflicting proposals for {key[0]}.{key[1]} across documents; kept the first definition for human review."
+                )
             existing["proposed_by_files"].append(file_path)
             existing["evidence"] = list(dict.fromkeys(existing["evidence"] + proposal["evidence"]))
             if proposal["reason"] not in existing["reason"]:
                 existing["reason"] += " " + proposal["reason"]
-    return [merged[key] for key in sorted(merged)]
+    return [merged[key] for key in sorted(merged)], warnings
 
 
 def yaml_snippet_for_proposal(proposal: dict[str, Any]) -> str:
@@ -539,6 +975,8 @@ def render_markdown_report(
     results: list[dict[str, Any]],
     proposals: list[dict[str, Any]],
     model: str,
+    document_errors: list[dict[str, str]],
+    global_warnings: list[str],
 ) -> str:
     lines = [
         "# Taxonomy AI suggestions",
@@ -548,8 +986,20 @@ def render_markdown_report(
         "> Advisory only. Repository taxonomy and deterministic validation remain authoritative.",
         "",
     ]
+
+    if document_errors:
+        lines.extend(["## Classification errors", ""])
+        for error in document_errors:
+            lines.append(f"- `{error['file']}`: {error['error']}")
+        lines.append("")
+
+    if global_warnings:
+        lines.extend(["## Cross-document proposal warnings", ""])
+        lines.extend(f"- {warning}" for warning in global_warnings)
+        lines.append("")
+
     if not results:
-        lines.extend(["No documentation files required AI classification.", ""])
+        lines.extend(["No documentation files produced a usable AI classification.", ""])
         return "\n".join(lines)
 
     for result in results:
@@ -562,6 +1012,12 @@ def render_markdown_report(
         for field, reason in result["selection_reasons"].items():
             lines.append(f"- **{field}**: {reason}")
         lines.append("")
+
+        if result.get("warnings"):
+            lines.extend(["### Normalisation / validation notes", ""])
+            for warning in result["warnings"]:
+                lines.append(f"- {warning['message']}")
+            lines.append("")
 
         file_proposals = result["proposed_taxonomy_terms"]
         if file_proposals:
@@ -580,7 +1036,7 @@ def render_markdown_report(
                         yaml_snippet_for_proposal(proposal),
                         "```",
                         "",
-                        "Evidence:",
+                        "Verified source evidence:",
                     ]
                 )
                 for excerpt in proposal["evidence"]:
@@ -726,17 +1182,19 @@ def main() -> int:
             validated["file"] = relative
             validated["current_metadata"] = current
             results.append(validated)
+            for warning in validated.get("warnings", []):
+                print(f"NOTE: {relative}: {warning['message']}", file=sys.stderr)
         except Exception as error:
             errors.append({"file": relative, "error": str(error)})
             print(f"WARNING: {relative}: {error}", file=sys.stderr)
 
-    try:
-        proposals = merge_global_proposals(results)
-    except ValueError as error:
-        print(f"ERROR: {error}", file=sys.stderr)
-        return 1
+    proposals, global_warnings = merge_global_proposals(results)
+    for warning in global_warnings:
+        print(f"NOTE: {warning}", file=sys.stderr)
 
-    markdown_report = render_markdown_report(results, proposals, args.model)
+    markdown_report = render_markdown_report(
+        results, proposals, args.model, errors, global_warnings
+    )
     output = args.output if args.output.is_absolute() else root / args.output
     json_output = args.json_output if args.json_output.is_absolute() else root / args.json_output
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -749,6 +1207,7 @@ def main() -> int:
                 "model": args.model,
                 "results": results,
                 "consolidated_proposals": proposals,
+                "global_warnings": global_warnings,
                 "errors": errors,
             },
             indent=2,
@@ -763,7 +1222,8 @@ def main() -> int:
     if args.apply:
         if errors:
             print(
-                "ERROR: refusing --apply because one or more documents failed AI classification",
+                "ERROR: refusing --apply because one or more documents had no usable AI classification. "
+                "Proposal-level warnings do not block apply, but document-level failures do.",
                 file=sys.stderr,
             )
             return 1
@@ -774,8 +1234,8 @@ def main() -> int:
             return 1
         print("AI suggestions applied to the working tree. Review `git diff` before committing.")
 
-    # AI operational failures remain advisory in CI when this step is configured
-    # with continue-on-error / non-blocking workflow semantics.
+    # Proposal-level warnings are advisory. Only document-level classification
+    # failures produce a non-zero status.
     return 1 if errors else 0
 
 

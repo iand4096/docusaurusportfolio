@@ -1,0 +1,89 @@
+{
+  "fingerprint": "1fce91d1c5821fa3ca91c587c307ccd27590f6ff94119071f6ee9757bb6058c6",
+  "label": "consolidate-audiences-chunk-1-of-1",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "terms": {
+      "administrators": {
+        "label": "Administrators",
+        "description": "Individuals responsible for configuring, managing, and maintaining a system or application.",
+        "aliases": [],
+        "source_ids": [
+          "administrators"
+        ]
+      },
+      "api-developers": {
+        "label": "API Developers",
+        "description": "Developers who build integrations with APIs, including understanding authentication, endpoints, and data formats.",
+        "aliases": [],
+        "source_ids": [
+          "api-developers"
+        ]
+      },
+      "documentation-engineers": {
+        "label": "Documentation Engineers",
+        "description": "Engineers who apply software engineering practices to documentation, including automation, CI/CD, and tooling.",
+        "aliases": [],
+        "source_ids": [
+          "documentation-engineers"
+        ]
+      },
+      "end-users": {
+        "label": "End Users",
+        "description": "Individuals who use a software application or system to perform tasks, but do not administer or develop it.",
+        "aliases": [],
+        "source_ids": [
+          "end-users"
+        ]
+      },
+      "engineering-teams": {
+        "label": "Engineering Teams",
+        "description": "Software engineers who contribute to or consume documentation as part of their work.",
+        "aliases": [],
+        "source_ids": [
+          "engineering-teams"
+        ]
+      },
+      "merchant-developers": {
+        "label": "Merchant Developers",
+        "description": "Developers who integrate payment or commerce solutions into merchant websites or applications.",
+        "aliases": [],
+        "source_ids": [
+          "merchant-developers"
+        ]
+      },
+      "product-managers": {
+        "label": "Product Managers",
+        "description": "Individuals responsible for defining product direction and requirements.",
+        "aliases": [],
+        "source_ids": [
+          "product-managers"
+        ]
+      },
+      "stakeholders": {
+        "label": "Stakeholders",
+        "description": "Individuals with an interest in a project, such as managers, clients, or reviewers.",
+        "aliases": [],
+        "source_ids": [
+          "stakeholders"
+        ]
+      },
+      "subject-matter-experts": {
+        "label": "Subject Matter Experts",
+        "description": "Individuals with deep knowledge of a specific domain who provide input to documentation.",
+        "aliases": [],
+        "source_ids": [
+          "subject-matter-experts"
+        ]
+      },
+      "technical-writers": {
+        "label": "Technical Writers",
+        "description": "Professionals who create and maintain technical documentation.",
+        "aliases": [],
+        "source_ids": [
+          "technical-writers"
+        ]
+      }
+    }
+  }
+}

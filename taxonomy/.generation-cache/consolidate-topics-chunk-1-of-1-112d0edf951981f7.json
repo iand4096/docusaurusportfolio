@@ -1,0 +1,329 @@
+{
+  "fingerprint": "112d0edf951981f74842bfb967c2830577bf95057f9e3f10a2bac9fc9121a9b3",
+  "label": "consolidate-topics-chunk-1-of-1",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "terms": {
+      "ai-assisted-documentation": {
+        "label": "AI-Assisted Documentation",
+        "description": "The use of artificial intelligence tools to assist in creating, reviewing, or transforming documentation.",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-documentation"
+        ]
+      },
+      "api-authentication": {
+        "label": "API Authentication",
+        "description": "Methods and protocols for authenticating API requests, such as OAuth, mTLS, and API keys.",
+        "aliases": [],
+        "source_ids": [
+          "api-authentication"
+        ]
+      },
+      "api-documentation": {
+        "label": "API Documentation",
+        "description": "Documentation that describes how to use an API, including endpoints, parameters, authentication, and examples.",
+        "aliases": [],
+        "source_ids": [
+          "api-documentation"
+        ]
+      },
+      "architecture-diagrams": {
+        "label": "Architecture Diagrams",
+        "description": "Diagrams that represent the structure and relationships of a system's components.",
+        "aliases": [],
+        "source_ids": [
+          "architecture-diagrams"
+        ]
+      },
+      "automation": {
+        "label": "Automation",
+        "description": "The use of scripts and tools to automate repetitive documentation tasks, such as migration, validation, and publishing.",
+        "aliases": [],
+        "source_ids": [
+          "automation"
+        ]
+      },
+      "ci-cd": {
+        "label": "CI/CD",
+        "description": "Continuous integration and continuous deployment practices applied to documentation builds and publishing.",
+        "aliases": [],
+        "source_ids": [
+          "ci-cd"
+        ]
+      },
+      "conditional-text": {
+        "label": "Conditional Text",
+        "description": "Content that is conditionally included or excluded based on target audience or output format.",
+        "aliases": [],
+        "source_ids": [
+          "conditional-text"
+        ]
+      },
+      "content-inventory": {
+        "label": "Content Inventory",
+        "description": "A systematic assessment of existing documentation content, often used for migration or restructuring.",
+        "aliases": [],
+        "source_ids": [
+          "content-inventory"
+        ]
+      },
+      "content-management": {
+        "label": "Content Management",
+        "description": "The process of creating, managing, and publishing digital content, often using a CMS.",
+        "aliases": [],
+        "source_ids": [
+          "content-management"
+        ]
+      },
+      "content-migration": {
+        "label": "Content Migration",
+        "description": "The process of moving content from one platform or format to another.",
+        "aliases": [],
+        "source_ids": [
+          "content-migration"
+        ]
+      },
+      "content-reuse": {
+        "label": "Content Reuse",
+        "description": "Reusing content across multiple documents or outputs to reduce duplication and maintain consistency.",
+        "aliases": [],
+        "source_ids": [
+          "content-reuse"
+        ]
+      },
+      "developer-experience": {
+        "label": "Developer Experience",
+        "description": "The overall experience of developers when using a product, API, or documentation, focusing on usability and efficiency.",
+        "aliases": [],
+        "source_ids": [
+          "developer-experience"
+        ]
+      },
+      "developer-portal": {
+        "label": "Developer Portal",
+        "description": "A website or platform that provides developers with documentation, tools, and resources for integrating with a product.",
+        "aliases": [],
+        "source_ids": [
+          "developer-portal"
+        ]
+      },
+      "diagrams-as-code": {
+        "label": "Diagrams-as-Code",
+        "description": "The practice of creating diagrams from text-based source files, such as PlantUML or Mermaid, that can be version-controlled.",
+        "aliases": [],
+        "source_ids": [
+          "diagrams-as-code"
+        ]
+      },
+      "digital-signage": {
+        "label": "Digital Signage",
+        "description": "The use of digital displays to show content, such as advertisements or information, often managed by a content management system.",
+        "aliases": [],
+        "source_ids": [
+          "digital-signage"
+        ]
+      },
+      "docs-as-code": {
+        "label": "Docs-as-Code",
+        "description": "The practice of treating documentation like code, using version control, CI/CD, and automated builds.",
+        "aliases": [],
+        "source_ids": [
+          "docs-as-code"
+        ]
+      },
+      "documentation-governance": {
+        "label": "Documentation Governance",
+        "description": "The processes and standards for managing documentation quality, ownership, and lifecycle.",
+        "aliases": [],
+        "source_ids": [
+          "documentation-governance"
+        ]
+      },
+      "documentation-metrics": {
+        "label": "Documentation Metrics",
+        "description": "Quantitative measures used to assess documentation usage, quality, and maintenance needs.",
+        "aliases": [],
+        "source_ids": [
+          "documentation-metrics"
+        ]
+      },
+      "documentation-platform": {
+        "label": "Documentation Platform",
+        "description": "A system or toolset used to create, manage, and publish documentation.",
+        "aliases": [],
+        "source_ids": [
+          "documentation-platform"
+        ]
+      },
+      "documentation-quality": {
+        "label": "Documentation Quality",
+        "description": "The practice of ensuring documentation is accurate, clear, and consistent through review and automated checks.",
+        "aliases": [],
+        "source_ids": [
+          "documentation-quality"
+        ]
+      },
+      "documentation-strategy": {
+        "label": "Documentation Strategy",
+        "description": "The high-level planning of documentation initiatives, including audience, structure, and tooling.",
+        "aliases": [],
+        "source_ids": [
+          "documentation-strategy"
+        ]
+      },
+      "encryption": {
+        "label": "Encryption",
+        "description": "The process of encoding data to protect it from unauthorized access, including field-level encryption and TLS.",
+        "aliases": [],
+        "source_ids": [
+          "encryption"
+        ]
+      },
+      "information-architecture": {
+        "label": "Information Architecture",
+        "description": "The structural design of information to support findability and usability.",
+        "aliases": [],
+        "source_ids": [
+          "information-architecture"
+        ]
+      },
+      "integration-testing": {
+        "label": "Integration Testing",
+        "description": "Testing that verifies the interaction between different systems or components.",
+        "aliases": [],
+        "source_ids": [
+          "integration-testing"
+        ]
+      },
+      "learning-paths": {
+        "label": "Learning Paths",
+        "description": "Structured sequences of documentation topics that guide users through a subject area.",
+        "aliases": [],
+        "source_ids": [
+          "learning-paths"
+        ]
+      },
+      "markdown": {
+        "label": "Markdown",
+        "description": "A lightweight markup language used for formatting text, commonly used in documentation.",
+        "aliases": [],
+        "source_ids": [
+          "markdown"
+        ]
+      },
+      "openapi": {
+        "label": "OpenAPI",
+        "description": "A specification for describing REST APIs, used for generating reference documentation and client SDKs.",
+        "aliases": [],
+        "source_ids": [
+          "openapi"
+        ]
+      },
+      "payments": {
+        "label": "Payments",
+        "description": "The domain of financial transactions, including payment gateways, digital wallets, and tokenisation.",
+        "aliases": [],
+        "source_ids": [
+          "payments"
+        ]
+      },
+      "pci-dss": {
+        "label": "PCI DSS",
+        "description": "The Payment Card Industry Data Security Standard, a set of security requirements for handling cardholder data.",
+        "aliases": [],
+        "source_ids": [
+          "pci-dss"
+        ]
+      },
+      "rag": {
+        "label": "RAG",
+        "description": "Retrieval-Augmented Generation, a technique that combines retrieval of relevant documents with language generation.",
+        "aliases": [],
+        "source_ids": [
+          "rag"
+        ]
+      },
+      "release-management": {
+        "label": "Release Management",
+        "description": "The process of planning, preparing, and coordinating software releases, including documentation.",
+        "aliases": [],
+        "source_ids": [
+          "release-management"
+        ]
+      },
+      "sdk-documentation": {
+        "label": "SDK Documentation",
+        "description": "Documentation that explains how to use a software development kit.",
+        "aliases": [],
+        "source_ids": [
+          "sdk-documentation"
+        ]
+      },
+      "search-and-retrieval": {
+        "label": "Search and Retrieval",
+        "description": "The methods and technologies for making documentation searchable and retrievable, including RAG.",
+        "aliases": [],
+        "source_ids": [
+          "search-and-retrieval"
+        ]
+      },
+      "sequence-diagrams": {
+        "label": "Sequence Diagrams",
+        "description": "Diagrams that show the order of interactions between systems or components over time.",
+        "aliases": [],
+        "source_ids": [
+          "sequence-diagrams"
+        ]
+      },
+      "single-sourcing": {
+        "label": "Single-Sourcing",
+        "description": "Using one source of content to generate multiple outputs or audience-specific versions.",
+        "aliases": [],
+        "source_ids": [
+          "single-sourcing"
+        ]
+      },
+      "static-site-generators": {
+        "label": "Static Site Generators",
+        "description": "Tools that generate a static website from source files, such as Docusaurus or MkDocs.",
+        "aliases": [],
+        "source_ids": [
+          "static-site-generators"
+        ]
+      },
+      "technical-validation": {
+        "label": "Technical Validation",
+        "description": "The practice of testing and verifying that documentation is accurate and that procedures work as described.",
+        "aliases": [],
+        "source_ids": [
+          "technical-validation"
+        ]
+      },
+      "tokenisation": {
+        "label": "Tokenisation",
+        "description": "The process of replacing sensitive data, such as card numbers, with a non-sensitive token.",
+        "aliases": [],
+        "source_ids": [
+          "tokenisation"
+        ]
+      },
+      "version-control": {
+        "label": "Version Control",
+        "description": "The management of changes to documents, typically using Git.",
+        "aliases": [],
+        "source_ids": [
+          "version-control"
+        ]
+      },
+      "webhooks": {
+        "label": "Webhooks",
+        "description": "HTTP callbacks that notify a system about events, often used for asynchronous API integrations.",
+        "aliases": [],
+        "source_ids": [
+          "webhooks"
+        ]
+      }
+    }
+  }
+}

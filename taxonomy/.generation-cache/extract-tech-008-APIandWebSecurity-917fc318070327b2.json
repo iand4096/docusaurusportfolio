@@ -1,0 +1,328 @@
+{
+  "fingerprint": "917fc318070327b2e547cc56156c51c6725dc9ccf88fd39d4e7187ce6df9019e",
+  "label": "extract-tech-008-APIandWebSecurity",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "oauth-1-0",
+        "label": "OAuth 1.0",
+        "description": "An open standard for token-based API authentication using signed requests.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "OAuth 1"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document explicitly lists OAuth 1.0 as part of API authentication experience and mentions OAuth 1 request signing in the Click to Pay integration."
+          }
+        ]
+      },
+      {
+        "id": "mtls",
+        "label": "mTLS",
+        "description": "Mutual Transport Layer Security for certificate-based client authentication.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "mutual TLS"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists mTLS as part of API authentication and transport security experience."
+          }
+        ]
+      },
+      {
+        "id": "pki",
+        "label": "PKI",
+        "description": "Public Key Infrastructure for managing digital certificates and keys.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [
+          "Public Key Infrastructure"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists PKI as part of the security technologies used."
+          }
+        ]
+      },
+      {
+        "id": "x-509-certificates",
+        "label": "X.509 certificates",
+        "description": "Standard format for public key certificates used in TLS and authentication.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "X.509"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists X.509 certificates as part of certificate-based client authentication."
+          }
+        ]
+      },
+      {
+        "id": "https-tls",
+        "label": "HTTPS/TLS",
+        "description": "Secure communication protocols for transport layer security.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "HTTPS",
+          "TLS"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists HTTPS/TLS as part of transport security and mentions HTTPS in webhook integrations."
+          }
+        ]
+      },
+      {
+        "id": "jose",
+        "label": "JOSE",
+        "description": "JSON Object Signing and Encryption framework for securing JSON data.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "JSON Object Signing and Encryption"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists JOSE as part of knowledge of secure structured data transmission."
+          }
+        ]
+      },
+      {
+        "id": "jwt",
+        "label": "JWT",
+        "description": "JSON Web Token, a compact token format for authentication and claims.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "JSON Web Token"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists JWT as part of knowledge of digital signatures and secure data."
+          }
+        ]
+      },
+      {
+        "id": "digital-signatures",
+        "label": "Digital signatures",
+        "description": "Cryptographic technique for verifying data integrity and authenticity.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists digital signatures as part of security knowledge."
+          }
+        ]
+      },
+      {
+        "id": "symmetric-asymmetric-encryption",
+        "label": "Symmetric and asymmetric encryption",
+        "description": "Encryption techniques using shared or public/private keys.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [
+          "encryption"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists symmetric and asymmetric encryption as part of security knowledge."
+          }
+        ]
+      },
+      {
+        "id": "hsm",
+        "label": "HSM",
+        "description": "Hardware Security Module for secure key management.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [
+          "Hardware Security Module"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions HSM-based key management."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions developing cloud-hosted Python encryption integrations and using Python for testing."
+          }
+        ]
+      },
+      {
+        "id": "flask",
+        "label": "Flask",
+        "description": "A micro web framework for Python.",
+        "kind": "framework",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions building full-stack sandbox integrations using Python/Flask."
+          }
+        ]
+      },
+      {
+        "id": "java",
+        "label": "Java",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using Java for full-stack integrations and testing."
+          }
+        ]
+      },
+      {
+        "id": "javascript",
+        "label": "JavaScript",
+        "description": "A scripting language for web development.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using JavaScript in full-stack sandbox integrations."
+          }
+        ]
+      },
+      {
+        "id": "node-js",
+        "label": "Node.js",
+        "description": "A JavaScript runtime for server-side applications.",
+        "kind": "runtime",
+        "parent": "javascript",
+        "aliases": [
+          "Node"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using Node.js in full-stack sandbox integrations."
+          }
+        ]
+      },
+      {
+        "id": "postman",
+        "label": "Postman",
+        "description": "An API testing and development tool.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using Postman for testing authentication, encryption, and REST APIs."
+          }
+        ]
+      },
+      {
+        "id": "insomnia",
+        "label": "Insomnia",
+        "description": "An API client for testing and debugging REST APIs.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using Insomnia for testing APIs."
+          }
+        ]
+      },
+      {
+        "id": "rest-apis",
+        "label": "REST APIs",
+        "description": "Architectural style for designing networked applications.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [
+          "REST"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions testing REST APIs and building REST integrations."
+          }
+        ]
+      },
+      {
+        "id": "webhooks",
+        "label": "Webhooks",
+        "description": "HTTP callbacks for asynchronous event notifications.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions building and testing webhook integrations."
+          }
+        ]
+      },
+      {
+        "id": "owasp",
+        "label": "OWASP",
+        "description": "Open Web Application Security Project, providing security guidance and risk lists.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "Open Web Application Security Project"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions awareness of OWASP web application and API security risks."
+          }
+        ]
+      },
+      {
+        "id": "click-to-pay",
+        "label": "Click to Pay",
+        "description": "A payment checkout technology by Mastercard.",
+        "kind": "payment-technology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document describes identifying a security weakness in a Click to Pay integration."
+          }
+        ]
+      }
+    ]
+  }
+}

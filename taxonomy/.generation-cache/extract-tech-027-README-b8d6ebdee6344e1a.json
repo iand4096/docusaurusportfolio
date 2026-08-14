@@ -1,0 +1,247 @@
+{
+  "fingerprint": "b8d6ebdee6344e1a9c194681ec9bdef66a40d1c335ad79014070408b5e24358a",
+  "label": "extract-tech-027-README",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A documentation site generator used to build the portfolio.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The document states the portfolio is built with Docusaurus and includes it in the technology list."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "Markdown is listed as a technology and the QA tool reviews Markdown documents."
+          }
+        ]
+      },
+      {
+        "id": "mdx",
+        "label": "MDX",
+        "description": "A format that combines Markdown with JSX for interactive content.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "MDX is listed as a technology and the QA tool reviews MDX documents."
+          }
+        ]
+      },
+      {
+        "id": "typescript",
+        "label": "TypeScript",
+        "description": "A typed superset of JavaScript.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "TypeScript is listed as a technology used in the portfolio."
+          }
+        ]
+      },
+      {
+        "id": "github-pages",
+        "label": "GitHub Pages",
+        "description": "A static site hosting service from GitHub.",
+        "kind": "cloud-hosting-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "GitHub Pages is listed as a technology for hosting the portfolio."
+          }
+        ]
+      },
+      {
+        "id": "npm",
+        "label": "npm",
+        "description": "A package manager for JavaScript and Node.js.",
+        "kind": "developer-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The document shows npm install and npm run start commands for local development."
+          }
+        ]
+      },
+      {
+        "id": "deepseek-ai",
+        "label": "DeepSeek AI",
+        "description": "An AI model used for editorial review in the QA script.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The QA script uses DeepSeek AI for AI-based editorial review."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language used to write the QA script.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The QA script is named ai_docs_review.py, indicating Python implementation."
+          }
+        ]
+      },
+      {
+        "id": "requests",
+        "label": "Requests",
+        "description": "A Python HTTP library used to make REST API calls.",
+        "kind": "library",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The document states the script uses the Requests library to make REST API calls."
+          }
+        ]
+      },
+      {
+        "id": "rest-api",
+        "label": "REST API",
+        "description": "An architectural style for designing networked applications.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The script makes REST API calls to the DeepSeek mode."
+          }
+        ]
+      },
+      {
+        "id": "json",
+        "label": "JSON",
+        "description": "A data interchange format.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The script requires structured JSON findings and generates a JSON report."
+          }
+        ]
+      },
+      {
+        "id": "html",
+        "label": "HTML",
+        "description": "A markup language for creating web pages.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The script generates an HTML report."
+          }
+        ]
+      },
+      {
+        "id": "github-actions",
+        "label": "GitHub Actions",
+        "description": "A CI/CD platform for automating workflows.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The script can be run as part of a GitHub Action with --ci mode."
+          }
+        ]
+      },
+      {
+        "id": "cli",
+        "label": "CLI",
+        "description": "A command-line interface for running the QA script.",
+        "kind": "developer-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The script exposes CLI options like --fail-high, --fail-medium, --fail-api-errors, and --ci."
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "label": "Mermaid",
+        "description": "A diagramming and charting tool that uses text-based definitions.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The AI checks suggest Mermaid diagram opportunities."
+          }
+        ]
+      },
+      {
+        "id": "accessibility-check",
+        "label": "AccessibilityCheck",
+        "description": "A static check for accessibility issues in documentation.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The document describes AccessibilityCheck as a static check for missing alt text, vague links, and heading-level jumps."
+          }
+        ]
+      },
+      {
+        "id": "link-check",
+        "label": "LinkCheck",
+        "description": "A static check for broken local links and assets.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The document describes LinkCheck as a static check for local links and assets."
+          }
+        ]
+      }
+    ]
+  }
+}

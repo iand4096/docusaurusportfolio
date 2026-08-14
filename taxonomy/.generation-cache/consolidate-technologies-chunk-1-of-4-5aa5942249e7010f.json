@@ -1,0 +1,558 @@
+{
+  "fingerprint": "5aa5942249e7010f50fa96f80b3b44165c1161ebd177ccfcc37f3a7ebfcccc36",
+  "label": "consolidate-technologies-chunk-1-of-4",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "terms": {
+      "agentic-ai-tools": {
+        "label": "Agentic AI tools",
+        "description": "AI tools that can autonomously perform tasks.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "agentic-ai-tools"
+        ]
+      },
+      "ai-assisted-authoring": {
+        "label": "AI-assisted authoring",
+        "description": "Using AI to create initial documentation structures and skeleton content from source material.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-authoring"
+        ]
+      },
+      "ai-assisted-development-tools": {
+        "label": "AI-assisted development tools",
+        "description": "Tools that use artificial intelligence to assist with software development tasks.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-development-tools"
+        ]
+      },
+      "ai-assisted-documentation": {
+        "label": "AI-assisted documentation workflows",
+        "description": "Using AI to assist in documentation creation and maintenance.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-documentation"
+        ]
+      },
+      "ai-assisted-workflows": {
+        "label": "AI-assisted workflows",
+        "description": "Use of artificial intelligence to assist in documentation production and maintenance.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-assisted-workflows"
+        ]
+      },
+      "ai-coding-tools": {
+        "label": "AI coding tools",
+        "description": "AI tools used to generate code, often in spec-driven development workflows.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "ai-coding-tools"
+        ]
+      },
+      "amp": {
+        "label": "Amp",
+        "description": "An AI coding tool (likely referring to Amp, an AI pair programmer).",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "amp"
+        ]
+      },
+      "claude": {
+        "label": "Claude",
+        "description": "An AI assistant developed by Anthropic, used for coding and documentation tasks.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "claude"
+        ]
+      },
+      "deepseek-ai": {
+        "label": "DeepSeek AI",
+        "description": "An AI model used for editorial review in the QA script.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "deepseek-ai"
+        ]
+      },
+      "deepseek-api": {
+        "label": "DeepSeek API",
+        "description": "A REST API for AI-powered quality checks on documentation.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "deepseek-api"
+        ]
+      },
+      "github-copilot": {
+        "label": "GitHub Copilot",
+        "description": "An AI-powered code completion tool.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "github-copilot"
+        ]
+      },
+      "llm-assisted-documentation": {
+        "label": "LLM-assisted documentation",
+        "description": "Using large language models for grammar checking, analysis, diagram generation, content transformation, and code generation.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "llm-assisted-documentation"
+        ]
+      },
+      "whisper": {
+        "label": "Whisper",
+        "description": "A speech-to-text model by OpenAI, used locally for privacy.",
+        "kind": "ai-ml-tool",
+        "aliases": [],
+        "source_ids": [
+          "whisper"
+        ]
+      },
+      "curl": {
+        "label": "cURL",
+        "description": "A command-line tool for transferring data with URLs, used to test APIs and integrations.",
+        "kind": "api-tool",
+        "aliases": [],
+        "source_ids": [
+          "curl"
+        ]
+      },
+      "jira-rest-api": {
+        "label": "Jira REST API",
+        "description": "The REST API for Atlassian Jira, used to interact with Jira issues and projects programmatically.",
+        "kind": "api-tool",
+        "aliases": [
+          "Jira API"
+        ],
+        "source_ids": [
+          "jira-rest-api"
+        ]
+      },
+      "mastercard-digital-enablement-api": {
+        "label": "Mastercard Digital Enablement API",
+        "description": "An API providing access to MDES for card tokenisation.",
+        "kind": "api-tool",
+        "aliases": [
+          "MDES",
+          "MDES API"
+        ],
+        "source_ids": [
+          "mastercard-digital-enablement-api"
+        ]
+      },
+      "postman": {
+        "label": "Postman",
+        "description": "An API testing and development tool.",
+        "kind": "api-tool",
+        "aliases": [],
+        "source_ids": [
+          "postman"
+        ]
+      },
+      "swagger": {
+        "label": "Swagger",
+        "description": "A suite of tools for implementing the OpenAPI specification.",
+        "kind": "api-tool",
+        "aliases": [],
+        "source_ids": [
+          "swagger"
+        ]
+      },
+      "monorepo": {
+        "label": "Monorepo",
+        "description": "A repository strategy that stores multiple projects in a single repository.",
+        "kind": "architecture-style",
+        "aliases": [],
+        "source_ids": [
+          "monorepo"
+        ]
+      },
+      "rest": {
+        "label": "REST",
+        "description": "An architectural style for distributed systems.",
+        "kind": "architecture-style",
+        "aliases": [
+          "Representational State Transfer",
+          "REST API",
+          "RESTful"
+        ],
+        "source_ids": [
+          "rest",
+          "rest-api",
+          "rest-apis"
+        ]
+      },
+      "madcap-flare": {
+        "label": "MadCap Flare",
+        "description": "A single-source documentation authoring tool used to create HTML help and PDF outputs.",
+        "kind": "authoring-tool",
+        "aliases": [
+          "Flare"
+        ],
+        "source_ids": [
+          "madcap-flare"
+        ]
+      },
+      "ci-cd": {
+        "label": "CI/CD",
+        "description": "Continuous integration and continuous delivery/deployment practices and tools.",
+        "kind": "ci-cd-automation",
+        "aliases": [],
+        "source_ids": [
+          "ci-cd"
+        ]
+      },
+      "github-actions": {
+        "label": "GitHub Actions",
+        "description": "A CI/CD platform used to automate QA and deployment workflows.",
+        "kind": "ci-cd-automation",
+        "aliases": [],
+        "source_ids": [
+          "github-actions"
+        ]
+      },
+      "jenkins": {
+        "label": "Jenkins",
+        "description": "An open-source automation server for CI/CD.",
+        "kind": "ci-cd-automation",
+        "aliases": [],
+        "source_ids": [
+          "jenkins"
+        ]
+      },
+      "cloud-hosted-test-environments": {
+        "label": "Cloud-hosted test environments",
+        "description": "Cloud-based environments used to overcome network restrictions and validate externally accessible integrations.",
+        "kind": "cloud-hosting-platform",
+        "aliases": [],
+        "source_ids": [
+          "cloud-hosted-test-environments"
+        ]
+      },
+      "github-pages": {
+        "label": "GitHub Pages",
+        "description": "A hosting service for static sites, used to publish the portfolio.",
+        "kind": "cloud-hosting-platform",
+        "aliases": [],
+        "source_ids": [
+          "github-pages"
+        ]
+      },
+      "pythonanywhere": {
+        "label": "PythonAnywhere",
+        "description": "A cloud hosting platform for Python applications.",
+        "kind": "cloud-hosting-platform",
+        "aliases": [],
+        "source_ids": [
+          "pythonanywhere"
+        ]
+      },
+      "brightspot": {
+        "label": "Brightspot",
+        "description": "A content management system (CMS) used for marketing-focused content, not designed for structured technical documentation.",
+        "kind": "cms-wiki",
+        "aliases": [],
+        "source_ids": [
+          "brightspot"
+        ]
+      },
+      "confluence": {
+        "label": "Confluence",
+        "description": "A collaboration and wiki platform by Atlassian used for team documentation and knowledge management.",
+        "kind": "cms-wiki",
+        "aliases": [],
+        "source_ids": [
+          "confluence"
+        ]
+      },
+      "twiki": {
+        "label": "TWiki",
+        "description": "A web-based collaboration platform and wiki.",
+        "kind": "cms-wiki",
+        "aliases": [],
+        "source_ids": [
+          "twiki"
+        ]
+      },
+      "wiki": {
+        "label": "Wiki",
+        "description": "A collaborative content management system.",
+        "kind": "cms-wiki",
+        "aliases": [],
+        "source_ids": [
+          "wiki"
+        ]
+      },
+      "hypothesis": {
+        "label": "Hypothes.is",
+        "description": "An open-source annotation tool that allows users to annotate web pages.",
+        "kind": "collaboration-project-tool",
+        "aliases": [
+          "Hypothesis"
+        ],
+        "source_ids": [
+          "hypothesis"
+        ]
+      },
+      "jira": {
+        "label": "Jira",
+        "description": "A project tracking and issue management tool.",
+        "kind": "collaboration-project-tool",
+        "aliases": [],
+        "source_ids": [
+          "jira"
+        ]
+      },
+      "docker": {
+        "label": "Docker",
+        "description": "A platform for developing, shipping, and running applications in containers.",
+        "kind": "container-platform",
+        "aliases": [],
+        "source_ids": [
+          "docker"
+        ]
+      },
+      "kubernetes": {
+        "label": "Kubernetes",
+        "description": "An open-source container orchestration platform.",
+        "kind": "container-platform",
+        "aliases": [],
+        "source_ids": [
+          "kubernetes"
+        ]
+      },
+      "analytics": {
+        "label": "Analytics",
+        "description": "Tools and techniques for measuring and analysing user behaviour.",
+        "kind": "data-analysis-tool",
+        "aliases": [],
+        "source_ids": [
+          "analytics"
+        ]
+      },
+      "excel": {
+        "label": "Excel",
+        "description": "A spreadsheet application by Microsoft, used for data analysis and reporting.",
+        "kind": "data-analysis-tool",
+        "aliases": [
+          "Microsoft Excel"
+        ],
+        "source_ids": [
+          "excel"
+        ]
+      },
+      "site-analytics": {
+        "label": "Site analytics",
+        "description": "Using analytics data to inform documentation decisions.",
+        "kind": "data-analysis-tool",
+        "aliases": [],
+        "source_ids": [
+          "site-analytics"
+        ]
+      },
+      "json": {
+        "label": "JSON",
+        "description": "A lightweight data-interchange format.",
+        "kind": "data-format",
+        "aliases": [
+          "JavaScript Object Notation"
+        ],
+        "source_ids": [
+          "json"
+        ]
+      },
+      "metadata": {
+        "label": "Metadata",
+        "description": "Data about data, used for filtering and search in documentation systems.",
+        "kind": "data-format",
+        "aliases": [],
+        "source_ids": [
+          "metadata"
+        ]
+      },
+      "pdf": {
+        "label": "PDF",
+        "description": "Portable Document Format, used for the printable manual output.",
+        "kind": "data-format",
+        "aliases": [],
+        "source_ids": [
+          "pdf"
+        ]
+      },
+      "svg": {
+        "label": "SVG",
+        "description": "Scalable Vector Graphics, an XML-based vector image format.",
+        "kind": "data-format",
+        "aliases": [
+          "Scalable Vector Graphics"
+        ],
+        "source_ids": [
+          "svg"
+        ]
+      },
+      "webmaps": {
+        "label": "Webmaps",
+        "description": "Generated webmaps for search indexing.",
+        "kind": "data-format",
+        "aliases": [],
+        "source_ids": [
+          "webmaps"
+        ]
+      },
+      "yaml": {
+        "label": "YAML",
+        "description": "A human-readable data serialization language.",
+        "kind": "data-format",
+        "aliases": [
+          "YAML Ain't Markup Language"
+        ],
+        "source_ids": [
+          "yaml"
+        ]
+      },
+      "adobe-illustrator": {
+        "label": "Adobe Illustrator",
+        "description": "A vector graphics editor used for creating and editing illustrations and diagrams.",
+        "kind": "design-graphics-tool",
+        "aliases": [
+          "Illustrator"
+        ],
+        "source_ids": [
+          "adobe-illustrator"
+        ]
+      },
+      "inkscape": {
+        "label": "Inkscape",
+        "description": "An open-source vector graphics editor.",
+        "kind": "design-graphics-tool",
+        "aliases": [],
+        "source_ids": [
+          "inkscape"
+        ]
+      },
+      "codepen": {
+        "label": "CodePen",
+        "description": "An online code editor and community for front-end development, used to create and share working examples.",
+        "kind": "developer-platform",
+        "aliases": [],
+        "source_ids": [
+          "codepen"
+        ]
+      },
+      "developer-portal": {
+        "label": "Developer portal",
+        "description": "A platform for developers to access documentation, APIs, and tools.",
+        "kind": "developer-platform",
+        "aliases": [],
+        "source_ids": [
+          "developer-portal"
+        ]
+      },
+      "github": {
+        "label": "GitHub",
+        "description": "A web-based platform for hosting Git repositories and collaborating on software development.",
+        "kind": "developer-platform",
+        "aliases": [],
+        "source_ids": [
+          "github"
+        ]
+      },
+      "mastercard-developers": {
+        "label": "Mastercard Developers",
+        "description": "A developer platform for Mastercard APIs and documentation.",
+        "kind": "developer-platform",
+        "aliases": [],
+        "source_ids": [
+          "mastercard-developers"
+        ]
+      },
+      "cli": {
+        "label": "CLI",
+        "description": "A command-line interface for running the QA script.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "cli"
+        ]
+      },
+      "find": {
+        "label": "find",
+        "description": "A command-line utility for searching files in a directory hierarchy.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "find"
+        ]
+      },
+      "grep": {
+        "label": "grep",
+        "description": "A command-line utility for searching text patterns.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "grep"
+        ]
+      },
+      "ide-plugin": {
+        "label": "IDE plugin",
+        "description": "A plugin for an integrated development environment providing live preview and migration tools.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "ide-plugin"
+        ]
+      },
+      "npm": {
+        "label": "npm",
+        "description": "A package manager for JavaScript and Node.js.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "npm"
+        ]
+      },
+      "sed": {
+        "label": "sed",
+        "description": "A stream editor for filtering and transforming text.",
+        "kind": "developer-tool",
+        "aliases": [],
+        "source_ids": [
+          "sed"
+        ]
+      },
+      "visual-cpp": {
+        "label": "Visual C++",
+        "description": "Microsoft's C++ compiler and development environment.",
+        "kind": "developer-tool",
+        "aliases": [
+          "MSVC"
+        ],
+        "source_ids": [
+          "visual-cpp"
+        ]
+      },
+      "graphviz": {
+        "label": "Graphviz",
+        "description": "A graph visualization tool used for generating diagrams.",
+        "kind": "diagramming-visualisation",
+        "aliases": [],
+        "source_ids": [
+          "graphviz"
+        ]
+      }
+    }
+  }
+}

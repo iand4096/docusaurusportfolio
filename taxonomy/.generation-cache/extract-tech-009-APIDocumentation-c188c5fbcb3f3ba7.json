@@ -1,0 +1,405 @@
+{
+  "fingerprint": "c188c5fbcb3f3ba7f3a95037057e111cc3f599567aa0579e81adb686306b1e39",
+  "label": "extract-tech-009-APIDocumentation",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "c",
+        "label": "C",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document states 'Former C/C++ developer'."
+          }
+        ]
+      },
+      {
+        "id": "cpp",
+        "label": "C++",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [
+          "C/C++"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document states 'Former C/C++ developer'."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions strong Python skills and Python applications using requests, Flask, and PythonAnywhere."
+          }
+        ]
+      },
+      {
+        "id": "java",
+        "label": "Java",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions practical experience in Java and Java integrations using embedded Jetty services."
+          }
+        ]
+      },
+      {
+        "id": "javascript",
+        "label": "JavaScript",
+        "description": "A scripting language for web pages and Node.js.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions browser-based development and Node.js plugins."
+          }
+        ]
+      },
+      {
+        "id": "nodejs",
+        "label": "Node.js",
+        "description": "A JavaScript runtime environment.",
+        "kind": "runtime",
+        "parent": null,
+        "aliases": [
+          "Node"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions practical experience in Node.js and extending Insomnia with Node.js plugins."
+          }
+        ]
+      },
+      {
+        "id": "requests",
+        "label": "Requests",
+        "description": "A Python HTTP library.",
+        "kind": "library",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions Python applications using the 'requests' library to make authenticated HTTP API calls."
+          }
+        ]
+      },
+      {
+        "id": "flask",
+        "label": "Flask",
+        "description": "A Python web framework.",
+        "kind": "framework",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions Flask applications exposing GET and POST endpoints and rendering HTML pages with Jinja templates."
+          }
+        ]
+      },
+      {
+        "id": "jinja",
+        "label": "Jinja",
+        "description": "A templating engine for Python.",
+        "kind": "library",
+        "parent": "python",
+        "aliases": [
+          "Jinja2"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions rendering HTML pages with Jinja templates."
+          }
+        ]
+      },
+      {
+        "id": "jetty",
+        "label": "Jetty",
+        "description": "A Java HTTP server and servlet container.",
+        "kind": "server-networking",
+        "parent": "java",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions Java integrations using embedded Jetty services."
+          }
+        ]
+      },
+      {
+        "id": "html",
+        "label": "HTML",
+        "description": "The standard markup language for web pages.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions rendering HTML pages with Jinja templates and browser-based forms."
+          }
+        ]
+      },
+      {
+        "id": "openapi",
+        "label": "OpenAPI",
+        "description": "A specification for describing REST APIs.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "Swagger"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions creating and maintaining OpenAPI schemas, using shared OpenAPI components, and comparing observed API behaviour with OpenAPI definitions."
+          }
+        ]
+      },
+      {
+        "id": "rest",
+        "label": "REST",
+        "description": "An architectural style for distributed systems.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [
+          "RESTful"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions REST API reference content, REST endpoints, and REST API behaviour."
+          }
+        ]
+      },
+      {
+        "id": "postman",
+        "label": "Postman",
+        "description": "An API development and testing tool.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions building reusable collections of API requests in Postman."
+          }
+        ]
+      },
+      {
+        "id": "insomnia",
+        "label": "Insomnia",
+        "description": "An API client and design tool.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions building reusable collections of API requests in Insomnia and extending Insomnia with Node.js plugins."
+          }
+        ]
+      },
+      {
+        "id": "oauth-1-0",
+        "label": "OAuth 1.0",
+        "description": "An authentication protocol.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "OAuth1"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions implementing and documenting OAuth 1.0 and extending Insomnia to support Mastercard OAuth 1.0."
+          }
+        ]
+      },
+      {
+        "id": "mutual-tls",
+        "label": "Mutual TLS",
+        "description": "A security protocol requiring both client and server certificates.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [
+          "mTLS"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions implementing and documenting Mutual TLS."
+          }
+        ]
+      },
+      {
+        "id": "jwt",
+        "label": "JWT",
+        "description": "JSON Web Token, a standard for securely transmitting information.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "JSON Web Token"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions implementing and documenting JWT and JOSE."
+          }
+        ]
+      },
+      {
+        "id": "jose",
+        "label": "JOSE",
+        "description": "JSON Object Signing and Encryption, a set of standards.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions implementing and documenting JWT and JOSE."
+          }
+        ]
+      },
+      {
+        "id": "openssl",
+        "label": "OpenSSL",
+        "description": "A cryptography toolkit implementing SSL/TLS.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions certificate-based cryptography and OpenSSL."
+          }
+        ]
+      },
+      {
+        "id": "pythonanywhere",
+        "label": "PythonAnywhere",
+        "description": "A cloud platform for hosting Python applications.",
+        "kind": "cloud-hosting-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions cloud-hosted PythonAnywhere applications using Flask to receive, process and respond to webhooks."
+          }
+        ]
+      },
+      {
+        "id": "webhooks",
+        "label": "Webhooks",
+        "description": "A technique for real-time event-driven communication.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions documenting webhooks, testing webhook flows, and receiving/responding to webhooks."
+          }
+        ]
+      },
+      {
+        "id": "exponential-backoff",
+        "label": "Exponential backoff",
+        "description": "A resilience pattern for retrying operations with increasing delays.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions documenting resilience patterns such as exponential back off."
+          }
+        ]
+      },
+      {
+        "id": "field-level-encryption",
+        "label": "Field-level encryption",
+        "description": "A security technique encrypting individual data fields.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [
+          "FLE"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions field-level encryption and decryption."
+          }
+        ]
+      },
+      {
+        "id": "request-signing",
+        "label": "Request signing",
+        "description": "A technique for authenticating requests via digital signatures.",
+        "kind": "security-cryptography",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions request signing and authentication flows."
+          }
+        ]
+      },
+      {
+        "id": "sdk-documentation",
+        "label": "SDK documentation",
+        "description": "The practice of documenting software development kits.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions creating SDK documentation and documenting SDKs."
+          }
+        ]
+      },
+      {
+        "id": "api-testing",
+        "label": "API testing",
+        "description": "The practice of testing API endpoints and integrations.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions API testing and building test integrations to verify API behaviour."
+          }
+        ]
+      }
+    ]
+  }
+}

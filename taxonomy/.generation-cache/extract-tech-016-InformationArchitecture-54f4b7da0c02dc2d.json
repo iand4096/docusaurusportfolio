@@ -1,0 +1,153 @@
+{
+  "fingerprint": "54f4b7da0c02dc2d794574726d2b80dcef62b7141b7d5d3445d786ee0d31d5f5",
+  "label": "extract-tech-016-InformationArchitecture",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "graphviz",
+        "label": "Graphviz",
+        "description": "A graph visualization tool used to generate tree-structured, hyperlinked navigation paths.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document describes designing and implementing a Graphviz-based navigation tool for generating tree-structured learning paths."
+          }
+        ]
+      },
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system used to consolidate legacy documentation into a monorepo.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions consolidating legacy documentation into a structured Git monorepo."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language used for authoring documentation content.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions extending the Markdown content model for documentation."
+          }
+        ]
+      },
+      {
+        "id": "sphinx",
+        "label": "Sphinx",
+        "description": "A documentation generator used for Python projects, mentioned as a source during migration.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions migration from Sphinx during a content inventory."
+          }
+        ]
+      },
+      {
+        "id": "twiki",
+        "label": "TWiki",
+        "description": "A wiki platform used for documentation, mentioned as a source during migration.",
+        "kind": "cms-wiki",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions migration from TWiki during a content inventory."
+          }
+        ]
+      },
+      {
+        "id": "rag",
+        "label": "RAG (Retrieval-Augmented Generation)",
+        "description": "An AI architecture pattern combining retrieval with generation for documentation search.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [
+          "Retrieval-Augmented Generation"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document describes designing the information architecture supporting a RAG-based documentation search system."
+          }
+        ]
+      },
+      {
+        "id": "metadata",
+        "label": "Metadata",
+        "description": "Data about data, used for filtering and search in documentation systems.",
+        "kind": "data-format",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions defining metadata requirements and proposing metadata-based filtering for documentation search."
+          }
+        ]
+      },
+      {
+        "id": "content-inventory",
+        "label": "Content inventory",
+        "description": "A systematic process of cataloguing and analysing content assets.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document describes conducting a content inventory of approximately 900 pages."
+          }
+        ]
+      },
+      {
+        "id": "site-analytics",
+        "label": "Site analytics",
+        "description": "Tools and methods for analysing website usage data to inform content decisions.",
+        "kind": "data-analysis-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions using site analytics to prioritise high-value content."
+          }
+        ]
+      },
+      {
+        "id": "spidering",
+        "label": "Spidering",
+        "description": "Automated crawling of web links to map content relationships.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "web crawling"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions recursively spidering internal links to map content relationships."
+          }
+        ]
+      }
+    ]
+  }
+}

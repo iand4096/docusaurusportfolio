@@ -1,0 +1,79 @@
+{
+  "fingerprint": "33d2104d291b75c65a4506a65f28e274edba30370a485df40d20fd4e7c87efd8",
+  "label": "extract-tech-023-GitContinuousIntegration",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document demonstrates strong working knowledge of Git, including branches, remotes, staging, commits, push/pull workflows, stash, pull requests, rebase, and commit squashing."
+          }
+        ]
+      },
+      {
+        "id": "github",
+        "label": "GitHub",
+        "description": "A web-based platform for hosting Git repositories and collaborating on software development.",
+        "kind": "developer-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document demonstrates experience with GitHub, including pull-request workflows and using GitHub Actions to build and publish a site."
+          }
+        ]
+      },
+      {
+        "id": "github-actions",
+        "label": "GitHub Actions",
+        "description": "A CI/CD and automation platform integrated with GitHub.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document states use of GitHub Actions to automatically build and publish a Docusaurus portfolio site when content changes are pushed."
+          }
+        ]
+      },
+      {
+        "id": "jenkins",
+        "label": "Jenkins",
+        "description": "An open-source automation server for continuous integration and delivery.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document demonstrates ability to read and understand Jenkins pipelines, diagnose build failures, and work with teams on build and publishing workflows."
+          }
+        ]
+      },
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A static site generator for documentation websites.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document mentions using GitHub Actions to build and publish a Docusaurus portfolio site."
+          }
+        ]
+      }
+    ]
+  }
+}

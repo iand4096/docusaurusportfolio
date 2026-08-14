@@ -1,0 +1,563 @@
+{
+  "fingerprint": "1069ebca906835ef99526e2f2275bed8383b24f2bdca59fc8bbac4a107675e81",
+  "label": "consolidate-technologies-chunk-2-of-4",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "terms": {
+      "graphviz-dot": {
+        "label": "Graphviz/DOT",
+        "description": "A graph visualization tool and DOT language for describing and rendering graphs.",
+        "kind": "diagramming-visualisation",
+        "aliases": [
+          "DOT",
+          "Graphviz"
+        ],
+        "source_ids": [
+          "graphviz-dot"
+        ]
+      },
+      "mermaid": {
+        "label": "Mermaid",
+        "description": "A diagramming and charting tool that uses text-based definitions.",
+        "kind": "diagramming-visualisation",
+        "aliases": [],
+        "source_ids": [
+          "mermaid"
+        ]
+      },
+      "microsoft-visio": {
+        "label": "Microsoft Visio",
+        "description": "A diagramming and vector graphics application for creating professional diagrams.",
+        "kind": "diagramming-visualisation",
+        "aliases": [
+          "Visio"
+        ],
+        "source_ids": [
+          "microsoft-visio"
+        ]
+      },
+      "plantuml": {
+        "label": "PlantUML",
+        "description": "A diagramming tool that uses a simple text language to create UML diagrams, including sequence diagrams.",
+        "kind": "diagramming-visualisation",
+        "aliases": [],
+        "source_ids": [
+          "plantuml"
+        ]
+      },
+      "sequence-diagrams": {
+        "label": "Sequence diagrams",
+        "description": "A type of UML diagram showing interactions between objects in time order.",
+        "kind": "diagramming-visualisation",
+        "aliases": [],
+        "source_ids": [
+          "sequence-diagrams"
+        ]
+      },
+      "api-reference": {
+        "label": "API reference",
+        "description": "Documentation that describes the endpoints, parameters, and usage of an API, delivered as part of the guide.",
+        "kind": "documentation-platform",
+        "aliases": [],
+        "source_ids": [
+          "api-reference"
+        ]
+      },
+      "docusaurus": {
+        "label": "Docusaurus",
+        "description": "A documentation site generator used to build and publish the portfolio.",
+        "kind": "documentation-platform",
+        "aliases": [],
+        "source_ids": [
+          "docusaurus"
+        ]
+      },
+      "mkdocs": {
+        "label": "MkDocs",
+        "description": "A static site generator for project documentation written in Python.",
+        "kind": "documentation-platform",
+        "aliases": [],
+        "source_ids": [
+          "mkdocs"
+        ]
+      },
+      "sphinx": {
+        "label": "Sphinx",
+        "description": "A documentation generator for Python projects.",
+        "kind": "documentation-platform",
+        "aliases": [],
+        "source_ids": [
+          "sphinx"
+        ]
+      },
+      "grammar-checking": {
+        "label": "Automated grammar checking",
+        "description": "Using automated tools to check grammar and spelling in documentation.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "grammar-checking"
+        ]
+      },
+      "languagetool": {
+        "label": "LanguageTool",
+        "description": "An open-source proofreading tool for grammar and style.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "languagetool"
+        ]
+      },
+      "link-validation": {
+        "label": "Link and build validation",
+        "description": "Validating links and builds in documentation.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "link-validation"
+        ]
+      },
+      "ltex": {
+        "label": "LTeX+",
+        "description": "A language tool for spelling and grammar checking in VS Code.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "ltex"
+        ]
+      },
+      "vale": {
+        "label": "Vale",
+        "description": "A command-line linter for prose, used for automated proofreading.",
+        "kind": "documentation-qa-tool",
+        "aliases": [],
+        "source_ids": [
+          "vale"
+        ]
+      },
+      "cad": {
+        "label": "CAD",
+        "description": "Computer-aided design software used for creating precise drawings and models.",
+        "kind": "engineering-design-tool",
+        "aliases": [
+          "Computer-Aided Design"
+        ],
+        "source_ids": [
+          "cad"
+        ]
+      },
+      "catia": {
+        "label": "CATIA",
+        "description": "A multi-platform CAD/CAM/CAE software suite for engineering and 3D design.",
+        "kind": "engineering-design-tool",
+        "aliases": [],
+        "source_ids": [
+          "catia"
+        ]
+      },
+      "fastmcp": {
+        "label": "FastMCP",
+        "description": "A framework for building Model Context Protocol servers.",
+        "kind": "framework",
+        "aliases": [],
+        "source_ids": [
+          "fastmcp"
+        ]
+      },
+      "flask": {
+        "label": "Flask",
+        "description": "A Python web framework used to build a cloud-hosted application for receiving webhooks.",
+        "kind": "framework",
+        "aliases": [],
+        "source_ids": [
+          "flask"
+        ]
+      },
+      "ide": {
+        "label": "IDE",
+        "description": "Integrated development environment used for authoring and live-preview tooling.",
+        "kind": "ide-editor",
+        "aliases": [],
+        "source_ids": [
+          "ide"
+        ]
+      },
+      "intellij": {
+        "label": "IntelliJ",
+        "description": "An integrated development environment for Java and other languages.",
+        "kind": "ide-editor",
+        "aliases": [
+          "IntelliJ IDEA"
+        ],
+        "source_ids": [
+          "intellij",
+          "intellij-idea"
+        ]
+      },
+      "pycharm": {
+        "label": "PyCharm",
+        "description": "An integrated development environment for Python.",
+        "kind": "ide-editor",
+        "aliases": [],
+        "source_ids": [
+          "pycharm"
+        ]
+      },
+      "vs-code": {
+        "label": "VS Code",
+        "description": "A source-code editor developed by Microsoft.",
+        "kind": "ide-editor",
+        "aliases": [
+          "Visual Studio Code"
+        ],
+        "source_ids": [
+          "vs-code"
+        ]
+      },
+      "proxmox": {
+        "label": "Proxmox",
+        "description": "An open-source virtualisation management platform.",
+        "kind": "infrastructure-platform",
+        "aliases": [],
+        "source_ids": [
+          "proxmox"
+        ]
+      },
+      "cryptography-libraries": {
+        "label": "Cryptography libraries",
+        "description": "Open-source libraries used for encryption and decryption.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "cryptography-libraries"
+        ]
+      },
+      "flexsearch": {
+        "label": "FlexSearch",
+        "description": "A JavaScript library for full-text search.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "flexsearch"
+        ]
+      },
+      "jinja": {
+        "label": "Jinja",
+        "description": "A templating engine for Python.",
+        "kind": "library",
+        "aliases": [
+          "Jinja2"
+        ],
+        "source_ids": [
+          "jinja"
+        ]
+      },
+      "jquery": {
+        "label": "jQuery",
+        "description": "A fast, small, and feature-rich JavaScript library.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "jquery"
+        ]
+      },
+      "mkdocs-plugins": {
+        "label": "MkDocs plugins",
+        "description": "Extensions for MkDocs to add features.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "mkdocs-plugins"
+        ]
+      },
+      "ocr": {
+        "label": "OCR libraries",
+        "description": "Optical character recognition libraries used to extract text from images.",
+        "kind": "library",
+        "aliases": [
+          "OCR",
+          "Optical Character Recognition"
+        ],
+        "source_ids": [
+          "ocr"
+        ]
+      },
+      "pandas": {
+        "label": "Pandas",
+        "description": "A Python library for data manipulation and analysis.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "pandas"
+        ]
+      },
+      "pathlib": {
+        "label": "pathlib",
+        "description": "A Python library for object-oriented filesystem paths.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "pathlib"
+        ]
+      },
+      "paysafe-js": {
+        "label": "Paysafe.js",
+        "description": "A JavaScript library that allows merchants to add customisable payment forms to their websites while reducing PCI DSS scope by collecting sensitive card details through hosted fields in iframes and returning a token.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "paysafe-js"
+        ]
+      },
+      "react": {
+        "label": "React",
+        "description": "A JavaScript library for building user interfaces.",
+        "kind": "library",
+        "aliases": [
+          "React.js",
+          "ReactJS"
+        ],
+        "source_ids": [
+          "react"
+        ]
+      },
+      "requests": {
+        "label": "Requests",
+        "description": "A Python HTTP library used to call the DeepSeek REST API.",
+        "kind": "library",
+        "aliases": [],
+        "source_ids": [
+          "requests"
+        ]
+      },
+      "stl": {
+        "label": "STL",
+        "description": "The Standard Template Library for C++, providing containers and algorithms.",
+        "kind": "library",
+        "aliases": [
+          "Standard Template Library"
+        ],
+        "source_ids": [
+          "stl"
+        ]
+      },
+      "css": {
+        "label": "CSS",
+        "description": "A stylesheet language used for styling web pages, including the styling of payment forms in the examples.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Cascading Style Sheets"
+        ],
+        "source_ids": [
+          "css"
+        ]
+      },
+      "html": {
+        "label": "HTML",
+        "description": "HyperText Markup Language, used for the online help output.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "HyperText Markup Language"
+        ],
+        "source_ids": [
+          "html"
+        ]
+      },
+      "markdown": {
+        "label": "Markdown",
+        "description": "A lightweight markup language used for authoring content.",
+        "kind": "markup-content-language",
+        "aliases": [],
+        "source_ids": [
+          "markdown"
+        ]
+      },
+      "mdx": {
+        "label": "MDX",
+        "description": "A format that combines Markdown with JSX for embedding React components.",
+        "kind": "markup-content-language",
+        "aliases": [],
+        "source_ids": [
+          "mdx"
+        ]
+      },
+      "scss": {
+        "label": "SCSS/Sass",
+        "description": "A CSS preprocessor that extends CSS with variables, nesting, and mixins.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Sass"
+        ],
+        "source_ids": [
+          "scss"
+        ]
+      },
+      "xhtml": {
+        "label": "XHTML",
+        "description": "A stricter, XML-based version of HTML used for structured content.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Extensible Hypertext Markup Language"
+        ],
+        "source_ids": [
+          "xhtml"
+        ]
+      },
+      "xml": {
+        "label": "XML",
+        "description": "A markup language that defines rules for encoding documents in a format that is both human-readable and machine-readable.",
+        "kind": "markup-content-language",
+        "aliases": [
+          "Extensible Markup Language"
+        ],
+        "source_ids": [
+          "xml"
+        ]
+      },
+      "c4-architecture-diagrams": {
+        "label": "C4 Architecture Diagrams",
+        "description": "A modelling methodology for visualising software architecture.",
+        "kind": "modelling-methodology",
+        "aliases": [
+          "C4 model",
+          "C4"
+        ],
+        "source_ids": [
+          "c4-architecture-diagrams",
+          "c4-model"
+        ]
+      },
+      "docs-as-code": {
+        "label": "Docs-as-code",
+        "description": "A methodology that treats documentation as code, using version control and developer workflows.",
+        "kind": "modelling-methodology",
+        "aliases": [],
+        "source_ids": [
+          "docs-as-code"
+        ]
+      },
+      "test-driven-technical-writing": {
+        "label": "Test-driven technical writing",
+        "description": "A methodology of using working software and integration code to verify technical claims before publication.",
+        "kind": "modelling-methodology",
+        "aliases": [],
+        "source_ids": [
+          "test-driven-technical-writing"
+        ]
+      },
+      "wireshark": {
+        "label": "Wireshark",
+        "description": "A network protocol analyser used for troubleshooting and analysis.",
+        "kind": "network-analysis-tool",
+        "aliases": [],
+        "source_ids": [
+          "wireshark"
+        ]
+      },
+      "linux": {
+        "label": "Linux",
+        "description": "An open-source Unix-like operating system family.",
+        "kind": "operating-system-firmware",
+        "aliases": [
+          "Unix"
+        ],
+        "source_ids": [
+          "linux",
+          "unix"
+        ]
+      },
+      "openwrt": {
+        "label": "OpenWrt",
+        "description": "An open-source firmware for routers and embedded devices.",
+        "kind": "operating-system-firmware",
+        "aliases": [],
+        "source_ids": [
+          "openwrt"
+        ]
+      },
+      "windows": {
+        "label": "Windows",
+        "description": "A family of operating systems developed by Microsoft.",
+        "kind": "operating-system-firmware",
+        "aliases": [],
+        "source_ids": [
+          "windows"
+        ]
+      },
+      "apple-pay": {
+        "label": "Apple Pay",
+        "description": "A digital wallet and payment service by Apple, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "apple-pay"
+        ]
+      },
+      "click-to-pay": {
+        "label": "Click to Pay",
+        "description": "A payment checkout technology by Mastercard.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "click-to-pay"
+        ]
+      },
+      "google-pay": {
+        "label": "Google Pay",
+        "description": "A digital wallet and payment service by Google, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "google-pay"
+        ]
+      },
+      "instant-withdrawal": {
+        "label": "Instant Withdrawal",
+        "description": "A payment feature allowing immediate withdrawal of funds, mentioned as a feature covered in later expansions of the guide.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "instant-withdrawal"
+        ]
+      },
+      "masterpass": {
+        "label": "Masterpass",
+        "description": "A digital wallet and checkout technology that enables merchants to integrate wallet-based payment flows.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "masterpass"
+        ]
+      },
+      "payment-integration": {
+        "label": "Payment integration",
+        "description": "The process of integrating payment processing into applications.",
+        "kind": "payment-technology",
+        "aliases": [],
+        "source_ids": [
+          "payment-integration"
+        ]
+      },
+      "assembly": {
+        "label": "Assembly language",
+        "description": "A low-level programming language that is closely related to machine code.",
+        "kind": "programming-language",
+        "aliases": [
+          "asm"
+        ],
+        "source_ids": [
+          "assembly"
+        ]
+      },
+      "c": {
+        "label": "C",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "aliases": [],
+        "source_ids": [
+          "c"
+        ]
+      }
+    }
+  }
+}

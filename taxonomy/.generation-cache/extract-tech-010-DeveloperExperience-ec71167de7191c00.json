@@ -1,0 +1,193 @@
+{
+  "fingerprint": "ec71167de7191c004860736a6afb1021e3c0b14347b69ad7444296339c79124d",
+  "label": "extract-tech-010-DeveloperExperience",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting plain text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Markdown documentation stored in Git is a key feature of the Codetreedocs platform."
+          }
+        ]
+      },
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Markdown documentation stored in Git and Git-based documentation workflows are described."
+          }
+        ]
+      },
+      {
+        "id": "intellij",
+        "label": "IntelliJ",
+        "description": "An integrated development environment for Java and other languages.",
+        "kind": "ide-editor",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "IntelliJ integration with live preview is listed as a key feature of Codetreedocs."
+          }
+        ]
+      },
+      {
+        "id": "diagrams-as-code",
+        "label": "Diagrams-as-code",
+        "description": "A technique for creating diagrams using textual code.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Diagrams-as-code support is listed as a key feature of Codetreedocs."
+          }
+        ]
+      },
+      {
+        "id": "jenkins",
+        "label": "Jenkins",
+        "description": "An open-source automation server for CI/CD.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Jenkins-based build and publishing pipelines are described for Codetreedocs."
+          }
+        ]
+      },
+      {
+        "id": "sphinx",
+        "label": "Sphinx",
+        "description": "A documentation generator for Python projects.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Migration tooling for legacy Sphinx content is mentioned."
+          }
+        ]
+      },
+      {
+        "id": "wiki",
+        "label": "Wiki",
+        "description": "A collaborative content management system.",
+        "kind": "cms-wiki",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Migration tooling for legacy wiki content is mentioned."
+          }
+        ]
+      },
+      {
+        "id": "openapi",
+        "label": "OpenAPI",
+        "description": "A specification for describing REST APIs.",
+        "kind": "standard-specification",
+        "parent": null,
+        "aliases": [
+          "Swagger"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Worked with OpenAPI/Swagger specifications for Mastercard Developers."
+          }
+        ]
+      },
+      {
+        "id": "swagger",
+        "label": "Swagger",
+        "description": "A suite of tools for implementing the OpenAPI specification.",
+        "kind": "api-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Worked with OpenAPI/Swagger specifications for Mastercard Developers."
+          }
+        ]
+      },
+      {
+        "id": "rest-api",
+        "label": "REST API",
+        "description": "An architectural style for designing networked applications.",
+        "kind": "architecture-style",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Created documentation for REST APIs at Mastercard Developers."
+          }
+        ]
+      },
+      {
+        "id": "sdk",
+        "label": "SDK",
+        "description": "A set of tools and libraries for building applications for a specific platform.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Created SDK documentation and worked with SDKs at Mastercard Developers and Paysafe."
+          }
+        ]
+      },
+      {
+        "id": "docs-as-code",
+        "label": "Docs-as-code",
+        "description": "A methodology for treating documentation like code.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "The document describes designing and evolving a docs-as-code platform and workflow."
+          }
+        ]
+      },
+      {
+        "id": "analytics",
+        "label": "Analytics",
+        "description": "Tools and techniques for measuring and analysing user behaviour.",
+        "kind": "data-analysis-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Analytics used to prioritise migration and content improvements on Codetreedocs."
+          }
+        ]
+      }
+    ]
+  }
+}

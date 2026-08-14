@@ -1,0 +1,37 @@
+{
+  "fingerprint": "7650d194ec4f64fc1985293b000fe27a62b685b45607f5f915b26793e25c72ec",
+  "label": "extract-tech-029-markdown-page",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting plain text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/markdown-page.mdx",
+            "reason": "The page is authored in Markdown, demonstrating its use for content creation."
+          }
+        ]
+      },
+      {
+        "id": "mdx",
+        "label": "MDX",
+        "description": "A format that combines Markdown with JSX, allowing interactive content in Markdown documents.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/markdown-page.mdx",
+            "reason": "The file extension .mdx indicates the use of MDX, which extends Markdown with JSX capabilities."
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,267 @@
+{
+  "fingerprint": "290dd51c41513eed8cad4fc1741c7457981b7e9e6c142a608813625a3fc22f33",
+  "label": "extract-tech-011-DocsAsCode",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language for formatting plain text.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document extensively describes creating documentation in Markdown, extending Markdown parsers, and converting content to Markdown."
+          }
+        ]
+      },
+      {
+        "id": "scala",
+        "label": "Scala",
+        "description": "A general-purpose programming language that combines object-oriented and functional programming.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document states the author built a custom Scala-based documentation platform and static site generator."
+          }
+        ]
+      },
+      {
+        "id": "codetreedocs",
+        "label": "Codetreedocs",
+        "description": "A custom Scala-based Markdown documentation platform and static site generator with IDE-based live preview.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document describes the author as product owner, creator, and contributor for Codetreedocs."
+          }
+        ]
+      },
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system.",
+        "kind": "version-control",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions managing documentation in Git repositories and a large Git monorepo."
+          }
+        ]
+      },
+      {
+        "id": "jenkins",
+        "label": "Jenkins",
+        "description": "An open-source automation server for CI/CD.",
+        "kind": "ci-cd-automation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions managing a Jenkins-based CI/CD publishing pipeline."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions developing Python migration tools to convert pages from Sphinx and TWiki to Markdown."
+          }
+        ]
+      },
+      {
+        "id": "sphinx",
+        "label": "Sphinx",
+        "description": "A documentation generator originally created for Python documentation.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions converting approximately 900 pages from Sphinx into Markdown."
+          }
+        ]
+      },
+      {
+        "id": "twiki",
+        "label": "TWiki",
+        "description": "A web-based collaboration platform and wiki.",
+        "kind": "cms-wiki",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions converting pages from TWiki into Markdown."
+          }
+        ]
+      },
+      {
+        "id": "java",
+        "label": "Java",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions using Java libraries to parse HTML and convert it to Markdown."
+          }
+        ]
+      },
+      {
+        "id": "html",
+        "label": "HTML",
+        "description": "The standard markup language for creating web pages.",
+        "kind": "markup-content-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions parsing HTML and embedding HTML within Markdown to preserve complex structures."
+          }
+        ]
+      },
+      {
+        "id": "plantuml",
+        "label": "PlantUML",
+        "description": "A tool for creating UML diagrams from plain text.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions extending Markdown parsers to support PlantUML diagrams."
+          }
+        ]
+      },
+      {
+        "id": "mermaid",
+        "label": "Mermaid",
+        "description": "A JavaScript-based diagramming and charting tool that renders Markdown-inspired text definitions.",
+        "kind": "diagramming-visualisation",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions extending Markdown parsers to support Mermaid diagrams."
+          }
+        ]
+      },
+      {
+        "id": "c4-architecture-diagrams",
+        "label": "C4 Architecture Diagrams",
+        "description": "A modelling methodology for visualising software architecture.",
+        "kind": "modelling-methodology",
+        "parent": null,
+        "aliases": [
+          "C4 model"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions extending Markdown parsers to support C4 Architecture diagrams."
+          }
+        ]
+      },
+      {
+        "id": "mkdocs",
+        "label": "MkDocs",
+        "description": "A static site generator for project documentation written in Python.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document describes building a test site with MkDocs, migrating 400 pages, and modifying MkDocs plugins."
+          }
+        ]
+      },
+      {
+        "id": "c-plus-plus",
+        "label": "C++",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [
+          "C++"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions recompiling MkDocs plugins as C++ binaries."
+          }
+        ]
+      },
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A static site generator for documentation sites built with React.",
+        "kind": "documentation-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document states the author built the current portfolio site with Docusaurus."
+          }
+        ]
+      },
+      {
+        "id": "static-site-generator",
+        "label": "Static Site Generator",
+        "description": "A tool that generates a static website from templates and content.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [
+          "SSG"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document describes designing and leading the delivery of a custom static site generator."
+          }
+        ]
+      },
+      {
+        "id": "ai-assisted-development-tools",
+        "label": "AI-assisted development tools",
+        "description": "Tools that use artificial intelligence to assist with software development tasks.",
+        "kind": "ai-ml-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions using AI-assisted development tools to automate repetitive documentation work."
+          }
+        ]
+      }
+    ]
+  }
+}

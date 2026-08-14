@@ -1,0 +1,5152 @@
+{
+  "generator": {
+    "taxonomy_version": 2,
+    "extraction_model": "deepseek-v4-flash",
+    "coverage_model": "deepseek-v4-flash",
+    "chunk_consolidation_model": "deepseek-v4-flash",
+    "consolidation_model": "deepseek-v4-pro",
+    "introduced_date": "2026-08-14",
+    "source_file_count": 29,
+    "nontechnology_batch_count": 1,
+    "technology_extraction_mode": "per-document-high-recall",
+    "coverage_audit_enabled": true,
+    "cache_enabled": true,
+    "cache_dir": "taxonomy\\.generation-cache",
+    "consolidation_chunk_size": 60
+  },
+  "per_document_technology_counts": {
+    "docs/case-studies/AMXInspiredSignageComposer.md": 8,
+    "docs/case-studies/DocusaurusPortfolio.md": 12,
+    "docs/case-studies/MasterpassMerchantIntegrationGuide.md": 6,
+    "docs/case-studies/MDES4Merchants.md": 10,
+    "docs/case-studies/PaysafeDeveloperJS.md": 14,
+    "docs/case-studies/ScalingADeveloperDocsPlatform.md": 13,
+    "docs/skills/AIandDocumentation.md": 10,
+    "docs/skills/APIandWebSecurity.md": 19,
+    "docs/skills/APIDocumentation.md": 25,
+    "docs/skills/DeveloperExperience.md": 13,
+    "docs/skills/DocsAsCode.md": 18,
+    "docs/skills/DocumentationEngineering.md": 28,
+    "docs/skills/DocumentationLeadership.md": 7,
+    "docs/skills/GovernanceDocs.md": 7,
+    "docs/skills/index.md": 4,
+    "docs/skills/InformationArchitecture.md": 10,
+    "docs/skills/TechnicalValidationTesting.md": 25,
+    "docs/tools/AIandDevTools.md": 11,
+    "docs/tools/ContainersAndCloudNative.md": 12,
+    "docs/tools/Diagramming.md": 12,
+    "docs/tools/DocusaurusAndMkdocs.md": 18,
+    "docs/tools/Flare.md": 25,
+    "docs/tools/GitContinuousIntegration.md": 5,
+    "docs/tools/index.md": 1,
+    "docs/tools/OpenAPIandAPITools.md": 10,
+    "docs/tools/ProgrammingAutomation.md": 55,
+    "README.md": 17,
+    "src/pages/index.md": 27,
+    "src/pages/markdown-page.mdx": 2
+  },
+  "candidate_counts": {
+    "content_types": 15,
+    "audiences": 10,
+    "topics": 40,
+    "technologies": 225
+  },
+  "coverage_audit_additions": [],
+  "coverage_warnings": [],
+  "rejected_technology_candidates": [
+    {
+      "file": "docs/case-studies/PaysafeDeveloperJS.md",
+      "id": "javascript",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/skills/APIandWebSecurity.md",
+      "id": "mtls",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/skills/APIandWebSecurity.md",
+      "id": "insomnia",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/skills/APIDocumentation.md",
+      "id": "insomnia",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/skills/APIDocumentation.md",
+      "id": "mutual-tls",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/skills/DocumentationEngineering.md",
+      "id": "insomnia",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/skills/TechnicalValidationTesting.md",
+      "id": "postman",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/skills/TechnicalValidationTesting.md",
+      "id": "insomnia",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/tools/OpenAPIandAPITools.md",
+      "id": "insomnia",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/tools/ProgrammingAutomation.md",
+      "id": "insomnia",
+      "reason": "organisation-like technology description: employer/client"
+    },
+    {
+      "file": "docs/tools/ProgrammingAutomation.md",
+      "id": "stmicroelectronics",
+      "reason": "organisation-like technology description: manufacturer"
+    }
+  ],
+  "candidates": {
+    "content_types": [
+      {
+        "id": "case-study",
+        "label": "Case Study",
+        "description": "A narrative account of a documentation project, including challenges, approach, deliverables, and outcomes.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "Document is structured as a project overview, challenge, approach, deliverables, and outcome."
+          },
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "Document follows the case study structure with sections for overview, challenge, approach, deliverables, and outcome."
+          }
+        ]
+      },
+      {
+        "id": "user-guide",
+        "label": "User Guide",
+        "description": "Documentation that provides instructions for end users on how to use a product or system.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The project involved writing user documentation for a content-management application, covering workflows for administrators and end users."
+          }
+        ]
+      },
+      {
+        "id": "api-reference",
+        "label": "API Reference",
+        "description": "Reference documentation describing the endpoints, parameters, authentication, and responses of an API.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The project involved correcting and improving an OpenAPI-based API reference."
+          },
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The project involved correcting and improving the supporting API reference documentation in OpenAPI schema format."
+          }
+        ]
+      },
+      {
+        "id": "integration-guide",
+        "label": "Integration Guide",
+        "description": "Documentation that explains how to integrate a product or service with other systems, often including workflows and code examples.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The document is a merchant integration guide explaining checkout flows."
+          },
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The document is a use case guide explaining how merchants can use an API for tokenisation."
+          }
+        ]
+      },
+      {
+        "id": "developer-guide",
+        "label": "Developer Guide",
+        "description": "Documentation aimed at developers, providing conceptual and procedural information for building with a product or API.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The project involved creating a developer guide for a JavaScript library."
+          }
+        ]
+      },
+      {
+        "id": "sdk-documentation",
+        "label": "SDK Documentation",
+        "description": "Documentation that explains how to use a software development kit, including installation, configuration, and usage.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The project involved updating Masterpass mobile SDK guides."
+          }
+        ]
+      },
+      {
+        "id": "conceptual-guide",
+        "label": "Conceptual Guide",
+        "description": "Documentation that explains concepts, architecture, and background information to help readers understand a product or technology.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The skill description mentions creating conceptual guides."
+          }
+        ]
+      },
+      {
+        "id": "tutorial",
+        "label": "Tutorial",
+        "description": "Step-by-step instructional content that guides users through a task or process.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The skill description mentions creating integration tutorials."
+          }
+        ]
+      },
+      {
+        "id": "release-notes",
+        "label": "Release Notes",
+        "description": "Documentation that describes the changes, new features, and fixes in a software release.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document describes building a C# release-notes tool that generates release documentation from Jira tickets."
+          }
+        ]
+      },
+      {
+        "id": "architecture-documentation",
+        "label": "Architecture Documentation",
+        "description": "Documentation that describes the architecture of a system, including diagrams and design decisions.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The skill description mentions creating software architecture-governance documentation and embedding C4 architecture diagrams."
+          }
+        ]
+      },
+      {
+        "id": "governance-record",
+        "label": "Governance Record",
+        "description": "Documentation that records decisions, actions, and attendees for governance processes.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The skill description mentions creating standardized governance records covering attendees, proposals, decisions, and actions."
+          }
+        ]
+      },
+      {
+        "id": "qa-report",
+        "label": "QA Report",
+        "description": "A report that presents the results of quality assurance checks on documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The README describes a QA report generated by a script that checks documentation quality."
+          }
+        ]
+      },
+      {
+        "id": "portfolio-page",
+        "label": "Portfolio Page",
+        "description": "A page in a portfolio that presents the author's work, skills, or tools.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page is the main portfolio landing page presenting selected work and capabilities."
+          }
+        ]
+      },
+      {
+        "id": "skill-page",
+        "label": "Skill Page",
+        "description": "A page that describes a specific skill or capability.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The page is a skill page describing API documentation experience."
+          }
+        ]
+      },
+      {
+        "id": "tool-page",
+        "label": "Tool Page",
+        "description": "A page that describes a specific tool or technology used in documentation work.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The page is a tool page describing MadCap Flare skills."
+          }
+        ]
+      }
+    ],
+    "audiences": [
+      {
+        "id": "end-users",
+        "label": "End Users",
+        "description": "Individuals who use a software application or system to perform tasks, but do not administer or develop it.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The documentation supported end users through the digital-signage workflow."
+          }
+        ]
+      },
+      {
+        "id": "administrators",
+        "label": "Administrators",
+        "description": "Individuals responsible for configuring, managing, and maintaining a system or application.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The documentation supported administrators through system configuration and permissions."
+          }
+        ]
+      },
+      {
+        "id": "merchant-developers",
+        "label": "Merchant Developers",
+        "description": "Developers who integrate payment or commerce solutions into merchant websites or applications.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The guide explained how merchants could integrate Masterpass checkout flows."
+          },
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The guide explained how merchants can use the MDES API for tokenisation."
+          }
+        ]
+      },
+      {
+        "id": "api-developers",
+        "label": "API Developers",
+        "description": "Developers who build integrations with APIs, including understanding authentication, endpoints, and data formats.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The guide is aimed at merchant developers integrating with a tokenisation API."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The skill description focuses on creating API documentation for developer audiences."
+          }
+        ]
+      },
+      {
+        "id": "technical-writers",
+        "label": "Technical Writers",
+        "description": "Professionals who create and maintain technical documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The skill page describes techniques and tools relevant to technical writers."
+          },
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The skill page discusses leading technical writing teams and strategy."
+          }
+        ]
+      },
+      {
+        "id": "documentation-engineers",
+        "label": "Documentation Engineers",
+        "description": "Engineers who apply software engineering practices to documentation, including automation, CI/CD, and tooling.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The skill page describes using software-engineering techniques for documentation."
+          }
+        ]
+      },
+      {
+        "id": "product-managers",
+        "label": "Product Managers",
+        "description": "Individuals responsible for defining product direction and requirements.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The project involved owning product direction and requirements for a documentation platform."
+          }
+        ]
+      },
+      {
+        "id": "engineering-teams",
+        "label": "Engineering Teams",
+        "description": "Software engineers who contribute to or consume documentation as part of their work.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The platform was designed to support engineering contributions and usage."
+          }
+        ]
+      },
+      {
+        "id": "subject-matter-experts",
+        "label": "Subject Matter Experts",
+        "description": "Individuals with deep knowledge of a specific domain who provide input to documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The skill description mentions reducing demands on subject-matter experts by investigating technical questions independently."
+          }
+        ]
+      },
+      {
+        "id": "stakeholders",
+        "label": "Stakeholders",
+        "description": "Individuals with an interest in a project, such as managers, clients, or reviewers.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The skill description mentions verifying technical details with stakeholders after meetings."
+          }
+        ]
+      }
+    ],
+    "topics": [
+      {
+        "id": "docs-as-code",
+        "label": "Docs-as-Code",
+        "description": "The practice of treating documentation like code, using version control, CI/CD, and automated builds.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The portfolio is built as a docs-as-code project with GitHub Actions."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The skill page is dedicated to docs-as-code experience."
+          }
+        ]
+      },
+      {
+        "id": "single-sourcing",
+        "label": "Single-Sourcing",
+        "description": "Using one source of content to generate multiple outputs or audience-specific versions.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The project used a single-source MadCap Flare project with conditional text and separate targets."
+          }
+        ]
+      },
+      {
+        "id": "content-reuse",
+        "label": "Content Reuse",
+        "description": "Reusing content across multiple documents or outputs to reduce duplication and maintain consistency.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The project used reusable content and snippets."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The skill page mentions content reuse in the context of Markdown and parser engineering."
+          }
+        ]
+      },
+      {
+        "id": "conditional-text",
+        "label": "Conditional Text",
+        "description": "Content that is conditionally included or excluded based on target audience or output format.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The project used conditional text to include administrator-only content in specific outputs."
+          }
+        ]
+      },
+      {
+        "id": "information-architecture",
+        "label": "Information Architecture",
+        "description": "The structural design of information to support findability and usability.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The skill page describes redesigning information architecture for a developer documentation site."
+          }
+        ]
+      },
+      {
+        "id": "content-migration",
+        "label": "Content Migration",
+        "description": "The process of moving content from one platform or format to another.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The project involved migrating legacy content from TWiki and Sphinx."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The skill page describes developing migration tools for content conversion."
+          }
+        ]
+      },
+      {
+        "id": "documentation-platform",
+        "label": "Documentation Platform",
+        "description": "A system or toolset used to create, manage, and publish documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The project involved designing and evolving a custom documentation platform."
+          }
+        ]
+      },
+      {
+        "id": "developer-portal",
+        "label": "Developer Portal",
+        "description": "A website or platform that provides developers with documentation, tools, and resources for integrating with a product.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "The skill page describes designing and scaling developer portals."
+          }
+        ]
+      },
+      {
+        "id": "api-documentation",
+        "label": "API Documentation",
+        "description": "Documentation that describes how to use an API, including endpoints, parameters, authentication, and examples.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The skill page is dedicated to API documentation experience."
+          }
+        ]
+      },
+      {
+        "id": "sdk-documentation",
+        "label": "SDK Documentation",
+        "description": "Documentation that explains how to use a software development kit.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The project involved updating mobile SDK guides."
+          }
+        ]
+      },
+      {
+        "id": "openapi",
+        "label": "OpenAPI",
+        "description": "A specification for describing REST APIs, used for generating reference documentation and client SDKs.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The project involved correcting OpenAPI definitions."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "The tool page describes maintaining OpenAPI specifications."
+          }
+        ]
+      },
+      {
+        "id": "api-authentication",
+        "label": "API Authentication",
+        "description": "Methods and protocols for authenticating API requests, such as OAuth, mTLS, and API keys.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The skill page describes experience with OAuth 1.0, mTLS, and other authentication methods."
+          }
+        ]
+      },
+      {
+        "id": "encryption",
+        "label": "Encryption",
+        "description": "The process of encoding data to protect it from unauthorized access, including field-level encryption and TLS.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The project involved documenting field-level encryption."
+          },
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The skill page describes knowledge of symmetric and asymmetric encryption."
+          }
+        ]
+      },
+      {
+        "id": "webhooks",
+        "label": "Webhooks",
+        "description": "HTTP callbacks that notify a system about events, often used for asynchronous API integrations.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The project involved receiving and validating webhook notifications."
+          },
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The skill page describes building and testing webhook integrations."
+          }
+        ]
+      },
+      {
+        "id": "payments",
+        "label": "Payments",
+        "description": "The domain of financial transactions, including payment gateways, digital wallets, and tokenisation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The guide is about integrating a digital wallet checkout flow."
+          },
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide is about a payment form integration."
+          }
+        ]
+      },
+      {
+        "id": "tokenisation",
+        "label": "Tokenisation",
+        "description": "The process of replacing sensitive data, such as card numbers, with a non-sensitive token.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The guide explains how to use an API to replace card numbers with tokens."
+          },
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide explains the tokenisation model of Paysafe.js."
+          }
+        ]
+      },
+      {
+        "id": "pci-dss",
+        "label": "PCI DSS",
+        "description": "The Payment Card Industry Data Security Standard, a set of security requirements for handling cardholder data.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide explains how hosted fields reduce PCI DSS scope."
+          }
+        ]
+      },
+      {
+        "id": "digital-signage",
+        "label": "Digital Signage",
+        "description": "The use of digital displays to show content, such as advertisements or information, often managed by a content management system.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The project involved documenting a digital-signage content-management application."
+          }
+        ]
+      },
+      {
+        "id": "content-management",
+        "label": "Content Management",
+        "description": "The process of creating, managing, and publishing digital content, often using a CMS.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The project involved documenting a content-management application."
+          }
+        ]
+      },
+      {
+        "id": "technical-validation",
+        "label": "Technical Validation",
+        "description": "The practice of testing and verifying that documentation is accurate and that procedures work as described.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The skill page is dedicated to technical validation and testing."
+          }
+        ]
+      },
+      {
+        "id": "integration-testing",
+        "label": "Integration Testing",
+        "description": "Testing that verifies the interaction between different systems or components.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The project involved building test integrations to validate documentation."
+          },
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The skill page describes integration testing experience."
+          }
+        ]
+      },
+      {
+        "id": "diagrams-as-code",
+        "label": "Diagrams-as-Code",
+        "description": "The practice of creating diagrams from text-based source files, such as PlantUML or Mermaid, that can be version-controlled.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The project involved creating PlantUML sequence diagrams."
+          },
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The tool page describes experience with diagrams-as-code tools."
+          }
+        ]
+      },
+      {
+        "id": "sequence-diagrams",
+        "label": "Sequence Diagrams",
+        "description": "Diagrams that show the order of interactions between systems or components over time.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The project involved creating sequence diagrams for checkout flows."
+          }
+        ]
+      },
+      {
+        "id": "architecture-diagrams",
+        "label": "Architecture Diagrams",
+        "description": "Diagrams that represent the structure and relationships of a system's components.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The skill page mentions embedding C4 architecture diagrams."
+          }
+        ]
+      },
+      {
+        "id": "documentation-governance",
+        "label": "Documentation Governance",
+        "description": "The processes and standards for managing documentation quality, ownership, and lifecycle.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The skill page is dedicated to documentation governance."
+          }
+        ]
+      },
+      {
+        "id": "documentation-strategy",
+        "label": "Documentation Strategy",
+        "description": "The high-level planning of documentation initiatives, including audience, structure, and tooling.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The skill page describes defining documentation approaches and strategies."
+          }
+        ]
+      },
+      {
+        "id": "developer-experience",
+        "label": "Developer Experience",
+        "description": "The overall experience of developers when using a product, API, or documentation, focusing on usability and efficiency.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "The skill page is dedicated to developer experience and portals."
+          }
+        ]
+      },
+      {
+        "id": "search-and-retrieval",
+        "label": "Search and Retrieval",
+        "description": "The methods and technologies for making documentation searchable and retrievable, including RAG.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The skill page describes experience with search integration and RAG-based retrieval."
+          }
+        ]
+      },
+      {
+        "id": "automation",
+        "label": "Automation",
+        "description": "The use of scripts and tools to automate repetitive documentation tasks, such as migration, validation, and publishing.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The tool page describes programming and automation skills."
+          }
+        ]
+      },
+      {
+        "id": "ci-cd",
+        "label": "CI/CD",
+        "description": "Continuous integration and continuous deployment practices applied to documentation builds and publishing.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The portfolio uses GitHub Actions for deployment and QA."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The skill page describes managing Jenkins-based CI/CD pipelines."
+          }
+        ]
+      },
+      {
+        "id": "static-site-generators",
+        "label": "Static Site Generators",
+        "description": "Tools that generate a static website from source files, such as Docusaurus or MkDocs.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The tool page describes experience with Docusaurus and MkDocs."
+          }
+        ]
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language used for formatting text, commonly used in documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The skill page describes extensive experience with Markdown."
+          }
+        ]
+      },
+      {
+        "id": "version-control",
+        "label": "Version Control",
+        "description": "The management of changes to documents, typically using Git.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The skill page describes managing documentation in Git repositories."
+          }
+        ]
+      },
+      {
+        "id": "documentation-quality",
+        "label": "Documentation Quality",
+        "description": "The practice of ensuring documentation is accurate, clear, and consistent through review and automated checks.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The README describes a QA pipeline for documentation quality."
+          }
+        ]
+      },
+      {
+        "id": "ai-assisted-documentation",
+        "label": "AI-Assisted Documentation",
+        "description": "The use of artificial intelligence tools to assist in creating, reviewing, or transforming documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The skill page is dedicated to AI applications in documentation."
+          }
+        ]
+      },
+      {
+        "id": "rag",
+        "label": "RAG",
+        "description": "Retrieval-Augmented Generation, a technique that combines retrieval of relevant documents with language generation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The skill page describes practical understanding of RAG concepts."
+          }
+        ]
+      },
+      {
+        "id": "documentation-metrics",
+        "label": "Documentation Metrics",
+        "description": "Quantitative measures used to assess documentation usage, quality, and maintenance needs.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The project used analytics to prioritise content migration and improvements."
+          }
+        ]
+      },
+      {
+        "id": "content-inventory",
+        "label": "Content Inventory",
+        "description": "A systematic assessment of existing documentation content, often used for migration or restructuring.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The skill page mentions conducting a content inventory of approximately 900 pages."
+          }
+        ]
+      },
+      {
+        "id": "learning-paths",
+        "label": "Learning Paths",
+        "description": "Structured sequences of documentation topics that guide users through a subject area.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The skill page describes designing a navigation tool for generating learning paths."
+          }
+        ]
+      },
+      {
+        "id": "release-management",
+        "label": "Release Management",
+        "description": "The process of planning, preparing, and coordinating software releases, including documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document describes a tool for generating release notes from Jira tickets."
+          }
+        ]
+      }
+    ],
+    "technologies": [
+      {
+        "id": "amx-composer",
+        "label": "AMX Composer",
+        "description": "A content-management application for the AMX Digital Signage platform.",
+        "parent": null,
+        "aliases": [
+          "Composer 5"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document is a case study about writing user documentation for AMX Composer 5, a content-management application for digital signage."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes the AMX Composer case study."
+          }
+        ],
+        "kind": "software-platform"
+      },
+      {
+        "id": "madcap-flare",
+        "label": "MadCap Flare",
+        "description": "A single-source documentation authoring tool used to create HTML help and PDF outputs.",
+        "parent": null,
+        "aliases": [
+          "Flare"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document states that a single-source MadCap Flare project was created using reusable content, conditional text, separate build targets, and separate source TOCs."
+          },
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document is a detailed account of the author's extensive experience with MadCap Flare, including core and advanced skills, community contributions, and automation/integration projects."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using a MadCap Flare XHTML template to generate release notes."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists MadCap Flare as a tag for the AMX Composer case study."
+          }
+        ],
+        "kind": "authoring-tool",
+        "alternative_kinds": [
+          "documentation-platform"
+        ]
+      },
+      {
+        "id": "html",
+        "label": "HTML",
+        "description": "HyperText Markup Language, used for the online help output.",
+        "parent": null,
+        "aliases": [
+          "HyperText Markup Language"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document mentions producing context-sensitive HTML help bundles and using cross-references rather than HTML-only hyperlinks."
+          },
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The CodePen examples and interactive Try Now demonstration involve HTML for structuring the payment forms."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions rendering HTML pages with Jinja templates and browser-based forms."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions parsing HTML and embedding HTML within Markdown to preserve complex structures."
+          },
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions publishing HTML output from Flare and integrating with hosting platforms, and the author's work with Flare-compatible XHTML topics."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using HTML to build interactive documentation-portal features."
+          },
+          {
+            "file": "README.md",
+            "reason": "The script generates an HTML report."
+          }
+        ],
+        "kind": "markup-content-language"
+      },
+      {
+        "id": "pdf",
+        "label": "PDF",
+        "description": "Portable Document Format, used for the printable manual output.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document describes producing a PDF administrator manual as a secondary output."
+          }
+        ],
+        "kind": "data-format"
+      },
+      {
+        "id": "tcp-ip",
+        "label": "TCP/IP",
+        "description": "Transmission Control Protocol/Internet Protocol, the networking protocol suite.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document states that the work required a practical understanding of TCP/IP networking."
+          },
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions practical understanding of TCP/IP networking developed while documenting networked audio/video and digital-signage systems."
+          }
+        ],
+        "kind": "protocol"
+      },
+      {
+        "id": "mermaid",
+        "label": "Mermaid",
+        "description": "A diagramming and charting tool that uses text-based definitions.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document includes a Mermaid flowchart diagram showing the content flow."
+          },
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions a simple Mermaid diagram."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions extending Markdown parsers to support Mermaid diagrams."
+          },
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Mermaid among diagrams-as-code tools used for reproducible diagrams."
+          },
+          {
+            "file": "README.md",
+            "reason": "The AI checks suggest Mermaid diagram opportunities."
+          }
+        ],
+        "kind": "diagramming-visualisation"
+      },
+      {
+        "id": "vale",
+        "label": "Vale",
+        "description": "A command-line linter for prose, used for automated proofreading.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document mentions Vale as a modern automated proofreading tool that could be used."
+          },
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions adding Vale as a future improvement."
+          },
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Vale is mentioned as a tool to add automated quality checks to documentation pull requests."
+          }
+        ],
+        "kind": "documentation-qa-tool"
+      },
+      {
+        "id": "languagetool",
+        "label": "LanguageTool",
+        "description": "An open-source proofreading tool for grammar and style.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/AMXInspiredSignageComposer.md",
+            "reason": "The document mentions LanguageTool as a modern automated proofreading tool that could be used."
+          },
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "LanguageTool is mentioned as a tool to add automated quality checks to documentation pull requests."
+          }
+        ],
+        "kind": "documentation-qa-tool"
+      },
+      {
+        "id": "docusaurus",
+        "label": "Docusaurus",
+        "description": "A documentation site generator used to build and publish the portfolio.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document describes building the portfolio as a Docusaurus documentation site."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document states the author built the current portfolio site with Docusaurus."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions using Docusaurus for a portfolio and building/publishing it with GitHub Actions."
+          },
+          {
+            "file": "docs/skills/index.md",
+            "reason": "The page imports a component from '@site/src/components/SkillsGrid', indicating the use of Docusaurus as the documentation platform."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states the portfolio was built using Docusaurus."
+          },
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document mentions using GitHub Actions to build and publish a Docusaurus portfolio site."
+          },
+          {
+            "file": "docs/tools/index.md",
+            "reason": "The page imports a Docusaurus component (ToolsGrid) and is part of a Docusaurus site."
+          },
+          {
+            "file": "README.md",
+            "reason": "The document states the portfolio is built with Docusaurus and includes it in the technology list."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page imports '@docusaurus/Link' and is part of a Docusaurus site, demonstrating use of Docusaurus."
+          }
+        ],
+        "kind": "documentation-platform"
+      },
+      {
+        "id": "markdown",
+        "label": "Markdown",
+        "description": "A lightweight markup language used for authoring content.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions extensive Markdown content and Markdown-first authoring."
+          },
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Documentation is Markdown-based and stored in Git."
+          },
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Markdown documentation stored in Git is a key feature of the Codetreedocs platform."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document extensively describes creating documentation in Markdown, extending Markdown parsers, and converting content to Markdown."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes Markdown and MDX authoring, custom Markdown extensions, and Markdown-based platforms."
+          },
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document mentions embedding C4 diagrams in Markdown and storing diagram definitions as text alongside documentation."
+          },
+          {
+            "file": "docs/skills/index.md",
+            "reason": "The document is authored in Markdown, as evidenced by the front matter and content structure."
+          },
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions extending the Markdown content model for documentation."
+          },
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document describes creating requirements in Markdown as part of a spec-driven development workflow."
+          },
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document mentions maintaining diagram source alongside Markdown documentation."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions creating components driven by Markdown content and generating cards from Markdown front matter."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes migrating documentation sets into Markdown-based formats and using Markdown for documentation."
+          },
+          {
+            "file": "README.md",
+            "reason": "Markdown is listed as a technology and the QA tool reviews Markdown documents."
+          },
+          {
+            "file": "src/pages/markdown-page.mdx",
+            "reason": "The page is authored in Markdown, demonstrating its use for content creation."
+          }
+        ],
+        "kind": "markup-content-language"
+      },
+      {
+        "id": "mdx",
+        "label": "MDX",
+        "description": "A format that combines Markdown with JSX for embedding React components.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions React/MDX customisation and using MDX for content."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document explicitly mentions MDX authoring."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document lists MDX as a technology used in building the portfolio."
+          },
+          {
+            "file": "README.md",
+            "reason": "MDX is listed as a technology and the QA tool reviews MDX documents."
+          },
+          {
+            "file": "src/pages/markdown-page.mdx",
+            "reason": "The file extension .mdx indicates the use of MDX, which extends Markdown with JSX capabilities."
+          }
+        ],
+        "kind": "markup-content-language"
+      },
+      {
+        "id": "react",
+        "label": "React",
+        "description": "A JavaScript library for building user interfaces.",
+        "parent": null,
+        "aliases": [
+          "React.js",
+          "ReactJS"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document describes creating React and JSX components for the site."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions using React components in the Docusaurus portfolio to turn Markdown data into visual layouts."
+          },
+          {
+            "file": "docs/skills/index.md",
+            "reason": "The page imports a React component (SkillsGrid) from the site's components directory, indicating the use of React within the documentation site."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document lists React as a technology used in building the portfolio."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with React/JSX components for documentation-portal features."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "jsx",
+        "label": "JSX",
+        "description": "A syntax extension for JavaScript used with React to describe UI components.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions React and JSX components."
+          },
+          {
+            "file": "docs/skills/index.md",
+            "reason": "The import statement uses JSX syntax to include a React component, demonstrating the use of JSX in the documentation."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document lists JSX as a technology used in building the portfolio."
+          }
+        ],
+        "kind": "programming-language",
+        "alternative_kinds": [
+          "markup-content-language"
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language used for the QA script.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions a Python script that calls the DeepSeek API."
+          },
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author created custom test code in Python to validate the integration."
+          },
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions developing cloud-hosted Python encryption integrations and using Python for testing."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions strong Python skills and Python applications using requests, Flask, and PythonAnywhere."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions developing Python migration tools to convert pages from Sphinx and TWiki to Markdown."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions Python migration scripts, Python-based MkDocs plugins, and Python test applications."
+          },
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Python is explicitly listed as a tool used to validate API behaviour and build integrations."
+          },
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions building externally accessible Python integrations to receive and test webhooks."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states plugin Python code was modified."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Developed Python utilities to call authenticated REST APIs, process API responses, and programmatically generate, parse and transform JSON and YAML."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document extensively describes Python experience across documentation tooling, content migration, API integrations, data processing, and workflow automation."
+          },
+          {
+            "file": "README.md",
+            "reason": "The QA script is named ai_docs_review.py, indicating Python implementation."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions Python as a technology used for test integrations and validation."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "requests",
+        "label": "Requests",
+        "description": "A Python HTTP library used to call the DeepSeek REST API.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions using the requests library to call the DeepSeek API."
+          },
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author used the Requests library to send API requests and inspect responses."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions Python applications using the 'requests' library to make authenticated HTTP API calls."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Requests and authentication libraries to integrate with REST and HTTP APIs."
+          },
+          {
+            "file": "README.md",
+            "reason": "The document states the script uses the Requests library to make REST API calls."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "deepseek-api",
+        "label": "DeepSeek API",
+        "description": "A REST API for AI-powered quality checks on documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document describes integrating the DeepSeek API into the QA workflow."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "github-actions",
+        "label": "GitHub Actions",
+        "description": "A CI/CD platform used to automate QA and deployment workflows.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document describes GitHub Actions workflows for QA and deployment."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document states that GitHub Actions automatically builds and publishes the Docusaurus portfolio."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states GitHub Actions was used for automated builds and deployment."
+          },
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document states use of GitHub Actions to automatically build and publish a Docusaurus portfolio site when content changes are pushed."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions integrating documentation workflows with GitHub Actions CI pipelines."
+          },
+          {
+            "file": "README.md",
+            "reason": "The script can be run as part of a GitHub Action with --ci mode."
+          }
+        ],
+        "kind": "ci-cd-automation"
+      },
+      {
+        "id": "github-pages",
+        "label": "GitHub Pages",
+        "description": "A hosting service for static sites, used to publish the portfolio.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/DocusaurusPortfolio.md",
+            "reason": "The document mentions deploying the site to GitHub Pages."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states deployment was to GitHub Pages."
+          },
+          {
+            "file": "README.md",
+            "reason": "GitHub Pages is listed as a technology for hosting the portfolio."
+          }
+        ],
+        "kind": "cloud-hosting-platform"
+      },
+      {
+        "id": "masterpass",
+        "label": "Masterpass",
+        "description": "A digital wallet and checkout technology that enables merchants to integrate wallet-based payment flows.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The document is about maintaining and updating the Masterpass Merchant Integration Guide, including building test integrations for Masterpass checkout flows."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes the Masterpass merchant integrations case study."
+          }
+        ],
+        "kind": "payment-technology"
+      },
+      {
+        "id": "openapi",
+        "label": "OpenAPI",
+        "description": "A specification for describing, producing, consuming, and visualizing RESTful APIs.",
+        "parent": null,
+        "aliases": [
+          "OpenAPI 2.0",
+          "Swagger",
+          "Swagger 2.0"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The author corrected the OpenAPI definitions underlying the API reference and used OpenAPI format for the API reference."
+          },
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author corrected and improved the API reference documentation in OpenAPI schema format."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions creating and maintaining OpenAPI schemas, using shared OpenAPI components, and comparing observed API behaviour with OpenAPI definitions."
+          },
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Worked with OpenAPI/Swagger specifications for Mastercard Developers."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Maintained Swagger 2.0 / OpenAPI 2.0 specifications and designed reusable definitions using $ref, shared schemas, parameters, responses, and security definitions."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists OpenAPI reference documentation as a technical capability."
+          }
+        ],
+        "kind": "standard-specification"
+      },
+      {
+        "id": "plantuml",
+        "label": "PlantUML",
+        "description": "A diagramming tool that uses a simple text language to create UML diagrams, including sequence diagrams.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The author created detailed sequence diagrams using PlantUML to illustrate checkout flow interactions."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions extending Markdown parsers to support PlantUML diagrams."
+          },
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists PlantUML among diagrams-as-code tools used for reproducible diagrams."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions extending AST-based parsing code to support PlantUML blocks in Scala."
+          }
+        ],
+        "kind": "diagramming-visualisation"
+      },
+      {
+        "id": "brightspot",
+        "label": "Brightspot",
+        "description": "A content management system (CMS) used for marketing-focused content, not designed for structured technical documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The author maintained developer documentation in Brightspot and worked around its limitations."
+          }
+        ],
+        "kind": "cms-wiki"
+      },
+      {
+        "id": "docs-as-code",
+        "label": "Docs-as-code",
+        "description": "A methodology that treats documentation as code, using version control and developer workflows.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The author advocated for and specified requirements for a docs-as-code platform, and tested its authoring and publishing workflow."
+          },
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "The document describes designing and evolving a docs-as-code platform and workflow."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document is about documentation engineering and explicitly describes docs-as-code practices."
+          },
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions docs-as-code adoption and designing Git- and CI-based documentation workflows."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes experience with docs-as-code platforms and lists it as a technical capability."
+          }
+        ],
+        "kind": "modelling-methodology"
+      },
+      {
+        "id": "mastercard-developers",
+        "label": "Mastercard Developers",
+        "description": "A developer platform for Mastercard APIs and documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MasterpassMerchantIntegrationGuide.md",
+            "reason": "The guide is published on Mastercard Developers, and the author worked within that platform context."
+          }
+        ],
+        "kind": "developer-platform"
+      },
+      {
+        "id": "flask",
+        "label": "Flask",
+        "description": "A Python web framework used to build a cloud-hosted application for receiving webhooks.",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author developed a cloud-hosted Flask application to receive webhook notifications."
+          },
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions building full-stack sandbox integrations using Python/Flask."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions Flask applications exposing GET and POST endpoints and rendering HTML pages with Jinja templates."
+          },
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Flask is explicitly mentioned as a technology used to validate API behaviour and build integrations."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes building Flask applications with GET and POST endpoints, query parameters, form handling, and Jinja-rendered pages."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions Flask as part of the Python/Flask stack for test integrations."
+          }
+        ],
+        "kind": "framework"
+      },
+      {
+        "id": "pythonanywhere",
+        "label": "PythonAnywhere",
+        "description": "A cloud hosting platform for Python applications.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The Flask application was hosted on PythonAnywhere to provide a public endpoint."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions cloud-hosted PythonAnywhere applications using Flask to receive, process and respond to webhooks."
+          },
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document describes using PythonAnywhere to host generated public documentation for SME review."
+          },
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions automatically publishing generated HTML output to PythonAnywhere for review."
+          }
+        ],
+        "kind": "cloud-hosting-platform"
+      },
+      {
+        "id": "oauth-1-0",
+        "label": "OAuth 1.0",
+        "description": "An authentication protocol used for API security.",
+        "parent": null,
+        "aliases": [
+          "OAuth 1",
+          "OAuth 1.0a",
+          "OAuth1"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author generated OAuth 1.0 authentication data for API requests."
+          },
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document explicitly lists OAuth 1.0 as part of API authentication experience and mentions OAuth 1 request signing in the Click to Pay integration."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions implementing and documenting OAuth 1.0 and extending Insomnia to support Mastercard OAuth 1.0."
+          }
+        ],
+        "kind": "protocol",
+        "alternative_kinds": [
+          "standard-specification"
+        ]
+      },
+      {
+        "id": "field-level-encryption",
+        "label": "Field-level encryption",
+        "description": "A security technique that encrypts individual data fields.",
+        "parent": null,
+        "aliases": [
+          "FLE"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author encrypted and decrypted protected fields using cryptography libraries."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions field-level encryption and decryption."
+          }
+        ],
+        "kind": "security-cryptography"
+      },
+      {
+        "id": "mastercard-digital-enablement-api",
+        "label": "Mastercard Digital Enablement API",
+        "description": "An API providing access to MDES for card tokenisation.",
+        "parent": null,
+        "aliases": [
+          "MDES",
+          "MDES API"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author tested and documented the Mastercard Digital Enablement API."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes the MDES for Merchants case study using this API."
+          }
+        ],
+        "kind": "api-tool"
+      },
+      {
+        "id": "webhooks",
+        "label": "Webhooks",
+        "description": "Asynchronous HTTP notifications used to notify about events.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author received and validated asynchronous webhook notifications during testing."
+          },
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions building and testing webhook integrations."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions documenting webhooks, testing webhook flows, and receiving/responding to webhooks."
+          },
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document describes using hosted environments to receive and test webhooks that could not reach internal development environments."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions building sandbox integrations for testing payment and API workflows, including webhooks."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "cryptography-libraries",
+        "label": "Cryptography libraries",
+        "description": "Open-source libraries used for encryption and decryption.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/MDES4Merchants.md",
+            "reason": "The author used open-source cryptography libraries to encrypt and decrypt fields."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "paysafe-js",
+        "label": "Paysafe.js",
+        "description": "A JavaScript library that allows merchants to add customisable payment forms to their websites while reducing PCI DSS scope by collecting sensitive card details through hosted fields in iframes and returning a token.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The document is a developer guide for Paysafe.js, explaining its hosted-field architecture, tokenisation model, and integration workflow."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes the Paysafe.js case study."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "css",
+        "label": "CSS",
+        "description": "A stylesheet language used for styling web pages, including the styling of payment forms in the examples.",
+        "parent": null,
+        "aliases": [
+          "Cascading Style Sheets"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide includes styling guidance for the payment forms, and the CodePen examples would use CSS."
+          },
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists custom CSS as an advanced Flare skill and mentions applying stylesheets and templates."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using CSS to customise documentation-site layout and styling."
+          }
+        ],
+        "kind": "markup-content-language"
+      },
+      {
+        "id": "codepen",
+        "label": "CodePen",
+        "description": "An online code editor and community for front-end development, used to create and share working examples.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The author created original CodePen examples for developers to inspect and modify working integrations."
+          }
+        ],
+        "kind": "developer-platform"
+      },
+      {
+        "id": "iframe",
+        "label": "iframe",
+        "description": "An HTML element that embeds another document within the current page, used by Paysafe.js to host secure fields.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The document explains that sensitive card details are collected through secure fields hosted by Paysafe in iframes."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "tokenisation",
+        "label": "Tokenisation",
+        "description": "The process of replacing sensitive data with a non-sensitive token, used in the Paysafe.js integration to return a token to the merchant.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide explains the tokenisation model and how the library returns a token for payment requests."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions tokenising card-on-file payment credentials in the MDES case study."
+          }
+        ],
+        "kind": "technical-technique",
+        "alternative_kinds": [
+          "security-cryptography"
+        ]
+      },
+      {
+        "id": "pci-dss",
+        "label": "PCI DSS",
+        "description": "The Payment Card Industry Data Security Standard, a set of security standards for organisations that handle cardholder data.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The document discusses how Paysafe.js reduces PCI DSS scope and supports SAQ A compliance."
+          }
+        ],
+        "kind": "standard-specification"
+      },
+      {
+        "id": "saq-a",
+        "label": "SAQ A",
+        "description": "A PCI DSS Self-Assessment Questionnaire for merchants that outsource cardholder data processing to third parties.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide explains that the iframe-based fields support SAQ A compliance."
+          }
+        ],
+        "kind": "standard-specification"
+      },
+      {
+        "id": "3d-secure",
+        "label": "3D Secure",
+        "description": "A security protocol for authenticating online card payments, mentioned as a feature covered in later expansions of the guide.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide has since been expanded to cover 3D Secure, indicating it is a relevant technology in the context of Paysafe.js."
+          }
+        ],
+        "kind": "protocol"
+      },
+      {
+        "id": "google-pay",
+        "label": "Google Pay",
+        "description": "A digital wallet and payment service by Google, mentioned as a feature covered in later expansions of the guide.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide has since been expanded to cover Google Pay, indicating it is a relevant payment method in the context of Paysafe.js."
+          }
+        ],
+        "kind": "payment-technology"
+      },
+      {
+        "id": "apple-pay",
+        "label": "Apple Pay",
+        "description": "A digital wallet and payment service by Apple, mentioned as a feature covered in later expansions of the guide.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide has since been expanded to cover Apple Pay, indicating it is a relevant payment method in the context of Paysafe.js."
+          }
+        ],
+        "kind": "payment-technology"
+      },
+      {
+        "id": "instant-withdrawal",
+        "label": "Instant Withdrawal",
+        "description": "A payment feature allowing immediate withdrawal of funds, mentioned as a feature covered in later expansions of the guide.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The guide has since been expanded to cover Instant Withdrawal, indicating it is a relevant payment feature in the context of Paysafe.js."
+          }
+        ],
+        "kind": "payment-technology"
+      },
+      {
+        "id": "api-reference",
+        "label": "API reference",
+        "description": "Documentation that describes the endpoints, parameters, and usage of an API, delivered as part of the guide.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The deliverables include API reference documentation for Paysafe.js."
+          }
+        ],
+        "kind": "documentation-platform"
+      },
+      {
+        "id": "try-now-demo",
+        "label": "Try Now demonstration",
+        "description": "An interactive inline demonstration that allows developers to explore the integration step by step.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/PaysafeDeveloperJS.md",
+            "reason": "The author developed an interactive Try Now demonstration within the documentation."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "codetreedocs",
+        "label": "Codetreedocs",
+        "description": "A custom internal docs-as-code platform and developer portal.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The document describes leading the design and evolution of Codetreedocs, a custom internal docs-as-code platform."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document describes the author as product owner, creator, and contributor for Codetreedocs."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes Codetreedocs as a custom documentation platform with static-site generation, IDE plugin, Git source control, Jenkins publishing, and search."
+          },
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document describes leading the design and evolution of Codetreedocs, a large-scale internal docs-as-code platform and developer portal."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions leading the design and evolution of Codetreedocs."
+          }
+        ],
+        "kind": "software-platform",
+        "alternative_kinds": [
+          "documentation-platform"
+        ]
+      },
+      {
+        "id": "git",
+        "label": "Git",
+        "description": "A distributed version control system.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The platform uses Git-based publishing workflow and documentation stored in Git within a monorepo."
+          },
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Markdown documentation stored in Git and Git-based documentation workflows are described."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions managing documentation in Git repositories and a large Git monorepo."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes extensive Git-based workflows, branching, pull requests, rebasing, and merge conflict resolution."
+          },
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions designing Git-based documentation workflows."
+          },
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions consolidating legacy documentation into a structured Git monorepo."
+          },
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document mentions maintaining diagram source alongside Markdown documentation in Git-based docs-as-code environments."
+          },
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists Git-based collaboration as an advanced Flare skill and mentions version control and CI."
+          },
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document demonstrates strong working knowledge of Git, including branches, remotes, staging, commits, push/pull workflows, stash, pull requests, rebase, and commit squashing."
+          }
+        ],
+        "kind": "version-control"
+      },
+      {
+        "id": "jenkins",
+        "label": "Jenkins",
+        "description": "An open-source automation server for CI/CD.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Jenkins-based documentation build and publishing pipelines are a key element."
+          },
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Jenkins-based build and publishing pipelines are described for Codetreedocs."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions managing a Jenkins-based CI/CD publishing pipeline."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes developing and operating a Jenkins-based publishing pipeline for Codetreedocs."
+          },
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document demonstrates ability to read and understand Jenkins pipelines, diagnose build failures, and work with teams on build and publishing workflows."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions integrating documentation workflows with Jenkins CI pipelines."
+          }
+        ],
+        "kind": "ci-cd-automation"
+      },
+      {
+        "id": "intellij",
+        "label": "IntelliJ",
+        "description": "An integrated development environment for Java and other languages.",
+        "parent": null,
+        "aliases": [
+          "IntelliJ IDEA"
+        ],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "An IntelliJ plugin provides live documentation preview."
+          },
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "IntelliJ integration with live preview is listed as a key feature of Codetreedocs."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions developing IntelliJ plugins, indicating use of the IntelliJ platform."
+          }
+        ],
+        "kind": "ide-editor"
+      },
+      {
+        "id": "diagrams-as-code",
+        "label": "Diagrams-as-code",
+        "description": "A technique for creating diagrams using textual definitions.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Support for diagrams-as-code, including software architecture diagrams, is a key element."
+          },
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions using AI for diagrams as code."
+          },
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Diagrams-as-code support is listed as a key feature of Codetreedocs."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "twiki",
+        "label": "TWiki",
+        "description": "A web-based collaboration platform and wiki.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Legacy documentation was fragmented across TWiki and Sphinx; migration scripts converted approximately 900 legacy TWiki pages."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions converting pages from TWiki into Markdown."
+          },
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions migration from TWiki during a content inventory."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions a large internal TWiki documentation site that was recreated."
+          }
+        ],
+        "kind": "cms-wiki"
+      },
+      {
+        "id": "sphinx",
+        "label": "Sphinx",
+        "description": "A documentation generator for Python projects.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Legacy documentation was fragmented across TWiki and Sphinx; tooling was written to migrate documentation from Sphinx."
+          },
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Migration tooling for legacy Sphinx content is mentioned."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions converting approximately 900 pages from Sphinx into Markdown."
+          },
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions migration from Sphinx during a content inventory."
+          }
+        ],
+        "kind": "documentation-platform"
+      },
+      {
+        "id": "docker",
+        "label": "Docker",
+        "description": "A platform for developing, shipping, and running applications in containers.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "The platform was migrated to the firm's strategic Docker-based web-hosting environment."
+          },
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions moving documentation infrastructure onto Docker-based hosting."
+          },
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document describes leading a migration of a documentation platform to Docker, troubleshooting containerised builds, and optimising build performance."
+          }
+        ],
+        "kind": "container-platform"
+      },
+      {
+        "id": "agentic-ai-tools",
+        "label": "Agentic AI tools",
+        "description": "AI tools that can autonomously perform tasks.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Agentic AI tools were used to accelerate platform enhancements and repetitive documentation tasks."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "spec-driven-development",
+        "label": "Spec-driven development",
+        "description": "A development technique where specifications drive implementation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+            "reason": "Spec-driven development techniques were used to accelerate platform enhancements."
+          },
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions using spec-driven development with AI coding tools."
+          }
+        ],
+        "kind": "technical-technique",
+        "alternative_kinds": [
+          "modelling-methodology"
+        ]
+      },
+      {
+        "id": "ai-assisted-authoring",
+        "label": "AI-Assisted Authoring",
+        "description": "Using AI to create initial documentation structures and skeleton content from source material.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document describes using AI to create initial documentation structures and skeleton content from Jira tickets and SME information."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "ai-coding-tools",
+        "label": "AI Coding Tools",
+        "description": "AI tools used to generate code, often in spec-driven development workflows.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions using AI coding tools and spec-driven development to extend documentation-platform functionality."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "retrieval-augmented-generation",
+        "label": "Retrieval-Augmented Generation (RAG)",
+        "description": "A technique combining retrieval of relevant documents with generative AI to produce responses.",
+        "parent": null,
+        "aliases": [
+          "RAG"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document describes practical understanding of RAG concepts, including using metadata and document lifecycle status to prevent deprecated API documentation from being recommended."
+          },
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document describes practical understanding of RAG concepts, including using metadata and document lifecycle status to prevent deprecated API documentation from being recommended."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "llm-assisted-documentation",
+        "label": "LLM-Assisted Documentation",
+        "description": "Using large language models for grammar checking, analysis, diagram generation, content transformation, and code generation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document states using AI for grammar checking, documentation analysis, diagrams as code, content transformation, and code generation."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "whisper",
+        "label": "Whisper",
+        "description": "A speech-to-text model by OpenAI, used locally for privacy.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions installing and using a local Whisper speech-to-text model for privacy-sensitive meeting transcripts."
+          },
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document describes a pilot using an approved internal Whisper speech-to-text model to generate draft transcripts from meeting recordings."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "model-context-protocol",
+        "label": "Model Context Protocol (MCP)",
+        "description": "A protocol for exposing tools and context to AI assistants.",
+        "parent": null,
+        "aliases": [
+          "MCP"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document describes building experimental MCP servers and using MCP to expose documentation-quality tools to AI assistants."
+          },
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document describes building experimental Model Context Protocol servers using FastMCP."
+          }
+        ],
+        "kind": "protocol"
+      },
+      {
+        "id": "fastmcp",
+        "label": "FastMCP",
+        "description": "A framework for building Model Context Protocol servers.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions building experimental MCP servers using FastMCP."
+          },
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document explicitly mentions using FastMCP to build experimental MCP servers."
+          }
+        ],
+        "kind": "framework"
+      },
+      {
+        "id": "jira",
+        "label": "Jira",
+        "description": "A project tracking and issue management tool.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/AIandDocumentation.md",
+            "reason": "The document mentions using Jira tickets as source material for AI-assisted authoring."
+          },
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document states that Jira tickets were created for agreed follow-up actions."
+          },
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Jira is explicitly mentioned as the tool used to raise and manage defects."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using JIRA tickets for release-note generation."
+          }
+        ],
+        "kind": "collaboration-project-tool"
+      },
+      {
+        "id": "pki",
+        "label": "PKI",
+        "description": "Public Key Infrastructure for managing digital certificates and keys.",
+        "parent": null,
+        "aliases": [
+          "Public Key Infrastructure"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists PKI as part of the security technologies used."
+          }
+        ],
+        "kind": "security-cryptography"
+      },
+      {
+        "id": "x-509-certificates",
+        "label": "X.509 certificates",
+        "description": "Standard format for public key certificates used in TLS and authentication.",
+        "parent": null,
+        "aliases": [
+          "X.509"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists X.509 certificates as part of certificate-based client authentication."
+          }
+        ],
+        "kind": "standard-specification"
+      },
+      {
+        "id": "https-tls",
+        "label": "HTTPS/TLS",
+        "description": "Secure communication protocols for transport layer security.",
+        "parent": null,
+        "aliases": [
+          "HTTPS",
+          "TLS"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists HTTPS/TLS as part of transport security and mentions HTTPS in webhook integrations."
+          }
+        ],
+        "kind": "protocol"
+      },
+      {
+        "id": "jose",
+        "label": "JOSE",
+        "description": "JSON Object Signing and Encryption framework for securing JSON data.",
+        "parent": null,
+        "aliases": [
+          "JSON Object Signing and Encryption"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists JOSE as part of knowledge of secure structured data transmission."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions implementing and documenting JWT and JOSE."
+          }
+        ],
+        "kind": "standard-specification"
+      },
+      {
+        "id": "jwt",
+        "label": "JWT",
+        "description": "JSON Web Token, a compact token format for authentication and claims.",
+        "parent": null,
+        "aliases": [
+          "JSON Web Token"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists JWT as part of knowledge of digital signatures and secure data."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions implementing and documenting JWT and JOSE."
+          }
+        ],
+        "kind": "standard-specification"
+      },
+      {
+        "id": "digital-signatures",
+        "label": "Digital signatures",
+        "description": "Cryptographic technique for verifying data integrity and authenticity.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists digital signatures as part of security knowledge."
+          }
+        ],
+        "kind": "security-cryptography"
+      },
+      {
+        "id": "symmetric-asymmetric-encryption",
+        "label": "Symmetric and asymmetric encryption",
+        "description": "Encryption techniques using shared or public/private keys.",
+        "parent": null,
+        "aliases": [
+          "encryption"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document lists symmetric and asymmetric encryption as part of security knowledge."
+          }
+        ],
+        "kind": "security-cryptography"
+      },
+      {
+        "id": "hsm",
+        "label": "HSM",
+        "description": "Hardware Security Module for secure key management.",
+        "parent": null,
+        "aliases": [
+          "Hardware Security Module"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions HSM-based key management."
+          }
+        ],
+        "kind": "security-cryptography"
+      },
+      {
+        "id": "java",
+        "label": "Java",
+        "description": "A general-purpose programming language.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using Java for full-stack integrations and testing."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions practical experience in Java and Java integrations using embedded Jetty services."
+          },
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions using Java libraries to parse HTML and convert it to Markdown."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions Java test applications for API testing and validation."
+          },
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "Java is explicitly listed as a tool used to validate API behaviour and build integrations."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists Java as a technology used for test integrations and validation."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "javascript",
+        "label": "JavaScript",
+        "description": "A scripting language for web development.",
+        "parent": null,
+        "aliases": [
+          "JS"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using JavaScript in full-stack sandbox integrations."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions browser-based development and Node.js plugins."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document lists JavaScript as a technology used in building the portfolio and for search integration."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Modified JavaScript/Node.js plugins for Insomnia to support custom authentication and encryption/decryption workflows."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes using JavaScript, jQuery, AJAX, HTML, CSS, and SCSS/Sass to build interactive documentation-portal features."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions a JavaScript SDK for Paysafe.js, indicating use of JavaScript."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "node-js",
+        "label": "Node.js",
+        "description": "A JavaScript runtime for server-side applications.",
+        "parent": "javascript",
+        "aliases": [
+          "Node"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using Node.js in full-stack sandbox integrations."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Modified JavaScript/Node.js plugins for Insomnia, indicating use of the Node.js runtime."
+          }
+        ],
+        "kind": "runtime"
+      },
+      {
+        "id": "postman",
+        "label": "Postman",
+        "description": "An API testing and development tool.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions using Postman for testing authentication, encryption, and REST APIs."
+          },
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions building reusable collections of API requests in Postman."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists Postman as a tool used for API testing and validation."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Created and maintained Postman collections and used Postman to execute authenticated API requests, validate examples, and troubleshoot issues."
+          }
+        ],
+        "kind": "api-tool"
+      },
+      {
+        "id": "rest-apis",
+        "label": "REST APIs",
+        "description": "Architectural style for designing networked applications.",
+        "parent": null,
+        "aliases": [
+          "REST"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions testing REST APIs and building REST integrations."
+          }
+        ],
+        "kind": "architecture-style"
+      },
+      {
+        "id": "owasp",
+        "label": "OWASP",
+        "description": "Open Web Application Security Project, providing security guidance and risk lists.",
+        "parent": null,
+        "aliases": [
+          "Open Web Application Security Project"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document mentions awareness of OWASP web application and API security risks."
+          }
+        ],
+        "kind": "standard-specification"
+      },
+      {
+        "id": "click-to-pay",
+        "label": "Click to Pay",
+        "description": "A payment checkout technology by Mastercard.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIandWebSecurity.md",
+            "reason": "The document describes identifying a security weakness in a Click to Pay integration."
+          }
+        ],
+        "kind": "payment-technology"
+      },
+      {
+        "id": "c",
+        "label": "C",
+        "description": "A general-purpose programming language.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document states 'Former C/C++ developer'."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes modifying a cross-platform 3D graphics CAD application in C and mentions C and assembly-language programming for kernel and device-driver development."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "cpp",
+        "label": "C++",
+        "description": "A general-purpose programming language.",
+        "parent": null,
+        "aliases": [
+          "C/C++"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document states 'Former C/C++ developer'."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document states several years of C++ development experience, including Visual C++ and use of STL containers and data structures."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "nodejs",
+        "label": "Node.js",
+        "description": "A JavaScript runtime environment.",
+        "parent": null,
+        "aliases": [
+          "Node"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions practical experience in Node.js and extending Insomnia with Node.js plugins."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using JavaScript/Node.js for building interactive documentation-portal features and browser-based test integrations."
+          }
+        ],
+        "kind": "runtime"
+      },
+      {
+        "id": "jinja",
+        "label": "Jinja",
+        "description": "A templating engine for Python.",
+        "parent": "python",
+        "aliases": [
+          "Jinja2"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions rendering HTML pages with Jinja templates."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions Jinja-rendered pages in Flask applications."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "jetty",
+        "label": "Jetty",
+        "description": "A Java HTTP server and servlet container.",
+        "parent": "java",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions Java integrations using embedded Jetty services."
+          }
+        ],
+        "kind": "server-networking"
+      },
+      {
+        "id": "rest",
+        "label": "REST",
+        "description": "An architectural style for distributed systems.",
+        "parent": null,
+        "aliases": [
+          "Representational State Transfer",
+          "REST API",
+          "RESTful"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions REST API reference content, REST endpoints, and REST API behaviour."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Reviewed API contracts against implemented REST behaviour and called authenticated REST APIs."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions integrating with REST and HTTP APIs using GET/POST methods, query parameters, headers, and status codes."
+          }
+        ],
+        "kind": "architecture-style"
+      },
+      {
+        "id": "openssl",
+        "label": "OpenSSL",
+        "description": "A cryptography toolkit implementing SSL/TLS.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions certificate-based cryptography and OpenSSL."
+          }
+        ],
+        "kind": "security-cryptography"
+      },
+      {
+        "id": "exponential-backoff",
+        "label": "Exponential backoff",
+        "description": "A resilience pattern for retrying operations with increasing delays.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions documenting resilience patterns such as exponential back off."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "request-signing",
+        "label": "Request signing",
+        "description": "A technique for authenticating requests via digital signatures.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions request signing and authentication flows."
+          }
+        ],
+        "kind": "security-cryptography"
+      },
+      {
+        "id": "sdk-documentation",
+        "label": "SDK documentation",
+        "description": "The practice of documenting software development kits.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions creating SDK documentation and documenting SDKs."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "api-testing",
+        "label": "API testing",
+        "description": "The practice of testing API endpoints and integrations.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/APIDocumentation.md",
+            "reason": "The document mentions API testing and building test integrations to verify API behaviour."
+          },
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes validating API behaviour, authentication flows, encryption, error handling, and webhooks."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "wiki",
+        "label": "Wiki",
+        "description": "A collaborative content management system.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Migration tooling for legacy wiki content is mentioned."
+          }
+        ],
+        "kind": "cms-wiki"
+      },
+      {
+        "id": "swagger",
+        "label": "Swagger",
+        "description": "A suite of tools for implementing the OpenAPI specification.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Worked with OpenAPI/Swagger specifications for Mastercard Developers."
+          }
+        ],
+        "kind": "api-tool"
+      },
+      {
+        "id": "rest-api",
+        "label": "REST API",
+        "description": "An architectural style for designing networked applications.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Created documentation for REST APIs at Mastercard Developers."
+          },
+          {
+            "file": "README.md",
+            "reason": "The script makes REST API calls to the DeepSeek mode."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions REST APIs in the context of MDES for Merchants and API documentation."
+          }
+        ],
+        "kind": "architecture-style"
+      },
+      {
+        "id": "sdk",
+        "label": "SDK",
+        "description": "A set of tools and libraries for building applications for a specific platform.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Created SDK documentation and worked with SDKs at Mastercard Developers and Paysafe."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists SDK documentation as a technical capability and mentions a JavaScript SDK."
+          }
+        ],
+        "kind": "software-platform"
+      },
+      {
+        "id": "analytics",
+        "label": "Analytics",
+        "description": "Tools and techniques for measuring and analysing user behaviour.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DeveloperExperience.md",
+            "reason": "Analytics used to prioritise migration and content improvements on Codetreedocs."
+          }
+        ],
+        "kind": "data-analysis-tool"
+      },
+      {
+        "id": "scala",
+        "label": "Scala",
+        "description": "A general-purpose programming language that combines object-oriented and functional programming.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document states the author built a custom Scala-based documentation platform and static site generator."
+          },
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document states the author analysed complex Scala implementation code to reconstruct undocumented API behaviour."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Developed Scala utilities to call authenticated REST APIs, process API responses, and programmatically generate, parse and transform JSON and YAML."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes using Scala for scripting, data processing, and extending AST-based parsing code to support PlantUML blocks."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists Scala as a technology used for test integrations and validation."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "c4-architecture-diagrams",
+        "label": "C4 Architecture Diagrams",
+        "description": "A modelling methodology for visualising software architecture.",
+        "parent": null,
+        "aliases": [
+          "C4 model"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions extending Markdown parsers to support C4 Architecture diagrams."
+          }
+        ],
+        "kind": "modelling-methodology"
+      },
+      {
+        "id": "mkdocs",
+        "label": "MkDocs",
+        "description": "A static site generator for project documentation written in Python.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document describes building a test site with MkDocs, migrating 400 pages, and modifying MkDocs plugins."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists MkDocs as a static-site generator used and mentions modifying Python-based MkDocs plugins."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states MkDocs was used to recreate functionality from a TWiki site."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions extending an existing MkDocs plugin to support additional Graphviz diagram-generation modes."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists MkDocs as a technology the author is experienced with."
+          }
+        ],
+        "kind": "documentation-platform"
+      },
+      {
+        "id": "c-plus-plus",
+        "label": "C++",
+        "description": "A general-purpose programming language.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions recompiling MkDocs plugins as C++ binaries."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "static-site-generator",
+        "label": "Static Site Generator",
+        "description": "A tool that generates a static website from templates and content.",
+        "parent": null,
+        "aliases": [
+          "SSG"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document describes designing and leading the delivery of a custom static site generator."
+          },
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions custom Markdown-based static-site generators and a custom platform (Codetreedocs) that includes a static-site generator."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document discusses selecting and extending static site generators, and custom static site generators."
+          }
+        ],
+        "kind": "technical-technique",
+        "alternative_kinds": [
+          "software-platform"
+        ]
+      },
+      {
+        "id": "ai-assisted-development-tools",
+        "label": "AI-assisted development tools",
+        "description": "Tools that use artificial intelligence to assist with software development tasks.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocsAsCode.md",
+            "reason": "The document mentions using AI-assisted development tools to automate repetitive documentation work."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "graphviz",
+        "label": "Graphviz",
+        "description": "A graph visualization tool used for generating diagrams.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions creating Graphviz-based tooling for generating hyperlinked trail diagrams."
+          },
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document describes designing and implementing a Graphviz-based navigation tool for generating tree-structured learning paths."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Graphviz for diagram generation, including hyperlink-enabled diagrams, invoked via Python subprocess."
+          }
+        ],
+        "kind": "diagramming-visualisation"
+      },
+      {
+        "id": "ocr",
+        "label": "OCR libraries",
+        "description": "Optical character recognition libraries used to extract text from images.",
+        "parent": null,
+        "aliases": [
+          "OCR",
+          "Optical Character Recognition"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions using OCR libraries to identify obsolete terminology in legacy raster diagrams."
+          },
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document mentions using OCR to identify outdated terminology in raster screenshots and diagrams."
+          }
+        ],
+        "kind": "library",
+        "alternative_kinds": [
+          "technical-technique"
+        ]
+      },
+      {
+        "id": "rag",
+        "label": "RAG (Retrieval-Augmented Generation)",
+        "description": "A technique combining retrieval with generative AI for search and question answering.",
+        "parent": null,
+        "aliases": [
+          "Retrieval-Augmented Generation"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions RAG-based documentation search and identifying retrieval problems in AI-generated answers."
+          },
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document describes designing the information architecture supporting a RAG-based documentation search system."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions working with RAG-based retrieval."
+          }
+        ],
+        "kind": "technical-technique",
+        "alternative_kinds": [
+          "ai-ml-tool",
+          "architecture-style"
+        ]
+      },
+      {
+        "id": "ide-plugin",
+        "label": "IDE plugin",
+        "description": "A plugin for an integrated development environment providing live preview and migration tools.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes an IDE plugin with live preview for Codetreedocs and an IDE-based migration tool."
+          }
+        ],
+        "kind": "developer-tool"
+      },
+      {
+        "id": "search-integration",
+        "label": "Search integration",
+        "description": "Integrating search functionality into documentation sites.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions integrating search into large documentation sites, including JavaScript-based and RAG-based search."
+          },
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists CMS and search integration as an advanced Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "metadata-filtering",
+        "label": "Metadata-based filtering",
+        "description": "Using metadata to filter search results and improve retrieval quality.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document describes proposing metadata-based filtering to improve search quality for AI-generated answers."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "site-analytics",
+        "label": "Site analytics",
+        "description": "Using analytics data to inform documentation decisions.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions using site analytics to prioritise content migration."
+          },
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions using site analytics to prioritise high-value content."
+          }
+        ],
+        "kind": "data-analysis-tool"
+      },
+      {
+        "id": "grammar-checking",
+        "label": "Automated grammar checking",
+        "description": "Using automated tools to check grammar and spelling in documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists automated grammar checking as a validation technique."
+          }
+        ],
+        "kind": "documentation-qa-tool"
+      },
+      {
+        "id": "link-validation",
+        "label": "Link and build validation",
+        "description": "Validating links and builds in documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions link and build validation as part of validation and quality."
+          }
+        ],
+        "kind": "documentation-qa-tool"
+      },
+      {
+        "id": "front-matter-processing",
+        "label": "Front-matter processing",
+        "description": "Processing YAML or TOML front matter in Markdown files.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists front-matter processing as an example of tooling and automation."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "landing-page-generation",
+        "label": "Automated landing-page generation",
+        "description": "Automatically generating landing pages from documentation data.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists automated landing-page generation as an example of tooling and automation."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "diagram-generation",
+        "label": "Diagram generation",
+        "description": "Automatically generating diagrams from documentation data.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists diagram generation as an example of tooling and automation."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "ai-assisted-documentation",
+        "label": "AI-assisted documentation workflows",
+        "description": "Using AI to assist in documentation creation and maintenance.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document lists AI-assisted documentation workflows as an example of tooling and automation."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "monorepo",
+        "label": "Monorepo",
+        "description": "A repository strategy that stores multiple projects in a single repository.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationEngineering.md",
+            "reason": "The document mentions large documentation repositories and monorepos."
+          }
+        ],
+        "kind": "architecture-style"
+      },
+      {
+        "id": "ci-cd",
+        "label": "CI/CD",
+        "description": "Continuous integration and continuous delivery/deployment practices and tools.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions designing CI-based documentation workflows and using automation."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions experience with CI/CD in the context of documentation engineering."
+          }
+        ],
+        "kind": "ci-cd-automation"
+      },
+      {
+        "id": "ide",
+        "label": "IDE",
+        "description": "Integrated development environment used for authoring and live-preview tooling.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions delivering IDE-based documentation authoring and live-preview tooling."
+          }
+        ],
+        "kind": "ide-editor"
+      },
+      {
+        "id": "ai-assisted-workflows",
+        "label": "AI-assisted workflows",
+        "description": "Use of artificial intelligence to assist in documentation production and maintenance.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/DocumentationLeadership.md",
+            "reason": "The document mentions introducing automation and AI-assisted workflows to make documentation production and maintenance more scalable."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "c4-model",
+        "label": "C4 model",
+        "description": "A notation for modelling software architecture using context, containers, components, and code diagrams.",
+        "parent": null,
+        "aliases": [
+          "C4"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document describes building a documentation-platform plugin for embedding C4 architecture diagrams in Markdown."
+          },
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document states familiarity with the C4 model and its system context, container, component, and relationship views."
+          }
+        ],
+        "kind": "modelling-methodology"
+      },
+      {
+        "id": "ldap",
+        "label": "LDAP",
+        "description": "A directory service protocol for querying and modifying directory data.",
+        "parent": null,
+        "aliases": [
+          "Lightweight Directory Access Protocol"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document mentions using LDAP directory lookups to populate attendee details and meeting metadata."
+          }
+        ],
+        "kind": "protocol"
+      },
+      {
+        "id": "finos-calm",
+        "label": "FINOS CALM",
+        "description": "A standard for representing software architectures in structured, machine-readable formats.",
+        "parent": null,
+        "aliases": [
+          "CALM"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document mentions exploring FINOS CALM as an emerging architecture-as-code standard."
+          }
+        ],
+        "kind": "standard-specification"
+      },
+      {
+        "id": "architecture-as-code",
+        "label": "Architecture as code",
+        "description": "A technical technique for managing architecture definitions as version-controlled code.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/GovernanceDocs.md",
+            "reason": "The document describes storing diagram definitions as text alongside documentation, allowing version control and audit."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "metadata",
+        "label": "Metadata",
+        "description": "Data about data, used for filtering and search in documentation systems.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions defining metadata requirements and proposing metadata-based filtering for documentation search."
+          }
+        ],
+        "kind": "data-format"
+      },
+      {
+        "id": "content-inventory",
+        "label": "Content inventory",
+        "description": "A systematic process of cataloguing and analysing content assets.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document describes conducting a content inventory of approximately 900 pages."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "spidering",
+        "label": "Spidering",
+        "description": "Automated crawling of web links to map content relationships.",
+        "parent": null,
+        "aliases": [
+          "web crawling"
+        ],
+        "evidence": [
+          {
+            "file": "docs/skills/InformationArchitecture.md",
+            "reason": "The document mentions recursively spidering internal links to map content relationships."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "curl",
+        "label": "cURL",
+        "description": "A command-line tool for transferring data with URLs, used to test APIs and integrations.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "cURL is explicitly listed as a tool used to validate API behaviour and integration accuracy."
+          },
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Used cURL to execute authenticated API requests, validate documented examples, and troubleshoot API request and response issues."
+          }
+        ],
+        "kind": "api-tool",
+        "alternative_kinds": [
+          "developer-tool"
+        ]
+      },
+      {
+        "id": "cloud-hosted-test-environments",
+        "label": "Cloud-hosted test environments",
+        "description": "Cloud-based environments used to overcome network restrictions and validate externally accessible integrations.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes using cloud-hosted test environments to overcome internal network restrictions and validate integrations."
+          }
+        ],
+        "kind": "cloud-hosting-platform"
+      },
+      {
+        "id": "encryption-decryption-integrations",
+        "label": "Encryption/decryption integrations",
+        "description": "Technical integrations involving encryption and decryption, created to test real API and asynchronous processing behaviour.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions creating cloud-hosted encryption/decryption integrations to test real API behaviour."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "webhook-integrations",
+        "label": "Webhook integrations",
+        "description": "Integrations that handle asynchronous callbacks via webhooks, used to test API and processing behaviour.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions creating cloud-hosted webhook integrations to test real API and asynchronous processing behaviour."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "test-driven-technical-writing",
+        "label": "Test-driven technical writing",
+        "description": "A methodology of using working software and integration code to verify technical claims before publication.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes applying a test-driven approach to technical writing, using working software to verify claims."
+          }
+        ],
+        "kind": "modelling-methodology"
+      },
+      {
+        "id": "black-box-testing",
+        "label": "Black-box testing",
+        "description": "A software testing method that verifies behaviour without examining internal implementation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists black-box testing as a hands-on testing experience."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "component-testing",
+        "label": "Component testing",
+        "description": "Testing individual components of a system in isolation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists component testing as a hands-on testing experience."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "smoke-testing",
+        "label": "Smoke testing",
+        "description": "Preliminary testing to check whether the basic functionality works.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists smoke testing as a hands-on testing experience."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "release-testing",
+        "label": "Release testing",
+        "description": "Testing performed to ensure a product is ready for release.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists release testing as a hands-on testing experience."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "usability-testing",
+        "label": "Usability testing",
+        "description": "Testing to evaluate how user-friendly a product is.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document lists usability testing as a hands-on testing experience."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "end-to-end-testing",
+        "label": "End-to-end testing",
+        "description": "Testing complete workflows from start to finish to verify system behaviour.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes testing complete workflows spanning client applications, APIs, and backend services."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "integration-testing",
+        "label": "Integration testing",
+        "description": "Testing interactions between integrated components or systems.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes building working integrations and validating API behaviour, which is integration testing."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "authentication-testing",
+        "label": "Authentication testing",
+        "description": "Testing authentication flows to ensure they work correctly and securely.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions validating authentication flows as part of API testing."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "encryption-testing",
+        "label": "Encryption testing",
+        "description": "Testing encryption mechanisms to ensure data is protected correctly.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions validating encryption as part of API testing and creating encryption/decryption integrations."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "webhook-testing",
+        "label": "Webhook testing",
+        "description": "Testing webhook callbacks and asynchronous processing.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document mentions validating webhooks and creating webhook integrations."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "sandbox-testing",
+        "label": "Sandbox testing",
+        "description": "Testing in a sandbox environment that mimics production but with mocked behaviour and constraints.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes strong understanding of sandbox and production environments and using sandbox environments for testing."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "defect-tracking",
+        "label": "Defect tracking",
+        "description": "The process of identifying, documenting, and managing defects.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes identifying, reproducing, documenting, and tracking defects."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "test-automation",
+        "label": "Test automation",
+        "description": "Using scripts and tools to automate repeated testing tasks.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes developing scripts and reusable integration code to make validation more efficient."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "developer-experience-evaluation",
+        "label": "Developer experience evaluation",
+        "description": "Assessing developer tools and workflows from a usability perspective.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/skills/TechnicalValidationTesting.md",
+            "reason": "The document describes evaluating developer tools and workflows from a usability perspective."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "claude",
+        "label": "Claude",
+        "description": "An AI assistant developed by Anthropic, used for coding and documentation tasks.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document lists Claude among AI coding tools used for development, debugging, refactoring, and documentation-platform work."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "github-copilot",
+        "label": "GitHub Copilot",
+        "description": "An AI-powered code completion tool.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document lists GitHub Copilot among AI coding tools used for development, debugging, refactoring, and documentation-platform work."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "amp",
+        "label": "Amp",
+        "description": "An AI coding tool (likely referring to Amp, an AI pair programmer).",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document lists Amp among AI coding tools used for development, debugging, refactoring, and documentation-platform work."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "intellij-idea",
+        "label": "IntelliJ IDEA",
+        "description": "An integrated development environment for Java and other languages.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document states extensive experience working with IntelliJ IDEA."
+          }
+        ],
+        "kind": "ide-editor"
+      },
+      {
+        "id": "pycharm",
+        "label": "PyCharm",
+        "description": "An integrated development environment for Python.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document states extensive experience working with PyCharm."
+          }
+        ],
+        "kind": "ide-editor"
+      },
+      {
+        "id": "vs-code",
+        "label": "VS Code",
+        "description": "A source-code editor developed by Microsoft.",
+        "parent": null,
+        "aliases": [
+          "Visual Studio Code"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document states extensive experience working with VS Code."
+          },
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions using LTeX+ in VS Code."
+          }
+        ],
+        "kind": "ide-editor"
+      },
+      {
+        "id": "intellij-plugin-development",
+        "label": "IntelliJ plugin development",
+        "description": "The practice of creating plugins for IntelliJ-based IDEs.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/AIandDevTools.md",
+            "reason": "The document mentions creating IntelliJ IDE plugins."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "nginx",
+        "label": "Nginx",
+        "description": "A web server and reverse proxy used to serve web content.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions migrating the publishing environment to Nginx running in Docker."
+          }
+        ],
+        "kind": "server-networking"
+      },
+      {
+        "id": "linux",
+        "label": "Linux",
+        "description": "An open-source Unix-like operating system family.",
+        "parent": null,
+        "aliases": [
+          "Unix"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document states comfort working in Linux/Unix environments and troubleshooting differences between local and CI builds."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working from the Unix/Linux command line."
+          }
+        ],
+        "kind": "operating-system-firmware"
+      },
+      {
+        "id": "openwrt",
+        "label": "OpenWrt",
+        "description": "An open-source firmware for routers and embedded devices.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions personal experience configuring OpenWrt, firewalls and network services."
+          }
+        ],
+        "kind": "operating-system-firmware"
+      },
+      {
+        "id": "wireshark",
+        "label": "Wireshark",
+        "description": "A network protocol analyser used for troubleshooting and analysis.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions basic use of Wireshark for network troubleshooting."
+          }
+        ],
+        "kind": "network-analysis-tool"
+      },
+      {
+        "id": "kubernetes",
+        "label": "Kubernetes",
+        "description": "An open-source container orchestration platform.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions basic hands-on exposure to Kubernetes, including setting up a small local cluster."
+          }
+        ],
+        "kind": "container-platform"
+      },
+      {
+        "id": "proxmox",
+        "label": "Proxmox",
+        "description": "An open-source virtualisation management platform.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions using Proxmox at home to host services including Home Assistant and the Kubernetes test environment."
+          }
+        ],
+        "kind": "infrastructure-platform"
+      },
+      {
+        "id": "home-assistant",
+        "label": "Home Assistant",
+        "description": "An open-source home automation platform.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions using Proxmox to host Home Assistant."
+          }
+        ],
+        "kind": "software-platform"
+      },
+      {
+        "id": "graphviz-dot",
+        "label": "Graphviz/DOT",
+        "description": "A graph visualization tool and DOT language for describing and rendering graphs.",
+        "parent": null,
+        "aliases": [
+          "DOT",
+          "Graphviz"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Graphviz/DOT among diagrams-as-code tools and describes advanced practical experience, including developing an internal Graphviz-based tool at Morgan Stanley."
+          }
+        ],
+        "kind": "diagramming-visualisation"
+      },
+      {
+        "id": "microsoft-visio",
+        "label": "Microsoft Visio",
+        "description": "A diagramming and vector graphics application for creating professional diagrams.",
+        "parent": null,
+        "aliases": [
+          "Visio"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Microsoft Visio among tools used for diagrams requiring greater graphical control."
+          }
+        ],
+        "kind": "diagramming-visualisation"
+      },
+      {
+        "id": "adobe-illustrator",
+        "label": "Adobe Illustrator",
+        "description": "A vector graphics editor used for creating and editing illustrations and diagrams.",
+        "parent": null,
+        "aliases": [
+          "Illustrator"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Adobe Illustrator among tools used for diagrams requiring greater graphical control."
+          }
+        ],
+        "kind": "design-graphics-tool"
+      },
+      {
+        "id": "inkscape",
+        "label": "Inkscape",
+        "description": "An open-source vector graphics editor.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document lists Inkscape among tools used for diagrams requiring greater graphical control."
+          }
+        ],
+        "kind": "design-graphics-tool"
+      },
+      {
+        "id": "svg",
+        "label": "SVG",
+        "description": "Scalable Vector Graphics, an XML-based vector image format.",
+        "parent": null,
+        "aliases": [
+          "Scalable Vector Graphics"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document describes creating, editing, and integrating SVG and other vector graphics into web-based documentation."
+          }
+        ],
+        "kind": "data-format"
+      },
+      {
+        "id": "catia",
+        "label": "CATIA",
+        "description": "A multi-platform CAD/CAM/CAE software suite for engineering and 3D design.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Diagramming.md",
+            "reason": "The document mentions earlier-career experience with CAD software including CATIA."
+          }
+        ],
+        "kind": "engineering-design-tool"
+      },
+      {
+        "id": "ltex",
+        "label": "LTeX+",
+        "description": "A language tool for spelling and grammar checking in VS Code.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states LTeX+ was used in VS Code for spelling and grammar checking."
+          }
+        ],
+        "kind": "documentation-qa-tool"
+      },
+      {
+        "id": "mkdocs-plugins",
+        "label": "MkDocs plugins",
+        "description": "Extensions for MkDocs to add features.",
+        "parent": "mkdocs",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document states multiple plugins were integrated to support advanced features."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "flexsearch",
+        "label": "FlexSearch",
+        "description": "A JavaScript library for full-text search.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions using FlexSearch for client-side search."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "webmaps",
+        "label": "Webmaps",
+        "description": "Generated webmaps for search indexing.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/DocusaurusAndMkdocs.md",
+            "reason": "The document mentions generating webmaps and metadata for search."
+          }
+        ],
+        "kind": "data-format"
+      },
+      {
+        "id": "xhtml",
+        "label": "XHTML",
+        "description": "A stricter, XML-based version of HTML used for structured content.",
+        "parent": null,
+        "aliases": [
+          "Extensible Hypertext Markup Language"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document explicitly mentions generating Flare-compatible XHTML topics and parsing/generating XHTML in the C# release-notes tool."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using a MadCap Flare XHTML template for release-note generation."
+          }
+        ],
+        "kind": "markup-content-language"
+      },
+      {
+        "id": "xml",
+        "label": "XML",
+        "description": "A markup language that defines rules for encoding documents in a format that is both human-readable and machine-readable.",
+        "parent": null,
+        "aliases": [
+          "Extensible Markup Language"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions custom XML development as part of Flare customisation and Flare-compatible XHTML topics."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using XML parsing and transformation logic in C# and working with XML responses in API integrations."
+          }
+        ],
+        "kind": "markup-content-language",
+        "alternative_kinds": [
+          "data-format"
+        ]
+      },
+      {
+        "id": "csharp",
+        "label": "C#",
+        "description": "A general-purpose, multi-paradigm programming language developed by Microsoft.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document describes building a C# release-notes tool that queries Jira REST API and generates Flare-compatible XHTML."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes developing tooling in C# to automate release-note generation from JIRA tickets, integrating with the JIRA REST API and XML parsing."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "jira-rest-api",
+        "label": "Jira REST API",
+        "description": "The REST API for Atlassian Jira, used to interact with Jira issues and projects programmatically.",
+        "parent": null,
+        "aliases": [
+          "Jira API"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions querying the Jira REST API for tickets tagged to a release in the C# release-notes tool."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document describes integrating with the JIRA REST API to retrieve ticket details for release-note generation."
+          }
+        ],
+        "kind": "api-tool"
+      },
+      {
+        "id": "hypothesis",
+        "label": "Hypothes.is",
+        "description": "An open-source annotation tool that allows users to annotate web pages.",
+        "parent": null,
+        "aliases": [
+          "Hypothesis"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document describes integrating Hypothes.is with hosted documentation for annotation by subject-matter experts."
+          }
+        ],
+        "kind": "collaboration-project-tool"
+      },
+      {
+        "id": "confluence",
+        "label": "Confluence",
+        "description": "A collaboration and wiki platform by Atlassian used for team documentation and knowledge management.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions developing scripts to migrate developer documentation from Confluence to MadCap Flare."
+          }
+        ],
+        "kind": "cms-wiki"
+      },
+      {
+        "id": "continuous-integration",
+        "label": "Continuous Integration",
+        "description": "A software development practice where code changes are automatically built, tested, and prepared for release.",
+        "parent": null,
+        "aliases": [
+          "CI"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions continuous integration as part of version control and CI in Flare workflows."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "topic-based-authoring",
+        "label": "Topic-based authoring",
+        "description": "A modular approach to writing documentation where content is organized into topics that can be reused across outputs.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists topic-based authoring as a core Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "single-sourcing",
+        "label": "Single-sourcing",
+        "description": "A documentation technique that uses a single source of content to generate multiple outputs or formats.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists advanced single-sourcing as an advanced Flare skill."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists single sourcing as a tag for the AMX Composer case study."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "conditional-text",
+        "label": "Conditional text",
+        "description": "A feature in documentation tools that allows content to be included or excluded based on conditions.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists conditional text as a core Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "snippets-and-variables",
+        "label": "Snippets and variables",
+        "description": "Reusable content fragments and placeholders in documentation tools.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists snippets and variables as a core Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "cross-references",
+        "label": "Cross-references",
+        "description": "Links within documentation that point to other sections or topics.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists hyperlinks and cross-references as a core Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "tables-of-contents",
+        "label": "Tables of contents",
+        "description": "A hierarchical list of topics or sections in a document.",
+        "parent": null,
+        "aliases": [
+          "TOC"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists tables of contents as a core Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "targets-and-build-configurations",
+        "label": "Targets and build configurations",
+        "description": "Settings in Flare that define how output is generated for different formats or audiences.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists targets and build configurations as a core Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "pdf-publishing",
+        "label": "PDF publishing",
+        "description": "The process of generating PDF documents from source content.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists HTML and PDF publishing as a core Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "cms-integration",
+        "label": "CMS integration",
+        "description": "Integrating a documentation tool with a content management system.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists CMS and search integration as an advanced Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "output-troubleshooting",
+        "label": "Output troubleshooting",
+        "description": "Diagnosing and resolving issues with generated documentation outputs.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document lists complex output troubleshooting as an advanced Flare skill."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "post-build-automation",
+        "label": "Post-build automation",
+        "description": "Automating tasks that run after the documentation build process.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document describes building a Flare post-build automation workflow."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "migration-scripts",
+        "label": "Migration scripts",
+        "description": "Scripts used to migrate content from one system to another.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/Flare.md",
+            "reason": "The document mentions developing scripts to migrate documentation from Confluence to Flare."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "github",
+        "label": "GitHub",
+        "description": "A web-based platform for hosting Git repositories and collaborating on software development.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/GitContinuousIntegration.md",
+            "reason": "The document demonstrates experience with GitHub, including pull-request workflows and using GitHub Actions to build and publish a site."
+          }
+        ],
+        "kind": "developer-platform"
+      },
+      {
+        "id": "json",
+        "label": "JSON",
+        "description": "A lightweight data-interchange format.",
+        "parent": null,
+        "aliases": [
+          "JavaScript Object Notation"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Used JSON extensively for OpenAPI specifications, configuration, documentation metadata, and programmatic generation and parsing."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with JSON payloads and responses in API integrations and using JSON processing in Python and Scala."
+          },
+          {
+            "file": "README.md",
+            "reason": "The script requires structured JSON findings and generates a JSON report."
+          }
+        ],
+        "kind": "data-format"
+      },
+      {
+        "id": "yaml",
+        "label": "YAML",
+        "description": "A human-readable data serialization language.",
+        "parent": null,
+        "aliases": [
+          "YAML Ain't Markup Language"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/OpenAPIandAPITools.md",
+            "reason": "Used YAML extensively for OpenAPI specifications, configuration, documentation metadata, and programmatic generation and parsing."
+          },
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using YAML processing in Python and Scala for structured data transformation."
+          }
+        ],
+        "kind": "data-format"
+      },
+      {
+        "id": "bash",
+        "label": "Bash",
+        "description": "A Unix shell and command language used for scripting and automation.",
+        "parent": null,
+        "aliases": [
+          "Bourne Again Shell"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Bash for automation of documentation migration, validation, build, and publishing tasks."
+          }
+        ],
+        "kind": "shell-scripting"
+      },
+      {
+        "id": "powershell",
+        "label": "PowerShell",
+        "description": "A task automation and configuration management framework from Microsoft, consisting of a command-line shell and scripting language.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions experience with Windows command-line and PowerShell automation."
+          }
+        ],
+        "kind": "shell-scripting"
+      },
+      {
+        "id": "scss",
+        "label": "SCSS/Sass",
+        "description": "A CSS preprocessor that extends CSS with variables, nesting, and mixins.",
+        "parent": null,
+        "aliases": [
+          "Sass"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using SCSS/Sass to customise documentation-site styling."
+          }
+        ],
+        "kind": "markup-content-language"
+      },
+      {
+        "id": "jquery",
+        "label": "jQuery",
+        "description": "A fast, small, and feature-rich JavaScript library.",
+        "parent": "javascript",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using jQuery for interactive documentation-portal features."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "pathlib",
+        "label": "pathlib",
+        "description": "A Python library for object-oriented filesystem paths.",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using pathlib to reconstruct documentation links following migration and restructuring."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "pandas",
+        "label": "Pandas",
+        "description": "A Python library for data manipulation and analysis.",
+        "parent": "python",
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Pandas for structured data transformation and reporting."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "http",
+        "label": "HTTP",
+        "description": "The Hypertext Transfer Protocol used for communication on the web.",
+        "parent": null,
+        "aliases": [
+          "Hypertext Transfer Protocol"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with HTTP APIs, including GET/POST methods, headers, and status codes."
+          }
+        ],
+        "kind": "protocol"
+      },
+      {
+        "id": "visual-cpp",
+        "label": "Visual C++",
+        "description": "Microsoft's C++ compiler and development environment.",
+        "parent": "cpp",
+        "aliases": [
+          "MSVC"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Visual C++ as part of C++ development experience."
+          }
+        ],
+        "kind": "developer-tool"
+      },
+      {
+        "id": "stl",
+        "label": "STL",
+        "description": "The Standard Template Library for C++, providing containers and algorithms.",
+        "parent": "cpp",
+        "aliases": [
+          "Standard Template Library"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions use of STL containers and data structures in C++ development."
+          }
+        ],
+        "kind": "library"
+      },
+      {
+        "id": "unix",
+        "label": "Unix",
+        "description": "A family of multitasking, multi-user computer operating systems.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions writing cross-platform code for Windows and Unix, and working from the Unix/Linux command line."
+          }
+        ],
+        "kind": "operating-system-firmware"
+      },
+      {
+        "id": "windows",
+        "label": "Windows",
+        "description": "A family of operating systems developed by Microsoft.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions writing cross-platform code for Windows and Unix, and experience with Windows command-line and PowerShell automation."
+          }
+        ],
+        "kind": "operating-system-firmware"
+      },
+      {
+        "id": "grep",
+        "label": "grep",
+        "description": "A command-line utility for searching text patterns.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using grep as part of Unix/Linux command-line tools for content processing."
+          }
+        ],
+        "kind": "developer-tool"
+      },
+      {
+        "id": "sed",
+        "label": "sed",
+        "description": "A stream editor for filtering and transforming text.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using sed as part of Unix/Linux command-line tools for content processing."
+          }
+        ],
+        "kind": "developer-tool"
+      },
+      {
+        "id": "find",
+        "label": "find",
+        "description": "A command-line utility for searching files in a directory hierarchy.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using find as part of Unix/Linux command-line tools for repository and content-processing tasks."
+          }
+        ],
+        "kind": "developer-tool"
+      },
+      {
+        "id": "regex",
+        "label": "Regular expressions",
+        "description": "A sequence of characters that define a search pattern.",
+        "parent": null,
+        "aliases": [
+          "regex",
+          "regexp"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using regex replacement lambdas in Python for content transformation."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "ast",
+        "label": "Abstract Syntax Tree (AST)",
+        "description": "A tree representation of the syntactic structure of source code.",
+        "parent": null,
+        "aliases": [
+          "AST"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions modifying and extending AST-based parsing code in Scala."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "ajax",
+        "label": "AJAX",
+        "description": "A technique for creating asynchronous web applications.",
+        "parent": null,
+        "aliases": [
+          "Asynchronous JavaScript and XML"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using AJAX for interactive documentation-portal features."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "encryption",
+        "label": "Encryption",
+        "description": "The process of encoding information to protect it from unauthorized access.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions building sandbox integrations that include encryption."
+          },
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists encryption as a tag for the MDES for Merchants case study."
+          }
+        ],
+        "kind": "security-cryptography"
+      },
+      {
+        "id": "assembly",
+        "label": "Assembly language",
+        "description": "A low-level programming language that is closely related to machine code.",
+        "parent": null,
+        "aliases": [
+          "asm"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions background in C and assembly-language programming, including kernel and device-driver development."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "kernel",
+        "label": "Kernel",
+        "description": "The core component of an operating system that manages system resources.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions kernel and device-driver development in C and assembly."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "device-driver",
+        "label": "Device driver",
+        "description": "Software that allows the operating system to communicate with hardware devices.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions graphics device drivers and kernel/device-driver development."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "cad",
+        "label": "CAD",
+        "description": "Computer-aided design software used for creating precise drawings and models.",
+        "parent": null,
+        "aliases": [
+          "Computer-Aided Design"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with CAD/VR systems and modifying a 3D graphics CAD application."
+          }
+        ],
+        "kind": "engineering-design-tool"
+      },
+      {
+        "id": "gis",
+        "label": "GIS",
+        "description": "Geographic information system for capturing, storing, and analyzing spatial data.",
+        "parent": null,
+        "aliases": [
+          "Geographic Information System"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions specialising in GIS as part of engineering background."
+          }
+        ],
+        "kind": "software-platform"
+      },
+      {
+        "id": "vr",
+        "label": "VR",
+        "description": "Virtual reality technology for simulated environments.",
+        "parent": null,
+        "aliases": [
+          "Virtual Reality"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions working with CAD/VR systems."
+          }
+        ],
+        "kind": "software-platform"
+      },
+      {
+        "id": "excel",
+        "label": "Excel",
+        "description": "A spreadsheet application by Microsoft, used for data analysis and reporting.",
+        "parent": null,
+        "aliases": [
+          "Microsoft Excel"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ProgrammingAutomation.md",
+            "reason": "The document mentions using Excel generation for structured data transformation and reporting, including workbooks with hyperlinks."
+          }
+        ],
+        "kind": "data-analysis-tool"
+      },
+      {
+        "id": "typescript",
+        "label": "TypeScript",
+        "description": "A typed superset of JavaScript.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "TypeScript is listed as a technology used in the portfolio."
+          }
+        ],
+        "kind": "programming-language"
+      },
+      {
+        "id": "npm",
+        "label": "npm",
+        "description": "A package manager for JavaScript and Node.js.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The document shows npm install and npm run start commands for local development."
+          }
+        ],
+        "kind": "developer-tool"
+      },
+      {
+        "id": "deepseek-ai",
+        "label": "DeepSeek AI",
+        "description": "An AI model used for editorial review in the QA script.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The QA script uses DeepSeek AI for AI-based editorial review."
+          }
+        ],
+        "kind": "ai-ml-tool"
+      },
+      {
+        "id": "cli",
+        "label": "CLI",
+        "description": "A command-line interface for running the QA script.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The script exposes CLI options like --fail-high, --fail-medium, --fail-api-errors, and --ci."
+          }
+        ],
+        "kind": "developer-tool"
+      },
+      {
+        "id": "accessibility-check",
+        "label": "AccessibilityCheck",
+        "description": "A static check for accessibility issues in documentation.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The document describes AccessibilityCheck as a static check for missing alt text, vague links, and heading-level jumps."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "link-check",
+        "label": "LinkCheck",
+        "description": "A static check for broken local links and assets.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "README.md",
+            "reason": "The document describes LinkCheck as a static check for local links and assets."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "oauth",
+        "label": "OAuth",
+        "description": "An open standard for access delegation, commonly used for API authentication.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists OAuth as a tag for the MDES for Merchants case study."
+          }
+        ],
+        "kind": "protocol"
+      },
+      {
+        "id": "api-documentation",
+        "label": "API documentation",
+        "description": "The practice of creating documentation for APIs.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page lists API documentation as a technical capability and describes API documentation work."
+          }
+        ],
+        "kind": "technical-technique"
+      },
+      {
+        "id": "developer-portal",
+        "label": "Developer portal",
+        "description": "A platform for developers to access documentation, APIs, and tools.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes leading the design of a developer portal and lists it as a capability."
+          }
+        ],
+        "kind": "developer-platform"
+      },
+      {
+        "id": "sequence-diagrams",
+        "label": "Sequence diagrams",
+        "description": "A type of UML diagram showing interactions between objects in time order.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions sequence diagrams as part of the Masterpass case study."
+          }
+        ],
+        "kind": "diagramming-visualisation"
+      },
+      {
+        "id": "api-validation",
+        "label": "API validation",
+        "description": "The process of testing and verifying API behavior.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page mentions API-reference validation as part of the Masterpass case study."
+          }
+        ],
+        "kind": "testing-debugging-tool"
+      },
+      {
+        "id": "payment-integration",
+        "label": "Payment integration",
+        "description": "The process of integrating payment processing into applications.",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "src/pages/index.md",
+            "reason": "The page describes payment integrations in the MDES and Paysafe.js case studies."
+          }
+        ],
+        "kind": "payment-technology"
+      }
+    ]
+  }
+}

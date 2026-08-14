@@ -1,0 +1,179 @@
+{
+  "fingerprint": "b0a5b8de20ef6ef2fa0b2980a7ff369dc27384135e93c28f5203ce95a94253c1",
+  "label": "extract-tech-019-ContainersAndCloudNative",
+  "model": "deepseek-v4-flash",
+  "result": {
+    "technologies": [
+      {
+        "id": "docker",
+        "label": "Docker",
+        "description": "A containerisation platform used to package and run applications in isolated containers.",
+        "kind": "container-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document describes leading a migration of a documentation platform to Docker, troubleshooting containerised builds, and optimising build performance."
+          }
+        ]
+      },
+      {
+        "id": "nginx",
+        "label": "Nginx",
+        "description": "A web server and reverse proxy used to serve web content.",
+        "kind": "server-networking",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions migrating the publishing environment to Nginx running in Docker."
+          }
+        ]
+      },
+      {
+        "id": "pythonanywhere",
+        "label": "PythonAnywhere",
+        "description": "A cloud hosting platform for Python applications.",
+        "kind": "cloud-hosting-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document describes using PythonAnywhere to host generated public documentation for SME review."
+          }
+        ]
+      },
+      {
+        "id": "python",
+        "label": "Python",
+        "description": "A general-purpose programming language.",
+        "kind": "programming-language",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions building externally accessible Python integrations to receive and test webhooks."
+          }
+        ]
+      },
+      {
+        "id": "webhooks",
+        "label": "Webhooks",
+        "description": "A mechanism for real-time event-driven communication between applications.",
+        "kind": "technical-technique",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document describes using hosted environments to receive and test webhooks that could not reach internal development environments."
+          }
+        ]
+      },
+      {
+        "id": "linux",
+        "label": "Linux",
+        "description": "An open-source Unix-like operating system family.",
+        "kind": "operating-system-firmware",
+        "parent": null,
+        "aliases": [
+          "Unix"
+        ],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document states comfort working in Linux/Unix environments and troubleshooting differences between local and CI builds."
+          }
+        ]
+      },
+      {
+        "id": "tcp-ip",
+        "label": "TCP/IP",
+        "description": "The fundamental suite of networking protocols used for internet communication.",
+        "kind": "protocol",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions practical understanding of TCP/IP networking developed while documenting networked audio/video and digital-signage systems."
+          }
+        ]
+      },
+      {
+        "id": "openwrt",
+        "label": "OpenWrt",
+        "description": "An open-source firmware for routers and embedded devices.",
+        "kind": "operating-system-firmware",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions personal experience configuring OpenWrt, firewalls and network services."
+          }
+        ]
+      },
+      {
+        "id": "wireshark",
+        "label": "Wireshark",
+        "description": "A network protocol analyser used for troubleshooting and analysis.",
+        "kind": "network-analysis-tool",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions basic use of Wireshark for network troubleshooting."
+          }
+        ]
+      },
+      {
+        "id": "kubernetes",
+        "label": "Kubernetes",
+        "description": "An open-source container orchestration platform.",
+        "kind": "container-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions basic hands-on exposure to Kubernetes, including setting up a small local cluster."
+          }
+        ]
+      },
+      {
+        "id": "proxmox",
+        "label": "Proxmox",
+        "description": "An open-source virtualisation management platform.",
+        "kind": "infrastructure-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions using Proxmox at home to host services including Home Assistant and the Kubernetes test environment."
+          }
+        ]
+      },
+      {
+        "id": "home-assistant",
+        "label": "Home Assistant",
+        "description": "An open-source home automation platform.",
+        "kind": "software-platform",
+        "parent": null,
+        "aliases": [],
+        "evidence": [
+          {
+            "file": "docs/tools/ContainersAndCloudNative.md",
+            "reason": "The document mentions using Proxmox to host Home Assistant."
+          }
+        ]
+      }
+    ]
+  }
+}
