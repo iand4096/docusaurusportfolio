@@ -16,6 +16,7 @@ documentation.
 ```bash
 npm install
 npm run start
+```
 
 ## QA Report for site
 
