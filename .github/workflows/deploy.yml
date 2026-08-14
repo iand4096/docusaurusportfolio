@@ -54,6 +54,34 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-doc-review.txt
 
+      # The Python QA script invokes Vale directly and parses its JSON
+      # output into the unified documentation QA report.
+      - name: Install Vale
+        shell: bash
+        run: |
+          sudo snap install vale
+
+          # Make Vale available to all following workflow steps.
+          echo "/snap/bin" >> "$GITHUB_PATH"
+
+          # Verify the installation immediately using the absolute path.
+          /snap/bin/vale --version
+
+      # Validate the repository Vale configuration before running the
+      # documentation QA script.
+      - name: Validate Vale configuration
+        shell: bash
+        run: |
+          if [ ! -f ".vale.ini" ]; then
+            echo "::error::.vale.ini was not found at the repository root."
+            exit 1
+          fi
+
+          echo "Vale configuration found."
+
+          vale sync
+          vale ls-config
+
       - name: Verify DeepSeek API key
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
@@ -74,7 +102,14 @@ jobs:
         continue-on-error: true
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+        shell: bash
         run: |
+          echo "Python:"
+          python --version
+
+          echo "Vale:"
+          vale --version
+
           python scripts/ai_docs_review.py \
             --ci \
             --mode per-page \
@@ -192,6 +227,16 @@ jobs:
             echo ""
             echo "QA step outcome: \`${{ steps.docs-qa.outcome }}\`"
             echo ""
+
+            echo "### Checks"
+            echo ""
+            echo "- AI documentation review — DeepSeek"
+            echo "- Static documentation checks"
+            echo "- Vale prose/style checks"
+            echo ""
+            echo "Vale findings are incorporated into the unified report with source \`vale\`."
+            echo ""
+
             echo "The HTML report is included in this GitHub Pages deployment under \`/qa/\`."
             echo ""
 
@@ -201,6 +246,14 @@ jobs:
               echo "[Download documentation-review artifact](${{ steps.upload-qa-artifact.outputs.artifact-url }})"
               echo ""
             fi
+
+            echo "### CI thresholds"
+            echo ""
+            echo "| Finding | Allowed |"
+            echo "|---|---:|"
+            echo "| High severity | 0 |"
+            echo "| Medium severity | 5 |"
+            echo "| API/check errors | 0 |"
           } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Upload GitHub Pages artifact
