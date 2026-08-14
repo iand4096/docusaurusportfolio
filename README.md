@@ -16,3 +16,7 @@ documentation.
 ```bash
 npm install
 npm run start
+
+## QA Report for site
+
+QA Report generated using [DeepSeek AI](scripts/ai_docs_review.py). See output at https://iand4096.github.io/docusaurusportfolio/qa/
