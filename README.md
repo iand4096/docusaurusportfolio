@@ -22,7 +22,7 @@ npm run start
 
 QA Report generated using [DeepSeek AI](scripts/ai_docs_review.py). See output at https://iand4096.github.io/docusaurusportfolio/qa/
 
-This file is not the QA results themselves; it is the **Python QA tool that generates the report**. Its purpose is to review a Docusaurus documentation/technical-writing portfolio and produce both human-readable and machine-readable QA results. 
+The report script **ai_docs_review.py** review a Docusaurus documentation/technical-writing portfolio and produce both human-readable and machine-readable QA results. 
 
 ### What it checks
 
