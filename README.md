@@ -2,7 +2,7 @@
 
 A Docusaurus portfolio presenting selected technical-writing work in API
 documentation, payments, developer experience, and software user
-documentation.
+documentation. See the site at https://iand4096.github.io/docusaurusportfolio/.
 
 ## Technology
 
