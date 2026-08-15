@@ -1,0 +1,8 @@
+# Sites that reject automated link-checking requests.
+# These links are manually verified but return anti-bot/rate-limit statuses to Lychee.
+
+# MadCap Software forums return HTTP 403 to automated requests.
+^https?://forums\.madcapsoftware\.com/
+
+# LinkedIn returns non-standard HTTP 999 responses to automated requests.
+^https?://(www\.)?linkedin\.com/

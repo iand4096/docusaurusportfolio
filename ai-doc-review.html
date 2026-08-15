@@ -141,6 +141,8 @@
         .confidence-low { background: #f3f4f6; color: #4b5563; }
         .source-static { background: #ede9fe; color: #5b21b6; }
         .source-ai { background: #e0f2fe; color: #075985; }
+        .source-vale { background: #dcfce7; color: #166534; }
+        .source-lychee { background: #fef3c7; color: #92400e; }
         .empty-state { text-align: center; padding: 30px; color: #6b7280; }
 
         @media (prefers-color-scheme: dark) {
@@ -157,22 +159,22 @@
     <h1>Documentation QA report</h1>
     <p class="subtitle">
         Mode: per-page ·
-        Checks: Mermaid opportunities only ·
+        Checks: Lychee external links only ·
         Model: deepseek-v4-flash
     </p>
 
     <div class="cards">
-        <div class="card"><strong>25</strong><span>files reviewed</span></div>
+        <div class="card"><strong>32</strong><span>files reviewed</span></div>
         <div class="card"><strong>1</strong><span>total issues</span></div>
-        <div class="card"><strong>0</strong><span>high</span></div>
+        <div class="card"><strong>1</strong><span>high</span></div>
         <div class="card"><strong>0</strong><span>medium</span></div>
-        <div class="card"><strong>1</strong><span>low</span></div>
+        <div class="card"><strong>0</strong><span>low</span></div>
         <div class="card"><strong>0</strong><span>API/check errors</span></div>
     </div>
 
-    <div class="ci-box ci-pass">
-        <strong>CI threshold result: PASS</strong><br>
-        All configured thresholds are satisfied.<br>
+    <div class="ci-box ci-fail">
+        <strong>CI threshold result: FAIL</strong><br>
+        high issues 1 &gt; allowed 0<br>
         Thresholds: high &gt; 0,
         medium &gt; 5,
         API/check errors &gt; 0.
@@ -197,6 +199,8 @@
                 <option value="">All</option>
                 <option value="static">Static</option>
                 <option value="ai">AI</option>
+                <option value="vale">Vale</option>
+                <option value="lychee">Lychee</option>
             </select>
         </label>
     </div>
@@ -220,20 +224,20 @@
             <tbody>
                 
             <tr
-                data-severity="low"
-                data-source="ai"
-                data-category="diagram"
+                data-severity="high"
+                data-source="lychee"
+                data-category="external-link"
             >
-                <td>docs/case-studies/PaysafeDeveloperJS.md</td>
-                <td>68</td>
-                <td><span class="badge severity-low">low</span></td>
-                <td><span class="badge confidence-medium">medium</span></td>
-                <td>diagram</td>
-                <td>diagram</td>
-                <td><span class="badge source-ai">ai</span></td>
-                <td><code>Add a sequence diagram showing how sensitive payment details passed directly from the Paysafe-hosted fields to Paysafe, while only the resulting token was returned to the merchant.</code></td>
-                <td>The text explicitly suggests adding a sequence diagram, which would clarify the flow of sensitive data and token return.</td>
-                <td>Add a Mermaid sequenceDiagram showing the merchant&#x27;s page, Paysafe-hosted iframe, and Paysafe backend, with the user entering card details into the iframe, data sent directly to Paysafe, and a token returned to the merchant.</td>
+                <td>README.md</td>
+                <td>50</td>
+                <td><span class="badge severity-high">high</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>external-link</td>
+                <td><span class="badge source-lychee">lychee</span></td>
+                <td><code>https://iand4096.github.io/docusaurusportfolios</code></td>
+                <td>External link failed Lychee validation: Rejected status code: 404 Not Found (HTTP 404)</td>
+                <td>Verify the destination, replace or remove the broken URL, or add a deliberate exception to .lycheeignore when the destination is known to reject automated checks.</td>
             </tr>
             
             </tbody>

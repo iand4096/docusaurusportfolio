@@ -45,6 +45,7 @@ FILTER_PRESETS = {
         "DiagramReview",
         "AccessibilityCheck",
         "LinkCheck",
+        "LycheeCheck",
         "ValeCheck",
         "SiteWideConsistencyReview",
     },
@@ -71,6 +72,13 @@ FILTER_PRESETS = {
     "vale": {
         "ValeCheck",
     },
+    "lychee": {
+        "LycheeCheck",
+    },
+    "links": {
+        "LinkCheck",
+        "LycheeCheck",
+    },
 }
 
 FILTER_LABELS = {
@@ -82,6 +90,8 @@ FILTER_LABELS = {
     "accessibility": "Accessibility only",
     "site-wide-consistency": "Site-wide consistency only",
     "vale": "Vale only",
+    "lychee": "Lychee external links only",
+    "links": "Local and external links only",
 }
 
 
@@ -1181,6 +1191,204 @@ class ValeCheck(BaseCheck):
 
 
 # ---------------------------------------------------------------------------
+# Lychee external-link integration
+# ---------------------------------------------------------------------------
+
+
+def lychee_preflight():
+    """Validate that the Lychee executable is available before checks run."""
+
+    print("Lychee preflight:")
+
+    executable = shutil.which("lychee")
+
+    if executable is None:
+        raise RuntimeError(
+            "Lychee executable was not found in PATH. Install Lychee locally or "
+            "in the GitHub Actions runner before running this script "
+            "(and verify the install with `lychee --version`)."
+        )
+
+    print(f"  Executable: {executable}")
+
+    version_result = subprocess.run(
+        [executable, "--version"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if version_result.returncode != 0:
+        detail = version_result.stderr.strip() or version_result.stdout.strip()
+        raise RuntimeError(
+            "Lychee is present but `lychee --version` failed"
+            + (f": {detail}" if detail else ".")
+        )
+
+    version = version_result.stdout.strip() or version_result.stderr.strip()
+    version = version.splitlines()[0] if version else "<unknown>"
+    print(f"  Version: {version}")
+    print()
+
+    return executable
+
+
+def lychee_status_text(status):
+    """Return a readable status from Lychee's JSON status representation."""
+
+    if isinstance(status, dict):
+        text = str(status.get("text", "")).strip()
+        code = status.get("code")
+
+        if text and code is not None:
+            return f"{text} (HTTP {code})"
+        if text:
+            return text
+        if code is not None:
+            return f"HTTP {code}"
+
+        return json.dumps(status, ensure_ascii=False, sort_keys=True)
+
+    if status is None:
+        return "unknown failure"
+
+    return str(status).strip() or "unknown failure"
+
+
+def parse_lychee_json(output, paths):
+    """Convert Lychee JSON failures into the unified issue schema."""
+
+    if not output.strip():
+        return []
+
+    try:
+        parsed = json.loads(output)
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f"Lychee returned invalid JSON: {error}") from error
+
+    if not isinstance(parsed, dict):
+        raise RuntimeError("Lychee JSON output must be an object.")
+
+    error_map = parsed.get("error_map", {})
+
+    # Lychee used the name `fail_map` before 0.18. Supporting it here costs
+    # almost nothing and makes local installations fail more gracefully.
+    if not error_map and isinstance(parsed.get("fail_map"), dict):
+        error_map = parsed["fail_map"]
+
+    if not isinstance(error_map, dict):
+        raise RuntimeError("Lychee JSON output contains an invalid error_map.")
+
+    issues = []
+
+    for raw_path, failures in error_map.items():
+        path = normalise_vale_path(raw_path, paths)
+
+        if path is None or not isinstance(failures, list):
+            continue
+
+        content = path.read_text(encoding="utf-8")
+
+        for failure in failures:
+            if not isinstance(failure, dict):
+                continue
+
+            url = str(failure.get("url", "")).strip()
+            if not url:
+                continue
+
+            # --include '^https?://' should already guarantee this, but keep the
+            # parser defensive in case a future Lychee version changes filtering.
+            if not re.match(r"^https?://", url, re.IGNORECASE):
+                continue
+
+            line = find_source_line(content, url) or 1
+            status = lychee_status_text(failure.get("status"))
+
+            issues.append(
+                make_issue(
+                    file=path.as_posix(),
+                    line=line,
+                    severity="high",
+                    confidence="high",
+                    issue_type="defect",
+                    category="external-link",
+                    original=url,
+                    message=f"External link failed Lychee validation: {status}",
+                    suggestion=(
+                        "Verify the destination, replace or remove the broken URL, "
+                        "or add a deliberate exception to .lycheeignore when the "
+                        "destination is known to reject automated checks."
+                    ),
+                    source="lychee",
+                )
+            )
+
+    return issues
+
+
+class LycheeCheck(BaseCheck):
+    """Run Lychee once across the selected Markdown/MDX files."""
+
+    name = "LycheeCheck"
+    source = "lychee"
+
+    def run_files(self, paths, executable=None):
+        executable = executable or shutil.which("lychee")
+
+        if executable is None:
+            raise RuntimeError(
+                "Lychee executable was not found in PATH. Run the Lychee preflight "
+                "before executing LycheeCheck."
+            )
+
+        # Use an absolute root directory. This is required by current Lychee
+        # versions for root-relative links such as /docs/skills.
+        root_dir = str(ROOT.resolve())
+
+        # Feed the exact file list over stdin instead of relying on shell globs.
+        # This avoids Windows glob/path quoting differences and keeps Lychee's
+        # scope identical to markdown_files(), including EXCLUDED_DIRS.
+        command = [
+            executable,
+            "--root-dir",
+            root_dir,
+            "--scheme",
+            "http",
+            "--scheme",
+            "https",
+            "--format",
+            "json",
+            "--no-progress",
+            "--files-from",
+            "-",
+        ]
+
+        files_from = "\n".join(path.as_posix() for path in paths) + "\n"
+
+        result = subprocess.run(
+            command,
+            cwd=ROOT,
+            input=files_from,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        # Lychee exit code 2 means link-check failures; that is expected input for
+        # the report. Exit codes 1 and 3 indicate runtime/configuration failures.
+        if result.returncode not in {0, 2}:
+            detail = result.stderr.strip() or result.stdout.strip()
+            raise RuntimeError(
+                f"Lychee exited with code {result.returncode}"
+                + (f": {detail}" if detail else ".")
+            )
+
+        return parse_lychee_json(result.stdout, paths)
+
+
+# ---------------------------------------------------------------------------
 # Deterministic checks
 # ---------------------------------------------------------------------------
 
@@ -1475,6 +1683,7 @@ def build_checks():
         DiagramReview(),
         AccessibilityCheck(),
         LinkCheck(),
+        LycheeCheck(),
         ValeCheck(),
         SiteWideConsistencyReview(),
     ]
@@ -1514,6 +1723,8 @@ def choose_filter():
     print("  6. Accessibility only")
     print("  7. Site-wide consistency only")
     print("  8. Vale only")
+    print("  9. Lychee external links only")
+    print(" 10. Local and external links only")
     print()
 
     choices = {
@@ -1525,6 +1736,8 @@ def choose_filter():
         "6": "accessibility",
         "7": "site-wide-consistency",
         "8": "vale",
+        "9": "lychee",
+        "10": "links",
     }
 
     while True:
@@ -1540,7 +1753,7 @@ def choose_filter():
         if choice in choices:
             return choices[choice]
 
-        print("Please enter a number from 1 to 8.")
+        print("Please enter a number from 1 to 10.")
 
 
 def selected_checks(filter_name):
@@ -1560,6 +1773,7 @@ def resolve_mode_for_filter(mode, filter_name):
         "portfolio",
         "mermaid",
         "accessibility",
+        "links",
     }
 
     if filter_name in page_only_filters and mode != "per-page":
@@ -1934,6 +2148,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
         .source-static {{ background: #ede9fe; color: #5b21b6; }}
         .source-ai {{ background: #e0f2fe; color: #075985; }}
         .source-vale {{ background: #dcfce7; color: #166534; }}
+        .source-lychee {{ background: #fef3c7; color: #92400e; }}
         .empty-state {{ text-align: center; padding: 30px; color: #6b7280; }}
 
         @media (prefers-color-scheme: dark) {{
@@ -1991,6 +2206,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 <option value="static">Static</option>
                 <option value="ai">AI</option>
                 <option value="vale">Vale</option>
+                <option value="lychee">Lychee</option>
             </select>
         </label>
     </div>
@@ -2151,8 +2367,8 @@ def main():
     mode = resolve_mode_for_filter(mode, filter_name)
     checks = selected_checks(filter_name)
 
-    vale_checks = [check for check in checks if check.source == "vale"]
-    scoped_checks = [check for check in checks if check.source != "vale"]
+    file_checks = [check for check in checks if hasattr(check, "run_files")]
+    scoped_checks = [check for check in checks if check not in file_checks]
 
     # Only retain implementations that can actually run in the chosen scope.
     if mode == "per-page":
@@ -2160,19 +2376,27 @@ def main():
     else:
         scoped_checks = [check for check in scoped_checks if check.supports_site]
 
-    checks = scoped_checks + vale_checks
+    checks = scoped_checks + file_checks
 
     if not checks:
         print("No checks are available for the selected mode and filter.")
         return 2
 
     vale_executable = None
+    lychee_executable = None
 
-    if vale_checks:
+    if any(check.source == "vale" for check in file_checks):
         try:
             vale_executable = vale_preflight()
         except RuntimeError as error:
             print(f"Vale preflight failed: {error}", file=sys.stderr)
+            return 2
+
+    if any(check.source == "lychee" for check in file_checks):
+        try:
+            lychee_executable = lychee_preflight()
+        except RuntimeError as error:
+            print(f"Lychee preflight failed: {error}", file=sys.stderr)
             return 2
 
     if not api_key and any(check.source == "ai" for check in checks):
@@ -2202,16 +2426,19 @@ def main():
             api_key,
         )
 
-    for check in vale_checks:
-        print(f"[vale] {check.name}")
+    for check in file_checks:
+        print(f"[{check.source}] {check.name}")
 
         try:
-            issues.extend(check.run_files(files, executable=vale_executable))
+            executable = (
+                vale_executable if check.source == "vale" else lychee_executable
+            )
+            issues.extend(check.run_files(files, executable=executable))
         except Exception as error:
             errors.append(
                 {
                     "check": check.name,
-                    "file": "<vale>",
+                    "file": f"<{check.source}>",
                     "error": str(error),
                 }
             )
