@@ -1,4 +1,4 @@
-do a similar update to docs-review.yml > name: Documentation QA
+name: Documentation QA
 
 on:
   # Manual QA runs from the Actions tab.
