@@ -33,3 +33,5 @@ OpenAPI-based
 Paysafe-hosted
 Drewett
 Optimus
+scannability
+mislocated

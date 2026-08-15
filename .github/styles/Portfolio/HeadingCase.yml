@@ -40,6 +40,9 @@ exceptions:
   - 'C#'
   - Paysafe Developer Centre
   - Mastercard Developers
+  - QA
+  - Ian Drewett
+  - M.Sc. Computer Science
 
 action:
   name: replace

@@ -106,9 +106,9 @@ Examples include:
 
 My current Docusaurus portfolio also uses React components to turn simple Markdown data into responsive visual layouts.
 
-## Validation and Quality
+## Validation and quality
 
-I treat documentation as something that can be tested rather than simply reviewed.
+I treat documentation as something that can be tested rather than just reviewed.
 
 I have used:
 
@@ -123,13 +123,13 @@ I have used:
 
 I have also used OCR libraries to identify obsolete terminology embedded in legacy raster diagrams and screenshots across a large documentation set to identify the diagrams to update.
 
-## Search and Retrieval
+## Search and retrieval
 
 I have experience integrating search into large documentation sites, including traditional JavaScript-based search and RAG-based documentation search.
 
 At Morgan Stanley, I identified a retrieval problem that allowed deprecated API documentation to appear in AI-generated answers and proposed metadata-based filtering to improve search quality.
 
-## Scaling Documentation
+## Scaling documentation
 
 A major part of documentation engineering is designing systems that continue to work as documentation grows.
 

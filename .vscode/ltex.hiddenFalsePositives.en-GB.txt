@@ -1,1 +1,5 @@
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QI have published 131 posts on the MadCap Flare user forum under the username iand, contributing answers, troubleshooting guidance and practical workarounds for other Flare users.\\E$"}
+{"rule":"POSSESSIVE_APOSTROPHE","sentence":"^\\QThe script uses the Requests library to make REST API calls to the configured DeepSeek mode with documentation text and requires structured JSON findings.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAccessibilityCheck finds issues such as missing/empty image alt text, vague links such as “click here”, and heading-level jumps.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QLinkCheck tests local links and assets to make sure their targets exist; external HTTP links are deliberately excluded from that test.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QModes (local / ci)\\E$"}

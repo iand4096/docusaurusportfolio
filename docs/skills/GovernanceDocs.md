@@ -14,25 +14,25 @@ sidebar_custom_props:
     ariaLabel: Explore my documentation-governance skills
 ---
 
-I have considerable experience creating and maintaining software architecture-governance documentation for complex financial systems. My work combined accurate meeting records, architecture diagrams, action tracking, metadata governance and workflow automation.
+I have several years experience creating and maintaining software architecture-governance documentation for complex financial systems. My work combined accurate meeting records, architecture diagrams, action tracking, metadata governance and workflow automation.
 
-## Architecture Governance
+## Architecture governance
 
 My experience includes:
 
 * Creating standardized governance records covering attendees, architectural proposals, decisions, actions and accountable owners
 * Verifying technical details with stakeholders after meetings and linking records to related architecture documentation
 * Creating Jira tickets for agreed follow-up actions
-* Applying approval-status and other required metadata so documents appeared correctly in the central governance portal
+* Applying approval-status and other required metadata, so documents appeared correctly in the central governance portal
 * Maintaining accurate, traceable documentation throughout the review and approval lifecycle
 
-## Architecture Diagrams and Architecture as Code
+## Architecture diagrams and architecture as Code
 
 I built a documentation-platform plugin for embedding C4 architecture diagrams in Markdown. Diagram definitions were stored as text alongside the supporting documentation, allowing diagrams and content to be version-controlled, reviewed and audited together.
 
 I have also explored emerging architecture-as-code standards, including FINOS CALM, for representing software architectures in structured, machine-readable formats.
 
-##  Governance Workflow Automation
+##  Governance workflow automation
 
 I developed automation to improve the efficiency and accuracy of governance documentation, including:
 

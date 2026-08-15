@@ -1,4 +1,4 @@
-# Ian Drewett — Technical Writing Portfolio
+# Ian Drewett - technical writing portfolio
 
 A Docusaurus portfolio presenting selected technical-writing work in API
 documentation, payments, developer experience, and software user
@@ -18,7 +18,7 @@ npm install
 npm run start
 ```
 
-## QA Site Report
+## QA site report
 
 A QA Report is generated using [DeepSeek AI](scripts/ai_docs_review.py) for every change to the site. See output at https://iand4096.github.io/docusaurusportfolio/qa/
 
@@ -90,14 +90,15 @@ Both are generated after all selected checks run.
 Issues have three severities:
 
 * **High** — materially misleading, broken, contradictory or publication-blocking.
-* **Medium** — significant comprehension, structural or portfolio-quality problems.
+* **Medium** — medium impact comprehension, structural or portfolio-quality problems.
 * **Low** — worthwhile but non-blocking improvements.
 
 There is also **high/medium/low confidence**, which is separate from severity.
 
-The default CI thresholds are particularly useful: **0 high issues, 5 medium issues and 0 API/check errors are allowed before crossing the configured threshold**. Because the comparison is `count > threshold`, one high issue fails by default, six medium issues fail, and one API/check error fails. Low-severity issues do not affect CI failure. The CLI exposes these as `--fail-high`, `--fail-medium`, and `--fail-api-errors`. 
+The default CI thresholds are particularly useful: **0 high issues, 5 medium issues and 0 API/check errors are allowed before crossing the configured threshold**. Because the comparison is `count > threshold`, one high issue 
+fails by default, six medium issues fail, and one API/check error fails. Low-severity issues do not affect CI failure. The CLI exposes these as `--fail-high`, `--fail-medium`, and `--fail-api-errors`. 
 
 ### Modes (local / ci)
 
-The script can be run locally or as part of a Github Action with `--ci` where a failed threshold causes an exit code of `1`
+The script can be run locally or as part of a GitHub Action with `--ci` where a failed threshold causes an exit code of `1`
 

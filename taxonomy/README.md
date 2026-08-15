@@ -153,7 +153,7 @@ Because technology extraction is now per-document, the bootstrap run makes more
 API calls than the earlier batch-only generator. For 29 Markdown/MDX files,
 expect roughly 29 technology-extraction calls plus the non-technology batch
 call(s), coverage-audit batch call(s), and one consolidation call. This is an
-intentional one-off bootstrap trade-off for substantially better recall.
+intentional one-off bootstrap trade-off for better recall.
 
 You can override all three with the backward-compatible `--model` option:
 

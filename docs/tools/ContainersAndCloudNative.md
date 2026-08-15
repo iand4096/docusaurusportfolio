@@ -14,7 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my containers and networking skills
 ---
 
-## Containers, Cloud and Networking
+## Containers, Cloud and networking
 
 Practical experience using **Docker, Linux, networking and cloud-hosted environments** for documentation platforms and API integration testing, with basic exposure to Kubernetes.
 
@@ -26,20 +26,20 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 * Proposed serving the generated documentation from an attached file system instead, reducing build time by approximately **15 minutes**.
 * Troubleshot containerised documentation builds.
 
-### Cloud-Hosted Integration Testing
+### Cloud-Hosted integration testing
 
 * Used **PythonAnywhere** to host generated public documentation for SME review.
 * Built externally accessible Python integrations to receive and test **webhooks** that could not reach internal development environments because of corporate firewall restrictions.
 * Used hosted environments to validate API and asynchronous integration behaviour.
 
-### Linux and Networking
+### Linux and networking
 
 * Comfortable working in **Linux/Unix environments** and troubleshooting differences between local and CI builds.
 * Practical understanding of **TCP/IP networking** developed while documenting networked audio/video and digital-signage systems.
 * Personal experience configuring **OpenWrt**, firewalls and network services.
 * Basic use of **Wireshark** for network troubleshooting.
 
-### Kubernetes and Virtualisation
+### Kubernetes and virtualisation
 
 * Basic hands-on exposure to **Kubernetes**, including setting up a small local cluster with AI assistance for experimentation and learning.
 * Used **Proxmox** at home to host services including Home Assistant and the Kubernetes test environment.
