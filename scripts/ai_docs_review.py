@@ -7,8 +7,11 @@ import shutil
 import subprocess
 import sys
 from abc import ABC, abstractmethod
+from calendar import monthrange
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
 
@@ -46,6 +49,7 @@ FILTER_PRESETS = {
         "AccessibilityCheck",
         "LinkCheck",
         "LycheeCheck",
+        "RemarkCheck",
         "ValeCheck",
         "SiteWideConsistencyReview",
     },
@@ -79,6 +83,9 @@ FILTER_PRESETS = {
         "LinkCheck",
         "LycheeCheck",
     },
+    "remark": {
+        "RemarkCheck",
+    },
 }
 
 FILTER_LABELS = {
@@ -92,6 +99,7 @@ FILTER_LABELS = {
     "vale": "Vale only",
     "lychee": "Lychee external links only",
     "links": "Local and external links only",
+    "remark": "Remark Markdown/MDX only",
 }
 
 
@@ -200,6 +208,63 @@ def markdown_files():
             continue
 
         yield path
+
+
+def _last_sunday(year, month):
+    """Return the day number of the last Sunday in a month."""
+
+    last_day = monthrange(year, month)[1]
+    last_date = datetime(year, month, last_day)
+    return last_day - ((last_date.weekday() + 1) % 7)
+
+
+def london_now():
+    """Return the current time in Europe/London without OS-specific commands.
+
+    Python's ZoneInfo is used when IANA timezone data is available. Some Windows
+    Python installations do not ship an IANA database, so a standard-library
+    fallback applies the current UK GMT/BST rule: clocks advance at 01:00 UTC on
+    the last Sunday in March and return at 01:00 UTC on the last Sunday in October.
+    """
+
+    now_utc = datetime.now(timezone.utc)
+
+    try:
+        return now_utc.astimezone(ZoneInfo("Europe/London"))
+    except ZoneInfoNotFoundError:
+        year = now_utc.year
+        bst_start = datetime(
+            year,
+            3,
+            _last_sunday(year, 3),
+            1,
+            tzinfo=timezone.utc,
+        )
+        bst_end = datetime(
+            year,
+            10,
+            _last_sunday(year, 10),
+            1,
+            tzinfo=timezone.utc,
+        )
+
+        if bst_start <= now_utc < bst_end:
+            london_tz = timezone(timedelta(hours=1), name="BST")
+        else:
+            london_tz = timezone(timedelta(0), name="GMT")
+
+        return now_utc.astimezone(london_tz)
+
+
+def report_run_metadata():
+    """Return machine-readable and display London timestamps for a report run."""
+
+    run_time = london_now()
+    return {
+        "report_run_at": run_time.isoformat(timespec="seconds"),
+        "report_run_at_display": run_time.strftime("%d %B %Y, %H:%M:%S %Z"),
+        "report_time_zone": "Europe/London",
+    }
 
 
 def add_line_numbers(text):
@@ -1191,6 +1256,302 @@ class ValeCheck(BaseCheck):
 
 
 # ---------------------------------------------------------------------------
+# Remark Markdown/MDX integration
+# ---------------------------------------------------------------------------
+
+
+def find_remark_executable():
+    """Return the local Remark CLI executable, with a PATH fallback."""
+
+    binary_name = "remark.cmd" if os.name == "nt" else "remark"
+    local_binary = ROOT / "node_modules" / ".bin" / binary_name
+
+    if local_binary.is_file():
+        return str(local_binary.resolve())
+
+    return shutil.which("remark")
+
+
+def find_remark_config():
+    """Return the repository Remark config source, if configured."""
+
+    config_names = [
+        ".remarkrc",
+        ".remarkrc.json",
+        ".remarkrc.yaml",
+        ".remarkrc.yml",
+        ".remarkrc.js",
+        ".remarkrc.cjs",
+        ".remarkrc.mjs",
+    ]
+
+    for name in config_names:
+        path = ROOT / name
+        if path.is_file():
+            return str(path.resolve())
+
+    package_path = ROOT / "package.json"
+    if package_path.is_file():
+        try:
+            package = json.loads(package_path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError):
+            package = None
+
+        if isinstance(package, dict) and "remarkConfig" in package:
+            return f"{package_path.resolve()} (remarkConfig)"
+
+    return None
+
+
+def remark_preflight():
+    """Validate the Remark CLI and repository configuration before checks run."""
+
+    print("Remark preflight:")
+
+    executable = find_remark_executable()
+
+    if executable is None:
+        raise RuntimeError(
+            "Remark CLI was not found. Install remark-cli in the repository with "
+            "`npm install --save-dev remark-cli` (or run `npm ci` in CI)."
+        )
+
+    print(f"  Executable: {executable}")
+
+    version_result = subprocess.run(
+        [executable, "--version"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if version_result.returncode != 0:
+        detail = version_result.stderr.strip() or version_result.stdout.strip()
+        raise RuntimeError(
+            "Remark is present but `remark --version` failed"
+            + (f": {detail}" if detail else ".")
+        )
+
+    version = version_result.stdout.strip() or version_result.stderr.strip()
+    version = version.splitlines()[0] if version else "<unknown>"
+    print(f"  Version: {version}")
+
+    config = find_remark_config()
+    if config is None:
+        raise RuntimeError(
+            "No Remark configuration was found. Commit .remarkrc.mjs (recommended "
+            "for this Docusaurus repository) or configure remarkConfig in package.json."
+        )
+
+    print(f"  Config: {config}")
+
+    ignore_path = ROOT / ".remarkignore"
+    if ignore_path.is_file():
+        print(f"  Ignore: {ignore_path.resolve()}")
+    else:
+        print("  Ignore: <none>")
+
+    print()
+    return executable
+
+
+def parse_remark_json(output, paths):
+    """Convert Remark/vfile JSON messages into the unified issue schema."""
+
+    if not output.strip():
+        return []
+
+    try:
+        parsed = json.loads(output)
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f"Remark returned invalid JSON: {error}") from error
+
+    if not isinstance(parsed, list):
+        raise RuntimeError("Remark JSON output must be an array of files.")
+
+    issues = []
+
+    for file_result in parsed:
+        if not isinstance(file_result, dict):
+            continue
+
+        raw_path = file_result.get("path")
+        path = normalise_vale_path(raw_path, paths)
+
+        if path is None:
+            continue
+
+        messages = file_result.get("messages", [])
+        if not isinstance(messages, list):
+            continue
+
+        content = path.read_text(encoding="utf-8")
+
+        for message in messages:
+            if not isinstance(message, dict):
+                continue
+
+            reason = str(message.get("reason", "")).strip()
+            if not reason:
+                continue
+
+            rule_id = str(message.get("ruleId") or "remark").strip()
+            message_source = str(message.get("source") or "remark").strip()
+
+            line = message.get("line")
+            if not isinstance(line, int) or line <= 0:
+                line = 1
+
+            fatal = message.get("fatal")
+            if fatal is True:
+                severity = "high"
+            elif fatal is False:
+                severity = "medium"
+            else:
+                severity = "low"
+
+            actual = message.get("actual")
+            if isinstance(actual, str) and actual.strip():
+                original = actual.strip()
+            else:
+                original = source_line_text(content, line)
+
+            if not original:
+                original = "<file-level Remark finding>"
+
+            expected = message.get("expected")
+            note = message.get("note")
+
+            if isinstance(note, str) and note.strip():
+                suggestion = note.strip()
+            elif isinstance(expected, list) and expected:
+                expected_text = ", ".join(str(item) for item in expected)
+                suggestion = f"Update the Markdown/MDX to use one of: {expected_text}."
+            else:
+                suggestion = (
+                    f"Correct the Markdown/MDX structure to satisfy Remark rule "
+                    f"`{rule_id}`."
+                )
+
+            issues.append(
+                make_issue(
+                    file=path.as_posix(),
+                    line=line,
+                    severity=severity,
+                    confidence="high",
+                    issue_type="defect",
+                    category=rule_id,
+                    original=original,
+                    message=f"Remark ({message_source}): {reason}",
+                    suggestion=suggestion,
+                    source="remark",
+                )
+            )
+
+    return issues
+
+
+class RemarkCheck(BaseCheck):
+    """Run Remark once across the selected Markdown/MDX files."""
+
+    name = "RemarkCheck"
+    source = "remark"
+
+    # A tiny reporter module keeps this integration self-contained and avoids
+    # requiring vfile-reporter-json as an extra project dependency.
+    REPORTER_SOURCE = r'''export default function reporter(files) {
+  const list = Array.isArray(files) ? files : [files];
+
+  return JSON.stringify(list.map((file) => ({
+    path: file.path || '',
+    cwd: file.cwd || '',
+    history: file.history || [],
+    messages: (file.messages || []).map((message) => ({
+      reason: message.reason || String(message),
+      line: message.line ?? null,
+      column: message.column ?? null,
+      fatal: message.fatal ?? null,
+      ruleId: message.ruleId ?? null,
+      source: message.source ?? null,
+      actual: message.actual ?? null,
+      expected: message.expected ?? null,
+      note: message.note ?? null,
+      url: message.url ?? null
+    }))
+  })));
+}
+'''
+
+    def run_files(self, paths, executable=None):
+        executable = executable or find_remark_executable()
+
+        if executable is None:
+            raise RuntimeError(
+                "Remark CLI was not found. Run the Remark preflight before "
+                "executing RemarkCheck."
+            )
+
+        reporter_path = ROOT / f".remark-python-reporter-{os.getpid()}.mjs"
+
+        try:
+            reporter_path.write_text(self.REPORTER_SOURCE, encoding="utf-8")
+
+            command = [
+                executable,
+                "--no-color",
+                "--no-stdout",
+                "--quiet",
+                "--silently-ignore",
+                "--report",
+                f"./{reporter_path.name}",
+                "--",
+                *[path.as_posix() for path in paths],
+            ]
+
+            result = subprocess.run(
+                command,
+                cwd=ROOT,
+                capture_output=True,
+                text=True,
+                check=False,
+            )
+        finally:
+            try:
+                reporter_path.unlink(missing_ok=True)
+            except OSError:
+                pass
+
+        # unified-engine writes reporter output to stderr. Normal lint warnings
+        # return 0 because this integration intentionally does not use --frail;
+        # CI policy is applied by the unified severity thresholds below.
+        report_text = result.stderr.strip()
+
+        if report_text:
+            try:
+                issues = parse_remark_json(report_text, paths)
+            except RuntimeError:
+                if result.returncode != 0:
+                    detail = result.stderr.strip() or result.stdout.strip()
+                    raise RuntimeError(
+                        f"Remark exited with code {result.returncode}: {detail}"
+                    )
+                raise
+
+            if issues or result.returncode == 0:
+                return issues
+
+        if result.returncode != 0:
+            detail = result.stderr.strip() or result.stdout.strip()
+            raise RuntimeError(
+                f"Remark exited with code {result.returncode}"
+                + (f": {detail}" if detail else ".")
+            )
+
+        return []
+
+
+# ---------------------------------------------------------------------------
 # Lychee external-link integration
 # ---------------------------------------------------------------------------
 
@@ -1298,8 +1659,8 @@ def parse_lychee_json(output, paths):
             if not url:
                 continue
 
-            # --include '^https?://' should already guarantee this, but keep the
-            # parser defensive in case a future Lychee version changes filtering.
+            # The HTTP/HTTPS scheme filters should already guarantee this, but keep
+            # the parser defensive in case a future Lychee version changes filtering.
             if not re.match(r"^https?://", url, re.IGNORECASE):
                 continue
 
@@ -1684,6 +2045,7 @@ def build_checks():
         AccessibilityCheck(),
         LinkCheck(),
         LycheeCheck(),
+        RemarkCheck(),
         ValeCheck(),
         SiteWideConsistencyReview(),
     ]
@@ -1722,9 +2084,10 @@ def choose_filter():
     print("  5. Mermaid opportunities only")
     print("  6. Accessibility only")
     print("  7. Site-wide consistency only")
-    print("  8. Vale only")
-    print("  9. Lychee external links only")
-    print(" 10. Local and external links only")
+    print("  8. Remark Markdown/MDX only")
+    print("  9. Vale only")
+    print(" 10. Lychee external links only")
+    print(" 11. Local and external links only")
     print()
 
     choices = {
@@ -1735,9 +2098,10 @@ def choose_filter():
         "5": "mermaid",
         "6": "accessibility",
         "7": "site-wide-consistency",
-        "8": "vale",
-        "9": "lychee",
-        "10": "links",
+        "8": "remark",
+        "9": "vale",
+        "10": "lychee",
+        "11": "links",
     }
 
     while True:
@@ -1753,7 +2117,7 @@ def choose_filter():
         if choice in choices:
             return choices[choice]
 
-        print("Please enter a number from 1 to 10.")
+        print("Please enter a number from 1 to 11.")
 
 
 def selected_checks(filter_name):
@@ -2149,6 +2513,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
         .source-ai {{ background: #e0f2fe; color: #075985; }}
         .source-vale {{ background: #dcfce7; color: #166534; }}
         .source-lychee {{ background: #fef3c7; color: #92400e; }}
+        .source-remark {{ background: #e0e7ff; color: #3730a3; }}
         .empty-state {{ text-align: center; padding: 30px; color: #6b7280; }}
 
         @media (prefers-color-scheme: dark) {{
@@ -2164,6 +2529,8 @@ def generate_html_report(issues, errors, metadata, ci_result):
 <main>
     <h1>Documentation QA report</h1>
     <p class="subtitle">
+        Report run: {html.escape(metadata['report_run_at_display'])}
+        ({html.escape(metadata['report_time_zone'])})<br>
         Mode: {html.escape(metadata['mode'])} ·
         Checks: {html.escape(metadata['filter_label'])} ·
         Model: {html.escape(metadata['model'])}
@@ -2207,6 +2574,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 <option value="ai">AI</option>
                 <option value="vale">Vale</option>
                 <option value="lychee">Lychee</option>
+                <option value="remark">Remark</option>
             </select>
         </label>
     </div>
@@ -2384,6 +2752,7 @@ def main():
 
     vale_executable = None
     lychee_executable = None
+    remark_executable = None
 
     if any(check.source == "vale" for check in file_checks):
         try:
@@ -2397,6 +2766,13 @@ def main():
             lychee_executable = lychee_preflight()
         except RuntimeError as error:
             print(f"Lychee preflight failed: {error}", file=sys.stderr)
+            return 2
+
+    if any(check.source == "remark" for check in file_checks):
+        try:
+            remark_executable = remark_preflight()
+        except RuntimeError as error:
+            print(f"Remark preflight failed: {error}", file=sys.stderr)
             return 2
 
     if not api_key and any(check.source == "ai" for check in checks):
@@ -2430,9 +2806,12 @@ def main():
         print(f"[{check.source}] {check.name}")
 
         try:
-            executable = (
-                vale_executable if check.source == "vale" else lychee_executable
-            )
+            executable_by_source = {
+                "vale": vale_executable,
+                "lychee": lychee_executable,
+                "remark": remark_executable,
+            }
+            executable = executable_by_source.get(check.source)
             issues.extend(check.run_files(files, executable=executable))
         except Exception as error:
             errors.append(
@@ -2452,6 +2831,7 @@ def main():
     )
 
     metadata = {
+        **report_run_metadata(),
         "mode": mode,
         "filter": filter_name,
         "filter_label": FILTER_LABELS[filter_name],

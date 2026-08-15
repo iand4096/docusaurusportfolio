@@ -143,6 +143,7 @@
         .source-ai { background: #e0f2fe; color: #075985; }
         .source-vale { background: #dcfce7; color: #166534; }
         .source-lychee { background: #fef3c7; color: #92400e; }
+        .source-remark { background: #e0e7ff; color: #3730a3; }
         .empty-state { text-align: center; padding: 30px; color: #6b7280; }
 
         @media (prefers-color-scheme: dark) {
@@ -158,23 +159,25 @@
 <main>
     <h1>Documentation QA report</h1>
     <p class="subtitle">
+        Report run: 15 August 2026, 14:30:38 BST
+        (Europe/London)<br>
         Mode: per-page ·
-        Checks: Lychee external links only ·
+        Checks: Remark Markdown/MDX only ·
         Model: deepseek-v4-flash
     </p>
 
     <div class="cards">
         <div class="card"><strong>32</strong><span>files reviewed</span></div>
-        <div class="card"><strong>1</strong><span>total issues</span></div>
-        <div class="card"><strong>1</strong><span>high</span></div>
-        <div class="card"><strong>0</strong><span>medium</span></div>
+        <div class="card"><strong>45</strong><span>total issues</span></div>
+        <div class="card"><strong>0</strong><span>high</span></div>
+        <div class="card"><strong>45</strong><span>medium</span></div>
         <div class="card"><strong>0</strong><span>low</span></div>
         <div class="card"><strong>0</strong><span>API/check errors</span></div>
     </div>
 
     <div class="ci-box ci-fail">
         <strong>CI threshold result: FAIL</strong><br>
-        high issues 1 &gt; allowed 0<br>
+        medium issues 45 &gt; allowed 5<br>
         Thresholds: high &gt; 0,
         medium &gt; 5,
         API/check errors &gt; 0.
@@ -201,6 +204,7 @@
                 <option value="ai">AI</option>
                 <option value="vale">Vale</option>
                 <option value="lychee">Lychee</option>
+                <option value="remark">Remark</option>
             </select>
         </label>
     </div>
@@ -224,20 +228,768 @@
             <tbody>
                 
             <tr
-                data-severity="high"
-                data-source="lychee"
-                data-category="external-link"
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
             >
                 <td>README.md</td>
                 <td>50</td>
-                <td><span class="badge severity-high">high</span></td>
+                <td><span class="badge severity-medium">medium</span></td>
                 <td><span class="badge confidence-high">high</span></td>
                 <td>defect</td>
-                <td>external-link</td>
-                <td><span class="badge source-lychee">lychee</span></td>
-                <td><code>https://iand4096.github.io/docusaurusportfolios</code></td>
-                <td>External link failed Lychee validation: Rejected status code: 404 Not Found (HTTP 404)</td>
-                <td>Verify the destination, replace or remove the broken URL, or add a deliberate exception to .lycheeignore when the destination is known to reject automated checks.</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>Broken Link - https://iand4096.github.io/docusaurusportfolios</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>README.md</td>
+                <td>107</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>The script can be run locally or as part of a GitHub Action with `--ci` where a failed threshold causes an exit code of `1`</code></td>
+                <td>Remark (remark-lint): Unexpected `1` blank line after node, expected `0` blank lines, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/case-studies/AMXInspiredSignageComposer.md</td>
+                <td>65</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Take advantage of modern automated proofreading tools like [Vale](https://github.com/vale-cli/vale) and [LanguageTool](https://github.com/languagetool-org/languagetool)</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/case-studies/DocusaurusPortfolio.md</td>
+                <td>17</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>It also features:</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/case-studies/DocusaurusPortfolio.md</td>
+                <td>64</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Add a dashboard showing stats such as the number of errors recorded by the quality checker over time.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-missing-blank-lines"
+            >
+                <td>docs/case-studies/MDES4Merchants.md</td>
+                <td>37</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-missing-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Custom Python code used to test and validate the integration.</code></td>
+                <td>Remark (remark-lint): Unexpected `0` blank lines between nodes, expected `1` or more blank lines, add `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-missing-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/case-studies/MDES4Merchants.md</td>
+                <td>54</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>If security restrictions allowed, I would provide developers with public runnable examples demonstrating authentication, encryption, decryption, and webhook handling. This was originally omitted due to the burden of maintaining this security critical code in multiple target languages using approved cryptography libraries.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/case-studies/MasterpassMerchantIntegrationGuide.md</td>
+                <td>54</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Move the documentation to a docs-as-code workflow earlier in the project to reduce the time spent working around the limitations of the Brightspot CMS.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/case-studies/PaysafeDeveloperJS.md</td>
+                <td>48</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>:::note[Published guide]</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/case-studies/PaysafeDeveloperJS.md</td>
+                <td>65</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>## What I would change</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/skills/AIandDocumentation.md</td>
+                <td>27</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* **Model Context Protocol:** Built experimental MCP servers using FastMCP and explored using MCP to expose documentation-quality tools, such as link checking to AI assistants.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/skills/APIDocumentation.md</td>
+                <td>24</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>### API and SDK documentation</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/skills/APIDocumentation.md</td>
+                <td>79</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>This reduces demands on subject-matter experts by allowing me to investigate many technical questions independently and reserve their time for issues requiring specialist product knowledge. It also helps me uncover documentation gaps, clarify complex security requirements and create guidance that enables developers to onboard quickly and build secure, performant and user-friendly integrations.</code></td>
+                <td>Remark (remark-lint): Unexpected `4` blank lines after node, expected `0` blank lines, remove `4` blank lines</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/skills/APIandWebSecurity.md</td>
+                <td>40</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Identified a security weakness in an early **Click to Pay** integration where security-relevant values were passed in custom HTTP headers that were not covered by Mastercard&#x27;s OAuth 1 request signing. Raised the issue with the API team, resulting in a change to the API design.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/skills/DocsAsCode.md</td>
+                <td>59</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>This experience combines documentation-platform ownership, software development, parser extension, programmatic content transformation, Git, CI/CD, static-site generation, content migration and automated publishing.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/skills/DocumentationEngineering.md</td>
+                <td>146</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>My approach is to treat documentation infrastructure as a product: understand the authoring and reader experience, identify bottlenecks, automate repetitive work and evolve the platform as the documentation estate grows.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/skills/GovernanceDocs.md</td>
+                <td>41</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* A pilot using an approved internal Whisper speech-to-text model to generate draft transcripts from meeting recordings for human review and correction.</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines after node, expected `0` blank lines, remove `2` blank lines</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-missing-blank-lines"
+            >
+                <td>docs/skills/InformationArchitecture.md</td>
+                <td>18</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-missing-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Redesigning the information architecture for a 400-page developer documentation site, replacing a flat collection of loosely connected pages with a structured content hierarchy and clearer navigation paths that improved findability, discoverability and content organisation.</code></td>
+                <td>Remark (remark-lint): Unexpected `0` blank lines between nodes, expected `1` or more blank lines, add `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-missing-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/skills/InformationArchitecture.md</td>
+                <td>24</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Conducting a content inventory of approximately 900 pages during migration from Sphinx and TWiki, recursively spidering internal links to map content relationships and dependencies, using site analytics to prioritise high-value content, and identifying obsolete or redundant material for retirement.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/skills/TechnicalValidationTesting.md</td>
+                <td>49</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Used programming and automation to investigate system behaviour beyond what could be established through manual testing alone.</code></td>
+                <td>Remark (remark-lint): Unexpected `3` blank lines after node, expected `0` blank lines, remove `3` blank lines</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/skills/index.md</td>
+                <td>13</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>&lt;SkillsGrid /&gt;</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/tools/AIandDevTools.md</td>
+                <td>27</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* **Developer Tooling:** Created **IntelliJ IDE plugins** and have extensive experience working with **IntelliJ IDEA, PyCharm and VS Code**.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/tools/ContainersAndCloudNative.md</td>
+                <td>45</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Used **Proxmox** at home to host services including Home Assistant and the Kubernetes test environment.</code></td>
+                <td>Remark (remark-lint): Unexpected `4` blank lines after node, expected `0` blank lines, remove `4` blank lines</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/tools/Diagramming.md</td>
+                <td>48</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Earlier-career experience with **CAD software including CATIA**, providing additional familiarity with engineering drawing and 3D design environments.</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/tools/Flare.md</td>
+                <td>24</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>&lt;CapabilityGrid variant=&quot;checklist&quot;&gt;</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/tools/Flare.md</td>
+                <td>39</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>## Advanced flare skills</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/tools/Flare.md</td>
+                <td>65</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>I applied these capabilities to the automation, integration and migration projects described in the [Flare Automation, Integration and Migration](#automation) section.</code></td>
+                <td>Remark (remark-lint): Unexpected `3` blank lines before node, expected up to `1` blank line, remove `2` blank lines</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>docs/tools/Flare.md</td>
+                <td>97</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>  4. Created consistently structured release documentation using a predefined topic template</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/tools/GitContinuousIntegration.md</td>
+                <td>27</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Diagnosed Jenkins and documentation build failures, including environment-specific issues that occurred under Linux or CI but could not be reproduced in local development environments.</code></td>
+                <td>Remark (remark-lint): Unexpected `1` blank line after node, expected `0` blank lines, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/tools/OpenAPIandAPITools.md</td>
+                <td>26</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>* Reviewed API contracts against implemented REST behaviour, identifying discrepancies in parameters, schemas, status codes, authentication and API responses, and working with engineers to resolve issues and update the specification and documentation.</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines after node, expected `0` blank lines, remove `2` blank lines</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/tools/ProgrammingAutomation.md</td>
+                <td>21</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>### Engineering background</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>docs/tools/index.md</td>
+                <td>11</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>&lt;ToolsGrid /&gt;</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines after node, expected `0` blank lines, remove `2` blank lines</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="heading-increment"
+            >
+                <td>remark-test.md</td>
+                <td>3</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>heading-increment</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>### Skipped heading level</code></td>
+                <td>Remark (remark-lint): Unexpected heading rank `3`, exected rank `2`</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `heading-increment`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-empty-url"
+            >
+                <td>remark-test.md</td>
+                <td>5</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-empty-url</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>[Empty link]()</code></td>
+                <td>Remark (remark-lint): Unexpected empty link URL referencing the current document, expected URL</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-empty-url`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-undefined-references"
+            >
+                <td>remark-test.md</td>
+                <td>7</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-undefined-references</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>[Undefined reference][missing]</code></td>
+                <td>Remark (remark-lint): Unexpected reference to undefined definition, expected corresponding definition (`missing`) for a link or escaped opening bracket (`\[`) for regular text</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-undefined-references`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="fenced-code-flag"
+            >
+                <td>remark-test.md</td>
+                <td>9</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>fenced-code-flag</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>```</code></td>
+                <td>Remark (remark-lint): Unexpected missing fenced code language flag in info string, expected keyword</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `fenced-code-flag`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>remark-test.md</td>
+                <td>15</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>| one | two | three |</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-hidden-table-cell"
+            >
+                <td>remark-test.md</td>
+                <td>15</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-hidden-table-cell</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>| one | two | three |</code></td>
+                <td>Remark (remark-lint): Unexpected hidden table cell, expected as many cells in body rows as in the head row</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-hidden-table-cell`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>src/pages/index.md</td>
+                <td>10</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code># Ian Drewett M.Sc. Computer Science</code></td>
+                <td>Remark (remark-lint): Unexpected `2` blank lines before node, expected up to `1` blank line, remove `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-missing-blank-lines"
+            >
+                <td>src/pages/index.md</td>
+                <td>25</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-missing-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>  &lt;p&gt;</code></td>
+                <td>Remark (remark-lint): Unexpected `0` blank lines between nodes, expected `1` or more blank lines, add `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-missing-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-missing-blank-lines"
+            >
+                <td>src/pages/index.md</td>
+                <td>28</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-missing-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>  &lt;span className=&quot;card-link&quot;&gt;Read case study →&lt;/span&gt;</code></td>
+                <td>Remark (remark-lint): Unexpected `0` blank lines between nodes, expected `1` or more blank lines, add `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-missing-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-consecutive-blank-lines"
+            >
+                <td>src/pages/index.md</td>
+                <td>79</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-consecutive-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>## Technical capabilities</code></td>
+                <td>Remark (remark-lint): Unexpected `3` blank lines before node, expected up to `1` blank line, remove `2` blank lines</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-consecutive-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="final-newline"
+            >
+                <td>src/pages/index.md</td>
+                <td>93</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>final-newline</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>[LinkedIn profile](https://www.linkedin.com/in/ian-drewett/).</code></td>
+                <td>Remark (remark-lint): Unexpected missing final newline character, expected line feed (`\n`) at end of file</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `final-newline`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-missing-blank-lines"
+            >
+                <td>taxonomy/taxonomy-ai-suggestions.md</td>
+                <td>91</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-missing-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>- `A documentation QA workflow that uses Python and the `requests` library to call the DeepSeek REST API`</code></td>
+                <td>Remark (remark-lint): Unexpected `0` blank lines between nodes, expected `1` or more blank lines, add `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-missing-blank-lines`.</td>
+            </tr>
+            
+            <tr
+                data-severity="medium"
+                data-source="remark"
+                data-category="no-missing-blank-lines"
+            >
+                <td>taxonomy/taxonomy-ai-suggestions.md</td>
+                <td>255</td>
+                <td><span class="badge severity-medium">medium</span></td>
+                <td><span class="badge confidence-high">high</span></td>
+                <td>defect</td>
+                <td>no-missing-blank-lines</td>
+                <td><span class="badge source-remark">remark</span></td>
+                <td><code>- `Python migration scripts`</code></td>
+                <td>Remark (remark-lint): Unexpected `0` blank lines between nodes, expected `1` or more blank lines, add `1` blank line</td>
+                <td>Correct the Markdown/MDX structure to satisfy Remark rule `no-missing-blank-lines`.</td>
             </tr>
             
             </tbody>
