@@ -46,6 +46,10 @@ There are also two static checks:
 - **AccessibilityCheck** finds issues such as missing/empty image alt text, vague links such as “click here”, and heading-level jumps.
 - **LinkCheck** tests local links and assets to make sure their targets exist; external HTTP links are deliberately excluded from that test. 
 
+
+Broken Link - https://iand4096.github.io/docusaurusportfolios
+Working Link - https://iand4096.github.io/docusaurusportfolio
+
 ### How the AI part works
 
 The script uses the Requests library to make REST API calls to the configured DeepSeek mode with documentation text and requires structured JSON findings. Each AI issue contains things such as:

@@ -23,6 +23,10 @@ on:
       - ".github/styles/**"
       - "styles/**"
 
+      # Lychee configuration changes must also trigger QA.
+      - "lychee.toml"
+      - ".lycheeignore"
+
       - ".github/workflows/docs-review.yml"
 
 permissions:
@@ -64,10 +68,16 @@ jobs:
         shell: bash
         run: |
           sudo snap install vale
-          vale --version
 
-      # Initialise/download any packages configured in .vale.ini.
-      - name: Sync Vale configuration
+          # Make Vale available to all following workflow steps.
+          echo "/snap/bin" >> "$GITHUB_PATH"
+
+          # Verify the installation immediately using the absolute path.
+          /snap/bin/vale --version
+
+      # Validate the repository Vale configuration before running the
+      # documentation QA script.
+      - name: Validate Vale configuration
         shell: bash
         run: |
           if [ ! -f ".vale.ini" ]; then
@@ -75,8 +85,67 @@ jobs:
             exit 1
           fi
 
+          echo "Vale configuration found."
+
           vale sync
           vale ls-config
+
+      # The Python QA script invokes Lychee directly to check external HTTP(S)
+      # links and parses its JSON output into the unified QA report.
+      - name: Install Lychee
+        shell: bash
+        run: |
+          sudo snap install lychee
+
+          # /snap/bin is already added above for Vale, but use the absolute
+          # path here so installation is verified immediately.
+          /snap/bin/lychee --version
+
+      # Validate that Lychee starts successfully with the same core options
+      # used by scripts/ai_docs_review.py. lychee.toml and .lycheeignore are
+      # optional; Lychee will load them automatically when present.
+      - name: Validate Lychee configuration
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          echo "Lychee configuration:"
+          if [ -f "lychee.toml" ]; then
+            echo "  lychee.toml: found"
+          else
+            echo "  lychee.toml: not present (using defaults)"
+          fi
+
+          if [ -f ".lycheeignore" ]; then
+            echo "  .lycheeignore: found"
+          else
+            echo "  .lycheeignore: not present"
+          fi
+
+          # GitHub Actions runs Bash with `-e`; temporarily disable it so
+          # Lychee exit code 2 can be inspected rather than aborting this step.
+          set +e
+          printf '%s\n' "README.md" | lychee \
+            --files-from - \
+            --root-dir "$(pwd)" \
+            --include '^https?://' \
+            --format json \
+            --no-progress \
+            > /tmp/lychee-preflight.json
+          LYCHEE_EXIT=$?
+          set -e
+
+          # Exit code 0 means all links passed. Exit code 2 means broken links
+          # were found, which still proves that Lychee and its configuration
+          # loaded successfully. Exit codes 1 and 3 indicate execution/config
+          # problems and should stop the workflow before paid AI checks run.
+          if [ "$LYCHEE_EXIT" -ne 0 ] && [ "$LYCHEE_EXIT" -ne 2 ]; then
+            echo "::error::Lychee preflight failed with exit code $LYCHEE_EXIT."
+            cat /tmp/lychee-preflight.json || true
+            exit "$LYCHEE_EXIT"
+          fi
+
+          echo "Lychee configuration loaded successfully."
 
       - name: Verify DeepSeek API key
         env:
@@ -93,7 +162,18 @@ jobs:
       - name: Run documentation QA
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
+        shell: bash
         run: |
+          echo "Python:"
+          python --version
+
+          echo "Vale:"
+          vale --version
+
+          echo "Lychee:"
+          lychee --version
+
           python scripts/ai_docs_review.py \
             --ci \
             --mode per-page \
@@ -121,13 +201,16 @@ jobs:
           {
             echo "## Documentation QA"
             echo ""
+
             echo "### Checks"
             echo ""
             echo "- AI documentation review — DeepSeek"
             echo "- Static documentation checks"
             echo "- Vale prose/style checks"
+            echo "- Lychee external HTTP(S) link checks"
             echo ""
             echo "Vale findings are incorporated into the unified reports with source \`vale\`."
+            echo "Lychee findings are incorporated into the unified reports with source \`lychee\`."
             echo ""
 
             echo "### Generated reports"
