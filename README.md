@@ -18,91 +18,94 @@ npm install
 npm run start
 ```
 
-## QA site report
+## Documentation QA
 
-A QA Report is generated using [DeepSeek AI](scripts/ai_docs_review.py) for every change to the site. See output at https://iand4096.github.io/docusaurusportfolio/qa/
+A QA report is generated for every change to the site and published at:
 
-The report script **ai_docs_review.py** review a Docusaurus documentation/technical-writing portfolio and produce both human-readable and machine-readable QA results.
+https://iand4096.github.io/docusaurusportfolio/qa/
 
-It provides a documentation QA pipeline for a technical-writing portfolio that combines conservative LLM editorial analysis with deterministic accessibility/link checks, validates AI findings against the source, produces HTML/JSON reports, and can block CI when serious documentation problems are found.
-
-Further details are provided below.
+The pipeline is implemented in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.
 
 ### What it checks
 
-The tool combines **AI-based editorial review** with **deterministic/static checks**.
+The **AI review** uses DeepSeek for conservative analysis of:
 
-The AI checks cover:
+* Grammar and clarity;
+* structure and scannability;
+* portfolio quality;
+* repetition;
+* Mermaid diagram opportunities;
+* site-wide consistency.
 
-* **Grammar and clarity** — grammar, confusing wording, incomplete sentences, terminology consistency, unfinished content, and punctuation. It deliberately avoids general spelling corrections and preserves valid British English. 
-* **Structure and scannability** — awkward ordering, overly dense paragraphs, misplaced context, misleading headings and over-explanation. 
-* **Portfolio quality** — specifically asks whether a technical-writing case study clearly shows the deliverable, audience, author's contribution, challenges/usefulness, and relationship to the published work. It also flags cases where too much space is spent explaining technology rather than demonstrating documentation work. 
-* **Repetition** — detects unnecessary duplication within a page or across pages. 
-* **Mermaid diagram opportunities** — very conservatively suggests diagrams for workflows, lifecycles, system relationships, decisions or other information that would benefit from visualisation. 
-* **Site-wide consistency** — compares portfolio pages for inconsistent structure, terminology and presentation of the author's contribution. 
+AI findings must quote exact source text. The script validates each quotation against the source and recalculates its line number, discarding findings that cannot be verified.
 
-There are also two static checks:
+The pipeline also runs:
 
-- **AccessibilityCheck** finds issues such as missing/empty image alt text, vague links such as “click here”, and heading-level jumps.
-- **LinkCheck** tests local links and assets to make sure their targets exist; external HTTP links are deliberately excluded from that test. 
+* **AccessibilityCheck** — checks alt text, vague link text, and heading-level jumps.
+* **LinkCheck** — validates local links and assets.
+* **Remark** — checks Markdown/MDX syntax and structural conventions.
+* **Vale** — checks mechanically enforceable prose and style-guide rules, such as terminology, wording, punctuation, and other configured conventions.
+* **Lychee** — checks external HTTP/HTTPS links.
 
+This keeps deterministic checks separate from the higher-level editorial judgement handled by the AI review.
 
-Broken Link - https://iand4096.github.io/docusaurusportfolios
-Working Link - https://iand4096.github.io/docusaurusportfolio
+### Review scopes and presets
 
-### How the AI part works
+The tool supports two review scopes:
 
-The script uses the Requests library to make REST API calls to the configured DeepSeek mode with documentation text and requires structured JSON findings. Each AI issue contains things such as:
+* **Per-page** — reviews individual Markdown and MDX documents.
+* **Site-wide** — compares documents for repetition and consistency.
 
-`severity → confidence → type → category → file/line → original text → explanation → suggestion`
+Available presets include:
 
-An important safeguard is that AI findings are **validated against the actual source**. The model has to quote exact source text, and the implementation recalculates the real line number. If the quoted text cannot be found, the finding is discarded. This reduces fabricated or mislocated findings. 
+* Full review
+* Editorial only
+* Portfolio only
+* Repetition only
+* Mermaid opportunities only
+* Accessibility only
+* Site-wide consistency only
+* Remark only
+* Vale only
+* Lychee only
+* Link checks only
 
-The prompts are also intentionally conservative: a good page is allowed to return **zero issues**, rather than forcing the model to manufacture criticism.
+Checks that do not apply to the selected scope are automatically excluded.
 
-### Per-page vs site-wide review
+### Modes
 
-The tool supports two scopes:
+The script can run in two modes:
 
-**Per-page mode** reviews each Markdown/MDX document individually. A full per-page review effectively runs grammar, structure, portfolio, repetition, Mermaid, accessibility and link checks.
+* **Local mode** — runs the selected checks and generates reports for inspection during development.
+* **CI mode** (`--ci`) — runs the QA pipeline and returns exit code `1` when configured issue or check-error thresholds are exceeded.
 
-**Site-wide mode** compares documents together. The relevant checks are primarily cross-page repetition and site-wide consistency.
+### Reports
 
-The tool automatically removes checks that do not support the selected review scope. 
+The script generates:
 
-It also provides presets such as **Full review, Editorial only, Portfolio only, Repetition only, Mermaid opportunities only, Accessibility only, and Site-wide consistency only**.
+* `ai-doc-review.html` — human-readable report.
+* `ai-doc-review.json` — structured output for automation and CI.
 
-### What the generated QA report looks like
+The report records file, line, severity, confidence, type, category, source, original text, issue, and suggestion. Findings can be filtered by severity and source, including AI, static checks, Remark, Vale, and Lychee.
 
-The HTML report contains an issue table with these columns:
+### Severity and CI
 
-**File | Line | Severity | Confidence | Type | Category | Source | Original | Issue | Suggestion**
+Issues are classified as **High**, **Medium**, or **Low**, with confidence recorded separately.
 
-It also separately displays API/check errors. 
+Default CI thresholds are:
 
-The HTML UI lets you filter findings by **severity** and whether the finding came from **static analysis or AI**. 
+* 0 high-severity issues;
+* 5 medium-severity issues;
+* 0 API/check errors.
 
-The script generates two files:
+Because failure occurs when a count exceeds its threshold, one high issue, six medium issues, or one API/check error causes the QA gate to fail. Low-severity findings do not fail CI.
 
-* `ai-doc-review.html` — visual report for a person to inspect.
-* `ai-doc-review.json` — structured output suitable for automation/CI.
+Thresholds can be configured with `--fail-high`, `--fail-medium`, and `--fail-api-errors`.
 
-Both are generated after all selected checks run. 
+### GitHub Actions integration
 
-### Severity and CI behaviour
+The deployment workflow builds the Docusaurus site, installs the QA dependencies, runs the full review, and publishes the HTML and JSON reports.
 
-Issues have three severities:
+The QA step is allowed to complete even when thresholds are exceeded so the report can still be deployed under `/qa/`. A later QA gate then fails the workflow when required.
 
-* **High** — materially misleading, broken, contradictory or publication-blocking.
-* **Medium** — medium impact comprehension, structural or portfolio-quality problems.
-* **Low** — worthwhile but non-blocking improvements.
-
-There is also **high/medium/low confidence**, which is separate from severity.
-
-The default CI thresholds are particularly useful: **0 high issues, 5 medium issues and 0 API/check errors are allowed before crossing the configured threshold**. Because the comparison is `count > threshold`, one high issue 
-fails by default, six medium issues fail, and one API/check error fails. Low-severity issues do not affect CI failure. The CLI exposes these as `--fail-high`, `--fail-medium`, and `--fail-api-errors`. 
-
-### Modes (local / ci)
-
-The script can be run locally or as part of a GitHub Action with `--ci` where a failed threshold causes an exit code of `1`
 

@@ -3,3 +3,6 @@
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAccessibilityCheck finds issues such as missing/empty image alt text, vague links such as “click here”, and heading-level jumps.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QLinkCheck tests local links and assets to make sure their targets exist; external HTTP links are deliberately excluded from that test.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QModes (local / ci)\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAccessibilityCheck — checks alt text, vague link text, and heading-level jumps.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QLinkCheck — validates local links and assets.\\E$"}
+{"rule":"ADVERB_VERB_ADVERB_REPETITION","sentence":"^\\QFull review\nEditorial only\nPortfolio only\nRepetition only\nMermaid opportunities only\nAccessibility only\nSite-wide consistency only\nRemark only\nVale only\nLychee only\nLink checks only\\E$"}
