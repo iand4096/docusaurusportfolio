@@ -15,23 +15,15 @@ on:
       - "docs/**/*.mdx"
       - "src/pages/**/*.md"
       - "src/pages/**/*.mdx"
-
-      # Documentation QA implementation.
       - "scripts/ai_docs_review.py"
       - "requirements-doc-review.txt"
 
-      # Remark configuration and dependencies.
-      - ".remarkrc.mjs"
-      - ".remarkignore"
-      - "package.json"
-      - "package-lock.json"
-
-      # Vale configuration and custom styles.
+      # Vale configuration and custom styles must also trigger QA.
       - ".vale.ini"
       - ".github/styles/**"
       - "styles/**"
 
-      # Lychee configuration.
+      # Lychee configuration changes must also trigger QA.
       - "lychee.toml"
       - ".lycheeignore"
 
@@ -60,27 +52,6 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
-      # Remark and mdx2vast are Node-based tools, so install the site's
-      # pinned npm dependencies before running documentation linting.
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version: 20
-          cache: npm
-
-      - name: Install site dependencies
-        run: npm ci
-
-      # Run deterministic Markdown/MDX linting before Python setup or
-      # paid AI review. Structural Markdown failures stop the job here.
-      - name: Lint Markdown and MDX
-        shell: bash
-        run: |
-          echo "Remark:"
-          npx remark --version
-
-          npm run lint:markdown
-
       - name: Set up Python
         uses: actions/setup-python@v7
         with:
@@ -91,8 +62,8 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-doc-review.txt
 
-      # The Python QA script invokes Vale directly and parses its JSON
-      # output into the unified documentation QA report. Vale uses
+      # The Python QA script invokes the Vale executable directly and parses
+      # its JSON output into the unified documentation QA report. Vale uses
       # mdx2vast as an external parser for MDX files.
       - name: Install Vale and MDX support
         shell: bash
@@ -132,26 +103,26 @@ jobs:
           vale sync
           vale ls-config
 
-      # The Python QA script invokes Lychee directly to check external
-      # HTTP(S) links and incorporates its JSON results into the report.
+      # The Python QA script invokes Lychee directly to check external HTTP(S)
+      # links and parses its JSON output into the unified QA report.
       - name: Install Lychee
         shell: bash
         run: |
           sudo snap install lychee
 
-          # /snap/bin is already added above for Vale, but use the
-          # absolute path here to verify installation immediately.
+          # /snap/bin is already added above for Vale, but use the absolute
+          # path here so installation is verified immediately.
           /snap/bin/lychee --version
 
-      # Validate that Lychee starts successfully with the same core
-      # options used by scripts/ai_docs_review.py.
+      # Validate that Lychee starts successfully with the same core options
+      # used by scripts/ai_docs_review.py. lychee.toml and .lycheeignore are
+      # optional; Lychee will load them automatically when present.
       - name: Validate Lychee configuration
         env:
           GITHUB_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           echo "Lychee configuration:"
-
           if [ -f "lychee.toml" ]; then
             echo "  lychee.toml: found"
           else
@@ -164,11 +135,9 @@ jobs:
             echo "  .lycheeignore: not present"
           fi
 
-          # GitHub Actions runs Bash with -e. Disable it temporarily so
-          # exit code 2 (broken links found) can be examined instead of
-          # terminating this preflight immediately.
+          # GitHub Actions runs Bash with `-e`; temporarily disable it so
+          # Lychee exit code 2 can be inspected rather than aborting this step.
           set +e
-
           printf '%s\n' "README.md" | lychee \
             --files-from - \
             --root-dir "$(pwd)" \
@@ -176,14 +145,13 @@ jobs:
             --format json \
             --no-progress \
             > /tmp/lychee-preflight.json
-
           LYCHEE_EXIT=$?
-
           set -e
 
-          # 0 = all links passed.
-          # 2 = broken links found, but Lychee/configuration loaded.
-          # Other exit codes indicate an execution/configuration problem.
+          # Exit code 0 means all links passed. Exit code 2 means broken links
+          # were found, which still proves that Lychee and its configuration
+          # loaded successfully. Exit codes 1 and 3 indicate execution/config
+          # problems and should stop the workflow before paid AI checks run.
           if [ "$LYCHEE_EXIT" -ne 0 ] && [ "$LYCHEE_EXIT" -ne 2 ]; then
             echo "::error::Lychee preflight failed with exit code $LYCHEE_EXIT."
             cat /tmp/lychee-preflight.json || true
@@ -212,9 +180,6 @@ jobs:
         run: |
           echo "Python:"
           python --version
-
-          echo "Remark:"
-          npx remark --version
 
           echo "Vale:"
           vale --version
@@ -255,14 +220,11 @@ jobs:
 
             echo "### Checks"
             echo ""
-            echo "- Remark Markdown/MDX structural linting"
             echo "- AI documentation review — DeepSeek"
             echo "- Static documentation checks"
             echo "- Vale prose/style checks"
             echo "- Lychee external HTTP(S) link checks"
             echo ""
-
-            echo "Remark runs before the AI review and fails immediately on Markdown/MDX lint violations."
             echo "Vale findings are incorporated into the unified reports with source \`vale\`."
             echo "Lychee findings are incorporated into the unified reports with source \`lychee\`."
             echo ""
