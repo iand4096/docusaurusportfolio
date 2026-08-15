@@ -14,7 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my documentation-governance skills
 ---
 
-I have several years experience creating and maintaining software architecture-governance documentation for complex financial systems. My work combined accurate meeting records, architecture diagrams, action tracking, metadata governance and workflow automation.
+I have several years of experience creating and maintaining software architecture-governance documentation for complex financial systems. My work combined accurate meeting records, architecture diagrams, action tracking, metadata governance and workflow automation.
 
 ## Architecture governance
 
@@ -32,7 +32,7 @@ I built a documentation-platform plugin for embedding C4 architecture diagrams i
 
 I have also explored emerging architecture-as-code standards, including FINOS CALM, for representing software architectures in structured, machine-readable formats.
 
-##  Governance workflow automation
+## Governance workflow automation
 
 I developed automation to improve the efficiency and accuracy of governance documentation, including:
 

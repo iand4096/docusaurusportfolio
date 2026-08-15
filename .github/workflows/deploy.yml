@@ -55,8 +55,9 @@ jobs:
           python -m pip install -r requirements-doc-review.txt
 
       # The Python QA script invokes Vale directly and parses its JSON
-      # output into the unified documentation QA report.
-      - name: Install Vale
+      # output into the unified documentation QA report. Vale uses
+      # mdx2vast as an external parser for MDX files.
+      - name: Install Vale and MDX support
         shell: bash
         run: |
           sudo snap install vale
@@ -64,11 +65,17 @@ jobs:
           # Make Vale available to all following workflow steps.
           echo "/snap/bin" >> "$GITHUB_PATH"
 
-          # Verify the installation immediately using the absolute path.
+          # Vale requires mdx2vast to lint MDX files.
+          npm install --global mdx2vast
+
+          echo "Vale:"
           /snap/bin/vale --version
 
-      # Validate the repository Vale configuration before running the
-      # documentation QA script.
+          echo "mdx2vast:"
+          command -v mdx2vast
+
+      # Validate the repository Vale configuration and MDX parser before
+      # running the documentation QA script.
       - name: Validate Vale configuration
         shell: bash
         run: |
@@ -77,10 +84,63 @@ jobs:
             exit 1
           fi
 
+          if ! command -v mdx2vast >/dev/null 2>&1; then
+            echo "::error::mdx2vast was not found in PATH. Vale cannot lint MDX files."
+            exit 1
+          fi
+
           echo "Vale configuration found."
+          echo "mdx2vast: $(command -v mdx2vast)"
 
           vale sync
           vale ls-config
+
+      # The Python QA script invokes Lychee directly and parses its JSON
+      # output into the unified documentation QA report.
+      - name: Install Lychee
+        shell: bash
+        run: |
+          sudo snap install lychee
+
+          # Make Lychee available to all following workflow steps.
+          echo "/snap/bin" >> "$GITHUB_PATH"
+
+          # Verify the installation immediately using the absolute path.
+          /snap/bin/lychee --version
+
+      # Validate the effective Lychee configuration used by the Python QA script.
+      # lychee.toml and .lycheeignore are optional; if present, Lychee loads them
+      # during this preflight and fails here if the configuration is invalid.
+      - name: Validate Lychee configuration
+        shell: bash
+        run: |
+          if [ -f "lychee.toml" ]; then
+            echo "lychee.toml configuration found."
+          else
+            echo "No lychee.toml found; using Lychee defaults plus QA-script options."
+          fi
+
+          if [ -f ".lycheeignore" ]; then
+            echo ".lycheeignore exclusions found."
+          else
+            echo "No .lycheeignore found; no repository-level URL exclusions configured."
+          fi
+
+          # Exercise the same core options used by scripts/ai_docs_review.py
+          # without making a network request. A malformed lychee.toml causes
+          # Lychee to fail here before the documentation QA step consumes API credits.
+          PREFLIGHT_FILE=".lychee-preflight.md"
+          trap 'rm -f "$PREFLIGHT_FILE"' EXIT
+          printf '# Lychee configuration preflight\n' > "$PREFLIGHT_FILE"
+
+          lychee \
+            --root-dir "$(pwd)" \
+            --include '^https?://' \
+            --format json \
+            --no-progress \
+            "$PREFLIGHT_FILE"
+
+          echo "Lychee configuration: OK"
 
       - name: Verify DeepSeek API key
         env:
@@ -102,6 +162,7 @@ jobs:
         continue-on-error: true
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          GITHUB_TOKEN: ${{ github.token }}
         shell: bash
         run: |
           echo "Python:"
@@ -109,6 +170,12 @@ jobs:
 
           echo "Vale:"
           vale --version
+
+          echo "mdx2vast:"
+          command -v mdx2vast
+
+          echo "Lychee:"
+          lychee --version
 
           python scripts/ai_docs_review.py \
             --ci \
@@ -233,8 +300,10 @@ jobs:
             echo "- AI documentation review — DeepSeek"
             echo "- Static documentation checks"
             echo "- Vale prose/style checks"
+            echo "- Lychee external HTTP(S) link checks"
             echo ""
             echo "Vale findings are incorporated into the unified report with source \`vale\`."
+            echo "Lychee findings are incorporated into the unified report with source \`lychee\`."
             echo ""
 
             echo "The HTML report is included in this GitHub Pages deployment under \`/qa/\`."
