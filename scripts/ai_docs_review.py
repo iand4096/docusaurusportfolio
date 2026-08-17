@@ -22,7 +22,7 @@ MODEL = "deepseek-v4-flash"
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
 # Set it back to True when AI review should be re-enabled.
-DEEPSEEK_AI_CHECKS_ENABLED = False
+DEEPSEEK_AI_CHECKS_ENABLED = True
 
 ROOT = Path(".")
 REPORT = Path("ai-doc-review.html")
