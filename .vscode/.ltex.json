@@ -1,0 +1,14 @@
+{
+  "ltex": {
+    "language": "en-GB",
+    "enabled": [
+      "markdown",
+      "mdx"
+    ],
+    "configurationTarget": {
+      "dictionary": "workspaceFolderExternalFile",
+      "disabledRules": "workspaceFolderExternalFile",
+      "hiddenFalsePositives": "workspaceFolderExternalFile"
+    }
+  }
+}

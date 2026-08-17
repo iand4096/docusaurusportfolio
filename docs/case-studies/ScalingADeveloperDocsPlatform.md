@@ -45,7 +45,7 @@ Key elements included:
 * Analytics used to identify high-value legacy content and prioritise migration.
 * Contribution workflows designed to encourage engineers to create and maintain documentation.
 
-I developed migration scripts and later helped create a more user-focused IDE-based migration tool that converted approximately **900 legacy Twiki pages** into the platform's extended Markdown format. I also wrote tooling to migrate documentation from Sphinx.
+I developed migration scripts and later helped create a more user-focused IDE-based migration tool that converted approximately **900 legacy TWiki pages** into the platform's extended Markdown format. I also wrote tooling to migrate documentation from Sphinx.
 
 As the platform matured, I contributed directly to its codebase and used agentic AI tools and spec-driven development techniques to accelerate platform enhancements and repetitive documentation tasks.
 
@@ -72,4 +72,4 @@ It also gave me experience spanning **documentation strategy, product ownership,
 
 * Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, before the corpus grew to several thousand pages.
 * Establish more comprehensive documentation analytics and contribution metrics earlier to measure adoption, content quality, usage, and maintenance needs more systematically.
-* Add automated quality checks to documentation pull requests using tools such as Vale and LanguageTool, together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues, so that quality could scale with the growth of the site once manual review of every PR was no longer practical.
+* Add automated quality checks to documentation pull requests using tools such as Vale and LanguageTool, together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues, so that quality could scale with the growth of the site once manual review of every PR was no longer practical. My [portfolio integrates these checks](./DocusaurusPortfolio.md)
