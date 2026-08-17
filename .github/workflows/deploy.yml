@@ -126,7 +126,7 @@ jobs:
 
       # LTeX+ provides grammar and spelling checks for Markdown and MDX.
       # Use the standalone Linux bundle, which includes its own Java runtime.
-          - name: Install LTeX+
+      - name: Install LTeX+
         shell: bash
         run: |
           set -euo pipefail
@@ -142,14 +142,11 @@ jobs:
             "https://github.com/ltex-plus/ltex-ls-plus/releases/download/${LTEX_VERSION}/ltex-ls-plus-${LTEX_VERSION}-linux-x64.tar.gz" \
             -o "$LTEX_ARCHIVE"
 
-          echo "Archive contents:"
-          tar -tzf "$LTEX_ARCHIVE" | head -n 30
+          echo "Archive contents (first 30 entries):"
+          tar -tzf "$LTEX_ARCHIVE" | sed -n '1,30p'
 
           rm -rf "$LTEX_EXTRACT"
           mkdir -p "$LTEX_EXTRACT"
-
-          # Do not strip path components. Release archive layouts can contain
-          # either the LTeX+ root directly or a top-level wrapper directory.
           tar -xzf "$LTEX_ARCHIVE" -C "$LTEX_EXTRACT"
 
           echo "Locating ltex-cli-plus..."
@@ -165,7 +162,7 @@ jobs:
           if [ -z "$LTEX_CLI" ]; then
             echo "::error::ltex-cli-plus was not found in the extracted LTeX+ archive."
             echo "Extracted files:"
-            find "$LTEX_EXTRACT" -maxdepth 4 -type f | sort | head -n 100
+            find "$LTEX_EXTRACT" -maxdepth 4 -type f | sort | sed -n '1,100p'
             exit 1
           fi
 
@@ -173,27 +170,76 @@ jobs:
 
           # bin/ltex-cli-plus -> bin -> installation root
           LTEX_ROOT="$(dirname "$(dirname "$LTEX_CLI")")"
-
           echo "Detected LTeX+ root: $LTEX_ROOT"
 
           sudo rm -rf "$LTEX_DIR"
           sudo mkdir -p "$LTEX_DIR"
 
-          # Copy the detected installation root while preserving the bundled
-          # Java runtime and the directory structure expected by the launcher.
+          # Preserve the installation tree because the launcher expects
+          # sibling lib/runtime files relative to this root.
           sudo cp -a "$LTEX_ROOT"/. "$LTEX_DIR"/
 
           sudo chmod +x "$LTEX_DIR/bin/ltex-cli-plus"
-          sudo chmod +x "$LTEX_DIR/bin/ltex-ls-plus"
 
+          if [ -f "$LTEX_DIR/bin/ltex-ls-plus" ]; then
+            sudo chmod +x "$LTEX_DIR/bin/ltex-ls-plus"
+          fi
+
+          # GITHUB_PATH applies to subsequent workflow steps.
           echo "$LTEX_DIR/bin" >> "$GITHUB_PATH"
 
-          echo "Installed files:"
+          echo "Installed LTeX+ bin directory:"
           ls -la "$LTEX_DIR/bin"
 
           echo "LTeX+:"
           "$LTEX_DIR/bin/ltex-cli-plus" --version
-          
+
+      # Validate both the LTeX+ runtime and the repository configuration.
+      # .ltex.json selects British English (en-GB) and enables Markdown/MDX.
+      - name: Validate LTeX+ installation and configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if ! command -v ltex-cli-plus >/dev/null 2>&1; then
+            echo "::error::ltex-cli-plus was not found in PATH."
+            exit 1
+          fi
+
+          if [ ! -f ".ltex.json" ]; then
+            echo "::error::.ltex.json was not found at the repository root."
+            exit 1
+          fi
+
+          echo "LTeX+ CLI: $(command -v ltex-cli-plus)"
+          ltex-cli-plus --version
+
+          echo ".ltex.json configuration found."
+          python -m json.tool .ltex.json >/dev/null
+          echo ".ltex.json syntax: OK"
+
+          # Exercise the CLI and the committed British-English configuration.
+          PREFLIGHT_FILE=".ltex-preflight.md"
+          trap 'rm -f "$PREFLIGHT_FILE"' EXIT
+          printf '# LTeX+ preflight\n\nThe colour of the centre is blue.\n' > "$PREFLIGHT_FILE"
+
+          set +e
+          ltex-cli-plus \
+            --client-configuration=.ltex.json \
+            "$PREFLIGHT_FILE"
+          LTEX_EXIT=$?
+          set -e
+
+          if [ "$LTEX_EXIT" -eq 0 ]; then
+            echo "LTeX+ installation and configuration: OK"
+          elif [ "$LTEX_EXIT" -eq 3 ]; then
+            # Exit 3 means the check ran successfully and produced diagnostics.
+            echo "LTeX+ installation and configuration: OK (diagnostics produced)"
+          else
+            echo "::error::LTeX+ preflight failed with exit code $LTEX_EXIT."
+            exit "$LTEX_EXIT"
+          fi
+
       # The Python QA script invokes Lychee directly and parses its JSON
       # output into the unified documentation QA report.
       - name: Install Lychee
@@ -399,15 +445,15 @@ jobs:
 
             echo "### Checks"
             echo ""
-            echo "- AI documentation review — DeepSeek"
+            echo "- AI documentation review — DeepSeek (temporarily disabled by hardcoded switch)"
             echo "- Static documentation checks"
             echo "- Vale prose/style checks"
-            echo "- LTeX+ installation/configuration preflight — British English (en-GB)"
+            echo "- LTeX+ grammar/spelling checks — British English (en-GB)"
             echo "- Lychee external HTTP(S) link checks"
             echo ""
             echo "Vale findings are incorporated into the unified report with source \`vale\`."
             echo "Lychee findings are incorporated into the unified report with source \`lychee\`."
-            echo "LTeX+ is validated here but is not yet incorporated into the unified QA report."
+            echo "LTeX+ findings are incorporated into the unified report with source \`ltex\`."
             echo ""
 
             echo "The HTML report is included in this GitHub Pages deployment under \`/qa/\`."
