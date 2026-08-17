@@ -124,6 +124,73 @@ jobs:
             echo "No MDX files found; skipping the MDX parser preflight."
           fi
 
+      # LTeX+ provides grammar and spelling checks for Markdown and MDX.
+      # Use the standalone Linux bundle, which includes its own Java runtime.
+      - name: Install LTeX+
+        shell: bash
+        run: |
+          LTEX_VERSION="18.7.0"
+          LTEX_DIR="/opt/ltex-ls-plus"
+
+          curl -fsSL \
+            "https://github.com/ltex-plus/ltex-ls-plus/releases/download/${LTEX_VERSION}/ltex-ls-plus-${LTEX_VERSION}-linux-x64.tar.gz" \
+            -o /tmp/ltex-ls-plus.tar.gz
+
+          sudo mkdir -p "$LTEX_DIR"
+          sudo tar -xzf /tmp/ltex-ls-plus.tar.gz \
+            -C "$LTEX_DIR" \
+            --strip-components=1
+
+          # Make the CLI available to all following workflow steps.
+          echo "$LTEX_DIR/bin" >> "$GITHUB_PATH"
+
+          echo "LTeX+:"
+          "$LTEX_DIR/bin/ltex-cli-plus" --version
+
+      # Validate both the LTeX+ runtime and the repository configuration.
+      # .ltex.json selects British English (en-GB) and enables Markdown/MDX.
+      - name: Validate LTeX+ installation and configuration
+        shell: bash
+        run: |
+          if ! command -v ltex-cli-plus >/dev/null 2>&1; then
+            echo "::error::ltex-cli-plus was not found in PATH."
+            exit 1
+          fi
+
+          if [ ! -f ".ltex.json" ]; then
+            echo "::error::.ltex.json was not found at the repository root."
+            exit 1
+          fi
+
+          echo "LTeX+ CLI: $(command -v ltex-cli-plus)"
+          ltex-cli-plus --version
+          echo ".ltex.json configuration found."
+
+          # Run a small British-English Markdown check to verify that the CLI,
+          # bundled Java runtime, LanguageTool, parser, and client configuration
+          # all start successfully before the documentation QA step uses API credits.
+          PREFLIGHT_FILE=".ltex-preflight.md"
+          trap 'rm -f "$PREFLIGHT_FILE"' EXIT
+          printf '# LTeX+ preflight\n\nThe colour of the centre is blue.\n' > "$PREFLIGHT_FILE"
+
+          set +e
+          ltex-cli-plus \
+            --client-configuration=.ltex.json \
+            "$PREFLIGHT_FILE"
+          LTEX_EXIT=$?
+          set -e
+
+          if [ "$LTEX_EXIT" -eq 0 ]; then
+            echo "LTeX+ installation and configuration: OK"
+          elif [ "$LTEX_EXIT" -eq 3 ]; then
+            # Exit 3 means the check ran successfully and produced one or
+            # more writing diagnostics; it is not a runtime/install failure.
+            echo "LTeX+ installation and configuration: OK (preflight produced diagnostics)"
+          else
+            echo "::error::LTeX+ preflight failed with exit code $LTEX_EXIT."
+            exit "$LTEX_EXIT"
+          fi
+
       # The Python QA script invokes Lychee directly and parses its JSON
       # output into the unified documentation QA report.
       - name: Install Lychee
@@ -202,6 +269,9 @@ jobs:
 
           echo "mdx2vast:"
           command -v mdx2vast
+
+          echo "LTeX+:"
+          ltex-cli-plus --version
 
           echo "Lychee:"
           lychee --version
@@ -329,10 +399,12 @@ jobs:
             echo "- AI documentation review — DeepSeek"
             echo "- Static documentation checks"
             echo "- Vale prose/style checks"
+            echo "- LTeX+ installation/configuration preflight — British English (en-GB)"
             echo "- Lychee external HTTP(S) link checks"
             echo ""
             echo "Vale findings are incorporated into the unified report with source \`vale\`."
             echo "Lychee findings are incorporated into the unified report with source \`lychee\`."
+            echo "LTeX+ is validated here but is not yet incorporated into the unified QA report."
             echo ""
 
             echo "The HTML report is included in this GitHub Pages deployment under \`/qa/\`."
