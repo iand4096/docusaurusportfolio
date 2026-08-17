@@ -106,6 +106,6 @@ Thresholds can be configured with `--fail-high`, `--fail-medium`, and `--fail-ap
 
 The deployment workflow builds the Docusaurus site, installs the QA dependencies, runs the full review, and publishes the HTML and JSON reports.
 
-The QA step is allowed to complete even when thresholds are exceeded so the report can still be deployed under `/qa/`. A later QA gate then fails the workflow when required.
+The QA step is allowed to complete even when thresholds are exceeded, so the report can still be deployed under `/qa/`. A later QA gate then fails the workflow when required.
 
 

@@ -35,7 +35,7 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 * Advanced practical experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams** providing structured learning paths through related developer documentation.
 * Used diagrams as an **interactive navigation mechanism**, not simply as illustrations, helping developers understand relationships between technical topics and follow recommended paths through large documentation sets.
 
-## Visual tools, svg and supporting graphics
+## Visual tools, SVG and supporting graphics
 
 * Experienced with **Microsoft Visio, Adobe Illustrator, and Inkscape** for diagrams requiring greater graphical control than diagrams-as-code tools provide.
 * Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. Prefer vector formats where possible because they support scalable output and efficient bulk relabelling or terminology updates.

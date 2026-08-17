@@ -26,6 +26,7 @@ The QA pipeline combines:
 * **Remark** for Markdown/MDX syntax and structure checks
 * **Vale** for deterministically enforceable style-guide and terminology rules
 * **Lychee** for external link checking
+* **LTeX+** as a front end for **LanguageTool** for spell checking.
 
 The checks are combined into HTML and JSON reports and run automatically when anyone pushes changes to the site using GitHub Actions.
 

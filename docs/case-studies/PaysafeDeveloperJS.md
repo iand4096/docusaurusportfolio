@@ -26,13 +26,14 @@ The guide has since been expanded by other contributors to cover features includ
 
 ## My approach
 
-I structured the guide around the developer’s end-to-end integration workflow rather than documenting the JavaScript API operation by operation. Developers could begin with a basic working implementation and then add configuration, validation, styling, and error handling.
+I structured the guide around the developer’s end-to-end integration workflow rather than documenting the JavaScript API operation by operation. This allowed developers to begin with a basic working implementation before adding configuration, validation, styling, and error handling.
 
-I first explained the purpose of the hosted fields and tokenisation model. This helped developers understand why the sensitive fields appeared within Paysafe-hosted iframes, why card data did not pass through the merchant’s systems, and how this reduced the PCI DSS obligations associated with the integration.
+The guide first explained the purpose of the hosted fields and tokenisation model. This helped developers understand why sensitive fields appeared within Paysafe-hosted iframes, why card data did not pass through the merchant’s systems, and how this reduced the PCI DSS obligations associated with the integration.
 
-I built CodePen examples so developers could inspect and modify working integrations without first creating a complete local project. I also developed an interactive **Try Now** demonstration that divided the integration into stages and showed how each part contributed to the completed payment form.
+To make the integration easier to explore, I created CodePen examples that developers could inspect and modify without first setting up a complete local project. An interactive **Try Now** demonstration also divided the integration into stages and showed how each part contributed to the completed payment form.
 
-I tested the documented workflow against the Paysafe.js implementation and worked with product and engineering teams to ensure that the instructions and examples reflected the expected behaviour.
+I tested the documented workflow against the Paysafe.js implementation, with input from product and engineering teams to ensure that the instructions and examples reflected the expected behaviour.
+
 
 ## Deliverables
 

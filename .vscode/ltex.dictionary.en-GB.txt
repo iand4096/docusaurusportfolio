@@ -35,3 +35,6 @@ Drewett
 Optimus
 scannability
 mislocated
+AccessibilityCheck
+LinkCheck
+PANs
