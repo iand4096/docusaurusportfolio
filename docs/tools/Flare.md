@@ -60,8 +60,6 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 </CapabilityGrid>
 
-
-
 I applied these capabilities to the automation, integration and migration projects described in the [Flare Automation, Integration and Migration](#automation) section.
 
 ## Flare community contributions

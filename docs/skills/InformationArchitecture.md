@@ -15,6 +15,7 @@ sidebar_custom_props:
 ---
 
 My background in Information Architecture includes:
+
 * Redesigning the information architecture for a 400-page developer documentation site, replacing a flat collection of loosely connected pages with a structured content hierarchy and clearer navigation paths that improved findability, discoverability and content organisation.
 * Designing and implementing a Graphviz-based navigation tool that allowed users to generate tree-structured, hyperlinked learning paths across related documentation, helping developers move through complex technical subject areas more intuitively especially for topics that spanned multiple subject areas.
 * Analysing competitor developer portals and contributing to the content and information-architecture strategy for a new group Developer Centre for Paysafe following the merger of Skrill and Optimal Payments.

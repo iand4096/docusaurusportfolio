@@ -34,6 +34,7 @@ While testing the documented workflows, I found issues and omissions in the supp
 * Corrections and improvements to the supporting Digital Enablement API reference documentation in OpenAPI schema format.
 
 Two internal deliverables provided to the product manager and other technical writers to encourage a culture of end-to-end product testing:
+
 * Custom Python code used to test and validate the integration.
 * A cloud-hosted Flask implementation used to receive webhook notifications.
 

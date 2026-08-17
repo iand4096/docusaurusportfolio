@@ -3,7 +3,6 @@ title: Docusaurus Portfolio
 sidebar_position: 6
 ---
 
-
 ## Project overview
 
 I designed and built this portfolio as a production-style Docusaurus documentation site to demonstrate documentation engineering, docs-as-code workflows, React/MDX customisation, automated QA, and CI/CD.

@@ -17,7 +17,6 @@ sidebar_custom_props:
 
 ## Programming and automation
 
-
 ### Engineering background
 
 Spent approximately five years as a C/C++ software engineer specialising in 2D/3D graphics, GIS, CAD/VR systems, and graphics device drivers, including work at STMicroelectronics. Wrote cross-platform code for Windows and Unix.

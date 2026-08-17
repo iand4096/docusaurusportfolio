@@ -6,7 +6,6 @@ hide_table_of_contents: true
 
 import Link from '@docusaurus/Link';
 
-
 # Ian Drewett M.Sc. Computer Science
 
 Principal Technical Writer with a software-engineering background, specialising in complex enterprise technology, developer platforms, API documentation, documentation strategy, and documentation governance within regulated environments. Experienced in docs-as-code, CI/CD, architecture governance, API and web security, and technical documentation for both software and networked hardware.
@@ -22,9 +21,7 @@ Principal Technical Writer with a software-engineering background, specialising 
 >
   <span className="card-tag">Docs-as-Code · Developer Portal · Platform Strategy</span>
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
-  <p>
-    How I led the design and evolution of a large-scale internal docs-as-code platform and developer portal supporting approximately 1,200 developers.
-  </p>
+  <p>How I led the design and evolution of a large-scale internal docs-as-code platform and developer portal supporting approximately 1,200 developers.</p>
   <span className="card-link">Read case study →</span>
 </Link>
 
@@ -73,8 +70,6 @@ Principal Technical Writer with a software-engineering background, specialising 
   </Link>
 
 </div>
-
-
 
 ## Technical capabilities
 

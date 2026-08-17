@@ -24,5 +24,3 @@ sidebar_custom_props:
 * Used **JSON and YAML** extensively for OpenAPI specifications, application and tooling configuration, documentation metadata and Markdown front matter.
 * Developed **Python and Scala** utilities to call authenticated REST APIs, process API responses, and programmatically generate, parse and transform JSON and YAML.
 * Reviewed API contracts against implemented REST behaviour, identifying discrepancies in parameters, schemas, status codes, authentication and API responses, and working with engineers to resolve issues and update the specification and documentation.
-
-

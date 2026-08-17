@@ -47,6 +47,3 @@ Strong practical experience in **software testing, technical validation, and int
 
 * Developed **scripts, sample applications, and reusable integration code** to make repeated API, software, and documentation validation more efficient.
 * Used programming and automation to investigate system behaviour beyond what could be established through manual testing alone.
-
-
-

@@ -25,4 +25,3 @@ sidebar_custom_props:
 * Able to read and understand **Jenkins pipelines**, identify potential improvements, and work with development teams on build and publishing workflows.
 * Implemented automated internal-link validation in documentation CI/CD pipelines, preventing pull requests containing broken links from being merged.
 * Diagnosed Jenkins and documentation build failures, including environment-specific issues that occurred under Linux or CI but could not be reproduced in local development environments.
-

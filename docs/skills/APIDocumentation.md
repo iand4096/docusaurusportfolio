@@ -16,10 +16,9 @@ sidebar_custom_props:
 
 ## API documentation and integration experience
 
-Substantial experience creating API and SDK documentation for financial-services and payments platforms at Morgan Stanley, Mastercard and Paysafe, supported by a strong software-development background. This includes validating APIs directly, reproducing integration scenarios, identifying implementation risks and producing documentation grounded in real developer workflows.
+Twelve years of experience creating API and SDK documentation for financial-services and payments platforms at Morgan Stanley, Mastercard and Paysafe, supported by a strong software-development background. This includes validating APIs directly, reproducing integration scenarios, identifying implementation risks and producing documentation grounded in real developer workflows.
 
 Former C/C++ developer with strong Python skills and practical experience in Java, Node.js, browser-based development, authentication, cryptography and API testing. The result is developer documentation that supports secure, usable and robust API integrations.
-
 
 ### API and SDK documentation
 
@@ -77,7 +76,3 @@ I have written Python code to process certificates, encrypt and decrypt payloads
 My development background allows me to work as both a technical writer and an integration tester. Rather than relying solely on specifications or subject-matter expert interviews, I build representative implementations, test edge cases, trace authentication and data flows and verify that developers can complete the documented task successfully.
 
 This reduces demands on subject-matter experts by allowing me to investigate many technical questions independently and reserve their time for issues requiring specialist product knowledge. It also helps me uncover documentation gaps, clarify complex security requirements and create guidance that enables developers to onboard quickly and build secure, performant and user-friendly integrations.
-
-
-
-

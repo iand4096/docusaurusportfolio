@@ -43,7 +43,3 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 
 * Basic hands-on exposure to **Kubernetes**, including setting up a small local cluster with AI assistance for experimentation and learning.
 * Used **Proxmox** at home to host services including Home Assistant and the Kubernetes test environment.
-
-
-
-

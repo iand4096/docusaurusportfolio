@@ -39,5 +39,3 @@ I developed automation to improve the efficiency and accuracy of governance docu
 * LDAP directory lookups to populate attendee details and other meeting metadata in standardized templates
 * Automated population of meeting dates, times and document fields
 * A pilot using an approved internal Whisper speech-to-text model to generate draft transcripts from meeting recordings for human review and correction.
-
-
