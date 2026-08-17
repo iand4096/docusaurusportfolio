@@ -230,8 +230,149 @@ jobs:
           echo "LTeX+:"
           "$LTEX_DIR/bin/ltex-cli-plus" --version
 
-      # Validate both the LTeX+ runtime and the repository configuration.
-      # .ltex.json selects British English (en-GB) and enables Markdown/MDX.
+      # Build the effective LTeX+ configuration used by CI.
+      #
+      # VS Code stores workspace-folder quick-fix data in these external files:
+      #   .vscode/ltex.dictionary.en-GB.txt
+      #   .vscode/ltex.disabledRules.en-GB.txt
+      #   .vscode/ltex.hiddenFalsePositives.en-GB.txt
+      #
+      # External setting files are handled by the VS Code client, so the
+      # standalone CLI does not automatically import them from .vscode.
+      # Convert each file into the language-specific arrays expected by LTeX+
+      # and merge them with the committed .ltex.json base configuration.
+      - name: Build LTeX+ CI configuration
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          BASE_CONFIG=".ltex.json"
+          CI_CONFIG=".ltex-ci.json"
+
+          DICTIONARY_FILE=".vscode/ltex.dictionary.en-GB.txt"
+          DISABLED_RULES_FILE=".vscode/ltex.disabledRules.en-GB.txt"
+          HIDDEN_FALSE_POSITIVES_FILE=".vscode/ltex.hiddenFalsePositives.en-GB.txt"
+
+          for file in \
+            "$BASE_CONFIG" \
+            "$DICTIONARY_FILE" \
+            "$DISABLED_RULES_FILE" \
+            "$HIDDEN_FALSE_POSITIVES_FILE"
+          do
+            if [ ! -f "$file" ]; then
+              echo "::error::Required LTeX+ configuration file was not found: $file"
+              exit 1
+            fi
+          done
+
+          node <<'NODE'
+          const fs = require('fs');
+
+          const baseConfigPath = '.ltex.json';
+          const ciConfigPath = '.ltex-ci.json';
+
+          const dictionaryPath = '.vscode/ltex.dictionary.en-GB.txt';
+          const disabledRulesPath = '.vscode/ltex.disabledRules.en-GB.txt';
+          const hiddenFalsePositivesPath =
+            '.vscode/ltex.hiddenFalsePositives.en-GB.txt';
+
+          function readLines(path) {
+            return fs
+              .readFileSync(path, 'utf8')
+              .replace(/^\uFEFF/, '')
+              .split(/\r?\n/)
+              .map((line) => line.trim())
+              .filter((line) => line.length > 0);
+          }
+
+          const config = JSON.parse(
+            fs.readFileSync(baseConfigPath, 'utf8').replace(/^\uFEFF/, '')
+          );
+
+          config.ltex ??= {};
+
+          const dictionary = readLines(dictionaryPath);
+          const disabledRules = readLines(disabledRulesPath);
+          const hiddenFalsePositives = readLines(hiddenFalsePositivesPath);
+
+          // hiddenFalsePositives entries are JSON strings containing rule and
+          // sentence information. Validate each source-file line before
+          // writing it into the generated LTeX+ configuration.
+          hiddenFalsePositives.forEach((entry, index) => {
+            try {
+              JSON.parse(entry);
+            } catch (error) {
+              throw new Error(
+                `${hiddenFalsePositivesPath}:${index + 1} is not valid JSON: ` +
+                  error.message
+              );
+            }
+          });
+
+          config.ltex.dictionary = {
+            'en-GB': dictionary
+          };
+
+          config.ltex.disabledRules = {
+            'en-GB': disabledRules
+          };
+
+          config.ltex.hiddenFalsePositives = {
+            'en-GB': hiddenFalsePositives
+          };
+
+          // configurationTarget is a VS Code client setting that controls
+          // where quick fixes are written. It is not needed by the CLI.
+          delete config.ltex.configurationTarget;
+
+          fs.writeFileSync(
+            ciConfigPath,
+            JSON.stringify(config, null, 2) + '\n',
+            'utf8'
+          );
+
+          console.log(`Dictionary entries: ${dictionary.length}`);
+          console.log(`Disabled rules: ${disabledRules.length}`);
+          console.log(
+            `Hidden false positives: ${hiddenFalsePositives.length}`
+          );
+          NODE
+
+          echo "Validating generated LTeX+ configuration JSON..."
+          python -m json.tool "$CI_CONFIG" >/dev/null
+          echo "$CI_CONFIG syntax: OK"
+
+          # Keep .ltex-ci.json for explicit preflight use, and replace only the
+          # runner workspace copy of .ltex.json so any existing QA code that
+          # reads .ltex.json automatically receives the same effective config.
+          cp "$CI_CONFIG" "$BASE_CONFIG"
+
+          echo "Effective .ltex.json prepared for CI."
+          echo "Generated LTeX+ settings:"
+          node <<'NODE'
+          const config = require('./.ltex-ci.json');
+
+          console.log(
+            JSON.stringify(
+              {
+                language: config.ltex?.language,
+                enabled: config.ltex?.enabled,
+                dictionaryEntries:
+                  config.ltex?.dictionary?.['en-GB']?.length ?? 0,
+                disabledRules:
+                  config.ltex?.disabledRules?.['en-GB']?.length ?? 0,
+                hiddenFalsePositives:
+                  config.ltex?.hiddenFalsePositives?.['en-GB']?.length ?? 0
+              },
+              null,
+              2
+            )
+          );
+          NODE
+
+      # Validate both the LTeX+ runtime and the effective CI configuration.
+      # .ltex-ci.json contains the committed base settings plus the three
+      # workspace external setting files converted to en-GB arrays.
       - name: Validate LTeX+ installation and configuration
         shell: bash
         run: |
@@ -255,18 +396,27 @@ jobs:
           echo "LTeX+ CLI: $(command -v ltex-cli-plus)"
           ltex-cli-plus --version
 
-          echo ".ltex.json configuration found."
+          if [ ! -f ".ltex-ci.json" ]; then
+            echo "::error::.ltex-ci.json was not generated."
+            exit 1
+          fi
+
+          echo "Effective .ltex.json configuration found."
           python -m json.tool .ltex.json >/dev/null
           echo ".ltex.json syntax: OK"
 
-          # Exercise the CLI and the committed British-English configuration.
+          echo "Generated .ltex-ci.json configuration found."
+          python -m json.tool .ltex-ci.json >/dev/null
+          echo ".ltex-ci.json syntax: OK"
+
+          # Exercise the CLI with the generated British-English CI configuration.
           PREFLIGHT_FILE=".ltex-preflight.md"
           trap 'rm -f "$PREFLIGHT_FILE"' EXIT
           printf '# LTeX+ preflight\n\nThe colour of the centre is blue.\n' > "$PREFLIGHT_FILE"
 
           set +e
           ltex-cli-plus \
-            --client-configuration=.ltex.json \
+            --client-configuration=.ltex-ci.json \
             "$PREFLIGHT_FILE"
           LTEX_EXIT=$?
           set -e
