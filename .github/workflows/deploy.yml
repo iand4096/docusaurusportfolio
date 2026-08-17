@@ -57,19 +57,29 @@ jobs:
       # The Python QA script invokes Vale directly and parses its JSON
       # output into the unified documentation QA report. Vale uses
       # mdx2vast as an external parser for MDX files.
+      #
+      # Install Vale as a normal Linux binary rather than through Snap.
+      # A Snap-confined Vale process may not be able to execute the
+      # globally installed mdx2vast binary even when the Actions shell
+      # itself can find mdx2vast in PATH.
       - name: Install Vale and MDX support
         shell: bash
         run: |
-          sudo snap install vale
+          VALE_VERSION="3.17.1"
+          curl -fsSL \
+            "https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
+            -o /tmp/vale.tar.gz
 
-          # Make Vale available to all following workflow steps.
-          echo "/snap/bin" >> "$GITHUB_PATH"
+          mkdir -p /tmp/vale
+          tar -xzf /tmp/vale.tar.gz -C /tmp/vale
+          sudo install /tmp/vale/vale /usr/local/bin/vale
 
           # Vale requires mdx2vast to lint MDX files.
           npm install --global mdx2vast
 
           echo "Vale:"
-          /snap/bin/vale --version
+          command -v vale
+          vale --version
 
           echo "mdx2vast:"
           command -v mdx2vast
@@ -84,16 +94,35 @@ jobs:
             exit 1
           fi
 
+          if ! command -v vale >/dev/null 2>&1; then
+            echo "::error::Vale was not found in PATH."
+            exit 1
+          fi
+
           if ! command -v mdx2vast >/dev/null 2>&1; then
             echo "::error::mdx2vast was not found in PATH. Vale cannot lint MDX files."
             exit 1
           fi
 
           echo "Vale configuration found."
+          echo "Vale: $(command -v vale)"
           echo "mdx2vast: $(command -v mdx2vast)"
 
           vale sync
           vale ls-config
+
+          # Exercise Vale against a real MDX file before the documentation
+          # QA step consumes API credits. This catches parser/runtime issues
+          # such as "mdx2vast not found" during the preflight.
+          TEST_MDX="$(find . -type f -name '*.mdx' -not -path './node_modules/*' | head -n 1)"
+
+          if [ -n "$TEST_MDX" ]; then
+            echo "Testing Vale MDX parsing with: $TEST_MDX"
+            vale --output=JSON --no-exit "$TEST_MDX" >/tmp/vale-mdx-preflight.json
+            echo "Vale MDX parsing: OK"
+          else
+            echo "No MDX files found; skipping the MDX parser preflight."
+          fi
 
       # The Python QA script invokes Lychee directly and parses its JSON
       # output into the unified documentation QA report.

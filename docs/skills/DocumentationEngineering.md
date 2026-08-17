@@ -137,7 +137,7 @@ My experience includes:
 
 * Managing thousands of documentation pages
 * Redesigning information architecture for large documentation sets
-* Reducing duplication through reusable content and metadata
+* Reducing duplication through content and code sample reuse
 * Improving build performance
 * Automating migration and publishing
 * Enabling engineering teams to contribute safely
