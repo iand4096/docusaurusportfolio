@@ -124,8 +124,32 @@ jobs:
             echo "No MDX files found; skipping the MDX parser preflight."
           fi
 
+      # LTeX+ 18.7.0 requires Java 21.
+      #
+      # Explicitly install/select Java 21 so the LTeX+ launcher does not
+      # fall back to the GitHub runner's Java 17 runtime.
+      - name: Set up Java for LTeX+
+        uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - name: Verify Java for LTeX+
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          echo "JAVA_HOME=$JAVA_HOME"
+
+          echo "Java executable:"
+          command -v java
+
+          echo "Java version:"
+          java --version
+
       # LTeX+ provides grammar and spelling checks for Markdown and MDX.
-      # Use the standalone Linux bundle, which includes its own Java runtime.
+      # Use the standalone Linux bundle and run it with the Java 21
+      # runtime configured above.
       - name: Install LTeX+
         shell: bash
         run: |
@@ -175,8 +199,8 @@ jobs:
           sudo rm -rf "$LTEX_DIR"
           sudo mkdir -p "$LTEX_DIR"
 
-          # Preserve the installation tree because the launcher expects
-          # sibling lib/runtime files relative to this root.
+          # Preserve the complete installation tree because the launcher
+          # expects sibling lib/runtime files relative to this root.
           sudo cp -a "$LTEX_ROOT"/. "$LTEX_DIR"/
 
           sudo chmod +x "$LTEX_DIR/bin/ltex-cli-plus"
@@ -190,6 +214,18 @@ jobs:
 
           echo "Installed LTeX+ bin directory:"
           ls -la "$LTEX_DIR/bin"
+
+          echo "Java being used:"
+          echo "JAVA_HOME=$JAVA_HOME"
+          command -v java
+          java --version
+
+          echo "Bundled Java executables, if any:"
+          find "$LTEX_DIR" \
+            -maxdepth 5 \
+            -type f \
+            -path '*/bin/java' \
+            -print || true
 
           echo "LTeX+:"
           "$LTEX_DIR/bin/ltex-cli-plus" --version
@@ -210,6 +246,11 @@ jobs:
             echo "::error::.ltex.json was not found at the repository root."
             exit 1
           fi
+
+          echo "Java:"
+          echo "JAVA_HOME=$JAVA_HOME"
+          command -v java
+          java --version
 
           echo "LTeX+ CLI: $(command -v ltex-cli-plus)"
           ltex-cli-plus --version
@@ -318,6 +359,9 @@ jobs:
 
           echo "mdx2vast:"
           command -v mdx2vast
+
+          echo "Java:"
+          java --version
 
           echo "LTeX+:"
           ltex-cli-plus --version
