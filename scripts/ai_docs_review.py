@@ -19,6 +19,11 @@ import requests
 API_URL = "https://api.deepseek.com/chat/completions"
 MODEL = "deepseek-v4-flash"
 
+# Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
+# checks without changing filter definitions or command-line invocations.
+# Set it back to True when AI review should be re-enabled.
+DEEPSEEK_AI_CHECKS_ENABLED = False
+
 ROOT = Path(".")
 REPORT = Path("ai-doc-review.html")
 JSON_REPORT = Path("ai-doc-review.json")
@@ -51,12 +56,14 @@ FILTER_PRESETS = {
         "LycheeCheck",
         "RemarkCheck",
         "ValeCheck",
+        "LtexCheck",
         "SiteWideConsistencyReview",
     },
     "editorial": {
         "GrammarReview",
         "StructureReview",
         "ValeCheck",
+        "LtexCheck",
     },
     "portfolio": {
         "PortfolioReview",
@@ -75,6 +82,9 @@ FILTER_PRESETS = {
     },
     "vale": {
         "ValeCheck",
+    },
+    "ltex": {
+        "LtexCheck",
     },
     "lychee": {
         "LycheeCheck",
@@ -97,6 +107,7 @@ FILTER_LABELS = {
     "accessibility": "Accessibility only",
     "site-wide-consistency": "Site-wide consistency only",
     "vale": "Vale only",
+    "ltex": "LTeX+ grammar/spelling only",
     "lychee": "Lychee external links only",
     "links": "Local and external links only",
     "remark": "Remark Markdown/MDX only",
@@ -297,6 +308,11 @@ def parse_model_json(model_output):
 
 def request_review(system_prompt, user_prompt, api_key):
     """Send a review request, retrying once if the model returns invalid JSON."""
+
+    if not DEEPSEEK_AI_CHECKS_ENABLED:
+        raise RuntimeError(
+            "DeepSeek AI checks are disabled by DEEPSEEK_AI_CHECKS_ENABLED = False."
+        )
 
     payload = {
         "model": MODEL,
@@ -1256,6 +1272,366 @@ class ValeCheck(BaseCheck):
 
 
 # ---------------------------------------------------------------------------
+# LTeX+ grammar/spelling integration
+# ---------------------------------------------------------------------------
+
+
+LTEX_SEVERITY_MAP = {
+    "error": "high",
+    "warning": "medium",
+    "information": "low",
+    "info": "low",
+    "hint": "low",
+}
+
+ANSI_ESCAPE_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
+
+# lsp-cli-plus/LTeX+ uses a human-readable compiler-style diagnostic stream.
+# Keep several compatible header patterns so minor formatting differences do not
+# silently discard findings. The check is run once for the exact file list.
+LTEX_DIAGNOSTIC_PATTERNS = [
+    re.compile(
+        r"^(?P<path>.+?):(?P<line>\d+):(?P<column>\d+):\s*"
+        r"(?:(?P<severity>error|warning|information|info|hint)\s*:\s*)?"
+        r"(?P<message>.+)$",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"^(?P<path>.+?):(?P<line>\d+):(?P<column>\d+)\s+-\s+"
+        r"(?:(?P<severity>error|warning|information|info|hint)\s+-\s+)?"
+        r"(?P<message>.+)$",
+        re.IGNORECASE,
+    ),
+    re.compile(
+        r"^(?P<path>.+?)\((?P<line>\d+),(?P<column>\d+)\):\s*"
+        r"(?:(?P<severity>error|warning|information|info|hint)\s*:\s*)?"
+        r"(?P<message>.+)$",
+        re.IGNORECASE,
+    ),
+]
+
+
+def strip_ansi(text):
+    """Remove terminal colour/control sequences from CLI output."""
+
+    return ANSI_ESCAPE_RE.sub("", text)
+
+
+def ltex_preflight():
+    """Validate the LTeX+ CLI executable and repository configuration."""
+
+    print("LTeX+ preflight:")
+
+    executable = shutil.which("ltex-cli-plus")
+
+    if executable is None:
+        raise RuntimeError(
+            "LTeX+ CLI was not found in PATH. Install ltex-ls-plus and expose "
+            "its bin/ltex-cli-plus launcher before running this script."
+        )
+
+    print(f"  Executable: {executable}")
+
+    version_result = subprocess.run(
+        [executable, "--version"],
+        cwd=ROOT,
+        capture_output=True,
+        text=True,
+        check=False,
+    )
+
+    if version_result.returncode != 0:
+        detail = version_result.stderr.strip() or version_result.stdout.strip()
+        raise RuntimeError(
+            "LTeX+ is present but `ltex-cli-plus --version` failed"
+            + (f": {detail}" if detail else ".")
+        )
+
+    version_text = version_result.stdout.strip() or version_result.stderr.strip()
+
+    try:
+        version_data = json.loads(version_text) if version_text else {}
+    except json.JSONDecodeError:
+        version_data = {}
+
+    if isinstance(version_data, dict):
+        ltex_version = version_data.get("ltex-ls-plus") or version_data.get("ltex-cli-plus")
+        java_version = version_data.get("java")
+
+        if ltex_version:
+            print(f"  Version: {ltex_version}")
+        elif version_text:
+            print(f"  Version: {version_text.splitlines()[0]}")
+        else:
+            print("  Version: <unknown>")
+
+        if java_version:
+            print(f"  Java: {java_version}")
+    else:
+        print(f"  Version: {version_text.splitlines()[0] if version_text else '<unknown>'}")
+
+    config_path = ROOT / ".ltex.json"
+
+    if not config_path.is_file():
+        raise RuntimeError(
+            f"LTeX+ configuration file was not found: {config_path.resolve()}. "
+            "Commit .ltex.json at the repository root before running LTeX+ in CI."
+        )
+
+    try:
+        config = json.loads(config_path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise RuntimeError(f".ltex.json is not valid JSON: {error}") from error
+
+    if not isinstance(config, dict):
+        raise RuntimeError(".ltex.json must contain a JSON object.")
+
+    print(f"  Config: {config_path.resolve()}")
+
+    # Surface the configured language in the preflight output when present.
+    ltex_settings = config.get("ltex") if isinstance(config.get("ltex"), dict) else config
+    language = ltex_settings.get("language") if isinstance(ltex_settings, dict) else None
+    if isinstance(language, str) and language.strip():
+        print(f"  Language: {language.strip()}")
+
+    print("  Configuration: OK")
+    print()
+
+    return executable
+
+
+def parse_ltex_diagnostic_header(line):
+    """Parse one LTeX+/lsp-cli-plus diagnostic header line."""
+
+    clean = strip_ansi(line).rstrip()
+
+    for pattern in LTEX_DIAGNOSTIC_PATTERNS:
+        match = pattern.match(clean)
+        if match:
+            data = match.groupdict()
+            try:
+                data["line"] = int(data["line"])
+                data["column"] = int(data["column"])
+            except (TypeError, ValueError):
+                return None
+            return data
+
+    return None
+
+
+def ltex_rule_and_message(message):
+    """Extract a trailing LanguageTool rule id when the CLI includes one."""
+
+    text = message.strip()
+
+    # Common diagnostic renderers append the LSP diagnostic code in brackets.
+    match = re.search(r"\s*\[([A-Za-z0-9_.-]+)\]\s*$", text)
+    if match:
+        return match.group(1), text[: match.start()].strip()
+
+    # Be tolerant of variants such as "(RULE_ID)" at the end of a message.
+    match = re.search(r"\s*\(([A-Z][A-Z0-9_.-]{2,})\)\s*$", text)
+    if match:
+        return match.group(1), text[: match.start()].strip()
+
+    return "ltex", text
+
+
+def ltex_suggestion(block_lines, rule):
+    """Choose a useful quick-fix line from a rendered diagnostic block."""
+
+    candidates = []
+
+    for raw_line in block_lines:
+        line = strip_ansi(raw_line).strip()
+        if not line:
+            continue
+
+        # lsp-cli-plus can print code actions beneath diagnostics. Prefer an
+        # explicit replacement action and ignore administrative actions such as
+        # adding words to dictionaries or disabling rules.
+        cleaned = re.sub(r"^(?:[-*•]|\d+[.)])\s*", "", line).strip()
+        lowered = cleaned.lower()
+
+        if lowered.startswith("use ") or lowered.startswith("replace "):
+            candidates.append(cleaned)
+
+    if candidates:
+        return candidates[0]
+
+    if rule != "ltex":
+        return f"Review and correct the text reported by LTeX+ rule {rule}."
+
+    return "Review and correct the grammar or spelling issue reported by LTeX+."
+
+
+def ltex_original_text(content, line_number, column_number):
+    """Return source text for an LTeX+ finding."""
+
+    line_text = source_line_text(content, line_number)
+    if not line_text:
+        return "<source text unavailable>"
+
+    # The CLI location is 1-based. Without a structured end range, retaining the
+    # full source line is safer than guessing the diagnostic span.
+    return line_text
+
+
+def normalise_ltex_diagnostic(header, block_lines, path, content):
+    """Convert one LTeX+ diagnostic into the unified report issue schema."""
+
+    line = header.get("line")
+    column = header.get("column")
+
+    if not isinstance(line, int) or line <= 0:
+        return None
+
+    if not isinstance(column, int) or column <= 0:
+        column = 1
+
+    raw_severity = str(header.get("severity") or "").strip().lower()
+    # LTeX+ diagnostics are warning-level by default. If a renderer omits the
+    # severity, keep the finding non-blocking rather than inventing a high level.
+    severity = LTEX_SEVERITY_MAP.get(raw_severity, "low")
+
+    rule, message = ltex_rule_and_message(str(header.get("message") or ""))
+    if not message:
+        message = f"LTeX+ rule {rule} reported a grammar or spelling issue."
+
+    return make_issue(
+        file=path.as_posix(),
+        line=line,
+        severity=severity,
+        confidence="high",
+        issue_type="defect" if raw_severity == "error" else "improvement",
+        category=rule,
+        original=ltex_original_text(content, line, column),
+        message=message,
+        suggestion=ltex_suggestion(block_lines, rule),
+        source="ltex",
+    )
+
+
+def parse_ltex_output(output, paths):
+    """Parse LTeX+ CLI output and return unified issues."""
+
+    if not output.strip():
+        return []
+
+    rendered_lines = strip_ansi(output).splitlines()
+    issues = []
+    current_header = None
+    current_path = None
+    current_block = []
+
+    def flush():
+        nonlocal current_header, current_path, current_block
+
+        if current_header is not None and current_path is not None:
+            content = current_path.read_text(encoding="utf-8")
+            issue = normalise_ltex_diagnostic(
+                current_header,
+                current_block,
+                current_path,
+                content,
+            )
+            if issue is not None:
+                issues.append(issue)
+
+        current_header = None
+        current_path = None
+        current_block = []
+
+    for rendered_line in rendered_lines:
+        header = parse_ltex_diagnostic_header(rendered_line)
+
+        if header is None:
+            if current_header is not None:
+                current_block.append(rendered_line)
+            continue
+
+        flush()
+
+        path = normalise_vale_path(header.get("path"), paths)
+        if path is None:
+            # Some renderers use file:// URIs. Convert those to local paths.
+            raw_path = str(header.get("path") or "").strip()
+            if raw_path.lower().startswith("file://"):
+                candidate = unquote(urlsplit(raw_path).path)
+                if os.name == "nt" and re.match(r"^/[A-Za-z]:/", candidate):
+                    candidate = candidate[1:]
+                path = normalise_vale_path(candidate, paths)
+
+        current_header = header
+        current_path = path
+        current_block = []
+
+    flush()
+    return issues
+
+
+class LtexCheck(BaseCheck):
+    """Run LTeX+ once across the selected Markdown/MDX files."""
+
+    name = "LtexCheck"
+    source = "ltex"
+
+    def run_files(self, paths, executable=None):
+        executable = executable or shutil.which("ltex-cli-plus")
+
+        if executable is None:
+            raise RuntimeError(
+                "LTeX+ CLI was not found in PATH. Run the LTeX+ preflight before "
+                "executing LtexCheck."
+            )
+
+        config_path = ROOT / ".ltex.json"
+        if not config_path.is_file():
+            raise RuntimeError(".ltex.json was not found at the repository root.")
+
+        command = [
+            executable,
+            f"--client-configuration={config_path.as_posix()}",
+            *[path.as_posix() for path in paths],
+        ]
+
+        result = subprocess.run(
+            command,
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+
+        # Official LTeX+ CLI exit codes: 0 = no diagnostics, 3 = diagnostics;
+        # 1 = runtime exception, 2 = invalid CLI arguments.
+        if result.returncode not in {0, 3}:
+            detail = result.stderr.strip() or result.stdout.strip()
+            raise RuntimeError(
+                f"LTeX+ exited with code {result.returncode}"
+                + (f": {detail}" if detail else ".")
+            )
+
+        if result.returncode == 0:
+            return []
+
+        issues = parse_ltex_output(result.stdout, paths)
+
+        # Do not silently report a clean run when LTeX+ explicitly told us that
+        # diagnostics existed but its renderer changed in an incompatible way.
+        if not issues:
+            detail = result.stdout.strip() or result.stderr.strip()
+            if len(detail) > 4000:
+                detail = detail[:4000] + "\n...<truncated>"
+            raise RuntimeError(
+                "LTeX+ reported diagnostics (exit code 3), but the QA script could "
+                "not parse the CLI output. Raw output follows:\n" + detail
+            )
+
+        return issues
+
+
+# ---------------------------------------------------------------------------
 # Remark Markdown/MDX integration
 # ---------------------------------------------------------------------------
 
@@ -2047,6 +2423,7 @@ def build_checks():
         LycheeCheck(),
         RemarkCheck(),
         ValeCheck(),
+        LtexCheck(),
         SiteWideConsistencyReview(),
     ]
 
@@ -2086,8 +2463,9 @@ def choose_filter():
     print("  7. Site-wide consistency only")
     print("  8. Remark Markdown/MDX only")
     print("  9. Vale only")
-    print(" 10. Lychee external links only")
-    print(" 11. Local and external links only")
+    print(" 10. LTeX+ grammar/spelling only")
+    print(" 11. Lychee external links only")
+    print(" 12. Local and external links only")
     print()
 
     choices = {
@@ -2100,8 +2478,9 @@ def choose_filter():
         "7": "site-wide-consistency",
         "8": "remark",
         "9": "vale",
-        "10": "lychee",
-        "11": "links",
+        "10": "ltex",
+        "11": "lychee",
+        "12": "links",
     }
 
     while True:
@@ -2117,12 +2496,17 @@ def choose_filter():
         if choice in choices:
             return choices[choice]
 
-        print("Please enter a number from 1 to 11.")
+        print("Please enter a number from 1 to 12.")
 
 
 def selected_checks(filter_name):
     allowed = FILTER_PRESETS[filter_name]
-    return [check for check in build_checks() if check.name in allowed]
+    checks = [check for check in build_checks() if check.name in allowed]
+
+    if not DEEPSEEK_AI_CHECKS_ENABLED:
+        checks = [check for check in checks if check.source != "ai"]
+
+    return checks
 
 
 def resolve_mode_for_filter(mode, filter_name):
@@ -2512,6 +2896,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
         .source-static {{ background: #ede9fe; color: #5b21b6; }}
         .source-ai {{ background: #e0f2fe; color: #075985; }}
         .source-vale {{ background: #dcfce7; color: #166534; }}
+        .source-ltex {{ background: #fae8ff; color: #86198f; }}
         .source-lychee {{ background: #fef3c7; color: #92400e; }}
         .source-remark {{ background: #e0e7ff; color: #3730a3; }}
         .empty-state {{ text-align: center; padding: 30px; color: #6b7280; }}
@@ -2573,6 +2958,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 <option value="static">Static</option>
                 <option value="ai">AI</option>
                 <option value="vale">Vale</option>
+                <option value="ltex">LTeX+</option>
                 <option value="lychee">Lychee</option>
                 <option value="remark">Remark</option>
             </select>
@@ -2704,6 +3090,11 @@ def main():
 
     api_key = os.environ.get("DEEPSEEK_API_KEY")
 
+    if DEEPSEEK_AI_CHECKS_ENABLED:
+        print("DeepSeek AI checks: ENABLED")
+    else:
+        print("DeepSeek AI checks: DISABLED (hardcoded switch)")
+
     files = list(markdown_files())
 
     print(f"Found {len(files)} documentation files.")
@@ -2747,10 +3138,17 @@ def main():
     checks = scoped_checks + file_checks
 
     if not checks:
-        print("No checks are available for the selected mode and filter.")
+        if not DEEPSEEK_AI_CHECKS_ENABLED:
+            print(
+                "No runnable checks remain for this preset because DeepSeek AI checks "
+                "are disabled by the hardcoded switch."
+            )
+        else:
+            print("No checks are available for the selected mode and filter.")
         return 2
 
     vale_executable = None
+    ltex_executable = None
     lychee_executable = None
     remark_executable = None
 
@@ -2759,6 +3157,13 @@ def main():
             vale_executable = vale_preflight()
         except RuntimeError as error:
             print(f"Vale preflight failed: {error}", file=sys.stderr)
+            return 2
+
+    if any(check.source == "ltex" for check in file_checks):
+        try:
+            ltex_executable = ltex_preflight()
+        except RuntimeError as error:
+            print(f"LTeX+ preflight failed: {error}", file=sys.stderr)
             return 2
 
     if any(check.source == "lychee" for check in file_checks):
@@ -2775,7 +3180,9 @@ def main():
             print(f"Remark preflight failed: {error}", file=sys.stderr)
             return 2
 
-    if not api_key and any(check.source == "ai" for check in checks):
+    if DEEPSEEK_AI_CHECKS_ENABLED and not api_key and any(
+        check.source == "ai" for check in checks
+    ):
         print("DEEPSEEK_API_KEY is not set, but the selected review includes AI checks.")
         return 2
 
@@ -2808,6 +3215,7 @@ def main():
         try:
             executable_by_source = {
                 "vale": vale_executable,
+                "ltex": ltex_executable,
                 "lychee": lychee_executable,
                 "remark": remark_executable,
             }
@@ -2835,7 +3243,8 @@ def main():
         "mode": mode,
         "filter": filter_name,
         "filter_label": FILTER_LABELS[filter_name],
-        "model": MODEL,
+        "model": MODEL if DEEPSEEK_AI_CHECKS_ENABLED else f"{MODEL} (disabled)",
+        "ai_checks_enabled": DEEPSEEK_AI_CHECKS_ENABLED,
         "files_reviewed": len(files),
         "checks": [check.name for check in checks],
     }
