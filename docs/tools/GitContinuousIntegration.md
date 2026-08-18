@@ -19,7 +19,6 @@ sidebar_custom_props:
 * Strong working knowledge of **Git and GitHub**, including branches, remotes, staging, commits, push/pull workflows, stash and pull requests.
 * Experienced troubleshooting Git issues for team members, including **merge conflicts and problematic branch histories**.
 * Comfortable with command-line Git, including **rebase** and **commit squashing** to resolve integration issues and maintain cleaner history.
-* Good understanding of how Git works internally, beyond day-to-day command usage.
 * Experienced with **GitHub pull-request workflows** for reviewing and integrating changes.
 * Use **GitHub Actions** to automatically build and publish my Docusaurus portfolio site when content changes are pushed.
 * Able to read and understand **Jenkins pipelines**, identify potential improvements, and work with development teams on build and publishing workflows.
