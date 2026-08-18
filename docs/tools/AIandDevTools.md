@@ -5,7 +5,7 @@ slug: /aianddevtools
 sidebar_custom_props:
   skillCard:
     tag: AI and developer tools
-    description: Using AI-assisted development, MCP, RAG concepts and developer tooling to improve documentation engineering, software development and technical-content workflows.
+    description: Using AI-assisted development, Agentic AI, MCP, RAG concepts and developer tooling to improve documentation engineering, software development and content workflows.
     highlights:
       - Spec-driven AI development and code validation
       - MCP servers with FastMCP
@@ -20,6 +20,7 @@ Practical experience using AI and developer tooling to improve documentation eng
 
 * **Spec-Driven Development:** Use a spec-first workflow for software tasks: create requirements in Markdown, refine them manually and with AI, generate the implementation, test it extensively, then use AI to improve the working code.
 * **AI Coding Tools:** Hands-on experience with **Claude, GitHub Copilot and Amp** for development, debugging, refactoring and documentation-platform work.
+* **Agentic AI** Exposure to agent mode development with Amp to enhance the documentation platform. Wrote `Skills.MD` files to help engineers using agent mode AI follow the documentation user and style guides.
 * **MCP:** Built experimental **Model Context Protocol servers using FastMCP** and explored their use for exposing documentation tools to AI assistants.
 * **AI-Assisted Documentation:** Used AI for grammar checking, documentation structures, content transformation and creating technical diagrams and diagrams as code, with human review and technical validation.
 * **AI Limitations and Validation:** Practical understanding of current AI limitations, including inaccurate generated content and code, incomplete context and retrieval-quality issues.
