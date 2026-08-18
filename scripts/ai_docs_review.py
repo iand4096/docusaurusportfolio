@@ -41,7 +41,7 @@ CONFIDENCE_LEVELS = {"high", "medium", "low"}
 ISSUE_TYPES = {"defect", "improvement", "diagram"}
 
 DEFAULT_FAIL_HIGH = 0
-DEFAULT_FAIL_MEDIUM = 5
+DEFAULT_FAIL_MEDIUM = 25
 DEFAULT_FAIL_API_ERRORS = 0
 
 FILTER_PRESETS = {
