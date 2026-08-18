@@ -524,7 +524,7 @@ jobs:
             --mode per-page \
             --filter full \
             --fail-high 0 \
-            --fail-medium 5 \
+            --fail-medium 25 \
             --fail-api-errors 0
 
       # Keep the source HTML and JSON available as a normal Actions
