@@ -20,7 +20,7 @@ The QA pipeline combines:
 
 * **DeepSeek AI** for higher-level editorial and portfolio review
 * **AccessibilityCheck** for issues such as alt text, vague links, and heading structure
-* **LinkCheck** for local links and assets
+* **LinkCheck** for checking local markdown links, image paths, and links to files hosted with the documentation.
 * **Remark** for Markdown/MDX syntax and structure checks
 * **Vale** for mechanical style-guide and terminology rules
 * **Lychee** for external link checking
