@@ -9,23 +9,35 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 # Ian Drewett M.Sc. Computer Science
 
-Principal / Senior Technical Writer and Documentation Engineer with a software-engineering background, specialising in developer and API documentation, documentation platforms, developer experience in complex regulated environments.
+Principal Technical Writer with a software-engineering background, specialising in developer and API documentation, documentation platforms, and developer experience in complex regulated environments.
 
-I combine technical writing with hands-on engineering, including API testing, docs-as-code, CI/CD, governance, and automation.
+I combine technical writing with hands-on engineering including:
 
-I have owned documentation platforms serving 1200 developers and 3,200+ pages, automated a 900-page migration, and built full-stack test integrations to validate APIs, security flows, and API reference information.
+<CapabilityGrid variant="checklist"> 
+
+* End-to-End API testing
+* Docs-as-code
+* CI/CD
+* Governance
+* Automation
+* Information Architecture
+
+</CapabilityGrid>
+
+
+I have owned documentation platforms serving 1200 developers and 3,200+ pages, automated a 900-page migration, and built full-stack test integrations in Python / Flask to validate APIs, security flows, and API reference information.
 
 ## Core expertise
 
 <CapabilityGrid> 
 
-* **Developer documentation**
+* **Developer documentation:**
   APIs, SDKs, integration guides, tutorials, code examples, OpenAPI references, and developer portals
 
-* **Documentation engineering**
+* **Documentation engineering:**
   Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling
 
-* **AI knowledge & governance**
+* **AI knowledge & governance:**
   Knowledge architecture, content governance, AI-ready documentation, and AI-assisted quality assurance
 
 </CapabilityGrid>
@@ -36,14 +48,6 @@ I have owned documentation platforms serving 1200 developers and 3,200+ pages, a
 - **Enterprise developer documentation platform:** Led the design and evolution of the Codetreedocs internal documentation platform at an investment bank, scaling to 3,200+ pages for an audience of over 1000 developers. Owned product direction, requirements, solution design, testing, and quality, and later contributed directly to the codebase.
 
 - **Public developer platform:** Led the design and launch of Paysafe's developer documentation and publishing platform for API and SDK integrations. See the [current Paysafe developer centre](https://developer.paysafe.com).
-
-
-:::tip[Automated documentation QA]
-
-This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions combining AI-assisted editorial review with deterministic tests for grammar and punctuation, accessibility, Markdown formating, style guide compliance, link, and spelling checks.
-
-**[View the live documentation QA report →](pathname:///qa/)**
-:::
 
 ## Case studies
 
@@ -92,3 +96,10 @@ Principal / Senior Technical Writer · Documentation Engineer · Developer Exper
 
 For employment history and professional experience, visit my
 [LinkedIn profile](https://www.linkedin.com/in/ian-drewett/).
+
+:::tip[Automated documentation QA]
+
+This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions combining AI-assisted editorial review with deterministic tests for grammar and punctuation, accessibility, Markdown formating, style guide compliance, link, and spelling checks.
+
+**[View the live documentation QA report →](pathname:///qa/)**
+:::
