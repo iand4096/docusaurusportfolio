@@ -29,7 +29,7 @@ sidebar_custom_props:
 * Performed hands-on technical troubleshooting during migration and personally resolved **post-deployment issues** affecting platform stability.
 * Maintained ownership of platform stability and continuity following release, ensuring successful transition into production.
 
-## Jira and Agile execution
+## Jira and agile execution
 
 * Managed **Jira stories, epics and backlogs** to support Agile delivery of documentation and platform initiatives.
 * Used **backlog refinement sessions** to clarify requirements and prioritise work based on stakeholder input and delivery needs.
