@@ -1,5 +1,6 @@
 ---
 title: Documentation Leadership & Strategy
+sidebar_position: 10
 slug: /docsleadership
 sidebar_custom_props:
   skillCard:

@@ -35,6 +35,6 @@ sidebar_custom_props:
 * Selecting static site generators based on documentation, scale and extensibility requirements.
 * Scaling documentation sites to **thousands of pages**.
 * Extending Markdown parsers and plugin behaviour.
-* **Search Integration and Optimization**: Led requirements definition and testing for fast client-side search on static documentation sites using JavaScript tools such as FlexSearch, alongside a dedicated central search option used when deeper or more comprehensive search was required. Also worked with RAG-based retrieval, generated webmaps and metadata, troubleshooting indexing and retrieval issues and improving search relevance.
+* **Search Integration and Optimization**: Led requirements definition and testing for fast client-side search using JavaScript tools such as FlexSearch, alongside a dedicated central search option used when deeper or more comprehensive search was required. Also worked with RAG-based retrieval, generated webmaps and metadata, troubleshooting indexing and retrieval issues and improving search relevance.
 * Designing automated build and publishing pipelines.
 * Understanding when an existing generator should be extended and when a **custom static site generator** is justified.

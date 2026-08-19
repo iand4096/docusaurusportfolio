@@ -1,6 +1,6 @@
 ---
 title: Information Architecture
-sidebar_position: 8
+sidebar_position: 7
 slug: /informationarch
 sidebar_custom_props:
   skillCard:

@@ -1,6 +1,6 @@
 ---
 title: Documentation Governance
-sidebar_position: 9
+sidebar_position: 8
 slug: /governancedocs
 sidebar_custom_props:
   skillCard:

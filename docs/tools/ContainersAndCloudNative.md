@@ -20,16 +20,16 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 
 ### Docker and Containers
 
-* Led a project to migrate a large internal documentation platform to **Docker**, working with a software engineer from a digital-modernisation team.
-* Defined documentation-platform requirements and helped migrate the publishing environment to **Nginx running in Docker**.
+* Led a project to migrate a large internal documentation platform to **Docker**, working with a software engineer from the central digital-modernisation team.
+* Defined documentation-platform requirements and helped migrate the web hosting and publishing environment to **Nginx running in Docker**. Built redirect logic so that old links continued to work.
 * Identified a build-performance issue caused by copying approximately **3,000 generated documentation pages into the container**.
 * Proposed serving the generated documentation from an attached file system instead, reducing build time by approximately **15 minutes**.
-* Troubleshot containerised documentation builds.
+* Gained experience troubleshooting containerised documentation builds.
 
 ### Cloud-Hosted integration testing
 
 * Used **PythonAnywhere** to host generated public documentation for SME review.
-* Built externally accessible Python integrations to receive and test **webhooks** that could not reach internal development environments because of corporate firewall restrictions.
+* Built externally accessible Python integrations to receive and test **webhooks** that could not reach internal development environments due to the corporate firewall.
 * Used hosted environments to validate API and asynchronous integration behaviour.
 
 ### Linux and networking
@@ -37,7 +37,7 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 * Comfortable working in **Linux/Unix environments** and troubleshooting differences between local and CI builds.
 * Practical understanding of **TCP/IP networking** developed while documenting networked audio/video and digital-signage systems.
 * Personal experience configuring **OpenWrt**, firewalls and network services.
-* Basic use of **Wireshark** for network troubleshooting.
+* Basic use of **Wireshark** and **Fiddler** for network troubleshooting.
 
 ### Kubernetes and virtualisation
 

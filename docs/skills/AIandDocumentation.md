@@ -1,6 +1,6 @@
 ---
 title: AI & Documentation
-sidebar_position: 10
+sidebar_position: 9
 slug: /aianddocs
 sidebar_custom_props:
   skillCard:
@@ -13,8 +13,6 @@ sidebar_custom_props:
       - Experimental MCP servers with FastMCP
     ariaLabel: Explore my AI for documentation skills
 ---
-
-## AI for documentation
 
 Practical experience applying AI to documentation engineering, content creation, retrieval, automation and developer workflows, with a strong emphasis on validation and human oversight.
 

@@ -1,6 +1,6 @@
 ---
 title: Technical Validation and Testing
-sidebar_position: 6
+sidebar_position: 5
 slug: /techvalidationtesting
 sidebar_custom_props:
   skillCard:
