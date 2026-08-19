@@ -48,16 +48,3 @@ I analysed competitor portals, worked with the web development team on the new s
 At Mastercard, I created developer-facing API and SDK documentation for products published through **Mastercard Developers**.
 
 I worked with OpenAPI/Swagger specifications, REST APIs, SDKs, authentication and encryption mechanisms, and executable API examples. I regularly built sandbox integrations to validate documentation and improve the developer experience.
-
-### Developer experience principles
-
-Across these platforms, I have focused on:
-
-* Clear information architecture, navigation, and search.
-* Task-oriented API and integration documentation.
-* Docs-as-code workflows close to the source code.
-* Tested, executable examples.
-* Low-friction contribution workflows for engineers.
-* Analytics and developer feedback to guide improvement.
-
-I treat developer portals as **products in their own right**, with developers as their users and usability, discoverability, reliability, maintainability, and scalability as core design concerns.

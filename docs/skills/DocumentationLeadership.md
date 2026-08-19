@@ -24,11 +24,10 @@ I have led documentation teams, platforms, and strategy across financial service
 * Treated documentation platforms and developer portals as products, with clear requirements, priorities, users, and success measures.
 * Used analytics, developer feedback, and contribution data to prioritise documentation and platform improvements.
 * Developed information architectures, contribution models, documentation standards, and migration strategies for large documentation sets.
-* Balanced immediate delivery needs with longer-term improvements to tooling, maintainability, governance, and developer experience.
 
 ### Leadership and team development
 
-* Recruited, managed, and mentored technical writers delivering API, SDK, and integration documentation.
+* Recruited, managed, and mentored technical writers delivering API, SDK, and integration documentation including a team of three writers at Paysafe.
 * Led cross-functional teams of technical writers and software engineers to build public and internal developer portals.
 * Established review processes, documentation standards, and shared working practices.
 * Encouraged writers to test APIs and SDKs directly and build working integrations to improve technical accuracy.
@@ -49,11 +48,9 @@ I have worked closely with software engineering, web development, DevOps, IDE to
 Examples include:
 
 * Launching and evolving developer portals.
-* Designing Git- and CI-based documentation workflows.
-* Delivering IDE-based documentation authoring and live-preview tooling.
-* Migrating large bodies of legacy documentation into modern docs-as-code platforms.
-* Moving documentation infrastructure onto strategic Docker-based hosting.
+* Designing Git and CI-based documentation workflows.
+* Delivering IDE plugins to help engineers create documentation.
+* Migrating large quantities of legacy documentation into modern docs-as-code platforms.
+* Moving documentation infrastructure onto Docker-based hosting.
 * Using analytics to prioritise migration and content improvements.
 * Introducing automation and AI-assisted workflows to make documentation production and maintenance more scalable.
-
-My overall approach is to combine **content strategy, developer experience, platform thinking, and hands-on technical understanding** so that documentation can scale with both the product and the engineering organisation.

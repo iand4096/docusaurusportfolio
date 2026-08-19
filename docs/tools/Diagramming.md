@@ -14,14 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my technical diagramming skills
 ---
 
-Strong practical experience creating and maintaining **technical diagrams, architecture visuals, process flows, and developer-facing graphics** to support API documentation, system documentation, tutorials, learning materials, and docs-as-code environments. Experienced selecting the appropriate diagram type, level of abstraction, and tooling for the intended audience.
-
-## Architecture, sequence and structural diagrams
-
-* **Produce system and software architecture diagrams** showing applications, services, APIs, infrastructure, external dependencies, system boundaries, and component relationships.
-* **Develop sequence diagrams** to explain interactions between clients, APIs, authentication services, backend systems, payment platforms, webhooks, and other components across multi-step workflows.
-* **Use class, structural, flow, and process diagrams** to document software design, interfaces, object relationships, integration processes, decision paths, onboarding journeys, and operational procedures.
-* **Familiar with the C4 model**, including system context, container, component, and relationship views at different levels of architectural abstraction.
+Strong practical experience creating and maintaining **technical diagrams, architectural diagrams, and process flows** to support API documentation, system documentation, tutorials, learning materials, and docs-as-code environments. Experienced selecting the appropriate diagram type and tooling for the intended audience.
 
 ## Diagrams-as-Code and Docs-as-Code
 
@@ -32,17 +25,16 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 
 ## Graphviz and documentation navigation
 
-* Advanced practical experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams** providing structured learning paths through related developer documentation.
-* Used diagrams as an **interactive navigation mechanism**, not simply as illustrations, helping developers understand relationships between technical topics and follow recommended paths through large documentation sets.
+* Advanced experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams** providing structured learning paths through related developer documentation.
 
 ## Visual tools, SVG and supporting graphics
 
 * Experienced with **Microsoft Visio, Adobe Illustrator, and Inkscape** for diagrams requiring greater graphical control than diagrams-as-code tools provide.
 * Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. Prefer vector formats where possible because they support scalable output and efficient bulk relabelling or terminology updates.
-* Create and annotate **screenshots and UI visuals** for tutorials, walkthroughs, troubleshooting material, and other documentation where visual guidance is more effective than text alone.
+* Created and annotated **screenshots** for tutorials, walkthroughs, and troubleshooting material.
 
 ## Diagram maintenance and CAD diagrams
 
-* Adapt diagrams to different audiences, from **high-level architectural overviews** to detailed sequence, component, and integration diagrams for developers.
+* Adapted diagrams to different audiences, from **high-level architectural overviews** to detailed sequence, component, and integration diagrams for developers.
 * Experienced maintaining large sets of legacy visual assets, including using **OCR to identify outdated terminology** in raster screenshots and diagrams before updating the affected graphics.
 * Earlier-career experience with **CAD software including CATIA**, providing additional familiarity with engineering drawing and 3D design environments.

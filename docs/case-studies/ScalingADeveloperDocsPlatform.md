@@ -20,14 +20,14 @@ At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom 
 
 Codetreedocs was designed to replace fragmented legacy documentation with a Git-based publishing workflow that made it easier for engineers to create, maintain, review, and discover technical content alongside source code.
 
-I owned product direction, requirements, solution design, testing, and quality. I initially worked with a dedicated engineering team on the core implementation and later contributed directly to the codebase to extend the platform and resolve issues as it scaled.
+I owned product direction, requirements, solution design, testing, and quality. I initially worked with a dedicated engineering team on the core implementation and later contributed directly to the codebase to extend the platform and resolve issues that arose as the platform scaled.
 
 ## The challenge
 
-* Replace fragmented documentation spread across legacy wiki and docs-as-code based systems.
-* Make documentation contribution practical for a large engineering community.
-* Support documentation stored in Git within a large monorepo.
-* Provide a scalable build, publishing, search, and navigation experience.
+* Replace fragmented documentation spread across legacy wiki and docs-as-code based systems with a single platform.
+* Make documentation contributions practical and as easy as possible for a large engineering community.
+* Support documentation stored in Git alongside the code in a large monorepo.
+* Provide scalable documentation publishing, search, and navigation.
 * Migrate valuable legacy content without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.
 
@@ -47,7 +47,7 @@ Key elements included:
 
 I developed migration scripts and later helped create a more user-focused IDE-based migration tool that converted approximately **900 legacy wiki pages** into the platform's extended Markdown format. I also wrote tooling to migrate documentation from Sphinx.
 
-As the platform matured, I contributed directly to its codebase and used agentic AI tools such as Amp and spec-driven development techniques to accelerate platform enhancements and repetitive documentation tasks.
+As the platform matured, I contributed directly to its codebase and used agentic AI tools such as Amp to enhance the platform and perform repetitive documentation tasks such as grammar checking.
 
 ## Deliverables
 
@@ -64,9 +64,9 @@ As the platform matured, I contributed directly to its codebase and used agentic
 
 Codetreedocs grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work and contributions from the wider engineering community.
 
-The project helped establish documentation as a normal part of engineering practice. Engineers were able to avoid context swithcing from their IDE to a separate documentation wiki.
+The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
 
-It gained experience spanning **documentation strategy, product ownership, developer experience, docs-as-code, information architecture, migration automation, platform engineering, and hands-on software development**.
+I gained experience spanning **documentation strategy, product ownership, developer experience, docs-as-code, information architecture, migration automation, platform engineering, and hands-on software development**.
 
 ## What I would change
 
