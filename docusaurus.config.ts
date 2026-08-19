@@ -142,8 +142,7 @@ plugins: [
         },
         {
           label: 'QA report',
-          href: '/qa/',
-          prependBaseUrlToHref: true,
+          href: 'https://iand4096.github.io/docusaurusportfolio/qa/',
           position: 'right',
           className: 'navbar-qa-link',
         },
