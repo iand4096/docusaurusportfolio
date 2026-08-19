@@ -24,7 +24,7 @@ I owned product direction, requirements, solution design, testing, and quality. 
 
 ## The challenge
 
-* Replace fragmented documentation spread across legacy TWiki and Sphinx-based systems.
+* Replace fragmented documentation spread across legacy wiki and docs-as-code based systems.
 * Make documentation contribution practical for a large engineering community.
 * Support documentation stored in Git within a large monorepo.
 * Provide a scalable build, publishing, search, and navigation experience.
@@ -45,9 +45,9 @@ Key elements included:
 * Analytics used to identify high-value legacy content and prioritise migration.
 * Contribution workflows designed to encourage engineers to create and maintain documentation.
 
-I developed migration scripts and later helped create a more user-focused IDE-based migration tool that converted approximately **900 legacy TWiki pages** into the platform's extended Markdown format. I also wrote tooling to migrate documentation from Sphinx.
+I developed migration scripts and later helped create a more user-focused IDE-based migration tool that converted approximately **900 legacy wiki pages** into the platform's extended Markdown format. I also wrote tooling to migrate documentation from Sphinx.
 
-As the platform matured, I contributed directly to its codebase and used agentic AI tools and spec-driven development techniques to accelerate platform enhancements and repetitive documentation tasks.
+As the platform matured, I contributed directly to its codebase and used agentic AI tools such as Amp and spec-driven development techniques to accelerate platform enhancements and repetitive documentation tasks.
 
 ## Deliverables
 
