@@ -24,8 +24,7 @@ After reviewing the report:
   python scripts/upgrade_taxonomy.py --apply
 
 updates taxonomy/taxonomy.yml to version 2. Genuine technologies receive a
-`kind`. Organisation-like entries are marked deprecated rather than silently
-deleted. Existing document front matter is NOT rewritten by this migration;
+`kind`. Organisation-like entries are marked deprecated instead of being deleted. Existing document front matter is NOT rewritten by this migration;
 run taxonomy_ai.py afterwards to reclassify affected documents and review the
 git diff.
 """

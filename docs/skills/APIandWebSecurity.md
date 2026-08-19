@@ -36,5 +36,5 @@ Strong practical understanding of API and web application security gained throug
 ## Security documentation and gap analysis
 
 * Translate complex security mechanisms into accurate developer guidance covering authentication, encryption, certificates, signing, key handling, secure request construction, and troubleshooting.
-* At Mastercard, validated security behaviour using working integrations rather than relying solely on specifications or engineering descriptions.
+* At Mastercard, I validated security behaviour using working integrations and avoided relying solely on specifications or engineering descriptions.
 * Identified a security weakness in an early **Click to Pay** integration where security-relevant values were passed in custom HTTP headers that were not covered by Mastercard's OAuth 1 request signing. Raised the issue with the API team, resulting in a change to the API design.

@@ -108,9 +108,7 @@ My current Docusaurus portfolio also uses React components to turn simple Markdo
 
 ## Validation and quality
 
-I treat documentation as something that can be tested rather than just reviewed.
-
-I have used:
+I treat documentation as something that can be tested and evaluated like software using:
 
 * Working API integrations
 * Postman and Insomnia

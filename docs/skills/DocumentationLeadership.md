@@ -32,7 +32,7 @@ I have led documentation teams, platforms, and strategy across financial service
 * Led cross-functional teams of technical writers and software engineers to build public and internal developer portals.
 * Established review processes, documentation standards, and shared working practices.
 * Encouraged writers to test APIs and SDKs directly and build working integrations to improve technical accuracy.
-* Worked to increase engineering ownership of documentation rather than relying entirely on a central documentation team.
+* Worked to increase engineering ownership of documentation. This is often essential to keep documentation updated when there are limited numbers of technical writers.
 
 ### Platform and product ownership
 

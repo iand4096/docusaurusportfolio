@@ -73,6 +73,6 @@ I have written Python code to process certificates, encrypt and decrypt payloads
 
 ### Technical-writing approach
 
-My development background allows me to work as both a technical writer and an integration tester. Rather than relying solely on specifications or subject-matter expert interviews, I build representative implementations, test edge cases, trace authentication and data flows and verify that developers can complete the documented task successfully.
+My development background allows me to work as both a technical writer and an integration tester. As a result, I avoid relying solely on specifications or subject-matter expert interviews. My approach involves building realistic end-to-end implementations combining multiple API calls to achieve a business objective, testing edge cases and not just the "happy path" and verifying that developers can complete the documented task successfully.
 
-This reduces demands on subject-matter experts by allowing me to investigate many technical questions independently and reserve their time for issues requiring specialist product knowledge. It also helps me uncover documentation gaps, clarify complex security requirements and create guidance that enables developers to onboard quickly and build secure, performant and user-friendly integrations.
+This reduces demands on subject-matter experts by allowing me to investigate many technical questions independently and reserves their time for issues requiring specialist product knowledge. It also helps me uncover documentation gaps, clarify complex security requirements and create guidance that enables developers to onboard quickly and build secure, performant and user-friendly integrations.

@@ -38,13 +38,12 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 
 * Used **Scala** for scripting, data processing and transformation of structured formats such as JSON and YAML.
 * Modified and extended **AST-based parsing code** to introduce new documentation features, including support for **PlantUML blocks**.
-* Worked with existing parser architectures rather than relying solely on string or regex-based processing.
 * Developed IntelliJ plugins including one that allowed developers to create learning paths, consisting of tree-like hyperlinked topic navigation diagrams from selected content files.
 
 ### Java
 
 * Built **Java** API and sandbox integrations used to test and validate developer documentation and integration workflows.
-* Developed working examples that exercised real API behaviour rather than documenting only from specifications.
+* Developed working examples that exercised real API behaviour.
 
 ### JavaScript / Node.js
 

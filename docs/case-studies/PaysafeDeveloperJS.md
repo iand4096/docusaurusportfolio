@@ -17,7 +17,7 @@ The guide has since been expanded by other contributors to cover features includ
 
 ## The challenge
 
-* Explain the security and compliance advantages of using Paysafe-hosted fields rather than collecting sensitive card data directly.
+* Explain the security and compliance advantages of using Paysafe-hosted fields over collecting sensitive card data directly.
 * Clarify how the iframe-based fields reduced the merchant’s PCI DSS scope and supported SAQ A compliance.
 * Explain the relationship between browser-side data collection, tokenisation, and subsequent server-side payment requests.
 * Provide working examples that developers could inspect, modify, and test.
@@ -26,7 +26,7 @@ The guide has since been expanded by other contributors to cover features includ
 
 ## My approach
 
-I structured the guide around the developer’s end-to-end integration workflow rather than documenting the JavaScript API operation by operation. This allowed developers to begin with a basic working implementation before adding configuration, validation, styling, and error handling.
+I structured the guide around the developer’s end-to-end integration workflow instead of documenting the JavaScript API operation by operation. This allowed developers to begin with a basic working implementation before adding configuration, validation, styling, and error handling.
 
 The guide first explained the purpose of the hosted fields and tokenisation model. This helped developers understand why sensitive fields appeared within Paysafe-hosted iframes, why card data did not pass through the merchant’s systems, and how this reduced the PCI DSS obligations associated with the integration.
 
@@ -65,7 +65,7 @@ The guide established the foundation for the current Paysafe.js documentation, w
 
 ## What I would change
 
-* Maintain the examples alongside the documentation source rather than on a separate platform such as CodePen. This would make them easier to version, review, test, and migrate with the guide.
+* Maintain the examples alongside the documentation source in place of a separate platform such as CodePen. This would make them easier to version, review, test, and migrate with the guide.
 * Introduce automated checks to confirm that the examples continue to work with each supported version of Paysafe.js.
 * Add a sequence diagram showing how sensitive payment details passed directly from the Paysafe-hosted fields to Paysafe, while only the resulting token was returned to the merchant.
 * Include a companion diagram showing how the merchant’s server could use that token to submit a payment through the server-side API.

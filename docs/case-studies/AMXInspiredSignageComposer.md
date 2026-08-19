@@ -41,7 +41,7 @@ I did extensive testing with the application and spent time discussing the conce
 
 I created a single-source MadCap Flare project using reusable content, conditional text, separate build targets, and separate source TOCs. Shared concepts and procedures were maintained once, while administrator-only content was conditionally included in the relevant HTML and PDF outputs.
 
-This approach produced audience-specific help without requiring separate documentation sets. I also used cross-references rather than HTML-only hyperlinks so that links remained usable in both the online and print outputs.
+This approach produced audience-specific help without requiring separate documentation sets. I also used cross-references in place of HTML-only hyperlinks so that links remained usable in both the online and print outputs.
 
 ## Deliverables
 

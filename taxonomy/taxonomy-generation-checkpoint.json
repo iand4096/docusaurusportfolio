@@ -1279,7 +1279,7 @@
         "evidence": [
           {
             "file": "docs/case-studies/DocusaurusPortfolio.md",
-            "reason": "The document mentions extensive Markdown content and Markdown-first authoring."
+            "reason": "The document mentions extensive Markdown content and Markdown based authoring."
           },
           {
             "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",

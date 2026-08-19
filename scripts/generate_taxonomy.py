@@ -9,7 +9,7 @@ The generator deliberately separates *discovery* from *consolidation*:
    missed by the per-document extractor.
 4. Cached, chunked consolidation per dimension so large candidate sets do not
    produce one oversized request. Chunk results are reconciled using compact
-   provenance IDs rather than repeating source evidence.
+   provenance IDs.
 5. A generation checkpoint and content-addressed response cache make reruns
    resumable after interruption or API timeouts.
 6. Deterministic restoration of validated foundational technology candidates

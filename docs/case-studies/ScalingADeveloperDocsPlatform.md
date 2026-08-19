@@ -64,9 +64,9 @@ As the platform matured, I contributed directly to its codebase and used agentic
 
 Codetreedocs grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work and contributions from the wider engineering community.
 
-The project helped establish documentation as a normal part of engineering practice rather than something maintained only by a central documentation team.
+The project helped establish documentation as a normal part of engineering practice. Engineers were able to avoid context swithcing from their IDE to a separate documentation wiki.
 
-It also gave me experience spanning **documentation strategy, product ownership, developer experience, docs-as-code, information architecture, migration automation, platform engineering, and hands-on software development**.
+It gained experience spanning **documentation strategy, product ownership, developer experience, docs-as-code, information architecture, migration automation, platform engineering, and hands-on software development**.
 
 ## What I would change
 
