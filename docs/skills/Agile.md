@@ -17,7 +17,7 @@ sidebar_custom_props:
 
 ## Agile delivery
 
-* Led Agile delivery of the **Paysafe Developer Center documentation portal**, defining scope, structure and delivery approach in collaboration with an engineering team.
+* Led Agile delivery of the **Paysafe Developer Centre documentation portal**, defining scope, structure and delivery approach in collaboration with an engineering team.
 * Participated in and led **sprint planning, standups and backlog refinement** to coordinate documentation and platform work across engineering stakeholders.
 * Ensured documentation requirements were continuously aligned with Agile development cycles, API changes and release planning.
 * Coordinated delivery of documentation work across multiple Agile teams, maintaining visibility of progress, dependencies and release readiness.

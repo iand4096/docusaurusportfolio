@@ -24,7 +24,6 @@ I combine technical writing with hands-on engineering including:
 
 </CapabilityGrid>
 
-
 I have owned documentation platforms serving 1200 developers and 3,200+ pages, automated a 900-page migration, and built full-stack test integrations in Python / Flask to validate APIs, security flows, and API reference information.
 
 ## Core expertise
@@ -99,7 +98,7 @@ For employment history and professional experience, visit my
 
 :::tip[Automated documentation QA]
 
-This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions combining AI-assisted editorial review with deterministic tests for grammar and punctuation, accessibility, Markdown formating, style guide compliance, link, and spelling checks.
+This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions combining AI-assisted editorial review with deterministic tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
 
-**[View the live documentation QA report →](pathname:///qa/)**
+**[View the live report →](pathname:///qa/)**
 :::
