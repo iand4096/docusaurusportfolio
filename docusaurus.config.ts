@@ -134,11 +134,18 @@ plugins: [
           position: 'left',
           activeBasePath: '/docs',
         },
-            {
+        {
           label: 'Tools',
           to: '/docs/tools',
           position: 'left',
           activeBasePath: '/docs',
+        },
+        {
+          label: 'QA report',
+          href: '/qa/',
+          prependBaseUrlToHref: true,
+          position: 'right',
+          className: 'navbar-qa-link',
         },
         {
           href: 'https://www.linkedin.com/in/ian-drewett/',

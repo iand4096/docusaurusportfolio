@@ -10,6 +10,14 @@ import Link from '@docusaurus/Link';
 
 Principal Technical Writer with a software-engineering background, specialising in complex enterprise technology, developer platforms, API documentation, documentation strategy, and documentation governance within regulated environments. Experienced in docs-as-code, CI/CD, architecture governance, API and web security, and technical documentation for both software and networked hardware.
 
+:::tip[Automated documentation QA]
+
+This portfolio is continuously checked using AI-assisted editorial review, accessibility checks, Remark, Vale, Lychee, link validation and spell checking.
+
+**[View the live documentation QA report →](pathname:///qa/)**
+
+:::
+
 ## Selected work
 
 <div className="portfolio-grid">
