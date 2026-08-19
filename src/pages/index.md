@@ -1,6 +1,6 @@
 ---
 title: Technical Writing Portfolio
-description: Ian Drewett's technical-writing portfolio, featuring API documentation, payment integrations, developer guides, and software user documentation.
+description: Ian Drewett's technical-writing and documentation-engineering portfolio, featuring developer documentation, APIs, docs-as-code, developer experience, and AI-ready knowledge systems.
 hide_table_of_contents: true
 ---
 
@@ -8,17 +8,39 @@ import Link from '@docusaurus/Link';
 
 # Ian Drewett M.Sc. Computer Science
 
-Principal Technical Writer with a software-engineering background, specialising in complex enterprise technology, developer platforms, API documentation, documentation strategy, and documentation governance within regulated environments. Experienced in docs-as-code, CI/CD, architecture governance, API and web security, and technical documentation for both software and networked hardware.
+Principal / Senior Technical Writer and Documentation Engineer with a software-engineering background, specialising in developer and API documentation, documentation platforms, developer experience, and AI-ready knowledge systems in complex regulated environments.
+
+I combine technical writing with hands-on engineering, including API testing, docs-as-code, CI/CD, governance, and automation. I have owned documentation platforms serving 1200 developers and 3,200+ pages, automated a 900-page migration, and built full-stack test integrations to validate APIs, security flows, and OpenAPI specifications.
+
+## Core expertise
+
+### Developer documentation
+
+API and SDK documentation, integration guides, tutorials, code examples, OpenAPI reference documentation, and developer portals.
+
+### Documentation engineering
+
+Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling.
+
+### AI knowledge & governance
+
+Knowledge architecture, content quality, governance, AI-ready documentation, and AI-assisted quality assurance.
+
+## Key projects
+
+- **Enterprise developer documentation platform:** Led the design and evolution of the Codetreedocs internal documentation platform at an investment bank, scaling to 3,200+ pages for an audience of over 1000 developers. Owned product direction, requirements, solution design, testing, and quality, and later contributed directly to the codebase.
+
+- **Public developer platform:** Led the design and launch of Paysafe's developer documentation and publishing platform for API and SDK integrations. See the [current Paysafe developer centre](https://developer.paysafe.com).
+
 
 :::tip[Automated documentation QA]
 
-This portfolio is continuously checked using AI-assisted editorial review, accessibility checks, Remark, Vale, Lychee, link validation and spell checking.
+This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions combining AI-assisted editorial review with deterministic tests for grammar and punctuation, accessibility, Markdown formating, style guide compliance, link, and spelling checks.
 
 **[View the live documentation QA report →](pathname:///qa/)**
-
 :::
 
-## Selected work
+## Case studies
 
 <div className="portfolio-grid">
 
@@ -55,40 +77,11 @@ This portfolio is continuously checked using AI-assisted editorial review, acces
     <span className="card-link">Read case study →</span>
   </Link>
 
-  <Link
-    className="portfolio-card"
-    to="/docs/case-studies/MasterpassMerchantIntegrationGuide"
-    aria-label="Read the Masterpass merchant integrations case study"
-  >
-    <span className="card-tag">API validation · Python · Sequence diagrams</span>
-    <h3>Masterpass merchant integrations</h3>
-    <p>Integration documentation supported by working test integrations, sequence diagrams and API-reference validation.</p>
-    <span className="card-link">Read case study →</span>
-  </Link>
-
-    <Link
-    className="portfolio-card"
-    to="/docs/case-studies/AMXInspiredSignageComposer"
-    aria-label="Read the AMX Composer case study"
-  >
-    <span className="card-tag">User documentation · Single sourcing · MadCap Flare</span>
-    <h3>AMX Composer</h3>
-    <p>User and administration documentation for a web-based digital-signage content-management application.</p>
-    <span className="card-link">Read case study →</span>
-  </Link>
-
 </div>
 
-## Technical capabilities
+## Target roles
 
-- API, SDK and other developer documentation
-- OpenAPI reference documentation
-- Test integrations and validation using Python / Flask, Scala, Java, etc.
-- Led the design and evolution of Codetreedocs, a custom, large-scale docs-as-code platform and developer portal, owning product direction, requirements, solution design, testing, and quality. Initially partnered with a dedicated engineering team on implementation, then contributed directly to the codebase to extend the platform and resolve issues that emerged as it scaled. Experienced with MkDocs and Docusaurus.
-
-## Skills
-
-See the [Skills](/docs/skills) section of this portfolio.
+Principal / Senior Technical Writer · Documentation Engineer · Developer Experience (DevEx) · API & Developer Documentation · AI Knowledge Manager · Documentation Lead
 
 ## Professional profile
 
