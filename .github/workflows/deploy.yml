@@ -639,7 +639,7 @@ jobs:
 
             echo "### Checks"
             echo ""
-            echo "- AI documentation review — DeepSeek (temporarily disabled by hardcoded switch)"
+            echo "- AI documentation review — DeepSeek"
             echo "- Static documentation checks"
             echo "- Vale prose/style checks"
             echo "- LTeX+ grammar/spelling checks — British English (en-GB)"
