@@ -42,7 +42,7 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 
 ### Java
 
-* Built **Java** API and sandbox integrations used to test and validate developer documentation and integration workflows.
+* Built **Java** API and sandbox integrations used to test and validate developer documentation.
 * Developed working examples that exercised real API behaviour.
 
 ### JavaScript / Node.js

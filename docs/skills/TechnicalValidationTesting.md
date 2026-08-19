@@ -31,7 +31,7 @@ Strong practical experience in **software testing, technical validation, and int
 
 ## Documentation and developer experience validation
 
-* Routinely tested **documented procedures, code samples, API calls, authentication instructions, and integration workflows** . I avoided assuming existing documentation or specifications were correct.
+* Routinely tested **documented procedures, code samples, API calls, authentication instructions, and integration workflows**. I avoided assuming existing documentation or specifications were correct.
 * Applied a **test-driven approach to technical writing**, using working software and integration code to verify technical claims before publication and uncover undocumented behaviour, incomplete guidance, authentication and encryption issues, and discrepancies between specifications and actual implementation.
 * Evaluated developer tools and workflows from a usability perspective, identifying confusing behaviour, unclear error messages, workflow friction, and opportunities to improve the **developer experience**.
 
