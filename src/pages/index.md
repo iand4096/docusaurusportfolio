@@ -8,23 +8,27 @@ import Link from '@docusaurus/Link';
 
 # Ian Drewett M.Sc. Computer Science
 
-Principal / Senior Technical Writer and Documentation Engineer with a software-engineering background, specialising in developer and API documentation, documentation platforms, developer experience, and AI-ready knowledge systems in complex regulated environments.
+Principal / Senior Technical Writer and Documentation Engineer with a software-engineering background, specialising in developer and API documentation, documentation platforms, developer experience in complex regulated environments.
 
-I combine technical writing with hands-on engineering, including API testing, docs-as-code, CI/CD, governance, and automation. I have owned documentation platforms serving 1200 developers and 3,200+ pages, automated a 900-page migration, and built full-stack test integrations to validate APIs, security flows, and OpenAPI specifications.
+I combine technical writing with hands-on engineering, including API testing, docs-as-code, CI/CD, governance, and automation.
+
+I have owned documentation platforms serving 1200 developers and 3,200+ pages, automated a 900-page migration, and built full-stack test integrations to validate APIs, security flows, and API reference information.
 
 ## Core expertise
 
-### Developer documentation
+<CapabilityGrid> 
 
-API and SDK documentation, integration guides, tutorials, code examples, OpenAPI reference documentation, and developer portals.
+* **Developer documentation**
+  APIs, SDKs, integration guides, tutorials, code examples, OpenAPI references, and developer portals
 
-### Documentation engineering
+* **Documentation engineering**
+  Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling
 
-Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling.
+* **AI knowledge & governance**
+  Knowledge architecture, content governance, AI-ready documentation, and AI-assisted quality assurance
 
-### AI knowledge & governance
+</CapabilityGrid>
 
-Knowledge architecture, content quality, governance, AI-ready documentation, and AI-assisted quality assurance.
 
 ## Key projects
 

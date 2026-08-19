@@ -20,7 +20,6 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 ## Core flare skills
 
-
 <CapabilityGrid variant="checklist">
 
 - Topic-based authoring
@@ -34,7 +33,6 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 - HTML and PDF publishing
 
 </CapabilityGrid>
-
 
 ## Advanced flare skills
 
