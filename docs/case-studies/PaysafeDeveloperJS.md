@@ -62,7 +62,6 @@ The interactive inline demo within the documentation showcased the product and p
 
 The guide established the foundation for the current Paysafe.js documentation, which has since been extended to cover additional payment methods and functionality.
 
-
 ## What I would change
 
 * Maintain the examples alongside the documentation source in place of a separate platform such as CodePen. This would make them easier to version, review, test, and migrate with the guide.

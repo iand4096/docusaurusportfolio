@@ -63,7 +63,7 @@ This includes considerations such as:
 
 I have also modified Python-based MkDocs plugins to add unsupported functionality.
 
-## Documentation Platform Development
+## Documentation platform development
 
 At Morgan Stanley, I was product owner, creator and contributor to **Codetreedocs**, a custom Markdown-based documentation platform.
 
@@ -79,7 +79,7 @@ The platform included:
 
 I also created Graphviz-based tooling for generating hyperlinked **trail diagrams**, allowing engineers to build structured learning paths through related documentation.
 
-## Documentation Migration
+## Documentation migration
 
 I have automated the migration of large documentation sets between platforms.
 
@@ -87,7 +87,7 @@ At Morgan Stanley, I developed migration scripts and later an IDE-based migratio
 
 I used site analytics to prioritise which content should be migrated first.
 
-## Tooling and Automation
+## Tooling and automation
 
 I regularly build small tools and scripts to remove repetitive documentation work.
 
