@@ -33,7 +33,7 @@ I owned product direction, requirements, solution design, testing, and quality. 
 
 ## My approach
 
-I treated the documentation platform as a product, working with engineers and internal tooling teams to improve both the authoring experience and the published developer portal.
+I worked with engineers from the internal tooling teams to improve both the authoring experience and the published developer portal.
 
 Key elements included:
 
@@ -65,8 +65,6 @@ As the platform matured, I contributed directly to its codebase and used agentic
 Codetreedocs grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
-
-I gained experience spanning **documentation strategy, product ownership, developer experience, docs-as-code, information architecture, migration automation, platform engineering, and hands-on software development**.
 
 ## What I would change
 

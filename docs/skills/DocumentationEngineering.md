@@ -140,5 +140,3 @@ My experience includes:
 * Automating migration and publishing
 * Enabling engineering teams to contribute safely
 * Creating standards and tooling that support distributed documentation ownership
-
-My approach is to treat documentation infrastructure as a product: understand the authoring and reader experience, identify bottlenecks, automate repetitive work and evolve the platform as the documentation estate grows.
