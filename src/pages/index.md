@@ -5,6 +5,7 @@ hide_table_of_contents: true
 ---
 
 import Link from '@docusaurus/Link';
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 # Ian Drewett M.Sc. Computer Science
 
