@@ -37,7 +37,7 @@ The checks are combined into HTML and JSON reports and run automatically when an
 
 ## My approach
 
-Docusaurus provides the documentation framework. I use Markdown and MDX used for content and React components for reusable custom presentation.
+Docusaurus provides the documentation framework. I use Markdown and MDX for content, and React components for reusable custom presentation.
 
 I used GitHub Actions to automate deployment and QA and wrote a Python QA script that
 
@@ -45,7 +45,7 @@ I used GitHub Actions to automate deployment and QA and wrote a Python QA script
 1. Validates the AI findings against the source
 1. Generates a unified report containing issues and suggested improvements.
 
-You can the QA pipeline locally or in CI. It supports per-page and site-wide review.
+You can run  QA pipeline locally or in CI. It supports per-page and site-wide review.
 
 ## Deliverables
 

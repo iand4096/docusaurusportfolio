@@ -11,7 +11,7 @@ repository state authoritative.
 
 Compared with the earlier v2 scripts:
 
-- technology extraction now runs **once per document** with a high-recall prompt;
+- Technology extraction now runs **once per document** with a high-recall prompt;
 - content type, audience and topic discovery remains batch-based;
 - a second **technology coverage-audit pass** asks DeepSeek specifically what
   the first extractor missed;

@@ -34,7 +34,6 @@ To make the integration easier to explore, I created CodePen examples that devel
 
 I tested the documented workflow against the Paysafe.js implementation, with input from product and engineering teams to ensure that the instructions and examples reflected the expected behaviour.
 
-
 ## Deliverables
 
 * The first version of the **Paysafe.js Developer Guide**.

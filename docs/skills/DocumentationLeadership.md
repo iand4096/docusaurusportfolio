@@ -14,7 +14,7 @@ sidebar_custom_props:
     ariaLabel: Explore my documentation leadership and strategy skills
 ---
 
-## Documentation Leadership and Strategy
+## Documentation leadership and strategy
 
 I have led documentation teams, platforms, and strategy across financial services, payments, and enterprise software environments. My experience includes documentation product ownership, team leadership, developer-portal strategy, content architecture, docs-as-code adoption, migration programmes, and improving engineering participation in documentation.
 
