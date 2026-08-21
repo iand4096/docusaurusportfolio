@@ -16,7 +16,6 @@ sidebar_custom_props:
 
 ## Git, GitHub, GitHub Actions and Jenkins
 
-* Strong working knowledge of **Git and GitHub**, including branches, remotes, staging, commits, push/pull workflows, stash and pull requests.
 * Experienced troubleshooting Git issues for team members, including **merge conflicts and problematic branch histories**.
 * Comfortable with command-line Git, including **rebase** and **commit squashing** to resolve integration issues and maintain cleaner repository history.
 * Experienced with **GitHub / Bitbucket pull-request workflows** for reviewing and integrating changes.

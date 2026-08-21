@@ -36,6 +36,6 @@ I have also explored emerging architecture-as-code standards, including FINOS CA
 
 I developed automation to improve the efficiency and accuracy of governance documentation, including:
 
-* LDAP directory lookups to populate attendee details and other meeting metadata in standardized templates
+* LDAP directory lookups to populate attendee details and other meeting metadata in standardised templates
 * Automated population of meeting dates, times and document fields
 * A pilot using an approved internal Whisper speech-to-text model to generate draft transcripts from meeting recordings for human review and correction.

@@ -30,8 +30,7 @@ The checks are combined into HTML and JSON reports and run automatically when an
 
 ## The challenge
 
-* Learn Docusaurus, React/JSX, and GitHub Actions
-* Build a technical-writing portfolio using docs-as-code practices
+* Build a production-style documentation site using Docusaurus, React/JSX and GitHub Actions
 * Integrate an LLM API into an automated QA workflow
 * Combine AI review with deterministic linting, accessibility, style, and link checks
 

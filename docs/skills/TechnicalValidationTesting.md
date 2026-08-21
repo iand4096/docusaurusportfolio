@@ -18,20 +18,20 @@ Strong practical experience in **software testing, technical validation, and int
 
 ## Software, Integration and end-to-end testing
 
-* Hands-on experience with **software testing** such as black-box testing, component testing, release and usability testing across applications, APIs, developer tools, and documentation platforms.
-* Tested complete workflows spanning **client applications, APIs, authentication, encryption, backend services, and asynchronous callbacks**, using realistic integration scenarios to verify behaviour from the developer or customer perspective.
+* Hands-on experience with software testing such as black-box testing, component testing, release and usability testing across applications, APIs, developer tools, and documentation platforms.
+* Tested complete workflows spanning client applications, APIs, authentication, encryption, backend services, and asynchronous callbacks**, using realistic integration scenarios to verify behaviour from the developer or customer perspective.
 * Built working integrations against **sandbox and production-like environments** using **Python, Flask, Java, Postman, cURL, and Insomnia** to validate API behaviour, authentication flows, encryption, error handling, webhooks, and integration accuracy.
-* Took on dedicated **QA responsibilities for a struggling software project** alongside documentation duties, raising 600 issues and helping move the product towards a stable, releasable state.
+* Took on dedicated QA responsibilities for a struggling software project alongside documentation duties, raising 600 issues and helping move the product towards a stable, releasable state.
 
 ## Defect Investigation and release readiness
 
-* Experienced identifying, reproducing, documenting, and tracking defects, with clear **reproduction steps, expected versus actual behaviour, environmental details, supporting evidence, severity, etc.**
+* Experienced identifying, reproducing, documenting, and tracking defects, with clear reproduction steps, expected versus actual behaviour, environmental details, supporting evidence and severity.
 * Raised and managed defects through **Jira**, worked with developers to clarify issues, retested fixes, and contributed to prioritisation based on severity, customer impact, security implications, and release readiness.
 * Treated potential **security defects** as priority issues, escalating concerns involving credential exposure, sensitive information, authentication weaknesses, encryption problems, and other security risks.
 
 ## Documentation and developer experience validation
 
-* Routinely tested **documented procedures, code samples, API calls, authentication instructions, and integration workflows**. I avoided assuming existing documentation or specifications were correct.
+* Routinely tested documented procedures, code samples, API calls, authentication instructions, and integration workflows. I avoided assuming existing documentation or specifications were correct.
 * Applied a **test-driven approach to technical writing**, using working software and integration code to verify technical claims before publication and uncover undocumented behaviour, incomplete guidance, authentication and encryption issues, and discrepancies between specifications and actual implementation.
 * Evaluated developer tools and workflows from a usability perspective, identifying confusing behaviour, unclear error messages, workflow friction, and opportunities to improve the **developer experience**.
 
@@ -39,8 +39,8 @@ Strong practical experience in **software testing, technical validation, and int
 
 ## Sandbox, network and Cloud-Based testing
 
-* Strong understanding of differences between **sandbox and production environments**, including mocked behaviour, test-data constraints, configuration differences, and assumptions that can affect testing and documentation accuracy.
-* Experienced troubleshooting testing constraints caused by **corporate firewalls, proxies, network access controls, callback accessibility, and externally generated webhook traffic**.
+* Strong understanding of differences between sandbox and production environments, including the limitations of mocked API responses, test-data constraints, configuration differences, and assumptions that can affect testing and documentation accuracy.
+* Experienced troubleshooting testing constraints caused by corporate firewalls, proxies, network access controls, callback accessibility, and externally generated webhook traffic.
 * Used **cloud-hosted test environments** to overcome internal network restrictions and validate externally accessible integrations. At Mastercard, created cloud-hosted encryption/decryption and webhook integrations to test real API and asynchronous processing behaviour.
 
 ## Test automation and reusable validation tooling

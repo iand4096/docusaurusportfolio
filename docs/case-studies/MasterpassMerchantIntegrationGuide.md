@@ -47,7 +47,7 @@ The guide is publicly available on Mastercard Developers. A direct link is omitt
 
 * The updated guides provided clearer and more accurate instructions based on tested checkout integrations. The sequence diagrams made the relationships between systems and the order of API interactions easier for merchant developers to understand.
 * Correcting the underlying OpenAPI definitions also improved the consistency between the narrative guides and the API reference.
-* The docs-as-code platform that we advocated for, specified, and tested was subsequently adopted by Mastercard. It improved the maintainability, consistency, and overall quality of Mastercard’s developer documentation.
+* The docs-as-code platform that we advocated for, specified, and tested was subsequently adopted by Mastercard.
 
 ## What I would change
 

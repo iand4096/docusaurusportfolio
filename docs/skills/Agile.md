@@ -31,7 +31,7 @@ sidebar_custom_props:
 ## Jira and delivery management
 
 * Managed **Jira stories, epics and backlogs**.
-* Used **backlog refinement sessions** including use of Jira polls to clarify requirements and prioritise work based on stakeholder input and delivery needs.
+* Used **backlog refinement sessions and Jira polls** to clarify requirements and prioritise work based on stakeholder input and delivery needs.
 * Created **Jira dashboards and JQL filters** to track progress, dependencies and release readiness across Agile teams.
 * Reported and tracked product and API defects with clear reproduction steps.
 

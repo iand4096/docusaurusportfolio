@@ -37,7 +37,7 @@ I have worked with both **Jenkins and GitHub Actions** to automate documentation
 
 At Morgan Stanley, I helped develop and operate a Jenkins-based publishing pipeline for Codetreedocs. For my own Docusaurus portfolio, GitHub Actions automatically builds and publishes the site when content changes are pushed.
 
-I am comfortable reading CI pipelines, diagnosing build issues and identifying improvements to documentation publishing workflows.
+I am comfortable diagnosing build issues and identifying improvements to documentation publishing workflows.
 
 ## Static-site generators
 
@@ -119,7 +119,7 @@ I treat documentation as something that can be tested and evaluated like softwar
 * Documentation analytics
 * User feedback
 
-I have also used OCR libraries to identify obsolete terminology embedded in legacy raster diagrams and screenshots across a large documentation set to identify the diagrams to update.
+I have also used OCR libraries to identify obsolete terminology embedded to updated in legacy raster diagrams and screenshots across a large documentation set.
 
 ## Search and retrieval
 
