@@ -47,7 +47,7 @@ Key elements included:
 
 I developed migration scripts and later helped create a more user-focused IDE-based migration tool that converted approximately **900 legacy wiki pages** into the platform's extended Markdown format. I also wrote tooling to migrate documentation from Sphinx.
 
-As the platform matured, I contributed directly to its codebase and used agentic AI tools such as Amp to enhance the platform and perform repetitive documentation tasks such as grammar checking.
+As the platform matured, I contributed directly to its codebase. I used Amp and agentic AI-assisted development to extend the platform. This work included adding PlantUML, mermaid, and C4 diagram support, adding support for LaTeX mathematical notation, and diagnosing and fixing bugs in the link-checking implementation.
 
 ## Deliverables
 
