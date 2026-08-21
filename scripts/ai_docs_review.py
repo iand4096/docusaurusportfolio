@@ -1,6 +1,3 @@
-eview.py
-
-
 import argparse
 import html
 import json
