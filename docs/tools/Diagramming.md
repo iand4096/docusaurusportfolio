@@ -18,7 +18,7 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 
 ## Diagrams-as-Code and Docs-as-Code
 
-* Strong advocate for **text-based, version-controlled diagrams** that can be easily maintained alongside documentation and source code.
+* Strong advocate for **text-based, version-controlled diagrams** that can be maintained alongside documentation and source code in Git with tracked changes.
 * Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-based approaches** for producing reproducible architecture, sequence, class, flow, and developer-focused diagrams.
 * I maintain diagram source alongside Markdown documentation in **Git-based docs-as-code environments**, keeping visual content reviewable, reproducible, and aligned with the documentation it supports.
 * I prefer source-controlled diagram definitions over manually maintained binary image formats where practical, reducing maintenance effort as systems and terminology evolve.
