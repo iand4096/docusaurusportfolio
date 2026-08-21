@@ -490,6 +490,17 @@ jobs:
 
           echo "DeepSeek API key is configured."
 
+      # Remove any QA output already present from the checked-out repository or
+      # Docusaurus build. This prevents a failed QA run from republishing a stale
+      # ai-doc-review.html from an earlier commit.
+      - name: Remove stale QA report outputs
+        shell: bash
+        run: |
+          set -euo pipefail
+          rm -f ai-doc-review.html ai-doc-review.json
+          rm -rf build/qa
+          echo "Stale QA report outputs removed."
+
       # continue-on-error is intentional. If the QA thresholds fail,
       # the report is still copied into the Pages build and deployed.
       # The qa-gate job below then restores the failure status.
@@ -665,7 +676,7 @@ jobs:
             echo "| Finding | Allowed |"
             echo "|---|---:|"
             echo "| High severity | 0 |"
-            echo "| Medium severity | 5 |"
+            echo "| Medium severity | 25 |"
             echo "| API/check errors | 0 |"
           } >> "$GITHUB_STEP_SUMMARY"
 
