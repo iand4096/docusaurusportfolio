@@ -42,7 +42,7 @@ I used GitHub Actions to automate deployment and QA and wrote a Python QA script
 
 1. Coordinates the AI review and deterministic checks
 1. Validates the AI findings against the source
-1. Generates a unified report containing issues and suggested improvements.
+1. Generates a unified report containing issues and suggested improvements
 
 You can run the QA pipeline locally or in CI. It supports per-page and site-wide review.
 
