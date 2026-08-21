@@ -43,7 +43,7 @@ I have owned documentation platforms serving 1200 developers and 3,200+ pages, a
 
 ## Key projects
 
-- **Enterprise developer documentation platform:** Led the design and evolution of the Codetreedocs internal documentation platform at an investment bank, scaling to 3,200+ pages for an audience of over 1000 developers. Responsible for all documentation for the Optimus and RICE products. Owned product direction, requirements, solution design, testing, and quality, and later contributed directly to the codebase.
+- **Enterprise developer documentation platform:** Led the design and evolution of the Codetreedocs internal documentation platform at an investment bank, scaling to 3,200+ pages for an audience of over 1000 developers. Responsible for all documentation for the Optimus and RICE products. Owned documentation platform direction, requirements, solution design, testing, and quality, and later contributed directly to the codebase.
 
 - **Public developer platform:** Led the design and launch of Paysafe’s developer documentation and publishing platform for API and SDK integrations. Authored developer documentation and managed a team of three technical writers, with responsibility for documentation quality and delivery. See the [current Paysafe developer centre](https://developer.paysafe.com).
 
