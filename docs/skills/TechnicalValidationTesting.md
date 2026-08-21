@@ -34,7 +34,6 @@ Strong practical experience in **software testing, technical validation, and int
 * Routinely tested documented procedures, code samples, API calls, authentication instructions, and integration workflows. I avoided assuming existing documentation or specifications were correct.
 * Applied a **test-driven approach to technical writing**, using working software and integration code to verify technical claims before publication and uncover undocumented behaviour, incomplete guidance, authentication and encryption issues, and discrepancies between specifications and actual implementation.
 * Evaluated developer tools and workflows from a usability perspective, identifying confusing behaviour, unclear error messages, workflow friction, and opportunities to improve the **developer experience**.
-
 * Analysed complex Scala implementation code to reconstruct undocumented API behaviour where original Subject-Matter Experts were no longer available, then validated the resulting understanding before publication.
 
 ## Sandbox, network and Cloud-Based testing
@@ -42,8 +41,3 @@ Strong practical experience in **software testing, technical validation, and int
 * Strong understanding of differences between sandbox and production environments, including the limitations of mocked API responses, test-data constraints, configuration differences, and assumptions that can affect testing and documentation accuracy.
 * Experienced troubleshooting testing constraints caused by corporate firewalls, proxies, network access controls, callback accessibility, and externally generated webhook traffic.
 * Used **cloud-hosted test environments** to overcome internal network restrictions and validate externally accessible integrations. At Mastercard, created cloud-hosted encryption/decryption and webhook integrations to test real API and asynchronous processing behaviour.
-
-## Test automation and reusable validation tooling
-
-* Developed **scripts, sample applications, and reusable integration code** to make repeated API, software, and documentation validation more efficient.
-* Used programming and automation to investigate system behaviour beyond what could be established through manual testing alone.
