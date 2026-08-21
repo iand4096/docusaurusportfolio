@@ -2695,25 +2695,7 @@ def github_repository():
 
 
 def github_revision():
-    """Return the revision to use in GitHub links.
-
-    CI links are pinned to GITHUB_SHA so line anchors refer to the exact source
-    version reviewed by the job. Local links prefer the current branch so the
-    opened file is convenient to edit, with the current commit as a fallback.
-    """
-
-    if os.environ.get("GITHUB_ACTIONS", "").lower() == "true":
-        sha = os.environ.get("GITHUB_SHA", "").strip()
-        if sha:
-            return sha
-
-    branch = _run_git("branch", "--show-current")
-    if branch:
-        return branch
-
-    sha = _run_git("rev-parse", "HEAD")
-    if sha:
-        return sha
+    """Return the editable GitHub branch used by report source links."""
 
     return "main"
 
