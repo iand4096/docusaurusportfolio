@@ -19,7 +19,7 @@ Strong practical experience in **software testing, technical validation, and int
 ## Software, Integration and end-to-end testing
 
 * Hands-on experience with software testing such as black-box testing, component testing, release and usability testing across applications, APIs, developer tools, and documentation platforms.
-* Tested complete workflows spanning client applications, APIs, authentication, encryption, backend services, and asynchronous callbacks**, using realistic integration scenarios to verify behaviour from the developer or customer perspective.
+* Tested complete workflows spanning client applications, APIs, authentication, encryption, backend services, and asynchronous callbacks, using realistic integration scenarios to verify behaviour from the developer or customer perspective.
 * Built working integrations against **sandbox and production-like environments** using **Python, Flask, Java, Postman, cURL, and Insomnia** to validate API behaviour, authentication flows, encryption, error handling, webhooks, and integration accuracy.
 * Took on dedicated QA responsibilities for a struggling software project alongside documentation duties, raising 600 issues and helping move the product towards a stable, releasable state.
 
