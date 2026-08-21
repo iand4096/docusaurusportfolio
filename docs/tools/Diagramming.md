@@ -20,8 +20,8 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 
 * Strong advocate for **text-based, version-controlled diagrams** that can be easily maintained alongside documentation and source code.
 * Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-based approaches** for producing reproducible architecture, sequence, class, flow, and developer-focused diagrams.
-* Maintain diagram source alongside Markdown documentation in **Git-based docs-as-code environments**, keeping visual content reviewable, reproducible, and aligned with the documentation it supports.
-* Prefer source-controlled diagram definitions over manually maintained binary assets where practical, reducing maintenance effort as systems and terminology evolve.
+* I maintain diagram source alongside Markdown documentation in **Git-based docs-as-code environments**, keeping visual content reviewable, reproducible, and aligned with the documentation it supports.
+* I prefer source-controlled diagram definitions over manually maintained binary image formats where practical, reducing maintenance effort as systems and terminology evolve.
 
 ## Graphviz and documentation navigation
 
@@ -30,11 +30,11 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 ## Visual tools, SVG and supporting graphics
 
 * Experienced with **Microsoft Visio, Adobe Illustrator, and Inkscape** for diagrams requiring greater graphical control than diagrams-as-code tools provide.
-* Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. Prefer vector formats where possible because they support scalable output and efficient bulk relabelling or terminology updates.
+* Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. I prefer vector formats where possible because they support scalable output and efficient relabelling or terminology updates.
 * Created and annotated **screenshots** for tutorials, walkthroughs, and troubleshooting material.
 
 ## Diagram maintenance and CAD diagrams
 
 * Adapted diagrams to different audiences, from **high-level architectural overviews** to detailed sequence, component, and integration diagrams for developers.
-* Experienced maintaining large sets of legacy visual assets, including using **OCR to identify outdated terminology** in raster screenshots and diagrams before updating the affected graphics.
-* Earlier-career experience with **CAD software including CATIA**, providing additional familiarity with engineering drawing and 3D design environments.
+* Experienced maintaining large sets of legacy visual assets, including using **OCR to identify outdated terminology** to fix in screenshots and raster diagrams.
+* Earlier-career experience with **CAD software including CATIA**, providing basic familiarity engineering drawing and 3D design environments.

@@ -24,28 +24,27 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 ### Python
 
 * Strong practical **Python** experience across documentation tooling, content migration, API integrations, data processing and workflow automation.
-* Developed scripts to migrate and transform large documentation sets into **Markdown-based formats**, initially using regex replacement lambdas and later class-based handlers as transformation logic became more complex.
+* Developed scripts to migrate and transform large documentation sets into extended **Markdown**, initially using regex replacement lambdas and then more sophisticated class-based handlers as the transformation logic became more complex.
 * Used **`pathlib`** to reconstruct documentation links following migration and restructuring, including conversion of absolute paths to relative links and re-linking moved content.
 * Extended an existing **MkDocs** plugin to support additional **Graphviz** diagram-generation modes, including hyperlink-enabled diagrams, using Python `subprocess` to invoke Graphviz.
 * Used Requests and authentication libraries to integrate with REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authenticated requests, JSON payloads, and JSON/XML responses.
-* Built Flask applications with GET and POST endpoints, query parameters, form handling and Jinja-rendered pages for API, sandbox and payment-integration testing.
+* Built Flask applications with GET and POST endpoints, query parameters, form handling and Jinja-rendered pages for API and payment-integration testing.
 * Built sandbox integrations for testing payment and API workflows, including authentication, encryption, webhooks and asynchronous processing.
-* Used **Pandas**, JSON and YAML processing, and Excel generation for structured data transformation and reporting, including Excel workbooks containing generated hyperlinks.
-* Added validation, exception handling and structured logging to migration and integration tooling to diagnose failures and support reliable processing.
+* Used the **Pandas** data processing library, along with JSON and YAML processing and Excel generation, for structured data transformation and reporting, for example building workbooks with hyperlinks to candidate pages for migration.
+* Added validation, exception handling and structured logging to migration and integration tooling to diagnose failures.
 * Debugged Python applications, scripts and integrations using IDE debugging, logging and runtime inspection.
 
 ### Scala
 
 * Used **Scala** for scripting, data processing and transformation of structured formats such as JSON and YAML.
 * Modified and extended **AST-based parsing code** to introduce new documentation features, including support for **PlantUML blocks**.
-* Developed IntelliJ plugins including one that allowed developers to create learning paths, consisting of tree-like hyperlinked topic navigation diagrams from selected content files.
+* Developed IntelliJ plugins including one that allowed developers to quickly create "learning paths", consisting of tree-like hyperlinked topic navigation diagrams, from selected content files.
 
 ### Java
 
-* Built **Java** API and sandbox integrations used to test and validate developer documentation.
-* Developed working examples that exercised real API behaviour.
+* Built **Java** API and sandbox integrations used to test and validate developer documentation. Used Java to complete assignments during my M.Sc. in Computer Science.
 
-### JavaScript / Node.js
+### JavaScript / Node.js / Front-end
 
 * Used JavaScript, jQuery, AJAX, HTML, CSS and SCSS/Sass to build and extend interactive documentation-portal features, including user-feedback submission, page ratings, syntax-highlighted code examples and expandable hierarchical navigation.
 * Developed browser-based test integrations using asynchronous requests to submit data and process responses.
@@ -60,12 +59,12 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 
 ### Automation and scripting
 
-* Automate documentation migration, validation, build and publishing tasks using **Python, Bash and PowerShell**.
+* Automated documentation migration, validation, build and publishing tasks using **Python, Bash and PowerShell**.
 * Comfortable working from the **Unix/Linux command line**, combining tools such as `grep`, `sed`, `find`, pipes and redirection for repository and content-processing tasks.
-* Use shell scripts and command-line utilities for bulk file processing, repository maintenance, build tasks and documentation transformations.
-* Experience with **Windows command-line and PowerShell** automation.
+* Used shell scripts and command-line utilities for bulk file processing, repository maintenance, build tasks and documentation transformations.
+* Experienced with **Windows command-line and PowerShell** automation.
 * Integrated documentation workflows with **GitHub Actions** and **Jenkins** CI pipelines to automate build, validation and publishing activities.
-* Use scripting and automation to reduce manual effort in content migration, transformation, link maintenance, validation and publishing.
+* Used scripting and automation to reduce manual effort in content migration, transformation, link maintenance, validation and publishing.
 
 ### Systems programming and debugging
 

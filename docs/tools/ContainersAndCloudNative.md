@@ -35,11 +35,11 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 ### Linux and networking
 
 * Comfortable working in **Linux/Unix environments** and troubleshooting differences between local and CI builds.
-* Practical understanding of **TCP/IP networking** developed while documenting networked audio/video and digital-signage systems.
+* Practical and theoretical understanding of **TCP/IP networking** developed in my M.Sc. in Computer Science and while documenting networked audio/video and digital-signage systems.
 * Personal experience configuring **OpenWrt**, firewalls and network services.
 * Basic use of **Wireshark** and **Fiddler** for network troubleshooting.
 
 ### Kubernetes and virtualisation
 
 * Basic hands-on exposure to **Kubernetes**, including setting up a small local cluster with AI assistance for experimentation and learning.
-* Used **Proxmox** at home to host services including Home Assistant and the Kubernetes test environment.
+* Used **Proxmox** at home to host services such as Home Assistant and a Kubernetes test environment.

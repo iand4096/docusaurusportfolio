@@ -14,11 +14,9 @@ sidebar_custom_props:
     ariaLabel: Explore my developer experience and developer portal skills
 ---
 
-## Developer experience and developer portals
-
 I have designed, developed, launched, and scaled developer documentation platforms and portals across financial services, payments, and enterprise software. My work combines documentation strategy, information architecture, docs-as-code, developer tooling, analytics, and hands-on technical implementation.
 
-### Codetreedocs
+## Codetreedocs
 
 At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom, large-scale docs-as-code platform and internal developer portal supporting an API platform used by approximately 1,200 developers.
 
@@ -37,13 +35,13 @@ Key features included:
 
 The portal grew from approximately **700 pages to more than 3,200 pages over three years**, supported by both technical writers and the wider engineering community.
 
-### Paysafe Developer Centre
+## Paysafe Developer Centre
 
 At Paysafe, I was in charge of all documentation for the launch of the first version of the **Paysafe Developer Centre** and helped define its direction following the merger of Skrill and Optimus Payments.
 
 I analysed competitor portals, worked with the web development team on the new site, and helped introduce a Git and CI-based documentation workflow. I later led the technical authoring team that produced all the API and SDK documentation.
 
-### Mastercard Developers
+## Mastercard Developers
 
 At Mastercard, I created developer-facing API and SDK documentation for products published through **Mastercard Developers**.
 

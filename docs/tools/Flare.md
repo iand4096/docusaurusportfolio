@@ -16,7 +16,7 @@ sidebar_custom_props:
 
 import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
-I am a MadCap Flare specialist with nearly eight years of experience using Flare at AMX, Monitise and Paysafe.
+I am a MadCap Flare specialist with nearly eight years of experience using Flare at AMX, Monitise (now Fiserv) and Paysafe.
 
 ## Core flare skills
 
@@ -85,7 +85,7 @@ My work included:
   * Applying templates, styles and information architecture
   * Preserving links and reusable content where possible
 
-In another role I built a **C# release-notes tool** that:
+In another role, I built a **C# release-notes tool** that:
 
   1. Queried the Jira REST API for tickets tagged to a specific release
   2. Extracted and transformed issue data
