@@ -5,7 +5,7 @@ slug: /techvalidationtesting
 sidebar_custom_props:
   skillCard:
     tag: Software testing
-    description: Practical software testing, technical validation, and integration testing across financial-services, payments, mobile, and API platforms, with a focus on validating real system behaviour, documentation accuracy, security, and release readiness.
+    description: Software testing, technical validation, and integration testing across financial-services, payments, mobile, and API platforms, with a focus on validating real system behaviour, documentation accuracy, security, and release readiness.
     highlights:
       - End-to-end API and integration testing
       - Jira-based defect reporting and retesting
