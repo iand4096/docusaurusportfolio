@@ -20,13 +20,13 @@ I have several years of experience creating and maintaining software architectur
 
 My experience includes:
 
-* Creating standardized governance records covering attendees, architectural proposals, decisions, actions and accountable owners
+* Creating standardised governance records covering attendees, architectural proposals, decisions, actions and accountable owners
 * Verifying technical details with stakeholders after meetings and linking records to related architecture documentation
 * Creating Jira tickets for agreed follow-up actions
 * Applying approval-status and other required metadata, so documents appeared correctly in the central governance portal
 * Maintaining accurate, traceable documentation throughout the review and approval lifecycle
 
-## Architecture diagrams and architecture as Code
+## Architecture diagrams and architecture as code
 
 I built a documentation-platform plugin for embedding C4 architecture diagrams in Markdown. Diagram definitions were stored as text alongside the supporting documentation, allowing diagrams and content to be version-controlled, reviewed and audited together.
 

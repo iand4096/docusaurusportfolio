@@ -70,7 +70,7 @@ See all [posts](https://forums.madcapsoftware.com/search.php?st=0&sk=t&sd=d&sr=p
 
 ## Flare automation, integration and migration {/* #automation */}
 
-At Paysafe, I integrated Flare with development, publishing and review systems as part of a broader documentation tool chain used to manage all the non API reference documentation on the launch version of the [Paysafe Developer Centre](https://developer.paysafe.com).
+At Paysafe, I integrated Flare with development, publishing and review systems as part of a broader documentation tool chain used to manage all the non-API-reference documentation on the launch version of the [Paysafe Developer Centre](https://developer.paysafe.com).
 
 My work included:
 

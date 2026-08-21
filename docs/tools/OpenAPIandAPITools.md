@@ -16,7 +16,7 @@ sidebar_custom_props:
 
 ## OpenAPI, Postman, Insomnia, cURL
 
-* Maintained **Swagger 2.0 / OpenAPI 2.0 specifications** at MasterCard covering HTTP methods, status codes, headers, query string / path parameters, request and response bodies, and authentication mechanisms, supporting automated generation of API reference documentation. Used similar technology, API Blueprint, at Paysafe.
+* Maintained **Swagger 2.0 / OpenAPI 2.0 specifications** at Mastercard covering HTTP methods, status codes, headers, query string & path parameters, request and response bodies, and authentication mechanisms, supporting automated generation of API reference documentation. Used similar technology, API Blueprint, at Paysafe.
 * Designed reusable OpenAPI definitions using **`$ref`, shared schemas, parameters, responses and security definitions** to reduce duplication and maintain consistency across large API specifications.
 * Created and maintained **Postman and Insomnia collections** containing executable API requests, authentication configuration and representative examples for use by external developers.
 * Used **Postman, Insomnia and cURL** to execute authenticated API requests, validate documented examples, troubleshoot API request and response issues, and verify documented behaviour against live API responses.

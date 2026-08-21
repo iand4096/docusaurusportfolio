@@ -37,4 +37,4 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 
 * Adapted diagrams to different audiences, from **high-level architectural overviews** to detailed sequence, component, and integration diagrams for developers.
 * Experienced maintaining large sets of legacy visual assets, including using **OCR to identify outdated terminology** to fix in screenshots and raster diagrams.
-* Earlier-career experience with **CAD software including CATIA**, providing basic familiarity engineering drawing and 3D design environments.
+* Earlier-career experience with **CAD software including CATIA** and 3D design environments.

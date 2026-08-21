@@ -5,7 +5,7 @@ sidebar_position: 5
 
 ## Project overview
 
-I wrote the user documentation for version 5 of AMX Composer 5, a content-management application for the AMX Digital Signage platform. Version 5 was a complete rewrite of the original Windows client-server application with many new features, a completely new user interface, and a new web-based technology stack.
+I wrote the user documentation for version 5 of AMX Composer, a content-management application for the AMX Digital Signage platform. Version 5 was a complete rewrite of the original Windows client-server application with many new features, a completely new user interface, and a new web-based technology stack.
 
 The guide supported administrators and end users through the complete digital-signage workflow, from creating and approving content to publishing it to networked players. It also covered system configuration, permissions, reporting, troubleshooting, and advanced playlist concepts.
 
@@ -33,7 +33,7 @@ This work required a practical understanding of TCP/IP networking, player config
 * Support administrators and end users without overwhelming either audience with irrelevant information.
 * Produce context-sensitive HTML help and a printable PDF from the same source content.
 * Minimise or eliminate duplicated content while allowing audience-specific variations.
-* Understand and explain a powerful and complex digital-signage application clearly.
+* Understand and explain a complex digital-signage application clearly.
 
 ## My approach
 

@@ -44,7 +44,6 @@ I tested the documented workflow against the Paysafe.js implementation, with inp
 * Supporting configuration, validation, styling, and error-handling guidance.
 * API reference documentation.
 
-
 :::note[Published guide]
 
 The current version of the guide is publicly available on the [Paysafe Developer Centre](https://developer.paysafe.com/en/api-docs/paysafe-js/overview/).
@@ -55,11 +54,7 @@ The current version of the guide is publicly available on the [Paysafe Developer
 
 The guide gave developers a practical route from understanding Paysafe.js and its compliance benefits to completing a working browser-based payment-tokenisation integration.
 
-The CodePen examples and interactive demonstration supplemented the documentation with working content that developers could explore and adapt.
-
-The interactive inline demo within the documentation showcased the product and provided a way for developers to quickly test the integration flow with an example token.
-
-The guide established the foundation for the current Paysafe.js documentation, which has since been extended to cover additional payment methods and functionality.
+The CodePen examples and Try Now demonstration provided working implementations that developers could inspect and modify.
 
 ## What I would change
 

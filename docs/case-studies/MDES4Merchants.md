@@ -52,4 +52,4 @@ The investigation required to produce the guide also led to extensive improvemen
 
 ## What I would change
 
-If security restrictions allowed, I would provide developers with public runnable examples demonstrating authentication, encryption, decryption, and webhook handling. This was originally omitted due to the burden of maintaining this security critical code in multiple target languages using approved cryptography libraries.
+If security restrictions allowed, I would provide developers with public runnable examples demonstrating authentication, encryption, decryption, and webhook handling. This was originally omitted due to the burden of maintaining this security-critical code in multiple target languages using approved cryptography libraries.
