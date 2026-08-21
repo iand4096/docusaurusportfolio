@@ -10,7 +10,7 @@ from abc import ABC, abstractmethod
 from calendar import monthrange
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import unquote, urlsplit
+from urllib.parse import quote, unquote, urlsplit
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
@@ -27,6 +27,9 @@ DEEPSEEK_AI_CHECKS_ENABLED = True
 ROOT = Path(".")
 REPORT = Path("ai-doc-review.html")
 JSON_REPORT = Path("ai-doc-review.json")
+
+PORTFOLIO_URL = "https://iand4096.github.io/docusaurusportfolio"
+GITHUB_REPOSITORY_FALLBACK = "iand4096/docusaurusportfolio"
 
 EXCLUDED_DIRS = {
     "node_modules",
@@ -2650,6 +2653,124 @@ def evaluate_ci(issues, errors, fail_high, fail_medium, fail_api_errors):
 # ---------------------------------------------------------------------------
 
 
+def _run_git(*args):
+    """Return stripped Git command output, or None when Git metadata is unavailable."""
+
+    try:
+        result = subprocess.run(
+            ["git", *args],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+    except OSError:
+        return None
+
+    if result.returncode != 0:
+        return None
+
+    value = result.stdout.strip()
+    return value or None
+
+
+def github_repository():
+    """Return the GitHub owner/repository used for report source links."""
+
+    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
+    if repository:
+        return repository
+
+    remote = _run_git("remote", "get-url", "origin")
+    if remote:
+        match = re.search(
+            r"(?:github\.com[/:])(?P<repository>[^/\s]+/[^/\s]+?)(?:\.git)?$",
+            remote,
+            re.IGNORECASE,
+        )
+        if match:
+            return match.group("repository")
+
+    return GITHUB_REPOSITORY_FALLBACK
+
+
+def github_revision():
+    """Return the revision to use in GitHub links.
+
+    CI links are pinned to GITHUB_SHA so line anchors refer to the exact source
+    version reviewed by the job. Local links prefer the current branch so the
+    opened file is convenient to edit, with the current commit as a fallback.
+    """
+
+    if os.environ.get("GITHUB_ACTIONS", "").lower() == "true":
+        sha = os.environ.get("GITHUB_SHA", "").strip()
+        if sha:
+            return sha
+
+    branch = _run_git("branch", "--show-current")
+    if branch:
+        return branch
+
+    sha = _run_git("rev-parse", "HEAD")
+    if sha:
+        return sha
+
+    return "main"
+
+
+def github_file_url(file_path, line=None):
+    """Build a GitHub blob URL for a repository-relative file and optional line."""
+
+    if not isinstance(file_path, str):
+        return None
+
+    normalised = file_path.strip().replace("\\", "/")
+    while normalised.startswith("./"):
+        normalised = normalised[2:]
+
+    if not normalised or normalised.startswith("<"):
+        return None
+
+    repository = github_repository().strip("/")
+    revision = github_revision()
+
+    repository_url = quote(repository, safe="/")
+    revision_url = quote(revision, safe="")
+    file_url = quote(normalised, safe="/")
+    url = f"https://github.com/{repository_url}/blob/{revision_url}/{file_url}"
+
+    if isinstance(line, int) and line > 0:
+        url += f"#L{line}"
+
+    return url
+
+
+def html_file_link(file_path, line=None):
+    """Render a report filename as a GitHub link when it represents a real file."""
+
+    label = html.escape(str(file_path))
+    url = github_file_url(file_path, line=line)
+
+    if url is None:
+        return label
+
+    escaped_url = html.escape(url, quote=True)
+    return f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer">{label}</a>'
+
+
+def html_line_link(file_path, line):
+    """Render a source line number as a GitHub line link when possible."""
+
+    label = html.escape(str(line))
+    url = github_file_url(file_path, line=line)
+
+    if url is None:
+        return label
+
+    escaped_url = html.escape(url, quote=True)
+    return f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer">{label}</a>'
+
+
 def sort_issues(issues):
     severity_order = {"high": 0, "medium": 1, "low": 2}
     confidence_order = {"high": 0, "medium": 1, "low": 2}
@@ -2690,6 +2811,9 @@ def generate_html_report(issues, errors, metadata, ci_result):
     rows = []
 
     for issue in issues:
+        file_link = html_file_link(issue["file"], line=issue["line"])
+        line_link = html_line_link(issue["file"], issue["line"])
+
         rows.append(
             f"""
             <tr
@@ -2697,8 +2821,8 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 data-source="{html.escape(issue['source'])}"
                 data-category="{html.escape(issue['category'])}"
             >
-                <td>{html.escape(issue['file'])}</td>
-                <td>{html.escape(str(issue['line']))}</td>
+                <td>{file_link}</td>
+                <td>{line_link}</td>
                 <td><span class="badge severity-{html.escape(issue['severity'])}">{html.escape(issue['severity'])}</span></td>
                 <td><span class="badge confidence-{html.escape(issue['confidence'])}">{html.escape(issue['confidence'])}</span></td>
                 <td>{html.escape(issue['type'])}</td>
@@ -2725,11 +2849,13 @@ def generate_html_report(issues, errors, metadata, ci_result):
     error_rows = []
 
     for error in errors:
+        error_file_link = html_file_link(error["file"])
+
         error_rows.append(
             f"""
             <tr>
                 <td>{html.escape(error['check'])}</td>
-                <td>{html.escape(error['file'])}</td>
+                <td>{error_file_link}</td>
                 <td>{html.escape(error['error'])}</td>
             </tr>
             """
@@ -2779,6 +2905,20 @@ def generate_html_report(issues, errors, metadata, ci_result):
 
         h1 {{ margin-bottom: 6px; }}
         h2 {{ margin-top: 32px; }}
+
+        a {{
+            color: #2563eb;
+            text-decoration: underline;
+            text-underline-offset: 2px;
+        }}
+
+        a:hover {{
+            text-decoration-thickness: 2px;
+        }}
+
+        .portfolio-link {{
+            margin: 0 0 18px;
+        }}
 
         .subtitle {{
             margin-top: 0;
@@ -2914,6 +3054,9 @@ def generate_html_report(issues, errors, metadata, ci_result):
 <body>
 <main>
     <h1>Documentation QA report</h1>
+    <p class="portfolio-link">
+        <a href="{html.escape(PORTFOLIO_URL, quote=True)}">← Back to Portfolio</a>
+    </p>
     <p class="subtitle">
         Report run: {html.escape(metadata['report_run_at_display'])}
         ({html.escape(metadata['report_time_zone'])})<br>
@@ -3248,6 +3391,9 @@ def main():
         "ai_checks_enabled": DEEPSEEK_AI_CHECKS_ENABLED,
         "files_reviewed": len(files),
         "checks": [check.name for check in checks],
+        "portfolio_url": PORTFOLIO_URL,
+        "github_repository": github_repository(),
+        "github_revision": github_revision(),
     }
 
     generate_html_report(
