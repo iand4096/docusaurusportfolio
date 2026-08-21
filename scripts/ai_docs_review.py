@@ -1,3 +1,6 @@
+eview.py
+
+
 import argparse
 import html
 import json
@@ -2737,7 +2740,10 @@ def github_file_url(file_path, line=None):
     repository_url = quote(repository, safe="/")
     revision_url = quote(revision, safe="")
     file_url = quote(normalised, safe="/")
-    url = f"https://github.com/{repository_url}/blob/{revision_url}/{file_url}"
+    # `?plain=1` keeps GitHub in source-file view, and the fragment must come
+    # after the query string so line anchors work as expected, e.g.
+    # `...?plain=1#L22`.
+    url = f"https://github.com/{repository_url}/blob/{revision_url}/{file_url}?plain=1"
 
     if isinstance(line, int) and line > 0:
         url += f"#L{line}"
