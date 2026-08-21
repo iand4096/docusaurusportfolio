@@ -44,7 +44,7 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 
 * Built **Java** API and sandbox integrations used to test and validate developer documentation. Used Java to complete assignments during my M.Sc. in Computer Science.
 
-### JavaScript / Node.js / Front-end
+### JavaScript, Node.js, front-end
 
 * Used JavaScript, jQuery, AJAX, HTML, CSS and SCSS/Sass to build and extend interactive documentation-portal features, including user-feedback submission, page ratings, syntax-highlighted code examples and expandable hierarchical navigation.
 * Developed browser-based test integrations using asynchronous requests to submit data and process responses.

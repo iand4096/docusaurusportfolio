@@ -34,6 +34,7 @@ EXCLUDED_DIRS = {
     ".docusaurus",
     ".git",
     "static",
+    "taxonomy",
 }
 
 SEVERITIES = {"high", "medium", "low"}
