@@ -8,7 +8,7 @@ sidebar_custom_props:
     description: Applying software-engineering practices to documentation through docs-as-code, CI/CD, static-site generators, migration automation, validation, search, and custom tooling that supports large-scale technical content.
     highlights:
       - Scaled documentation from 700 to 3,200 pages
-      - Automated migration of 900 legacy wiki pages
+      - Automated migration of 900 legacy pages
       - Built and operated custom docs-as-code tooling
       - CI/CD, validation, search and publishing automation
     ariaLabel: Explore my documentation engineering skills
