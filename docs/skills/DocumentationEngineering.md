@@ -47,9 +47,9 @@ I have worked with:
 * MkDocs
 * Custom Markdown-based static-site generators
 
-I have experience evaluating when an existing static-site generator can be extended and when a custom solution is justified.
+I have experience evaluating whether to extend an existing static-site generator or build a custom solution.
 
-This includes considerations such as:
+Key considerations include:
 
 * Build performance
 * Plugin compatibility
