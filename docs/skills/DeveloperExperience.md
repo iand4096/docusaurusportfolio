@@ -39,7 +39,7 @@ The portal grew from approximately **700 pages to more than 3,200 pages over thr
 
 At Paysafe, I was in charge of all documentation for the launch of the first version of the **Paysafe Developer Centre** and helped define its direction following the merger of Skrill and Optimus Payments.
 
-I analysed competitor portals, worked with the web development team on the new site, and helped introduce a Git and CI-based documentation workflow. I later led the technical authoring team that produced all the API and SDK documentation.
+I analysed competitor portals, worked with the web development team on the new site, and helped introduce a Git and CI-based documentation workflow with Typo3 CMS integration. I later led the technical authoring team that produced all the API and SDK documentation.
 
 ## Mastercard Developers
 

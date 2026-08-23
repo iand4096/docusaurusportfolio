@@ -6,3 +6,5 @@
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAccessibilityCheck — checks alt text, vague link text, and heading-level jumps.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QLinkCheck — validates local links and assets.\\E$"}
 {"rule":"ADVERB_VERB_ADVERB_REPETITION","sentence":"^\\QFull review\nEditorial only\nPortfolio only\nRepetition only\nMermaid opportunities only\nAccessibility only\nSite-wide consistency only\nRemark only\nVale only\nLychee only\nLink checks only\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QPublic developer platform: Led the documentation work for the first Paysafe Developer Center during a period when the group surpassed $1 billion in annual revenue.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QSee the current Paysafe Developer Center.\\E$"}

@@ -24,8 +24,6 @@ I combine technical writing with hands-on engineering including:
 
 </CapabilityGrid>
 
-I have owned documentation platforms serving 1200 developers and 3,200+ pages, automated a 900-page migration, and built full-stack test integrations in Python / Flask to validate APIs, security flows, and API reference information.
-
 ## Core expertise
 
 <CapabilityGrid> 
@@ -43,9 +41,9 @@ I have owned documentation platforms serving 1200 developers and 3,200+ pages, a
 
 ## Key projects
 
-- **Enterprise developer documentation platform:** Led the design and evolution of the Codetreedocs internal documentation platform at an investment bank, scaling to 3,200+ pages for an audience of over 1000 developers. Responsible for all documentation for the Optimus and RICE products. Owned documentation platform direction, requirements, solution design, testing, and quality, and later contributed directly to the codebase.
+* **Internal developer documentation platform:** Led the design and evolution of Codetreedocs, an internal documentation platform at an investment bank that grew to more than 3,200 pages, with approximately 1,200 developer mailing-list subscribers. Owned documentation for the Optimus and RICE products, led platform requirements, solution design, testing, and later contributed directly to the Codetreedocs codebase.
 
-- **Public developer platform:** Led the design and launch of Paysafe’s developer documentation and publishing platform for API and SDK integrations. Authored developer documentation and managed a team of three technical writers, with responsibility for documentation quality and delivery. See the [current Paysafe developer centre](https://developer.paysafe.com).
+- **Public developer documentation platform:** Led the documentation work for the first Paysafe Developer Center during a period when the group surpassed $1 billion in annual revenue. Brought together API, SDK and integration documentation from previously separate businesses, helped define and test the publishing platform and release workflow, migrated hundreds of legacy pages, authored developer documentation, and managed three technical writers. See the [current Paysafe Developer Center](https://developer.paysafe.com).
 
 ## Case studies
 

@@ -35,7 +35,7 @@ I have led documentation teams, platforms, and strategy across financial service
 
 ### Platform and product ownership
 
-At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a large-scale internal docs-as-code platform and developer portal supporting an API platform used by approximately 1,200 developers.
+At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a large-scale internal docs-as-code platform and developer portal supporting an API platform with approximately 1,200 developer mailing-list subscribers.
 
 I owned product direction, requirements, solution design, testing, quality, and feature prioritisation. I initially worked with a dedicated engineering team on implementation and later contributed directly to the codebase as the platform evolved.
 

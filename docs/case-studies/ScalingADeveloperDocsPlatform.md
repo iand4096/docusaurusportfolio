@@ -5,7 +5,7 @@ sidebar_position: 1
 sidebar_custom_props:
   caseStudyCard:
     tag: Docs-as-Code · Developer Portal
-    description: Scaling a custom enterprise documentation platform from 700 to more than 3,200 pages for a developer community of approximately 1,200 users.
+    description: Scaling a custom enterprise documentation platform from 700 to more than 3,200 pages for a large developer community
     highlights:
       - Documentation platform strategy and product ownership
       - Git, Markdown and Jenkins publishing workflows
@@ -16,7 +16,7 @@ sidebar_custom_props:
 
 ## Project overview
 
-At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom internal docs-as-code platform and developer portal supporting an API platform used by approximately **1,200 developers**.
+At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom internal docs-as-code platform and developer portal supporting an API platform whose developer mailing list had approximately 1,200 subscribers.
 
 Codetreedocs was designed to replace fragmented legacy documentation with a Git-based publishing workflow that made it easier for engineers to create, maintain, review, and discover technical content alongside source code.
 
