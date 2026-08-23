@@ -129,6 +129,11 @@ plugins: [
           activeBasePath: '/docs/case-studies',
         },
         {
+          label: 'Documentation samples',
+          to: '/docs/case-studies/MDES4Merchants',
+          position: 'left',
+        },
+        {
           label: 'Skills',
           to: '/docs/skills',
           position: 'left',

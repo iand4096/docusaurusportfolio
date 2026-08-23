@@ -43,7 +43,7 @@ I combine technical writing with hands-on engineering including:
 
 * **Internal developer documentation platform:** Led the design and evolution of Codetreedocs, an internal documentation platform at an investment bank that grew to more than 3,200 pages, with approximately 1,200 developer mailing-list subscribers. Owned documentation for the Optimus and RICE products, led platform requirements, solution design, testing, and later contributed directly to the Codetreedocs codebase.
 
-- **Public developer documentation platform:** Led the documentation work for the first Paysafe Developer Center during a period when the group surpassed $1 billion in annual revenue. Brought together API, SDK and integration documentation from previously separate businesses, helped define and test the publishing platform and release workflow, migrated hundreds of legacy pages, authored developer documentation, and managed three technical writers. See the [current Paysafe Developer Center](https://developer.paysafe.com).
+- **Public developer documentation platform:** Led the documentation work for the first [Paysafe Developer Center]((https://developer.paysafe.com)) during a period when the group surpassed $1 billion in annual revenue. Brought together API, SDK and integration documentation from previously separate businesses, helped define and test the publishing platform and release workflow, migrated hundreds of legacy pages, authored developer documentation, and managed three technical writers.
 
 ## Case studies
 
@@ -56,32 +56,59 @@ I combine technical writing with hands-on engineering including:
 >
   <span className="card-tag">Docs-as-Code · Developer Portal · Platform Strategy</span>
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
-  <p>How I led the design and evolution of a large-scale internal docs-as-code platform and developer portal supporting approximately 1,200 developers.</p>
+  <p>How I led the design and evolution of a large-scale internal docs-as-code platform and developer portal</p>
   <span className="card-link">Read case study →</span>
 </Link>
 
+<Link
+  className="portfolio-card"
+  to="/docs/case-studies/paysafedevcenter"
+  aria-label="Read the Paysafe Developer Center case study"
+>
+  <span className="card-tag">Developer Portal · API Documentation · Platform Delivery</span>
+  <h3>Building the Paysafe Developer Center</h3>
+  <p>How I led the documentation work for Paysafe's first Developer Center</p>
+  <span className="card-link">Read case study →</span>
+</Link>
+
+</div>
+
+## Documentation samples
+
+
+<div className="portfolio-grid">
   <Link
     className="portfolio-card"
     to="/docs/case-studies/MDES4Merchants"
-    aria-label="Read the MDES for Merchants case study"
+    aria-label="Read the MDES for Merchants documentation sample"
   >
     <span className="card-tag">REST APIs · OAuth · Encryption · Payments</span>
     <h3>MDES for Merchants</h3>
-    <p>A use-case guide explaining how merchants can use the Mastercard Digital Enablement API to tokenise card-on-file payment credentials.</p>
-    <span className="card-link">Read case study →</span>
+    <p>A use-case guide explaining how merchants can use the Mastercard Digital Enablement API to tokenise payment cards</p>
+    <span className="card-link">Read documentation sample →</span>
   </Link>
 
-  <Link
+  <Link 
+  className="portfolio-card" 
+  to="/docs/AMXInspiredSignageComposer" 
+  aria-label="Read the AMX Inspired Signage Composer user manual" 
+> 
+  <span className="card-tag">User documentation · Enterprise software · Desktop application</span> 
+  <h3>AMX Inspired Signage Composer</h3> 
+  <p>User manual for an enterprise digital-signage application, covering installation, configuration and day-to-day use.</p> 
+  <span className="card-link">Read user manual →</span> 
+</Link>
+
+ <Link
     className="portfolio-card"
     to="/docs/case-studies/PaysafeDeveloperJS"
-    aria-label="Read the Paysafe.js case study"
+    aria-label="Read the Paysafe.js documentation sample"
   >
     <span className="card-tag">JavaScript SDK · Browser integration · Payments</span>
     <h3>Paysafe.js</h3>
     <p>Developer documentation for a browser-based payment integration, including interactive examples and implementation guidance.</p>
-    <span className="card-link">Read case study →</span>
+    <span className="card-link">Read documentation sample →</span>
   </Link>
-
 </div>
 
 ## Target roles
