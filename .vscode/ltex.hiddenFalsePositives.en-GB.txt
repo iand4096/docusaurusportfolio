@@ -8,3 +8,9 @@
 {"rule":"ADVERB_VERB_ADVERB_REPETITION","sentence":"^\\QFull review\nEditorial only\nPortfolio only\nRepetition only\nMermaid opportunities only\nAccessibility only\nSite-wide consistency only\nRemark only\nVale only\nLychee only\nLink checks only\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QPublic developer platform: Led the documentation work for the first Paysafe Developer Center during a period when the group surpassed $1 billion in annual revenue.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QSee the current Paysafe Developer Center.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QFollowing the merger of Skrill and Optimal Payments, I led the documentation work for the first Paysafe Developer Center, bringing payment APIs, SDKs and integration guides from previously separate businesses into a single developer site.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QThe Developer Center was highlighted in the company's 2016 Annual Report as one of its achievements under its “State-of-the-art technology” strategy.\\E$"}
+{"rule":"POSSESSIVE_APOSTROPHE","sentence":"^\\QI developed migration tooling to move hundreds of pages from the previous Optimal Payments developer centre into the new platform.\\E$"}
+{"rule":"POSSESSIVE_APOSTROPHE","sentence":"^\\QMigrate existing documentation from the previous Optimal Payments developer centre and Skrill PDF documentation.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QThe first Paysafe Developer Center.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QThe first phase of the Developer Center launched in December 2016.\\E$"}
