@@ -69,5 +69,4 @@ The project helped establish documentation as a normal part of the engineering w
 ## What I would change
 
 * Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, before the corpus grew to several thousand pages.
-* Establish more comprehensive documentation analytics and contribution metrics earlier to measure adoption, content quality, usage, and maintenance needs more systematically.
 * Add automated quality checks to documentation pull requests using tools such as Vale and LanguageTool, together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues, so that quality could scale with the growth of the site once manual review of every PR was no longer practical. My [portfolio integrates these checks](./DocusaurusPortfolio.md).
