@@ -43,7 +43,7 @@ I combine technical writing with hands-on engineering including:
 
 * **Internal developer documentation platform:** Led the design and evolution of Codetreedocs, an internal documentation platform at an investment bank that grew to more than 3,200 pages, with approximately 1,200 developer mailing-list subscribers. Owned documentation for the Optimus and RICE products, led platform requirements, solution design, testing, and later contributed directly to the Codetreedocs codebase.
 
-- **Public developer documentation platform:** Led the documentation work for the first [Paysafe Developer Center]((https://developer.paysafe.com)) during a period when the group surpassed $1 billion in annual revenue. Brought together API, SDK and integration documentation from previously separate businesses, helped define and test the publishing platform and release workflow, migrated hundreds of legacy pages, authored developer documentation, and managed three technical writers.
+- **Public developer documentation platform:** Led the documentation work for the first [Paysafe Developer Center](https://developer.paysafe.com) during a period when the group surpassed $1 billion in annual revenue. Brought together API, SDK and integration documentation from previously separate businesses, helped define and test the publishing platform and release workflow, migrated hundreds of legacy pages, authored developer documentation, and managed three technical writers.
 
 ## Case studies
 
@@ -90,12 +90,12 @@ I combine technical writing with hands-on engineering including:
 
   <Link 
   className="portfolio-card" 
-  to="/docs/AMXInspiredSignageComposer" 
+  to="/docs/case-studies/AMXInspiredSignageComposer" 
   aria-label="Read the AMX Inspired Signage Composer user manual" 
 > 
   <span className="card-tag">User documentation · Enterprise software · Desktop application</span> 
   <h3>AMX Inspired Signage Composer</h3> 
-  <p>User manual for an enterprise digital-signage application, covering installation, configuration and day-to-day use.</p> 
+  <p>User manual for an enterprise digital-signage application, covering configuration, content creation and day-to-day use.</p> 
   <span className="card-link">Read user manual →</span> 
 </Link>
 
