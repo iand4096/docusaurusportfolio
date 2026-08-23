@@ -55,3 +55,10 @@ As Documentation Manager, I managed three technical writers and prioritised work
 ## Outcome
 
 The first phase of the Developer Center launched in December 2016. Paysafe subsequently included the Developer Center launch in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf) and January 2017 trading update. The launch was also reported in the financial technology press, including [Finextra](https://www.finextra.com/pressarticle/67611/paysafe-expected-to-surpass-1-billion-revenue-milestone-in-fy-2016).
+
+## What I would change
+
+* Today, I would prefer a full docs-as-code approach using extended Markdown with automated quality checks rather than the hybrid Flare/XHTML model I used at the time. The documentation was already managed in Git, reviewed through pull requests and published through CI, but authors worked in Flare and the source remained in its proprietary XHTML-based format. Using extended Markdown would make the source easier for engineers and support staff to edit directly while still 
+supporting requirements such as reuse and conditional content.
+ 
+* I would also use Python HTML-parsing libraries such as Beautiful Soup to clean migrated content rather than relying on regular-expression replacements, which required more manual clean-up.
