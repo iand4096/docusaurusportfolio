@@ -7,20 +7,22 @@ hide_table_of_contents: true
 import Link from '@docusaurus/Link';
 import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
-# Ian Drewett M.Sc. Computer Science
+# Ian Drewett
 
-Principal Technical Writer with a software-engineering background, specialising in developer and API documentation, documentation platforms, and developer experience in complex regulated environments.
+Principal Technical Writer and Documentation Engineer with an M.Sc. in Computer Science, a Physics degree, and a software-engineering background spanning systems programming, APIs, developer platforms, and documentation engineering
 
-I combine technical writing with hands-on engineering including:
+I combine technical writing with hands-on engineering:
 
 <CapabilityGrid variant="checklist"> 
 
 * End-to-End API testing
 * Docs-as-code
 * CI/CD
-* Governance
 * Automation
 * Information Architecture
+* Governance
+* Python & Scala
+* API security & OpenAPI
 
 </CapabilityGrid>
 
@@ -37,13 +39,10 @@ I combine technical writing with hands-on engineering including:
 * **AI knowledge & governance:**
   Knowledge architecture, content governance, AI-ready documentation, and AI-assisted quality assurance
 
+* **Technical validation & engineering:**
+API implementation and testing, security validation, software debugging, automation, and developer tooling.
+
 </CapabilityGrid>
-
-## Key projects
-
-* **Internal developer documentation platform:** Led the design and evolution of Codetreedocs, an internal documentation platform at an investment bank that grew to more than 3,200 pages, with approximately 1,200 developer mailing-list subscribers. Owned documentation for the Optimus and RICE products, led platform requirements, solution design, testing, and later contributed directly to the Codetreedocs codebase.
-
-- **Public developer documentation platform:** Led the documentation work for the first [Paysafe Developer Center](https://developer.paysafe.com) during a period when the group surpassed $1 billion in annual revenue. Brought together API, SDK and integration documentation from previously separate businesses, helped define and test the publishing platform and release workflow, migrated hundreds of legacy pages, authored developer documentation, and managed three technical writers.
 
 ## Case studies
 
@@ -54,9 +53,16 @@ I combine technical writing with hands-on engineering including:
   to="/docs/case-studies/scalingdeveloperdocs"
   aria-label="Read the Scaling an Enterprise Developer Documentation Platform case study"
 >
-  <span className="card-tag">Docs-as-Code · Developer Portal · Platform Strategy</span>
+  <span className="card-tag">
+    Docs-as-Code · Developer Portal · Platform Strategy
+  </span>
+
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
-  <p>How I led the design and evolution of a large-scale internal docs-as-code platform and developer portal</p>
+
+  <p>
+   Led the design and evolution of Codetreedocs, an internal documentation platform that grew to more than 3,200 pages and approximately 1,200 developer mailing-list subscribers. My responsibilities also included documentation for Optimus, a distributed Scala graph-computation engine, and RICE, Morgan Stanley’s fixed-income risk framework.
+  </p>
+
   <span className="card-link">Read case study →</span>
 </Link>
 
@@ -65,9 +71,17 @@ I combine technical writing with hands-on engineering including:
   to="/docs/case-studies/paysafedevcenter"
   aria-label="Read the Paysafe Developer Center case study"
 >
-  <span className="card-tag">Developer Portal · API Documentation · Platform Delivery</span>
+  <span className="card-tag">
+    Developer Portal · API Documentation · Platform Delivery
+  </span>
+
   <h3>Building the Paysafe Developer Center</h3>
-  <p>How I led the documentation work for Paysafe's first Developer Center</p>
+
+  <p>
+     Led the documentation work for the first Paysafe Developer Center during a period of rapid growth, when the group surpassed $1 billion in annual revenue. Brought together API, SDK and integration documentation from previously separate
+    businesses, helped define and test the publishing platform and release workflow, migrated hundreds of legacy pages, authored developer documentation, and managed three technical writers.
+  </p>
+
   <span className="card-link">Read case study →</span>
 </Link>
 
@@ -111,9 +125,14 @@ I combine technical writing with hands-on engineering including:
   </Link>
 </div>
 
+## Engineering background
+
+M.Sc. Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C and C++/STL. Current development includes Scala and full-stack API integrations using Python/Flask on the backend and JavaScript on the frontend.
+
 ## Target roles
 
 Principal / Senior Technical Writer · Documentation Engineer · Developer Experience (DevEx) · API & Developer Documentation · AI Knowledge Manager · Documentation Lead
+
 
 ## Professional profile
 
