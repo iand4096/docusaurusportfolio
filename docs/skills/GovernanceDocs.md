@@ -3,7 +3,7 @@ title: Documentation Governance
 sidebar_position: 8
 slug: /governancedocs
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Content operations
     description: Standards, review processes, ownership models, quality controls and governance practices for large documentation estates.
     highlights:

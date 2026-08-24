@@ -3,7 +3,7 @@ title:  Programming and Automation
 sidebar_position: 5
 slug: /programming
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Programming and automation
     description: Using Python, JavaScript and scripting to build documentation tooling, API integrations, test applications, migration utilities and automated docs-as-code workflows.
     highlights:

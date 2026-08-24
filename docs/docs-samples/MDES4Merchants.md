@@ -1,6 +1,16 @@
 ---
 title: MDES for Merchants Guide
 sidebar_position: 2
+sidebar_custom_props:
+  sampleCard:
+    tag: API integration
+    description: Mastercard tokenisation documentation developed through custom Python integration testing, OAuth 1.0 authentication, field-level encryption, and webhook validation.
+    highlights:
+      - Wrote the first MDES for Merchants use-case guide
+      - Built custom Python test integrations
+      - Validated OAuth, encryption, and webhooks
+      - Improved the supporting OpenAPI reference
+    ariaLabel: View the MDES for Merchants documentation sample
 ---
 
 ## Project overview

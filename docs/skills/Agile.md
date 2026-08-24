@@ -3,7 +3,7 @@ title: Agile Delivery and Project Management
 sidebar_position: 11
 slug: /agile
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Agile Delivery
     description: Led Agile documentation and platform delivery initiatives, including sprint planning, backlog management, technical implementation and post-deployment support across engineering teams.
     highlights:

@@ -3,7 +3,7 @@ title: MadCap Flare
 sidebar_position: 8
 slug: /flare
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Structured authoring
     description: Advanced single-sourcing, custom styling, publishing automation, Git integration, content migration and complex output troubleshooting.
     highlights:

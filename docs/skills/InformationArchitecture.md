@@ -3,7 +3,7 @@ title: Information Architecture
 sidebar_position: 7
 slug: /informationarch
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Content structure
     description: Designing scalable documentation structures, navigation models, metadata, content inventories and search experiences for complex technical content.
     highlights:

@@ -3,7 +3,7 @@ title: AI & Documentation
 sidebar_position: 9
 slug: /aianddocs
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: AI for documentation
     description: Applying AI to documentation engineering, authoring, retrieval and automation, with strong emphasis on technical validation, human oversight and responsible use.
     highlights:

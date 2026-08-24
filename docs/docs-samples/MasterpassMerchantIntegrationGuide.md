@@ -1,6 +1,16 @@
 ---
 title: Masterpass Integration Guide
 sidebar_position: 3
+sidebar_custom_props:
+  sampleCard:
+    tag: API integration
+    description: Mastercard merchant integration documentation validated through working checkout integrations, OpenAPI corrections, and sequence diagrams.
+    highlights:
+      - Built working integrations for multiple checkout flows
+      - Corrected issues in the OpenAPI API reference
+      - Created PlantUML sequence diagrams
+      - Updated merchant and mobile SDK guidance
+    ariaLabel: View the Masterpass Integration Guide documentation sample
 ---
 
 ## Project overview

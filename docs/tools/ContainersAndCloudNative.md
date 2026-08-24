@@ -3,7 +3,7 @@ title: Containers and Cloud
 sidebar_position: 9
 slug: /containersandcloud
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Containers and networking
     description: Practical experience using Docker, Linux, networking and hosted environments for documentation platforms, API testing and CI troubleshooting.
     highlights:

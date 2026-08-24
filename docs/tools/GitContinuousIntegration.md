@@ -3,7 +3,7 @@ title: Git and Continuous Integration
 sidebar_position: 3
 slug: /gitandci
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Git and CI/CD
     description: Using Git, GitHub, Bitbucket and CI/CD to review, validate, build and publish documentation, with hands-on experience implementing QA gates and troubleshooting build issues.
     highlights:

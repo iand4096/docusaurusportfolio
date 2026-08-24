@@ -3,7 +3,7 @@ title: AI and Dev Tools
 sidebar_position: 6
 slug: /aianddevtools
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: AI and developer tools
     description: Using AI-assisted development, Agentic AI, MCP, RAG concepts and developer tooling to improve documentation engineering, software development and content workflows.
     highlights:

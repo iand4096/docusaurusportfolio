@@ -3,7 +3,7 @@ title: Documentation Leadership & Strategy
 sidebar_position: 10
 slug: /docsleadership
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Documentation Strategy
     description: Leading documentation teams, strategy, platforms and operating models across complex developer and enterprise environments.
     highlights:

@@ -3,7 +3,7 @@ title: Static Site Generators and Docs Platforms
 sidebar_position: 4
 slug: /staticsitedocsplatforms
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Documentation platforms
     description: Building and extending scalable documentation platforms using Docusaurus, MkDocs, custom plugins, search integrations and automated publishing workflows.
     highlights:

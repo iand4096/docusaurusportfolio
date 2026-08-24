@@ -3,7 +3,7 @@ title: Documentation Engineering
 sidebar_position: 4
 slug: /documentationeng
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Documentation engineering
     description: Docs-as-code, documentation-platform ownership, CI/CD, static-site generators, parser extensions, migration automation, validation, search and custom tooling for large-scale technical content.
     highlights:

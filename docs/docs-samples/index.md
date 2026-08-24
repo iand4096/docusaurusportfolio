@@ -5,8 +5,11 @@ slug: /docs-samples
 sidebar_position: 1
 ---
 
-import SkillsGrid from '@site/src/components/SkillsGrid';
+import SidebarCardGrid from '@site/src/components/SidebarCardGrid';
 
 Explore my documentation samples
 
-<SkillsGrid />
+<SidebarCardGrid
+  metadataKey="sampleCard"
+  linkLabel="View sample →"
+/>

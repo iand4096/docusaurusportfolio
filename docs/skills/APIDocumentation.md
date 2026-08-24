@@ -3,7 +3,7 @@ title: API Documentation and Technical Validation
 sidebar_position: 3
 slug: /apidocumentation
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: API documentation
     description: >-
       API and SDK documentation validated through working integrations, API testing,

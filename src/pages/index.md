@@ -86,44 +86,6 @@ API implementation and testing, security validation, software debugging, automat
 
 </div>
 
-## Documentation samples
-
-
-<div className="portfolio-grid">
-  <Link
-    className="portfolio-card"
-    to="/docs/case-studies/MDES4Merchants"
-    aria-label="Read the MDES for Merchants documentation sample"
-  >
-    <span className="card-tag">REST APIs · OAuth · Encryption · Payments</span>
-    <h3>MDES for Merchants</h3>
-    <p>A use-case guide explaining how merchants can use the Mastercard Digital Enablement API to tokenise payment cards</p>
-    <span className="card-link">Read documentation sample →</span>
-  </Link>
-
-  <Link 
-  className="portfolio-card" 
-  to="/docs/case-studies/AMXInspiredSignageComposer" 
-  aria-label="Read the AMX Inspired Signage Composer user manual" 
-> 
-  <span className="card-tag">User documentation · Enterprise software · Desktop application</span> 
-  <h3>AMX Inspired Signage Composer</h3> 
-  <p>User manual for an enterprise digital-signage application, covering configuration, content creation and day-to-day use.</p> 
-  <span className="card-link">Read user manual →</span> 
-</Link>
-
- <Link
-    className="portfolio-card"
-    to="/docs/case-studies/PaysafeDeveloperJS"
-    aria-label="Read the Paysafe.js documentation sample"
-  >
-    <span className="card-tag">JavaScript SDK · Browser integration · Payments</span>
-    <h3>Paysafe.js</h3>
-    <p>Developer documentation for a browser-based payment integration, including interactive examples and implementation guidance.</p>
-    <span className="card-link">Read documentation sample →</span>
-  </Link>
-</div>
-
 ## Engineering background
 
 M.Sc. Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C and C++/STL. Current development includes Scala and full-stack API integrations using Python/Flask on the backend and JavaScript on the frontend.

@@ -3,7 +3,7 @@ title: Diagramming and Technical Visualisation
 sidebar_position: 7
 slug: /diagramsandvisuals
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: Technical diagrams
     description: Creating clear technical diagrams for software architecture, APIs, system interactions and developer workflows using both diagrams-as-code and traditional visual tools.
     highlights:

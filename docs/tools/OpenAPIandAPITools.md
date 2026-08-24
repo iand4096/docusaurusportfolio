@@ -3,7 +3,7 @@ title: OpenAPI and API tools
 sidebar_position: 2
 slug: /openapitools
 sidebar_custom_props:
-  skillCard:
+  sampleCard:
     tag: API specifications
     description: Creating and maintaining OpenAPI specifications, API collections, structured data and validation workflows for developer documentation and integration testing.
     highlights:
