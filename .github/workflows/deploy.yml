@@ -23,6 +23,8 @@ jobs:
 
     outputs:
       qa-outcome: ${{ steps.docs-qa.outcome }}
+      qa-report-path: ${{ steps.add-qa-report.outputs.report-path }}
+      qa-report-version: ${{ steps.add-qa-report.outputs.report-version }}
 
     steps:
       - name: Check out repository
@@ -42,6 +44,11 @@ jobs:
         run: npm ci
 
       - name: Build Docusaurus site
+        env:
+          # Expose the deployment version to Docusaurus. The QA route itself also
+          # uses a versioned report file below, so this is safe even if the site
+          # configuration does not currently consume QA_VERSION.
+          QA_VERSION: ${{ github.sha }}
         run: npm run build
 
       - name: Set up Python
@@ -497,9 +504,15 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f ai-doc-review.html ai-doc-review.json
+          rm -f ai-doc-review.html ai-doc-review.json .qa-run-start
           rm -rf build/qa
+
+          # Record the start of this QA run. Any report copied into the Pages
+          # artifact must be newer than this marker.
+          touch .qa-run-start
+
           echo "Stale QA report outputs removed."
+          echo "QA run freshness marker created."
 
       # continue-on-error is intentional. If the QA thresholds fail,
       # the report is still copied into the Pages build and deployed.
@@ -538,6 +551,37 @@ jobs:
             --fail-medium 25 \
             --fail-api-errors 0
 
+      # Verify that any generated report belongs to this workflow run. The stale
+      # outputs were deleted immediately before QA, and this timestamp check adds
+      # a second guard against accidentally publishing an older report.
+      - name: Verify QA report freshness
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          if [ -f ai-doc-review.html ]; then
+            if [ ai-doc-review.html -nt .qa-run-start ]; then
+              echo "HTML QA report is fresh."
+            else
+              echo "::warning::ai-doc-review.html is not newer than the QA run marker; removing it."
+              rm -f ai-doc-review.html
+            fi
+          else
+            echo "No HTML QA report was generated."
+          fi
+
+          if [ -f ai-doc-review.json ]; then
+            if [ ai-doc-review.json -nt .qa-run-start ]; then
+              echo "JSON QA report is fresh."
+            else
+              echo "::warning::ai-doc-review.json is not newer than the QA run marker; removing it."
+              rm -f ai-doc-review.json
+            fi
+          else
+            echo "No JSON QA report was generated."
+          fi
+
       # Keep the source HTML and JSON available as a normal Actions
       # artifact as well as publishing the HTML report under /qa/.
       - name: Upload documentation QA artifact
@@ -551,22 +595,30 @@ jobs:
             ai-doc-review.json
           if-no-files-found: warn
 
-      # Anything copied into build/ is part of the static Pages site.
-      # build/qa/index.html therefore becomes:
-      # https://<owner>.github.io/<repo>/qa/
+      # Publish the QA report under a commit-specific filename. /qa/index.html is
+      # a small stable loader that fetches version.json with a cache-busting query
+      # parameter and redirects to the immutable, SHA-versioned report. This avoids
+      # stale QA HTML when GitHub Pages or the browser caches /qa/.
       - name: Add QA report to site
+        id: add-qa-report
         if: always()
         shell: bash
         run: |
+          set -euo pipefail
+
+          QA_VERSION="${GITHUB_SHA:0:12}"
+          REPORT_NAME="report-${QA_VERSION}.html"
+          REPORT_PATH="build/qa/${REPORT_NAME}"
+
           mkdir -p build/qa
 
           if [ -f ai-doc-review.html ]; then
-            cp ai-doc-review.html build/qa/index.html
-            echo "QA report copied to build/qa/index.html."
+            cp ai-doc-review.html "$REPORT_PATH"
+            echo "QA report copied to $REPORT_PATH."
           else
             echo "::warning::ai-doc-review.html was not generated."
 
-            cat > build/qa/index.html <<'EOF'
+            cat > "$REPORT_PATH" <<'EOF'
           <!doctype html>
           <html lang="en-GB">
           <head>
@@ -608,7 +660,105 @@ jobs:
           EOF
           fi
 
-      # Ask search engines not to index the generated QA report.
+          # A small machine-readable pointer to the report from this deployment.
+          # The /qa/ loader requests this file with a unique timestamp query string.
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+          from pathlib import Path
+
+          sha = os.environ["GITHUB_SHA"]
+          version = sha[:12]
+          payload = {
+              "sha": sha,
+              "version": version,
+              "report": f"report-{version}.html",
+              "generatedAt": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+          }
+
+          Path("build/qa/version.json").write_text(
+              json.dumps(payload, indent=2) + "\n",
+              encoding="utf-8",
+          )
+          Path("build/qa/deployment-version.txt").write_text(sha + "\n", encoding="utf-8")
+          PY
+
+          # Keep /qa/ as the human-friendly URL. The loader itself can safely be
+          # cached because it always asks for version.json with a cache-busting
+          # query parameter before redirecting to the versioned report.
+          cat > build/qa/index.html <<'EOF'
+          <!doctype html>
+          <html lang="en-GB">
+          <head>
+            <meta charset="utf-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="robots" content="noindex,nofollow">
+            <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+            <meta http-equiv="Pragma" content="no-cache">
+            <meta http-equiv="Expires" content="0">
+            <title>Documentation QA</title>
+            <style>
+              body {
+                max-width: 800px;
+                margin: 60px auto;
+                padding: 0 24px;
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+                line-height: 1.6;
+              }
+            </style>
+          </head>
+          <body>
+            <main>
+              <h1>Documentation QA</h1>
+              <p id="qa-status">Loading the latest QA report…</p>
+              <noscript>
+                <p>JavaScript is required to resolve the latest versioned QA report.</p>
+              </noscript>
+            </main>
+            <script>
+              (async () => {
+                const status = document.getElementById('qa-status');
+
+                try {
+                  const response = await fetch(
+                    `./version.json?_qa=${Date.now()}`,
+                    {cache: 'no-store'},
+                  );
+
+                  if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                  }
+
+                  const version = await response.json();
+
+                  if (!version.report || !version.sha) {
+                    throw new Error('Invalid QA version metadata');
+                  }
+
+                  const target =
+                    `./${encodeURIComponent(version.report)}?v=${encodeURIComponent(version.sha)}`;
+
+                  window.location.replace(target);
+                } catch (error) {
+                  console.error('Unable to resolve the latest QA report:', error);
+                  status.textContent =
+                    'Unable to load the latest QA report. Refresh the page to try again.';
+                }
+              })();
+            </script>
+          </body>
+          </html>
+          EOF
+
+          # Expose the versioned report path to later jobs and workflow summaries.
+          echo "report-path=qa/${REPORT_NAME}" >> "$GITHUB_OUTPUT"
+          echo "report-version=${QA_VERSION}" >> "$GITHUB_OUTPUT"
+
+          echo "Stable QA URL: qa/"
+          echo "Versioned QA report: qa/${REPORT_NAME}"
+
+      # Ask search engines not to index any generated QA HTML.
       # This is not access control: /qa/ remains a public URL.
       - name: Add noindex to QA report
         if: always()
@@ -617,26 +767,58 @@ jobs:
           python - <<'PY'
           from pathlib import Path
 
-          path = Path("build/qa/index.html")
-
-          if not path.exists():
-              raise SystemExit(0)
-
-          content = path.read_text(encoding="utf-8")
+          qa_dir = Path("build/qa")
           noindex = '<meta name="robots" content="noindex,nofollow">'
 
-          if noindex not in content and "<head>" in content:
-              content = content.replace(
-                  "<head>",
-                  f"<head>\n    {noindex}",
-                  1,
-              )
+          if not qa_dir.is_dir():
+              raise SystemExit(0)
 
-              path.write_text(
-                  content,
-                  encoding="utf-8",
-              )
+          for path in qa_dir.glob("*.html"):
+              content = path.read_text(encoding="utf-8")
+
+              if noindex not in content and "<head>" in content:
+                  content = content.replace(
+                      "<head>",
+                      f"<head>\n    {noindex}",
+                      1,
+                  )
+                  path.write_text(content, encoding="utf-8")
+                  print(f"Added noindex to {path}")
           PY
+
+      - name: Verify published QA bundle
+        if: always()
+        shell: bash
+        run: |
+          set -euo pipefail
+
+          test -s build/qa/index.html || {
+            echo "::error::build/qa/index.html is missing or empty."
+            exit 1
+          }
+
+          test -s build/qa/version.json || {
+            echo "::error::build/qa/version.json is missing or empty."
+            exit 1
+          }
+
+          REPORT_FILE="$(python - <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("build/qa/version.json").read_text(encoding="utf-8"))
+          print(data["report"])
+          PY
+          )"
+
+          test -s "build/qa/$REPORT_FILE" || {
+            echo "::error::Versioned QA report build/qa/$REPORT_FILE is missing or empty."
+            exit 1
+          }
+
+          echo "QA loader: build/qa/index.html"
+          echo "QA metadata: build/qa/version.json"
+          echo "QA report: build/qa/$REPORT_FILE"
 
       - name: Add QA information to workflow summary
         if: always()
@@ -662,6 +844,8 @@ jobs:
             echo ""
 
             echo "The HTML report is included in this GitHub Pages deployment under \`/qa/\`."
+            echo "Versioned report: \`${{ steps.add-qa-report.outputs.report-path }}\`"
+            echo "Deployment version: \`${{ steps.add-qa-report.outputs.report-version }}\`"
             echo ""
 
             if [ -n "${{ steps.upload-qa-artifact.outputs.artifact-url }}" ]; then
@@ -711,7 +895,9 @@ jobs:
             echo ""
             echo "### Documentation QA"
             echo ""
-            echo "${{ steps.deployment.outputs.page_url }}qa/"
+            echo "Stable URL: ${{ steps.deployment.outputs.page_url }}qa/"
+            echo ""
+            echo "Versioned report: ${{ steps.deployment.outputs.page_url }}${{ needs.build.outputs.qa-report-path }}"
           } >> "$GITHUB_STEP_SUMMARY"
 
   # The QA command was allowed to continue so that a failing report
