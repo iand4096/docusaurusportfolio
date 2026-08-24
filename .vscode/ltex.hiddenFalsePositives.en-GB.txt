@@ -14,3 +14,5 @@
 {"rule":"POSSESSIVE_APOSTROPHE","sentence":"^\\QMigrate existing documentation from the previous Optimal Payments developer centre and Skrill PDF documentation.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QThe first Paysafe Developer Center.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QThe first phase of the Developer Center launched in December 2016.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QPaysafe subsequently included the Developer Center launch in its 2016 Annual Report and January 2017 trading update.\\E$"}
+{"rule":"ENGLISH_WORD_REPEAT_BEGINNING_RULE","sentence":"^\\QC++: Several years of development experience, including Visual C++ and use of STL containers and data structures for application logic and data processing.\\E$"}

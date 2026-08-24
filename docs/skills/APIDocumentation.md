@@ -28,7 +28,7 @@ My experience includes:
 * OpenAPI authoring and maintenance for generated reference documentation
 * Handwritten SDKs and language-specific clients generated from OpenAPI specifications
 * Relationships between REST endpoints, SDK methods, request and response models and authentication configuration
-* Multi-step API workflows and sequence diagrams
+* Multistep API workflows and sequence diagrams
 * Authentication and encryption
 * Webhooks and asynchronous processing
 * Error handling, retries and resilience patterns
@@ -48,7 +48,7 @@ My experience includes:
 * JavaScript and browser-based integrations
 * Postman, Insomnia and cURL
 * Cloud-hosted Flask applications for receiving and processing webhooks
-* Multi-step synchronous and asynchronous transaction flows
+* Multistep synchronous and asynchronous transaction flows
 * Sandbox and production-like test environments
 
 I use these integrations to compare documented behaviour with actual system behaviour and to investigate missing, ambiguous or incorrect guidance.
@@ -66,7 +66,7 @@ This includes:
 * Exercising authentication and encryption flows
 * Testing error responses and edge cases
 * Validating webhook and callback behaviour
-* Creating repeatable scenarios for multi-step API workflows
+* Creating repeatable scenarios for multistep API workflows
 * Comparing observed behaviour with OpenAPI definitions, generated clients and written documentation
 * Testing documented procedures and code examples before publication
 

@@ -40,3 +40,4 @@ LinkCheck
 PANs
 DevEx
 Fiserv
+Finextra
