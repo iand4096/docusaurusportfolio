@@ -6,3 +6,6 @@
 
 # LinkedIn returns non-standard HTTP 999 responses to automated requests.
 ^https?://(www\.)?linkedin\.com/
+
+# Finextra blocks or rejects automated link-checking requests.
+^https?://www\.finextra\.com/pressarticle/67611/paysafe-expected-to-surpass-1-billion-revenue-milestone-in-fy-2016$
