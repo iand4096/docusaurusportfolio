@@ -52,16 +52,28 @@ plugins: [
       redirects: [
         {
           from: '/docs/AMXInspiredSignageComposer',
-          to: '/docs/case-studies/AMXInspiredSignageComposer',
+          to: '/docs/docs-samples/AMXInspiredSignageComposer',
         },
         {
           from: '/docs/MasterpassMerchantIntegrationGuide',
-          to: '/docs/case-studies/MasterpassMerchantIntegrationGuide',
+          to: '/docs/docs-samples/MasterpassMerchantIntegrationGuide',
         },
         {
           from: '/docs/MDES4Merchants',
-          to: '/docs/case-studies/MDES4Merchants',
-        }
+          to: '/docs/docs-samples/MDES4Merchants',
+        },
+        {
+          from: '/docs/case-studies/MDES4Merchants',
+          to: '/docs/docs-samples/MDES4Merchants',
+        },
+        {
+          from: '/docs/case-studies/AMXInspiredSignageComposer',
+          to: '/docs/docs-samples/AMXInspiredSignageComposer',
+        },
+        {
+          from: '/docs/case-studies/MasterpassMerchantIntegrationGuide',
+          to: '/docs/docs-samples/MasterpassMerchantIntegrationGuide',
+        },
       ],
     },
   ],
@@ -130,8 +142,9 @@ plugins: [
         },
         {
           label: 'Documentation samples',
-          to: '/docs/case-studies/MDES4Merchants',
+          to: '/docs/docs-samples',
           position: 'left',
+          activeBasePath: '/docs/docs-samples',
         },
         {
           label: 'Skills',
@@ -180,8 +193,16 @@ plugins: [
               to: '/docs/case-studies/scalingdeveloperdocs',
             },
             {
+              label: 'Documentation Samples',
+              to: '/docs/docs-samples',
+            },
+            {
               label: 'Skills',
               to: '/docs/skills',
+            },
+            {
+              label: 'Tools',
+              to: '/docs/tools',
             },
           ],
         },

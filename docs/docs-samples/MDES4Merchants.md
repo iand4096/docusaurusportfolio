@@ -1,6 +1,6 @@
 ---
 title: MDES for Merchants Guide
-sidebar_position: 3
+sidebar_position: 2
 ---
 
 ## Project overview
