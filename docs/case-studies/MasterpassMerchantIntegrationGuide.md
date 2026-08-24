@@ -9,7 +9,7 @@ I maintained and updated the **Masterpass Merchant Integration Guide** while wor
 
 My main contribution was to build test integrations for each checkout flow and use the results to improve the accuracy and clarity of the documentation. I also added detailed sequence diagrams, corrected issues in the supporting API reference, and updated the Masterpass mobile SDK guides.
 
-The content has received minor updates from other contributors since I left Mastercard but remains substantially the same.
+The content has received minor updates from other contributors since I left Mastercard as it is now a legacy product replaced by Click to Pay.
 
 ## The challenge
 
@@ -45,8 +45,8 @@ The guide is publicly available on Mastercard Developers. A direct link is omitt
 
 ## Outcome
 
-* The updated guides provided clearer and more accurate instructions based on tested checkout integrations. The sequence diagrams made the relationships between systems and the order of API interactions easier for merchant developers to understand.
-* Correcting the underlying OpenAPI definitions also improved the consistency between the narrative guides and the API reference.
+* Provided clearer and more accurate instructions based on tested checkout integrations. The sequence diagrams made the relationships between systems and the order of API interactions easier for merchant developers to understand.
+* Corrected the underlying OpenAPI definitions to improve the consistency between the narrative guides and the API reference.
 * The docs-as-code platform that we advocated for, specified, and tested was subsequently adopted by Mastercard.
 
 ## What I would change

@@ -78,8 +78,7 @@ API implementation and testing, security validation, software debugging, automat
   <h3>Building the Paysafe Developer Center</h3>
 
   <p>
-     Led the documentation work for the first Paysafe Developer Center during a period of rapid growth, when the group surpassed $1 billion in annual revenue. Brought together API, SDK and integration documentation from previously separate
-    businesses, helped define and test the publishing platform and release workflow, migrated hundreds of legacy pages, authored developer documentation, and managed three technical writers.
+     Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion, as the company integrated major acquisitions, delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.
   </p>
 
   <span className="card-link">Read case study →</span>
@@ -129,11 +128,6 @@ API implementation and testing, security validation, software debugging, automat
 
 M.Sc. Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C and C++/STL. Current development includes Scala and full-stack API integrations using Python/Flask on the backend and JavaScript on the frontend.
 
-## Target roles
-
-Principal / Senior Technical Writer · Documentation Engineer · Developer Experience (DevEx) · API & Developer Documentation · AI Knowledge Manager · Documentation Lead
-
-
 ## Professional profile
 
 For employment history and professional experience, visit my
@@ -141,7 +135,7 @@ For employment history and professional experience, visit my
 
 :::tip[Automated documentation QA]
 
-This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions combining AI-assisted editorial review with deterministic tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
+This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions combining AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
 
 **[View the live report →](pathname:///qa/)**
 :::
