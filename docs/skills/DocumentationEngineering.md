@@ -179,4 +179,4 @@ A key example is **Codetreedocs**, an internal developer-documentation platform 
 
 Over three years, the documentation estate grew from approximately **700 pages to more than 3,200 pages**, supported by contributions from the wider engineering community. I also developed migration tooling that converted approximately **900 legacy pages** into the platform's extended Markdown format.
 
-[Read the Codetreedocs case study →](../case-studies/scalingdeveloperdocs)
+[Read the Codetreedocs case study →](../case-studies/ScalingADeveloperDocsPlatform.md)
