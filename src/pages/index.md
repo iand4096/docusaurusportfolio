@@ -9,7 +9,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 # Ian Drewett
 
-Principal Technical Writer and Documentation Engineer with an M.Sc. in Computer Science, a Physics degree, and a software-engineering background spanning systems programming, APIs, developer platforms, and documentation engineering
+Principal Technical Writer and Documentation Engineer with an M.Sc. in Computer Science and a software-engineering background spanning device drivers, graphics/CAD/VR, APIs, and developer platforms.
 
 I combine technical writing with hands-on engineering:
 
@@ -60,7 +60,7 @@ API implementation and testing, security validation, software debugging, automat
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
 
   <p>
-   Led the design and evolution of Codetreedocs, an internal documentation platform that grew to more than 3,200 pages and approximately 1,200 developer mailing-list subscribers. My responsibilities also included documentation for Optimus, a distributed Scala graph-computation engine, and RICE, Morgan Stanley’s fixed-income risk framework.
+   Led the design and evolution of Codetreedocs, an internal documentation platform that grew to more than 3,200 pages and approximately 1,200 developer mailing-list subscribers. My responsibilities also included documentation for Optimus, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
   </p>
 
   <span className="card-link">Read case study →</span>
