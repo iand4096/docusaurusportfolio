@@ -1481,6 +1481,77 @@ def ltex_original_text(content, line_number, column_number):
     return line_text
 
 
+def is_ltex_non_prose_line(content, line_number):
+    """Return True when an LTeX+ diagnostic points at source syntax, not prose.
+
+    LTeX+ can interpret Docusaurus/MDX source constructs as English text when
+    checking Markdown files. This filter is deliberately narrow: it ignores
+    diagnostics on import/export statements, Docusaurus directive markers, and
+    React/MDX component markup while leaving the surrounding reader-facing prose
+    available to LTeX+.
+    """
+
+    lines = content.splitlines()
+
+    if not 1 <= line_number <= len(lines):
+        return False
+
+    target_index = line_number - 1
+    stripped = lines[target_index].strip()
+
+    # Empty lines are never reader-facing prose.
+    if not stripped:
+        return True
+
+    # ES module / MDX imports and exports.
+    if re.match(r"^(?:import|export)\b", stripped):
+        return True
+
+    # Docusaurus directives/admonition markers. Only the marker line is ignored;
+    # prose inside the admonition remains eligible for LTeX+ checking.
+    if stripped.startswith(":::"):
+        return True
+
+    # Closing React/MDX component tags, for example </Tabs>.
+    if re.match(r"^</[A-Z][A-Za-z0-9_.:-]*\s*>$", stripped):
+        return True
+
+    # Self-contained React/MDX component tags on one line.
+    if re.match(r"^<[A-Z][A-Za-z0-9_.:-]*\b.*?/?>\s*$", stripped):
+        return True
+
+    # Determine whether the diagnostic line sits inside a multiline React/MDX
+    # opening tag, for example:
+    #
+    # <SidebarCardGrid
+    #   metadataKey="skillCard"
+    #   linkLabel="Explore skills →"
+    # />
+    in_jsx_opening_tag = False
+
+    for index, raw_line in enumerate(lines):
+        if index > target_index:
+            break
+
+        current = raw_line.strip()
+
+        if not in_jsx_opening_tag:
+            if re.match(r"^<[A-Z][A-Za-z0-9_.:-]*\b", current):
+                if index == target_index:
+                    return True
+
+                if ">" not in current:
+                    in_jsx_opening_tag = True
+        else:
+            if index == target_index:
+                return True
+
+            if ">" in current:
+                in_jsx_opening_tag = False
+
+    return False
+
+
 def normalise_ltex_diagnostic(header, block_lines, path, content):
     """Convert one LTeX+ diagnostic into the unified report issue schema."""
 
@@ -1492,6 +1563,11 @@ def normalise_ltex_diagnostic(header, block_lines, path, content):
 
     if not isinstance(column, int) or column <= 0:
         column = 1
+
+    # LTeX+ can report Docusaurus/MDX source syntax as English prose. Drop only
+    # those diagnostics; reader-facing prose on surrounding lines is unchanged.
+    if is_ltex_non_prose_line(content, line):
+        return None
 
     raw_severity = str(header.get("severity") or "").strip().lower()
     # LTeX+ diagnostics are warning-level by default. If a renderer omits the
@@ -2869,7 +2945,40 @@ def generate_html_report(issues, errors, metadata, ci_result):
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <title>Documentation QA report</title>
+    <script>
+        // GitHub Pages controls the response Cache-Control header, so this page
+        // cache-busts its own URL once on each visit. A stale cached copy still
+        // executes this code and requests a unique URL for the current report.
+        (() => {{
+            if (window.location.protocol !== 'http:' && window.location.protocol !== 'https:') {{
+                return;
+            }}
+
+            const url = new URL(window.location.href);
+            const refreshParameter = '_qa_refresh';
+
+            if (!url.searchParams.has(refreshParameter)) {{
+                url.searchParams.set(refreshParameter, Date.now().toString());
+                window.location.replace(url.toString());
+                return;
+            }}
+
+            // Keep the address bar clean after the cache-busted page has loaded.
+            window.addEventListener('DOMContentLoaded', () => {{
+                const cleanUrl = new URL(window.location.href);
+                cleanUrl.searchParams.delete(refreshParameter);
+                window.history.replaceState(
+                    null,
+                    '',
+                    cleanUrl.pathname + cleanUrl.search + cleanUrl.hash,
+                );
+            }});
+        }})();
+    </script>
     <style>
         :root {{
             font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -2903,6 +3012,26 @@ def generate_html_report(issues, errors, metadata, ci_result):
 
         .portfolio-link {{
             margin: 0 0 18px;
+        }}
+
+        .report-actions {{
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 0 0 18px;
+        }}
+
+        .report-actions a {{
+            display: inline-block;
+            padding: 7px 10px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            background: #fff;
+            text-decoration: none;
+        }}
+
+        .report-actions a:hover {{
+            text-decoration: underline;
         }}
 
         .subtitle {{
@@ -3030,6 +3159,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
         @media (prefers-color-scheme: dark) {{
             body {{ background: #111827; color: #f3f4f6; }}
             .card, .table-wrap {{ background: #1f2937; border-color: #374151; }}
+            .report-actions a {{ background: #1f2937; border-color: #374151; }}
             th {{ background: #111827; }}
             th, td {{ border-bottom-color: #374151; }}
             .subtitle, .card span {{ color: #9ca3af; }}
@@ -3042,6 +3172,9 @@ def generate_html_report(issues, errors, metadata, ci_result):
     <p class="portfolio-link">
         <a href="{html.escape(PORTFOLIO_URL, quote=True)}">← Back to Portfolio</a>
     </p>
+    <div class="report-actions">
+        <a id="latestReportLink" href="#">Load latest report</a>
+    </div>
     <p class="subtitle">
         Report run: {html.escape(metadata['report_run_at_display'])}
         ({html.escape(metadata['report_time_zone'])})<br>
@@ -3136,6 +3269,16 @@ def generate_html_report(issues, errors, metadata, ci_result):
 <script>
     const severityFilter = document.getElementById('severityFilter');
     const sourceFilter = document.getElementById('sourceFilter');
+    const latestReportLink = document.getElementById('latestReportLink');
+
+    if (latestReportLink) {{
+        latestReportLink.addEventListener('click', (event) => {{
+            event.preventDefault();
+            const url = new URL(window.location.href);
+            url.searchParams.set('_qa_refresh', Date.now().toString());
+            window.location.assign(url.toString());
+        }});
+    }}
 
     function applyFilters() {{
         const severity = severityFilter.value;
