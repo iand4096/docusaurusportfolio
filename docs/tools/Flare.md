@@ -18,7 +18,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 I am a MadCap Flare specialist with nearly eight years of experience using Flare at AMX, Monitise (now Fiserv) and Paysafe.
 
-## Core flare skills
+## Core Flare skills
 
 <CapabilityGrid variant="checklist">
 
@@ -34,7 +34,7 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 </CapabilityGrid>
 
-## Advanced flare skills
+## Advanced Flare skills
 
 <CapabilityGrid>
 
