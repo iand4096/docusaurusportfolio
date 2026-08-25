@@ -7,7 +7,7 @@ hide_table_of_contents: true
 import Link from '@docusaurus/Link';
 import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
-# Ian Drewett
+# Ian Drewett M.Sc.
 
 Principal Technical Writer and Documentation Engineer with an M.Sc. in Computer Science and a software-engineering background spanning device drivers, graphics/CAD/VR, APIs, and developer platforms.
 
@@ -32,6 +32,9 @@ I combine technical writing with hands-on engineering:
 
 * **Developer documentation:**
   APIs, SDKs, integration guides, tutorials, code examples, OpenAPI references, and developer portals
+
+* **User documentation:**
+ User, Administrator and Installation Guides for complex SaaS products using single-sourcing techniques for scalability and maintenance.
 
 * **Documentation engineering:**
   Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling
