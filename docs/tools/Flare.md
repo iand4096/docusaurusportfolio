@@ -60,6 +60,11 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 I applied these capabilities to the automation, integration and migration projects described in the [Flare Automation, Integration and Migration](#automation) section.
 
+
+## Flare user documentatoin
+
+I have used Flare to create a large user manual and HTML application help at AMX for a [CMS for networked digital signage players](../docs-samples/AMXInspiredSignageComposer.md).
+
 ## Flare community contributions
 
 I have published 131 posts on the MadCap Flare user forum under the username **iand**, contributing answers, troubleshooting guidance and practical workarounds for other Flare users.
