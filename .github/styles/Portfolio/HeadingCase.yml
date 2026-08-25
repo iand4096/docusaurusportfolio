@@ -43,6 +43,7 @@ exceptions:
   - QA
   - Ian Drewett
   - M.Sc. Computer Science
+  - Flare
 
 action:
   name: replace
