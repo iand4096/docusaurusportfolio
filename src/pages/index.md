@@ -34,7 +34,7 @@ I combine technical writing with hands-on engineering:
   APIs, SDKs, integration guides, tutorials, code examples, OpenAPI references, and developer portals
 
 * **User documentation:**
- User, Administrator and Installation Guides for complex SaaS products using single-sourcing techniques for scalability and maintenance.
+ User, administrator and installation guides for complex SaaS products using single-sourcing techniques for scalability and maintenance.
 
 * **Documentation engineering:**
   Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling
