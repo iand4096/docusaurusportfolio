@@ -62,7 +62,7 @@ I applied these capabilities to the automation, integration and migration projec
 
 ## Flare user documentation
 
-I used Flare to create a large user / administrator manual and HTML application help using single-sourcing techniques at AMX for a [networked digital signage CMS](../docs-samples/AMXInspiredSignageComposer.md).
+At AMX, I used MadCap Flare and single-sourcing techniques to develop two comprehensive manuals and integrated HTML help for administrators and end users of a [networked digital signage CMS](../docs-samples/AMXInspiredSignageComposer.md).
 
 ## Flare community contributions
 
