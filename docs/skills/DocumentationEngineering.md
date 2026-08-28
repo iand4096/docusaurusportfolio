@@ -14,32 +14,28 @@ sidebar_custom_props:
     ariaLabel: Explore my documentation engineering skills
 ---
 
-I apply software-engineering practices to documentation systems, treating documentation as a product that can be versioned, tested, automated and continuously improved.
+I apply software-engineering practices to documentation systems, including version control, automated testing, CI/CD and tooling for repetitive tasks.
 
 My experience includes docs-as-code, Git and CI/CD workflows, static-site generators, Markdown and parser extensions, large-scale content migration, documentation-platform development, search, validation and custom tooling.
 
 ## Docs-as-code
 
-I have extensive experience designing and working with documentation systems in which content is managed alongside software using engineering workflows.
-
-This includes:
+My docs-as-code experience includes:
 
 * Markdown authoring
-* Git branching and pull-request workflows
-* Command-line Git, including rebasing and resolving merge conflicts
-* Documentation stored alongside source code
-* Large repositories and monorepos
-* Automated builds and publishing
-* Engineering-led documentation contributions
+* Using Git branching and pull-request workflows to update the documentation
+* Command-line Git, including rebasing and resolving merge conflicts.
+* Documentation stored alongside source code, including the benefits and trade-offs of this approach.
+* Hosting documentation in large repositories and monorepos
+* Automating builds and publishing
+* Promoting and enabling engineering documentation contributions
 * Review, versioning and traceability through Git
 
-I have also designed contributor workflows, standards and tooling intended to make documentation a normal part of software development rather than a separate downstream activity.
+I have also designed contributor workflows, standards and tooling that enable engineers to contribute documentation through normal development workflows.
 
 ## CI/CD and publishing
 
-I use CI/CD to make documentation publishing repeatable, testable and less dependent on manual processes.
-
-My experience includes:
+I use CI/CD to automate documentation build, validation and publishing workflows. My experience includes:
 
 * Jenkins-based documentation pipelines
 * GitHub Actions
@@ -55,7 +51,7 @@ My current portfolio, for example, uses GitHub Actions to build and publish the 
 
 I have worked with Docusaurus, MkDocs and custom Markdown-based static-site generators.
 
-My experience goes beyond configuring existing platforms. I have evaluated, extended and helped develop documentation platforms to meet requirements around:
+I have evaluated, extended and developed documentation platforms to meet requirements around:
 
 * Build performance
 * Large documentation sets
@@ -66,25 +62,23 @@ My experience goes beyond configuring existing platforms. I have evaluated, exte
 * Incremental builds and caching
 * CI integration
 * Contributor experience
+* User feedback collection
 
-I have modified existing MkDocs plugins where required and have also designed and helped deliver a custom static-site generator when an off-the-shelf platform could not meet the project's requirements.
+I have modified existing MkDocs plugins where required. I also led and specified the requirements for a custom static-site generator, was closely involved in its technical design and testing, and later contributed directly to its development.
 
 ## Markdown and parser engineering
 
 Standard Markdown is not always sufficient for complex developer documentation.
 
-I have extended documentation tooling to support features including:
+I have extended Markdown parsers and static-site tooling to support features including:
 
-* PlantUML
-* Mermaid
-* C4 architecture diagrams
+* Diagrams-as-code formats such as PlantUML, Mermaid, and Graphviz
+* C4 software architecture diagrams
 * LaTeX mathematical notation
-* Reusable content
+* Content reuse and conditional text
 * Code-sample injection
-* Extended Markdown structures
-* Embedded HTML for structures that Markdown cannot represent effectively
 
-I have also worked directly with parsers and transformation logic to diagnose rendering problems and extend documentation-platform functionality.
+I have also built tools to convert complex HTML into clean embedded HTML or mixed Markdown and HTML for structures that standard Markdown cannot represent, such as complex tables using `rowspan`, `colspan`, or multi-line cell content.
 
 ## Content migration and transformation
 
@@ -96,17 +90,18 @@ My migration work has included:
 * HTML parsing and transformation
 * Wiki-to-Markdown conversion
 * Sphinx-to-Markdown conversion
-* Link preservation and rewriting
+* Confluence XHTML to MadCap Flare XHTML conversion
+* Link preservation and rewriting, including conversion of absolute links to relative link
 * Front-matter and metadata generation
 * Structural content transformation
 * Reusable-content conversion
-* Validation of generated output
+* Validating generated Markdown and HTML for errors
 
-For large migrations, I combine automated conversion with content analysis rather than treating migration as a simple copy operation. Analytics can be used to identify high-value content, while obsolete or duplicate material can be restructured or retired rather than automatically carried into the new platform.
+For large migrations, I use analytics such as page views to identify high-value content and flag potentially obsolete material for review or archival.
 
 ## Documentation tooling and automation
 
-I regularly build tools to remove repetitive documentation work and make documentation systems easier to maintain.
+I build tools to remove repetitive documentation work and make documentation systems easier to maintain.
 
 Examples include:
 
@@ -115,10 +110,9 @@ Examples include:
 * Automated landing-page generation
 * Diagram generation
 * Git workflow automation
-* Documentation validation
-* Grammar and spelling checks
+* Automated grammar and spelling checks
 * Link checking
-* AI-assisted editorial and engineering workflows
+* LLM-assisted editorial checks
 
 I also use web-development techniques where appropriate. This portfolio, for example, combines Docusaurus and React components to turn structured Markdown content into responsive visual layouts.
 
@@ -126,18 +120,18 @@ I also use web-development techniques where appropriate. This portfolio, for exa
 
 I treat documentation as something that can be tested rather than relying entirely on manual review.
 
-Depending on the platform, this can include:
+Examples include:
 
 * Build validation
 * Link checking
 * Markdown validation
 * Grammar and spelling checks
-* Style-guide checks
+* Style-guide checks using Vale or similar
 * Accessibility checks
 * Rendering tests
 * Migration-output validation
-* Detection of obsolete terminology in screenshots / diagrams using OCR
-* Automated quality checks in pull requests
+* OCR-based detection of obsolete terminology in screenshots and legacy diagrams
+* Automated quality checks on pull requests
 
 This approach allows quality controls to scale with the size of the documentation set and the number of contributors.
 
@@ -145,26 +139,11 @@ This approach allows quality controls to scale with the size of the documentatio
 
 Documentation engineering also includes making content discoverable once it has been published.
 
-I have worked with traditional site search as well as RAG-based retrieval approaches.
-
-For large documentation sets, I consider search and retrieval requirements alongside content architecture, including:
-
-* Metadata
-* Content lifecycle status
-* Search indexing
-* Deprecated content
-* Navigation
-* Ownership
-* Content type
-* Audience
-
-These controls become increasingly important as documentation estates grow and are also important when documentation is used as a source for AI-generated answers.
+I have integrated traditional enterprise search, fast browser-based search using tools such as FlexSearch.js, and central RAG-based retrieval services. My RAG work has included generating sitemaps for indexing, testing retrieval quality, identifying issues such as deprecated APIs being surfaced, and proposing metadata and filtering to improve results.
 
 ## Engineering for scale
 
-Documentation systems need to continue working as content volume, contributor numbers and publishing frequency increase.
-
-My experience includes:
+My experience engineering documentation systems for scale includes:
 
 * Managing documentation estates containing thousands of pages
 * Scaling Git-based contribution workflows
@@ -173,9 +152,8 @@ My experience includes:
 * Reducing duplication through reuse
 * Supporting distributed engineering contributions
 * Developing documentation standards and tooling
-* Designing platforms that can evolve as requirements change
 
-A key example is **Codetreedocs**, an internal developer-documentation platform at Morgan Stanley. I was product owner, creator and contributor to the platform, which combined Markdown, Git, Jenkins, an IDE-based authoring experience, custom static-site generation, search and migration tooling.
+A key example is **Codetreedocs**, an internal developer-documentation platform at Morgan Stanley. I led the platform as product owner, defined its requirements, contributed to the design, did the majority of the testing, and later contributed directly to its development. The platform combined Markdown, Git, Jenkins, an IDE-based authoring experience, custom static-site generation, search and migration tooling.
 
 Over three years, the documentation estate grew from approximately **700 pages to more than 3,200 pages**, supported by contributions from the wider engineering community. I also developed migration tooling that converted approximately **900 legacy pages** into the platform's extended Markdown format.
 

@@ -41,3 +41,4 @@ PANs
 DevEx
 Fiserv
 Finextra
+Flexsearch
