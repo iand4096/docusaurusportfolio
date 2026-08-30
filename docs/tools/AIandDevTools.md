@@ -5,13 +5,48 @@ slug: /aianddevtools
 sidebar_custom_props:
   sampleCard:
     tag: AI and developer tools
-    description: Using AI-assisted development, Agentic AI, MCP, RAG concepts and developer tooling to improve documentation engineering, software development and content workflows.
+    description: Using AI-assisted development, Agentic AI, MCP, RAG concepts and developer tooling 
+      to improve documentation engineering, software development and content workflows.
     highlights:
       - Spec-driven AI development and code validation
       - MCP servers with FastMCP
       - RAG, metadata and retrieval-quality considerations
       - IntelliJ plugins and modern AI coding tools
     ariaLabel: Explore my AI and developer tooling skills
+type:
+  - skill
+audiences:
+  - technical-writers
+  - developers
+topics:
+  - documentation-engineering
+  - docs-as-code
+  - developer-experience
+technologies:
+  - claude
+  - github-copilot
+  - amp
+  - agentic-ai
+  - mcp
+  - fastmcp
+  - rag
+  - spec-driven-development
+  - markdown
+lifecycle:
+  - current
+tags:
+  - agentic-ai
+  - amp
+  - claude
+  - developer-experience
+  - docs-as-code
+  - documentation-engineering
+  - fastmcp
+  - github-copilot
+  - markdown
+  - mcp
+  - rag
+  - spec-driven-development
 ---
 
 Practical experience using AI and developer tooling to improve documentation engineering, software development and technical-content workflows.

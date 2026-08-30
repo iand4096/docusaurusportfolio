@@ -5,13 +5,54 @@ slug: /staticsitedocsplatforms
 sidebar_custom_props:
   sampleCard:
     tag: Documentation platforms
-    description: Building and extending scalable documentation platforms using Docusaurus, MkDocs, custom plugins, search integrations and automated publishing workflows.
+    description: Building and extending scalable documentation platforms using Docusaurus, MkDocs, 
+      custom plugins, search integrations and automated publishing workflows.
     highlights:
       - Docusaurus, MkDocs and static-site generators
       - React, JavaScript and Python platform extensions
       - Client-side, central and RAG search integration
       - Scalable builds for thousands of documentation pages
     ariaLabel: Explore my documentation platform engineering skills
+type:
+  - tool
+audiences:
+  - technical-writers
+  - documentation-managers
+topics:
+  - docs-as-code
+  - documentation-engineering
+  - developer-experience
+technologies:
+  - docusaurus
+  - mkdocs
+  - mdx
+  - react
+  - jsx
+  - github-actions
+  - github-pages
+  - vale
+  - vs-code
+  - flexsearch
+  - python
+  - markdown
+lifecycle:
+  - current
+tags:
+  - developer-experience
+  - docs-as-code
+  - documentation-engineering
+  - docusaurus
+  - flexsearch
+  - github-actions
+  - github-pages
+  - jsx
+  - markdown
+  - mdx
+  - mkdocs
+  - python
+  - react
+  - vale
+  - vs-code
 ---
 
 ## Static site generators and documentation platforms

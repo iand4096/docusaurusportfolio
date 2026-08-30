@@ -4,13 +4,49 @@ sidebar_position: 2
 sidebar_custom_props:
   sampleCard:
     tag: API integration
-    description: Mastercard tokenisation documentation developed through custom Python integration testing, OAuth 1.0 authentication, field-level encryption, and webhook validation.
+    description: Mastercard tokenisation documentation developed through custom Python integration 
+      testing, OAuth 1.0 authentication, field-level encryption, and webhook validation.
     highlights:
       - Wrote the first MDES for Merchants use-case guide
       - Built custom Python test integrations
       - Validated OAuth, encryption, and webhooks
       - Improved the supporting OpenAPI reference
     ariaLabel: View the MDES for Merchants documentation sample
+type:
+  - case-study
+audiences:
+  - developers
+topics:
+  - api-documentation
+  - api-security
+  - technical-validation
+  - payments
+technologies:
+  - python
+  - requests
+  - flask
+  - pythonanywhere
+  - openapi
+  - oauth
+  - mdes
+  - digital-enablement-api
+  - postman
+lifecycle:
+  - current
+tags:
+  - api-documentation
+  - api-security
+  - digital-enablement-api
+  - flask
+  - mdes
+  - oauth
+  - openapi
+  - payments
+  - postman
+  - python
+  - pythonanywhere
+  - requests
+  - technical-validation
 ---
 
 ## Project overview

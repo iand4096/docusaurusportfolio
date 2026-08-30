@@ -226,6 +226,7 @@
 
 .portfolio-card h3,
 .portfolio-card p,
+.portfolio-card .card-description,
 .portfolio-card span {
   /* Wrap long words, URLs and technical terms */
   min-width: 0;
@@ -242,7 +243,8 @@
   line-height: 1.35;
 }
 
-.portfolio-card p {
+.portfolio-card p,
+.portfolio-card .card-description {
   flex-grow: 1;
   margin: 0 0 1rem;
   line-height: 1.6;

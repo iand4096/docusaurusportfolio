@@ -4,13 +4,38 @@ sidebar_position: 5
 sidebar_custom_props:
   sampleCard:
     tag: User documentation
-    description: Single-source user and administrator documentation for a networked digital-signage platform, produced as context-sensitive HTML help and PDF from one MadCap Flare project.
+    description: Single-source user and administrator documentation for a networked digital-signage 
+      platform, produced as context-sensitive HTML help and PDF from one MadCap Flare project.
     highlights:
       - Created role-specific HTML help and PDF outputs
       - Used conditional text and reusable content to minimise duplication
       - Documented configuration, permissions, publishing, and troubleshooting
       - Applied practical TCP/IP and device-connectivity knowledge
     ariaLabel: View the AMX Digital Signage User Manual documentation sample
+type:
+  - case-study
+audiences:
+  - system-administrators
+  - technical-writers
+topics:
+  - technical-writing
+  - information-architecture
+technologies:
+  - madcap-flare
+  - mermaid
+  - tcp-ip
+  - vale
+  - languagetool
+lifecycle:
+  - current
+tags:
+  - information-architecture
+  - languagetool
+  - madcap-flare
+  - mermaid
+  - tcp-ip
+  - technical-writing
+  - vale
 ---
 
 ## Project overview

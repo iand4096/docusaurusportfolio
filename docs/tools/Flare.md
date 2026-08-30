@@ -5,13 +5,52 @@ slug: /flare
 sidebar_custom_props:
   sampleCard:
     tag: Structured authoring
-    description: Advanced single-sourcing, custom styling, publishing automation, Git integration, content migration and complex output troubleshooting.
+    description: Advanced single-sourcing, custom styling, publishing automation, Git integration, 
+      content migration and complex output troubleshooting.
     highlights:
       - Nearly eight years of experience
       - HTML and PDF single-sourcing
       - C# and REST API automation
       - 131 community-forum contributions
     ariaLabel: Explore my MadCap Flare skills
+type:
+  - skill
+audiences:
+  - technical-writers
+  - documentation-managers
+topics:
+  - technical-writing
+  - documentation-engineering
+  - docs-as-code
+technologies:
+  - madcap-flare
+  - git
+  - jenkins
+  - confluence
+  - jira
+  - pythonanywhere
+  - hypothesis
+  - xhtml
+  - css
+  - xml
+  - csharp
+lifecycle:
+  - current
+tags:
+  - confluence
+  - csharp
+  - css
+  - docs-as-code
+  - documentation-engineering
+  - git
+  - hypothesis
+  - jenkins
+  - jira
+  - madcap-flare
+  - pythonanywhere
+  - technical-writing
+  - xhtml
+  - xml
 ---
 
 import CapabilityGrid from '@site/src/components/CapabilityGrid';

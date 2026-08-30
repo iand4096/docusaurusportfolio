@@ -43,14 +43,19 @@
         "agentic-ai",
         "amp",
         "amx-composer",
+        "api-blueprint",
         "apple-pay",
+        "bash",
         "brightspot-cms",
+        "c-plus-plus",
         "c4-model",
         "catia",
         "claude",
         "codepen",
         "codetreedocs",
         "confluence",
+        "csharp",
+        "css",
         "curl",
         "deepseek-api",
         "digital-enablement-api",
@@ -74,6 +79,7 @@
         "inkscape",
         "insomnia",
         "intellij-idea",
+        "javascript",
         "jenkins",
         "jetty",
         "jinja",
@@ -96,8 +102,10 @@
         "mkdocs",
         "mtls",
         "nginx",
+        "node-js",
         "oauth",
         "ocr",
+        "openapi",
         "openssl",
         "openwrt",
         "owasp",
@@ -108,24 +116,30 @@
         "postman",
         "proxmox",
         "pycharm",
+        "python",
         "pythonanywhere",
         "rag",
         "react",
         "requests",
         "rest",
         "saq-a",
+        "scala",
         "spec-driven-development",
         "sphinx",
+        "svg",
         "tcp-ip",
         "tls",
+        "tokenisation",
         "twiki",
         "typescript",
+        "typo3",
         "vale",
         "visio",
         "vs-code",
         "whisper",
         "wireshark",
         "x509",
+        "xhtml",
         "xml",
         "yaml"
       ]
@@ -174,7 +188,8 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Audiences",
@@ -182,7 +197,8 @@
           "type": "taxonomy",
           "taxonomyId": "audiences",
           "required": true,
-          "taxonomyLimit": 3
+          "taxonomyLimit": 3,
+          "singleValueAsString": false
         },
         {
           "title": "Topics",
@@ -190,7 +206,8 @@
           "type": "taxonomy",
           "taxonomyId": "topics",
           "required": true,
-          "taxonomyLimit": 5
+          "taxonomyLimit": 5,
+          "singleValueAsString": false
         },
         {
           "title": "Technologies",
@@ -198,7 +215,8 @@
           "type": "taxonomy",
           "taxonomyId": "technologies",
           "required": false,
-          "taxonomyLimit": 50
+          "taxonomyLimit": 50,
+          "singleValueAsString": false
         },
         {
           "title": "Lifecycle",
@@ -206,7 +224,8 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -251,7 +270,8 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Audiences",
@@ -259,7 +279,8 @@
           "type": "taxonomy",
           "taxonomyId": "audiences",
           "required": true,
-          "taxonomyLimit": 3
+          "taxonomyLimit": 3,
+          "singleValueAsString": false
         },
         {
           "title": "Topics",
@@ -267,7 +288,8 @@
           "type": "taxonomy",
           "taxonomyId": "topics",
           "required": true,
-          "taxonomyLimit": 5
+          "taxonomyLimit": 5,
+          "singleValueAsString": false
         },
         {
           "title": "Technologies",
@@ -275,7 +297,8 @@
           "type": "taxonomy",
           "taxonomyId": "technologies",
           "required": false,
-          "taxonomyLimit": 15
+          "taxonomyLimit": 15,
+          "singleValueAsString": false
         },
         {
           "title": "Lifecycle",
@@ -283,7 +306,8 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -328,7 +352,8 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Audiences",
@@ -336,7 +361,8 @@
           "type": "taxonomy",
           "taxonomyId": "audiences",
           "required": true,
-          "taxonomyLimit": 3
+          "taxonomyLimit": 3,
+          "singleValueAsString": false
         },
         {
           "title": "Topics",
@@ -344,7 +370,8 @@
           "type": "taxonomy",
           "taxonomyId": "topics",
           "required": true,
-          "taxonomyLimit": 5
+          "taxonomyLimit": 5,
+          "singleValueAsString": false
         },
         {
           "title": "Technologies",
@@ -352,7 +379,8 @@
           "type": "taxonomy",
           "taxonomyId": "technologies",
           "required": false,
-          "taxonomyLimit": 50
+          "taxonomyLimit": 50,
+          "singleValueAsString": false
         },
         {
           "title": "Lifecycle",
@@ -360,7 +388,8 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -405,7 +434,8 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Audiences",
@@ -413,7 +443,8 @@
           "type": "taxonomy",
           "taxonomyId": "audiences",
           "required": true,
-          "taxonomyLimit": 3
+          "taxonomyLimit": 3,
+          "singleValueAsString": false
         },
         {
           "title": "Topics",
@@ -421,7 +452,8 @@
           "type": "taxonomy",
           "taxonomyId": "topics",
           "required": true,
-          "taxonomyLimit": 5
+          "taxonomyLimit": 5,
+          "singleValueAsString": false
         },
         {
           "title": "Technologies",
@@ -429,7 +461,8 @@
           "type": "taxonomy",
           "taxonomyId": "technologies",
           "required": false,
-          "taxonomyLimit": 20
+          "taxonomyLimit": 20,
+          "singleValueAsString": false
         },
         {
           "title": "Lifecycle",
@@ -437,7 +470,8 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -482,7 +516,8 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Audiences",
@@ -490,7 +525,8 @@
           "type": "taxonomy",
           "taxonomyId": "audiences",
           "required": true,
-          "taxonomyLimit": 3
+          "taxonomyLimit": 3,
+          "singleValueAsString": false
         },
         {
           "title": "Topics",
@@ -498,7 +534,8 @@
           "type": "taxonomy",
           "taxonomyId": "topics",
           "required": true,
-          "taxonomyLimit": 5
+          "taxonomyLimit": 5,
+          "singleValueAsString": false
         },
         {
           "title": "Technologies",
@@ -506,7 +543,8 @@
           "type": "taxonomy",
           "taxonomyId": "technologies",
           "required": false,
-          "taxonomyLimit": 40
+          "taxonomyLimit": 40,
+          "singleValueAsString": false
         },
         {
           "title": "Lifecycle",
@@ -514,7 +552,8 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -532,16 +571,21 @@
     "agentic-ai",
     "amp",
     "amx-composer",
+    "api-blueprint",
     "api-documentation",
     "api-security",
     "apple-pay",
+    "bash",
     "brightspot-cms",
+    "c-plus-plus",
     "c4-model",
     "catia",
     "claude",
     "codepen",
     "codetreedocs",
     "confluence",
+    "csharp",
+    "css",
     "curl",
     "deepseek-api",
     "developer-experience",
@@ -570,6 +614,7 @@
     "inkscape",
     "insomnia",
     "intellij-idea",
+    "javascript",
     "jenkins",
     "jetty",
     "jinja",
@@ -592,8 +637,10 @@
     "mkdocs",
     "mtls",
     "nginx",
+    "node-js",
     "oauth",
     "ocr",
+    "openapi",
     "openssl",
     "openwrt",
     "owasp",
@@ -605,30 +652,44 @@
     "postman",
     "proxmox",
     "pycharm",
+    "python",
     "pythonanywhere",
     "rag",
     "react",
     "requests",
     "rest",
     "saq-a",
+    "scala",
     "spec-driven-development",
     "sphinx",
+    "svg",
     "tcp-ip",
     "technical-validation",
     "technical-writing",
     "tls",
+    "tokenisation",
     "twiki",
     "typescript",
+    "typo3",
     "vale",
     "visio",
     "vs-code",
     "whisper",
     "wireshark",
     "x509",
+    "xhtml",
     "xml",
     "yaml"
   ],
   "technologyKinds": {
+    "data-format": {
+      "label": "Data format",
+      "description": "A structured data serialisation or interchange format such as JSON, YAML, XML, or SVG."
+    },
+    "payment-technology": {
+      "label": "Payment technology",
+      "description": "A payment-specific technical product, wallet integration, tokenisation technology, checkout technology, or payment platform used in implementation work."
+    },
     "programming-language": {
       "label": "Programming language",
       "description": "A general-purpose or domain-specific programming language."
@@ -692,6 +753,10 @@
     "ide-editor": {
       "label": "IDE or editor",
       "description": "An integrated development environment or source-code editor."
+    },
+    "stylesheet-language": {
+      "label": "Stylesheet language",
+      "description": "A language used to describe the presentation and visual styling of structured documents or web content."
     },
     "testing-debugging-tool": {
       "label": "Testing or debugging tool",
@@ -775,15 +840,29 @@
     }
   },
   "technologyTermsByKind": {
+    "data-format": [
+      "svg"
+    ],
+    "payment-technology": [
+      "tokenisation"
+    ],
     "programming-language": [
+      "c-plus-plus",
+      "csharp",
+      "javascript",
       "jsx",
+      "python",
+      "scala",
       "typescript"
     ],
-    "shell-scripting": [],
+    "shell-scripting": [
+      "bash"
+    ],
     "markup-content-language": [
       "json",
       "markdown",
       "mdx",
+      "xhtml",
       "xml",
       "yaml"
     ],
@@ -798,11 +877,15 @@
       "react",
       "requests"
     ],
-    "runtime": [],
+    "runtime": [
+      "node-js"
+    ],
     "standard-specification": [
+      "api-blueprint",
       "finos-calm",
       "jose",
       "jwt",
+      "openapi",
       "owasp",
       "pci-dss",
       "saq-a",
@@ -838,7 +921,8 @@
     "cms-wiki": [
       "brightspot-cms",
       "confluence",
-      "twiki"
+      "twiki",
+      "typo3"
     ],
     "developer-platform": [
       "codepen",
@@ -851,6 +935,9 @@
       "intellij-idea",
       "pycharm",
       "vs-code"
+    ],
+    "stylesheet-language": [
+      "css"
     ],
     "testing-debugging-tool": [],
     "network-analysis-tool": [

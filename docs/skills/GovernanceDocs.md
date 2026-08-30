@@ -5,13 +5,42 @@ slug: /governancedocs
 sidebar_custom_props:
   sampleCard:
     tag: Content operations
-    description: Standards, review processes, ownership models, quality controls and governance practices for large documentation estates.
+    description: Standards, review processes, ownership models, quality controls and governance 
+      practices for large documentation estates.
     highlights:
       - Documentation standards and templates
       - Review and approval workflows
       - Content ownership and lifecycle management
       - Quality, consistency and compliance controls
     ariaLabel: Explore my documentation-governance skills
+type:
+  - skill
+audiences:
+  - technical-writers
+  - documentation-managers
+topics:
+  - documentation-governance
+  - information-architecture
+  - docs-as-code
+technologies:
+  - c4-model
+  - finos-calm
+  - jira
+  - ldap
+  - markdown
+  - whisper
+lifecycle:
+  - current
+tags:
+  - c4-model
+  - docs-as-code
+  - documentation-governance
+  - finos-calm
+  - information-architecture
+  - jira
+  - ldap
+  - markdown
+  - whisper
 ---
 
 I have several years of experience creating and maintaining software architecture-governance documentation for complex financial systems. My work combined accurate meeting records, architecture diagrams, action tracking, metadata governance and workflow automation.

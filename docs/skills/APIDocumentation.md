@@ -14,6 +14,65 @@ sidebar_custom_props:
       - Authentication, encryption and webhook validation
       - Test-driven documentation and defect investigation
     ariaLabel: Explore my API documentation and technical validation skills
+type:
+  - skill
+audiences:
+  - developers
+  - technical-writers
+  - documentation-managers
+topics:
+  - api-documentation
+  - technical-validation
+  - api-security
+  - developer-experience
+  - technical-writing
+technologies:
+  - openapi
+  - rest
+  - oauth
+  - mtls
+  - x509
+  - pki
+  - jwt
+  - jose
+  - https
+  - tls
+  - python
+  - requests
+  - flask
+  - jetty
+  - postman
+  - insomnia
+  - curl
+  - jira
+  - node-js
+lifecycle:
+  - current
+tags:
+  - api-documentation
+  - api-security
+  - curl
+  - developer-experience
+  - flask
+  - https
+  - insomnia
+  - jetty
+  - jira
+  - jose
+  - jwt
+  - mtls
+  - node-js
+  - oauth
+  - openapi
+  - pki
+  - postman
+  - python
+  - requests
+  - rest
+  - technical-validation
+  - technical-writing
+  - tls
+  - x509
 ---
 
 Twelve years of experience creating API and SDK documentation for fintech, financial-services at companies such as Morgan Stanley, Mastercard and Paysafe, supported by a software-development background.

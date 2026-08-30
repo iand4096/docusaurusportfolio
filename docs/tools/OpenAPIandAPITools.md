@@ -5,13 +5,54 @@ slug: /openapitools
 sidebar_custom_props:
   sampleCard:
     tag: API specifications
-    description: Creating and maintaining OpenAPI specifications, API collections, structured data and validation workflows for developer documentation and integration testing.
+    description: Creating and maintaining OpenAPI specifications, API collections, structured data 
+      and validation workflows for developer documentation and integration testing.
     highlights:
       - Swagger 2.0 / OpenAPI 2.0
       - Postman and Insomnia collections
       - Custom authentication and encryption plugins
       - JSON and YAML automation with Python and Scala
     ariaLabel: Explore my API specification and API testing tools
+type:
+  - case-study
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - api-documentation
+  - technical-validation
+  - developer-experience
+technologies:
+  - openapi
+  - api-blueprint
+  - postman
+  - insomnia
+  - curl
+  - json
+  - yaml
+  - python
+  - scala
+  - rest
+  - javascript
+  - node-js
+lifecycle:
+  - current
+tags:
+  - api-blueprint
+  - api-documentation
+  - curl
+  - developer-experience
+  - insomnia
+  - javascript
+  - json
+  - node-js
+  - openapi
+  - postman
+  - python
+  - rest
+  - scala
+  - technical-validation
+  - yaml
 ---
 
 ## OpenAPI, Postman, Insomnia, cURL

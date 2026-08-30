@@ -5,13 +5,74 @@ slug: /documentationeng
 sidebar_custom_props:
   sampleCard:
     tag: Documentation engineering
-    description: Docs-as-code, documentation-platform ownership, CI/CD, static-site generators, parser extensions, migration automation, validation, search and custom tooling for large-scale technical content.
+    description: Docs-as-code, documentation-platform ownership, CI/CD, static-site generators, 
+      parser extensions, migration automation, validation, search and custom tooling for large-scale
+      technical content.
     highlights:
       - Built and operated a custom docs-as-code platform
       - Scaled documentation from 700 to 3,200 pages
       - Automated migration of approximately 900 legacy pages
       - CI/CD, parser extensions, validation and search
     ariaLabel: Explore my documentation engineering skills
+type:
+  - skill
+audiences:
+  - technical-writers
+  - documentation-managers
+  - developers
+topics:
+  - docs-as-code
+  - documentation-engineering
+  - technical-writing
+  - information-architecture
+  - technical-validation
+technologies:
+  - git
+  - github-actions
+  - jenkins
+  - docusaurus
+  - mkdocs
+  - markdown
+  - plantuml
+  - mermaid
+  - graphviz
+  - c4-model
+  - python
+  - sphinx
+  - confluence
+  - madcap-flare
+  - vale
+  - flexsearch
+  - rag
+  - codetreedocs
+  - react
+lifecycle:
+  - current
+tags:
+  - c4-model
+  - codetreedocs
+  - confluence
+  - docs-as-code
+  - documentation-engineering
+  - docusaurus
+  - flexsearch
+  - git
+  - github-actions
+  - graphviz
+  - information-architecture
+  - jenkins
+  - madcap-flare
+  - markdown
+  - mermaid
+  - mkdocs
+  - plantuml
+  - python
+  - rag
+  - react
+  - sphinx
+  - technical-validation
+  - technical-writing
+  - vale
 ---
 
 I apply software-engineering practices to documentation systems, including version control, automated testing, CI/CD and tooling for repetitive tasks.

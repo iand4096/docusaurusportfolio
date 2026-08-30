@@ -1,11 +1,12 @@
 ---
-title:  Programming and Automation
+title: Programming and Automation
 sidebar_position: 5
 slug: /programming
 sidebar_custom_props:
   sampleCard:
     tag: Programming and automation
-    description: Using Python, JavaScript and scripting to build documentation tooling, API integrations, test applications, migration utilities and automated docs-as-code workflows.
+    description: Using Python, JavaScript and scripting to build documentation tooling, API 
+      integrations, test applications, migration utilities and automated docs-as-code workflows.
     highlights:
       - Python, Flask and REST API integration
       - JavaScript, Node.js and React documentation tooling
@@ -13,6 +14,62 @@ sidebar_custom_props:
       - Multi-language code analysis and technical validation
       - API client and SDK testing and validation
     ariaLabel: Explore my programming and automation skills
+type:
+  - skill
+audiences:
+  - technical-writers
+  - developers
+topics:
+  - documentation-engineering
+  - docs-as-code
+  - technical-writing
+technologies:
+  - python
+  - markdown
+  - mkdocs
+  - graphviz
+  - requests
+  - flask
+  - jinja
+  - json
+  - yaml
+  - plantuml
+  - intellij-idea
+  - react
+  - jsx
+  - insomnia
+  - c-plus-plus
+  - csharp
+  - jira
+  - madcap-flare
+  - xml
+  - bash
+lifecycle:
+  - current
+tags:
+  - bash
+  - c-plus-plus
+  - csharp
+  - docs-as-code
+  - documentation-engineering
+  - flask
+  - graphviz
+  - insomnia
+  - intellij-idea
+  - jinja
+  - jira
+  - json
+  - jsx
+  - madcap-flare
+  - markdown
+  - mkdocs
+  - plantuml
+  - python
+  - react
+  - requests
+  - technical-writing
+  - xml
+  - yaml
 ---
 
 ## Programming and automation

@@ -5,13 +5,45 @@ slug: /aianddocs
 sidebar_custom_props:
   sampleCard:
     tag: AI for documentation
-    description: Applying AI to documentation engineering, authoring, retrieval and automation, with strong emphasis on technical validation, human oversight and responsible use.
+    description: Applying AI to documentation engineering, authoring, retrieval and automation, with
+      strong emphasis on technical validation, human oversight and responsible use.
     highlights:
       - AI-assisted documentation from Jira and SME input
       - SKILL.md guidance for consistent AI-authored docs
       - RAG and metadata-aware retrieval
       - Experimental MCP servers with FastMCP
     ariaLabel: Explore my AI for documentation skills
+type:
+  - skill
+audiences:
+  - technical-writers
+  - documentation-managers
+  - developers
+topics:
+  - documentation-engineering
+  - docs-as-code
+  - technical-writing
+  - developer-experience
+technologies:
+  - rag
+  - mcp
+  - fastmcp
+  - whisper
+  - spec-driven-development
+  - jira
+lifecycle:
+  - current
+tags:
+  - developer-experience
+  - docs-as-code
+  - documentation-engineering
+  - fastmcp
+  - jira
+  - mcp
+  - rag
+  - spec-driven-development
+  - technical-writing
+  - whisper
 ---
 
 Practical experience applying AI to documentation engineering, content creation, retrieval, automation and developer workflows, with a strong emphasis on validation and human oversight.

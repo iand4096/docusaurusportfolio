@@ -5,13 +5,44 @@ slug: /docsleadership
 sidebar_custom_props:
   sampleCard:
     tag: Documentation Strategy
-    description: Leading documentation teams, strategy, platforms and operating models across complex developer and enterprise environments.
+    description: Leading documentation teams, strategy, platforms and operating models across 
+      complex developer and enterprise environments.
     highlights:
       - Documentation strategy and product ownership
       - Hiring, mentoring and team leadership
       - Cross-functional platform delivery
       - Scalable contribution and governance models
     ariaLabel: Explore my documentation leadership and strategy skills
+type:
+  - skill
+audiences:
+  - documentation-managers
+  - technical-writers
+topics:
+  - documentation-engineering
+  - docs-as-code
+  - documentation-governance
+  - developer-experience
+  - information-architecture
+technologies:
+  - codetreedocs
+  - git
+  - docker
+  - github-actions
+  - docusaurus
+lifecycle:
+  - current
+tags:
+  - codetreedocs
+  - developer-experience
+  - docker
+  - docs-as-code
+  - documentation-engineering
+  - documentation-governance
+  - docusaurus
+  - git
+  - github-actions
+  - information-architecture
 ---
 
 I have led documentation teams, platforms, and strategy across financial services, payments, and enterprise software environments. My experience includes documentation product ownership, team leadership, developer-portal strategy, content architecture, docs-as-code adoption, migration programmes, and improving engineering participation in documentation.

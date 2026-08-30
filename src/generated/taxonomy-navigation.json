@@ -1,0 +1,1472 @@
+{
+  "generatedFrom": [
+    "taxonomy/taxonomy.yml",
+    "docs/**/*.md",
+    "docs/**/*.mdx"
+  ],
+  "taxonomyVersion": 2,
+  "dimensions": {
+    "content_types": {
+      "id": "content_types",
+      "label": "Content type",
+      "metadataField": "type",
+      "terms": [
+        {
+          "id": "case-study",
+          "label": "Case study",
+          "description": "A documented example of work, approach and outcomes."
+        },
+        {
+          "id": "landing-page",
+          "label": "Landing page",
+          "description": "A page that introduces a section and provides navigation to its contents."
+        },
+        {
+          "id": "skill",
+          "label": "Skill",
+          "description": "A page describing a professional capability or area of expertise."
+        },
+        {
+          "id": "tool",
+          "label": "Tool",
+          "description": "A page describing a tool or technology used in technical writing or documentation engineering."
+        }
+      ]
+    },
+    "topics": {
+      "id": "topics",
+      "label": "Topic",
+      "metadataField": "topics",
+      "terms": [
+        {
+          "id": "api-documentation",
+          "label": "API documentation",
+          "description": "Creation and maintenance of documentation for application programming interfaces."
+        },
+        {
+          "id": "api-security",
+          "label": "API security",
+          "description": "Security mechanisms and practices for APIs, including authentication, encryption, and webhooks."
+        },
+        {
+          "id": "developer-experience",
+          "label": "Developer experience",
+          "description": "Design and improvement of developer portals, documentation, and tooling for developers."
+        },
+        {
+          "id": "docs-as-code",
+          "label": "Docs-as-code",
+          "description": "Approach of treating documentation as code, using version control, CI/CD, and automation."
+        },
+        {
+          "id": "documentation-engineering",
+          "label": "Documentation engineering",
+          "description": "Application of software engineering techniques to documentation creation and maintenance."
+        },
+        {
+          "id": "documentation-governance",
+          "label": "Documentation governance",
+          "description": "Processes and standards for managing documentation quality, metadata, and lifecycle."
+        },
+        {
+          "id": "information-architecture",
+          "label": "Information architecture",
+          "description": "Organisation and structure of information to improve findability and usability."
+        },
+        {
+          "id": "payments",
+          "label": "Payments",
+          "description": "Payment systems, digital wallets, tokenisation, and related financial technology."
+        },
+        {
+          "id": "technical-validation",
+          "label": "Technical validation",
+          "description": "Testing and validation of technical content and integrations."
+        },
+        {
+          "id": "technical-writing",
+          "label": "Technical writing",
+          "description": "The practice of creating technical documentation and content."
+        }
+      ]
+    },
+    "technologies": {
+      "id": "technologies",
+      "label": "Technology",
+      "metadataField": "technologies",
+      "terms": [
+        {
+          "id": "3d-secure",
+          "label": "3D Secure",
+          "description": "A security protocol for online card payments."
+        },
+        {
+          "id": "adobe-illustrator",
+          "label": "Adobe Illustrator",
+          "description": "A vector graphics editor."
+        },
+        {
+          "id": "agentic-ai",
+          "label": "Agentic AI",
+          "description": "AI systems that can act autonomously."
+        },
+        {
+          "id": "amp",
+          "label": "Amp",
+          "description": "An AI coding tool."
+        },
+        {
+          "id": "amx-composer",
+          "label": "AMX Composer",
+          "description": "A content management application for digital signage."
+        },
+        {
+          "id": "api-blueprint",
+          "label": "API Blueprint",
+          "description": "A Markdown-based API description format for documenting HTTP APIs."
+        },
+        {
+          "id": "apple-pay",
+          "label": "Apple Pay",
+          "description": "A mobile payment service by Apple."
+        },
+        {
+          "id": "bash",
+          "label": "Bash",
+          "description": "A Unix shell and command language used for interactive command-line work, scripting, automation, and build or deployment workflows."
+        },
+        {
+          "id": "brightspot-cms",
+          "label": "Brightspot CMS",
+          "description": "A content management system."
+        },
+        {
+          "id": "csharp",
+          "label": "C#",
+          "description": "A general-purpose programming language in the .NET ecosystem used to build applications, services, and tooling."
+        },
+        {
+          "id": "c-plus-plus",
+          "label": "C++",
+          "description": "A general-purpose programming language used for systems software, embedded development, high-performance applications, and native tooling."
+        },
+        {
+          "id": "c4-model",
+          "label": "C4 model",
+          "description": "A modelling methodology for software architecture."
+        },
+        {
+          "id": "catia",
+          "label": "CATIA",
+          "description": "A CAD software."
+        },
+        {
+          "id": "claude",
+          "label": "Claude",
+          "description": "An AI assistant."
+        },
+        {
+          "id": "codepen",
+          "label": "CodePen",
+          "description": "An online code editor and community."
+        },
+        {
+          "id": "codetreedocs",
+          "label": "Codetreedocs",
+          "description": "A custom internal docs-as-code platform."
+        },
+        {
+          "id": "confluence",
+          "label": "Confluence",
+          "description": "A collaboration and documentation platform."
+        },
+        {
+          "id": "css",
+          "label": "CSS",
+          "description": "A stylesheet language used to control the presentation and layout of HTML, XML, and related structured documents."
+        },
+        {
+          "id": "curl",
+          "label": "cURL",
+          "description": "A command-line tool for transferring data with URLs."
+        },
+        {
+          "id": "deepseek-api",
+          "label": "DeepSeek API",
+          "description": "An AI API used for documentation quality checks."
+        },
+        {
+          "id": "digital-enablement-api",
+          "label": "Digital Enablement API",
+          "description": "Mastercard API for tokenisation."
+        },
+        {
+          "id": "docker",
+          "label": "Docker",
+          "description": "A containerisation platform."
+        },
+        {
+          "id": "docusaurus",
+          "label": "Docusaurus",
+          "description": "A static site generator for building documentation websites."
+        },
+        {
+          "id": "fastmcp",
+          "label": "FastMCP",
+          "description": "A framework for building MCP servers."
+        },
+        {
+          "id": "finos-calm",
+          "label": "FINOS CALM",
+          "description": "An architecture-as-code standard."
+        },
+        {
+          "id": "flask",
+          "label": "Flask",
+          "description": "A Python web framework."
+        },
+        {
+          "id": "flexsearch",
+          "label": "FlexSearch",
+          "description": "A JavaScript search library."
+        },
+        {
+          "id": "git",
+          "label": "Git",
+          "description": "A distributed version control system."
+        },
+        {
+          "id": "github",
+          "label": "GitHub",
+          "description": "A hosting platform for Git repositories."
+        },
+        {
+          "id": "github-actions",
+          "label": "GitHub Actions",
+          "description": "A CI/CD platform integrated with GitHub."
+        },
+        {
+          "id": "github-copilot",
+          "label": "GitHub Copilot",
+          "description": "An AI pair programmer."
+        },
+        {
+          "id": "github-pages",
+          "label": "GitHub Pages",
+          "description": "A static site hosting service from GitHub."
+        },
+        {
+          "id": "google-pay",
+          "label": "Google Pay",
+          "description": "A digital wallet platform by Google."
+        },
+        {
+          "id": "graphviz",
+          "label": "Graphviz",
+          "description": "A graph visualisation software."
+        },
+        {
+          "id": "home-assistant",
+          "label": "Home Assistant",
+          "description": "An open-source home automation platform."
+        },
+        {
+          "id": "hsm",
+          "label": "HSM",
+          "description": "Hardware Security Module."
+        },
+        {
+          "id": "https",
+          "label": "HTTPS",
+          "description": "HTTP over TLS."
+        },
+        {
+          "id": "hypothesis",
+          "label": "Hypothes.is",
+          "description": "A web annotation tool."
+        },
+        {
+          "id": "inkscape",
+          "label": "Inkscape",
+          "description": "A vector graphics editor."
+        },
+        {
+          "id": "insomnia",
+          "label": "Insomnia",
+          "description": "An API client and testing tool."
+        },
+        {
+          "id": "intellij-idea",
+          "label": "IntelliJ IDEA",
+          "description": "An integrated development environment."
+        },
+        {
+          "id": "javascript",
+          "label": "JavaScript",
+          "description": "A general-purpose programming language widely used for web development, browser scripting, server-side applications, and tooling."
+        },
+        {
+          "id": "jenkins",
+          "label": "Jenkins",
+          "description": "A CI/CD automation server."
+        },
+        {
+          "id": "jetty",
+          "label": "Jetty",
+          "description": "A Java HTTP server and servlet container."
+        },
+        {
+          "id": "jinja",
+          "label": "Jinja",
+          "description": "A templating engine for Python."
+        },
+        {
+          "id": "jira",
+          "label": "Jira",
+          "description": "An issue tracking and project management tool."
+        },
+        {
+          "id": "jose",
+          "label": "JOSE",
+          "description": "JSON Object Signing and Encryption standards."
+        },
+        {
+          "id": "json",
+          "label": "JSON",
+          "description": "JavaScript Object Notation."
+        },
+        {
+          "id": "jsx",
+          "label": "JSX",
+          "description": "A syntax extension for JavaScript used with React."
+        },
+        {
+          "id": "jwt",
+          "label": "JWT",
+          "description": "JSON Web Token, a standard for secure token-based authentication."
+        },
+        {
+          "id": "kubernetes",
+          "label": "Kubernetes",
+          "description": "A container orchestration platform."
+        },
+        {
+          "id": "languagetool",
+          "label": "LanguageTool",
+          "description": "A grammar and style checker."
+        },
+        {
+          "id": "ldap",
+          "label": "LDAP",
+          "description": "Lightweight Directory Access Protocol."
+        },
+        {
+          "id": "linux",
+          "label": "Linux",
+          "description": "An open-source operating system kernel."
+        },
+        {
+          "id": "madcap-flare",
+          "label": "MadCap Flare",
+          "description": "A help authoring tool for creating documentation."
+        },
+        {
+          "id": "markdown",
+          "label": "Markdown",
+          "description": "A lightweight markup language for formatting text."
+        },
+        {
+          "id": "masterpass",
+          "label": "Masterpass",
+          "description": "A digital wallet service by Mastercard."
+        },
+        {
+          "id": "mcp",
+          "label": "MCP",
+          "description": "Model Context Protocol."
+        },
+        {
+          "id": "mdes",
+          "label": "MDES",
+          "description": "Mastercard Digital Enablement Service."
+        },
+        {
+          "id": "mdx",
+          "label": "MDX",
+          "description": "An extension of Markdown that allows embedding JSX components."
+        },
+        {
+          "id": "mermaid",
+          "label": "Mermaid",
+          "description": "A JavaScript-based diagramming and charting tool."
+        },
+        {
+          "id": "visio",
+          "label": "Microsoft Visio",
+          "description": "A diagramming application."
+        },
+        {
+          "id": "mkdocs",
+          "label": "MkDocs",
+          "description": "A static site generator for project documentation."
+        },
+        {
+          "id": "mtls",
+          "label": "mTLS",
+          "description": "Mutual TLS authentication."
+        },
+        {
+          "id": "nginx",
+          "label": "Nginx",
+          "description": "A web server and reverse proxy."
+        },
+        {
+          "id": "node-js",
+          "label": "Node.js",
+          "description": "A JavaScript runtime built on the V8 engine for running JavaScript outside the browser."
+        },
+        {
+          "id": "oauth",
+          "label": "OAuth",
+          "description": "An open standard for access delegation."
+        },
+        {
+          "id": "ocr",
+          "label": "OCR",
+          "description": "Optical Character Recognition."
+        },
+        {
+          "id": "openapi",
+          "label": "OpenAPI",
+          "description": "A standard specification for describing HTTP APIs in a machine-readable format."
+        },
+        {
+          "id": "openssl",
+          "label": "OpenSSL",
+          "description": "A cryptography library and toolkit."
+        },
+        {
+          "id": "openwrt",
+          "label": "OpenWrt",
+          "description": "A Linux-based firmware for routers."
+        },
+        {
+          "id": "owasp",
+          "label": "OWASP",
+          "description": "Open Web Application Security Project."
+        },
+        {
+          "id": "paysafe-js",
+          "label": "Paysafe.js",
+          "description": "A JavaScript library for payment integration."
+        },
+        {
+          "id": "pci-dss",
+          "label": "PCI DSS",
+          "description": "Payment Card Industry Data Security Standard."
+        },
+        {
+          "id": "pki",
+          "label": "PKI",
+          "description": "Public Key Infrastructure."
+        },
+        {
+          "id": "plantuml",
+          "label": "PlantUML",
+          "description": "A tool for creating UML diagrams from text."
+        },
+        {
+          "id": "postman",
+          "label": "Postman",
+          "description": "An API testing and development tool."
+        },
+        {
+          "id": "proxmox",
+          "label": "Proxmox",
+          "description": "A virtualization platform."
+        },
+        {
+          "id": "pycharm",
+          "label": "PyCharm",
+          "description": "An IDE for Python development."
+        },
+        {
+          "id": "python",
+          "label": "Python",
+          "description": "A general-purpose programming language used for scripting, automation, tooling, data processing, and software development."
+        },
+        {
+          "id": "pythonanywhere",
+          "label": "PythonAnywhere",
+          "description": "A cloud hosting platform for Python applications."
+        },
+        {
+          "id": "rag",
+          "label": "RAG",
+          "description": "Retrieval-Augmented Generation."
+        },
+        {
+          "id": "react",
+          "label": "React",
+          "description": "A JavaScript library for building user interfaces."
+        },
+        {
+          "id": "requests",
+          "label": "Requests",
+          "description": "A Python library for making HTTP requests."
+        },
+        {
+          "id": "rest",
+          "label": "REST",
+          "description": "An architectural style for designing networked applications."
+        },
+        {
+          "id": "saq-a",
+          "label": "SAQ A",
+          "description": "Self-Assessment Questionnaire A for PCI DSS."
+        },
+        {
+          "id": "scala",
+          "label": "Scala",
+          "description": "A general-purpose programming language for the JVM that combines object-oriented and functional programming paradigms."
+        },
+        {
+          "id": "spec-driven-development",
+          "label": "Spec-driven development",
+          "description": "A development approach using specifications."
+        },
+        {
+          "id": "sphinx",
+          "label": "Sphinx",
+          "description": "A documentation generator."
+        },
+        {
+          "id": "svg",
+          "label": "SVG",
+          "description": "An XML-based vector graphics format for describing scalable two-dimensional graphics."
+        },
+        {
+          "id": "tcp-ip",
+          "label": "TCP/IP",
+          "description": "The Internet protocol suite."
+        },
+        {
+          "id": "tls",
+          "label": "TLS",
+          "description": "Transport Layer Security protocol."
+        },
+        {
+          "id": "tokenisation",
+          "label": "Tokenisation",
+          "description": "A payment and security technique that replaces sensitive payment data with non-sensitive tokens for storage, transmission, or transaction processing."
+        },
+        {
+          "id": "twiki",
+          "label": "TWiki",
+          "description": "A wiki platform."
+        },
+        {
+          "id": "typescript",
+          "label": "TypeScript",
+          "description": "A typed superset of JavaScript."
+        },
+        {
+          "id": "typo3",
+          "label": "TYPO3",
+          "description": "An open-source content management system used to build and manage websites and digital content."
+        },
+        {
+          "id": "vale",
+          "label": "Vale",
+          "description": "A documentation linter and style checker."
+        },
+        {
+          "id": "vs-code",
+          "label": "VS Code",
+          "description": "A source code editor."
+        },
+        {
+          "id": "whisper",
+          "label": "Whisper",
+          "description": "A speech-to-text model."
+        },
+        {
+          "id": "wireshark",
+          "label": "Wireshark",
+          "description": "A network protocol analyzer."
+        },
+        {
+          "id": "x509",
+          "label": "X.509",
+          "description": "A standard for public key certificates."
+        },
+        {
+          "id": "xhtml",
+          "label": "XHTML",
+          "description": "An XML-based reformulation of HTML used to author structured web content with XML syntax rules."
+        },
+        {
+          "id": "xml",
+          "label": "XML",
+          "description": "Extensible Markup Language."
+        },
+        {
+          "id": "yaml",
+          "label": "YAML",
+          "description": "A human-readable data serialization format."
+        }
+      ]
+    },
+    "audiences": {
+      "id": "audiences",
+      "label": "Audience",
+      "metadataField": "audiences",
+      "terms": [
+        {
+          "id": "developers",
+          "label": "Developers",
+          "description": "Software developers who consume APIs, SDKs, and developer documentation."
+        },
+        {
+          "id": "documentation-managers",
+          "label": "Documentation managers",
+          "description": "Managers and leads responsible for documentation strategy and teams."
+        },
+        {
+          "id": "system-administrators",
+          "label": "System administrators",
+          "description": "Administrators who manage systems, networks, or platforms."
+        },
+        {
+          "id": "technical-writers",
+          "label": "Technical writers",
+          "description": "Professionals who create and maintain technical documentation."
+        }
+      ]
+    },
+    "lifecycle": {
+      "id": "lifecycle",
+      "label": "Lifecycle",
+      "metadataField": "lifecycle",
+      "terms": [
+        {
+          "id": "archived",
+          "label": "Archived",
+          "description": "Content retained for record purposes but no longer treated as active portfolio material."
+        },
+        {
+          "id": "current",
+          "label": "Current",
+          "description": "Content that represents current practice, capability or portfolio material."
+        },
+        {
+          "id": "historical",
+          "label": "Historical",
+          "description": "Content intentionally retained as a historical example or past project."
+        }
+      ]
+    }
+  },
+  "documents": [
+    {
+      "id": "skills/Agile",
+      "title": "Agile Delivery and Project Management",
+      "path": "/docs/agile",
+      "source": "docs/skills/Agile.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "docs-as-code",
+        "documentation-governance"
+      ],
+      "technologies": [
+        "jira",
+        "docker",
+        "rest"
+      ],
+      "audiences": [
+        "documentation-managers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "skills/AIandDocumentation",
+      "title": "AI & Documentation",
+      "path": "/docs/aianddocs",
+      "source": "docs/skills/AIandDocumentation.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "docs-as-code",
+        "technical-writing",
+        "developer-experience"
+      ],
+      "technologies": [
+        "rag",
+        "mcp",
+        "fastmcp",
+        "whisper",
+        "spec-driven-development",
+        "jira"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers",
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "tools/AIandDevTools",
+      "title": "AI and Dev Tools",
+      "path": "/docs/aianddevtools",
+      "source": "docs/tools/AIandDevTools.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "docs-as-code",
+        "developer-experience"
+      ],
+      "technologies": [
+        "claude",
+        "github-copilot",
+        "amp",
+        "agentic-ai",
+        "mcp",
+        "fastmcp",
+        "rag",
+        "spec-driven-development",
+        "markdown"
+      ],
+      "audiences": [
+        "technical-writers",
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "docs-samples/AMXInspiredSignageComposer",
+      "title": "AMX Digital Signage User Manual",
+      "path": "/docs/docs-samples/AMXInspiredSignageComposer",
+      "source": "docs/docs-samples/AMXInspiredSignageComposer.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "technical-writing",
+        "information-architecture"
+      ],
+      "technologies": [
+        "madcap-flare",
+        "mermaid",
+        "tcp-ip",
+        "vale",
+        "languagetool"
+      ],
+      "audiences": [
+        "system-administrators",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "skills/APIDocumentation",
+      "title": "API Documentation and Technical Validation",
+      "path": "/docs/apidocumentation",
+      "source": "docs/skills/APIDocumentation.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "api-documentation",
+        "technical-validation",
+        "api-security",
+        "developer-experience",
+        "technical-writing"
+      ],
+      "technologies": [
+        "openapi",
+        "rest",
+        "oauth",
+        "mtls",
+        "x509",
+        "pki",
+        "jwt",
+        "jose",
+        "https",
+        "tls",
+        "python",
+        "requests",
+        "flask",
+        "jetty",
+        "postman",
+        "insomnia",
+        "curl",
+        "jira",
+        "node-js"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "case-studies/PaysafeDeveloperCenter",
+      "title": "Building the Paysafe Developer Center",
+      "path": "/docs/case-studies/paysafedevcenter",
+      "source": "docs/case-studies/PaysafeDeveloperCenter.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "api-documentation",
+        "information-architecture",
+        "docs-as-code",
+        "documentation-engineering",
+        "developer-experience"
+      ],
+      "technologies": [
+        "git",
+        "api-blueprint",
+        "hypothesis",
+        "typo3",
+        "rest"
+      ],
+      "audiences": [
+        "developers",
+        "documentation-managers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "historical"
+      ]
+    },
+    {
+      "id": "tools/ContainersAndCloudNative",
+      "title": "Containers and Cloud",
+      "path": "/docs/containersandcloud",
+      "source": "docs/tools/ContainersAndCloudNative.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "docs-as-code",
+        "technical-validation"
+      ],
+      "technologies": [
+        "docker",
+        "nginx",
+        "linux",
+        "pythonanywhere",
+        "tcp-ip",
+        "openwrt",
+        "wireshark",
+        "kubernetes"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "tools/Diagramming",
+      "title": "Diagramming and Technical Visualisation",
+      "path": "/docs/diagramsandvisuals",
+      "source": "docs/tools/Diagramming.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "docs-as-code",
+        "information-architecture"
+      ],
+      "technologies": [
+        "plantuml",
+        "mermaid",
+        "graphviz",
+        "c4-model",
+        "git",
+        "markdown",
+        "visio",
+        "adobe-illustrator",
+        "inkscape",
+        "ocr",
+        "catia"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "skills/DocumentationEngineering",
+      "title": "Documentation Engineering",
+      "path": "/docs/documentationeng",
+      "source": "docs/skills/DocumentationEngineering.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering",
+        "technical-writing",
+        "information-architecture",
+        "technical-validation"
+      ],
+      "technologies": [
+        "git",
+        "github-actions",
+        "jenkins",
+        "docusaurus",
+        "mkdocs",
+        "markdown",
+        "plantuml",
+        "mermaid",
+        "graphviz",
+        "c4-model",
+        "python",
+        "sphinx",
+        "confluence",
+        "madcap-flare",
+        "vale",
+        "flexsearch",
+        "rag",
+        "codetreedocs",
+        "react"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers",
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "skills/GovernanceDocs",
+      "title": "Documentation Governance",
+      "path": "/docs/governancedocs",
+      "source": "docs/skills/GovernanceDocs.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "documentation-governance",
+        "information-architecture",
+        "docs-as-code"
+      ],
+      "technologies": [
+        "c4-model",
+        "finos-calm",
+        "jira",
+        "ldap",
+        "markdown",
+        "whisper"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "docs-samples/index",
+      "title": "Documentation Samples",
+      "path": "/docs/docs-samples",
+      "source": "docs/docs-samples/index.md",
+      "type": [
+        "landing-page"
+      ],
+      "topics": [
+        "technical-writing"
+      ],
+      "technologies": [],
+      "audiences": [
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "case-studies/DocusaurusPortfolio",
+      "title": "Docusaurus Portfolio",
+      "path": "/docs/case-studies/DocusaurusPortfolio",
+      "source": "docs/case-studies/DocusaurusPortfolio.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering",
+        "developer-experience",
+        "technical-validation"
+      ],
+      "technologies": [
+        "docusaurus",
+        "react",
+        "mdx",
+        "markdown",
+        "github-actions",
+        "github-pages",
+        "python",
+        "vale",
+        "languagetool",
+        "deepseek-api",
+        "mermaid",
+        "jsx",
+        "javascript",
+        "git",
+        "github"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "tools/GitContinuousIntegration",
+      "title": "Git and Continuous Integration",
+      "path": "/docs/gitandci",
+      "source": "docs/tools/GitContinuousIntegration.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering",
+        "technical-validation"
+      ],
+      "technologies": [
+        "git",
+        "github",
+        "github-actions",
+        "jenkins",
+        "docusaurus",
+        "linux"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "skills/InformationArchitecture",
+      "title": "Information Architecture",
+      "path": "/docs/informationarch",
+      "source": "docs/skills/InformationArchitecture.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "information-architecture",
+        "documentation-engineering",
+        "docs-as-code",
+        "developer-experience"
+      ],
+      "technologies": [
+        "graphviz",
+        "git",
+        "markdown",
+        "sphinx",
+        "twiki",
+        "rag"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "skills/DocumentationLeadership",
+      "title": "Leadership & Strategy",
+      "path": "/docs/docsleadership",
+      "source": "docs/skills/DocumentationLeadership.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "docs-as-code",
+        "documentation-governance",
+        "developer-experience",
+        "information-architecture"
+      ],
+      "technologies": [
+        "codetreedocs",
+        "git",
+        "docker",
+        "github-actions",
+        "docusaurus"
+      ],
+      "audiences": [
+        "documentation-managers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "tools/Flare",
+      "title": "MadCap Flare",
+      "path": "/docs/flare",
+      "source": "docs/tools/Flare.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "technical-writing",
+        "documentation-engineering",
+        "docs-as-code"
+      ],
+      "technologies": [
+        "madcap-flare",
+        "git",
+        "jenkins",
+        "confluence",
+        "jira",
+        "pythonanywhere",
+        "hypothesis",
+        "xhtml",
+        "css",
+        "xml",
+        "csharp"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "docs-samples/MasterpassMerchantIntegrationGuide",
+      "title": "Masterpass Integration Guide",
+      "path": "/docs/docs-samples/MasterpassMerchantIntegrationGuide",
+      "source": "docs/docs-samples/MasterpassMerchantIntegrationGuide.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "api-documentation",
+        "technical-writing",
+        "developer-experience",
+        "docs-as-code"
+      ],
+      "technologies": [
+        "masterpass",
+        "openapi",
+        "plantuml",
+        "brightspot-cms"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "historical"
+      ]
+    },
+    {
+      "id": "docs-samples/MDES4Merchants",
+      "title": "MDES for Merchants Guide",
+      "path": "/docs/docs-samples/MDES4Merchants",
+      "source": "docs/docs-samples/MDES4Merchants.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "api-documentation",
+        "api-security",
+        "technical-validation",
+        "payments"
+      ],
+      "technologies": [
+        "python",
+        "requests",
+        "flask",
+        "pythonanywhere",
+        "openapi",
+        "oauth",
+        "mdes",
+        "digital-enablement-api",
+        "postman"
+      ],
+      "audiences": [
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "tools/OpenAPIandAPITools",
+      "title": "OpenAPI and API tools",
+      "path": "/docs/openapitools",
+      "source": "docs/tools/OpenAPIandAPITools.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "api-documentation",
+        "technical-validation",
+        "developer-experience"
+      ],
+      "technologies": [
+        "openapi",
+        "api-blueprint",
+        "postman",
+        "insomnia",
+        "curl",
+        "json",
+        "yaml",
+        "python",
+        "scala",
+        "rest",
+        "javascript",
+        "node-js"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "docs-samples/PaysafeDeveloperJS",
+      "title": "Paysafe.js Developer Guide",
+      "path": "/docs/docs-samples/PaysafeDeveloperJS",
+      "source": "docs/docs-samples/PaysafeDeveloperJS.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "api-documentation",
+        "payments",
+        "technical-writing"
+      ],
+      "technologies": [
+        "paysafe-js",
+        "codepen",
+        "3d-secure",
+        "google-pay",
+        "apple-pay",
+        "pci-dss",
+        "saq-a",
+        "tokenisation"
+      ],
+      "audiences": [
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "tools/ProgrammingAutomation",
+      "title": "Programming and Automation",
+      "path": "/docs/programming",
+      "source": "docs/tools/ProgrammingAutomation.md",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "docs-as-code",
+        "technical-writing"
+      ],
+      "technologies": [
+        "python",
+        "markdown",
+        "mkdocs",
+        "graphviz",
+        "requests",
+        "flask",
+        "jinja",
+        "json",
+        "yaml",
+        "plantuml",
+        "intellij-idea",
+        "react",
+        "jsx",
+        "insomnia",
+        "c-plus-plus",
+        "csharp",
+        "jira",
+        "madcap-flare",
+        "xml",
+        "bash"
+      ],
+      "audiences": [
+        "technical-writers",
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "case-studies/ScalingADeveloperDocsPlatform",
+      "title": "Scaling an Enterprise Developer Docs Platform",
+      "path": "/docs/case-studies/scalingdeveloperdocs",
+      "source": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering",
+        "developer-experience",
+        "information-architecture",
+        "documentation-governance"
+      ],
+      "technologies": [
+        "codetreedocs",
+        "git",
+        "markdown",
+        "jenkins",
+        "intellij-idea",
+        "plantuml",
+        "mermaid",
+        "c4-model",
+        "sphinx",
+        "docker",
+        "amp",
+        "agentic-ai",
+        "vale",
+        "languagetool"
+      ],
+      "audiences": [
+        "developers",
+        "documentation-managers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "skills/index",
+      "title": "Skills",
+      "path": "/docs/skills",
+      "source": "docs/skills/index.md",
+      "type": [
+        "landing-page"
+      ],
+      "topics": [
+        "technical-writing",
+        "documentation-engineering",
+        "documentation-governance",
+        "information-architecture",
+        "developer-experience"
+      ],
+      "technologies": [],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers",
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "tools/DocusaurusAndMkdocs",
+      "title": "Static Site Generators and Docs Platforms",
+      "path": "/docs/staticsitedocsplatforms",
+      "source": "docs/tools/DocusaurusAndMkdocs.md",
+      "type": [
+        "tool"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering",
+        "developer-experience"
+      ],
+      "technologies": [
+        "docusaurus",
+        "mkdocs",
+        "mdx",
+        "react",
+        "jsx",
+        "github-actions",
+        "github-pages",
+        "vale",
+        "vs-code",
+        "flexsearch",
+        "python",
+        "markdown"
+      ],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "tools/index",
+      "title": "Tools",
+      "path": "/docs/tools",
+      "source": "docs/tools/index.md",
+      "type": [
+        "landing-page"
+      ],
+      "topics": [
+        "documentation-engineering"
+      ],
+      "technologies": [],
+      "audiences": [
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    }
+  ]
+}

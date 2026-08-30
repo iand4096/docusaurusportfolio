@@ -159,6 +159,12 @@ plugins: [
           activeBasePath: '/docs',
         },
         {
+          label: 'Browse',
+          to: '/browse',
+          position: 'left',
+          activeBasePath: '/browse',
+        },
+        {
           label: 'QA report',
           href: 'https://iand4096.github.io/docusaurusportfolio/qa/',
           position: 'right',
@@ -203,6 +209,10 @@ plugins: [
             {
               label: 'Tools',
               to: '/docs/tools',
+            },
+            {
+              label: 'Browse',
+              to: '/browse',
             },
           ],
         },

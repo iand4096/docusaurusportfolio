@@ -1,6 +1,55 @@
 ---
 title: Docusaurus Portfolio
 sidebar_position: 7
+type:
+  - case-study
+audiences:
+  - developers
+  - technical-writers
+  - documentation-managers
+topics:
+  - docs-as-code
+  - documentation-engineering
+  - developer-experience
+  - technical-validation
+technologies:
+  - docusaurus
+  - react
+  - mdx
+  - markdown
+  - github-actions
+  - github-pages
+  - python
+  - vale
+  - languagetool
+  - deepseek-api
+  - mermaid
+  - jsx
+  - javascript
+  - git
+  - github
+lifecycle:
+  - current
+tags:
+  - deepseek-api
+  - developer-experience
+  - docs-as-code
+  - documentation-engineering
+  - docusaurus
+  - git
+  - github
+  - github-actions
+  - github-pages
+  - javascript
+  - jsx
+  - languagetool
+  - markdown
+  - mdx
+  - mermaid
+  - python
+  - react
+  - technical-validation
+  - vale
 ---
 
 ## Project overview

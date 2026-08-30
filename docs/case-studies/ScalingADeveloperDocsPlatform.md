@@ -3,44 +3,65 @@ title: Scaling an Enterprise Developer Docs Platform
 slug: /case-studies/scalingdeveloperdocs
 sidebar_position: 1
 type:
-- case-study
+  - case-study
 audiences:
-- developers
-- documentation-managers
-- technical-writers
+  - developers
+  - documentation-managers
+  - technical-writers
 topics:
-- docs-as-code
-- documentation-engineering
-- developer-experience
-- information-architecture
-- documentation-governance
+  - docs-as-code
+  - documentation-engineering
+  - developer-experience
+  - information-architecture
+  - documentation-governance
 technologies:
-- codetreedocs
-- git
-- markdown
-- jenkins
-- intellij-idea
-- plantuml
-- mermaid
-- c4-model
-- sphinx
-- docker
-- amp
-- agentic-ai
-- vale
-- languagetool
+  - codetreedocs
+  - git
+  - markdown
+  - jenkins
+  - intellij-idea
+  - plantuml
+  - mermaid
+  - c4-model
+  - sphinx
+  - docker
+  - amp
+  - agentic-ai
+  - vale
+  - languagetool
 lifecycle:
-- current
+  - current
 sidebar_custom_props:
   caseStudyCard:
     tag: Docs-as-Code · Developer Portal
-    description: Scaling a custom enterprise documentation platform from 700 to more than 3,200 pages for a large developer community
+    description: Scaling a custom enterprise documentation platform from 700 to more than 3,200 
+      pages for a large developer community
     highlights:
       - Documentation platform strategy and product ownership
       - Git, Markdown and Jenkins publishing workflows
       - IDE tooling, migration automation and diagrams-as-code
       - Large-scale adoption, governance and platform evolution
     ariaLabel: Read the enterprise developer documentation platform case study
+tags:
+  - agentic-ai
+  - amp
+  - c4-model
+  - codetreedocs
+  - developer-experience
+  - docker
+  - docs-as-code
+  - documentation-engineering
+  - documentation-governance
+  - git
+  - information-architecture
+  - intellij-idea
+  - jenkins
+  - languagetool
+  - markdown
+  - mermaid
+  - plantuml
+  - sphinx
+  - vale
 ---
 
 ## Project overview

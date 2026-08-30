@@ -13,7 +13,9 @@
     "write-translations": "docusaurus write-translations",
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
-    "lint:markdown": "remark README.md \"docs/**/*.{md,mdx}\" \"src/pages/**/*.{md,mdx}\" --quiet --frail --silently-ignore"
+    "lint:markdown": "remark README.md \"docs/**/*.{md,mdx}\" \"src/pages/**/*.{md,mdx}\" --quiet --frail --silently-ignore",
+    "taxonomy:generate": "python scripts/taxonomy.py generate",
+    "taxonomy:check": "python scripts/taxonomy.py check --all"
   },
   "dependencies": {
     "@docusaurus/core": "3.10.2",

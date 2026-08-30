@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+
 """Deterministic taxonomy, front-matter, and derived-file tooling.
 
 Taxonomy v2 adds typed technology subclasses and optional content-type-specific
@@ -27,10 +27,12 @@ Commands:
   python scripts/taxonomy.py sync --all
   python scripts/taxonomy.py audit-technologies
 
-`generate` writes files derived from the canonical taxonomy:
+`generate` writes deterministic projections derived from the canonical taxonomy
+and, for navigation, validated document metadata:
 
   docs/tags.yml
   .frontmatter/generated-taxonomy.json
+  src/generated/taxonomy-navigation.json
 
 `check` validates the taxonomy itself, confirms derived files are in sync, and
 optionally validates document front matter.
@@ -64,6 +66,7 @@ TAXONOMY_PATH = Path("taxonomy/taxonomy.yml")
 SCHEMA_PATH = Path("taxonomy/schema.json")
 DOCUSAURUS_TAGS_PATH = Path("docs/tags.yml")
 FRONTMATTER_PROJECTION_PATH = Path(".frontmatter/generated-taxonomy.json")
+NAVIGATION_PROJECTION_PATH = Path("src/generated/taxonomy-navigation.json")
 
 DOC_SUFFIXES = {".md", ".mdx"}
 TERM_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
@@ -75,6 +78,22 @@ REQUIRED_DIMENSIONS = {
     "topics",
     "technologies",
     "lifecycle",
+}
+
+NAVIGATION_DIMENSION_ORDER = (
+    "content_types",
+    "topics",
+    "technologies",
+    "audiences",
+    "lifecycle",
+)
+
+NAVIGATION_DIMENSION_LABELS = {
+    "content_types": "Content type",
+    "audiences": "Audience",
+    "topics": "Topic",
+    "technologies": "Technology",
+    "lifecycle": "Lifecycle",
 }
 
 ALLOWED_GOVERNANCE_SOURCES = {
@@ -693,15 +712,207 @@ def render_frontmatter_projection(taxonomy: dict[str, Any]) -> str:
     return json.dumps(build_frontmatter_projection(taxonomy), indent=2, ensure_ascii=False) + "\n"
 
 
-def expected_derived_files(taxonomy: dict[str, Any]) -> dict[Path, str]:
+def docusaurus_doc_path(
+    path: Path,
+    root: Path,
+    front_matter: CommentedMap,
+) -> str:
+    """Derive the Docusaurus docs route for a source document.
+
+    The repository currently uses the classic docs preset with its default
+    /docs route base. An explicit front-matter slug is respected. Otherwise
+    the route follows the document path beneath docs/.
+    """
+    slug = front_matter.get("slug")
+    if isinstance(slug, str) and slug.strip():
+        normalized = "/" + slug.strip().strip("/")
+        if normalized == "/docs" or normalized.startswith("/docs/"):
+            return normalized
+        return "/docs" + ("" if normalized == "/" else normalized)
+
+    docs_root = root / "docs"
+    relative = path.relative_to(docs_root).with_suffix("")
+    parts = list(relative.parts)
+
+    if parts and parts[-1].casefold() in {"index", "readme"}:
+        parts = parts[:-1]
+    else:
+        explicit_id = front_matter.get("id")
+        if (
+            parts
+            and isinstance(explicit_id, str)
+            and explicit_id.strip()
+            and "/" not in explicit_id
+            and "\\" not in explicit_id
+        ):
+            parts[-1] = explicit_id.strip()
+
+    suffix = "/".join(parts)
+    return "/docs" + (f"/{suffix}" if suffix else "")
+
+
+def navigation_metadata_values(
+    front_matter: CommentedMap,
+    dimension_id: str,
+    dimension: dict[str, Any],
+    relative: str,
+) -> list[str]:
+    """Return canonical active IDs for one navigation facet.
+
+    Navigation is a projection of governed metadata, not a second taxonomy.
+    Malformed, unknown, or deprecated values therefore fail generation rather
+    than being silently copied into the browse index.
+    """
+    field_name = dimension["metadata_field"]
+    value = front_matter.get(field_name)
+
+    if value is None:
+        return []
+
+    if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
+        raise ValidationError(
+            f"{relative}: metadata field {field_name!r} must be a YAML list of taxonomy IDs "
+            "before the navigation index can be generated"
+        )
+
+    values = list(value)
+    if len(values) != len(set(values)):
+        raise ValidationError(
+            f"{relative}: metadata field {field_name!r} contains duplicate values"
+        )
+
+    terms = dimension["terms"]
+    for term_id in values:
+        term = terms.get(term_id)
+        if term is None:
+            raise ValidationError(
+                f"{relative}: unknown {dimension_id} taxonomy term {term_id!r}; "
+                "navigation generation only accepts canonical taxonomy IDs"
+            )
+        if term["governance"]["status"] != "active":
+            replacement = term["governance"].get("replaced_by")
+            suffix = f"; use {replacement!r}" if replacement else ""
+            raise ValidationError(
+                f"{relative}: deprecated {dimension_id} taxonomy term {term_id!r}{suffix}"
+            )
+
+    return values
+
+
+def build_navigation_projection(
+    root: Path,
+    taxonomy: dict[str, Any],
+) -> dict[str, Any]:
+    """Build the read-only taxonomy index consumed by the Docusaurus browse page."""
+    dimensions = taxonomy["dimensions"]
+
+    projected_dimensions: dict[str, dict[str, Any]] = {}
+    for dimension_id in NAVIGATION_DIMENSION_ORDER:
+        dimension = dimensions[dimension_id]
+        projected_terms: list[dict[str, Any]] = []
+
+        for term_id, term in active_terms(dimension).items():
+            projected_term: dict[str, Any] = {
+                "id": term_id,
+                "label": term["label"],
+                "description": term["description"],
+            }
+            if term.get("parent"):
+                projected_term["parent"] = term["parent"]
+            projected_terms.append(projected_term)
+
+        projected_terms.sort(
+            key=lambda term: (term["label"].casefold(), term["id"])
+        )
+
+        projected_dimensions[dimension_id] = {
+            "id": dimension_id,
+            "label": NAVIGATION_DIMENSION_LABELS[dimension_id],
+            "metadataField": dimension["metadata_field"],
+            "terms": projected_terms,
+        }
+
+    documents: list[dict[str, Any]] = []
+    for path in all_docs(root):
+        # Docusaurus partial files are not routable content pages.
+        if path.name.startswith("_"):
+            continue
+
+        front_matter, _ = load_front_matter(path)
+
+        # Draft and unlisted documents should not be surfaced by end-user browse
+        # navigation even though they may remain useful in the source corpus.
+        if front_matter.get("draft") is True or front_matter.get("unlisted") is True:
+            continue
+
+        relative = path.relative_to(root).as_posix()
+        title = front_matter.get("title")
+        if not isinstance(title, str) or not title.strip():
+            raise ValidationError(
+                f"{relative}: title is required before the navigation index can be generated"
+            )
+
+        description = front_matter.get("description")
+        if description is not None and not isinstance(description, str):
+            raise ValidationError(
+                f"{relative}: description must be a string when present"
+            )
+
+        document: dict[str, Any] = {
+            "id": path.relative_to(root / "docs").with_suffix("").as_posix(),
+            "title": title.strip(),
+            "path": docusaurus_doc_path(path, root, front_matter),
+            "source": relative,
+        }
+        if isinstance(description, str) and description.strip():
+            document["description"] = description.strip()
+
+        for dimension_id in NAVIGATION_DIMENSION_ORDER:
+            dimension = dimensions[dimension_id]
+            document[dimension["metadata_field"]] = navigation_metadata_values(
+                front_matter,
+                dimension_id,
+                dimension,
+                relative,
+            )
+
+        documents.append(document)
+
+    documents.sort(key=lambda document: (document["title"].casefold(), document["id"]))
+
+    return {
+        "generatedFrom": [
+            TAXONOMY_PATH.as_posix(),
+            "docs/**/*.md",
+            "docs/**/*.mdx",
+        ],
+        "taxonomyVersion": taxonomy["version"],
+        "dimensions": projected_dimensions,
+        "documents": documents,
+    }
+
+
+def render_navigation_projection(root: Path, taxonomy: dict[str, Any]) -> str:
+    return (
+        json.dumps(
+            build_navigation_projection(root, taxonomy),
+            indent=2,
+            ensure_ascii=False,
+        )
+        + "\n"
+    )
+
+
+def expected_derived_files(root: Path, taxonomy: dict[str, Any]) -> dict[Path, str]:
     return {
         DOCUSAURUS_TAGS_PATH: render_docusaurus_tags(taxonomy),
         FRONTMATTER_PROJECTION_PATH: render_frontmatter_projection(taxonomy),
+        NAVIGATION_PROJECTION_PATH: render_navigation_projection(root, taxonomy),
     }
 
 
 def generate_derived_files(root: Path, taxonomy: dict[str, Any]) -> None:
-    for relative_path, content in expected_derived_files(taxonomy).items():
+    for relative_path, content in expected_derived_files(root, taxonomy).items():
         path = root / relative_path
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
@@ -710,7 +921,7 @@ def generate_derived_files(root: Path, taxonomy: dict[str, Any]) -> None:
 
 def check_derived_files(root: Path, taxonomy: dict[str, Any]) -> list[str]:
     errors = []
-    for relative_path, expected in expected_derived_files(taxonomy).items():
+    for relative_path, expected in expected_derived_files(root, taxonomy).items():
         path = root / relative_path
         if not path.exists():
             errors.append(
@@ -719,12 +930,15 @@ def check_derived_files(root: Path, taxonomy: dict[str, Any]) -> list[str]:
             continue
         actual = path.read_text(encoding="utf-8")
         if actual != expected:
+            if relative_path == NAVIGATION_PROJECTION_PATH:
+                source = "the canonical taxonomy and document metadata"
+            else:
+                source = str(TAXONOMY_PATH)
             errors.append(
-                f"{relative_path}: out of sync with {TAXONOMY_PATH}; run "
+                f"{relative_path}: out of sync with {source}; run "
                 "`python scripts/taxonomy.py generate`"
             )
     return errors
-
 
 def split_front_matter(text: str) -> tuple[str, str, str] | None:
     lines = text.splitlines(keepends=True)
@@ -1087,7 +1301,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--root", type=Path, default=Path("."), help="Repository root")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    subparsers.add_parser("generate", help="Generate Docusaurus/VS Code derived files")
+    subparsers.add_parser("generate", help="Generate Docusaurus/VS Code/navigation derived files")
 
     check = subparsers.add_parser("check", help="Validate taxonomy and front matter")
     check.add_argument("paths", nargs="*", help="Documentation files or directories")

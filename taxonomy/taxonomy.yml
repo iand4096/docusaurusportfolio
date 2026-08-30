@@ -1,4 +1,4 @@
-# Canonical controlled vocabulary for portfolio metadata.
+
 # AI may propose changes, but only reviewed repository changes adopt them.
 
 version: 2
@@ -7,6 +7,14 @@ governance:
   ai_proposals_require_pr_review: true
   default_review: annual
 technology_kinds:
+  data-format:
+    label: Data format
+    description: A structured data serialisation or interchange format such as JSON, YAML, XML, or 
+      SVG.
+  payment-technology:
+    label: Payment technology
+    description: A payment-specific technical product, wallet integration, tokenisation technology, 
+      checkout technology, or payment platform used in implementation work.
   programming-language:
     label: Programming language
     description: A general-purpose or domain-specific programming language.
@@ -55,6 +63,10 @@ technology_kinds:
   ide-editor:
     label: IDE or editor
     description: An integrated development environment or source-code editor.
+  stylesheet-language:
+    label: Stylesheet language
+    description: A language used to describe the presentation and visual styling of structured 
+      documents or web content.
   testing-debugging-tool:
     label: Testing or debugging tool
     description: A tool used to test, debug, inspect, or diagnose software systems.
@@ -367,6 +379,17 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      api-blueprint:
+        label: API Blueprint
+        description: A Markdown-based API description format for documenting HTTP APIs.
+        kind: standard-specification
+        aliases:
+          - APIB
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
+          review: annual
       apple-pay:
         label: Apple Pay
         description: A mobile payment service by Apple.
@@ -376,6 +399,19 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      bash:
+        label: Bash
+        description: A Unix shell and command language used for interactive command-line work, 
+          scripting, automation, and build or deployment workflows.
+        kind: shell-scripting
+        aliases:
+          - GNU Bash
+          - Bourne Again Shell
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
+          review: annual
       brightspot-cms:
         label: Brightspot CMS
         description: A content management system.
@@ -384,6 +420,19 @@ dimensions:
           status: active
           introduced: '2026-08-14'
           source: initial-taxonomy
+          review: annual
+      c-plus-plus:
+        label: C++
+        description: A general-purpose programming language used for systems software, embedded 
+          development, high-performance applications, and native tooling.
+        kind: programming-language
+        aliases:
+          - CPP
+          - C Plus Plus
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
           review: annual
       c4-model:
         label: C4 model
@@ -438,6 +487,30 @@ dimensions:
           status: active
           introduced: '2026-08-14'
           source: initial-taxonomy
+          review: annual
+      csharp:
+        label: C#
+        description: A general-purpose programming language in the .NET ecosystem used to build 
+          applications, services, and tooling.
+        kind: programming-language
+        aliases:
+          - C Sharp
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
+          review: annual
+      css:
+        label: CSS
+        description: A stylesheet language used to control the presentation and layout of HTML, XML,
+          and related structured documents.
+        kind: stylesheet-language
+        aliases:
+          - Cascading Style Sheets
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
           review: annual
       curl:
         label: cURL
@@ -646,6 +719,18 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      javascript:
+        label: JavaScript
+        description: A general-purpose programming language widely used for web development, browser
+          scripting, server-side applications, and tooling.
+        kind: programming-language
+        aliases:
+          - JS
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
+          review: annual
       jenkins:
         label: Jenkins
         description: A CI/CD automation server.
@@ -844,6 +929,19 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      node-js:
+        label: Node.js
+        description: A JavaScript runtime built on the V8 engine for running JavaScript outside the 
+          browser.
+        kind: runtime
+        aliases:
+          - Node
+          - NodeJS
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
+          review: annual
       oauth:
         label: OAuth
         description: An open standard for access delegation.
@@ -966,7 +1064,8 @@ dimensions:
           review: annual
       python:
         label: Python
-        description: A general-purpose programming language used for scripting, automation, tooling, data processing, and software development.
+        description: A general-purpose programming language used for scripting, automation, tooling,
+          data processing, and software development.
         kind: programming-language
         governance:
           status: active
@@ -1027,6 +1126,16 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      scala:
+        label: Scala
+        description: A general-purpose programming language for the JVM that combines 
+          object-oriented and functional programming paradigms.
+        kind: programming-language
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
+          review: annual
       spec-driven-development:
         label: Spec-driven development
         description: A development approach using specifications.
@@ -1044,6 +1153,18 @@ dimensions:
           status: active
           introduced: '2026-08-14'
           source: initial-taxonomy
+          review: annual
+      svg:
+        label: SVG
+        description: An XML-based vector graphics format for describing scalable two-dimensional 
+          graphics.
+        kind: data-format
+        aliases:
+          - Scalable Vector Graphics
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
           review: annual
       tcp-ip:
         label: TCP/IP
@@ -1063,6 +1184,18 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      tokenisation:
+        label: Tokenisation
+        description: A payment and security technique that replaces sensitive payment data with 
+          non-sensitive tokens for storage, transmission, or transaction processing.
+        kind: payment-technology
+        aliases:
+          - Tokenization
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
+          review: annual
       twiki:
         label: TWiki
         description: A wiki platform.
@@ -1080,6 +1213,16 @@ dimensions:
           status: active
           introduced: '2026-08-14'
           source: initial-taxonomy
+          review: annual
+      typo3:
+        label: TYPO3
+        description: An open-source content management system used to build and manage websites and 
+          digital content.
+        kind: cms-wiki
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
           review: annual
       vale:
         label: Vale
@@ -1134,6 +1277,18 @@ dimensions:
           status: active
           introduced: '2026-08-14'
           source: initial-taxonomy
+          review: annual
+      xhtml:
+        label: XHTML
+        description: An XML-based reformulation of HTML used to author structured web content with 
+          XML syntax rules.
+        kind: markup-content-language
+        aliases:
+          - Extensible HyperText Markup Language
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
           review: annual
       xml:
         label: XML

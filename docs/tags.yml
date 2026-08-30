@@ -16,6 +16,9 @@ amp:
 amx-composer:
   description: A content management application for digital signage.
   label: AMX Composer
+api-blueprint:
+  description: A Markdown-based API description format for documenting HTTP APIs.
+  label: API Blueprint
 api-documentation:
   description: Creation and maintenance of documentation for application programming interfaces.
   label: API documentation
@@ -25,9 +28,17 @@ api-security:
 apple-pay:
   description: A mobile payment service by Apple.
   label: Apple Pay
+bash:
+  description: A Unix shell and command language used for interactive command-line work, scripting, automation,
+    and build or deployment workflows.
+  label: Bash
 brightspot-cms:
   description: A content management system.
   label: Brightspot CMS
+c-plus-plus:
+  description: A general-purpose programming language used for systems software, embedded development,
+    high-performance applications, and native tooling.
+  label: C++
 c4-model:
   description: A modelling methodology for software architecture.
   label: C4 model
@@ -46,6 +57,14 @@ codetreedocs:
 confluence:
   description: A collaboration and documentation platform.
   label: Confluence
+csharp:
+  description: A general-purpose programming language in the .NET ecosystem used to build applications,
+    services, and tooling.
+  label: C#
+css:
+  description: A stylesheet language used to control the presentation and layout of HTML, XML, and related
+    structured documents.
+  label: CSS
 curl:
   description: A command-line tool for transferring data with URLs.
   label: cURL
@@ -130,6 +149,10 @@ insomnia:
 intellij-idea:
   description: An integrated development environment.
   label: IntelliJ IDEA
+javascript:
+  description: A general-purpose programming language widely used for web development, browser scripting,
+    server-side applications, and tooling.
+  label: JavaScript
 jenkins:
   description: A CI/CD automation server.
   label: Jenkins
@@ -196,12 +219,18 @@ mtls:
 nginx:
   description: A web server and reverse proxy.
   label: Nginx
+node-js:
+  description: A JavaScript runtime built on the V8 engine for running JavaScript outside the browser.
+  label: Node.js
 oauth:
   description: An open standard for access delegation.
   label: OAuth
 ocr:
   description: Optical Character Recognition.
   label: OCR
+openapi:
+  description: A standard specification for describing HTTP APIs in a machine-readable format.
+  label: OpenAPI
 openssl:
   description: A cryptography library and toolkit.
   label: OpenSSL
@@ -235,6 +264,10 @@ proxmox:
 pycharm:
   description: An IDE for Python development.
   label: PyCharm
+python:
+  description: A general-purpose programming language used for scripting, automation, tooling, data processing,
+    and software development.
+  label: Python
 pythonanywhere:
   description: A cloud hosting platform for Python applications.
   label: PythonAnywhere
@@ -253,12 +286,19 @@ rest:
 saq-a:
   description: Self-Assessment Questionnaire A for PCI DSS.
   label: SAQ A
+scala:
+  description: A general-purpose programming language for the JVM that combines object-oriented and functional
+    programming paradigms.
+  label: Scala
 spec-driven-development:
   description: A development approach using specifications.
   label: Spec-driven development
 sphinx:
   description: A documentation generator.
   label: Sphinx
+svg:
+  description: An XML-based vector graphics format for describing scalable two-dimensional graphics.
+  label: SVG
 tcp-ip:
   description: The Internet protocol suite.
   label: TCP/IP
@@ -271,12 +311,20 @@ technical-writing:
 tls:
   description: Transport Layer Security protocol.
   label: TLS
+tokenisation:
+  description: A payment and security technique that replaces sensitive payment data with non-sensitive
+    tokens for storage, transmission, or transaction processing.
+  label: Tokenisation
 twiki:
   description: A wiki platform.
   label: TWiki
 typescript:
   description: A typed superset of JavaScript.
   label: TypeScript
+typo3:
+  description: An open-source content management system used to build and manage websites and digital
+    content.
+  label: TYPO3
 vale:
   description: A documentation linter and style checker.
   label: Vale
@@ -295,6 +343,10 @@ wireshark:
 x509:
   description: A standard for public key certificates.
   label: X.509
+xhtml:
+  description: An XML-based reformulation of HTML used to author structured web content with XML syntax
+    rules.
+  label: XHTML
 xml:
   description: Extensible Markup Language.
   label: XML

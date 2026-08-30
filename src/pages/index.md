@@ -62,9 +62,9 @@ API implementation and testing, security validation, software debugging, automat
 
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
 
-  <p>
-   Led the design and evolution of Codetreedocs, an internal documentation platform that grew to more than 3,200 pages and approximately 1,200 developer mailing-list subscribers. My responsibilities also included documentation for Optimus, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
-  </p>
+  <div className="card-description">
+  Led the design and evolution of Codetreedocs, an internal documentation platform that grew to more than 3,200 pages and approximately 1,200 developer mailing-list subscribers. My responsibilities also included documentation for Optimus, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
+</div>
 
   <span className="card-link">Read case study →</span>
 </Link>
@@ -80,9 +80,9 @@ API implementation and testing, security validation, software debugging, automat
 
   <h3>Building the Paysafe Developer Center</h3>
 
-  <p>
-     Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion, as the company integrated major acquisitions, delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.
-  </p>
+ <div className="card-description">
+  Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion, as the company integrated major acquisitions, delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.
+</div>
 
   <span className="card-link">Read case study →</span>
 </Link>
