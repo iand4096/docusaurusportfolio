@@ -862,6 +862,18 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      openapi:
+        label: OpenAPI
+        description: A standard specification for describing HTTP APIs in a machine-readable format.
+        kind: standard-specification
+        aliases:
+          - OpenAPI Specification
+          - OAS
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
+          review: annual
       openssl:
         label: OpenSSL
         description: A cryptography library and toolkit.
@@ -951,6 +963,15 @@ dimensions:
           status: active
           introduced: '2026-08-14'
           source: initial-taxonomy
+          review: annual
+      python:
+        label: Python
+        description: A general-purpose programming language used for scripting, automation, tooling, data processing, and software development.
+        kind: programming-language
+        governance:
+          status: active
+          introduced: '2026-08-30'
+          source: human-proposed
           review: annual
       pythonanywhere:
         label: PythonAnywhere

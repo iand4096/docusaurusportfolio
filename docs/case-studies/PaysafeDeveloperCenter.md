@@ -2,6 +2,26 @@
 title: Building the Paysafe Developer Center
 slug: /case-studies/paysafedevcenter
 sidebar_position: 2
+type:
+- case-study
+audiences:
+- developers
+- documentation-managers
+- technical-writers
+topics:
+- api-documentation
+- information-architecture
+- docs-as-code
+- documentation-engineering
+- developer-experience
+technologies:
+- git
+- api-blueprint
+- hypothesis
+- typo3
+- rest
+lifecycle:
+- historical
 ---
 
 ## Project overview

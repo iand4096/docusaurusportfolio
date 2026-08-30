@@ -2,12 +2,18 @@
 """Deterministic taxonomy, front-matter, and derived-file tooling.
 
 Taxonomy v2 adds typed technology subclasses and optional content-type-specific
-cardinality constraints while keeping the public front matter simple:
+cardinality constraints while keeping the public front matter simple. All governed
+taxonomy dimensions are serialised as YAML lists, including dimensions whose
+maximum cardinality is one:
 
+  type:
+    - case-study
   technologies:
     - python
     - openapi
     - docusaurus
+  lifecycle:
+    - current
 
 The canonical taxonomy is taxonomy/taxonomy.yml. This script never calls an
 LLM, so it is safe to use as a blocking CI check.
@@ -573,18 +579,20 @@ def taxonomy_field_definition(
     content_type: str | None = None,
 ) -> dict[str, Any]:
     minimum, maximum = effective_limits(dimension, content_type)
+
     field: dict[str, Any] = {
         "title": dimension_id.replace("_", " ").title(),
         "name": dimension["metadata_field"],
         "type": "taxonomy",
         "taxonomyId": dimension_id,
         "required": dimension["required"] or minimum > 0,
+        # Cardinality and YAML serialisation are separate concerns. Front Matter
+        # may allow only one selection, but governed taxonomy metadata is always
+        # stored as a YAML list.
+        "taxonomyLimit": maximum,
+        "singleValueAsString": False,
     }
-    if dimension["multiple"]:
-        field["taxonomyLimit"] = maximum
-    else:
-        field["taxonomyLimit"] = 1
-        field["singleValueAsString"] = True
+
     return field
 
 
@@ -778,7 +786,13 @@ def validate_document_front_matter(
     selected: dict[str, list[str]] = {}
 
     content_type_value = front_matter.get(dimensions["content_types"]["metadata_field"])
-    content_type = content_type_value if isinstance(content_type_value, str) else None
+    content_type = (
+        content_type_value[0]
+        if isinstance(content_type_value, list)
+        and len(content_type_value) == 1
+        and isinstance(content_type_value[0], str)
+        else None
+    )
 
     for dimension_id, dimension in dimensions.items():
         field_name = dimension["metadata_field"]
@@ -791,19 +805,14 @@ def validate_document_front_matter(
             selected[dimension_id] = []
             continue
 
-        values = value_as_list(value)
-        if values is None:
+        if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
             errors.append(
-                f"{relative}: metadata field {field_name!r} must be "
-                + ("a list of taxonomy IDs" if dimension["multiple"] else "a taxonomy ID")
+                f"{relative}: metadata field {field_name!r} must be a YAML list of taxonomy IDs"
             )
             selected[dimension_id] = []
             continue
 
-        if dimension["multiple"] and isinstance(value, str):
-            errors.append(f"{relative}: metadata field {field_name!r} must be a YAML list")
-        if not dimension["multiple"] and isinstance(value, list):
-            errors.append(f"{relative}: metadata field {field_name!r} must be a single string")
+        values = list(value)
 
         if len(values) < minimum or len(values) > maximum:
             suffix = f" for content type {content_type!r}" if content_type else ""

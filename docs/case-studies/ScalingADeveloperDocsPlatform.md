@@ -2,6 +2,35 @@
 title: Scaling an Enterprise Developer Docs Platform
 slug: /case-studies/scalingdeveloperdocs
 sidebar_position: 1
+type:
+- case-study
+audiences:
+- developers
+- documentation-managers
+- technical-writers
+topics:
+- docs-as-code
+- documentation-engineering
+- developer-experience
+- information-architecture
+- documentation-governance
+technologies:
+- codetreedocs
+- git
+- markdown
+- jenkins
+- intellij-idea
+- plantuml
+- mermaid
+- c4-model
+- sphinx
+- docker
+- amp
+- agentic-ai
+- vale
+- languagetool
+lifecycle:
+- current
 sidebar_custom_props:
   caseStudyCard:
     tag: Docs-as-Code · Developer Portal

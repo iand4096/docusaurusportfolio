@@ -174,8 +174,7 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Audiences",
@@ -207,8 +206,7 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -253,8 +251,7 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Audiences",
@@ -286,8 +283,7 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -332,8 +328,7 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Audiences",
@@ -365,8 +360,7 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -411,8 +405,7 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Audiences",
@@ -444,8 +437,7 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Docusaurus tags (derived)",
@@ -490,8 +482,7 @@
           "type": "taxonomy",
           "taxonomyId": "content_types",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Audiences",
@@ -523,8 +514,7 @@
           "type": "taxonomy",
           "taxonomyId": "lifecycle",
           "required": true,
-          "taxonomyLimit": 1,
-          "singleValueAsString": true
+          "taxonomyLimit": 1
         },
         {
           "title": "Docusaurus tags (derived)",

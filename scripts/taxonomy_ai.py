@@ -15,6 +15,8 @@ This version is deliberately tolerant at the AI boundary:
   rest of the document classification.
 - Over-cardinality AI selections are trimmed deterministically with a warning.
   Under-cardinality required metadata still fails the document classification.
+- All governed taxonomy metadata is normalised to arrays, including dimensions
+  such as content type and lifecycle whose maximum cardinality is one.
 
 Examples:
 
@@ -63,6 +65,11 @@ Use British English. Return JSON only.
 
 CORE RULES:
 
+- Every value inside the top-level `metadata` object MUST be a JSON array of
+  taxonomy IDs, including single-selection dimensions such as `type` and
+  `lifecycle`. Never return a scalar taxonomy value.
+- A dimension with `multiple=false` still uses an array; its cardinality rules
+  determine how many values may appear in that array.
 - Existing taxonomy values are preferred whenever they adequately represent the
   document.
 - Select only values materially supported by the supplied document.
@@ -114,11 +121,11 @@ Return exactly this top-level JSON shape:
 
 {
   "metadata": {
-    "type": "case-study",
+    "type": ["case-study"],
     "audiences": ["developers"],
     "topics": ["api-documentation"],
     "technologies": ["openapi"],
-    "lifecycle": "current"
+    "lifecycle": ["current"]
   },
   "selection_reasons": {
     "type": "Concise evidence-based rationale.",
@@ -316,6 +323,49 @@ def clean_string_list(value: Any) -> list[str] | None:
     if not isinstance(value, list) or not all(isinstance(item, str) for item in value):
         return None
     return list(value)
+
+
+def normalise_ai_metadata_values(
+    value: Any,
+    *,
+    field: str,
+    required: bool,
+    warnings: list[dict[str, Any]],
+) -> list[str]:
+    """Normalise AI metadata to the repository's array storage contract.
+
+    The prompt requires arrays for every taxonomy dimension. A scalar string is
+    still tolerated at the AI boundary for backwards compatibility and is
+    wrapped in a one-item list with an advisory warning. Other malformed values
+    fail required fields and are ignored for optional fields.
+    """
+
+    values = clean_string_list(value)
+    if values is not None:
+        return values
+
+    if isinstance(value, str):
+        warnings.append(
+            {
+                "code": "normalised-scalar-metadata",
+                "message": (
+                    f"Normalised scalar metadata.{field} {value!r} to a one-item array."
+                ),
+            }
+        )
+        return [value]
+
+    if required:
+        raise ValueError(f"metadata.{field} must be an array of IDs/labels")
+
+    if value is not None:
+        warnings.append(
+            {
+                "code": "invalid-optional-metadata",
+                "message": f"Ignored malformed optional metadata.{field}; expected an array.",
+            }
+        )
+    return []
 
 
 def active_term_ids(dimension: dict[str, Any]) -> set[str]:
@@ -731,17 +781,40 @@ def validate_ai_result(
         proposed_by_dimension[proposal["dimension"]].append(proposal)
 
     # Content type first because it determines per-type cardinality limits.
+    # The repository stores every taxonomy dimension as an array, even when its
+    # maximum cardinality is one. Scalar model output is tolerated and
+    # normalised only at this AI boundary.
     type_dimension = dimensions["content_types"]
     type_field = type_dimension["metadata_field"]
-    raw_type = metadata.get(type_field)
-    if not isinstance(raw_type, str):
-        raise ValueError(f"metadata.{type_field} must be a single ID or label")
+    raw_type_values = normalise_ai_metadata_values(
+        metadata.get(type_field),
+        field=type_field,
+        required=True,
+        warnings=warnings,
+    )
+    if not raw_type_values:
+        raise ValueError(f"metadata.{type_field} must contain one content type")
+    if len(raw_type_values) > 1:
+        warnings.append(
+            {
+                "code": "trimmed-cardinality",
+                "message": (
+                    f"Trimmed metadata.{type_field} from {len(raw_type_values)} to 1 value "
+                    "before applying content-type-specific cardinality rules."
+                ),
+            }
+        )
+        raw_type_values = raw_type_values[:1]
+
+    raw_type = raw_type_values[0]
     type_value, method = resolve_existing_term(raw_type, type_dimension)
     if not type_value:
         type_value = resolve_proposal_term(raw_type, proposed_by_dimension["content_types"])
         method = "proposed-term" if type_value else method
     if not type_value:
-        raise ValueError(f"metadata.{type_field} does not resolve to a declared/proposed content type: {raw_type!r}")
+        raise ValueError(
+            f"metadata.{type_field} does not resolve to a declared/proposed content type: {raw_type!r}"
+        )
     if method != "exact-id":
         warnings.append(
             {
@@ -757,25 +830,13 @@ def validate_ai_result(
 
         if dimension_id == "content_types":
             raw_values = [type_value]
-        elif dimension["multiple"]:
-            raw_values = clean_string_list(raw_value)
-            if raw_values is None:
-                if dimension["required"]:
-                    raise ValueError(f"metadata.{field} must be an array of IDs/labels")
-                raw_values = []
-                warnings.append(
-                    {
-                        "code": "invalid-optional-metadata",
-                        "message": f"Ignored malformed optional metadata.{field}; expected an array.",
-                    }
-                )
         else:
-            if isinstance(raw_value, str):
-                raw_values = [raw_value]
-            elif dimension["required"]:
-                raise ValueError(f"metadata.{field} must be a single ID or label")
-            else:
-                raw_values = []
+            raw_values = normalise_ai_metadata_values(
+                raw_value,
+                field=field,
+                required=dimension["required"],
+                warnings=warnings,
+            )
 
         resolved_values: list[str] = []
         if dimension_id == "content_types":
@@ -841,7 +902,8 @@ def validate_ai_result(
             # An accepted new proposal is, by definition, materially evidenced
             # by this document. For multi-valued dimensions, include it in the
             # document metadata even if the model forgot to repeat its new ID
-            # in the metadata array.
+            # in the metadata array. Single-cardinality dimensions remain
+            # selection-policy controlled and are not auto-expanded here.
             if dimension["multiple"]:
                 for proposal in proposed_by_dimension[dimension_id]:
                     proposal_id = proposal["id"]
@@ -882,7 +944,9 @@ def validate_ai_result(
                 f"minimum is {minimum} for content type {type_value!r}"
             )
 
-        clean_metadata[field] = resolved_values if dimension["multiple"] else resolved_values[0]
+        # Repository storage contract: every governed taxonomy field is a YAML
+        # list, even when cardinality permits exactly one value.
+        clean_metadata[field] = resolved_values
 
     clean_reasons: dict[str, str] = {}
     for dimension in dimensions.values():
@@ -978,8 +1042,18 @@ def render_markdown_report(
     document_errors: list[dict[str, str]],
     global_warnings: list[str],
 ) -> str:
+    """Render an action-oriented human review report.
+
+    The report puts the two review decisions first:
+
+    1. Accept/reject the suggested metadata.
+    2. Accept/reject any proposed additions to the controlled vocabulary.
+
+    Rationale and validation notes follow afterwards as supporting evidence.
+    """
+
     lines = [
-        "# Taxonomy AI suggestions",
+        "# Taxonomy AI review",
         "",
         f"Model: `{model}`",
         "",
@@ -1002,51 +1076,87 @@ def render_markdown_report(
         lines.extend(["No documentation files produced a usable AI classification.", ""])
         return "\n".join(lines)
 
-    for result in results:
-        lines.extend([f"## `{result['file']}`", "", "### Suggested metadata", "", "```yaml"])
-        yaml = YAML()
-        yaml.default_flow_style = False
+    yaml = YAML()
+    yaml.default_flow_style = False
+
+    for result_index, result in enumerate(results):
+        lines.extend(
+            [
+                f"**Document:** `{result['file']}`",
+                "",
+                "## Suggested metadata",
+                "",
+                "Review these values before applying them.",
+                "",
+                "```yaml",
+            ]
+        )
+
         stream = io.StringIO()
         yaml.dump(result["metadata"], stream)
-        lines.extend([stream.getvalue().rstrip(), "```", "", "### Rationale", ""])
-        for field, reason in result["selection_reasons"].items():
-            lines.append(f"- **{field}**: {reason}")
-        lines.append("")
+        lines.extend([stream.getvalue().rstrip(), "```", ""])
 
-        if result.get("warnings"):
-            lines.extend(["### Normalisation / validation notes", ""])
-            for warning in result["warnings"]:
-                lines.append(f"- {warning['message']}")
-            lines.append("")
-
+        lines.extend(["## Proposed new taxonomy terms", ""])
         file_proposals = result["proposed_taxonomy_terms"]
-        if file_proposals:
-            lines.extend(["### Taxonomy expansion proposals", ""])
+
+        if not file_proposals:
+            lines.extend(
+                [
+                    "None. The existing controlled vocabulary is sufficient for this document.",
+                    "",
+                ]
+            )
+        else:
             for proposal in file_proposals:
-                kind_suffix = f" — kind `{proposal['kind']}`" if proposal.get("kind") else ""
+                kind_suffix = (
+                    f" — kind `{proposal['kind']}`"
+                    if proposal.get("kind")
+                    else ""
+                )
                 lines.extend(
                     [
-                        f"#### `{proposal['dimension']}.{proposal['id']}` — {proposal['label']}{kind_suffix}",
+                        f"### `{proposal['dimension']}.{proposal['id']}` — "
+                        f"{proposal['label']}{kind_suffix}",
                         "",
-                        proposal["reason"],
+                        f"**Why propose it:** {proposal['reason']}",
                         "",
-                        "Suggested term definition:",
+                        "**Suggested definition**",
                         "",
                         "```yaml",
                         yaml_snippet_for_proposal(proposal),
                         "```",
                         "",
-                        "Verified source evidence:",
+                        "**Verified source evidence**",
+                        "",
                     ]
                 )
                 for excerpt in proposal["evidence"]:
                     lines.append(f"- `{excerpt}`")
                 lines.append("")
 
-    if proposals:
+        lines.extend(["## Why these metadata values", ""])
+        for field, reason in result["selection_reasons"].items():
+            lines.append(f"- **{field}**: {reason}")
+        lines.append("")
+
+        if result.get("warnings"):
+            lines.extend(["## Normalisation / validation notes", ""])
+            for warning in result["warnings"]:
+                lines.append(f"- {warning['message']}")
+            lines.append("")
+
+        if result_index < len(results) - 1:
+            lines.extend(["---", ""])
+
+    # Keep consolidated proposals for batch CLI runs only. In the normal
+    # single-document Front Matter workflow this would just duplicate the
+    # proposal section above.
+    if proposals and len(results) > 1:
         lines.extend(["# Consolidated taxonomy proposals", ""])
         for proposal in proposals:
-            files = ", ".join(f"`{item}`" for item in proposal["proposed_by_files"])
+            files = ", ".join(
+                f"`{item}`" for item in proposal["proposed_by_files"]
+            )
             lines.extend(
                 [
                     f"## `{proposal['dimension']}.{proposal['id']}`",
@@ -1059,6 +1169,7 @@ def render_markdown_report(
                     "",
                 ]
             )
+
     return "\n".join(lines).rstrip() + "\n"
 
 
