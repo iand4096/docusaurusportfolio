@@ -656,24 +656,6 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
-      home-assistant:
-        label: Home Assistant
-        description: An open-source home automation platform.
-        kind: software-platform
-        governance:
-          status: active
-          introduced: '2026-08-14'
-          source: initial-taxonomy
-          review: annual
-      hsm:
-        label: HSM
-        description: Hardware Security Module.
-        kind: security-cryptography
-        governance:
-          status: active
-          introduced: '2026-08-14'
-          source: initial-taxonomy
-          review: annual
       https:
         label: HTTPS
         description: HTTP over TLS.
@@ -1039,15 +1021,6 @@ dimensions:
         label: Postman
         description: An API testing and development tool.
         kind: api-tool
-        governance:
-          status: active
-          introduced: '2026-08-14'
-          source: initial-taxonomy
-          review: annual
-      proxmox:
-        label: Proxmox
-        description: A virtualization platform.
-        kind: infrastructure-platform
         governance:
           status: active
           introduced: '2026-08-14'

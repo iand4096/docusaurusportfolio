@@ -22,20 +22,24 @@ topics:
   - technical-writing
   - developer-experience
   - docs-as-code
+  - payments
 technologies:
   - masterpass
   - openapi
   - plantuml
   - brightspot-cms
+  - amx-composer
 lifecycle:
   - historical
 tags:
+  - amx-composer
   - api-documentation
   - brightspot-cms
   - developer-experience
   - docs-as-code
   - masterpass
   - openapi
+  - payments
   - plantuml
   - technical-writing
 ---

@@ -72,8 +72,6 @@
         "github-pages",
         "google-pay",
         "graphviz",
-        "home-assistant",
-        "hsm",
         "https",
         "hypothesis",
         "inkscape",
@@ -114,7 +112,6 @@
         "pki",
         "plantuml",
         "postman",
-        "proxmox",
         "pycharm",
         "python",
         "pythonanywhere",
@@ -606,8 +603,6 @@
     "github-pages",
     "google-pay",
     "graphviz",
-    "home-assistant",
-    "hsm",
     "https",
     "hypothesis",
     "information-architecture",
@@ -650,7 +645,6 @@
     "pki",
     "plantuml",
     "postman",
-    "proxmox",
     "pycharm",
     "python",
     "pythonanywhere",
@@ -954,9 +948,7 @@
       "docker",
       "kubernetes"
     ],
-    "infrastructure-platform": [
-      "proxmox"
-    ],
+    "infrastructure-platform": [],
     "operating-system-firmware": [
       "linux",
       "openwrt"
@@ -987,7 +979,6 @@
       "spec-driven-development"
     ],
     "security-cryptography": [
-      "hsm",
       "mtls",
       "openssl",
       "pki"
@@ -1016,7 +1007,6 @@
       "amx-composer",
       "apple-pay",
       "google-pay",
-      "home-assistant",
       "masterpass",
       "mdes"
     ]

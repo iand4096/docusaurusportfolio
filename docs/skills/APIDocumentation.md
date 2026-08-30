@@ -37,6 +37,7 @@ technologies:
   - jose
   - https
   - tls
+  - openssl
   - python
   - requests
   - flask
@@ -64,6 +65,7 @@ tags:
   - node-js
   - oauth
   - openapi
+  - openssl
   - pki
   - postman
   - python
@@ -133,7 +135,7 @@ I have practical experience testing and documenting security mechanisms used by 
 
 * OAuth 1.0 and signed API requests
 * Mutual TLS
-* X.509 certificates and PKI
+* X.509 certificates, OpenSSL use, and PKI
 * JWT and JOSE
 * Digital signatures
 * Symmetric and asymmetric encryption
@@ -142,6 +144,10 @@ I have practical experience testing and documenting security mechanisms used by 
 * API credentials, tokens and secrets
 * Certificate and cryptographic-key handling
 * Secure webhook and callback processing
+
+## Web security
+
+* Basic OWASP vulnerabilities.
 
 I have written Python code to process certificates, encrypt and decrypt payloads, create and validate tokens and test secure integrations in sandbox environments.
 

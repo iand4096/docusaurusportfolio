@@ -125,12 +125,6 @@ google-pay:
 graphviz:
   description: A graph visualisation software.
   label: Graphviz
-home-assistant:
-  description: An open-source home automation platform.
-  label: Home Assistant
-hsm:
-  description: Hardware Security Module.
-  label: HSM
 https:
   description: HTTP over TLS.
   label: HTTPS
@@ -258,9 +252,6 @@ plantuml:
 postman:
   description: An API testing and development tool.
   label: Postman
-proxmox:
-  description: A virtualization platform.
-  label: Proxmox
 pycharm:
   description: An IDE for Python development.
   label: PyCharm

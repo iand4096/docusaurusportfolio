@@ -266,16 +266,6 @@
           "description": "A graph visualisation software."
         },
         {
-          "id": "home-assistant",
-          "label": "Home Assistant",
-          "description": "An open-source home automation platform."
-        },
-        {
-          "id": "hsm",
-          "label": "HSM",
-          "description": "Hardware Security Module."
-        },
-        {
           "id": "https",
           "label": "HTTPS",
           "description": "HTTP over TLS."
@@ -479,11 +469,6 @@
           "id": "postman",
           "label": "Postman",
           "description": "An API testing and development tool."
-        },
-        {
-          "id": "proxmox",
-          "label": "Proxmox",
-          "description": "A virtualization platform."
         },
         {
           "id": "pycharm",
@@ -810,6 +795,7 @@
         "jose",
         "https",
         "tls",
+        "openssl",
         "python",
         "requests",
         "flask",
@@ -1193,13 +1179,15 @@
         "api-documentation",
         "technical-writing",
         "developer-experience",
-        "docs-as-code"
+        "docs-as-code",
+        "payments"
       ],
       "technologies": [
         "masterpass",
         "openapi",
         "plantuml",
-        "brightspot-cms"
+        "brightspot-cms",
+        "amx-composer"
       ],
       "audiences": [
         "developers",
