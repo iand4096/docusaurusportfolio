@@ -34,7 +34,6 @@ technologies:
   - inkscape
   - ocr
   - catia
-data-format:
   - svg
 lifecycle:
   - current
@@ -52,6 +51,7 @@ tags:
   - mermaid
   - ocr
   - plantuml
+  - svg
   - visio
 ---
 

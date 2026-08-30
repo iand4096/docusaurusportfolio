@@ -458,7 +458,7 @@
           "type": "taxonomy",
           "taxonomyId": "technologies",
           "required": false,
-          "taxonomyLimit": 20,
+          "taxonomyLimit": 30,
           "singleValueAsString": false
         },
         {
