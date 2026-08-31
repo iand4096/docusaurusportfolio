@@ -623,6 +623,11 @@
           "description": "Managers and leads responsible for documentation strategy and teams."
         },
         {
+          "id": "end-users",
+          "label": "End users",
+          "description": "Software application users"
+        },
+        {
           "id": "system-administrators",
           "label": "System administrators",
           "description": "Administrators who manage systems, networks, or platforms."
@@ -771,6 +776,7 @@
         "languagetool"
       ],
       "audiences": [
+        "end-users",
         "system-administrators",
         "technical-writers"
       ],

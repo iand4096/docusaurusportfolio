@@ -17,6 +17,7 @@
       "options": [
         "developers",
         "documentation-managers",
+        "end-users",
         "system-administrators",
         "technical-writers"
       ]
@@ -295,7 +296,7 @@
           "type": "taxonomy",
           "taxonomyId": "technologies",
           "required": false,
-          "taxonomyLimit": 15,
+          "taxonomyLimit": 30,
           "singleValueAsString": false
         },
         {

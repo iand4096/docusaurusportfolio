@@ -15,6 +15,7 @@ sidebar_custom_props:
 type:
   - doc-sample
 audiences:
+  - end-users
   - system-administrators
   - technical-writers
 topics:

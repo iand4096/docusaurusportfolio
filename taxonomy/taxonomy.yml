@@ -192,6 +192,14 @@ dimensions:
     docusaurus_tags: false
     ai_managed: true
     terms:
+      end-users:
+        label: End users
+        description: Software application users
+        governance:
+          status: active
+          introduced: '2026-08-31'
+          source: initial-taxonomy
+          review: annual
       developers:
         label: Developers
         description: Software developers who consume APIs, SDKs, and developer documentation.
@@ -224,6 +232,7 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      
   topics:
     description: Reusable subject areas substantially covered by the content.
     metadata_field: topics
@@ -334,7 +343,7 @@ dimensions:
     constraints_by_type:
       case-study:
         min: 0
-        max: 15
+        max: 30
       skill:
         min: 0
         max: 30
