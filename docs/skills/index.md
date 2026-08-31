@@ -1,5 +1,7 @@
 ---
 title: Skills
+description: Overview of technical writing, documentation engineering, 
+  governance, structured authoring, and developer documentation capabilities.
 slug: /skills
 sidebar_position: 1
 type:

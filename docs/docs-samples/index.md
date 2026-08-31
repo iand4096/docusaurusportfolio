@@ -1,6 +1,8 @@
 ---
 id: docs-samples
 title: Documentation Samples
+description: A collection of documentation samples demonstrating technical 
+  writing skills and approaches.
 slug: /docs-samples
 sidebar_position: 1
 type:

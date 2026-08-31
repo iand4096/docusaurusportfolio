@@ -13,7 +13,7 @@ sidebar_custom_props:
       - Applied practical TCP/IP and device-connectivity knowledge
     ariaLabel: View the AMX Digital Signage User Manual documentation sample
 type:
-  - case-study
+  - doc-sample
 audiences:
   - system-administrators
   - technical-writers

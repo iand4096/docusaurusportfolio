@@ -40,7 +40,7 @@ def main() -> int:
     temp_parent.mkdir(parents=True, exist_ok=True)
 
     print(
-        f"Suggesting taxonomy for: {relative_document.as_posix()}",
+        f"Suggesting title, description, and taxonomy for: {relative_document.as_posix()}",
         flush=True,
     )
 
@@ -72,7 +72,7 @@ def main() -> int:
 
         if not markdown_report.exists():
             print(
-                "ERROR: taxonomy AI did not produce a Markdown report",
+                "ERROR: metadata AI did not produce a Markdown review report",
                 file=sys.stderr,
             )
             return result.returncode or 1
@@ -87,7 +87,7 @@ def main() -> int:
             )
             return result.returncode or 1
 
-        print("Opening taxonomy suggestions in VS Code...", flush=True)
+        print("Opening metadata suggestions in VS Code...", flush=True)
 
         subprocess.run(
             [

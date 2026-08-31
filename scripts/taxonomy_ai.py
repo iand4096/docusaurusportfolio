@@ -82,6 +82,26 @@ CORE RULES:
   propose a lifecycle term.
 - A new term may be proposed only in a dimension marked ai_managed=true.
 
+PAGE FIELD POLICY:
+
+- `title` and `description` are ordinary top-level Docusaurus front-matter
+  fields, not taxonomy dimensions.
+- Suggest `title` only when the current top-level `title` field is absent, null,
+  empty, or whitespace-only. If a usable title already exists, return null for
+  `page_fields.title` and do not rewrite it.
+- Suggest `description` only when the current top-level `description` field is
+  absent, null, empty, or whitespace-only. If a usable description already
+  exists, return null for `page_fields.description` and do not rewrite it.
+- A suggested title must be concise, specific to the document, plain text, and
+  suitable as the page title.
+- A suggested description must be concise plain text suitable for Docusaurus
+  metadata and the portfolio Browse card. Prefer one informative sentence and
+  do not use Markdown.
+- Existing nested card text such as
+  `sidebar_custom_props.sampleCard.description` may be used as evidence/context,
+  but it does not count as the top-level `description` field.
+- Never invent claims that are not supported by the document.
+
 TECHNOLOGY POLICY:
 
 - The technology vocabulary is intentionally broad because the portfolio spans
@@ -120,6 +140,10 @@ source text. Do not invent evidence that is absent from the document.
 Return exactly this top-level JSON shape:
 
 {
+  "page_fields": {
+    "title": "Suggested title when the current top-level title is missing, otherwise null",
+    "description": "Suggested description when the current top-level description is missing, otherwise null"
+  },
   "metadata": {
     "type": ["case-study"],
     "audiences": ["developers"],
@@ -162,7 +186,7 @@ STOPWORDS = {
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="Suggest or apply taxonomy metadata with DeepSeek")
+    parser = argparse.ArgumentParser(description="Suggest page fields and taxonomy metadata with DeepSeek")
     parser.add_argument("paths", nargs="*", help="docs Markdown/MDX files or directories")
     parser.add_argument("--root", type=Path, default=Path("."), help="Repository root")
     parser.add_argument("--all", action="store_true", help="Review every docs/**/*.md[x] file")
@@ -308,6 +332,21 @@ def document_payload(path: Path, root: Path, max_chars: int) -> tuple[dict[str, 
     front_matter, body = taxonomy_tools.load_front_matter(path)
     dimensions = taxonomy_tools.load_and_validate_taxonomy(root)["dimensions"]
     current = {}
+
+    # Include page-level fields needed for conditional title/description
+    # suggestions. Keep selected supporting Docusaurus front matter as context,
+    # including existing nested sample-card copy when present.
+    for field in (
+        "title",
+        "description",
+        "sidebar_custom_props",
+        "slug",
+        "id",
+        "sidebar_label",
+    ):
+        if field in front_matter:
+            current[field] = plain_value(front_matter[field])
+
     for dimension in dimensions.values():
         field = dimension["metadata_field"]
         if field in front_matter:
@@ -317,6 +356,96 @@ def document_payload(path: Path, root: Path, max_chars: int) -> tuple[dict[str, 
     if len(body) > max_chars:
         body = body[:max_chars] + "\n\n[CONTENT TRUNCATED FOR AI CLASSIFICATION]"
     return current, body
+
+
+def has_usable_front_matter_string(value: Any) -> bool:
+    return isinstance(value, str) and bool(value.strip())
+
+
+def normalise_page_field_suggestion(value: Any) -> str | None:
+    """Return one clean plain-text suggestion, or None for an unusable value."""
+    if not isinstance(value, str):
+        return None
+    cleaned = " ".join(value.split())
+    return cleaned or None
+
+
+def missing_page_field_suggestions(
+    result: dict[str, Any],
+    current: dict[str, Any],
+) -> list[str]:
+    """Return missing top-level page fields that still lack usable AI suggestions."""
+    raw_page_fields = result.get("page_fields")
+    if not isinstance(raw_page_fields, dict):
+        raw_page_fields = {}
+
+    missing: list[str] = []
+    for field in ("title", "description"):
+        if has_usable_front_matter_string(current.get(field)):
+            continue
+        if normalise_page_field_suggestion(raw_page_fields.get(field)) is None:
+            missing.append(field)
+    return missing
+
+
+def validate_page_field_suggestions(
+    result: dict[str, Any],
+    current: dict[str, Any],
+    warnings: list[dict[str, Any]],
+) -> dict[str, str]:
+    """Validate conditional AI suggestions for top-level title/description.
+
+    Existing usable values are immutable at the AI layer: even if the model
+    returns replacement copy, it is ignored. Only genuinely missing/blank
+    top-level fields are eligible for suggestions.
+    """
+    raw_page_fields = result.get("page_fields")
+    if raw_page_fields is None:
+        raw_page_fields = {}
+    if not isinstance(raw_page_fields, dict):
+        warnings.append(
+            {
+                "code": "invalid-page-fields",
+                "message": "Ignored malformed page_fields; expected an object.",
+            }
+        )
+        raw_page_fields = {}
+
+    suggestions: dict[str, str] = {}
+    for field in ("title", "description"):
+        current_value = current.get(field)
+        missing = not has_usable_front_matter_string(current_value)
+        raw_value = raw_page_fields.get(field)
+
+        if not missing:
+            if normalise_page_field_suggestion(raw_value):
+                warnings.append(
+                    {
+                        "code": "ignored-existing-page-field",
+                        "message": (
+                            f"Ignored AI page_fields.{field} because the document "
+                            f"already has a usable top-level {field!r} field."
+                        ),
+                    }
+                )
+            continue
+
+        suggestion = normalise_page_field_suggestion(raw_value)
+        if suggestion is None:
+            warnings.append(
+                {
+                    "code": "missing-page-field-suggestion",
+                    "message": (
+                        f"Top-level {field!r} is missing, but DeepSeek did not "
+                        f"return a usable page_fields.{field} suggestion."
+                    ),
+                }
+            )
+            continue
+
+        suggestions[field] = suggestion
+
+    return suggestions
 
 
 def clean_string_list(value: Any) -> list[str] | None:
@@ -714,6 +843,7 @@ def validate_ai_result(
     result: dict[str, Any],
     taxonomy: dict[str, Any],
     document_text: str,
+    current: dict[str, Any],
 ) -> dict[str, Any]:
     metadata = result.get("metadata")
     reasons = result.get("selection_reasons")
@@ -727,6 +857,7 @@ def validate_ai_result(
 
     dimensions = taxonomy["dimensions"]
     warnings: list[dict[str, Any]] = []
+    page_field_suggestions = validate_page_field_suggestions(result, current, warnings)
     proposals: list[dict[str, Any]] = []
     folded_existing: dict[str, set[str]] = {dimension_id: set() for dimension_id in dimensions}
 
@@ -964,6 +1095,7 @@ def validate_ai_result(
             )
 
     return {
+        "page_field_suggestions": page_field_suggestions,
         "metadata": clean_metadata,
         "selection_reasons": clean_reasons,
         "proposed_taxonomy_terms": proposals,
@@ -978,13 +1110,52 @@ def make_user_prompt(
     current: dict[str, Any],
     body: str,
 ) -> str:
+    missing_page_fields = [
+        field
+        for field in ("title", "description")
+        if not has_usable_front_matter_string(current.get(field))
+    ]
+    existing_page_fields = [
+        field
+        for field in ("title", "description")
+        if has_usable_front_matter_string(current.get(field))
+    ]
+
+    page_field_requirements = [
+        "PAGE FIELD REQUIREMENTS FOR THIS DOCUMENT:",
+    ]
+    if missing_page_fields:
+        page_field_requirements.append(
+            "- REQUIRED: return a non-empty plain-text suggestion in `page_fields` "
+            "for each of these missing top-level fields: "
+            + ", ".join(missing_page_fields)
+            + "."
+        )
+    else:
+        page_field_requirements.append(
+            "- No top-level title/description fields are missing."
+        )
+
+    if existing_page_fields:
+        page_field_requirements.append(
+            "- These top-level fields already have usable values and MUST be returned "
+            "as null in `page_fields`: "
+            + ", ".join(existing_page_fields)
+            + "."
+        )
+
+    page_field_requirements.append(
+        "- Do not omit the `page_fields` object from the JSON response."
+    )
+
     return (
         "Classify this document using the controlled taxonomy below. Return JSON only.\n\n"
-        "CONTROLLED TAXONOMY:\n"
+        + "\n".join(page_field_requirements)
+        + "\n\nCONTROLLED TAXONOMY:\n"
         + json.dumps(taxonomy_for_prompt(taxonomy), indent=2, ensure_ascii=False)
         + "\n\nFILE: "
         + path.relative_to(root).as_posix()
-        + "\nCURRENT TAXONOMY FRONT MATTER:\n"
+        + "\nCURRENT FRONT MATTER (relevant fields):\n"
         + json.dumps(current, indent=2, ensure_ascii=False)
         + "\n\nDOCUMENT CONTENT:\n"
         + body
@@ -1084,7 +1255,35 @@ def render_markdown_report(
             [
                 f"**Document:** `{result['file']}`",
                 "",
-                "## Suggested metadata",
+                "## Suggested page fields",
+                "",
+            ]
+        )
+
+        page_field_suggestions = result.get("page_field_suggestions", {})
+        if page_field_suggestions:
+            lines.extend(
+                [
+                    "Only missing top-level fields are shown; existing title/description values are retained.",
+                    "",
+                    "```yaml",
+                ]
+            )
+            page_stream = io.StringIO()
+            yaml.dump(page_field_suggestions, page_stream)
+            lines.extend([page_stream.getvalue().rstrip(), "```", ""])
+        else:
+            lines.extend(
+                [
+                    "None. The document already has usable top-level title and description fields, "
+                    "or DeepSeek did not return a usable suggestion.",
+                    "",
+                ]
+            )
+
+        lines.extend(
+            [
+                "## Suggested taxonomy metadata",
                 "",
                 "Review these values before applying them.",
                 "",
@@ -1223,6 +1422,16 @@ def apply_results(
     for result in results:
         path = root / result["file"]
         front_matter, body = taxonomy_tools.load_front_matter(path)
+
+        # Page-field suggestions are intentionally conservative: --apply fills
+        # only missing/blank top-level title/description fields and never
+        # overwrites an existing usable value.
+        for field, value in result.get("page_field_suggestions", {}).items():
+            if field not in {"title", "description"}:
+                continue
+            if not has_usable_front_matter_string(front_matter.get(field)):
+                front_matter[field] = value
+
         for dimension in taxonomy["dimensions"].values():
             field = dimension["metadata_field"]
             value = result["metadata"][field]
@@ -1283,13 +1492,43 @@ def main() -> int:
         print(f"classifying {index}/{len(docs)}: {relative}")
         try:
             current, body = document_payload(path, root, args.max_file_chars)
+            user_prompt = make_user_prompt(path, root, taxonomy, current, body)
             raw = request_json(
                 api_key,
                 args.model,
-                make_user_prompt(path, root, taxonomy, current, body),
+                user_prompt,
                 args.max_tokens,
             )
-            validated = validate_ai_result(raw, taxonomy, body)
+
+            missing_page_fields = missing_page_field_suggestions(raw, current)
+            if missing_page_fields:
+                print(
+                    f"NOTE: {relative}: DeepSeek omitted required page field suggestion(s): "
+                    + ", ".join(missing_page_fields)
+                    + "; retrying page-field generation.",
+                    file=sys.stderr,
+                )
+                repair_prompt = (
+                    user_prompt
+                    + "\n\nCORRECTION REQUIRED:\n"
+                    + "Your previous response omitted one or more REQUIRED page-field suggestions. "
+                    + "Return the complete JSON object again. In `page_fields`, provide non-empty "
+                    + "plain-text suggestions for exactly these missing top-level fields: "
+                    + ", ".join(missing_page_fields)
+                    + ". Existing usable title/description fields must remain null. "
+                    + "Do not omit `page_fields`."
+                )
+                repaired = request_json(
+                    api_key,
+                    args.model,
+                    repair_prompt,
+                    args.max_tokens,
+                )
+                repaired_page_fields = repaired.get("page_fields")
+                if isinstance(repaired_page_fields, dict):
+                    raw["page_fields"] = repaired_page_fields
+
+            validated = validate_ai_result(raw, taxonomy, body, current)
             validated["file"] = relative
             validated["current_metadata"] = current
             results.append(validated)

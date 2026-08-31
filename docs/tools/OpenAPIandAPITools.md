@@ -14,7 +14,7 @@ sidebar_custom_props:
       - JSON and YAML automation with Python and Scala
     ariaLabel: Explore my API specification and API testing tools
 type:
-  - case-study
+  - tool
 audiences:
   - developers
   - technical-writers

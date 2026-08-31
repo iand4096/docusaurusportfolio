@@ -15,7 +15,7 @@ sidebar_custom_props:
       - Cross-platform CI and build-failure troubleshooting
     ariaLabel: Explore my Git and CI/CD skills
 type:
-  - skill
+  - tool
 audiences:
   - technical-writers
   - documentation-managers

@@ -1,5 +1,7 @@
 ---
 title: Docusaurus Portfolio
+description: A case study of building a Docusaurus portfolio site with docs-as-code workflows, 
+  React/MDX customisation, automated QA, and CI/CD.
 sidebar_position: 7
 type:
   - case-study
@@ -28,6 +30,7 @@ technologies:
   - javascript
   - git
   - github
+  - typescript
 lifecycle:
   - current
 tags:
@@ -49,6 +52,7 @@ tags:
   - python
   - react
   - technical-validation
+  - typescript
   - vale
 ---
 
@@ -79,7 +83,7 @@ The checks are combined into HTML and JSON reports and run automatically when an
 
 ## The challenge
 
-* Build a production-style documentation site using Docusaurus, React/JSX and GitHub Actions
+* Build a production-style documentation site using Docusaurus, React/JSX, Typescript and GitHub Actions
 * Integrate an LLM API into an automated QA workflow
 * Combine AI review with deterministic Markdown linting, accessibility, style, and link checks
 

@@ -13,7 +13,7 @@ sidebar_custom_props:
       - Documented hosted fields, tokenisation, validation, and error handling
     ariaLabel: View the Paysafe.js Developer Guide documentation sample
 type:
-  - case-study
+  - doc-sample
 audiences:
   - developers
 topics:

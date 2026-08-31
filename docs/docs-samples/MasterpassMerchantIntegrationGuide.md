@@ -13,7 +13,7 @@ sidebar_custom_props:
       - Updated merchant and mobile SDK guidance
     ariaLabel: View the Masterpass Integration Guide documentation sample
 type:
-  - case-study
+  - doc-sample
 audiences:
   - developers
   - technical-writers

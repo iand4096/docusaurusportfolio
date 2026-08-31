@@ -858,6 +858,34 @@ def build_navigation_projection(
                 f"{relative}: description must be a string when present"
             )
 
+        # Prefer the document's top-level description. If it is absent or blank,
+        # fall back to the single nested sidebar card description used by the
+        # site's navigation cards.
+        if not isinstance(description, str) or not description.strip():
+            sidebar_custom_props = front_matter.get("sidebar_custom_props")
+
+            if isinstance(sidebar_custom_props, dict):
+                sample_card = sidebar_custom_props.get("sampleCard")
+
+                if isinstance(sample_card, dict):
+                    nested_description = sample_card.get("description")
+
+                    if nested_description is not None and not isinstance(
+                        nested_description,
+                        str,
+                    ):
+                        raise ValidationError(
+                            f"{relative}: "
+                            "sidebar_custom_props.sampleCard.description "
+                            "must be a string when present"
+                        )
+
+                    if (
+                        isinstance(nested_description, str)
+                        and nested_description.strip()
+                    ):
+                        description = nested_description
+
         document: dict[str, Any] = {
             "id": path.relative_to(root / "docs").with_suffix("").as_posix(),
             "title": title.strip(),

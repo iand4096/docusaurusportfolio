@@ -149,6 +149,14 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      doc-sample:
+        label: Documentation sample
+        description: A page describing documentation I created with a link to it or description of where to find the content.
+        governance:
+          status: active
+          introduced: '2026-08-31'
+          source: initial-taxonomy
+          review: annual
       landing-page:
         label: Landing page
         description: A page that introduces a section and provides navigation to its contents.
@@ -167,7 +175,7 @@ dimensions:
           review: annual
       tool:
         label: Tool
-        description: A page describing a tool or technology used in technical writing or 
+        description: A page describing tools or technology used in technical writing or 
           documentation engineering.
         governance:
           status: active
@@ -522,7 +530,7 @@ dimensions:
           source: initial-taxonomy
           review: annual
       deepseek-api:
-        label: DeepSeek API
+        label: DeepSeek LLM API
         description: An AI API used for documentation quality checks.
         kind: ai-ml-tool
         governance:

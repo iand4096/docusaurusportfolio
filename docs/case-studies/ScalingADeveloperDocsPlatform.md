@@ -1,5 +1,7 @@
 ---
 title: Scaling an Enterprise Developer Docs Platform
+description: How I scaled a custom enterprise docs-as-code platform from 700 to 
+  over 3,200 pages for a large developer community
 slug: /case-studies/scalingdeveloperdocs
 sidebar_position: 1
 type:

@@ -14,7 +14,7 @@ sidebar_custom_props:
       - 131 community-forum contributions
     ariaLabel: Explore my MadCap Flare skills
 type:
-  - skill
+  - tool
 audiences:
   - technical-writers
   - documentation-managers

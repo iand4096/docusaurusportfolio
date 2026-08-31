@@ -14,7 +14,7 @@ sidebar_custom_props:
       - IntelliJ plugins and modern AI coding tools
     ariaLabel: Explore my AI and developer tooling skills
 type:
-  - skill
+  - tool
 audiences:
   - technical-writers
   - developers

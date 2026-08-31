@@ -1,0 +1,22 @@
+{
+  "$schema": "https://frontmatter.codes/frontmatter.schema.json",
+
+  "frontMatter.config.dynamicFilePath": "[[workspace]]/frontmatter.config.cjs",
+
+  "frontMatter.content.pageFolders": [
+    {
+      "title": "Documentation",
+      "path": "[[workspace]]/docs"
+    }
+  ],
+
+  "frontMatter.custom.scripts": [
+    {
+      "id": "suggest-taxonomy-deepseek",
+      "title": "Suggest metadata with DeepSeek",
+      "script": "./scripts/frontmatter_taxonomy.py",
+      "command": "python",
+      "type": "content"
+    }
+  ]
+}

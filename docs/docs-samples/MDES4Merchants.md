@@ -13,7 +13,7 @@ sidebar_custom_props:
       - Improved the supporting OpenAPI reference
     ariaLabel: View the MDES for Merchants documentation sample
 type:
-  - case-study
+  - doc-sample
 audiences:
   - developers
 topics:

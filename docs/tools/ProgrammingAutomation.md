@@ -15,7 +15,7 @@ sidebar_custom_props:
       - API client and SDK testing and validation
     ariaLabel: Explore my programming and automation skills
 type:
-  - skill
+  - tool
 audiences:
   - technical-writers
   - developers
@@ -34,6 +34,7 @@ technologies:
   - json
   - yaml
   - plantuml
+  - pycharm
   - intellij-idea
   - react
   - jsx
@@ -64,6 +65,7 @@ tags:
   - markdown
   - mkdocs
   - plantuml
+  - pycharm
   - python
   - react
   - requests
@@ -89,7 +91,7 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 * Built sandbox integrations for testing payment and API workflows, including authentication, encryption, webhooks and asynchronous processing.
 * Used the **Pandas** data processing library, along with JSON and YAML processing and Excel generation, for structured data transformation and reporting, for example building workbooks with hyperlinks to candidate pages for migration.
 * Added validation, exception handling and structured logging to migration and integration tooling to diagnose failures.
-* Debugged Python applications, scripts and integrations using IDE debugging, logging and runtime inspection.
+* Debugged Python applications, scripts and integrations using PyCharm IDE debugging, logging and runtime inspection.
 
 ### Scala
 

@@ -1,5 +1,7 @@
 ---
 title: Building the Paysafe Developer Center
+description: Case study of leading the documentation work for the launch of the 
+  Paysafe Developer Center
 slug: /case-studies/paysafedevcenter
 sidebar_position: 2
 type:

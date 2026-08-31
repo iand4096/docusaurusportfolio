@@ -13,13 +13,5 @@
   },
 
   "vale.valeCLI.minAlertLevel": "suggestion",
-  "chat.disableAIFeatures": true,
-  "frontMatter.content.pageFolders": [
-    {
-      "path": "[[workspace]]/docs"
-    }
-  ],
-  "frontMatter.framework.id": "docusaurus",
-  "frontMatter.content.publicFolder": "static",
-  "frontMatter.preview.host": "http://localhost:3000"
+  "chat.disableAIFeatures": true
 }

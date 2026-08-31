@@ -70,7 +70,7 @@ curl:
   label: cURL
 deepseek-api:
   description: An AI API used for documentation quality checks.
-  label: DeepSeek API
+  label: DeepSeek LLM API
 developer-experience:
   description: Design and improvement of developer portals, documentation, and tooling for developers.
   label: Developer experience

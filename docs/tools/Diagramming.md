@@ -14,7 +14,7 @@ sidebar_custom_props:
       - Visio, SVG and developer-focused visual documentation
     ariaLabel: Explore my technical diagramming skills
 type:
-  - skill
+  - tool
 audiences:
   - technical-writers
   - documentation-managers

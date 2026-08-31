@@ -6,6 +6,7 @@
       "id": "content_types",
       "options": [
         "case-study",
+        "doc-sample",
         "landing-page",
         "skill",
         "tool"
@@ -295,6 +296,88 @@
           "taxonomyId": "technologies",
           "required": false,
           "taxonomyLimit": 15,
+          "singleValueAsString": false
+        },
+        {
+          "title": "Lifecycle",
+          "name": "lifecycle",
+          "type": "taxonomy",
+          "taxonomyId": "lifecycle",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
+        },
+        {
+          "title": "Docusaurus tags (derived)",
+          "name": "tags",
+          "type": "list",
+          "hidden": true,
+          "required": false
+        }
+      ]
+    },
+    {
+      "name": "doc-sample",
+      "pageBundle": false,
+      "fields": [
+        {
+          "title": "Title",
+          "name": "title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "title": "Description",
+          "name": "description",
+          "type": "string",
+          "required": false
+        },
+        {
+          "title": "Slug",
+          "name": "slug",
+          "type": "slug",
+          "required": false
+        },
+        {
+          "title": "Sidebar position",
+          "name": "sidebar_position",
+          "type": "number",
+          "required": false
+        },
+        {
+          "title": "Content Types",
+          "name": "type",
+          "type": "taxonomy",
+          "taxonomyId": "content_types",
+          "required": true,
+          "taxonomyLimit": 1,
+          "singleValueAsString": false
+        },
+        {
+          "title": "Audiences",
+          "name": "audiences",
+          "type": "taxonomy",
+          "taxonomyId": "audiences",
+          "required": true,
+          "taxonomyLimit": 3,
+          "singleValueAsString": false
+        },
+        {
+          "title": "Topics",
+          "name": "topics",
+          "type": "taxonomy",
+          "taxonomyId": "topics",
+          "required": true,
+          "taxonomyLimit": 5,
+          "singleValueAsString": false
+        },
+        {
+          "title": "Technologies",
+          "name": "technologies",
+          "type": "taxonomy",
+          "taxonomyId": "technologies",
+          "required": false,
+          "taxonomyLimit": 50,
           "singleValueAsString": false
         },
         {

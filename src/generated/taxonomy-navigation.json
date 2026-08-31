@@ -17,6 +17,11 @@
           "description": "A documented example of work, approach and outcomes."
         },
         {
+          "id": "doc-sample",
+          "label": "Documentation sample",
+          "description": "A page describing documentation I created with a link to it or description of where to find the content."
+        },
+        {
           "id": "landing-page",
           "label": "Landing page",
           "description": "A page that introduces a section and provides navigation to its contents."
@@ -29,7 +34,7 @@
         {
           "id": "tool",
           "label": "Tool",
-          "description": "A page describing a tool or technology used in technical writing or documentation engineering."
+          "description": "A page describing tools or technology used in technical writing or documentation engineering."
         }
       ]
     },
@@ -192,7 +197,7 @@
         },
         {
           "id": "deepseek-api",
-          "label": "DeepSeek API",
+          "label": "DeepSeek LLM API",
           "description": "An AI API used for documentation quality checks."
         },
         {
@@ -658,6 +663,7 @@
       "title": "Agile Delivery and Project Management",
       "path": "/docs/agile",
       "source": "docs/skills/Agile.md",
+      "description": "Agile delivery of documentation and platform initiatives, combining sprint planning, backlog management, technical ownership and release automation across engineering teams.",
       "type": [
         "skill"
       ],
@@ -684,6 +690,7 @@
       "title": "AI & Documentation",
       "path": "/docs/aianddocs",
       "source": "docs/skills/AIandDocumentation.md",
+      "description": "Applying AI to documentation engineering, authoring, retrieval and automation, with strong emphasis on technical validation, human oversight and responsible use.",
       "type": [
         "skill"
       ],
@@ -715,8 +722,9 @@
       "title": "AI and Dev Tools",
       "path": "/docs/aianddevtools",
       "source": "docs/tools/AIandDevTools.md",
+      "description": "Using AI-assisted development, Agentic AI, MCP, RAG concepts and developer tooling to improve documentation engineering, software development and content workflows.",
       "type": [
-        "skill"
+        "tool"
       ],
       "topics": [
         "documentation-engineering",
@@ -747,8 +755,9 @@
       "title": "AMX Digital Signage User Manual",
       "path": "/docs/docs-samples/AMXInspiredSignageComposer",
       "source": "docs/docs-samples/AMXInspiredSignageComposer.md",
+      "description": "Single-source user and administrator documentation for a networked digital-signage platform, produced as context-sensitive HTML help and PDF from one MadCap Flare project.",
       "type": [
-        "case-study"
+        "doc-sample"
       ],
       "topics": [
         "technical-writing",
@@ -774,6 +783,7 @@
       "title": "API Documentation and Technical Validation",
       "path": "/docs/apidocumentation",
       "source": "docs/skills/APIDocumentation.md",
+      "description": "API and SDK documentation validated through working integrations, API testing, authentication and encryption workflows, and hands-on technical investigation.",
       "type": [
         "skill"
       ],
@@ -821,6 +831,7 @@
       "title": "Building the Paysafe Developer Center",
       "path": "/docs/case-studies/paysafedevcenter",
       "source": "docs/case-studies/PaysafeDeveloperCenter.md",
+      "description": "Case study of leading the documentation work for the launch of the Paysafe Developer Center",
       "type": [
         "case-study"
       ],
@@ -852,8 +863,9 @@
       "title": "Containers and Cloud",
       "path": "/docs/containersandcloud",
       "source": "docs/tools/ContainersAndCloudNative.md",
+      "description": "Practical experience using Docker, Linux, networking and hosted environments for documentation platforms, API testing and CI troubleshooting.",
       "type": [
-        "skill"
+        "tool"
       ],
       "topics": [
         "documentation-engineering",
@@ -883,8 +895,9 @@
       "title": "Diagramming and Technical Visualisation",
       "path": "/docs/diagramsandvisuals",
       "source": "docs/tools/Diagramming.md",
+      "description": "Creating clear technical diagrams for software architecture, APIs, system interactions and developer workflows using both diagrams-as-code and traditional visual tools.",
       "type": [
-        "skill"
+        "tool"
       ],
       "topics": [
         "documentation-engineering",
@@ -918,6 +931,7 @@
       "title": "Documentation Engineering",
       "path": "/docs/documentationeng",
       "source": "docs/skills/DocumentationEngineering.md",
+      "description": "Docs-as-code, documentation-platform ownership, CI/CD, static-site generators, parser extensions, migration automation, validation, search and custom tooling for large-scale technical content.",
       "type": [
         "skill"
       ],
@@ -963,6 +977,7 @@
       "title": "Documentation Governance",
       "path": "/docs/governancedocs",
       "source": "docs/skills/GovernanceDocs.md",
+      "description": "Standards, review processes, ownership models, quality controls and governance practices for large documentation estates.",
       "type": [
         "skill"
       ],
@@ -992,6 +1007,7 @@
       "title": "Documentation Samples",
       "path": "/docs/docs-samples",
       "source": "docs/docs-samples/index.md",
+      "description": "A collection of documentation samples demonstrating technical writing skills and approaches.",
       "type": [
         "landing-page"
       ],
@@ -1011,6 +1027,7 @@
       "title": "Docusaurus Portfolio",
       "path": "/docs/case-studies/DocusaurusPortfolio",
       "source": "docs/case-studies/DocusaurusPortfolio.md",
+      "description": "A case study of building a Docusaurus portfolio site with docs-as-code workflows, React/MDX customisation, automated QA, and CI/CD.",
       "type": [
         "case-study"
       ],
@@ -1035,7 +1052,8 @@
         "jsx",
         "javascript",
         "git",
-        "github"
+        "github",
+        "typescript"
       ],
       "audiences": [
         "developers",
@@ -1051,8 +1069,9 @@
       "title": "Git and Continuous Integration",
       "path": "/docs/gitandci",
       "source": "docs/tools/GitContinuousIntegration.md",
+      "description": "Using Git, GitHub, Bitbucket and CI/CD to review, validate, build and publish documentation, with hands-on experience implementing QA gates and troubleshooting build issues.",
       "type": [
-        "skill"
+        "tool"
       ],
       "topics": [
         "docs-as-code",
@@ -1080,6 +1099,7 @@
       "title": "Information Architecture",
       "path": "/docs/informationarch",
       "source": "docs/skills/InformationArchitecture.md",
+      "description": "Designing scalable documentation structures, navigation models, metadata, content inventories and search experiences for complex technical content.",
       "type": [
         "skill"
       ],
@@ -1110,6 +1130,7 @@
       "title": "Leadership & Strategy",
       "path": "/docs/docsleadership",
       "source": "docs/skills/DocumentationLeadership.md",
+      "description": "Leading documentation teams, strategy, platforms and operating models across complex developer and enterprise environments.",
       "type": [
         "skill"
       ],
@@ -1140,8 +1161,9 @@
       "title": "MadCap Flare",
       "path": "/docs/flare",
       "source": "docs/tools/Flare.md",
+      "description": "Advanced single-sourcing, custom styling, publishing automation, Git integration, content migration and complex output troubleshooting.",
       "type": [
-        "skill"
+        "tool"
       ],
       "topics": [
         "technical-writing",
@@ -1174,8 +1196,9 @@
       "title": "Masterpass Integration Guide",
       "path": "/docs/docs-samples/MasterpassMerchantIntegrationGuide",
       "source": "docs/docs-samples/MasterpassMerchantIntegrationGuide.md",
+      "description": "Mastercard merchant integration documentation validated through working checkout integrations, OpenAPI corrections, and sequence diagrams.",
       "type": [
-        "case-study"
+        "doc-sample"
       ],
       "topics": [
         "api-documentation",
@@ -1204,8 +1227,9 @@
       "title": "MDES for Merchants Guide",
       "path": "/docs/docs-samples/MDES4Merchants",
       "source": "docs/docs-samples/MDES4Merchants.md",
+      "description": "Mastercard tokenisation documentation developed through custom Python integration testing, OAuth 1.0 authentication, field-level encryption, and webhook validation.",
       "type": [
-        "case-study"
+        "doc-sample"
       ],
       "topics": [
         "api-documentation",
@@ -1236,8 +1260,9 @@
       "title": "OpenAPI and API tools",
       "path": "/docs/openapitools",
       "source": "docs/tools/OpenAPIandAPITools.md",
+      "description": "Creating and maintaining OpenAPI specifications, API collections, structured data and validation workflows for developer documentation and integration testing.",
       "type": [
-        "case-study"
+        "tool"
       ],
       "topics": [
         "api-documentation",
@@ -1271,8 +1296,9 @@
       "title": "Paysafe.js Developer Guide",
       "path": "/docs/docs-samples/PaysafeDeveloperJS",
       "source": "docs/docs-samples/PaysafeDeveloperJS.md",
+      "description": "Paysafe.js developer documentation covering hosted payment fields, tokenisation, PCI DSS scope reduction, and browser-based integration workflows.",
       "type": [
-        "case-study"
+        "doc-sample"
       ],
       "topics": [
         "api-documentation",
@@ -1301,8 +1327,9 @@
       "title": "Programming and Automation",
       "path": "/docs/programming",
       "source": "docs/tools/ProgrammingAutomation.md",
+      "description": "Using Python, JavaScript and scripting to build documentation tooling, API integrations, test applications, migration utilities and automated docs-as-code workflows.",
       "type": [
-        "skill"
+        "tool"
       ],
       "topics": [
         "documentation-engineering",
@@ -1320,6 +1347,7 @@
         "json",
         "yaml",
         "plantuml",
+        "pycharm",
         "intellij-idea",
         "react",
         "jsx",
@@ -1344,6 +1372,7 @@
       "title": "Scaling an Enterprise Developer Docs Platform",
       "path": "/docs/case-studies/scalingdeveloperdocs",
       "source": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+      "description": "How I scaled a custom enterprise docs-as-code platform from 700 to over 3,200 pages for a large developer community",
       "type": [
         "case-study"
       ],
@@ -1384,6 +1413,7 @@
       "title": "Skills",
       "path": "/docs/skills",
       "source": "docs/skills/index.md",
+      "description": "Overview of technical writing, documentation engineering, governance, structured authoring, and developer documentation capabilities.",
       "type": [
         "landing-page"
       ],
@@ -1409,6 +1439,7 @@
       "title": "Static Site Generators and Docs Platforms",
       "path": "/docs/staticsitedocsplatforms",
       "source": "docs/tools/DocusaurusAndMkdocs.md",
+      "description": "Building and extending scalable documentation platforms using Docusaurus, MkDocs, custom plugins, search integrations and automated publishing workflows.",
       "type": [
         "tool"
       ],
@@ -1444,6 +1475,7 @@
       "title": "Tools",
       "path": "/docs/tools",
       "source": "docs/tools/index.md",
+      "description": "Explore the tools I use to create, maintain, enhance, and publish technical documentation.",
       "type": [
         "landing-page"
       ],

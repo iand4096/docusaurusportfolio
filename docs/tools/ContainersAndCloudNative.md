@@ -14,7 +14,7 @@ sidebar_custom_props:
       - Cloud-hosted webhook and integration testing
     ariaLabel: Explore my containers and networking skills
 type:
-  - skill
+  - tool
 audiences:
   - technical-writers
   - documentation-managers
