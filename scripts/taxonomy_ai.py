@@ -22,12 +22,16 @@ Examples:
 
   python scripts/taxonomy_ai.py docs/skills/APIDocumentation.md
   python scripts/taxonomy_ai.py --changed-base origin/main
-  python scripts/taxonomy_ai.py --all --apply
+  python scripts/taxonomy_ai.py --all
+  python scripts/taxonomy_ai.py --apply-from taxonomy/taxonomy-ai-suggestions.json
 
-When --apply is used, accepted proposed terms are added to
-taxonomy/taxonomy.yml with `source: ai-proposed`, metadata is written to the
-selected documents, and derived Docusaurus/Front Matter files are regenerated.
-Nothing is committed or pushed; `git diff` remains the human approval surface.
+Normal classification runs are review-only: they write Markdown and JSON review
+artifacts without modifying repository state. `--apply-from` applies the exact
+saved JSON artifact without calling the model again. The legacy `--all --apply`
+workflow is deprecated and rejected because it combines a fresh corpus-wide AI
+run with immediate mutation. Targeted `--apply` remains available for backwards
+compatibility. Nothing is committed or pushed; `git diff` remains the final
+human approval surface.
 """
 
 from __future__ import annotations
@@ -191,7 +195,19 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--root", type=Path, default=Path("."), help="Repository root")
     parser.add_argument("--all", action="store_true", help="Review every docs/**/*.md[x] file")
     parser.add_argument("--changed-base", help="Review docs changed since this git SHA")
-    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument(
+        "--apply-from",
+        type=Path,
+        help=(
+            "Apply one previously reviewed taxonomy-ai JSON artifact without calling the model. "
+            "Cannot be combined with document selection or --model."
+        ),
+    )
+    parser.add_argument(
+        "--model",
+        default=None,
+        help=f"DeepSeek model for classification runs (default: {DEFAULT_MODEL})",
+    )
     parser.add_argument("--max-file-chars", type=int, default=120_000)
     parser.add_argument("--max-tokens", type=int, default=8_000)
     parser.add_argument("--output", type=Path, default=DEFAULT_MARKDOWN_REPORT)
@@ -199,12 +215,15 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--introduced-date",
         default=date.today().isoformat(),
-        help="Introduction date for applied AI-proposed taxonomy terms",
+        help="Introduction date recorded in generated review artifacts and for targeted --apply",
     )
     parser.add_argument(
         "--apply",
         action="store_true",
-        help="Apply accepted suggestions to the working tree; review and commit the diff manually",
+        help=(
+            "Apply a targeted classification run immediately. Deprecated with --all; "
+            "prefer review followed by --apply-from."
+        ),
     )
     return parser.parse_args()
 
@@ -1383,6 +1402,134 @@ def write_taxonomy(path: Path, taxonomy: dict[str, Any]) -> None:
         yaml.dump(taxonomy, handle)
 
 
+def load_review_artifact(path: Path) -> dict[str, Any]:
+    if not path.exists():
+        raise ValueError(f"review artifact does not exist: {path}")
+    try:
+        artifact = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError as error:
+        raise ValueError(f"review artifact is not valid JSON: {error}") from error
+    if not isinstance(artifact, dict):
+        raise ValueError("review artifact root must be a JSON object")
+    return artifact
+
+
+def validate_review_artifact(
+    root: Path,
+    taxonomy: dict[str, Any],
+    artifact: dict[str, Any],
+) -> tuple[list[dict[str, Any]], list[dict[str, Any]], str]:
+    """Validate a saved review artifact before applying it.
+
+    This validates the saved, already-canonicalised result against the current
+    taxonomy without calling an LLM. Content/taxonomy fingerprints are a later
+    hardening step; this function deliberately implements only the reviewed
+    artifact CLI contract.
+    """
+    version = artifact.get("taxonomy_version")
+    if version != taxonomy_tools.TAXONOMY_VERSION or version != taxonomy.get("version"):
+        raise ValueError(
+            f"review artifact taxonomy version {version!r} does not match current "
+            f"taxonomy version {taxonomy.get('version')!r}"
+        )
+
+    introduced = artifact.get("introduced_date")
+    if not isinstance(introduced, str) or not re.fullmatch(r"\d{4}-\d{2}-\d{2}", introduced):
+        raise ValueError(
+            "review artifact has no valid introduced_date; regenerate it with the updated taxonomy_ai.py"
+        )
+
+    errors = artifact.get("errors", [])
+    if not isinstance(errors, list):
+        raise ValueError("review artifact errors must be an array")
+    if errors:
+        raise ValueError(
+            "refusing to apply a review artifact containing document-level classification errors"
+        )
+
+    results = artifact.get("results")
+    proposals = artifact.get("consolidated_proposals")
+    if not isinstance(results, list) or not all(isinstance(item, dict) for item in results):
+        raise ValueError("review artifact results must be an array of objects")
+    if not isinstance(proposals, list) or not all(isinstance(item, dict) for item in proposals):
+        raise ValueError("review artifact consolidated_proposals must be an array of objects")
+    if not results:
+        raise ValueError("review artifact contains no document classifications to apply")
+
+    # A proposal in a generated artifact was new at review time. If its ID now
+    # exists, canonical taxonomy state changed after review; do not silently skip it.
+    for proposal in proposals:
+        dimension_id = proposal.get("dimension")
+        term_id = proposal.get("id")
+        if dimension_id not in taxonomy["dimensions"] or not isinstance(term_id, str):
+            raise ValueError("review artifact contains an invalid consolidated proposal")
+        if term_id in taxonomy["dimensions"][dimension_id]["terms"]:
+            raise ValueError(
+                f"review artifact is stale: {dimension_id}.{term_id} now exists in the canonical taxonomy"
+            )
+
+    proposal_ids: dict[str, set[str]] = {dimension_id: set() for dimension_id in taxonomy["dimensions"]}
+    for proposal in proposals:
+        proposal_ids[proposal["dimension"]].add(proposal["id"])
+
+    for result in results:
+        relative = result.get("file")
+        metadata = result.get("metadata")
+        if not isinstance(relative, str) or not relative:
+            raise ValueError("review artifact result is missing file")
+        path = (root / relative).resolve()
+        try:
+            path.relative_to(root)
+        except ValueError as error:
+            raise ValueError(f"review artifact file is outside repository root: {relative}") from error
+        if not path.is_file():
+            raise ValueError(f"review artifact file no longer exists: {relative}")
+        if not isinstance(metadata, dict):
+            raise ValueError(f"{relative}: review artifact metadata must be an object")
+
+        type_dimension = taxonomy["dimensions"]["content_types"]
+        type_field = type_dimension["metadata_field"]
+        type_values = metadata.get(type_field)
+        if not isinstance(type_values, list) or len(type_values) != 1 or not isinstance(type_values[0], str):
+            raise ValueError(f"{relative}: saved metadata.{type_field} must contain exactly one taxonomy ID")
+        content_type = type_values[0]
+
+        for dimension_id, dimension in taxonomy["dimensions"].items():
+            field = dimension["metadata_field"]
+            values = metadata.get(field)
+            if not isinstance(values, list) or not all(isinstance(item, str) for item in values):
+                raise ValueError(f"{relative}: saved metadata.{field} must be an array of taxonomy IDs")
+            minimum, maximum = taxonomy_tools.effective_limits(dimension, content_type)
+            if len(values) < minimum or len(values) > maximum:
+                raise ValueError(
+                    f"{relative}: saved metadata.{field} violates current cardinality {minimum}..{maximum}"
+                )
+            active_ids = set(taxonomy_tools.active_terms(dimension))
+            allowed_ids = active_ids | proposal_ids[dimension_id]
+            unknown = [value for value in values if value not in allowed_ids]
+            if unknown:
+                raise ValueError(
+                    f"{relative}: saved metadata.{field} contains unknown/non-active IDs: "
+                    + ", ".join(sorted(unknown))
+                )
+
+        page_fields = result.get("page_field_suggestions", {})
+        if not isinstance(page_fields, dict):
+            raise ValueError(f"{relative}: page_field_suggestions must be an object")
+        for field, value in page_fields.items():
+            if field not in {"title", "description"} or not isinstance(value, str) or not value.strip():
+                raise ValueError(f"{relative}: invalid saved page field suggestion {field!r}")
+
+    return results, proposals, introduced
+
+
+def apply_review_artifact(root: Path, artifact_path: Path) -> None:
+    artifact = load_review_artifact(artifact_path)
+    taxonomy = taxonomy_tools.load_and_validate_taxonomy(root)
+    results, proposals, introduced = validate_review_artifact(root, taxonomy, artifact)
+    apply_results(root, taxonomy, results, proposals, introduced)
+
+
 def apply_results(
     root: Path,
     taxonomy: dict[str, Any],
@@ -1458,15 +1605,67 @@ def apply_results(
 def main() -> int:
     args = parse_args()
     root = args.root.resolve()
+
+    # Phase 2: apply an already reviewed JSON artifact. This path is deliberately
+    # deterministic: it performs no model calls and therefore needs no API key.
+    if args.apply_from is not None:
+        conflicts = []
+        if args.paths:
+            conflicts.append("paths")
+        if args.all:
+            conflicts.append("--all")
+        if args.changed_base:
+            conflicts.append("--changed-base")
+        if args.model is not None:
+            conflicts.append("--model")
+        if args.apply:
+            conflicts.append("--apply")
+        if conflicts:
+            print(
+                "ERROR: --apply-from cannot be combined with " + ", ".join(conflicts),
+                file=sys.stderr,
+            )
+            return 2
+
+        artifact_path = args.apply_from if args.apply_from.is_absolute() else root / args.apply_from
+        try:
+            apply_review_artifact(root, artifact_path)
+        except Exception as error:
+            print(f"ERROR: failed to apply reviewed artifact: {error}", file=sys.stderr)
+            return 1
+        try:
+            artifact_display = artifact_path.relative_to(root).as_posix()
+        except ValueError:
+            artifact_display = str(artifact_path)
+        print(
+            f"Applied reviewed AI artifact {artifact_display}. "
+            "No model call was made. Review `git diff` before committing."
+        )
+        return 0
+
     if not re.fullmatch(r"\d{4}-\d{2}-\d{2}", args.introduced_date):
         print("ERROR: --introduced-date must be YYYY-MM-DD", file=sys.stderr)
         return 2
 
     modes = int(bool(args.paths)) + int(bool(args.all)) + int(bool(args.changed_base))
     if modes != 1:
-        print("ERROR: choose exactly one of explicit paths, --all, or --changed-base", file=sys.stderr)
+        print(
+            "ERROR: choose exactly one of explicit paths, --all, --changed-base, or --apply-from",
+            file=sys.stderr,
+        )
         return 2
 
+    if args.all and args.apply:
+        print(
+            "ERROR: --all --apply is deprecated and no longer supported. "
+            "Run `python scripts/taxonomy_ai.py --all`, review the Markdown/JSON report, "
+            "then run `python scripts/taxonomy_ai.py --apply-from "
+            "taxonomy/taxonomy-ai-suggestions.json`.",
+            file=sys.stderr,
+        )
+        return 2
+
+    model = args.model or DEFAULT_MODEL
     api_key = os.environ.get("DEEPSEEK_API_KEY")
     if not api_key:
         print("ERROR: DEEPSEEK_API_KEY is not set", file=sys.stderr)
@@ -1495,7 +1694,7 @@ def main() -> int:
             user_prompt = make_user_prompt(path, root, taxonomy, current, body)
             raw = request_json(
                 api_key,
-                args.model,
+                model,
                 user_prompt,
                 args.max_tokens,
             )
@@ -1520,7 +1719,7 @@ def main() -> int:
                 )
                 repaired = request_json(
                     api_key,
-                    args.model,
+                    model,
                     repair_prompt,
                     args.max_tokens,
                 )
@@ -1543,7 +1742,7 @@ def main() -> int:
         print(f"NOTE: {warning}", file=sys.stderr)
 
     markdown_report = render_markdown_report(
-        results, proposals, args.model, errors, global_warnings
+        results, proposals, model, errors, global_warnings
     )
     output = args.output if args.output.is_absolute() else root / args.output
     json_output = args.json_output if args.json_output.is_absolute() else root / args.json_output
@@ -1554,7 +1753,8 @@ def main() -> int:
         json.dumps(
             {
                 "taxonomy_version": taxonomy_tools.TAXONOMY_VERSION,
-                "model": args.model,
+                "model": model,
+                "introduced_date": args.introduced_date,
                 "results": results,
                 "consolidated_proposals": proposals,
                 "global_warnings": global_warnings,
@@ -1568,8 +1768,18 @@ def main() -> int:
     )
     print(f"wrote {output.relative_to(root).as_posix()}")
     print(f"wrote {json_output.relative_to(root).as_posix()}")
+    if not args.apply:
+        print(
+            "review the report, then apply this exact artifact with: "
+            f"python scripts/taxonomy_ai.py --apply-from {json_output.relative_to(root).as_posix()}"
+        )
 
     if args.apply:
+        print(
+            "WARNING: direct --apply is retained only for targeted compatibility. "
+            "For audited changes, review the generated report and use --apply-from instead.",
+            file=sys.stderr,
+        )
         if errors:
             print(
                 "ERROR: refusing --apply because one or more documents had no usable AI classification. "
