@@ -228,7 +228,10 @@ export default function BrowsePage(): React.JSX.Element {
           <p className={styles.intro}>
             Explore content by type, topic, technology, audience, and lifecycle.
             The navigation is generated from the same controlled vocabulary used
-            to validate document metadata.
+            to validate document metadata. See the{' '}
+            <Link to="/docs/case-studies/TaxonomyGovernance">
+              taxonomy governance case study.
+            </Link>{' '}
           </p>
         </header>
 
