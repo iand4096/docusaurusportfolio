@@ -1,0 +1,26 @@
+schema_version: 2
+id: 2026-09-01-add-implementation-guide-taxonomy-topic
+change_type: vocabulary-expansion
+trigger: content-driven
+description: Add Implementation Guide as a controlled content type and Taxonomy as a controlled 
+  topic.
+governance:
+  date: '2026-09-01'
+  source: human-proposed
+  reason: The portfolio now contains content that is better represented by an implementation-guide 
+    content type and requires taxonomy as a reusable topic.
+preconditions:
+  taxonomy_version: 2
+changes:
+  content_types:
+    add:
+      implementation-guide:
+        label: Implementation Guide
+        description: Step-by-step guidance for implementing, configuring, integrating, or adopting a
+          technical solution.
+  topics:
+    add:
+      taxonomy:
+        label: Taxonomy
+        description: Controlled vocabulary design, classification structures, taxonomy management, 
+          and taxonomy governance.

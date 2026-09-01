@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://example.invalid/taxonomy/migration.schema.json",
   "title": "Taxonomy migration manifest",
-  "description": "Declarative, reviewable changes to a repository-controlled taxonomy. Repository-specific semantic checks remain the responsibility of taxonomy.py.",
+  "description": "Declarative, reviewable changes to a repository-controlled taxonomy. Schema version 2 adds explicit change intent and trigger provenance while retaining validation compatibility for historical version 1 manifests. Repository-specific semantic checks remain the responsibility of taxonomy.py.",
   "type": "object",
   "additionalProperties": false,
   "required": [
@@ -15,7 +15,11 @@
   "properties": {
     "schema_version": {
       "type": "integer",
-      "const": 1
+      "enum": [
+        1,
+        2
+      ],
+      "description": "Migration manifest schema version. Version 1 is retained for historical manifests; new manifests should use version 2."
     },
     "id": {
       "type": "string",
@@ -35,11 +39,32 @@
       "type": "object",
       "minProperties": 1,
       "propertyNames": {
-        "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+        "pattern": "^[a-z0-9]+(?:[_-][a-z0-9]+)*$",
+        "description": "Taxonomy dimension ID. Dimension IDs may use lowercase letters, digits, underscores, or hyphens."
       },
       "additionalProperties": {
         "$ref": "#/$defs/dimensionChanges"
       }
+    },
+    "change_type": {
+      "type": "string",
+      "description": "The governed intent of the taxonomy change.",
+      "enum": [
+        "vocabulary-expansion",
+        "vocabulary-contraction",
+        "taxonomy-correction",
+        "term-replacement",
+        "policy-change"
+      ]
+    },
+    "trigger": {
+      "type": "string",
+      "description": "The event or review process that caused the migration to be proposed.",
+      "enum": [
+        "content-driven",
+        "taxonomy-review",
+        "policy-driven"
+      ]
     }
   },
   "$defs": {
@@ -432,6 +457,242 @@
           "minimum": 0
         }
       }
+    },
+    "addOnlyDimensionChanges": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "add"
+      ],
+      "properties": {
+        "add": {
+          "$ref": "#/$defs/addOperations"
+        }
+      }
+    },
+    "deprecateOnlyDimensionChanges": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "deprecate"
+      ],
+      "properties": {
+        "deprecate": {
+          "$ref": "#/$defs/deprecateOperations"
+        }
+      }
+    },
+    "updateOnlyDimensionChanges": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "update"
+      ],
+      "properties": {
+        "update": {
+          "$ref": "#/$defs/updateOperations"
+        }
+      }
+    },
+    "replacementDimensionChanges": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "replace"
+      ],
+      "properties": {
+        "add": {
+          "$ref": "#/$defs/addOperations"
+        },
+        "replace": {
+          "$ref": "#/$defs/replaceOperations"
+        }
+      }
+    },
+    "configurationOnlyDimensionChanges": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "configuration"
+      ],
+      "properties": {
+        "configuration": {
+          "$ref": "#/$defs/configurationOperation"
+        }
+      }
     }
-  }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 1
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "not": {
+          "anyOf": [
+            {
+              "required": [
+                "change_type"
+              ]
+            },
+            {
+              "required": [
+                "trigger"
+              ]
+            }
+          ]
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 2
+          }
+        },
+        "required": [
+          "schema_version"
+        ]
+      },
+      "then": {
+        "required": [
+          "change_type",
+          "trigger"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 2
+          },
+          "change_type": {
+            "const": "vocabulary-expansion"
+          }
+        },
+        "required": [
+          "schema_version",
+          "change_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "changes": {
+            "additionalProperties": {
+              "$ref": "#/$defs/addOnlyDimensionChanges"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 2
+          },
+          "change_type": {
+            "const": "vocabulary-contraction"
+          }
+        },
+        "required": [
+          "schema_version",
+          "change_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "changes": {
+            "additionalProperties": {
+              "$ref": "#/$defs/deprecateOnlyDimensionChanges"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 2
+          },
+          "change_type": {
+            "const": "taxonomy-correction"
+          }
+        },
+        "required": [
+          "schema_version",
+          "change_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "changes": {
+            "additionalProperties": {
+              "$ref": "#/$defs/updateOnlyDimensionChanges"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 2
+          },
+          "change_type": {
+            "const": "term-replacement"
+          }
+        },
+        "required": [
+          "schema_version",
+          "change_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "changes": {
+            "additionalProperties": {
+              "$ref": "#/$defs/replacementDimensionChanges"
+            }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "schema_version": {
+            "const": 2
+          },
+          "change_type": {
+            "const": "policy-change"
+          }
+        },
+        "required": [
+          "schema_version",
+          "change_type"
+        ]
+      },
+      "then": {
+        "properties": {
+          "changes": {
+            "additionalProperties": {
+              "$ref": "#/$defs/configurationOnlyDimensionChanges"
+            }
+          }
+        }
+      }
+    }
+  ]
 }

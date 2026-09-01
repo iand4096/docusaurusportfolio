@@ -22,6 +22,11 @@
           "description": "A page describing documentation I created with a link to it or description of where to find the content."
         },
         {
+          "id": "implementation-guide",
+          "label": "Implementation Guide",
+          "description": "Step-by-step guidance for implementing, configuring, integrating, or adopting a technical solution."
+        },
+        {
           "id": "landing-page",
           "label": "Landing page",
           "description": "A page that introduces a section and provides navigation to its contents."
@@ -82,6 +87,11 @@
           "id": "payments",
           "label": "Payments",
           "description": "Payment systems, digital wallets, tokenisation, and related financial technology."
+        },
+        {
+          "id": "taxonomy",
+          "label": "Taxonomy",
+          "description": "Controlled vocabulary design, classification structures, taxonomy management, and taxonomy governance."
         },
         {
           "id": "technical-validation",
@@ -756,6 +766,40 @@
       ]
     },
     {
+      "id": "implementation-details/taxonomy",
+      "title": "AI-assisted taxonomy governance",
+      "path": "/docs/implementation-details/taxonomy",
+      "source": "docs/implementation-details/taxonomy.md",
+      "description": "The implementation details of a Docusaurus documentation taxonomy that combines controlled vocabulary management, deterministic validation, governed migrations, and AI-assisted semantic classification.",
+      "type": [
+        "implementation-guide"
+      ],
+      "topics": [
+        "documentation-governance",
+        "docs-as-code",
+        "documentation-engineering",
+        "taxonomy"
+      ],
+      "technologies": [
+        "git",
+        "docusaurus",
+        "yaml",
+        "markdown",
+        "mermaid",
+        "python",
+        "deepseek-api",
+        "vs-code"
+      ],
+      "audiences": [
+        "documentation-managers",
+        "technical-writers",
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
       "id": "docs-samples/AMXInspiredSignageComposer",
       "title": "AMX Digital Signage User Manual",
       "path": "/docs/docs-samples/AMXInspiredSignageComposer",
@@ -1095,6 +1139,34 @@
       "audiences": [
         "technical-writers",
         "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "case-studies/TaxonomyGovernance",
+      "title": "Governed documentation taxonomy",
+      "path": "/docs/case-studies/TaxonomyGovernance",
+      "source": "docs/case-studies/TaxonomyGovernance.md",
+      "description": "A case study describing the design and implementation of a governed documentation taxonomy for a Docusaurus portfolio, including AI-assisted classification and deterministic validation.",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "documentation-governance",
+        "docs-as-code",
+        "documentation-engineering",
+        "taxonomy"
+      ],
+      "technologies": [
+        "docusaurus",
+        "yaml",
+        "git"
+      ],
+      "audiences": [
+        "documentation-managers",
+        "technical-writers"
       ],
       "lifecycle": [
         "current"
@@ -1471,39 +1543,6 @@
       "audiences": [
         "technical-writers",
         "documentation-managers"
-      ],
-      "lifecycle": [
-        "current"
-      ]
-    },
-    {
-      "id": "case-studies/taxonomy",
-      "title": "Taxonomy Support",
-      "path": "/docs/case-studies/taxonomy",
-      "source": "docs/case-studies/taxonomy.md",
-      "description": "Describes the taxonomy-driven documentation governance system, including the canonical taxonomy, deterministic tooling, and AI-assisted classification workflows.",
-      "type": [
-        "case-study"
-      ],
-      "topics": [
-        "documentation-governance",
-        "docs-as-code",
-        "documentation-engineering"
-      ],
-      "technologies": [
-        "git",
-        "docusaurus",
-        "yaml",
-        "markdown",
-        "mermaid",
-        "python",
-        "deepseek-api",
-        "vs-code"
-      ],
-      "audiences": [
-        "documentation-managers",
-        "technical-writers",
-        "developers"
       ],
       "lifecycle": [
         "current"

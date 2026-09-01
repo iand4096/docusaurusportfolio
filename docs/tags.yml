@@ -290,6 +290,10 @@ sphinx:
 svg:
   description: An XML-based vector graphics format for describing scalable two-dimensional graphics.
   label: SVG
+taxonomy:
+  description: Controlled vocabulary design, classification structures, taxonomy management, and taxonomy
+    governance.
+  label: Taxonomy
 tcp-ip:
   description: The Internet protocol suite.
   label: TCP/IP

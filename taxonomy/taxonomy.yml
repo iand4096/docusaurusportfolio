@@ -182,6 +182,15 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      implementation-guide:
+        label: Implementation Guide
+        description: Step-by-step guidance for implementing, configuring, integrating, or adopting a
+          technical solution.
+        governance:
+          status: active
+          introduced: '2026-09-01'
+          source: human-proposed
+          review: annual
   audiences:
     description: Audiences for whom the content is materially relevant.
     metadata_field: audiences
@@ -329,6 +338,15 @@ dimensions:
           status: active
           introduced: '2026-08-14'
           source: initial-taxonomy
+          review: annual
+      taxonomy:
+        label: Taxonomy
+        description: Controlled vocabulary design, classification structures, taxonomy management, 
+          and taxonomy governance.
+        governance:
+          status: active
+          introduced: '2026-09-01'
+          source: human-proposed
           review: annual
   technologies:
     description: Technologies, standards, tools, platforms, technical methods and techniques 

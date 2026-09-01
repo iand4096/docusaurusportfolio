@@ -23,8 +23,15 @@ module.exports = async (config) => {
     "frontMatter.custom.scripts": [
       {
         "id": "suggest-taxonomy-deepseek",
-        "title": "Suggest taxonomy with DeepSeek",
+        "title": "Review metadata with DeepSeek",
         "script": "./scripts/frontmatter_taxonomy.py",
+        "command": "python",
+        "type": "content"
+      },
+      {
+        "id": "apply-taxonomy-review",
+        "title": "Apply reviewed taxonomy metadata",
+        "script": "./scripts/frontmatter_taxonomy_apply.py",
         "command": "python",
         "type": "content"
       }
