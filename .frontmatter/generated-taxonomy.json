@@ -919,9 +919,14 @@
   },
   "technologyTermsByKind": {
     "data-format": [
-      "svg"
+      "json",
+      "svg",
+      "xml",
+      "yaml"
     ],
     "payment-technology": [
+      "apple-pay",
+      "google-pay",
       "tokenisation"
     ],
     "programming-language": [
@@ -937,12 +942,9 @@
       "bash"
     ],
     "markup-content-language": [
-      "json",
       "markdown",
       "mdx",
-      "xhtml",
-      "xml",
-      "yaml"
+      "xhtml"
     ],
     "framework": [
       "fastmcp",
@@ -1089,8 +1091,6 @@
     ],
     "software-platform": [
       "amx-composer",
-      "apple-pay",
-      "google-pay",
       "masterpass",
       "mdes"
     ]

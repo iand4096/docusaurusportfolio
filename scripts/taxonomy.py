@@ -26,6 +26,7 @@ Commands:
   python scripts/taxonomy.py check docs/example.md
   python scripts/taxonomy.py sync --all
   python scripts/taxonomy.py audit-technologies
+  python scripts/taxonomy.py migrate taxonomy/migrations/<migration>.yml
 
 `generate` writes deterministic projections derived from the canonical taxonomy
 and, for navigation, validated document metadata:
@@ -43,11 +44,16 @@ optionally validates document front matter.
 `audit-technologies` groups technology terms by kind and emits non-blocking
 warnings for descriptions that look organisation-like. Use --strict to turn
 those warnings into a non-zero exit code.
+
+`migrate` validates and previews a declarative taxonomy migration. It is dry-run
+by default. Use --apply only after reviewing the migration and its impact.
 """
 
 from __future__ import annotations
 
 import argparse
+import copy
+import hashlib
 import io
 import json
 import re
@@ -64,6 +70,8 @@ from ruamel.yaml.comments import CommentedMap
 TAXONOMY_VERSION = 2
 TAXONOMY_PATH = Path("taxonomy/taxonomy.yml")
 SCHEMA_PATH = Path("taxonomy/schema.json")
+MIGRATION_SCHEMA_PATH = Path("taxonomy/taxonomy-migration.schema.json")
+MIGRATIONS_PATH = Path("taxonomy/migrations")
 DOCUSAURUS_TAGS_PATH = Path("docs/tags.yml")
 FRONTMATTER_PROJECTION_PATH = Path(".frontmatter/generated-taxonomy.json")
 NAVIGATION_PROJECTION_PATH = Path("src/generated/taxonomy-navigation.json")
@@ -324,17 +332,59 @@ def load_json(path: Path) -> dict[str, Any]:
     return data
 
 
-def validate_taxonomy_schema(taxonomy: dict[str, Any], schema_path: Path) -> None:
+def load_round_trip_yaml(path: Path) -> CommentedMap:
+    if not path.exists():
+        raise ValidationError(f"{path} does not exist.")
+    with path.open("r", encoding="utf-8") as handle:
+        data = round_trip_yaml().load(handle)
+    if not isinstance(data, CommentedMap):
+        raise ValidationError(f"{path} must contain a YAML object at its root.")
+    return data
+
+
+def write_yaml(path: Path, data: Any) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8") as handle:
+        round_trip_yaml().dump(data, handle)
+
+
+def validate_json_schema(
+    data: dict[str, Any],
+    schema_path: Path,
+    *,
+    label: str,
+) -> None:
     schema = load_json(schema_path)
-    validator = jsonschema.Draft202012Validator(schema)
-    errors = sorted(validator.iter_errors(taxonomy), key=lambda error: list(error.path))
+    validator = jsonschema.Draft202012Validator(
+        schema,
+        format_checker=jsonschema.FormatChecker(),
+    )
+    errors = sorted(validator.iter_errors(data), key=lambda error: list(error.path))
     if not errors:
         return
     rendered = []
     for error in errors:
         location = ".".join(str(part) for part in error.absolute_path) or "<root>"
-        rendered.append(f"taxonomy schema: {location}: {error.message}")
+        rendered.append(f"{label} schema: {location}: {error.message}")
     raise ValidationError("\n".join(rendered))
+
+
+def validate_taxonomy_schema(taxonomy: dict[str, Any], schema_path: Path) -> None:
+    validate_json_schema(taxonomy, schema_path, label="taxonomy")
+
+
+def validate_migration_schema(migration: dict[str, Any], schema_path: Path) -> None:
+    validate_json_schema(migration, schema_path, label="migration")
+
+
+def taxonomy_sha256(taxonomy: dict[str, Any]) -> str:
+    canonical = json.dumps(
+        taxonomy,
+        sort_keys=True,
+        separators=(",", ":"),
+        ensure_ascii=False,
+    )
+    return hashlib.sha256(canonical.encode("utf-8")).hexdigest()
 
 
 def active_terms(dimension: dict[str, Any]) -> dict[str, dict[str, Any]]:
@@ -802,6 +852,8 @@ def navigation_metadata_values(
 def build_navigation_projection(
     root: Path,
     taxonomy: dict[str, Any],
+    *,
+    front_matter_overrides: dict[Path, CommentedMap] | None = None,
 ) -> dict[str, Any]:
     """Build the read-only taxonomy index consumed by the Docusaurus browse page."""
     dimensions = taxonomy["dimensions"]
@@ -838,7 +890,10 @@ def build_navigation_projection(
         if path.name.startswith("_"):
             continue
 
-        front_matter, _ = load_front_matter(path)
+        if front_matter_overrides and path in front_matter_overrides:
+            front_matter = front_matter_overrides[path]
+        else:
+            front_matter, _ = load_front_matter(path)
 
         # Draft and unlisted documents should not be surfaced by end-user browse
         # navigation even though they may remain useful in the source corpus.
@@ -920,10 +975,19 @@ def build_navigation_projection(
     }
 
 
-def render_navigation_projection(root: Path, taxonomy: dict[str, Any]) -> str:
+def render_navigation_projection(
+    root: Path,
+    taxonomy: dict[str, Any],
+    *,
+    front_matter_overrides: dict[Path, CommentedMap] | None = None,
+) -> str:
     return (
         json.dumps(
-            build_navigation_projection(root, taxonomy),
+            build_navigation_projection(
+                root,
+                taxonomy,
+                front_matter_overrides=front_matter_overrides,
+            ),
             indent=2,
             ensure_ascii=False,
         )
@@ -931,11 +995,20 @@ def render_navigation_projection(root: Path, taxonomy: dict[str, Any]) -> str:
     )
 
 
-def expected_derived_files(root: Path, taxonomy: dict[str, Any]) -> dict[Path, str]:
+def expected_derived_files(
+    root: Path,
+    taxonomy: dict[str, Any],
+    *,
+    front_matter_overrides: dict[Path, CommentedMap] | None = None,
+) -> dict[Path, str]:
     return {
         DOCUSAURUS_TAGS_PATH: render_docusaurus_tags(taxonomy),
         FRONTMATTER_PROJECTION_PATH: render_frontmatter_projection(taxonomy),
-        NAVIGATION_PROJECTION_PATH: render_navigation_projection(root, taxonomy),
+        NAVIGATION_PROJECTION_PATH: render_navigation_projection(
+            root,
+            taxonomy,
+            front_matter_overrides=front_matter_overrides,
+        ),
     }
 
 
@@ -1011,19 +1084,12 @@ def value_as_list(value: Any) -> list[str] | None:
     return None
 
 
-def validate_document_front_matter(
-    path: Path,
-    root: Path,
+def validate_front_matter_data(
+    front_matter: CommentedMap,
+    relative: str,
     taxonomy: dict[str, Any],
 ) -> list[str]:
     errors: list[str] = []
-    relative = path.relative_to(root).as_posix()
-
-    try:
-        front_matter, _ = load_front_matter(path)
-    except ValidationError as error:
-        return [str(error).replace(str(root) + "/", "")]
-
     dimensions = taxonomy["dimensions"]
     selected: dict[str, list[str]] = {}
 
@@ -1109,8 +1175,23 @@ def validate_document_front_matter(
     return errors
 
 
-def sync_document_tags(path: Path, taxonomy: dict[str, Any]) -> bool:
-    front_matter, body = load_front_matter(path)
+def validate_document_front_matter(
+    path: Path,
+    root: Path,
+    taxonomy: dict[str, Any],
+) -> list[str]:
+    relative = path.relative_to(root).as_posix()
+    try:
+        front_matter, _ = load_front_matter(path)
+    except ValidationError as error:
+        return [str(error).replace(str(root) + "/", "")]
+    return validate_front_matter_data(front_matter, relative, taxonomy)
+
+
+def sync_front_matter_tags(
+    front_matter: CommentedMap,
+    taxonomy: dict[str, Any],
+) -> bool:
     desired: list[str] = []
     for dimension in taxonomy["dimensions"].values():
         if not dimension.get("docusaurus_tags"):
@@ -1128,8 +1209,15 @@ def sync_document_tags(path: Path, taxonomy: dict[str, Any]) -> bool:
         front_matter["tags"] = desired
     elif "tags" in front_matter:
         del front_matter["tags"]
-    write_front_matter(path, front_matter, body)
     return True
+
+
+def sync_document_tags(path: Path, taxonomy: dict[str, Any]) -> bool:
+    front_matter, body = load_front_matter(path)
+    changed = sync_front_matter_tags(front_matter, taxonomy)
+    if changed:
+        write_front_matter(path, front_matter, body)
+    return changed
 
 
 def all_docs(root: Path) -> list[Path]:
@@ -1217,6 +1305,510 @@ def suspicious_technology_terms(taxonomy: dict[str, Any]) -> list[dict[str, str]
             )
     return warnings
 
+
+
+def validate_migration_preconditions(
+    taxonomy: dict[str, Any],
+    migration: dict[str, Any],
+) -> None:
+    preconditions = migration.get("preconditions", {})
+
+    expected_version = preconditions.get("taxonomy_version")
+    if expected_version is not None and taxonomy.get("version") != expected_version:
+        raise ValidationError(
+            f"migration requires taxonomy version {expected_version}; "
+            f"found {taxonomy.get('version')!r}"
+        )
+
+    expected_hash = preconditions.get("taxonomy_sha256")
+    if expected_hash is not None:
+        actual_hash = taxonomy_sha256(taxonomy)
+        if actual_hash.casefold() != expected_hash.casefold():
+            raise ValidationError(
+                "migration taxonomy_sha256 precondition does not match the current canonical taxonomy; "
+                f"expected {expected_hash}, found {actual_hash}"
+            )
+
+
+def validate_migration_semantics(
+    taxonomy: dict[str, Any],
+    migration: dict[str, Any],
+    migration_path: Path,
+) -> None:
+    migration_id = migration["id"]
+    governance_date = migration["governance"]["date"]
+    if not migration_id.startswith(governance_date + "-"):
+        raise ValidationError(
+            f"migration ID {migration_id!r} must begin with governance date {governance_date!r}"
+        )
+    if migration_path.stem != migration_id:
+        raise ValidationError(
+            f"migration filename {migration_path.name!r} must match migration ID {migration_id!r}"
+        )
+
+    dimensions = taxonomy["dimensions"]
+    for dimension_id, changes in migration["changes"].items():
+        if dimension_id not in dimensions:
+            raise ValidationError(f"migration references unknown dimension {dimension_id!r}")
+
+        seen: dict[str, str] = {}
+        for operation_name in ("add", "update", "deprecate", "replace"):
+            for term_id in changes.get(operation_name, {}):
+                previous = seen.get(term_id)
+                if previous:
+                    raise ValidationError(
+                        f"{dimension_id}.{term_id}: term appears in both {previous!r} and "
+                        f"{operation_name!r} operations"
+                    )
+                seen[term_id] = operation_name
+
+        if "configuration" in changes:
+            expect = changes["configuration"]["expect"]
+            set_values = changes["configuration"]["set"]
+            forbidden = {"metadata_field", "terms"}
+            if forbidden & set(set_values):
+                raise ValidationError(
+                    f"{dimension_id}: migration configuration may not change "
+                    + ", ".join(sorted(forbidden & set(set_values)))
+                )
+            if forbidden & set(expect):
+                raise ValidationError(
+                    f"{dimension_id}: migration configuration may not assert "
+                    + ", ".join(sorted(forbidden & set(expect)))
+                )
+
+
+def assert_expected_values(
+    actual: dict[str, Any],
+    expected: dict[str, Any],
+    *,
+    context: str,
+) -> None:
+    for key, expected_value in expected.items():
+        if key == "status":
+            actual_value = actual.get("governance", {}).get("status")
+        else:
+            actual_value = actual.get(key)
+        if actual_value != expected_value:
+            raise ValidationError(
+                f"{context}: expected {key}={expected_value!r}; found {actual_value!r}"
+            )
+
+
+def assert_expected_mapping(
+    actual: dict[str, Any],
+    expected: dict[str, Any],
+    *,
+    context: str,
+) -> None:
+    for key, expected_value in expected.items():
+        if key not in actual:
+            raise ValidationError(f"{context}: expected key {key!r} is missing")
+        actual_value = actual[key]
+        if isinstance(expected_value, dict):
+            if not isinstance(actual_value, dict):
+                raise ValidationError(
+                    f"{context}.{key}: expected an object; found {actual_value!r}"
+                )
+            assert_expected_mapping(
+                actual_value,
+                expected_value,
+                context=f"{context}.{key}",
+            )
+        elif actual_value != expected_value:
+            raise ValidationError(
+                f"{context}: expected {key}={expected_value!r}; found {actual_value!r}"
+            )
+
+
+def deep_merge(target: dict[str, Any], patch: dict[str, Any]) -> None:
+    for key, value in patch.items():
+        if isinstance(value, dict) and isinstance(target.get(key), dict):
+            deep_merge(target[key], value)
+        else:
+            target[key] = copy.deepcopy(value)
+
+
+def apply_term_patch(term: dict[str, Any], patch: dict[str, Any]) -> None:
+    for key, value in patch.items():
+        if key == "aliases" and isinstance(value, dict):
+            aliases = list(term.get("aliases", []))
+            for alias in value.get("add", []):
+                if alias not in aliases:
+                    aliases.append(alias)
+            remove = set(value.get("remove", []))
+            aliases = [alias for alias in aliases if alias not in remove]
+            if aliases:
+                term["aliases"] = aliases
+            else:
+                term.pop("aliases", None)
+            continue
+
+        if value is None:
+            term.pop(key, None)
+        else:
+            term[key] = copy.deepcopy(value)
+
+
+def migration_add_terms(
+    taxonomy: dict[str, Any],
+    dimension_id: str,
+    additions: dict[str, Any],
+    migration: dict[str, Any],
+) -> None:
+    dimension = taxonomy["dimensions"][dimension_id]
+    terms = dimension["terms"]
+    migration_governance = migration["governance"]
+    default_review = taxonomy["governance"]["default_review"]
+
+    for term_id, definition in additions.items():
+        if term_id in terms:
+            raise ValidationError(f"{dimension_id}.{term_id}: cannot add; term already exists")
+
+        term = copy.deepcopy(definition)
+        term["governance"] = {
+            "status": "active",
+            "introduced": migration_governance["date"],
+            "source": migration_governance["source"],
+            "review": copy.deepcopy(default_review),
+        }
+        terms[term_id] = term
+
+
+def migration_update_terms(
+    taxonomy: dict[str, Any],
+    dimension_id: str,
+    updates: dict[str, Any],
+) -> None:
+    terms = taxonomy["dimensions"][dimension_id]["terms"]
+    for term_id, operation in updates.items():
+        term = terms.get(term_id)
+        if term is None:
+            raise ValidationError(f"{dimension_id}.{term_id}: cannot update unknown term")
+        assert_expected_values(
+            term,
+            operation["expect"],
+            context=f"{dimension_id}.{term_id}",
+        )
+        apply_term_patch(term, operation["set"])
+
+
+def migration_replace_terms(
+    taxonomy: dict[str, Any],
+    dimension_id: str,
+    operations: dict[str, Any],
+) -> dict[str, str]:
+    terms = taxonomy["dimensions"][dimension_id]["terms"]
+    replacements: dict[str, str] = {}
+
+    for old_id, operation in operations.items():
+        new_id = operation["with"]
+        old_term = terms.get(old_id)
+        new_term = terms.get(new_id)
+
+        if old_term is None:
+            raise ValidationError(f"{dimension_id}.{old_id}: replacement source does not exist")
+        if new_term is None:
+            raise ValidationError(
+                f"{dimension_id}.{old_id}: replacement target {new_id!r} does not exist"
+            )
+        if old_id == new_id:
+            raise ValidationError(f"{dimension_id}.{old_id}: term cannot replace itself")
+        if old_term["governance"]["status"] != "active":
+            raise ValidationError(f"{dimension_id}.{old_id}: replacement source is not active")
+        if new_term["governance"]["status"] != "active":
+            raise ValidationError(
+                f"{dimension_id}.{old_id}: replacement target {new_id!r} must be active"
+            )
+
+        governance = old_term["governance"]
+        governance["status"] = "deprecated"
+        governance["replaced_by"] = new_id
+        governance["deprecation_reason"] = operation["reason"]
+        replacements[old_id] = new_id
+
+    return replacements
+
+
+def migration_deprecate_terms(
+    taxonomy: dict[str, Any],
+    dimension_id: str,
+    operations: dict[str, Any],
+) -> set[str]:
+    terms = taxonomy["dimensions"][dimension_id]["terms"]
+    deprecated: set[str] = set()
+
+    for term_id, operation in operations.items():
+        term = terms.get(term_id)
+        if term is None:
+            raise ValidationError(f"{dimension_id}.{term_id}: cannot deprecate unknown term")
+        governance = term["governance"]
+        if governance["status"] != "active":
+            raise ValidationError(f"{dimension_id}.{term_id}: term is already deprecated")
+
+        governance["status"] = "deprecated"
+        governance.pop("replaced_by", None)
+        governance["deprecation_reason"] = operation["reason"]
+        deprecated.add(term_id)
+
+    return deprecated
+
+
+def apply_dimension_configuration(
+    dimension: dict[str, Any],
+    operation: dict[str, Any],
+    *,
+    dimension_id: str,
+) -> None:
+    assert_expected_mapping(
+        dimension,
+        operation["expect"],
+        context=f"{dimension_id}.configuration",
+    )
+    deep_merge(dimension, operation["set"])
+
+
+def build_migrated_taxonomy(
+    taxonomy: dict[str, Any],
+    migration: dict[str, Any],
+) -> tuple[
+    dict[str, Any],
+    dict[str, dict[str, str]],
+    dict[str, set[str]],
+]:
+    candidate = copy.deepcopy(taxonomy)
+    replacements: dict[str, dict[str, str]] = {}
+    bare_deprecations: dict[str, set[str]] = {}
+
+    for dimension_id, changes in migration["changes"].items():
+        if changes.get("add"):
+            migration_add_terms(candidate, dimension_id, changes["add"], migration)
+        if changes.get("update"):
+            migration_update_terms(candidate, dimension_id, changes["update"])
+        if changes.get("replace"):
+            replacements[dimension_id] = migration_replace_terms(
+                candidate,
+                dimension_id,
+                changes["replace"],
+            )
+        if changes.get("deprecate"):
+            bare_deprecations[dimension_id] = migration_deprecate_terms(
+                candidate,
+                dimension_id,
+                changes["deprecate"],
+            )
+        if changes.get("configuration"):
+            apply_dimension_configuration(
+                candidate["dimensions"][dimension_id],
+                changes["configuration"],
+                dimension_id=dimension_id,
+            )
+
+    return candidate, replacements, bare_deprecations
+
+
+def replace_document_taxonomy_ids(
+    front_matter: CommentedMap,
+    taxonomy: dict[str, Any],
+    replacements: dict[str, dict[str, str]],
+) -> bool:
+    changed = False
+
+    for dimension_id, mapping in replacements.items():
+        if not mapping:
+            continue
+        dimension = taxonomy["dimensions"][dimension_id]
+        field_name = dimension["metadata_field"]
+        raw_value = front_matter.get(field_name)
+        if raw_value is None:
+            continue
+        if not isinstance(raw_value, list) or not all(isinstance(item, str) for item in raw_value):
+            continue
+
+        new_values: list[str] = []
+        for term_id in raw_value:
+            replacement = mapping.get(term_id, term_id)
+            if replacement not in new_values:
+                new_values.append(replacement)
+
+        if new_values != list(raw_value):
+            front_matter[field_name] = new_values
+            changed = True
+
+    return changed
+
+
+def migration_operation_counts(migration: dict[str, Any]) -> dict[str, int]:
+    counts = {name: 0 for name in ("add", "update", "deprecate", "replace", "configuration")}
+    for changes in migration["changes"].values():
+        for name in ("add", "update", "deprecate", "replace"):
+            counts[name] += len(changes.get(name, {}))
+        if "configuration" in changes:
+            counts["configuration"] += 1
+    return counts
+
+
+def preflight_migration_documents(
+    root: Path,
+    taxonomy: dict[str, Any],
+    replacements: dict[str, dict[str, str]],
+) -> tuple[
+    dict[Path, tuple[CommentedMap, str]],
+    dict[Path, CommentedMap],
+    list[str],
+]:
+    changed_docs: dict[Path, tuple[CommentedMap, str]] = {}
+    front_matter_overrides: dict[Path, CommentedMap] = {}
+    errors: list[str] = []
+
+    for path in all_docs(root):
+        try:
+            original_front_matter, body = load_front_matter(path)
+        except ValidationError as error:
+            errors.append(str(error).replace(str(root) + "/", ""))
+            continue
+
+        candidate_front_matter = copy.deepcopy(original_front_matter)
+        replace_document_taxonomy_ids(candidate_front_matter, taxonomy, replacements)
+        sync_front_matter_tags(candidate_front_matter, taxonomy)
+
+        relative = path.relative_to(root).as_posix()
+        errors.extend(
+            validate_front_matter_data(
+                candidate_front_matter,
+                relative,
+                taxonomy,
+            )
+        )
+
+        if candidate_front_matter != original_front_matter:
+            changed_docs[path] = (candidate_front_matter, body)
+            front_matter_overrides[path] = candidate_front_matter
+
+    return changed_docs, front_matter_overrides, errors
+
+
+def snapshot_paths(paths: Iterable[Path]) -> dict[Path, bytes | None]:
+    snapshots: dict[Path, bytes | None] = {}
+    for path in paths:
+        snapshots[path] = path.read_bytes() if path.exists() else None
+    return snapshots
+
+
+def restore_snapshots(snapshots: dict[Path, bytes | None]) -> None:
+    for path, content in snapshots.items():
+        if content is None:
+            if path.exists():
+                path.unlink()
+            continue
+        path.parent.mkdir(parents=True, exist_ok=True)
+        path.write_bytes(content)
+
+
+def command_migrate(args: argparse.Namespace) -> int:
+    root = args.root.resolve()
+    migration_path = args.migration
+    if not migration_path.is_absolute():
+        migration_path = root / migration_path
+    migration_path = migration_path.resolve()
+
+    try:
+        migration = load_yaml(migration_path)
+        validate_migration_schema(migration, root / MIGRATION_SCHEMA_PATH)
+
+        taxonomy_path = root / TAXONOMY_PATH
+        taxonomy = load_round_trip_yaml(taxonomy_path)
+        validate_taxonomy_schema(taxonomy, root / SCHEMA_PATH)
+        validate_taxonomy_semantics(taxonomy)
+
+        validate_migration_semantics(taxonomy, migration, migration_path)
+        validate_migration_preconditions(taxonomy, migration)
+
+        candidate, replacements, _bare_deprecations = build_migrated_taxonomy(
+            taxonomy,
+            migration,
+        )
+        validate_taxonomy_schema(candidate, root / SCHEMA_PATH)
+        validate_taxonomy_semantics(candidate)
+
+        changed_docs, front_matter_overrides, document_errors = preflight_migration_documents(
+            root,
+            candidate,
+            replacements,
+        )
+
+        # Build every derived projection in memory against the candidate taxonomy
+        # and simulated document front matter. This ensures --apply does not begin
+        # writing until the complete candidate repository state is derivable.
+        expected_derived_files(
+            root,
+            candidate,
+            front_matter_overrides=front_matter_overrides,
+        )
+
+        counts = migration_operation_counts(migration)
+        print(f"migration: {migration['id']}")
+        print(f"description: {migration['description']}")
+        print(f"taxonomy sha256 before: {taxonomy_sha256(taxonomy)}")
+        print(f"taxonomy sha256 after:  {taxonomy_sha256(candidate)}")
+        print(
+            "operations: "
+            + ", ".join(f"{name}={count}" for name, count in counts.items() if count)
+        )
+        print(f"documents scanned: {len(all_docs(root))}")
+        print(f"documents requiring deterministic rewrite: {len(changed_docs)}")
+
+        if document_errors:
+            print("semantic/document conflicts:", file=sys.stderr)
+            for error in document_errors:
+                print(f"ERROR: {error}", file=sys.stderr)
+            print(
+                "migration cannot be applied until the reported document conflicts are resolved; "
+                "no files were changed",
+                file=sys.stderr,
+            )
+            return 1
+
+        if not args.apply:
+            print("dry-run passed; no files changed")
+            print("use --apply to write the migration")
+            return 0
+
+        derived_paths = [root / path for path in expected_derived_files(root, candidate)]
+        paths_to_snapshot = [taxonomy_path, *changed_docs.keys(), *derived_paths]
+        snapshots = snapshot_paths(paths_to_snapshot)
+
+        try:
+            write_yaml(taxonomy_path, candidate)
+            print(f"updated {TAXONOMY_PATH.as_posix()}")
+
+            for path, (front_matter, body) in changed_docs.items():
+                write_front_matter(path, front_matter, body)
+                print(f"updated {path.relative_to(root).as_posix()}")
+
+            generate_derived_files(root, candidate)
+
+            final_errors = check_derived_files(root, candidate)
+            for path in all_docs(root):
+                final_errors.extend(validate_document_front_matter(path, root, candidate))
+
+            if final_errors:
+                raise ValidationError(
+                    "applied migration failed final deterministic validation:\n"
+                    + "\n".join(final_errors)
+                )
+        except Exception:
+            restore_snapshots(snapshots)
+            raise
+
+        print(f"applied migration {migration['id']}")
+        print("taxonomy and metadata validation passed")
+        print("review `git diff` before committing")
+        return 0
+
+    except (ValidationError, json.JSONDecodeError, OSError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
 
 def command_generate(args: argparse.Namespace) -> int:
     root = args.root.resolve()
@@ -1359,6 +1951,21 @@ def build_parser() -> argparse.ArgumentParser:
         help="Return exit code 1 if organisation-like terms are detected",
     )
 
+    migrate = subparsers.add_parser(
+        "migrate",
+        help="Preview or apply a declarative taxonomy migration",
+    )
+    migrate.add_argument(
+        "migration",
+        type=Path,
+        help="Taxonomy migration YAML manifest",
+    )
+    migrate.add_argument(
+        "--apply",
+        action="store_true",
+        help="Apply the validated migration; default is dry-run only",
+    )
+
     return parser
 
 
@@ -1382,6 +1989,8 @@ def main() -> int:
         return command_sync(args)
     if args.command == "audit-technologies":
         return command_audit_technologies(args)
+    if args.command == "migrate":
+        return command_migrate(args)
     raise AssertionError(args.command)
 
 

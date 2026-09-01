@@ -1,0 +1,52 @@
+# Conservative taxonomy correction.
+# Ambiguous semantic classifications (for example OWASP, JSX, Agentic AI and
+# Digital Enablement API) are intentionally excluded for separate review.
+
+schema_version: 1
+
+id: 2026-09-01-correct-technology-kinds
+description: Correct technology kinds that conflict with the controlled kind definitions.
+
+governance:
+  date: "2026-09-01"
+  source: migration
+  reason: >-
+    Align existing technology terms with the taxonomy's controlled kind definitions.
+    JSON, YAML and XML are structured data formats; Apple Pay and Google Pay are
+    payment-specific wallet/payment technologies.
+
+preconditions:
+  taxonomy_version: 2
+
+changes:
+  technologies:
+    update:
+      json:
+        expect:
+          kind: markup-content-language
+        set:
+          kind: data-format
+
+      yaml:
+        expect:
+          kind: markup-content-language
+        set:
+          kind: data-format
+
+      xml:
+        expect:
+          kind: markup-content-language
+        set:
+          kind: data-format
+
+      apple-pay:
+        expect:
+          kind: software-platform
+        set:
+          kind: payment-technology
+
+      google-pay:
+        expect:
+          kind: software-platform
+        set:
+          kind: payment-technology

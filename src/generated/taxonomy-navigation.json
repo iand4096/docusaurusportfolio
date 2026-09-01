@@ -1477,6 +1477,39 @@
       ]
     },
     {
+      "id": "case-studies/taxonomy",
+      "title": "Taxonomy Support",
+      "path": "/docs/case-studies/taxonomy",
+      "source": "docs/case-studies/taxonomy.md",
+      "description": "Describes the taxonomy-driven documentation governance system, including the canonical taxonomy, deterministic tooling, and AI-assisted classification workflows.",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "documentation-governance",
+        "docs-as-code",
+        "documentation-engineering"
+      ],
+      "technologies": [
+        "git",
+        "docusaurus",
+        "yaml",
+        "markdown",
+        "mermaid",
+        "python",
+        "deepseek-api",
+        "vs-code"
+      ],
+      "audiences": [
+        "documentation-managers",
+        "technical-writers",
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
       "id": "tools/index",
       "title": "Tools",
       "path": "/docs/tools",
