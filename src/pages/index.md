@@ -9,9 +9,9 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 # Ian Drewett
 
-Principal Technical Writer and Documentation Engineer with an M.Sc. in Computer Science and a software-engineering background spanning device drivers, graphics/CAD/VR, APIs, and developer platforms.
+Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a software-engineering background spanning device drivers, graphics/CAD/VR, APIs, and developer platforms.
 
-I combine technical writing with hands-on engineering:
+I combine a depth of knowledge management experience with hands-on engineering:
 
 <CapabilityGrid variant="checklist"> 
 
@@ -20,7 +20,7 @@ I combine technical writing with hands-on engineering:
 * CI/CD
 * Automation
 * Information Architecture
-* Governance
+* Taxonomy and Content Governance
 * Python & Scala
 * API security & OpenAPI
 
@@ -40,7 +40,7 @@ I combine technical writing with hands-on engineering:
   Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling
 
 * **AI knowledge & governance:**
-  Knowledge architecture, content governance, AI-ready documentation, and AI-assisted quality assurance
+  Knowledge architecture, content and taxonomy governance, AI-ready documentation, and AI-assisted quality assurance
 
 * **Technical validation & engineering:**
 API implementation and testing, security validation, software debugging, automation, and developer tooling
