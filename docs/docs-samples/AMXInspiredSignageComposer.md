@@ -49,10 +49,10 @@ The following diagram shows a high-level summary of the content flow:
 
 ```mermaid
 flowchart LR
-    USERS["fa:fa-users<br/>Users"]
-    COMPOSER["fa:fa-pen-to-square<br/>AMX Inspired Composer"]
-    PLAYERS["fa:fa-server<br/>Inspired Players"]
-    SCREENS["fa:fa-display<br/>Display screens"]
+    USERS["fa:fa-users<br/>`Users`"]
+    COMPOSER["fa:fa-pen-to-square<br/>`AMX Inspired Composer`"]
+    PLAYERS["fa:fa-server<br/>`Inspired Players`"]
+    SCREENS["fa:fa-display<br/>`Display screens`"]
 
     USERS --> COMPOSER
     COMPOSER -->|"Publish"| PLAYERS

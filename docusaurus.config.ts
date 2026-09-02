@@ -45,39 +45,39 @@ const config: Config = {
 
   themes: ['@docusaurus/theme-mermaid'],
 
-plugins: [
-  [
-    '@docusaurus/plugin-client-redirects',
-    {
-      redirects: [
-        {
-          from: '/docs/AMXInspiredSignageComposer',
-          to: '/docs/docs-samples/AMXInspiredSignageComposer',
-        },
-        {
-          from: '/docs/MasterpassMerchantIntegrationGuide',
-          to: '/docs/docs-samples/MasterpassMerchantIntegrationGuide',
-        },
-        {
-          from: '/docs/MDES4Merchants',
-          to: '/docs/docs-samples/MDES4Merchants',
-        },
-        {
-          from: '/docs/case-studies/MDES4Merchants',
-          to: '/docs/docs-samples/MDES4Merchants',
-        },
-        {
-          from: '/docs/case-studies/AMXInspiredSignageComposer',
-          to: '/docs/docs-samples/AMXInspiredSignageComposer',
-        },
-        {
-          from: '/docs/case-studies/MasterpassMerchantIntegrationGuide',
-          to: '/docs/docs-samples/MasterpassMerchantIntegrationGuide',
-        },
-      ],
-    },
+  plugins: [
+    [
+      '@docusaurus/plugin-client-redirects',
+      {
+        redirects: [
+          {
+            from: '/docs/AMXInspiredSignageComposer',
+            to: '/docs/docs-samples/AMXInspiredSignageComposer',
+          },
+          {
+            from: '/docs/MasterpassMerchantIntegrationGuide',
+            to: '/docs/docs-samples/MasterpassMerchantIntegrationGuide',
+          },
+          {
+            from: '/docs/MDES4Merchants',
+            to: '/docs/docs-samples/MDES4Merchants',
+          },
+          {
+            from: '/docs/case-studies/MDES4Merchants',
+            to: '/docs/docs-samples/MDES4Merchants',
+          },
+          {
+            from: '/docs/case-studies/AMXInspiredSignageComposer',
+            to: '/docs/docs-samples/AMXInspiredSignageComposer',
+          },
+          {
+            from: '/docs/case-studies/MasterpassMerchantIntegrationGuide',
+            to: '/docs/docs-samples/MasterpassMerchantIntegrationGuide',
+          },
+        ],
+      },
+    ],
   ],
-],
 
   presets: [
     [
@@ -121,9 +121,20 @@ plugins: [
       options: {
         fontSize: 22,
 
+        // Mermaid Markdown Strings ("`...`") wrap automatically.
+        markdownAutoWrap: true,
+
+        // htmlLabels is now a global Mermaid option.
+        // flowchart.htmlLabels is deprecated.
+        htmlLabels: true,
+
         flowchart: {
           useMaxWidth: true,
-          htmlLabels: true,
+
+          // Maximum width of Markdown-string node labels
+          // before Mermaid wraps the text.
+          wrappingWidth: 180,
+
           nodeSpacing: 40,
           rankSpacing: 50,
         },

@@ -85,14 +85,14 @@ A semantic proposal is not automatically a taxonomy change. New or modified voca
 
 ```mermaid
 flowchart TD
-    AI["taxonomy_ai.py<br/>Semantic classification + vocabulary proposals"]
-    REVIEW["Human review<br/>Markdown / JSON artefacts"]
-    APPLY["taxonomy_ai.py --apply-from<br/>Apply reviewed document metadata"]
-    MIGRATION["taxonomy/migrations/*.yml<br/>Reviewed vocabulary change"]
-    ENGINE["taxonomy.py migrate<br/>Taxonomy migration and validation engine"]
-    DOCS["docs/**/*.md[x]<br/>Governed document metadata"]
-    TAXONOMY["taxonomy/taxonomy.yml<br/>Canonical controlled vocabulary"]
-    DERIVED["Derived state<br/>docs/tags.yml<br/>Front Matter projection<br/>Navigation projection"]
+    AI["`taxonomy_ai.py Semantic classification + vocabulary proposals`"]
+    REVIEW["`Human review Markdown / JSON artefacts`"]
+    APPLY["`taxonomy_ai.py --apply-from Apply reviewed document metadata`"]
+    MIGRATION["`taxonomy/migrations/*.yml Reviewed vocabulary change`"]
+    ENGINE["`taxonomy.py migrate Taxonomy migration and validation engine`"]
+    DOCS["`docs/**/*.md[x] Governed document metadata`"]
+    TAXONOMY["`taxonomy/taxonomy.yml Canonical controlled vocabulary`"]
+    DERIVED["`Derived state docs/tags.yml Front Matter projection Navigation projection`"]
 
     AI --> REVIEW
     REVIEW -->|"approved classification"| APPLY
@@ -205,21 +205,21 @@ This lets the extension provide CMS convenience without becoming a second taxono
 
 ```mermaid
 flowchart TD
-    DOC["Open Markdown/MDX document in VS Code"]
-    REVIEW_ACTION["Front Matter action<br/>Review metadata with DeepSeek"]
-    WRAPPER["frontmatter_taxonomy.py"]
-    AI["taxonomy_ai.py<br/>Review-only AI classification"]
-    ARTEFACTS["Persistent review artefacts<br/>.review.md + .review.json"]
-    HUMAN["Human review in VS Code"]
-    PROPOSAL{"New vocabulary proposed?"}
-    MIGRATION["Schema-v2 vocabulary-expansion migration"]
-    ENGINE["taxonomy.py migrate<br/>dry-run / --apply"]
-    TAXONOMY["taxonomy.yml"]
-    APPLY_ACTION["Front Matter action<br/>Apply reviewed taxonomy metadata"]
-    APPLY_WRAPPER["frontmatter_taxonomy_apply.py"]
-    APPLY_FROM["taxonomy_ai.py --apply-from"]
-    UPDATED_DOC["Updated document metadata"]
-    GENERATED["Regenerated repository projections"]
+    DOC["`Open Markdown/MDX document in VS Code`"]
+    REVIEW_ACTION["`Front Matter action Review metadata with DeepSeek`"]
+    WRAPPER["`frontmatter_taxonomy.py`"]
+    AI["`taxonomy_ai.py Review-only AI classification`"]
+    ARTEFACTS["`Persistent review artefacts .review.md + .review.json`"]
+    HUMAN["`Human review in VS Code`"]
+    PROPOSAL{"`New vocabulary proposed?`"}
+    MIGRATION["`Schema-v2 vocabulary-expansion migration`"]
+    ENGINE["`taxonomy.py migrate dry-run / --apply`"]
+    TAXONOMY["`taxonomy.yml`"]
+    APPLY_ACTION["`Front Matter action Apply reviewed taxonomy metadata`"]
+    APPLY_WRAPPER["`frontmatter_taxonomy_apply.py`"]
+    APPLY_FROM["`taxonomy_ai.py --apply-from`"]
+    UPDATED_DOC["`Updated document metadata`"]
+    GENERATED["`Regenerated repository projections`"]
 
     DOC --> REVIEW_ACTION
     REVIEW_ACTION --> WRAPPER
