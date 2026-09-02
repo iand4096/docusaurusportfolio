@@ -69,7 +69,7 @@ The portfolio includes:
 * Mermaid diagrams - diagrams as code
 * Automated documentation QA and deployment using GitHub Actions
 * AI assisted taxonomy generation and governance. This is described in [the taxonomy case study](TaxonomyGovernance.md)
-  * The taxonomy machinery generates a [browse page](pathname:///browse/) using Docusaurus tags.
+* The taxonomy system generates a [browse page](pathname:///browse/) using Docusaurus tags.
 
 The QA pipeline combines:
 
@@ -88,6 +88,7 @@ The checks are combined into HTML and JSON reports and run automatically when an
 * Build a production-style documentation site using Docusaurus, React/JSX, Typescript and GitHub Actions
 * Integrate an LLM API into an automated QA workflow
 * Combine AI review with deterministic Markdown linting, accessibility, style, and link checks
+* Implement a governed central taxonomy for navigation, tagging, and future enhancements such as RAG Search.  
 
 ## My approach
 
@@ -106,6 +107,8 @@ You can run the QA pipeline locally or in CI. It supports per-page and site-wide
 * This Docusaurus portfolio, published on GitHub Pages
 * A [Documentation QA report](pathname:///qa/) for the current site
 * The GitHub repository containing the source, QA tooling, and deployment workflow
+* A central taxonomy and set of scripts to manage it in a controlled way
+* A user-friendly way to review and apply AI-suggested taxonomy metadata to documents
 
 ## Outcome
 
@@ -113,6 +116,5 @@ A portfolio that demonstrates a modern docs-as-code workflow, reusable documenta
 
 ## What I would change
 
-* Add a glossary implemented as Markdown files containing terms and definitions
-* Use glossary entries to provide hover tooltips for defined terms
 * Add a dashboard showing QA trends, such as issue counts and severity over time
+* Implement a RAG search
