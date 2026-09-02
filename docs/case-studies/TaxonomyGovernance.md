@@ -38,7 +38,7 @@ In large documentation repositories, metadata affects more than tags. It feeds n
 
 For this portfolio, I wanted to build a smaller version of the controls I would have found useful in that environment.
 
-The taxonomy is a controlled vocabulary stored in Git rather than a set of free-form tags. It supplies document metadata, Docusaurus tags, editor controls, and faceted navigation — see this in action on [the browse page](pathname:///browse/).
+The taxonomy is a controlled vocabulary stored in Git rather than a set of free-form tags. It supplies document metadata, Docusaurus tags, editor controls, and faceted navigation. See this in action on [the browse page](pathname:///browse/).
 
 One rule drives the implementation:
 
