@@ -32,13 +32,13 @@ tags:
 
 ## Project overview
 
-I built the taxonomy for this Docusaurus portfolio after encountering metadata-governance problems while managing a much larger docs-as-code portal at a financial institution.
+I built the taxonomy for this Docusaurus portfolio after encountering governance problems while managing a large docs-as-code portal at a financial institution.
 
-In a large documentation repository, metadata affects more than tags. It feeds navigation, search, content ownership, lifecycle information, publishing automation, and repository-wide maintenance. Small inconsistencies are manageable when they affect one or two pages. They are much harder to correct once they have spread across a large corpus and multiple contributors.
+In large documentation repositories, metadata affects more than tags. It feeds navigation, search, content ownership, lifecycle information, publishing automation, and repository-wide maintenance. Small inconsistencies are manageable when they affect one or two pages. They are much harder to correct once they have spread across a large corpus and multiple contributors.
 
 For this portfolio, I wanted to build a smaller version of the controls I would have found useful in that environment.
 
-The taxonomy is a controlled vocabulary stored in Git rather than a set of free-form tags. It supplies document metadata, Docusaurus tags, editor controls, and faceted navigation — see [the browse page](pathname:///browse/).
+The taxonomy is a controlled vocabulary stored in Git rather than a set of free-form tags. It supplies document metadata, Docusaurus tags, editor controls, and faceted navigation — see this in action on [the browse page](pathname:///browse/).
 
 One rule drives the implementation:
 
@@ -49,26 +49,22 @@ The system includes:
 * A canonical taxonomy in YAML, versioned in Git
 * Controlled dimensions for content type, audience, topic, technology, and lifecycle
 * Validation of taxonomy and document metadata
-* Generated Docusaurus tags, editor controls, and navigation data
+* Generated Docusaurus tags, editor controls, and navigation data - all produced from the taxonomy.
 * AI-assisted classification and vocabulary-gap detection
-* Reviewable taxonomy migrations with preconditions and dry runs
+* Reviewable taxonomy migration files with preconditions and dry runs
 * Repository-wide checks before taxonomy changes are applied
 
 ## The problem
 
-On a large docs-as-code portal, taxonomy problems often started with reasonable local decisions.
+On large docs-as-code portals, taxonomy problems often start with reasonable local decisions.
 
-A writer could not find an exact term, so they added another one. Similar concepts ended up with slightly different names. Metadata conventions changed, but older documents kept the previous values. Navigation configuration and authoring tools sometimes developed their own versions of the same information.
+A writer could not find an exact term, so they added another one. Similar concepts end up with slightly different names. Metadata conventions change, but older documents keep previous values. Navigation configuration and authoring tools sometimes develop their own versions of the same information.
 
-None of those changes was especially serious on its own. The difficulty came later, when the same concepts had to be searched, renamed, deprecated, or changed across many documents.
-
-Syntax validation did not solve that problem either. A YAML value can be structurally valid and still be the wrong value.
+None of those changes are especially serious on its own. The difficulty comes later, when the same concepts have to be searched, renamed, deprecated, or changed across many documents.
 
 I wanted the repository to enforce more of the metadata model itself instead of relying on contributors to remember conventions.
 
 ### Moving the rules into the repository
-
-A style guide can document valid metadata, but it cannot tell whether the repository still follows those rules.
 
 I wanted:
 
@@ -81,11 +77,11 @@ I wanted:
 * Explicit handling of renames, corrections, replacements, and deprecations
 * A way to see the effect of a taxonomy change before applying it
 
-That meant treating the taxonomy as repository state, not just editorial guidance.
+That required treating the taxonomy as repository state, not just editorial guidance.
 
 ### Where AI fits
 
-Some taxonomy decisions require judgement.
+Some taxonomy decisions need judgement.
 
 An AI model can make a useful first pass at questions such as:
 
@@ -95,29 +91,25 @@ An AI model can make a useful first pass at questions such as:
 
 I did not want the model deciding whether repository state was valid or whether a new term should become canonical.
 
-That responsibility stays with the repository tooling. It validates IDs and cardinality, checks migration preconditions, identifies documents that would need metadata updates, and controls changes to the canonical taxonomy.
+That responsibility stays with the repository tooling. It validates IDs and cardinality, checks migration preconditions, identifies documents that need metadata updates, and controls changes to the canonical taxonomy.
 
-AI produces proposals. A person reviews them. Repository tooling applies approved changes.
+AI produces proposals. A person reviews them. Repository tooling applies these approved changes.
 
 ## Scaling the model
 
-The portfolio itself is small. The design comes from problems that become more noticeable in a much larger documentation estate.
+The portfolio itself is small. The design comes from problems that become noticeable in a much larger documentation estate.
 
 As the number of documents, repositories, contributors, product versions, and automated consumers increases, metadata changes become harder to treat as isolated edits.
 
 The system therefore has a few deliberate constraints:
 
 * **One source of truth.** Docusaurus, the authoring environment, and navigation use generated views of the same taxonomy.
-* **Repository validation.** Validation and migration checks do not depend on the LLM.
+* **Repository validation.** Validation and migration checks
 * **Preflight checks.** A taxonomy change can be checked against the corpus before any files are updated.
-* **Explicit migrations.** Vocabulary changes have their own reviewable records.
+* **Explicit migration files** Vocabulary changes have their own reviewable records.
 * **Deprecation rather than automatic deletion.** Old IDs and replacement relationships remain visible.
 * **Human review for semantic changes.** The LLM can suggest a change but cannot add or redefine canonical vocabulary on its own.
-* **Controlled authoring.** Writers select governed values without needing to know how the taxonomy is implemented.
-
-The same approach could be used for API documentation metadata such as product area, service ownership, SDK, authentication method, lifecycle state, version applicability, or content type.
-
-Once those values start driving search, navigation, ownership, or automation, inconsistent metadata becomes an operational problem rather than just an editorial one.
+* **Controlled authoring.** Writers select governed values using provided tooling without needing to know how the taxonomy is implemented.
 
 ## Outcome
 
@@ -129,4 +121,4 @@ AI-assisted classification is separate from the tooling that changes the canonic
 
 The migration workflow has already caught issues outside the change being tested. During one taxonomy correction, I prepared updates to five technology terms and checked the migration against all 26 portfolio documents. The first preflight run found stale derived state in a recently added document. I corrected that first, reran the checks, and only then applied the taxonomy migration.
 
-Because the portfolio is small, I can show the implementation in [full](../implementation-details/taxonomy.md). The controls are based on problems I had already seen become difficult to manage in a much larger docs-as-code environment.
+Because the portfolio is small, I can show the implementation in [full](../implementation-details/taxonomy.md). These controls are based on problems I have already seen become difficult to manage in a much larger docs-as-code environment.
