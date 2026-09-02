@@ -1,47 +1,44 @@
 ---
-
 title: AI-assisted taxonomy governance
 description: >
-The implementation details of a Docusaurus documentation taxonomy that combines controlled
-vocabulary management, repository validation, governed migrations, and
-AI-assisted semantic classification.
+  The implementation details of a Docusaurus documentation taxonomy that combines controlled
+  vocabulary management, repository validation, governed migrations, and
+  AI-assisted semantic classification.
 type:
-
-* implementation-guide
-  audiences:
-* documentation-managers
-* technical-writers
-* developers
-  topics:
-* documentation-governance
-* docs-as-code
-* documentation-engineering
-* taxonomy
-  technologies:
-* git
-* docusaurus
-* yaml
-* markdown
-* mermaid
-* python
-* deepseek-api
-* vs-code
-  lifecycle:
-* current
-  tags:
-* deepseek-api
-* docs-as-code
-* documentation-engineering
-* documentation-governance
-* docusaurus
-* git
-* markdown
-* mermaid
-* python
-* taxonomy
-* vs-code
-* yaml
-
+  - implementation-guide
+audiences:
+  - documentation-managers
+  - technical-writers
+  - developers
+topics:
+  - documentation-governance
+  - docs-as-code
+  - documentation-engineering
+  - taxonomy
+technologies:
+  - git
+  - docusaurus
+  - yaml
+  - markdown
+  - mermaid
+  - python
+  - deepseek-api
+  - vs-code
+lifecycle:
+  - current
+tags:
+  - deepseek-api
+  - docs-as-code
+  - documentation-engineering
+  - documentation-governance
+  - docusaurus
+  - git
+  - markdown
+  - mermaid
+  - python
+  - taxonomy
+  - vs-code
+  - yaml
 ---
 
 I designed and implemented a governed taxonomy for a Docusaurus documentation site. The project combined information architecture, docs-as-code automation, editor integration, and AI-assisted classification.

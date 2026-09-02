@@ -93,6 +93,7 @@ Key elements included:
 * Jenkins-based documentation build and publishing pipelines.
 * An IntelliJ plugin providing live documentation preview.
 * Support for diagrams-as-code, including software architecture diagrams.
+* Support for content and code-sample reuse.
 * Search and information architecture designed for a large technical documentation set.
 * Analytics used to identify high-value legacy content and prioritise migration.
 * Contribution workflows designed to encourage engineers to create and maintain documentation.
