@@ -1,8 +1,9 @@
 ---
 title: Governed documentation taxonomy
-description: A case study describing the design and implementation of a governed documentation 
-  taxonomy for a Docusaurus portfolio, including AI-assisted classification and deterministic 
-  validation.
+description: >
+  A case study describing the design and implementation of a governed documentation
+  taxonomy for a Docusaurus portfolio, including AI-assisted classification,
+  repository validation, and controlled taxonomy changes.
 type:
   - case-study
 audiences:
@@ -29,21 +30,19 @@ tags:
   - yaml
 ---
 
-# Governed documentation taxonomy
-
 ## Project overview
 
-I built the taxonomy for this Docusaurus portfolio after encountering metadata problems while managing a much larger docs-as-code portal at a financial institution.
+I built the taxonomy for this Docusaurus portfolio after encountering metadata-governance problems while managing a much larger docs-as-code portal at a financial institution.
 
 In a large documentation repository, metadata affects more than tags. It feeds navigation, search, content ownership, lifecycle information, publishing automation, and repository-wide maintenance. Small inconsistencies are manageable when they affect one or two pages. They are much harder to correct once they have spread across a large corpus and multiple contributors.
 
 For this portfolio, I wanted to build a smaller version of the controls I would have found useful in that environment.
 
-The taxonomy is a version-controlled controlled vocabulary rather than a set of free-form tags. It supplies document metadata, Docusaurus tags, editor controls and faceted navigation - see [the browse page](pathname:///browse/).
+The taxonomy is a controlled vocabulary stored in Git rather than a set of free-form tags. It supplies document metadata, Docusaurus tags, editor controls, and faceted navigation — see [the browse page](pathname:///browse/).
 
 One rule drives the implementation:
 
-> **AI can propose semantic intent; humans approve it; deterministic tooling changes canonical state.**
+> **AI suggests metadata and vocabulary changes; humans review them; repository tooling applies approved changes.**
 
 The system includes:
 
@@ -52,14 +51,14 @@ The system includes:
 * Validation of taxonomy and document metadata
 * Generated Docusaurus tags, editor controls, and navigation data
 * AI-assisted classification and vocabulary-gap detection
-* Reviewed taxonomy migrations with preconditions and dry runs
-* Corpus-wide checks before a taxonomy change is applied
+* Reviewable taxonomy migrations with preconditions and dry runs
+* Repository-wide checks before taxonomy changes are applied
 
 ## The problem
 
 On a large docs-as-code portal, taxonomy problems often started with reasonable local decisions.
 
-A writer can't find an exact term, so they add another one. Similar concepts ended up with slightly different names. Metadata conventions changed, but older documents kept the previous values. Navigation configuration and authoring tools sometimes developed their own versions of the same information.
+A writer could not find an exact term, so they added another one. Similar concepts ended up with slightly different names. Metadata conventions changed, but older documents kept the previous values. Navigation configuration and authoring tools sometimes developed their own versions of the same information.
 
 None of those changes was especially serious on its own. The difficulty came later, when the same concepts had to be searched, renamed, deprecated, or changed across many documents.
 
@@ -96,9 +95,9 @@ An AI model can make a useful first pass at questions such as:
 
 I did not want the model deciding whether repository state was valid or whether a new term should become canonical.
 
-Those checks are handled by deterministic tooling. It validates IDs and cardinality, checks migration preconditions, determines whether documents need rewriting, and controls changes to the canonical taxonomy.
+That responsibility stays with the repository tooling. It validates IDs and cardinality, checks migration preconditions, identifies documents that would need metadata updates, and controls changes to the canonical taxonomy.
 
-AI produces proposals. A person reviews them. The repository tooling applies approved changes.
+AI produces proposals. A person reviews them. Repository tooling applies approved changes.
 
 ## Scaling the model
 
@@ -109,11 +108,11 @@ As the number of documents, repositories, contributors, product versions, and au
 The system therefore has a few deliberate constraints:
 
 * **One source of truth.** Docusaurus, the authoring environment, and navigation use generated views of the same taxonomy.
-* **Deterministic validation.** Repository checks do not depend on an external model.
-* **Preflight before mutation.** A taxonomy change can be checked against the corpus before files are changed.
+* **Repository validation.** Validation and migration checks do not depend on the LLM.
+* **Preflight checks.** A taxonomy change can be checked against the corpus before any files are updated.
 * **Explicit migrations.** Vocabulary changes have their own reviewable records.
 * **Deprecation rather than automatic deletion.** Old IDs and replacement relationships remain visible.
-* **Human review for semantic changes.** Automation can suggest a change but cannot silently redefine the vocabulary.
+* **Human review for semantic changes.** The LLM can suggest a change but cannot add or redefine canonical vocabulary on its own.
 * **Controlled authoring.** Writers select governed values without needing to know how the taxonomy is implemented.
 
 The same approach could be used for API documentation metadata such as product area, service ownership, SDK, authentication method, lifecycle state, version applicability, or content type.
@@ -124,10 +123,10 @@ Once those values start driving search, navigation, ownership, or automation, in
 
 The portfolio now has one canonical vocabulary and one supported path for changing it.
 
-Canonical IDs and validation reduce vocabulary drift. Docusaurus tags, editor configuration, and navigation are generated from the same source instead of being maintained separately. Taxonomy corrections are handled through migrations with dry runs and preconditions. The tooling can also determine which documents would need to change before a migration is applied.
+Canonical IDs and repository validation reduce vocabulary drift. Docusaurus tags, editor configuration, and navigation are generated from the same source instead of being maintained separately. Taxonomy corrections are handled through migrations with dry runs and preconditions. The tooling also identifies which documents would require metadata updates before a migration is applied.
 
-AI-assisted classification stays outside that mutation path. It can suggest a classification or a new term, but it cannot make either canonical.
+AI-assisted classification is separate from the tooling that changes the canonical taxonomy. It can suggest a classification or a new term, but it cannot make either canonical.
 
-The migration workflow has already caught issues outside the change being tested. During one taxonomy correction, I prepared updates to five technology terms and ran the migration against all 26 portfolio documents. The first preflight run found stale derived state in a recently added document. I corrected that first, reran the checks, and only then applied the taxonomy migration.
+The migration workflow has already caught issues outside the change being tested. During one taxonomy correction, I prepared updates to five technology terms and checked the migration against all 26 portfolio documents. The first preflight run found stale derived state in a recently added document. I corrected that first, reran the checks, and only then applied the taxonomy migration.
 
-Because this repository is small, the implementation is practical to show in [full](../implementation-details/taxonomy.md). The controls themselves are based on problems I had already seen become difficult to manage in a much larger docs-as-code environment.
+Because the portfolio is small, I can show the implementation in [full](../implementation-details/taxonomy.md). The controls are based on problems I had already seen become difficult to manage in a much larger docs-as-code environment.
