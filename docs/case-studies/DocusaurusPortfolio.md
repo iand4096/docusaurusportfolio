@@ -70,7 +70,9 @@ I designed and built this portfolio as a production-style Docusaurus documentati
 
 Docusaurus provides the documentation framework. I used Markdown and MDX for content, and React components for reusable custom presentation.
 
-Additionally, GitHub Actions were used to automate deployment and QA. Finally, I wrote a Python QA script to coordinate AI review and deterministic checks, validate AI findings against the source, and generate a report containing issues and suggested improvements. The QA pipeline can run locally or in CI and supports per-page and site-wide review.
+GitHub Actions automate deployment and documentation QA.
+
+For quality assurance, I wrote a Python script that combines the AI review with the deterministic checks such as link checking. The script validates the AI findings against the source to guard against hallucination, and generates a report containing the identified issues and suggested improvements.
 
 ## Implementation
 
@@ -82,9 +84,7 @@ The portfolio includes:
 * React and JSX components for reusable presentation of skills, tools, and marketing-style content.
 * Mermaid diagrams-as-code.
 * Automated documentation QA and deployment using GitHub Actions.
-* AI-assisted taxonomy generation and governance, described in [the taxonomy case study](TaxonomyGovernance.md).
-
-  * The taxonomy machinery generates a [browse page](pathname:///browse/) using Docusaurus tags.
+* AI-assisted taxonomy generation and governance, described in [the taxonomy case study](TaxonomyGovernance.md). The taxonomy machinery generates a [browse page](pathname:///browse/) using Docusaurus tags.
 
 The QA pipeline combines:
 
@@ -106,4 +106,4 @@ This portfolio demonstrates a modern docs-as-code workflow, reusable documentati
 
 ## Lessons learned
 
-* Add a dashboard showing QA trends, such as issue counts and severity over time.
+* A dashboard showing QA trends would help track issue counts and severity over time.

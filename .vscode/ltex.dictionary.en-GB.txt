@@ -42,3 +42,4 @@ DevEx
 Fiserv
 Finextra
 Flexsearch
+GenAI-assisted

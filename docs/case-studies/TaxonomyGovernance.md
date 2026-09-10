@@ -37,7 +37,7 @@ In a large documentation repository, structured metadata should be used to drive
 
 For this portfolio, I wanted to build a smaller version of the metadata controls I would have found useful in that environment.
 
-The taxonomy uses a version-controlled controlled vocabulary rather than free-form tags. That controlled vocabulary then generates document metadata, Docusaurus tags, editor controls and faceted navigation - see [the browse page](pathname:///browse/) for an example of the latter.
+The taxonomy uses a git-versioned and controlled vocabulary rather than free-form tags. That controlled vocabulary then generates document metadata, Docusaurus tags, editor controls and faceted navigation - see [the browse page](pathname:///browse/) for an example of the latter.
 
 ## Challenge
 

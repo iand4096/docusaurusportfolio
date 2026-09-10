@@ -68,9 +68,9 @@ tags:
 
 ## Context
 
-At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom internal docs-as-code platform and developer portal supporting an API platform whose developer mailing list had approximately 1,200 subscribers.
+At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom internal docs-as-code platform and developer portal supporting an API platform whose developer mailing list had approximately 1,200 subscribers. This documentation was used by Quantitive Analysts and Developers to create applications supporting Morgan Stanley's Institutional Securities business.
 
-Codetreedocs was designed to replace fragmented legacy wiki-based documentation with a Git-based publishing workflow to make it easier for engineers to create, maintain, review, and discover documentation.
+Codetreedocs was designed to replace fragmented legacy wiki-based documentation with a Git-based publishing workflow to make it easier for engineers and technical writers to create, maintain, review, and discover documentation.
 
 I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and core implementation and later contributed directly to the codebase to extend the platform and resolve issues that arose as the platform scaled.
 
@@ -97,16 +97,19 @@ The approach focused on:
 
 ## Implementation
 
-The platform included:
+* **Markdown-based documentation stored and reviewed in Git**. This provided stronger version control than the previous wiki-based platforms, allowing users to update multiple pages in a single, reviewable atomic change. It also made the documentation easier to integrate with GenAI-assisted authoring and maintenance workflows.
 
-* Markdown-based documentation stored and reviewed in Git.
-* A Jenkins-based documentation build and publishing pipeline with basic quality checks such as link-checking for new documentation.
-* An IntelliJ plugin for documentation authoring and live preview.
-* Support for diagrams-as-code, including software architecture diagrams.
-* Search and navigation for a growing documentation set.
-* The ability to reuse content in multiple locations and insert code samples into the documentation.
+* **A Jenkins-based documentation build and publishing pipeline with automated quality checks**. Checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
 
-I also led the successful migration of the platform to the firm's new Docker-based web-hosting environment. Additionally, I developed content migration scripts for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool, collectively converting approximately **900 legacy wiki pages** to the platform’s extended Markdown format.
+* **An IntelliJ plugin for documentation authoring and live preview**. This lowered the barrier for developers to contribute documentation by allowing them to edit and preview changes directly within their existing development environment.
+
+* **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without requiring specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
+
+* **Search and navigation for a growing documentation set**. Fast, responsive search using FlexSearch.js supported routine lookup, while slower but more authoritative RAG-based search supported more complex natural-language queries.
+
+* **The ability to reuse content in multiple locations and embed code samples directly from source**. This reduced duplication and maintenance effort by allowing shared content and code examples to be updated centrally.
+
+I also led the successful migration of the platform to the firm's new Docker-based web-hosting environment. In parallel, I developed automated content migration tooling for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk involved in moving legacy documentation, enabling approximately 900 legacy wiki pages to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. The later IDE-based tooling allowed content owners to migrate and validate their own documentation, making the migration process more scalable.
 
 As the platform matured, I contributed directly to its codebase using Amp and agentic AI-assisted development. This work included adding support for PlantUML, Mermaid, and C4 diagrams and LaTeX mathematical notation, as well as diagnosing and fixing bugs in the link-checking implementation.
 
@@ -120,4 +123,4 @@ The project helped establish documentation as a normal part of the engineering w
 
 * Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, before a corpus grows to several thousand pages. My current portfolio integrates [a canonical taxonomy and associated governance system](./TaxonomyGovernance.md).
 
-* Add automated quality checks to documentation pull requests beyond simple link checking, using tools such as Vale and LanguageTool together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues. This would help to ensure that quality scales with the growth of the site once manual review of every PR is no longer practical. My [portfolio integrates these checks](./DocusaurusPortfolio.md).
+* Add a full set of automated quality checks to documentation pull requests beyond simple link checking, using tools such as Vale and LanguageTool together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues. This would help to ensure that quality scales with the growth of the site once manual review of every PR is no longer practical. My [portfolio integrates these checks](./DocusaurusPortfolio.md).

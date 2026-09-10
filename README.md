@@ -30,12 +30,12 @@ The pipeline is implemented in [`scripts/ai_docs_review.py`](scripts/ai_docs_rev
 
 The **AI review** uses DeepSeek for conservative analysis of:
 
-* Grammar and clarity;
-* structure and scannability;
-* portfolio quality;
-* repetition;
-* Mermaid diagram opportunities;
-* site-wide consistency.
+* Grammar and clarity.
+* structure and scannability.
+* Portfolio quality.
+* Repetition.
+* Mermaid diagram opportunities.
+* Site-wide consistency.
 
 AI findings must quote exact source text. The script validates each quotation against the source and recalculates its line number, discarding findings that cannot be verified.
 
