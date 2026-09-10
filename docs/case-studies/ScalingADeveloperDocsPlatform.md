@@ -66,60 +66,60 @@ tags:
   - vale
 ---
 
-## Project overview
+## Context
 
 At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom internal docs-as-code platform and developer portal supporting an API platform whose developer mailing list had approximately 1,200 subscribers.
 
-Codetreedocs was designed to replace fragmented legacy documentation with a Git-based publishing workflow that made it easier for engineers to create, maintain, review, and discover technical content alongside source code.
+Codetreedocs was designed to replace fragmented legacy wiki-based documentation with a Git-based publishing workflow to make it easier for engineers to create, maintain, review, and discover documentation.
 
-I owned product direction, requirements, solution design, testing, and quality. I initially worked with a dedicated engineering team on the core implementation and later contributed directly to the codebase to extend the platform and resolve issues that arose as the platform scaled.
+I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and core implementation and later contributed directly to the codebase to extend the platform and resolve issues that arose as the platform scaled.
 
-## The challenge
+## Challenge
 
-* Replace fragmented documentation spread across legacy wiki and docs-as-code based systems with a single platform.
+* Replace fragmented documentation spread across legacy wiki and docs-as-code-based systems with a single platform.
 * Make documentation contributions practical and as easy as possible for a large engineering community.
 * Support documentation stored in Git alongside the code in a large monorepo.
 * Provide scalable documentation publishing, search, and navigation.
 * Migrate valuable legacy content without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.
 
-## My approach
+## Approach
 
-I worked with engineers from the internal tooling teams to improve both the authoring experience and the published developer portal.
+I worked with engineers from the internal tooling team to improve the authoring experience and create a published developer portal.
 
-Key elements included:
+The approach focused on:
+
+* Storing and reviewing documentation in Git alongside source code.
+* Reducing friction for documentation contributions.
+* Designing search and information architecture for a large technical documentation set.
+* Using analytics to identify high-value legacy content and prioritise migration.
+* Supporting documentation authoring within engineers' existing development environment.
+
+## Implementation
+
+The platform included:
 
 * Markdown-based documentation stored and reviewed in Git.
-* Jenkins-based documentation build and publishing pipelines.
-* An IntelliJ plugin providing live documentation preview.
+* A Jenkins-based documentation build and publishing pipeline with basic quality checks such as link-checking for new documentation.
+* An IntelliJ plugin for documentation authoring and live preview.
 * Support for diagrams-as-code, including software architecture diagrams.
-* Support for content and code-sample reuse.
-* Search and information architecture designed for a large technical documentation set.
-* Analytics used to identify high-value legacy content and prioritise migration.
-* Contribution workflows designed to encourage engineers to create and maintain documentation.
+* Search and navigation for a growing documentation set.
+* The ability to reuse content in multiple locations and insert code samples into the documentation.
 
-I developed migration scripts for the internal wiki and Sphinx, followed by an end-user focused IDE-based migration tool, collectively converting approximately **900 legacy wiki pages** to the platform’s extended Markdown format.
+I also led the successful migration of the platform to the firm's new Docker-based web-hosting environment. Additionally, I developed content migration scripts for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool, collectively converting approximately **900 legacy wiki pages** to the platform’s extended Markdown format.
 
-As the platform matured, I contributed directly to its codebase. I used Amp and agentic AI-assisted development to extend the platform. This work included adding PlantUML, mermaid, and C4 diagram support, adding support for LaTeX mathematical notation, and diagnosing and fixing bugs in the link-checking implementation.
+As the platform matured, I contributed directly to its codebase using Amp and agentic AI-assisted development. This work included adding support for PlantUML, Mermaid, and C4 diagrams and LaTeX mathematical notation, as well as diagnosing and fixing bugs in the link-checking implementation.
 
-## Deliverables
 
-* A large-scale internal docs-as-code platform and developer portal.
-* Git and Markdown-based authoring and review workflows.
-* Jenkins-based CI and publishing infrastructure.
-* IntelliJ documentation authoring and live-preview tooling.
-* Support for diagrams-as-code and architecture documentation.
-* Automated migration tooling for legacy wiki and Sphinx content.
-* Search, navigation, and information architecture for a growing documentation corpus.
-* Migration of the platform to the firm's strategic Docker-based web-hosting environment.
-
-## Outcome
+## Impact
 
 Codetreedocs grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
 
-## What I would change
+## Lessons learned
 
-* Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, before the corpus grew to several thousand pages. My portfolio integrates [a canonical taxonomy and associated governance system](./TaxonomyGovernance.md).
-* Add automated quality checks to documentation pull requests using tools such as Vale and LanguageTool, together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues, so that quality could scale with the growth of the site once manual review of every PR was no longer practical. My [portfolio integrates these checks](./DocusaurusPortfolio.md).
+* Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, before a corpus grows to several thousand pages. My current portfolio integrates [a canonical taxonomy and associated governance system](./TaxonomyGovernance.md).
+
+* Add automated quality checks to documentation pull requests beyond simple link checking, using tools such as Vale and LanguageTool together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues. This would help to ensure that quality scales with the growth of the site once manual review of every PR is no longer practical. My [portfolio integrates these checks](./DocusaurusPortfolio.md).
+

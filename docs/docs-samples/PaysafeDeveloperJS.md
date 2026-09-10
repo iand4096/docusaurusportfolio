@@ -49,11 +49,11 @@ tags:
 
 I was tasked with creating the first version of the **Paysafe.js Developer Guide** for the newly released Paysafe.js product.
 
-Paysafe.js allows merchants to add customisable payment forms to their websites while reducing their PCI DSS scope. Sensitive card details are collected through secure fields hosted by Paysafe in iframes, preventing the merchant’s systems from handling the card data directly. The library then returns a token that the merchant can use to make a payment request.
+Paysafe.js allows merchants to add attractive, customisable payment forms to their websites while reducing their PCI DSS scope. Sensitive card details are collected through secure fields hosted on Paysafe's servers using iframes, preventing the merchant’s systems from handling the card data directly. The library then returns a token that the merchant's system can use to make a payment request.
 
 The original guide explained both this product model and the core integration workflow, from loading and configuring the JavaScript library to collecting payment details and receiving a token.
 
-I also created the original CodePen examples and an interactive inline **Try Now** demonstration that allowed developers to explore the integration step by step.
+I also created the original CodePen examples and an interactive inline **Try Now** demonstration for developers to explore a basic end-to-end integration without leaving the documentation.
 
 The guide has since been expanded by other contributors to cover features including 3D Secure, Google Pay, Apple Pay, and Instant Withdrawal.
 
@@ -68,11 +68,9 @@ The guide has since been expanded by other contributors to cover features includ
 
 ## My approach
 
-I structured the guide around the developer’s end-to-end integration workflow instead of documenting the JavaScript API operation by operation. This allowed developers to begin with a basic working implementation before adding configuration, validation, styling, and error handling.
+I structured the guide around the full integration workflow instead of documenting the JavaScript API operation by operation. This allowed developers to begin with a basic working implementation before adding configuration, validation, styling, and error handling.
 
 The guide first explained the purpose of the hosted fields and tokenisation model. This helped developers understand why sensitive fields appeared within Paysafe-hosted iframes, why card data did not pass through the merchant’s systems, and how this reduced the PCI DSS obligations associated with the integration.
-
-To make the integration easier to explore, I created CodePen examples that developers could inspect and modify without first setting up a complete local project. An interactive **Try Now** demonstration also divided the integration into stages and showed how each part contributed to the completed payment form.
 
 I tested the documented workflow against the Paysafe.js implementation, with input from product and engineering teams to ensure that the instructions and examples reflected the expected behaviour.
 
@@ -95,8 +93,6 @@ The current version of the guide is publicly available on the [Paysafe Developer
 ## Outcome
 
 The guide gave developers a practical route from understanding Paysafe.js and its compliance benefits to completing a working browser-based payment-tokenisation integration.
-
-The CodePen examples and Try Now demonstration provided working implementations that developers could inspect and modify.
 
 ## What I would change
 

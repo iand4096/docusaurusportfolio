@@ -41,7 +41,7 @@ tags:
 
 ## Project overview
 
-I wrote the user documentation for version 5 of AMX Composer, a content-management application for the AMX Digital Signage platform. Version 5 was a complete rewrite of the original Windows client-server application with many new features, a completely new user interface, and a new web-based technology stack.
+I wrote the user documentation for version 5 of AMX Composer, a content-management application for the AMX Digital Signage platform. Version 5 was a complete rewrite of the original Windows client-server application with many new features including a redesigned user interface, and a new web-based technology stack.
 
 The guide supported administrators and end users through the complete digital-signage workflow, from creating and approving content to publishing it to networked players. It also covered system configuration, permissions, reporting, troubleshooting, and advanced playlist concepts.
 
@@ -62,7 +62,7 @@ flowchart LR
     class USERS,COMPOSER,PLAYERS,SCREENS large;
 ```
 
-This work required a practical understanding of TCP/IP networking, player configuration, device connectivity, and troubleshooting networked digital-signage systems.
+This work required a practical understanding of TCP/IP networking, 2D graphics and troubleshooting connectivity issues for networked digital-signage systems.
 
 ## The challenge
 
@@ -73,7 +73,7 @@ This work required a practical understanding of TCP/IP networking, player config
 
 ## My approach
 
-I did extensive testing with the application and spent time discussing the concepts behind the product with the developers.
+I carried out extensive testing with the application and spent time discussing the concepts behind the product with the developers.
 
 I created a single-source [MadCap Flare](../tools/Flare.md) project using reusable content, conditional text, separate build targets, and separate source TOCs. Shared concepts and procedures were maintained once, while administrator-only content was conditionally included in the relevant HTML and PDF outputs.
 
@@ -97,5 +97,5 @@ The HTML help and PDF manual were successfully released with the product and rec
 ## What I would change
 
 * The PDF manual did not include a linked, page-numbered table of contents because I was unable to resolve an issue with Flare’s print output before the release deadline. I would now test print-navigation requirements earlier and allow more time to address output-specific issues.
-* Include the glossary from the HTML help in the PDF manual so that readers could access definitions without using the application.
-* Take advantage of modern automated proofreading tools like [Vale](https://github.com/vale-cli/vale) and [LanguageTool](https://github.com/languagetool-org/languagetool). My [portfolio integrates these checks](../case-studies/DocusaurusPortfolio.md)
+* I would include the glossary from the HTML help in the PDF manual so that readers could access definitions without using the application.
+* I would take advantage of modern automated proofreading tools like [Vale](https://github.com/vale-cli/vale) and [LanguageTool](https://github.com/languagetool-org/languagetool). My [portfolio integrates these checks](../case-studies/DocusaurusPortfolio.md)

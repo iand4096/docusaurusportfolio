@@ -11,7 +11,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a software-engineering background spanning device drivers, graphics/CAD/VR, APIs, and developer platforms.
 
-I combine a depth of knowledge management experience with hands-on engineering:
+I combine in-depth knowledge management experience with hands-on engineering including:
 
 <CapabilityGrid variant="checklist"> 
 
@@ -39,7 +39,7 @@ I combine a depth of knowledge management experience with hands-on engineering:
 * **Documentation engineering:**
   Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling
 
-* **AI knowledge & governance:**
+* **AI knowledge management & governance:**
   Knowledge architecture, content and taxonomy governance, AI-ready documentation, and AI-assisted quality assurance
 
 * **Technical validation & engineering:**
@@ -63,7 +63,7 @@ API implementation and testing, security validation, software debugging, automat
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
 
   <div className="card-description">
-  Led the design and evolution of Codetreedocs, an internal documentation platform that grew to more than 3,200 pages and approximately 1,200 developer mailing-list subscribers. My responsibilities also included documentation for Optimus, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
+  Led the design and evolution of Codetreedocs, an internal documentation platform that grew to more than 3,200 pages for a developer mailing-list containing approximately 1,200 subscribers. My responsibilities also included creating documentation for Optimus, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
 </div>
 
   <span className="card-link">Read case study →</span>
@@ -81,7 +81,7 @@ API implementation and testing, security validation, software debugging, automat
   <h3>Building the Paysafe Developer Center</h3>
 
  <div className="card-description">
-  Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion, as the company integrated major acquisitions, delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.
+  Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion as the company delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.
 </div>
 
   <span className="card-link">Read case study →</span>
@@ -91,7 +91,7 @@ API implementation and testing, security validation, software debugging, automat
 
 ## Engineering background
 
-M.Sc. Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C and C++/STL. Current development includes Scala and full-stack API integrations using Python/Flask on the backend and JavaScript on the frontend.
+M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C and C++/STL. Current development work includes using Scala for documentation engineering and building full-stack API integrations with Python/Flask and JavaScript.
 
 ## Professional profile
 
@@ -100,7 +100,7 @@ For employment history and professional experience, visit my
 
 :::tip[Automated documentation QA]
 
-This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions combining AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
+This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
 
 **[View the live report →](pathname:///qa/)**
 :::
