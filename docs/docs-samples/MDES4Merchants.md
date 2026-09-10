@@ -51,7 +51,7 @@ tags:
 
 ## Project overview
 
-I wrote the first version of the **MDES for Merchants Use Case Guide** while working at Mastercard. The guide explains how merchants can use the Mastercard Digital Enablement API to replace payment card numbers - Primary Account Numbers, or PANs - with securely stored payment tokens.
+I wrote the first version of the **MDES for Merchants Use Case Guide** while working at Mastercard. The guide explains how merchant developers can use the Mastercard Digital Enablement API to replace payment card numbers - Primary Account Numbers, or PANs - with securely stored payment tokens to reduce the security risks associated with storing payment cards.
 
 Unlike card numbers, tokens can continue to work when the underlying card is replaced or reported lost, making them particularly useful for recurring and subscription payments.
 
@@ -67,22 +67,27 @@ The Digital Enablement API provides access to Mastercard Digital Enablement Serv
 
 ## My approach
 
-To understand and verify the complete integration workflow, I created custom test code in Python using the Requests library and open-source cryptography libraries. This allowed me to generate the required OAuth 1.0 authentication data, encrypt and decrypt protected fields, send API requests, and inspect the responses.
+To understand and verify the complete integration workflow, I created custom test code in Python using the Requests library and open-source cryptography libraries. This allowed me to generate the required OAuth 1.0 authentication data, encrypt and decrypt protected fields, send API requests, and inspect the responses. This work was necessary to develop the understanding required to create detailed integration documentation for this complex API.
 
-I also developed a cloud-hosted Flask application on PythonAnywhere to provide a publicly accessible endpoint for receiving and examining webhook notifications. This provided the means to test asynchronous parts of the merchant tokenisation lifecycle that could not be validated through local requests alone.
+I also developed a cloud-hosted Flask application on PythonAnywhere to provide a publicly accessible endpoint for receiving and examining webhook notifications. This provided the means to test and document asynchronous parts of the merchant tokenisation lifecycle that could not be validated within the corporate firewall.
 
 While testing the documented workflows, I found issues and omissions in the supporting API reference. I worked with the product owner to correct these problems.
 
 ## Deliverables
 
+### Published deliverables
+
 * The first version of the **MDES for Merchants Use Case Guide**, covering the end-to-end merchant tokenisation workflow.
 * Technical guidance for OAuth 1.0 authentication, field-level encryption, API requests, responses, and webhook notifications.
 * Corrections and improvements to the supporting Digital Enablement API reference documentation in OpenAPI schema format.
 
-Two internal deliverables provided to the product manager and other technical writers to encourage a culture of end-to-end product testing:
+### Internal deliverables
+
+To encourage a culture of end-to-end product testing, I also provided the product owner and other technical writers with:
 
 * Custom Python code used to test and validate the integration.
 * A cloud-hosted Flask implementation used to receive webhook notifications.
+
 
 :::note[Published guide]
 

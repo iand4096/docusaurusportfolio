@@ -20,7 +20,7 @@ tags:
 
 import SidebarCardGrid from '@site/src/components/SidebarCardGrid';
 
-Explore my documentation samples
+Explore documentation samples demonstrating my technical writing and approach to documentation tasks.
 
 <SidebarCardGrid
   metadataKey="sampleCard"

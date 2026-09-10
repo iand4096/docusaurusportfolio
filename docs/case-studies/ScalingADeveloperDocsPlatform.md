@@ -68,11 +68,11 @@ tags:
 
 ## Context
 
-At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom internal docs-as-code platform and developer portal supporting an API platform whose developer mailing list had approximately 1,200 subscribers. This documentation was used by Quantitive Analysts and Developers to create applications supporting Morgan Stanley's Institutional Securities business.
+At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom internal docs-as-code platform and developer portal that consolidated existing documentation into a single modern system. It hosted documentation for a large internal API platform with a developer mailing list of approximately 1,200 subscribers. The documentation was used by quantitative analysts and developers building applications for Morgan Stanley’s Institutional Securities business.
 
-Codetreedocs was designed to replace fragmented legacy wiki-based documentation with a Git-based publishing workflow to make it easier for engineers and technical writers to create, maintain, review, and discover documentation.
+Codetreedocs was designed to replace fragmented wiki-based documentation with a Git-based publishing workflow to make it easier for engineers and technical writers to create, maintain, review, and discover documentation.
 
-I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and core implementation and later contributed directly to the codebase to extend the platform and resolve issues that arose as the platform scaled.
+I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and later contributed directly to the codebase once the main features had been implemented to extend the platform and resolve issues that arose due to scaling.
 
 ## Challenge
 
@@ -105,11 +105,13 @@ The approach focused on:
 
 * **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without requiring specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
 
-* **Search and navigation for a growing documentation set**. Fast, responsive search using FlexSearch.js supported routine lookup, while slower but more authoritative RAG-based search supported more complex natural-language queries.
+* **Search and navigation for a growing documentation set**. I designed the search approach to help users find relevant information quickly as the documentation set expanded. This combined fast client-side search using FlexSearch.js for direct lookup with a slower RAG-based search for more complex natural-language queries where retrieval quality was more important than response time.
 
 * **The ability to reuse content in multiple locations and embed code samples directly from source**. This reduced duplication and maintenance effort by allowing shared content and code examples to be updated centrally.
 
-I also led the successful migration of the platform to the firm's new Docker-based web-hosting environment. In parallel, I developed automated content migration tooling for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 wiki pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. The subsequent IDE-based tooling allowed content owners to migrate and validate their own documentation, making the process more scalable.
+I led the successful migration of the platform to the firm's new Docker-based web-hosting environment. 
+
+In parallel, I developed automated content migration tooling for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 wiki pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. The subsequent IDE-based tooling allowed content owners to migrate and validate their own documentation, making the process more scalable.
 
 As the platform matured, I contributed directly to its codebase using Amp and agentic AI-assisted development. This work included adding support for PlantUML, Mermaid, and C4 diagrams and LaTeX mathematical notation, as well as diagnosing and fixing bugs in the link-checking implementation.
 
@@ -121,6 +123,6 @@ The project helped establish documentation as a normal part of the engineering w
 
 ## Lessons learned
 
-* Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, before a corpus grows to several thousand pages. My current portfolio integrates [a canonical taxonomy and associated governance system](./TaxonomyGovernance.md).
+* Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, early in the development of a documentation platform. My current portfolio integrates [a canonical taxonomy and associated governance system](./TaxonomyGovernance.md).
 
-* Add a full set of automated quality checks to documentation pull requests beyond simple link checking, using tools such as Vale and LanguageTool together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues. This would help to ensure that quality scales with the growth of the site once manual review of every PR is no longer practical. My [portfolio integrates these checks](./DocusaurusPortfolio.md).
+* Add a full set of automated quality checks to documentation pull requests beyond simple link checking, using tools such as Vale and LanguageTool together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues. This would help to ensure that quality scales with the growth of the site once manual review of every PR is no longer practical and is especially important when engineers use GenAI assisted authoring. My [portfolio integrates these checks](./DocusaurusPortfolio.md).

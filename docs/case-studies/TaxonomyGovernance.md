@@ -31,19 +31,13 @@ tags:
 
 ## Context
 
-I built the taxonomy for this Docusaurus portfolio after encountering metadata problems while managing a much larger docs-as-code portal at a financial institution.
+In a large documentation repository, structured metadata and taxonomy can improve navigation and search while also supporting content ownership, documentation lifecycle management, publishing automation, and consistent vocabulary.
 
-In a large documentation repository, structured metadata should be used to drive navigation, search, content ownership, lifecycle information, publishing automation, and repository-wide maintenance.
+I built the taxonomy for this Docusaurus portfolio after encountering these problems in a much larger docs-as-code portal at a financial institution. GenAI now makes it increasingly practical to automate the application and validation of structured metadata. I therefore wanted to build a smaller implementation of the metadata controls that would have been useful in that environment.
 
-For this portfolio, I wanted to build a smaller version of the metadata controls I would have found useful in that environment.
-
-The taxonomy uses a git-versioned and controlled vocabulary rather than free-form tags. That controlled vocabulary then generates document metadata, Docusaurus tags, editor controls and faceted navigation - see [the browse page](pathname:///browse/) for an example of the latter.
+The taxonomy uses a **Git-versioned controlled vocabulary** rather than free-form tags. That vocabulary drives document metadata, Docusaurus tags, editor controls, and faceted navigation — see [the browse page](pathname:///browse/) for an example of the latter.
 
 ## Challenge
-
-On a large docs-as-code portal, taxonomy problems often start with reasonable local decisions. A writer cannot find an exact term and adds another one; similar concepts acquire different names; metadata conventions change while older documents retain previous values; and navigation or authoring tools develop their own versions of the same information.
-
-These inconsistencies become difficult when teams need to search, rename, deprecate, or change concepts across many documents. Syntax validation alone does not solve the problem: a YAML value can follow the required structure and still contain the wrong value.
 
 I wanted the repository to enforce the metadata model rather than rely on contributors to remember conventions. This required:
 
@@ -70,7 +64,7 @@ A central set of tools is used to validate IDs and cardinality, check migration 
 The design uses these constraints:
 
 * **One source of truth.** Docusaurus, the authoring environment, and navigation use views generated from the same taxonomy.
-* **Preflight before mutation.** The tooling checks taxonomy changes against the corpus before changing files.
+* **Preflight before mutation.** The tooling checks taxonomy changes against the documentation corpus before changing files.
 * **Explicit migrations.** Vocabulary changes have their own reviewable records.
 * **Deprecation rather than automatic deletion.** The taxonomy retains old IDs and replacement relationships.
 * **Human review for semantic changes.** Automation can suggest a change but cannot silently redefine the vocabulary.

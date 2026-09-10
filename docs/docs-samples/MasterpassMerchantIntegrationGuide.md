@@ -46,7 +46,7 @@ tags:
 
 ## Project overview
 
-I maintained and updated the existing **Masterpass Merchant Integration Guide** while working at Mastercard. The guide explained how merchants could integrate the Masterpass digital-wallet checkout flows into their websites and applications.
+I maintained and updated the existing **Masterpass Merchant Integration Guide** while working at Mastercard. The guide explained how merchant developers could integrate Masterpass's digital-wallet checkout into their websites and applications.
 
 My main contribution was to build test integrations for each checkout flow and use the results to improve the accuracy and clarity of the documentation. I also added detailed sequence diagrams, corrected issues in the supporting API reference documentation, and updated the Masterpass mobile SDK guides.
 
@@ -61,13 +61,13 @@ The content has received minor updates from other contributors since I left Mast
 
 ## My approach
 
-I built working test integrations for the supported Masterpass checkout flows so that I could validate the documented procedures against the behaviour of the APIs. This allowed me to identify missing steps, unclear explanations, and discrepancies in the supporting API reference.
+I built working test integrations for the supported Masterpass flows to validate the documented procedures against actual API behaviour. This helped me identify missing steps, unclear explanations, and discrepancies in the supporting API reference, which I then worked with the product owner to correct.
 
-I created detailed sequence diagrams using PlantUML to show the order of interactions between the merchant, the customer, and Masterpass. The diagrams made complex checkout flows easier to understand and provided developers with a visual overview before they followed the detailed integration instructions.
+I created detailed sequence diagrams using PlantUML to show the order of interactions between the merchant, the customer, and Masterpass. The diagrams made complex checkout flows easier to understand and provided developers with a visual overview before they followed the integration instructions.
 
 When I found errors or omissions in the API reference, I corrected the underlying OpenAPI definitions as well as the related guide content. I also reviewed and updated the Masterpass mobile SDK documentation to keep it aligned with the main merchant integration guidance.
 
-Brightspot made structured authoring, content reuse, version control, and technical review difficult. Working with another technical writer who joined at the same time, I advocated for a docs-as-code alternative. Together, we specified the requirements for the first version of the new platform and tested its authoring and publishing workflow.
+Brightspot made structured authoring, content reuse, version control, and technical review difficult. I worked with another technical writer, to advocate for a docs-as-code alternative. Together, we specified the requirements for the first version of the new platform and tested early prototypes.
 
 ## Deliverables
 
