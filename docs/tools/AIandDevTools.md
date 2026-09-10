@@ -56,5 +56,5 @@ Practical experience using AI and developer tooling to improve documentation eng
 * **Agentic AI:** Exposure to agent mode development with Amp to enhance the documentation platform. Wrote `SKILL.md` files to help engineers using agent mode AI follow the documentation guidelines.
 * **MCP:** Built experimental **Model Context Protocol servers using FastMCP** and explored their use for exposing documentation tools to AI assistants.
 * **AI-Assisted Documentation:** Used AI for grammar checking, documentation structures, content transformation and creating technical diagrams and diagrams as code, with human review and technical validation.
-* **AI Limitations and Validation:** Working knowledge of current AI limitations, including inaccurate generated content and code, hallucinations, and retrieval-quality issues.
+* **AI Limitations and Validation:** Working knowledge of current AI limitations, including inaccurate and repetitive generated content, code security issues, and hallucinations such as APIs that don't exist.
 * **RAG and Retrieval:** Practical understanding of Retrieval-Augmented Generation concepts, including using metadata and document lifecycle status to prevent deprecated API documentation from being recommended unless specifically requested.

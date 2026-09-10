@@ -63,7 +63,7 @@ The Digital Enablement API provides access to Mastercard Digital Enablement Serv
 * Document non-standard API security requirements, including OAuth 1.0 authentication and field-level encryption.
 * Test an API that did not work with standard REST API testing tools such as Postman.
 * Receive and validate asynchronous webhook notifications during end-to-end testing.
-* Identify and resolve problems in the Mastercard Digital Enablement API which the guide depended on.
+* Identify and resolve problems in the Mastercard Digital Enablement API reference documentation which the guide depended on.
 
 ## My approach
 

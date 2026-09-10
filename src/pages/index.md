@@ -11,7 +11,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a software-engineering background spanning device drivers, graphics/CAD/VR, APIs, and developer platforms.
 
-I combine in-depth knowledge management experience with hands-on engineering including:
+I combine in-depth knowledge management experience with hands-on engineering. My experience includes:
 
 <CapabilityGrid variant="checklist"> 
 
@@ -91,7 +91,7 @@ API implementation and testing, security validation, software debugging, automat
 
 ## Engineering background
 
-M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C and C++/STL. Current development work includes using Scala for documentation engineering and building full-stack API integrations with Python/Flask and JavaScript.
+I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C and C++/STL. Recent development work includes using Scala for documentation engineering and building full-stack test API integrations with Python/Flask and JavaScript to validate technical documentation.
 
 ## Professional profile
 
@@ -100,7 +100,7 @@ For employment history and professional experience, visit my
 
 :::tip[Automated documentation QA]
 
-This portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
+My portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
 
 **[View the live report →](pathname:///qa/)**
 :::

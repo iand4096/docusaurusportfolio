@@ -33,11 +33,11 @@ tags:
 
 I built the taxonomy for this Docusaurus portfolio after encountering metadata problems while managing a much larger docs-as-code portal at a financial institution.
 
-In a large documentation repository, metadata drives navigation, search, content ownership, lifecycle information, publishing automation, and repository-wide maintenance. Small inconsistencies become harder to correct once they spread across a large corpus and multiple contributors.
+In a large documentation repository, structured metadata should be used to drive navigation, search, content ownership, lifecycle information, publishing automation, and repository-wide maintenance.
 
-For this portfolio, I wanted to build a smaller version of the controls I would have found useful in that environment.
+For this portfolio, I wanted to build a smaller version of the metadata controls I would have found useful in that environment.
 
-The taxonomy uses a version-controlled controlled vocabulary rather than free-form tags. It supplies document metadata, Docusaurus tags, editor controls and faceted navigation - see [the browse page](pathname:///browse/).
+The taxonomy uses a version-controlled controlled vocabulary rather than free-form tags. That controlled vocabulary then generates document metadata, Docusaurus tags, editor controls and faceted navigation - see [the browse page](pathname:///browse/) for an example of the latter.
 
 ## Challenge
 

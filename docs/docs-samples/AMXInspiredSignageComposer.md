@@ -45,23 +45,6 @@ I wrote the user documentation for version 5 of AMX Composer, a content-manageme
 
 The guide supported administrators and end users through the complete digital-signage workflow, from creating and approving content to publishing it to networked players. It also covered system configuration, permissions, reporting, troubleshooting, and advanced playlist concepts.
 
-The following diagram shows a high-level summary of the content flow:
-
-```mermaid
-flowchart LR
-    USERS["fa:fa-users<br/>`Users`"]
-    COMPOSER["fa:fa-pen-to-square<br/>`AMX Inspired Composer`"]
-    PLAYERS["fa:fa-server<br/>`Inspired Players`"]
-    SCREENS["fa:fa-display<br/>`Display screens`"]
-
-    USERS --> COMPOSER
-    COMPOSER -->|"Publish"| PLAYERS
-    PLAYERS --> SCREENS
-
-    classDef large font-size:20px,padding:18px;
-    class USERS,COMPOSER,PLAYERS,SCREENS large;
-```
-
 This work required a practical understanding of TCP/IP networking, 2D graphics and troubleshooting connectivity issues for networked digital-signage systems.
 
 ## The challenge
@@ -98,4 +81,4 @@ The HTML help and PDF manual were successfully released with the product and rec
 
 * The PDF manual did not include a linked, page-numbered table of contents because I was unable to resolve an issue with Flare’s print output before the release deadline. I would now test print-navigation requirements earlier and allow more time to address output-specific issues.
 * I would include the glossary from the HTML help in the PDF manual so that readers could access definitions without using the application.
-* I would take advantage of modern automated proofreading tools like [Vale](https://github.com/vale-cli/vale) and [LanguageTool](https://github.com/languagetool-org/languagetool). My [portfolio integrates these checks](../case-studies/DocusaurusPortfolio.md).
+* Take advantage of modern automated proofreading tools like [Vale](https://github.com/vale-cli/vale) and [LanguageTool](https://github.com/languagetool-org/languagetool). My [portfolio integrates these checks](../case-studies/DocusaurusPortfolio.md).
