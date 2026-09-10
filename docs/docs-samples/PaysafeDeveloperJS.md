@@ -49,7 +49,7 @@ tags:
 
 I was tasked with creating the first version of the **Paysafe.js Developer Guide** for the newly released Paysafe.js product.
 
-Paysafe.js allows merchants to add attractive, customisable payment forms to their websites while reducing their PCI DSS scope. Sensitive card details are collected through secure fields hosted on Paysafe's servers using iframes, preventing the merchant’s systems from handling the card data directly. The library then returns a token that the merchant's system can use to make a payment request.
+Paysafe.js allows merchants to add attractive, customisable payment forms to their websites while reducing their PCI DSS scope. Sensitive card details are collected through secure fields hosted on Paysafe’s servers using iframes, preventing the merchant’s systems from handling the card data directly. The library then returns a token that the merchant’s systems can use to make a payment request.
 
 The original guide explained both this product model and the core integration workflow, from loading and configuring the JavaScript library to collecting payment details and receiving a token.
 
@@ -84,12 +84,6 @@ I tested the documented workflow against the Paysafe.js implementation, with inp
 * Supporting configuration, validation, styling, and error-handling guidance.
 * API reference documentation.
 
-:::note[Published guide]
-
-The current version of the guide is publicly available on the [Paysafe Developer Centre](https://developer.paysafe.com/en/api-docs/paysafe-js/overview/).
-
-:::
-
 ## Outcome
 
 The guide gave developers a practical route from understanding Paysafe.js and its compliance benefits to completing a working browser-based payment-tokenisation integration.
@@ -99,4 +93,4 @@ The guide gave developers a practical route from understanding Paysafe.js and it
 * Maintain the examples alongside the documentation source in place of a separate platform such as CodePen. This would make them easier to version, review, test, and migrate with the guide.
 * Introduce automated checks to confirm that the examples continue to work with each supported version of Paysafe.js.
 * Add a sequence diagram showing how sensitive payment details passed directly from the Paysafe-hosted fields to Paysafe, while only the resulting token was returned to the merchant.
-* Include a companion diagram showing how the merchant’s server could use that token to submit a payment through the server-side API.
+* Include a companion diagram showing how the merchant’s systems could use that token to submit a payment through the server-side API.

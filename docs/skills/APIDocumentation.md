@@ -79,9 +79,9 @@ tags:
   - x509
 ---
 
-Twelve years of experience creating API and SDK documentation for fintech, financial-services at companies such as Morgan Stanley, Mastercard and Paysafe, supported by a software-development background.
+I have twelve years of experience creating API and SDK documentation for fintech and financial-services companies such as Morgan Stanley, Mastercard and Paysafe, supported by my software-development background.
 
-I don't rely solely on specifications or subject-matter expert interviews. Where practical, I build and test realistic full-stack integrations, reproduce developer workflows and validate security and API behaviour before I write the documentation. This helps me not only identify any gaps between specification and implementation but also to provide additional guidance based on practical experience with the API.
+I don't rely solely on specifications or subject-matter expert interviews. Where practical, I build and test realistic full-stack integrations, reproduce developer workflows and validate security and API behaviour before I write the documentation. This helps me not only to identify any gaps between specification and implementation but also to provide additional guidance based on practical experience with the API.
 
 ## API and SDK documentation
 
@@ -131,7 +131,7 @@ I also use ad-hoc API testing as part of the documentation process. This include
 
 I have also extended developer tooling as necessary. For example, I created Node.js extensions for Insomnia to add support for Mastercard OAuth 1.0 authentication which was not offered by either Postman or Insomnia by default.
 
-## Authentication, encryption and API security
+## Authentication and encryption
 
 I have practical experience testing and documenting security mechanisms used by financial-services and payment APIs, including:
 
@@ -147,13 +147,9 @@ I have practical experience testing and documenting security mechanisms used by 
 * Certificate and cryptographic-key handling
 * Secure webhook and callback processing
 
-## Web security
+## Web and API security
 
-* Basic OWASP vulnerabilities.
-
-I have written Python code to process certificates, encrypt and decrypt payloads, create and validate tokens and test secure integrations in sandbox environments.
-
-My aim is not to position myself as an application-security specialist. The value of this experience is that I can investigate security-sensitive API behaviour directly and translate complex authentication and cryptography requirements into accurate developer documentation and help developers achieve secure API integrations.
+I have experience of web security through annual security training covering common OWASP vulnerabilities. I have also written Python code to process certificates, encrypt and decrypt payloads, create and validate tokens, and test secure integrations in sandbox environments. This allows me to investigate security-sensitive API behaviour directly, translate complex authentication and cryptographic requirements into accurate developer documentation, and help developers implement secure API integrations.
 
 ### Security validation in practice
 

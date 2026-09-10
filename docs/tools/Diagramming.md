@@ -66,7 +66,7 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 
 ## Graphviz and documentation navigation
 
-* Advanced experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams** providing structured learning paths through related developer documentation.
+* Advanced experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams**. These diagrams provided structured learning paths through related developer documentation improving the site navigation.
 
 ## Visual tools, SVG and supporting graphics
 
@@ -74,8 +74,11 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 * Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. I prefer vector formats where possible because they support scalable output and efficient relabelling or terminology updates.
 * Created and annotated **screenshots** for tutorials, walkthroughs, and troubleshooting material.
 
-## Diagram maintenance and CAD diagrams
+## Diagram maintenance
 
 * Adapted diagrams to different audiences, from **high-level architectural overviews** to detailed sequence, component, and integration diagrams for developers.
 * Experienced maintaining large sets of legacy visual assets, including using **OCR to identify outdated terminology** to fix in screenshots and raster diagrams.
-* Earlier-career experience with **CAD software including CATIA** and 3D design environments.
+
+## CAD diagrams
+
+* Early career experience with **CAD software** including CATIA and other 3D design environments.
