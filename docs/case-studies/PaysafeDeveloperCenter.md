@@ -81,7 +81,7 @@ Alongside this work, I authored API and integration documentation, including API
 
 ## Impact
 
-The first phase of the Developer Center launched in December 2016. Paysafe subsequently included the Developer Center launch in its [2016 Annual Report]([https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf]%28https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf%29) as one of its achievements under its “State-of-the-art technology” strategy. Paysafe also mentioned the Developer Center in its January 2017 trading update. The launch was reported in the financial technology press, including [Finextra]([https://www.finextra.com/pressarticle/67611/paysafe-expected-to-surpass-1-billion-revenue-milestone-in-fy-2016]%28https://www.finextra.com/pressarticle/67611/paysafe-expected-to-surpass-1-billion-revenue-milestone-in-fy-2016%29). Paysafe was a rapidly growing business at that time that reported 2016 revenue of just over $1 billion.
+The first phase of the Developer Center launched in December 2016. Paysafe subsequently included the Developer Center launch in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf) as one of its achievements under its “State-of-the-art technology” strategy. Paysafe also mentioned the Developer Center in its January 2017 trading update. The launch was reported in the financial technology press, including [Finextra](https://www.finextra.com/pressarticle/67611/paysafe-expected-to-surpass-1-billion-revenue-milestone-in-fy-2016). Paysafe was a rapidly growing business at that time that reported 2016 revenue of just over $1 billion.
 
 ## Lessons learned
 
