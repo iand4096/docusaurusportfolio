@@ -51,6 +51,19 @@ The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/t
 
 ## Problem
 
+Documentation metadata helps with:
+
+* **Search and discovery** - improve filtering, faceting, ranking, and findability.
+* **Navigation generation** - automatically build menus, browse pages, indexes, and landing pages.
+* **Vocabulary control** - enforce preferred terms and approved taxonomy values.
+* **Lifecycle management** - track draft, current, deprecated, archived, and review status.
+* **Audience targeting** - identify content for specific user groups, roles, or experience levels.
+* **Related-content generation** - connect pages by topic, product, task, tool, or audience.
+* **QA and automation** - trigger validation rules, publishing logic, and CI checks.
+* **Content governance** - track ownership, review dates, product applicability, and maintenance responsibility.
+* **Analytics and gap analysis** - measure coverage and identify missing or under-documented areas.
+* **AI and semantic retrieval** - provide structured context for RAG, semantic search, and knowledge-graph generation.
+
 Free-form content tags are easy to add but difficult to govern consistently over time. As the portfolio expanded, I wanted metadata that:
 
 * used stable canonical IDs rather than inconsistent free-text labels;

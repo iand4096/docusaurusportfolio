@@ -46,11 +46,11 @@ tags:
 
 ## Project overview
 
-I maintained and updated the **Masterpass Merchant Integration Guide** while working at Mastercard. The guide explained how merchants could integrate the Masterpass digital-wallet checkout flows into their websites and applications.
+I maintained and updated the existing **Masterpass Merchant Integration Guide** while working at Mastercard. The guide explained how merchants could integrate the Masterpass digital-wallet checkout flows into their websites and applications.
 
-My main contribution was to build test integrations for each checkout flow and use the results to improve the accuracy and clarity of the documentation. I also added detailed sequence diagrams, corrected issues in the supporting API reference, and updated the Masterpass mobile SDK guides.
+My main contribution was to build test integrations for each checkout flow and use the results to improve the accuracy and clarity of the documentation. I also added detailed sequence diagrams, corrected issues in the supporting API reference documentation, and updated the Masterpass mobile SDK guides.
 
-The content has received minor updates from other contributors since I left Mastercard as it is now a legacy product replaced by Click to Pay.
+The content has received minor updates from other contributors since I left Mastercard but is mostly unchanged as it is now a legacy product replaced by Click to Pay.
 
 ## The challenge
 

@@ -99,4 +99,3 @@ Canonical IDs and validation reduce vocabulary drift. The same source generates 
 AI-assisted classification is advisory only. It can suggest a classification or new term, but it cannot make either canonical.
 
 During one taxonomy correction, I prepared updates to five technology terms and ran the migration against all 26 portfolio documents. The first preflight run found stale derived state in a recently added document. I corrected that first, reran the checks, and then applied the migration.
-

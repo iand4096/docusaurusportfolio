@@ -102,9 +102,8 @@ The implementation includes the portfolio published on GitHub Pages, a [Document
 
 ## Impact
 
-A portfolio that demonstrates a modern docs-as-code workflow, reusable documentation components, automated deployment and quality checks.
+This portfolio demonstrates a modern docs-as-code workflow, reusable documentation components, and automated deployment and quality checks.
 
 ## Lessons learned
 
 * Add a dashboard showing QA trends, such as issue counts and severity over time.
-
