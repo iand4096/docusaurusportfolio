@@ -95,7 +95,7 @@ My experience includes:
 * Documenting how to access and use APIs securely using authentication and encryption
 * Webhooks and asynchronous processing
 * Describing error handling, error codes and retry strategies
-* Creating Code examples designed around realistic developer tasks
+* Creating code examples designed around realistic developer tasks
 
 I focus on the complete developer journey rather than documenting individual endpoints in isolation.
 
@@ -114,7 +114,7 @@ I build working integrations where possible. My integration experience includes:
 
 I use these integrations to compare documented behaviour with actual system behaviour and to investigate missing, ambiguous or incorrect guidance.
 
-At Mastercard, for example, internal network restrictions made webhook or redirect URL based workflows difficult to test. As a result, I created cloud-hosted python code implementing encryption, decryption and webhook handling to validate real API behaviour including asynchronous notifications rather than relying entirely on mocked responses or specifications.
+At Mastercard, for example, internal network restrictions made webhook or redirect URL based workflows difficult to test. As a result, I created cloud-hosted Python code implementing encryption, decryption and webhook handling to validate real API behaviour including asynchronous notifications rather than relying entirely on mocked responses or specifications.
 
 ## API testing and developer tooling
 

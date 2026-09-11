@@ -28,11 +28,9 @@ technologies:
   - openapi
   - plantuml
   - brightspot-cms
-  - amx-composer
 lifecycle:
   - historical
 tags:
-  - amx-composer
   - api-documentation
   - brightspot-cms
   - developer-experience
