@@ -5,6 +5,203 @@
     "docs/**/*.mdx"
   ],
   "taxonomyVersion": 2,
+  "technologyKinds": {
+    "ai-ml-tool": {
+      "id": "ai-ml-tool",
+      "label": "AI or ML tool",
+      "description": "An AI/ML model, assistant, API, platform, or development tool."
+    },
+    "api-tool": {
+      "id": "api-tool",
+      "label": "API tool",
+      "description": "A tool used to design, document, test, inspect, or work with APIs."
+    },
+    "architecture-style": {
+      "id": "architecture-style",
+      "label": "Architecture style",
+      "description": "A reusable software or systems architecture style used in technical work."
+    },
+    "authoring-tool": {
+      "id": "authoring-tool",
+      "label": "Authoring tool",
+      "description": "A specialised application used to author or manage technical documentation."
+    },
+    "ci-cd-automation": {
+      "id": "ci-cd-automation",
+      "label": "CI/CD and automation",
+      "description": "A continuous-integration, delivery, deployment, or build-automation technology."
+    },
+    "cloud-hosting-platform": {
+      "id": "cloud-hosting-platform",
+      "label": "Cloud or hosting platform",
+      "description": "A hosted development, deployment, or static-site platform."
+    },
+    "cms-wiki": {
+      "id": "cms-wiki",
+      "label": "CMS or wiki",
+      "description": "A content-management or wiki platform used to create and maintain content."
+    },
+    "collaboration-project-tool": {
+      "id": "collaboration-project-tool",
+      "label": "Collaboration and project tool",
+      "description": "A collaboration, annotation, issue-tracking, or project-management tool."
+    },
+    "container-platform": {
+      "id": "container-platform",
+      "label": "Container and orchestration platform",
+      "description": "A containerisation, orchestration, or workload-management platform."
+    },
+    "data-analysis-tool": {
+      "id": "data-analysis-tool",
+      "label": "Data and analysis tool",
+      "description": "A data-processing, analysis, search, indexing, or data-oriented technology."
+    },
+    "data-format": {
+      "id": "data-format",
+      "label": "Data format",
+      "description": "A structured data serialisation or interchange format such as JSON, YAML, XML, or SVG."
+    },
+    "design-graphics-tool": {
+      "id": "design-graphics-tool",
+      "label": "Design and graphics tool",
+      "description": "A graphics, illustration, or visual-design application used in technical work."
+    },
+    "developer-platform": {
+      "id": "developer-platform",
+      "label": "Developer platform",
+      "description": "A hosted or local platform that supports software development workflows."
+    },
+    "developer-tool": {
+      "id": "developer-tool",
+      "label": "Developer tool",
+      "description": "A general-purpose software-development tool not better represented by another kind."
+    },
+    "diagramming-visualisation": {
+      "id": "diagramming-visualisation",
+      "label": "Diagramming and visualisation",
+      "description": "A tool or language used to create diagrams, charts, or technical visualisations."
+    },
+    "documentation-platform": {
+      "id": "documentation-platform",
+      "label": "Documentation platform",
+      "description": "A documentation site generator or platform used to publish technical content."
+    },
+    "documentation-qa-tool": {
+      "id": "documentation-qa-tool",
+      "label": "Documentation QA tool",
+      "description": "A deterministic spelling, grammar, prose, style, or documentation-quality tool."
+    },
+    "engineering-design-tool": {
+      "id": "engineering-design-tool",
+      "label": "Engineering design tool",
+      "description": "A CAD, engineering, or product-design application."
+    },
+    "framework": {
+      "id": "framework",
+      "label": "Framework",
+      "description": "A software framework that provides reusable structure for applications or tooling."
+    },
+    "ide-editor": {
+      "id": "ide-editor",
+      "label": "IDE or editor",
+      "description": "An integrated development environment or source-code editor."
+    },
+    "infrastructure-platform": {
+      "id": "infrastructure-platform",
+      "label": "Infrastructure platform",
+      "description": "A virtualisation, infrastructure, or systems-management platform."
+    },
+    "library": {
+      "id": "library",
+      "label": "Library",
+      "description": "A reusable software library or package."
+    },
+    "markup-content-language": {
+      "id": "markup-content-language",
+      "label": "Markup and content language",
+      "description": "A markup, content, or document syntax used to author structured text."
+    },
+    "modelling-methodology": {
+      "id": "modelling-methodology",
+      "label": "Modelling methodology",
+      "description": "A technical modelling notation, method, or structured architecture-modelling approach."
+    },
+    "network-analysis-tool": {
+      "id": "network-analysis-tool",
+      "label": "Network analysis tool",
+      "description": "A tool used to inspect, capture, or analyse network traffic and protocols."
+    },
+    "operating-system-firmware": {
+      "id": "operating-system-firmware",
+      "label": "Operating system or firmware",
+      "description": "An operating system, operating-system family, or device firmware platform."
+    },
+    "payment-technology": {
+      "id": "payment-technology",
+      "label": "Payment technology",
+      "description": "A payment-specific technical product, wallet integration, tokenisation technology, checkout technology, or payment platform used in implementation work."
+    },
+    "programming-language": {
+      "id": "programming-language",
+      "label": "Programming language",
+      "description": "A general-purpose or domain-specific programming language."
+    },
+    "protocol": {
+      "id": "protocol",
+      "label": "Protocol",
+      "description": "A technical communication, security, or directory protocol."
+    },
+    "runtime": {
+      "id": "runtime",
+      "label": "Runtime",
+      "description": "A runtime environment used to execute software."
+    },
+    "security-cryptography": {
+      "id": "security-cryptography",
+      "label": "Security and cryptography",
+      "description": "A security, cryptography, identity, or trust technology not better represented as a protocol."
+    },
+    "server-networking": {
+      "id": "server-networking",
+      "label": "Server and networking software",
+      "description": "A web server, application server, reverse proxy, or related networking technology."
+    },
+    "shell-scripting": {
+      "id": "shell-scripting",
+      "label": "Shell and scripting",
+      "description": "A shell, command language, or scripting environment used for automation."
+    },
+    "software-platform": {
+      "id": "software-platform",
+      "label": "Software platform",
+      "description": "A reusable software product or application platform not better represented by another kind."
+    },
+    "standard-specification": {
+      "id": "standard-specification",
+      "label": "Standard or specification",
+      "description": "A formal technical standard, specification, or interoperable data definition."
+    },
+    "stylesheet-language": {
+      "id": "stylesheet-language",
+      "label": "Stylesheet language",
+      "description": "A language used to describe the presentation and visual styling of structured documents or web content."
+    },
+    "technical-technique": {
+      "id": "technical-technique",
+      "label": "Technical technique",
+      "description": "A reusable technical technique or capability that is materially demonstrated."
+    },
+    "testing-debugging-tool": {
+      "id": "testing-debugging-tool",
+      "label": "Testing or debugging tool",
+      "description": "A tool used to test, debug, inspect, or diagnose software systems."
+    },
+    "version-control": {
+      "id": "version-control",
+      "label": "Version control",
+      "description": "A version-control technology or source-management system."
+    }
+  },
   "dimensions": {
     "content_types": {
       "id": "content_types",
@@ -113,507 +310,608 @@
         {
           "id": "3d-secure",
           "label": "3D Secure",
-          "description": "A security protocol for online card payments."
+          "description": "A security protocol for online card payments.",
+          "kind": "protocol"
         },
         {
           "id": "adobe-illustrator",
           "label": "Adobe Illustrator",
-          "description": "A vector graphics editor."
+          "description": "A vector graphics editor.",
+          "kind": "design-graphics-tool"
         },
         {
           "id": "agentic-ai",
           "label": "Agentic AI",
-          "description": "AI systems that can act autonomously."
+          "description": "AI systems that can act autonomously.",
+          "kind": "ai-ml-tool"
         },
         {
           "id": "amp",
           "label": "Amp",
-          "description": "An AI coding tool."
+          "description": "An AI coding tool.",
+          "kind": "ai-ml-tool"
         },
         {
           "id": "amx-composer",
           "label": "AMX Composer",
-          "description": "A content management application for digital signage."
+          "description": "A content management application for digital signage.",
+          "kind": "software-platform"
         },
         {
           "id": "api-blueprint",
           "label": "API Blueprint",
-          "description": "A Markdown-based API description format for documenting HTTP APIs."
+          "description": "A Markdown-based API description format for documenting HTTP APIs.",
+          "kind": "standard-specification"
         },
         {
           "id": "apple-pay",
           "label": "Apple Pay",
-          "description": "A mobile payment service by Apple."
+          "description": "A mobile payment service by Apple.",
+          "kind": "payment-technology"
         },
         {
           "id": "bash",
           "label": "Bash",
-          "description": "A Unix shell and command language used for interactive command-line work, scripting, automation, and build or deployment workflows."
+          "description": "A Unix shell and command language used for interactive command-line work, scripting, automation, and build or deployment workflows.",
+          "kind": "shell-scripting"
         },
         {
           "id": "brightspot-cms",
           "label": "Brightspot CMS",
-          "description": "A content management system."
+          "description": "A content management system.",
+          "kind": "cms-wiki"
         },
         {
           "id": "csharp",
           "label": "C#",
-          "description": "A general-purpose programming language in the .NET ecosystem used to build applications, services, and tooling."
+          "description": "A general-purpose programming language in the .NET ecosystem used to build applications, services, and tooling.",
+          "kind": "programming-language"
         },
         {
           "id": "c-plus-plus",
           "label": "C++",
-          "description": "A general-purpose programming language used for systems software, embedded development, high-performance applications, and native tooling."
+          "description": "A general-purpose programming language used for systems software, embedded development, high-performance applications, and native tooling.",
+          "kind": "programming-language"
         },
         {
           "id": "c4-model",
           "label": "C4 model",
-          "description": "A modelling methodology for software architecture."
+          "description": "A modelling methodology for software architecture.",
+          "kind": "modelling-methodology"
         },
         {
           "id": "catia",
           "label": "CATIA",
-          "description": "A CAD software."
+          "description": "A CAD software.",
+          "kind": "engineering-design-tool"
         },
         {
           "id": "claude",
           "label": "Claude",
-          "description": "An AI assistant."
+          "description": "An AI assistant.",
+          "kind": "ai-ml-tool"
         },
         {
           "id": "codepen",
           "label": "CodePen",
-          "description": "An online code editor and community."
+          "description": "An online code editor and community.",
+          "kind": "developer-platform"
         },
         {
           "id": "codetreedocs",
           "label": "Codetreedocs",
-          "description": "A custom internal docs-as-code platform."
+          "description": "A custom internal docs-as-code platform.",
+          "kind": "documentation-platform"
         },
         {
           "id": "confluence",
           "label": "Confluence",
-          "description": "A collaboration and documentation platform."
+          "description": "A collaboration and documentation platform.",
+          "kind": "cms-wiki"
         },
         {
           "id": "css",
           "label": "CSS",
-          "description": "A stylesheet language used to control the presentation and layout of HTML, XML, and related structured documents."
+          "description": "A stylesheet language used to control the presentation and layout of HTML, XML, and related structured documents.",
+          "kind": "stylesheet-language"
         },
         {
           "id": "curl",
           "label": "cURL",
-          "description": "A command-line tool for transferring data with URLs."
+          "description": "A command-line tool for transferring data with URLs.",
+          "kind": "developer-tool"
         },
         {
           "id": "deepseek-api",
           "label": "DeepSeek LLM API",
-          "description": "An AI API used for documentation quality checks."
+          "description": "An AI API used for documentation quality checks.",
+          "kind": "ai-ml-tool"
         },
         {
           "id": "digital-enablement-api",
           "label": "Digital Enablement API",
-          "description": "Mastercard API for tokenisation."
+          "description": "Mastercard API for tokenisation.",
+          "kind": "api-tool"
         },
         {
           "id": "docker",
           "label": "Docker",
-          "description": "A containerisation platform."
+          "description": "A containerisation platform.",
+          "kind": "container-platform"
         },
         {
           "id": "docusaurus",
           "label": "Docusaurus",
-          "description": "A static site generator for building documentation websites."
+          "description": "A static site generator for building documentation websites.",
+          "kind": "documentation-platform"
         },
         {
           "id": "fastmcp",
           "label": "FastMCP",
-          "description": "A framework for building MCP servers."
+          "description": "A framework for building MCP servers.",
+          "kind": "framework"
         },
         {
           "id": "finos-calm",
           "label": "FINOS CALM",
-          "description": "An architecture-as-code standard."
+          "description": "An architecture-as-code standard.",
+          "kind": "standard-specification"
         },
         {
           "id": "flask",
           "label": "Flask",
-          "description": "A Python web framework."
+          "description": "A Python web framework.",
+          "kind": "framework"
         },
         {
           "id": "flexsearch",
           "label": "FlexSearch",
-          "description": "A JavaScript search library."
+          "description": "A JavaScript search library.",
+          "kind": "library"
         },
         {
           "id": "git",
           "label": "Git",
-          "description": "A distributed version control system."
+          "description": "A distributed version control system.",
+          "kind": "version-control"
         },
         {
           "id": "github",
           "label": "GitHub",
-          "description": "A hosting platform for Git repositories."
+          "description": "A hosting platform for Git repositories.",
+          "kind": "developer-platform"
         },
         {
           "id": "github-actions",
           "label": "GitHub Actions",
-          "description": "A CI/CD platform integrated with GitHub."
+          "description": "A CI/CD platform integrated with GitHub.",
+          "kind": "ci-cd-automation"
         },
         {
           "id": "github-copilot",
           "label": "GitHub Copilot",
-          "description": "An AI pair programmer."
+          "description": "An AI pair programmer.",
+          "kind": "ai-ml-tool"
         },
         {
           "id": "github-pages",
           "label": "GitHub Pages",
-          "description": "A static site hosting service from GitHub."
+          "description": "A static site hosting service from GitHub.",
+          "kind": "cloud-hosting-platform"
         },
         {
           "id": "google-pay",
           "label": "Google Pay",
-          "description": "A digital wallet platform by Google."
+          "description": "A digital wallet platform by Google.",
+          "kind": "payment-technology"
         },
         {
           "id": "graphviz",
           "label": "Graphviz",
-          "description": "A graph visualisation software."
+          "description": "A graph visualisation software.",
+          "kind": "diagramming-visualisation"
         },
         {
           "id": "https",
           "label": "HTTPS",
-          "description": "HTTP over TLS."
+          "description": "HTTP over TLS.",
+          "kind": "protocol"
         },
         {
           "id": "hypothesis",
           "label": "Hypothes.is",
-          "description": "A web annotation tool."
+          "description": "A web annotation tool.",
+          "kind": "collaboration-project-tool"
         },
         {
           "id": "inkscape",
           "label": "Inkscape",
-          "description": "A vector graphics editor."
+          "description": "A vector graphics editor.",
+          "kind": "design-graphics-tool"
         },
         {
           "id": "insomnia",
           "label": "Insomnia",
-          "description": "An API client and testing tool."
+          "description": "An API client and testing tool.",
+          "kind": "api-tool"
         },
         {
           "id": "intellij-idea",
           "label": "IntelliJ IDEA",
-          "description": "An integrated development environment."
+          "description": "An integrated development environment.",
+          "kind": "ide-editor"
         },
         {
           "id": "javascript",
           "label": "JavaScript",
-          "description": "A general-purpose programming language widely used for web development, browser scripting, server-side applications, and tooling."
+          "description": "A general-purpose programming language widely used for web development, browser scripting, server-side applications, and tooling.",
+          "kind": "programming-language"
         },
         {
           "id": "jenkins",
           "label": "Jenkins",
-          "description": "A CI/CD automation server."
+          "description": "A CI/CD automation server.",
+          "kind": "ci-cd-automation"
         },
         {
           "id": "jetty",
           "label": "Jetty",
-          "description": "A Java HTTP server and servlet container."
+          "description": "A Java HTTP server and servlet container.",
+          "kind": "server-networking"
         },
         {
           "id": "jinja",
           "label": "Jinja",
-          "description": "A templating engine for Python."
+          "description": "A templating engine for Python.",
+          "kind": "library"
         },
         {
           "id": "jira",
           "label": "Jira",
-          "description": "An issue tracking and project management tool."
+          "description": "An issue tracking and project management tool.",
+          "kind": "collaboration-project-tool"
         },
         {
           "id": "jose",
           "label": "JOSE",
-          "description": "JSON Object Signing and Encryption standards."
+          "description": "JSON Object Signing and Encryption standards.",
+          "kind": "standard-specification"
         },
         {
           "id": "json",
           "label": "JSON",
-          "description": "JavaScript Object Notation."
+          "description": "JavaScript Object Notation.",
+          "kind": "data-format"
         },
         {
           "id": "jsx",
           "label": "JSX",
-          "description": "A syntax extension for JavaScript used with React."
+          "description": "A syntax extension for JavaScript used with React.",
+          "kind": "programming-language"
         },
         {
           "id": "jwt",
           "label": "JWT",
-          "description": "JSON Web Token, a standard for secure token-based authentication."
+          "description": "JSON Web Token, a standard for secure token-based authentication.",
+          "kind": "standard-specification"
         },
         {
           "id": "kubernetes",
           "label": "Kubernetes",
-          "description": "A container orchestration platform."
+          "description": "A container orchestration platform.",
+          "kind": "container-platform"
         },
         {
           "id": "languagetool",
           "label": "LanguageTool",
-          "description": "A grammar and style checker."
+          "description": "A grammar and style checker.",
+          "kind": "documentation-qa-tool"
         },
         {
           "id": "ldap",
           "label": "LDAP",
-          "description": "Lightweight Directory Access Protocol."
+          "description": "Lightweight Directory Access Protocol.",
+          "kind": "protocol"
         },
         {
           "id": "linux",
           "label": "Linux",
-          "description": "An open-source operating system kernel."
+          "description": "An open-source operating system kernel.",
+          "kind": "operating-system-firmware"
         },
         {
           "id": "madcap-flare",
           "label": "MadCap Flare",
-          "description": "A help authoring tool for creating documentation."
+          "description": "A help authoring tool for creating documentation.",
+          "kind": "authoring-tool"
         },
         {
           "id": "markdown",
           "label": "Markdown",
-          "description": "A lightweight markup language for formatting text."
+          "description": "A lightweight markup language for formatting text.",
+          "kind": "markup-content-language"
         },
         {
           "id": "masterpass",
           "label": "Masterpass",
-          "description": "A digital wallet service by Mastercard."
+          "description": "A digital wallet service by Mastercard.",
+          "kind": "software-platform"
         },
         {
           "id": "mcp",
           "label": "MCP",
-          "description": "Model Context Protocol."
+          "description": "Model Context Protocol.",
+          "kind": "protocol"
         },
         {
           "id": "mdes",
           "label": "MDES",
-          "description": "Mastercard Digital Enablement Service."
+          "description": "Mastercard Digital Enablement Service.",
+          "kind": "software-platform"
         },
         {
           "id": "mdx",
           "label": "MDX",
-          "description": "An extension of Markdown that allows embedding JSX components."
+          "description": "An extension of Markdown that allows embedding JSX components.",
+          "kind": "markup-content-language"
         },
         {
           "id": "mermaid",
           "label": "Mermaid",
-          "description": "A JavaScript-based diagramming and charting tool."
+          "description": "A JavaScript-based diagramming and charting tool.",
+          "kind": "diagramming-visualisation"
         },
         {
           "id": "visio",
           "label": "Microsoft Visio",
-          "description": "A diagramming application."
+          "description": "A diagramming application.",
+          "kind": "diagramming-visualisation"
         },
         {
           "id": "mkdocs",
           "label": "MkDocs",
-          "description": "A static site generator for project documentation."
+          "description": "A static site generator for project documentation.",
+          "kind": "documentation-platform"
         },
         {
           "id": "mtls",
           "label": "mTLS",
-          "description": "Mutual TLS authentication."
+          "description": "Mutual TLS authentication.",
+          "kind": "security-cryptography"
         },
         {
           "id": "nginx",
           "label": "Nginx",
-          "description": "A web server and reverse proxy."
+          "description": "A web server and reverse proxy.",
+          "kind": "server-networking"
         },
         {
           "id": "node-js",
           "label": "Node.js",
-          "description": "A JavaScript runtime built on the V8 engine for running JavaScript outside the browser."
+          "description": "A JavaScript runtime built on the V8 engine for running JavaScript outside the browser.",
+          "kind": "runtime"
         },
         {
           "id": "oauth",
           "label": "OAuth",
-          "description": "An open standard for access delegation."
+          "description": "An open standard for access delegation.",
+          "kind": "protocol"
         },
         {
           "id": "ocr",
           "label": "OCR",
-          "description": "Optical Character Recognition."
+          "description": "Optical Character Recognition.",
+          "kind": "technical-technique"
         },
         {
           "id": "openapi",
           "label": "OpenAPI",
-          "description": "A standard specification for describing HTTP APIs in a machine-readable format."
+          "description": "A standard specification for describing HTTP APIs in a machine-readable format.",
+          "kind": "standard-specification"
         },
         {
           "id": "openssl",
           "label": "OpenSSL",
-          "description": "A cryptography library and toolkit."
+          "description": "A cryptography library and toolkit.",
+          "kind": "security-cryptography"
         },
         {
           "id": "openwrt",
           "label": "OpenWrt",
-          "description": "A Linux-based firmware for routers."
+          "description": "A Linux-based firmware for routers.",
+          "kind": "operating-system-firmware"
         },
         {
           "id": "owasp",
           "label": "OWASP",
-          "description": "Open Web Application Security Project."
+          "description": "Open Web Application Security Project.",
+          "kind": "standard-specification"
         },
         {
           "id": "paysafe-js",
           "label": "Paysafe.js",
-          "description": "A JavaScript library for payment integration."
+          "description": "A JavaScript library for payment integration.",
+          "kind": "library"
         },
         {
           "id": "pci-dss",
           "label": "PCI DSS",
-          "description": "Payment Card Industry Data Security Standard."
+          "description": "Payment Card Industry Data Security Standard.",
+          "kind": "standard-specification"
         },
         {
           "id": "pki",
           "label": "PKI",
-          "description": "Public Key Infrastructure."
+          "description": "Public Key Infrastructure.",
+          "kind": "security-cryptography"
         },
         {
           "id": "plantuml",
           "label": "PlantUML",
-          "description": "A tool for creating UML diagrams from text."
+          "description": "A tool for creating UML diagrams from text.",
+          "kind": "diagramming-visualisation"
         },
         {
           "id": "postman",
           "label": "Postman",
-          "description": "An API testing and development tool."
+          "description": "An API testing and development tool.",
+          "kind": "api-tool"
         },
         {
           "id": "pycharm",
           "label": "PyCharm",
-          "description": "An IDE for Python development."
+          "description": "An IDE for Python development.",
+          "kind": "ide-editor"
         },
         {
           "id": "python",
           "label": "Python",
-          "description": "A general-purpose programming language used for scripting, automation, tooling, data processing, and software development."
+          "description": "A general-purpose programming language used for scripting, automation, tooling, data processing, and software development.",
+          "kind": "programming-language"
         },
         {
           "id": "pythonanywhere",
           "label": "PythonAnywhere",
-          "description": "A cloud hosting platform for Python applications."
+          "description": "A cloud hosting platform for Python applications.",
+          "kind": "cloud-hosting-platform"
         },
         {
           "id": "rag",
           "label": "RAG",
-          "description": "Retrieval-Augmented Generation."
+          "description": "Retrieval-Augmented Generation.",
+          "kind": "technical-technique"
         },
         {
           "id": "react",
           "label": "React",
-          "description": "A JavaScript library for building user interfaces."
+          "description": "A JavaScript library for building user interfaces.",
+          "kind": "library"
         },
         {
           "id": "requests",
           "label": "Requests",
-          "description": "A Python library for making HTTP requests."
+          "description": "A Python library for making HTTP requests.",
+          "kind": "library"
         },
         {
           "id": "rest",
           "label": "REST",
-          "description": "An architectural style for designing networked applications."
+          "description": "An architectural style for designing networked applications.",
+          "kind": "architecture-style"
         },
         {
           "id": "saq-a",
           "label": "SAQ A",
-          "description": "Self-Assessment Questionnaire A for PCI DSS."
+          "description": "Self-Assessment Questionnaire A for PCI DSS.",
+          "kind": "standard-specification"
         },
         {
           "id": "scala",
           "label": "Scala",
-          "description": "A general-purpose programming language for the JVM that combines object-oriented and functional programming paradigms."
+          "description": "A general-purpose programming language for the JVM that combines object-oriented and functional programming paradigms.",
+          "kind": "programming-language"
         },
         {
           "id": "spec-driven-development",
           "label": "Spec-driven development",
-          "description": "A development approach using specifications."
+          "description": "A development approach using specifications.",
+          "kind": "technical-technique"
         },
         {
           "id": "sphinx",
           "label": "Sphinx",
-          "description": "A documentation generator."
+          "description": "A documentation generator.",
+          "kind": "documentation-platform"
         },
         {
           "id": "svg",
           "label": "SVG",
-          "description": "An XML-based vector graphics format for describing scalable two-dimensional graphics."
+          "description": "An XML-based vector graphics format for describing scalable two-dimensional graphics.",
+          "kind": "data-format"
         },
         {
           "id": "tcp-ip",
           "label": "TCP/IP",
-          "description": "The Internet protocol suite."
+          "description": "The Internet protocol suite.",
+          "kind": "protocol"
         },
         {
           "id": "tls",
           "label": "TLS",
-          "description": "Transport Layer Security protocol."
+          "description": "Transport Layer Security protocol.",
+          "kind": "protocol"
         },
         {
           "id": "tokenisation",
           "label": "Tokenisation",
-          "description": "A payment and security technique that replaces sensitive payment data with non-sensitive tokens for storage, transmission, or transaction processing."
+          "description": "A payment and security technique that replaces sensitive payment data with non-sensitive tokens for storage, transmission, or transaction processing.",
+          "kind": "payment-technology"
         },
         {
           "id": "twiki",
           "label": "TWiki",
-          "description": "A wiki platform."
+          "description": "A wiki platform.",
+          "kind": "cms-wiki"
         },
         {
           "id": "typescript",
           "label": "TypeScript",
-          "description": "A typed superset of JavaScript."
+          "description": "A typed superset of JavaScript.",
+          "kind": "programming-language"
         },
         {
           "id": "typo3",
           "label": "TYPO3",
-          "description": "An open-source content management system used to build and manage websites and digital content."
+          "description": "An open-source content management system used to build and manage websites and digital content.",
+          "kind": "cms-wiki"
         },
         {
           "id": "vale",
           "label": "Vale",
-          "description": "A documentation linter and style checker."
+          "description": "A documentation linter and style checker.",
+          "kind": "documentation-qa-tool"
         },
         {
           "id": "vs-code",
           "label": "VS Code",
-          "description": "A source code editor."
+          "description": "A source code editor.",
+          "kind": "ide-editor"
         },
         {
           "id": "whisper",
           "label": "Whisper",
-          "description": "A speech-to-text model."
+          "description": "A speech-to-text model.",
+          "kind": "ai-ml-tool"
         },
         {
           "id": "wireshark",
           "label": "Wireshark",
-          "description": "A network protocol analyzer."
+          "description": "A network protocol analyzer.",
+          "kind": "network-analysis-tool"
         },
         {
           "id": "x509",
           "label": "X.509",
-          "description": "A standard for public key certificates."
+          "description": "A standard for public key certificates.",
+          "kind": "standard-specification"
         },
         {
           "id": "xhtml",
           "label": "XHTML",
-          "description": "An XML-based reformulation of HTML used to author structured web content with XML syntax rules."
+          "description": "An XML-based reformulation of HTML used to author structured web content with XML syntax rules.",
+          "kind": "markup-content-language"
         },
         {
           "id": "xml",
           "label": "XML",
-          "description": "Extensible Markup Language."
+          "description": "Extensible Markup Language.",
+          "kind": "data-format"
         },
         {
           "id": "yaml",
           "label": "YAML",
-          "description": "A human-readable data serialization format."
+          "description": "A human-readable data serialization format.",
+          "kind": "data-format"
         }
       ]
     },

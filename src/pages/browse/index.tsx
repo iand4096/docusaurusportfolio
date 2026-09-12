@@ -24,6 +24,13 @@ type TaxonomyTerm = {
   label: string;
   description?: string;
   parent?: string;
+  kind?: string;
+};
+
+type TechnologyKind = {
+  id: string;
+  label: string;
+  description?: string;
 };
 
 type TaxonomyDimension = {
@@ -49,6 +56,7 @@ type NavigationDocument = {
 type TaxonomyNavigationIndex = {
   generatedFrom?: string | string[];
   taxonomyVersion?: number;
+  technologyKinds?: Record<string, TechnologyKind>;
   dimensions: Record<DimensionId, TaxonomyDimension>;
   documents: NavigationDocument[];
 };
@@ -172,6 +180,44 @@ function countDocumentsForTerm(
   }, 0);
 }
 
+
+type TechnologyGroup = {
+  id: string;
+  label: string;
+  description?: string;
+  terms: TaxonomyTerm[];
+};
+
+function technologyGroups(dimension: TaxonomyDimension): TechnologyGroup[] {
+  const groups = new Map<string, TechnologyGroup>();
+  const kinds = data.technologyKinds ?? {};
+
+  dimension.terms.forEach((term) => {
+    const kindId = term.kind ?? 'other';
+    const kind = kinds[kindId];
+
+    if (!groups.has(kindId)) {
+      groups.set(kindId, {
+        id: kindId,
+        label: kind?.label ?? (kindId === 'other' ? 'Other' : kindId),
+        description: kind?.description,
+        terms: [],
+      });
+    }
+
+    groups.get(kindId)?.terms.push(term);
+  });
+
+  return [...groups.values()]
+    .map((group) => ({
+      ...group,
+      terms: [...group.terms].sort((left, right) =>
+        left.label.localeCompare(right.label),
+      ),
+    }))
+    .sort((left, right) => left.label.localeCompare(right.label));
+}
+
 export default function BrowsePage(): React.JSX.Element {
   const [query, setQuery] = useState('');
   const [selected, setSelected] = useState<SelectedFilters>(() => emptyFilters());
@@ -277,32 +323,99 @@ export default function BrowsePage(): React.JSX.Element {
                     {dimension.label || DEFAULT_DIMENSION_LABELS[dimensionId]}
                   </h3>
 
-                  <div className={styles.filterOptions}>
-                    {dimension.terms.map((term) => {
-                      const isSelected = selected[dimensionId].has(term.id);
-                      const count = countDocumentsForTerm(
-                        data.documents,
-                        dimension,
-                        term.id,
-                      );
+                  {dimensionId === 'technologies' && data.technologyKinds ? (
+                    <div className={styles.filterOptions}>
+                      {technologyGroups(dimension).map((group) => {
+                        const hasSelectedTerm = group.terms.some((term) =>
+                          selected.technologies.has(term.id),
+                        );
 
-                      return (
-                        <button
-                          key={term.id}
-                          type="button"
-                          className={`${styles.filterChip} ${
-                            isSelected ? styles.filterChipSelected : ''
-                          }`}
-                          aria-pressed={isSelected}
-                          onClick={() => toggleFilter(dimensionId, term.id)}
-                          title={term.description}
-                        >
-                          <span>{term.label}</span>
-                          <span className={styles.count}>{count}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
+                        return (
+                          <details
+                            key={group.id}
+                            defaultOpen={hasSelectedTerm}
+                            title={group.description}
+                            style={{
+                              width: '100%',
+                              flexBasis: '100%',
+                              marginTop: '0.35rem',
+                            }}
+                          >
+                            <summary
+                              style={{
+                                cursor: 'pointer',
+                                fontWeight: 600,
+                              }}
+                            >
+                              {group.label} ({group.terms.length})
+                            </summary>
+
+                            <div className={styles.filterOptions}>
+                              {group.terms.map((term) => {
+                                const isSelected = selected.technologies.has(
+                                  term.id,
+                                );
+                                const count = countDocumentsForTerm(
+                                  data.documents,
+                                  dimension,
+                                  term.id,
+                                );
+
+                                return (
+                                  <button
+                                    key={term.id}
+                                    type="button"
+                                    className={`${styles.filterChip} ${
+                                      isSelected
+                                        ? styles.filterChipSelected
+                                        : ''
+                                    }`}
+                                    aria-pressed={isSelected}
+                                    onClick={() =>
+                                      toggleFilter('technologies', term.id)
+                                    }
+                                    title={term.description}
+                                  >
+                                    <span>{term.label}</span>
+                                    <span className={styles.count}>
+                                      {count}
+                                    </span>
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </details>
+                        );
+                      })}
+                    </div>
+                  ) : (
+                    <div className={styles.filterOptions}>
+                      {dimension.terms.map((term) => {
+                        const isSelected = selected[dimensionId].has(term.id);
+                        const count = countDocumentsForTerm(
+                          data.documents,
+                          dimension,
+                          term.id,
+                        );
+
+                        return (
+                          <button
+                            key={term.id}
+                            type="button"
+                            className={`${styles.filterChip} ${
+                              isSelected ? styles.filterChipSelected : ''
+                            }`}
+                            aria-pressed={isSelected}
+                            onClick={() => toggleFilter(dimensionId, term.id)}
+                            title={term.description}
+                          >
+                            <span>{term.label}</span>
+                            <span className={styles.count}>{count}</span>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  )}
                 </section>
               );
             })}

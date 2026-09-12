@@ -26,6 +26,8 @@ Commands:
   python scripts/taxonomy.py check docs/example.md
   python scripts/taxonomy.py sync --all
   python scripts/taxonomy.py audit-technologies
+  python scripts/taxonomy.py audit-unused
+  python scripts/taxonomy.py audit-unused --dimension technologies
   python scripts/taxonomy.py migrate taxonomy/migrations/<migration>.yml
 
 `generate` writes deterministic projections derived from the canonical taxonomy
@@ -45,8 +47,13 @@ optionally validates document front matter.
 warnings for descriptions that look organisation-like. Use --strict to turn
 those warnings into a non-zero exit code.
 
+`audit-unused` reports active taxonomy terms with zero direct references from
+governed document metadata. Unused terms are contraction candidates only; the
+command never mutates taxonomy.yml. Use --strict to make candidates fail CI.
+
 `migrate` validates and previews a declarative taxonomy migration. It is dry-run
-by default. Use --apply only after reviewing the migration and its impact.
+by default. Schema v2 migrations explicitly declare change_type and trigger
+provenance. Use --apply only after reviewing the migration and its impact.
 """
 
 from __future__ import annotations
@@ -858,6 +865,15 @@ def build_navigation_projection(
     """Build the read-only taxonomy index consumed by the Docusaurus browse page."""
     dimensions = taxonomy["dimensions"]
 
+    projected_technology_kinds = {
+        kind_id: {
+            "id": kind_id,
+            "label": kind["label"],
+            "description": kind["description"],
+        }
+        for kind_id, kind in sorted(taxonomy["technology_kinds"].items())
+    }
+
     projected_dimensions: dict[str, dict[str, Any]] = {}
     for dimension_id in NAVIGATION_DIMENSION_ORDER:
         dimension = dimensions[dimension_id]
@@ -869,6 +885,8 @@ def build_navigation_projection(
                 "label": term["label"],
                 "description": term["description"],
             }
+            if dimension_id == "technologies":
+                projected_term["kind"] = term["kind"]
             if term.get("parent"):
                 projected_term["parent"] = term["parent"]
             projected_terms.append(projected_term)
@@ -970,6 +988,7 @@ def build_navigation_projection(
             "docs/**/*.mdx",
         ],
         "taxonomyVersion": taxonomy["version"],
+        "technologyKinds": projected_technology_kinds,
         "dimensions": projected_dimensions,
         "documents": documents,
     }
@@ -1307,6 +1326,116 @@ def suspicious_technology_terms(taxonomy: dict[str, Any]) -> list[dict[str, str]
 
 
 
+def taxonomy_reference_counts(
+    root: Path,
+    taxonomy: dict[str, Any],
+    *,
+    dimensions: set[str] | None = None,
+) -> tuple[
+    dict[str, dict[str, int]],
+    dict[str, dict[str, list[str]]],
+]:
+    """Count direct document references to active canonical taxonomy terms.
+
+    By default only AI-managed dimensions are audited because those dimensions
+    are intended to evolve with corpus content. Explicitly requested dimensions
+    are honoured even when ai_managed is false.
+
+    Counts come from governed metadata fields, never from the derived `tags`
+    field, so a document contributes at most one reference per term.
+    """
+    taxonomy_dimensions = taxonomy["dimensions"]
+
+    if dimensions is None:
+        selected_dimensions = {
+            dimension_id: dimension
+            for dimension_id, dimension in taxonomy_dimensions.items()
+            if dimension.get("ai_managed", False)
+        }
+    else:
+        unknown = dimensions - set(taxonomy_dimensions)
+        if unknown:
+            raise ValidationError(
+                "unknown taxonomy dimension(s): " + ", ".join(sorted(unknown))
+            )
+        selected_dimensions = {
+            dimension_id: taxonomy_dimensions[dimension_id]
+            for dimension_id in sorted(dimensions)
+        }
+
+    counts: dict[str, dict[str, int]] = {}
+    references: dict[str, dict[str, list[str]]] = {}
+
+    for dimension_id, dimension in selected_dimensions.items():
+        term_ids = sorted(active_terms(dimension))
+        counts[dimension_id] = {term_id: 0 for term_id in term_ids}
+        references[dimension_id] = {term_id: [] for term_id in term_ids}
+
+    for path in all_docs(root):
+        front_matter, _ = load_front_matter(path)
+        relative = path.relative_to(root).as_posix()
+
+        for dimension_id, dimension in selected_dimensions.items():
+            field_name = dimension["metadata_field"]
+            raw_value = front_matter.get(field_name)
+
+            if raw_value is None:
+                continue
+            if not isinstance(raw_value, list) or not all(
+                isinstance(item, str) for item in raw_value
+            ):
+                raise ValidationError(
+                    f"{relative}: metadata field {field_name!r} must be a YAML list "
+                    "of taxonomy IDs before references can be audited"
+                )
+
+            for term_id in set(raw_value):
+                if term_id not in counts[dimension_id]:
+                    continue
+                counts[dimension_id][term_id] += 1
+                references[dimension_id][term_id].append(relative)
+
+    return counts, references
+
+
+def validate_contraction_references(
+    root: Path,
+    taxonomy: dict[str, Any],
+    migration: dict[str, Any],
+) -> None:
+    """Reject v2 vocabulary contractions while live document references remain."""
+    if migration.get("schema_version") != 2:
+        return
+    if migration.get("change_type") != "vocabulary-contraction":
+        return
+
+    affected_dimensions = set(migration["changes"])
+    _, references = taxonomy_reference_counts(
+        root,
+        taxonomy,
+        dimensions=affected_dimensions,
+    )
+
+    conflicts: list[str] = []
+
+    for dimension_id, changes in migration["changes"].items():
+        for term_id in changes.get("deprecate", {}):
+            paths = references.get(dimension_id, {}).get(term_id, [])
+            if not paths:
+                continue
+
+            conflicts.append(
+                f"{dimension_id}.{term_id}: {len(paths)} document reference(s) remain"
+            )
+            conflicts.extend(f"  - {path}" for path in paths)
+
+    if conflicts:
+        raise ValidationError(
+            "cannot apply vocabulary contraction while document references remain:\n"
+            + "\n".join(conflicts)
+        )
+
+
 def validate_migration_preconditions(
     taxonomy: dict[str, Any],
     migration: dict[str, Any],
@@ -1345,6 +1474,18 @@ def validate_migration_semantics(
         raise ValidationError(
             f"migration filename {migration_path.name!r} must match migration ID {migration_id!r}"
         )
+
+    if migration.get("schema_version") == 2:
+        change_type = migration["change_type"]
+        trigger = migration["trigger"]
+
+        # The migration JSON Schema enforces the allowed operation family for
+        # each change_type. Keep repository-level semantic policy here rather
+        # than duplicating structural schema validation in Python.
+        if change_type == "policy-change" and trigger != "policy-driven":
+            raise ValidationError(
+                "policy-change migrations must use trigger 'policy-driven'"
+            )
 
     dimensions = taxonomy["dimensions"]
     for dimension_id, changes in migration["changes"].items():
@@ -1723,6 +1864,7 @@ def command_migrate(args: argparse.Namespace) -> int:
 
         validate_migration_semantics(taxonomy, migration, migration_path)
         validate_migration_preconditions(taxonomy, migration)
+        validate_contraction_references(root, taxonomy, migration)
 
         candidate, replacements, _bare_deprecations = build_migrated_taxonomy(
             taxonomy,
@@ -1749,6 +1891,9 @@ def command_migrate(args: argparse.Namespace) -> int:
         counts = migration_operation_counts(migration)
         print(f"migration: {migration['id']}")
         print(f"description: {migration['description']}")
+        if migration.get("schema_version") == 2:
+            print(f"change type: {migration['change_type']}")
+            print(f"trigger: {migration['trigger']}")
         print(f"taxonomy sha256 before: {taxonomy_sha256(taxonomy)}")
         print(f"taxonomy sha256 after:  {taxonomy_sha256(candidate)}")
         print(
@@ -1916,6 +2061,61 @@ def command_audit_technologies(args: argparse.Namespace) -> int:
     return 1 if args.strict and warnings else 0
 
 
+def command_audit_unused(args: argparse.Namespace) -> int:
+    root = args.root.resolve()
+
+    try:
+        taxonomy = load_and_validate_taxonomy(root)
+        requested_dimensions = set(args.dimension or [])
+
+        counts, _ = taxonomy_reference_counts(
+            root,
+            taxonomy,
+            dimensions=requested_dimensions or None,
+        )
+    except (ValidationError, json.JSONDecodeError) as error:
+        print(f"ERROR: {error}", file=sys.stderr)
+        return 1
+
+    unused_count = 0
+    print("Unused active taxonomy terms:")
+
+    for dimension_id in sorted(counts):
+        unused = [
+            term_id
+            for term_id, count in counts[dimension_id].items()
+            if count == 0
+        ]
+        if not unused:
+            continue
+
+        print(f"\n{dimension_id}:")
+        dimension = taxonomy["dimensions"][dimension_id]
+
+        for term_id in sorted(unused):
+            term = dimension["terms"][term_id]
+            governance = term.get("governance", {})
+
+            print(f"  {term_id}")
+            print("    references: 0")
+            if governance.get("introduced"):
+                print(f"    introduced: {governance['introduced']}")
+            if governance.get("source"):
+                print(f"    source: {governance['source']}")
+
+            unused_count += 1
+
+    if unused_count == 0:
+        print("  none")
+    else:
+        print(f"\n{unused_count} active term(s) have no document references.")
+        print(
+            "These are contraction candidates only; no taxonomy changes were made."
+        )
+
+    return 1 if args.strict and unused_count else 0
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(description="Repository taxonomy tooling")
     parser.add_argument("--root", type=Path, default=Path("."), help="Repository root")
@@ -1949,6 +2149,21 @@ def build_parser() -> argparse.ArgumentParser:
         "--strict",
         action="store_true",
         help="Return exit code 1 if organisation-like terms are detected",
+    )
+
+    audit_unused = subparsers.add_parser(
+        "audit-unused",
+        help="Report active taxonomy terms with no document references",
+    )
+    audit_unused.add_argument(
+        "--dimension",
+        action="append",
+        help="Limit the audit to a taxonomy dimension; may be supplied more than once",
+    )
+    audit_unused.add_argument(
+        "--strict",
+        action="store_true",
+        help="Return exit code 1 if unused active terms are found",
     )
 
     migrate = subparsers.add_parser(
@@ -1989,6 +2204,8 @@ def main() -> int:
         return command_sync(args)
     if args.command == "audit-technologies":
         return command_audit_technologies(args)
+    if args.command == "audit-unused":
+        return command_audit_unused(args)
     if args.command == "migrate":
         return command_migrate(args)
     raise AssertionError(args.command)
