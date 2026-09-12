@@ -27,11 +27,13 @@ Examples:
 
 Normal classification runs are review-only: they write Markdown and JSON review
 artifacts without modifying repository state. `--apply-from` applies the exact
-saved JSON artifact without calling the model again. The legacy `--all --apply`
-workflow is deprecated and rejected because it combines a fresh corpus-wide AI
-run with immediate mutation. Targeted `--apply` remains available for backwards
-compatibility. Nothing is committed or pushed; `git diff` remains the final
-human approval surface.
+saved JSON artifact without calling the model again, but only when every saved
+metadata ID is already active in the canonical taxonomy. AI proposals remain
+advisory until they are adopted through a reviewed taxonomy migration. The legacy
+`--all --apply` workflow is deprecated and rejected because it combines a fresh
+corpus-wide AI run with immediate mutation. Targeted `--apply` remains available
+for backwards compatibility and has the same canonical-ID restriction. Nothing
+is committed or pushed; `git diff` remains the final human approval surface.
 """
 
 from __future__ import annotations
@@ -1391,17 +1393,6 @@ def render_markdown_report(
     return "\n".join(lines).rstrip() + "\n"
 
 
-def write_taxonomy(path: Path, taxonomy: dict[str, Any]) -> None:
-    yaml = YAML()
-    yaml.default_flow_style = False
-    yaml.indent(mapping=2, sequence=4, offset=2)
-    yaml.width = 100
-    with path.open("w", encoding="utf-8") as handle:
-        handle.write("# Canonical controlled vocabulary for portfolio metadata.\n")
-        handle.write("# AI may propose changes, but only reviewed repository changes adopt them.\n\n")
-        yaml.dump(taxonomy, handle)
-
-
 def load_review_artifact(path: Path) -> dict[str, Any]:
     if not path.exists():
         raise ValueError(f"review artifact does not exist: {path}")
@@ -1456,21 +1447,19 @@ def validate_review_artifact(
     if not results:
         raise ValueError("review artifact contains no document classifications to apply")
 
-    # A proposal in a generated artifact was new at review time. If its ID now
-    # exists, canonical taxonomy state changed after review; do not silently skip it.
+    # Proposals remain advisory. Keep their IDs only so validation can distinguish
+    # a reviewed proposal that still needs migration from an arbitrary unknown ID.
+    # If a proposal has since been adopted by a migration and is now active, the
+    # same reviewed artifact may be applied without another model call.
+    proposal_ids: dict[str, set[str]] = {
+        dimension_id: set() for dimension_id in taxonomy["dimensions"]
+    }
     for proposal in proposals:
         dimension_id = proposal.get("dimension")
         term_id = proposal.get("id")
         if dimension_id not in taxonomy["dimensions"] or not isinstance(term_id, str):
             raise ValueError("review artifact contains an invalid consolidated proposal")
-        if term_id in taxonomy["dimensions"][dimension_id]["terms"]:
-            raise ValueError(
-                f"review artifact is stale: {dimension_id}.{term_id} now exists in the canonical taxonomy"
-            )
-
-    proposal_ids: dict[str, set[str]] = {dimension_id: set() for dimension_id in taxonomy["dimensions"]}
-    for proposal in proposals:
-        proposal_ids[proposal["dimension"]].add(proposal["id"])
+        proposal_ids[dimension_id].add(term_id)
 
     for result in results:
         relative = result.get("file")
@@ -1504,13 +1493,28 @@ def validate_review_artifact(
                 raise ValueError(
                     f"{relative}: saved metadata.{field} violates current cardinality {minimum}..{maximum}"
                 )
-            active_ids = set(taxonomy_tools.active_terms(dimension))
-            allowed_ids = active_ids | proposal_ids[dimension_id]
-            unknown = [value for value in values if value not in allowed_ids]
-            if unknown:
+            active_ids = active_term_ids(dimension)
+            non_canonical = sorted({value for value in values if value not in active_ids})
+            if non_canonical:
+                pending_proposals = sorted(
+                    set(non_canonical) & proposal_ids[dimension_id]
+                )
+                other_non_canonical = sorted(
+                    set(non_canonical) - set(pending_proposals)
+                )
+                details: list[str] = []
+                if pending_proposals:
+                    details.append(
+                        "proposed but not yet adopted: " + ", ".join(pending_proposals)
+                    )
+                if other_non_canonical:
+                    details.append(
+                        "unknown or non-active: " + ", ".join(other_non_canonical)
+                    )
                 raise ValueError(
-                    f"{relative}: saved metadata.{field} contains unknown/non-active IDs: "
-                    + ", ".join(sorted(unknown))
+                    f"{relative}: saved metadata.{field} contains non-canonical taxonomy IDs "
+                    f"({'; '.join(details)}). Adopt the required term(s) through a reviewed "
+                    "taxonomy migration first, then re-run --apply-from."
                 )
 
         page_fields = result.get("page_field_suggestions", {})
@@ -1526,45 +1530,36 @@ def validate_review_artifact(
 def apply_review_artifact(root: Path, artifact_path: Path) -> None:
     artifact = load_review_artifact(artifact_path)
     taxonomy = taxonomy_tools.load_and_validate_taxonomy(root)
-    results, proposals, introduced = validate_review_artifact(root, taxonomy, artifact)
-    apply_results(root, taxonomy, results, proposals, introduced)
+    results, _proposals, _introduced = validate_review_artifact(root, taxonomy, artifact)
+    apply_results(root, taxonomy, results)
 
 
 def apply_results(
     root: Path,
     taxonomy: dict[str, Any],
     results: list[dict[str, Any]],
-    proposals: list[dict[str, Any]],
-    introduced: str,
 ) -> None:
-    review = taxonomy["governance"]["default_review"]
-
-    for proposal in proposals:
-        dimension = taxonomy["dimensions"][proposal["dimension"]]
-        term_id = proposal["id"]
-        if term_id in dimension["terms"]:
-            continue
-        term: dict[str, Any] = {
-            "label": proposal["label"],
-            "description": proposal["description"],
-        }
-        if proposal.get("kind"):
-            term["kind"] = proposal["kind"]
-        if proposal.get("parent"):
-            term["parent"] = proposal["parent"]
-        if proposal.get("aliases"):
-            term["aliases"] = proposal["aliases"]
-        term["governance"] = {
-            "status": "active",
-            "introduced": introduced,
-            "source": "ai-proposed",
-            "review": review,
-        }
-        dimension["terms"][term_id] = term
-
-    taxonomy_tools.validate_taxonomy_schema(taxonomy, root / taxonomy_tools.SCHEMA_PATH)
-    taxonomy_tools.validate_taxonomy_semantics(taxonomy)
-    write_taxonomy(root / taxonomy_tools.TAXONOMY_PATH, taxonomy)
+    # taxonomy_ai.py may update document metadata, but it must never make an AI
+    # proposal canonical. Preflight every result before writing any document so
+    # both --apply-from and the legacy targeted --apply path enforce the same
+    # authority boundary.
+    for result in results:
+        relative = result["file"]
+        metadata = result["metadata"]
+        for dimension in taxonomy["dimensions"].values():
+            field = dimension["metadata_field"]
+            values = metadata[field]
+            active_ids = active_term_ids(dimension)
+            non_canonical = sorted({value for value in values if value not in active_ids})
+            if non_canonical:
+                raise ValueError(
+                    f"{relative}: refusing to apply metadata.{field} because it contains "
+                    "non-canonical taxonomy IDs: "
+                    + ", ".join(non_canonical)
+                    + ". taxonomy_ai.py cannot adopt taxonomy proposals. Adopt the required "
+                    "term(s) through a reviewed taxonomy migration first, then apply the "
+                    "reviewed metadata again."
+                )
 
     for result in results:
         path = root / result["file"]
@@ -1777,7 +1772,9 @@ def main() -> int:
     if args.apply:
         print(
             "WARNING: direct --apply is retained only for targeted compatibility. "
-            "For audited changes, review the generated report and use --apply-from instead.",
+            "It can apply only already-canonical taxonomy IDs and cannot adopt AI proposals. "
+            "For audited changes, review the generated report, adopt any required new terms "
+            "through a migration, and use --apply-from instead.",
             file=sys.stderr,
         )
         if errors:
@@ -1788,7 +1785,7 @@ def main() -> int:
             )
             return 1
         try:
-            apply_results(root, taxonomy, results, proposals, args.introduced_date)
+            apply_results(root, taxonomy, results)
         except Exception as error:
             print(f"ERROR: {error}", file=sys.stderr)
             return 1

@@ -71,7 +71,7 @@ To understand and verify the complete integration workflow, I created custom tes
 
 I also developed a cloud-hosted Flask application on PythonAnywhere to provide a publicly accessible endpoint for receiving and examining webhook notifications. This provided the means to test and document asynchronous parts of the merchant tokenisation lifecycle that could not be validated within the corporate firewall.
 
-While testing the documented workflows, I found issues and omissions in the supporting API reference. I worked with the product owner to correct these problems.
+While testing the documented workflows, I found some issues and omissions in the supporting API reference. I worked with the product owner to correct these problems.
 
 ## Deliverables
 

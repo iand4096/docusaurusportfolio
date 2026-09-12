@@ -39,7 +39,7 @@ tags:
 
 ## Context
 
-Following the merger of Skrill and Optimal Payments, I led the documentation work for the launch of the Paysafe Developer Center for Merchant developers integrating Paysafe payment methods. This work brought payment API and SDK reference documentation and integration guides from previously separate businesses into a single modern developer site.
+Following the merger of Skrill and Optimal Payments to form Paysafe, I led the documentation work for the launch of the Paysafe Developer Center for Merchant developers integrating Paysafe's payment methods. This work brought payment API and SDK reference documentation and integration guides from previously separate businesses into a single modern developer site.
 
 I defined the documentation strategy and information architecture, worked with the web development team on the publishing platform, and authored API and integration documentation, while managing a team of three technical writers.
 

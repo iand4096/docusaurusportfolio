@@ -40,3 +40,4 @@
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAt Paysafe, I defined the documentation structure and publishing approach for the first Paysafe Developer Center following the Skrill/Optimal Payments merger.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAt Paysafe, I defined the documentation structure and publishing approach for the first Paysafe Developer Center following the Skrill / Optimal Payments merger.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAt Paysafe, I defined the documentation strategy and publishing approach for the first Paysafe Developer Center following the Skrill / Optimal Payments merger.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QFollowing the merger of Skrill and Optimal Payments to form Paysafe, I led the documentation work for the launch of the Paysafe Developer Center for Merchant developers integrating Paysafe's payment methods.\\E$"}

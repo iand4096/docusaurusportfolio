@@ -72,7 +72,7 @@ At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom 
 
 Codetreedocs was designed to replace fragmented wiki-based documentation with a Git-based publishing workflow to make it easier for engineers and technical writers to create, maintain, review, and discover documentation.
 
-I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and later contributed directly to the codebase once the main features had been implemented to extend the platform and resolve issues that arose due to scaling.
+I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and later contributed directly to the codebase, once they had implemented the main features, to extend the platform and resolve issues as the site scaled.
 
 ## Challenge
 
@@ -97,7 +97,7 @@ The approach focused on:
 
 ## Implementation
 
-* **Markdown-based documentation stored and reviewed in Git**. This provided stronger version control than the previous wiki-based platforms, allowing users to update multiple pages in a single, reviewable atomic change. It also made the documentation easier to integrate with GenAI-assisted authoring and maintenance workflows.
+* **Markdown-based documentation stored and reviewed in Git alongside the code**. This provided stronger version control than the previous wiki-based platforms, allowing users to update multiple pages in a single, reviewable atomic change. It also made the documentation easier to integrate with GenAI workflows.
 
 * **A Jenkins-based documentation build and publishing pipeline with automated quality checks**. Checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
 
@@ -105,13 +105,17 @@ The approach focused on:
 
 * **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without requiring specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
 
-* **Search and navigation for a growing documentation set**. I designed the search approach to help users find relevant information quickly as the documentation set expanded. This combined fast client-side search using FlexSearch.js for direct lookup with a slower RAG-based search for more complex natural-language queries where retrieval quality was more important than response time.
+* **Search and navigation for a growing documentation set**. I designed the search approach, combining fast client-side lookup with FlexSearch.js and slower RAG-based search for complex natural-language queries. I also tested search behaviour and retrieval quality; the engineering team implemented the solution.
 
 * **The ability to reuse content in multiple locations and embed code samples directly from source**. This reduced duplication and maintenance effort by allowing shared content and code examples to be updated centrally.
 
-I led the successful migration of the platform to the firm's new Docker-based web-hosting environment. 
+### Docker migration
 
-In parallel, I developed automated content migration tooling for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 wiki pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. The subsequent IDE-based tooling allowed content owners to migrate and validate their own documentation, making the process more scalable.
+I led the successful migration of the documentation platform to the firm’s new Docker-based hosting solution and domain, implementing redirects for legacy URLs and resolving post-launch issues.
+
+### Content migration
+
+I developed automated content migration tooling for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 wiki pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. The subsequent IDE-based tooling allowed content owners to migrate and validate their own documentation, making the process more scalable.
 
 As the platform matured, I contributed directly to its codebase using Amp and agentic AI-assisted development. This work included adding support for PlantUML, Mermaid, and C4 diagrams and LaTeX mathematical notation, as well as diagnosing and fixing bugs in the link-checking implementation.
 
