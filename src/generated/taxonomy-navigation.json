@@ -705,7 +705,6 @@
       "title": "AI & Documentation",
       "path": "/docs/aianddocs",
       "source": "docs/skills/AIandDocumentation.md",
-      "description": "Applying AI to documentation engineering, authoring, retrieval and automation, with strong emphasis on technical validation, human oversight and responsible use.",
       "type": [
         "skill"
       ],
@@ -721,7 +720,12 @@
         "fastmcp",
         "whisper",
         "spec-driven-development",
-        "jira"
+        "jira",
+        "claude",
+        "github-copilot",
+        "amp",
+        "agentic-ai",
+        "markdown"
       ],
       "audiences": [
         "technical-writers",
@@ -733,44 +737,11 @@
       ]
     },
     {
-      "id": "tools/AIandDevTools",
-      "title": "AI and Dev Tools",
-      "path": "/docs/aianddevtools",
-      "source": "docs/tools/AIandDevTools.md",
-      "description": "Using AI-assisted development, Agentic AI, MCP, RAG concepts and developer tooling to improve documentation engineering, software development and content workflows.",
-      "type": [
-        "tool"
-      ],
-      "topics": [
-        "documentation-engineering",
-        "docs-as-code",
-        "developer-experience"
-      ],
-      "technologies": [
-        "claude",
-        "github-copilot",
-        "amp",
-        "agentic-ai",
-        "mcp",
-        "fastmcp",
-        "rag",
-        "spec-driven-development",
-        "markdown"
-      ],
-      "audiences": [
-        "technical-writers",
-        "developers"
-      ],
-      "lifecycle": [
-        "current"
-      ]
-    },
-    {
       "id": "implementation-details/taxonomy",
       "title": "AI-assisted taxonomy governance",
       "path": "/docs/implementation-details/taxonomy",
       "source": "docs/implementation-details/taxonomy.md",
-      "description": "The implementation details of a Docusaurus documentation taxonomy that combines controlled vocabulary management, deterministic validation, governed migrations, and AI-assisted semantic classification.",
+      "description": "The implementation details of a Docusaurus documentation taxonomy that combines controlled vocabulary management, repository validation, governed migrations, and AI-assisted semantic classification.",
       "type": [
         "implementation-guide"
       ],
@@ -1289,8 +1260,7 @@
         "masterpass",
         "openapi",
         "plantuml",
-        "brightspot-cms",
-        "amx-composer"
+        "brightspot-cms"
       ],
       "audiences": [
         "developers",

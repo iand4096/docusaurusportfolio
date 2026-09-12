@@ -75,9 +75,7 @@ tags:
   - vale
 ---
 
-I apply software-engineering practices to documentation systems, including version control, automated testing, CI/CD and tooling for repetitive tasks.
-
-My experience includes docs-as-code, Git and CI/CD workflows, static-site generators, Markdown and parser extensions, large-scale content migration, documentation-platform development, search, validation and custom tooling.
+I build documentation systems using software-engineering practices such as source control, CI/CD, parser and platform extensions, migration tooling, search and publishing automation.
 
 ## Docs-as-code
 
@@ -183,24 +181,24 @@ I treat documentation as something that can be tested rather than relying entire
 
 Examples include:
 
-* Build validation
 * Link checking
-* Markdown validation
+* Markdown syntax checks
 * Grammar and spelling checks
 * Style-guide checks using Vale or similar
 * Accessibility checks
-* Rendering tests
 * Migration-output validation
 * OCR-based detection of obsolete terminology in screenshots and legacy diagrams
 * Automated quality checks on pull requests
 
-This approach allows quality controls to scale with the size of the documentation set and the number of contributors.
+On large repositories, these checks catch broken links, invalid Markdown and style problems before merge, reducing the dependence on manual reviews.
 
 ## Search and retrieval
 
 Documentation engineering also includes making content discoverable once it has been published.
 
-I have integrated traditional enterprise search, fast browser-based search using tools such as FlexSearch.js, and central RAG-based retrieval services. My RAG work has included generating sitemaps for indexing, testing retrieval quality, identifying issues such as deprecated APIs being surfaced, and proposing metadata and filtering to improve results.
+I have integrated traditional enterprise search and fast browser-based search using tools such as central RAG-based retrieval services and FlexSearch.js. 
+
+My RAG work has included generating sitemaps for indexing, testing retrieval quality and identifying issues such as the search returning deprecated content. For the latter, I proposed metadata filtering to improve the results.
 
 ## Engineering for scale
 

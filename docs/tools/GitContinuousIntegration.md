@@ -46,10 +46,10 @@ tags:
 
 ## Git, GitHub, GitHub Actions and Jenkins
 
-* Experienced troubleshooting Git issues for team members, including **merge conflicts and problematic branch histories**.
-* Comfortable with command-line Git, including **rebase** and **commit squashing** to resolve integration issues and maintain cleaner repository history.
-* Experienced with **GitHub / Bitbucket pull-request workflows** for reviewing and integrating changes.
+* Diagnosed and resolved Git issues for my technical writing team including resolving **merge conflicts**.
+* Experienced using command-line Git, including **rebase** and **commit squashing**, to resolve integration issues and maintain cleaner repository history.
+* 9 years using **GitHub and Bitbucket pull-request workflows** to review and integrate changes to documentation and code.
 * Used **GitHub Actions** for Continuous Integration and Deployment (CI / CD) to automatically build and publish my Docusaurus portfolio site when content changes are pushed.
-* Worked with Jenkins CI / CD pipelines for documentation builds, QA, and deployment at Morgan Stanley. Able to read and understand pipeline configurations, identify issues and potential improvements, and work with development teams to resolve problems.
+* Worked with Jenkins CI / CD pipelines for documentation builds, QA, and deployment at Morgan Stanley. Able to read and understand pipeline configurations, identify issues and potential improvements, and work with development teams to resolve any problems.
 * Implemented automated internal-link validation in the documentation CI/CD pipelines at Morgan Stanley, preventing pull requests containing broken links from being merged.
 * Diagnosed Jenkins and documentation build failures, including environment-specific issues that occurred under Linux or CI but could not be reproduced in local development environments.

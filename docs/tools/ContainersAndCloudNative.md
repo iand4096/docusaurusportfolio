@@ -58,6 +58,7 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 * Identified a build-performance issue caused by copying approximately **3,000 generated documentation pages into the container**.
 * Proposed serving the generated documentation from an attached file system instead, reducing build time by approximately **15 minutes**.
 * Gained experience troubleshooting containerised documentation builds.
+* Built a personal Kubernetes cluster on Proxmox.
 
 ### Cloud-Hosted integration testing
 

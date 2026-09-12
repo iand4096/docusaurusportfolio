@@ -9,7 +9,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 # Ian Drewett
 
-Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a software-engineering background spanning device drivers, graphics/CAD/VR, APIs, and developer platforms.
+Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a <Link to="#engineering-background">software-engineering background</Link>.
 
 I combine in-depth knowledge management experience with hands-on engineering. My experience includes:
 
@@ -63,7 +63,7 @@ API implementation and testing, security validation, software debugging, automat
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
 
   <div className="card-description">
-  Led the design and evolution of Codetreedocs, an internal documentation platform that grew to more than 3,200 pages for a developer mailing-list containing approximately 1,200 subscribers. My responsibilities also included creating documentation for Optimus, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
+  Led the design and evolution of Codetreedocs, an internal documentation platform that grew from 700 pages to more than 3,200 for a developer mailing-list containing approximately 1,200 subscribers. My responsibilities also included creating documentation for Optimus, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
 </div>
 
   <span className="card-link">Read case study →</span>
@@ -89,9 +89,9 @@ API implementation and testing, security validation, software debugging, automat
 
 </div>
 
-## Engineering background
+## Software engineering background {/* #engineering-background */}
 
-I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C and C++/STL. Recent development work includes using Scala for documentation engineering and building full-stack test API integrations with Python/Flask and JavaScript to validate technical documentation.
+I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C, and C++/STL. Recent development work includes using Scala for documentation engineering and building full-stack test API integrations with Python/Flask and JavaScript to validate technical documentation. This engineering background informs my approach to technical writing by helping me verify implementation details, work effectively with APIs and docs-as-code tool chains, and test documentation against real software behaviour.
 
 ## Professional profile
 
@@ -100,7 +100,7 @@ For employment history and professional experience, visit my
 
 :::tip[Automated documentation QA]
 
-My portfolio uses a CI-integrated documentation QA pipeline implemented using GitHub Actions. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
+My portfolio has a QA pipeline implemented using GitHub Actions which runs automatically on any committed changes as part of Continuous Integration. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
 
 **[View the live report →](pathname:///qa/)**
 :::

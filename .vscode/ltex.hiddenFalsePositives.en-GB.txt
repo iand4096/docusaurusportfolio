@@ -36,3 +36,7 @@
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QFollowing the merger of Skrill and Optimal Payments, I led the documentation work for the launch of the Paysafe Developer Center for Merchant developers integrating Paysafe payment methods.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QPaysafe subsequently included the Developer Center launch in its 2016 Annual Report as one of its achievements under its “State-of-the-art technology” strategy.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QPaysafe also mentioned the Developer Center in its January 2017 trading update.\\E$"}
+{"rule":"HE_VERB_AGR","sentence":"^\\QPractical Python experience across documentation tooling, content migration, API integrations, data processing and workflow automation.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAt Paysafe, I defined the documentation structure and publishing approach for the first Paysafe Developer Center following the Skrill/Optimal Payments merger.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAt Paysafe, I defined the documentation structure and publishing approach for the first Paysafe Developer Center following the Skrill / Optimal Payments merger.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QAt Paysafe, I defined the documentation strategy and publishing approach for the first Paysafe Developer Center following the Skrill / Optimal Payments merger.\\E$"}

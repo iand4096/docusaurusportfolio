@@ -45,13 +45,13 @@ tags:
   - information-architecture
 ---
 
-I have led documentation teams, platforms, and strategy across financial services, payments, and enterprise software environments. My experience includes documentation product ownership, team leadership, developer-portal strategy, content architecture, docs-as-code adoption, migration programmes, and improving engineering participation in documentation.
+I have led documentation teams, platforms, and strategy across financial services, payments, and enterprise software environments. My experience includes documentation product ownership, team leadership, developer-portal strategy, content architecture, docs-as-code adoption, leading migration programmes, and improving engineering participation in documentation.
 
 ## Strategy
 
-* Defined documentation approaches for large API and developer platforms.
-* Treated documentation platforms and developer portals as products, with clear requirements, priorities, users, and success measures.
-* Used analytics, developer feedback, and contribution data to prioritise documentation and platform improvements.
+* At Paysafe, I defined the documentation strategy and publishing approach for the first Paysafe Developer Center following the Skrill / Optimal Payments merger.
+* At Morgan Stanley, I owned requirements and priorities for the development of a custom doc-as-code system to replace legacy documentation platforms.
+* Used analytics and developer and support feedback to prioritise content migration work as well as documentation and platform improvements.
 * Developed information architectures, contribution models, documentation standards, and migration strategies for large documentation sets.
 
 ## Leadership and team development
@@ -82,4 +82,4 @@ Examples include:
 * Migrating large quantities of legacy documentation into modern docs-as-code platforms.
 * Moving documentation infrastructure onto Docker-based hosting.
 * Using analytics to prioritise migration and content improvements.
-* Introducing automation and AI-assisted workflows to make documentation production and maintenance more scalable.
+* Introducing automation and AI-assisted workflows to improve documentation production and maintenance.

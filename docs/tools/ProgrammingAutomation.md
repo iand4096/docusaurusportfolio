@@ -78,13 +78,11 @@ tags:
 
 ### Engineering background
 
-Spent approximately five years as a C/C++ software engineer specialising in 2D/3D graphics, GIS, CAD/VR systems, and graphics device drivers, including work at STMicroelectronics. Wrote cross-platform code for Windows and Unix.
-
 ### Python
 
-* Strong practical **Python** experience across documentation tooling, content migration, API integrations, data processing and workflow automation.
+* Practical **Python** experience covering documentation tooling, content migration, API integrations, data processing and workflow automation.
 * Developed scripts to migrate and transform large documentation sets into extended **Markdown**, initially using regex replacement lambdas and then more sophisticated class-based handlers as the transformation logic became more complex.
-* Used **`pathlib`** to reconstruct documentation links following content migration and restructuring, this includes converting absolute links to relative links and re-linking moved content.
+* Used **`pathlib`** to reconstruct documentation links following content migration and restructuring; this includes converting absolute links to relative links and re-linking moved content.
 * Extended an existing **MkDocs** plugin to support additional **Graphviz** diagram-generation modes, including hyperlink-enabled diagrams, using Python `subprocess` to invoke Graphviz.
 * Used Requests and authentication libraries to integrate with REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authentication, JSON payloads, and JSON/XML responses.
 * Built Flask applications with GET and POST endpoints, query parameters, form handling and Jinja-rendered pages for API and payment-integration testing.
@@ -112,20 +110,17 @@ Spent approximately five years as a C/C++ software engineer specialising in 2D/3
 
 ### C, C++ and C#
 
-- **C:** Modified and extended an existing cross-platform 3D graphics CAD application, using matrix mathematics for graphics transformations and callback-based event handling to build responsive multi-platform UI interfaces (Windows and Unix).
-- **C++:** Several years of development experience, including Visual C++ and use of **STL containers and data structures** for application logic and data processing.
-- **C#:** Developed tooling to automate release-note generation from a tagged set of JIRA tickets. Integrated with the JIRA REST API to retrieve ticket details, then used XML parsing and transformation logic to populate a MadCap Flare XHTML template and generate the final release-note document.
+I have nearly five years of C/C++ software engineering experience includes work in 2D/3D graphics, GIS, CAD/VR systems, and graphics device drivers, including at STMicroelectronics. This involved developing cross-platform software for Windows and Unix, modifying and extending a 3D CAD application, applying matrix mathematics to graphics transformations, using callback-based event handling for responsive user interfaces, and working with STL containers and data structures for application logic and data processing. My C# experience includes developing tooling to automate release-note generation from tagged JIRA tickets by integrating with the JIRA REST API, parsing XML, and transforming the retrieved data into MadCap Flare XHTML templates to generate final release-note documents.
 
 ### Automation and scripting
 
 * Automated documentation migration, validation, build and publishing tasks using **Python, Bash and PowerShell**.
-* Comfortable working from the **Unix/Linux command line**, combining tools such as `grep`, `sed`, `find`, pipes and redirection for repository and content-processing tasks.
-* Used shell scripts and command-line utilities for bulk file processing, repository maintenance, build tasks and documentation transformations.
-* Experienced with **Windows command-line and PowerShell** automation.
-* Integrated documentation workflows with **GitHub Actions** and **Jenkins** CI pipelines to automate build, validation and publishing activities.
-* Used scripting and automation to reduce manual effort in content migration, transformation, link maintenance, validation and publishing.
+* Used **Unix/Linux command-line tools** such as `grep`, `sed`, `find`, pipes and redirection for repository maintenance, bulk file processing and content transformation.
+* Integrated documentation workflows with **GitHub Actions** and **Jenkins** CI pipelines for build, validation and publishing.
 
 ### Systems programming and debugging
 
 * Background in **C and assembly-language programming**, including kernel and user-mode device-driver development.
 * Experience with low-level systems debugging, including kernel and driver diagnostics, memory inspection and runtime analysis.
+
+My systems-programming and debugging experience supports my documentation work by helping me follow low-level implementation details.

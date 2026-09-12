@@ -67,7 +67,7 @@ The Digital Enablement API provides access to Mastercard Digital Enablement Serv
 
 ## My approach
 
-To understand and verify the complete integration workflow, I created custom test code in Python using the Requests library and open-source cryptography libraries. This allowed me to generate the required OAuth 1.0 authentication data, encrypt and decrypt protected fields, send API requests, and inspect the responses. This work was necessary to develop the understanding required to create detailed integration documentation for this complex API.
+To understand and verify the complete integration workflow, I created custom test code in Python using the Requests library and open-source cryptography libraries. This allowed me to generate the required OAuth 1.0 authentication data, encrypt and decrypt protected fields, send API requests, and inspect the responses.
 
 I also developed a cloud-hosted Flask application on PythonAnywhere to provide a publicly accessible endpoint for receiving and examining webhook notifications. This provided the means to test and document asynchronous parts of the merchant tokenisation lifecycle that could not be validated within the corporate firewall.
 
@@ -87,7 +87,6 @@ To encourage a culture of end-to-end product testing, I also provided the produc
 
 * Custom Python code used to test and validate the integration.
 * A cloud-hosted Flask implementation used to receive webhook notifications.
-
 
 :::note[Published guide]
 

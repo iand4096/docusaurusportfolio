@@ -2,28 +2,28 @@
 title: AI & Documentation
 sidebar_position: 9
 slug: /aianddocs
+
 sidebar_custom_props:
-  sampleCard:
+  skillCard:
     tag: AI for documentation
     description: Applying AI to documentation engineering, authoring, retrieval and automation, with
-      strong emphasis on technical validation, human oversight and responsible use.
+      technical validation and human review.
     highlights:
       - AI-assisted documentation from Jira and SME input
       - SKILL.md guidance for consistent AI-authored docs
       - RAG and metadata-aware retrieval
       - Experimental MCP servers with FastMCP
     ariaLabel: Explore my AI for documentation skills
+
 type:
   - skill
-audiences:
-  - technical-writers
-  - documentation-managers
-  - developers
+
 topics:
   - documentation-engineering
   - docs-as-code
   - technical-writing
   - developer-experience
+
 technologies:
   - rag
   - mcp
@@ -31,14 +31,30 @@ technologies:
   - whisper
   - spec-driven-development
   - jira
+  - claude
+  - github-copilot
+  - amp
+  - agentic-ai
+  - markdown
+
+audiences:
+  - technical-writers
+  - documentation-managers
+  - developers
+
 lifecycle:
   - current
 tags:
+  - agentic-ai
+  - amp
+  - claude
   - developer-experience
   - docs-as-code
   - documentation-engineering
   - fastmcp
+  - github-copilot
   - jira
+  - markdown
   - mcp
   - rag
   - spec-driven-development
@@ -46,12 +62,28 @@ tags:
   - whisper
 ---
 
-Practical experience applying AI to documentation engineering, content creation, retrieval, automation and developer workflows, with a strong emphasis on validation and human oversight.
+I use AI selectively for documentation authoring, retrieval, quality assurance, and documentation-platform development. I manually review generated text and code before using it.
 
-* **AI-Assisted Authoring:** Used AI to create initial documentation structures and skeleton content from Jira tickets, SME information and other source material, followed by detailed technical validation and editing before publication.
-* **AI Authoring Standards:** Created `SKILL.md` guidance to help developers using AI produce documentation that followed required writing style, structure and documentation standards.
-* **AI Coding Workflows:** Used AI coding tools and spec-driven development to extend documentation-platform functionality, with generated code reviewed, tested and iterated against defined requirements.
-* **RAG and Retrieval:** Practical understanding of Retrieval-Augmented Generation concepts, including using metadata and document lifecycle status to prevent deprecated API documentation from being recommended unless specifically requested.
-* **LLM-Assisted Documentation:** Used AI for grammar checking, documentation analysis, diagrams as code, content transformation and code generation, while treating generated output as requiring verification.
-* **Local AI and Privacy:** Installed and used a local Whisper speech-to-text model where privacy was important, generating draft meeting transcripts for human review and correction.
-* **Model Context Protocol:** Built experimental MCP servers using FastMCP and explored using MCP to expose documentation-quality tools, such as link checking to AI assistants.
+## AI-assisted authoring
+
+I created **SKILL.md** guidance for developers using AI coding agents to generate documentation, so generated content matched local documentation conventions and style guidelines. I wrote guidelines to clarify that generated content must be manually reviewed and that responsibility for the final change would remain with the person committing it. Additionally, I used AI personally for lower-risk documentation tasks such as grammar and style review, diagram generation, and other work where I could independently check the output.
+
+## AI-assisted development
+
+I have used agentic coding assistants including **Amp, Claude, and GitHub Copilot** while extending the documentation platform. Examples include adding PlantUML support, fixing problems with documentation link checking, and creating tooling for tasks such as content migration. For larger changes. I generally work from a written specification by defining the requirements in Markdown first and then use AI to help generate or modify the implementation. Finally, I test the resulting code extensively before accepting it.
+
+## Retrieval and RAG
+
+I integrated documentation with a central **RAG-based search system** by generating the sitemap and metadata required for indexing as part of the documentation CI/CD process. During this work, I found cases where deprecated APIs could still appear in RAG search results. I proposed using lifecycle metadata and retrieval filtering so deprecated material would only be returned when the user specifically requested it.
+
+## Validation and governance
+
+AI-generated documentation is reviewed by a person before publication rather than being published directly. On my portfolio site, I have also experimented with AI-assisted documentation quality checks to flag issues such as repetition and possible grammar problems. I use these alongside deterministic checks such as link checking rather than replacing them.
+
+## Local AI and privacy
+
+Where source material could not be sent to external services, I have used locally hosted AI tools instead. One example was a pilot using **Whisper** to assist with transcription of sensitive software architecture discussions, reducing the amount of manual transcription required while keeping the source material local.
+
+## MCP and AI tooling experiments
+
+I built an experimental **Model Context Protocol (MCP)** server with **FastMCP** to test whether AI agents could call documentation tools such as link checkers etc.

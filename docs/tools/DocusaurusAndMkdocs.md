@@ -60,22 +60,23 @@ tags:
 ### Docusaurus
 
 * Built my portfolio using **Docusaurus, MDX, React, JSX and JavaScript**.
-* Created reusable components such as responsive skill grids driven by simple Markdown content.
+* Created reusable React components such as responsive skill grids driven by simple Markdown content.
 * Generated landing-page cards automatically from Markdown front matter.
 * Used **GitHub Actions** for automated builds and deployment to GitHub Pages.
 * Used plugins such as **LTeX+** and **Vale** in VS Code for spelling, grammar, and style guide checks.
 
 ### MkDocs
 
-* Used **MkDocs and plugins** to recreate functionality from a large internal Wiki documentation site as a pilot project.
-* Integrated multiple plugins to support the advanced features from the Wiki site and modified plugin Python code to add the remaining unsupported features.
-* Recompiled modified plugins as standalone executables for deployment.
+* Used **MkDocs and a number of plugins** to recreate functionality from a large internal Wiki documentation site as a pilot project.
+* Integrated multiple plugins to support the advanced features from the Wiki site and modified plugin code to add the remaining unsupported features.
+* Recompiled the modified plugins as standalone executables for deployment.
 
 ### Documentation platform engineering
 
 * Selected static site generators based on documentation, scale and extensibility requirements.
 * Scaled documentation sites to **thousands of pages**.
 * Extended Markdown parsers and plugin behaviour.
-* **Search Integration and Optimization**: led requirements definition and testing for fast client-side search using JavaScript tools such as FlexSearch, alongside a dedicated central search option used when deeper or more comprehensive search was required. Also worked with RAG-based retrieval, generated webmaps and metadata, troubleshooting indexing and retrieval issues and improving search relevance.
+* Defined and tested fast client-side documentation search using FlexSearch, alongside integrating the slower central search service for broader queries.
+* Tested RAG-based retrieval, including indexing, sitemap generation and proposed metadata changes to improve retrieval relevance.
 * Designed automated build and publishing pipelines.
 * Understood when an existing generator should be extended and when a **custom static site generator** was justified.

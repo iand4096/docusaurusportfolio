@@ -65,7 +65,7 @@ I created detailed sequence diagrams using PlantUML to show the order of interac
 
 When I found errors or omissions in the API reference, I corrected the underlying OpenAPI definitions as well as the related guide content. I also reviewed and updated the Masterpass mobile SDK documentation to keep it aligned with the main merchant integration guidance.
 
-Brightspot made structured authoring, content reuse, version control, and technical review difficult. I worked with another technical writer, to advocate for a docs-as-code alternative. Together, we specified the requirements for the first version of the new platform and tested early prototypes.
+Brightspot made structured authoring, content reuse, version control, and technical review difficult. I worked with another technical writer to advocate for a docs-as-code alternative. Together, we specified the requirements for the first version of the new platform and tested early prototypes.
 
 ## Deliverables
 
