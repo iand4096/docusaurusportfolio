@@ -42,22 +42,22 @@ tags:
 
 ## Agile delivery
 
-* Led the delivery of the **Paysafe Developer Centre documentation portal**, defining scope, structure and delivery approach in collaboration with an engineering team.
-* Led **sprint planning, standups and backlog refinement** to coordinate documentation and platform work across engineering stakeholders.
+* Led the delivery of the **Paysafe Developer Center documentation portal**, defining scope, structure and delivery approach in collaboration with an engineering team.
+* Led **sprint planning, standups and backlog refinement** to coordinate documentation and platform work with engineering stakeholders.
 * Ensured documentation requirements were aligned with development cycles, API changes and release planning.
 * Coordinated delivery of documentation work across multiple Agile teams.
 
 ## Platform migration and technical ownership
 
-* Led the delivery of a **documentation migration to a Docker-based web hosting platform**, owning work from planning through to production release.
+* Led the delivery of a project to migrate the documentation portal I managed to **a Docker-based web hosting platform**, owning work from planning through to production release.
 * Defined delivery milestones and ensured progress toward release goals.
-* Performed hands-on technical troubleshooting during migration and personally resolved **post-deployment issues** affecting platform stability.
+* Performed hands-on technical troubleshooting during the migration such as suggesting a way to save 15 minutes on each documentation build and personally resolved most of the minor post-deployment issues.
 
 ## Jira and delivery management
 
 * Managed **Jira stories, epics and backlogs**.
 * Used **backlog refinement sessions and Jira polls** to clarify requirements and prioritise work based on stakeholder input and delivery needs.
-* Created **Jira dashboards and JQL filters** to track progress, dependencies and release readiness across Agile teams.
+* Created **Jira dashboards and JQL filters** to track progress, dependencies and release readiness.
 * Reported and tracked product and API defects with clear reproduction steps.
 
 ## Automation and release workflows

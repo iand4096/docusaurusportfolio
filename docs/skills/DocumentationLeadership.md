@@ -49,18 +49,11 @@ I have led documentation teams, platforms, and strategy across financial service
 
 ## Strategy
 
-* At Paysafe, I defined the documentation strategy and publishing approach for the first Paysafe Developer Center following the Skrill / Optimal Payments merger.
-* At Morgan Stanley, I owned requirements and priorities for the development of a custom doc-as-code system to replace legacy documentation platforms.
-* Used analytics and developer and support feedback to prioritise content migration work as well as documentation and platform improvements.
-* Developed information architectures, contribution models, documentation standards, and migration strategies for large documentation sets.
+At Paysafe, I defined the documentation strategy and publishing approach for the first Paysafe Developer Center following the merger of Skrill and Optimal Payments. During my time at Morgan Stanley, I owned requirements and priorities for the development of a custom docs-as-code system to replace legacy documentation platforms. I used analytics alongside developer feedback to prioritise content for migration to the new platform and used the same approach to prioritise documentation and platform improvements. I developed the information architecture for the sites I managed at both Paysafe and Morgan Stanley and created contributor and review workflows, documentation standards, and content migration strategies.
 
 ## Leadership and team development
 
-* Recruited, managed, and mentored technical writers delivering API, SDK, and integration documentation including a team of three writers at Paysafe.
-* Led cross-functional teams of technical writers and software engineers to build public and internal developer portals.
-* Established review processes, documentation standards, and shared working practices.
-* Encouraged writers to test APIs and SDKs directly and build working integrations to improve technical accuracy.
-* Worked to increase engineering ownership of documentation. This is often essential to keep documentation updated when there are limited numbers of technical writers.
+I have recruited, managed, and mentored technical writers delivering API, SDK, and integration documentation, including a team of three writers at Paysafe. At Paysafe and Morgan Stanley, I led cross-functional teams of technical writers and software engineers to build public and internal developer portals. My work at both companies included establishing review processes, documentation standards, and shared working practices. Throughout my career, I have encouraged writers to test APIs and SDKs directly and build working integrations to improve technical accuracy. I have also worked to increase engineering ownership of documentation; this helps improve accuracy with fast-changing software and is often essential for keeping documentation updated when there are few technical writers.
 
 ## Platform and product ownership
 
@@ -72,14 +65,12 @@ The site grew from approximately **700 pages to more than 3,200 pages over three
 
 ## Cross-functional delivery
 
-I have worked closely with software engineering, web development, DevOps, IDE tooling, product management, and infrastructure teams to deliver documentation platforms and developer experiences.
-
-Examples include:
+I have worked closely with software engineering, web development, DevOps, IDE tooling, product management, and infrastructure teams to deliver documentation platforms and developer experiences. Examples include:
 
 * Launching and evolving developer portals.
-* Designing Git and CI-based documentation workflows.
+* Designing Git- and CI-based documentation workflows.
 * Delivering IDE plugins to help engineers create documentation.
-* Migrating large quantities of legacy documentation into modern docs-as-code platforms.
 * Moving documentation infrastructure onto Docker-based hosting.
 * Using analytics to prioritise migration and content improvements.
 * Introducing automation and AI-assisted workflows to improve documentation production and maintenance.
+
