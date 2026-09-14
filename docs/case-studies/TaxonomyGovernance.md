@@ -29,7 +29,7 @@ tags:
   - yaml
 ---
 
-I designed and implemented a governed taxonomy for a Docusaurus documentation site. The project combines information architecture, docs-as-code automation, editor integration, deterministic repository validation, and AI-assisted metadata review.
+ designed and implemented a governed taxonomy for a Docusaurus documentation site. The project combines information architecture, docs-as-code automation, editor integration, deterministic repository validation, and AI-assisted metadata review.
 
 The aim was to make governed taxonomy metadata practical for authors without allowing convenience tooling or an LLM to become an independent taxonomy authority. Authors can select controlled taxonomy values in VS Code, run AI metadata reviews on individual documents or the wider corpus, and propose controlled-vocabulary changes when genuinely new concepts appear. Controlled-vocabulary changes remain explicit, reviewable repository operations.
 
@@ -81,45 +81,17 @@ Authority is divided by concern.
 
 Generated files are projections of the canonical taxonomy and validated document metadata. Generated files are not independent sources of taxonomy data.
 
-Concern
-
-Authoritative mechanism
-
-Canonical taxonomy: controlled vocabulary and policy
-
-taxonomy/taxonomy.yml
-
-AI metadata review and semantic classification
-
-taxonomy_ai.py
-
-Approval or rejection of AI-generated proposals
-
-Human review
-
-Document metadata changes proposed by AI
-
-Review JSON applied through taxonomy_ai.py --apply-from
-
-Controlled-vocabulary change contract
-
-taxonomy/taxonomy-migration.schema.json
-
-Approved migration manifests
-
-taxonomy/migrations/*.yml
-
-Applying canonical taxonomy changes
-
-taxonomy.py migrate
-
-Structural and repository validation
-
-taxonomy.py
-
-Final repository review
-
-Git diff / pull-request review
+| Concern | Authoritative mechanism |
+| --- | --- |
+| Canonical taxonomy: controlled vocabulary and policy | `taxonomy/taxonomy.yml` |
+| AI metadata review and semantic classification | `taxonomy_ai.py` |
+| Approval or rejection of AI-generated proposals | Human review |
+| Document metadata changes proposed by AI | Review JSON applied through `taxonomy_ai.py --apply-from` |
+| Controlled-vocabulary change contract | `taxonomy/taxonomy-migration.schema.json` |
+| Approved migration manifests | `taxonomy/migrations/*.yml` |
+| Applying canonical taxonomy changes | `taxonomy.py migrate` |
+| Structural and repository validation | `taxonomy.py` |
+| Final repository review | Git diff / pull-request review |
 
 The architecture enforces that separation:
 
@@ -187,41 +159,16 @@ There is deliberately no direct write path from `taxonomy_ai.py` to `taxonomy.ym
 
 ### Steady-state components
 
-Component
-
-Operational role
-
-taxonomy/taxonomy.yml
-
-Defines the controlled vocabulary and taxonomy policy.
-
-scripts/taxonomy.py
-
-Validates taxonomy and document metadata, synchronises derived document tags, regenerates projections, performs audits, and applies migrations.
-
-scripts/taxonomy_ai.py
-
-Performs AI metadata review, including semantic classification, and produces document-metadata proposals and draft migration manifests for review.
-
-taxonomy/taxonomy-migration.schema.json
-
-Defines and validates the migration-manifest structure.
-
-taxonomy/migrations/*.yml
-
-Stores approved, auditable migration manifests.
-
-frontmatter.config.cjs
-
-Loads the generated Front Matter projection and registers repository actions in the frontmatter UI.
-
-scripts/frontmatter_taxonomy.py
-
-Creates a persistent single-document AI metadata review from VS Code Front Matter.
-
-scripts/frontmatter_taxonomy_apply.py
-
-Applies saved review JSON from a single-document review through taxonomy_ai.py --apply-from.
+| Component | Operational role |
+| --- | --- |
+| `taxonomy/taxonomy.yml` | Defines the controlled vocabulary and taxonomy policy. |
+| `scripts/taxonomy.py` | Validates taxonomy and document metadata, synchronises derived document tags, regenerates projections, performs audits, and applies migrations. |
+| `scripts/taxonomy_ai.py` | Performs AI metadata review, including semantic classification, and produces document-metadata proposals and draft migration manifests for review. |
+| `taxonomy/taxonomy-migration.schema.json` | Defines and validates the migration-manifest structure. |
+| `taxonomy/migrations/*.yml` | Stores approved, auditable migration manifests. |
+| `frontmatter.config.cjs` | Loads the generated Front Matter projection and registers repository actions in the Front Matter UI. |
+| `scripts/frontmatter_taxonomy.py` | Creates a persistent single-document AI metadata review from VS Code Front Matter. |
+| `scripts/frontmatter_taxonomy_apply.py` | Applies saved review JSON from a single-document review through `taxonomy_ai.py --apply-from`. |
 
 Because `taxonomy.py` does not call an LLM, CI can use its checks as deterministic gates.
 
@@ -229,21 +176,11 @@ Because `taxonomy.py` does not call an LLM, CI can use its checks as determinist
 
 The canonical taxonomy and validated document metadata produce three main generated projections:
 
-Generated file
-
-Purpose
-
-docs/tags.yml
-
-Docusaurus tag definitions.
-
-.frontmatter/generated-taxonomy.json
-
-Allowed metadata values and content-type field definitions for VS Code Front Matter.
-
-src/generated/taxonomy-navigation.json
-
-Faceted navigation data derived from taxonomy terms and document metadata.
+| Generated file | Purpose |
+| --- | --- |
+| [`docs/tags.yml`](../tags.yml) | Docusaurus tag definitions. |
+| [`.frontmatter/generated-taxonomy.json`](../../.frontmatter/generated-taxonomy.json) | Allowed metadata values and content-type field definitions for VS Code Front Matter. |
+| [`src/generated/taxonomy-navigation.json`](../../src/generated/taxonomy-navigation.json) | Faceted navigation data derived from taxonomy terms and document metadata. |
 
 `taxonomy.py` checks generated projections against the output expected from the canonical taxonomy and validated document metadata. It detects manual edits or stale projections as repository drift rather than accepting them as independent taxonomy changes.
 
@@ -429,33 +366,14 @@ python scripts/taxonomy.py audit-unused
 
 ```
 
-Command
-
-Purpose
-
-check
-
-Validate taxonomy structure, governed document metadata, and derived repository state.
-
-sync
-
-Synchronise derived document tags with governed taxonomy dimensions.
-
-generate
-
-Regenerate generated projections from the canonical taxonomy and validated document metadata.
-
-audit-technologies
-
-Identify questionable technology terms or technology-kind assignments.
-
-audit-unused
-
-Report active terms with no direct references in the document corpus.
-
-migrate
-
-Process an approved migration manifest in dry-run mode or apply it.
+| Command | Purpose |
+| --- | --- |
+| `check` | Validate taxonomy structure, governed document metadata, and derived repository state. |
+| `sync` | Synchronise derived document tags with governed taxonomy dimensions. |
+| `generate` | Regenerate generated projections from the canonical taxonomy and validated document metadata. |
+| `audit-technologies` | Identify questionable technology terms or technology-kind assignments. |
+| `audit-unused` | Report active terms with no direct references in the document corpus. |
+| `migrate` | Process an approved migration manifest in dry-run mode or apply it. |
 
 `audit-unused` is intentionally read-only. It identifies contraction candidates; it does not decide that an unused term should be removed or deprecated. See [Content-driven contraction](#content-driven-contraction).
 
