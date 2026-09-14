@@ -307,15 +307,23 @@ docs/case-studies/taxonomy.md
 
 the review wrapper persists:
 
-```text id="v5qt0e"
+```mermaid id="v5qt0e"
 
-.frontmatter/taxonomy-reviews/
+flowchart TD
 
-└── case-studies/
+ROOT[".frontmatter/taxonomy-reviews/"]
 
-    ├── taxonomy.review.md
+CASES["case-studies/"]
 
-    └── taxonomy.review.json
+REPORT["taxonomy.review.md"]
+
+JSON["taxonomy.review.json"]
+
+ROOT --> CASES
+
+CASES --> REPORT
+
+CASES --> JSON
 
 ```
 
@@ -557,29 +565,31 @@ A new document may introduce a reusable concept missing from the controlled voca
 
 In that situation:
 
-```text id="9r9sa1"
+```mermaid id="9r9sa1"
 
-new or changed content
+flowchart TD
 
-        ↓
+CONTENT["new or changed content"]
 
-AI metadata review identifies a vocabulary gap
+AI_REVIEW["AI metadata review identifies a vocabulary gap"]
 
-        ↓
+DRAFT["draft vocabulary-expansion migration manifest"]
 
-draft vocabulary-expansion migration manifest
+HUMAN["human review"]
 
-        ↓
+PREFLIGHT["migration preflight / dry-run mode"]
 
-human review
+APPLY["approved migration application"]
 
-        ↓
+CONTENT --> AI_REVIEW
 
-migration preflight / dry-run mode
+AI_REVIEW --> DRAFT
 
-        ↓
+DRAFT --> HUMAN
 
-approved migration application
+HUMAN --> PREFLIGHT
+
+PREFLIGHT --> APPLY
 
 ```
 
@@ -793,25 +803,31 @@ Preflight exposed unrelated repository drift and prevented stale derived reposit
 
 The implementation evolved from one-off discovery and conversion scripts into the current governed maintenance model:
 
-```text id="avn081"
+```mermaid id="avn081"
 
-generate_taxonomy.py
+flowchart TD
 
-    ↓
+GENERATE["generate_taxonomy.py"]
 
-initial AI-assisted taxonomy discovery
+DISCOVERY["initial AI-assisted taxonomy discovery"]
 
-upgrade_taxonomy.py
+UPGRADE["upgrade_taxonomy.py"]
 
-    ↓
+CONVERSION["one-off taxonomy v1 → v2 conversion"]
 
-one-off taxonomy v1 → v2 conversion
+CURRENT["taxonomy.py + taxonomy_ai.py"]
 
-taxonomy.py + taxonomy_ai.py
+MAINTENANCE["ongoing controlled taxonomy maintenance"]
 
-    ↓
+GENERATE --> DISCOVERY
 
-ongoing controlled taxonomy maintenance
+DISCOVERY --> UPGRADE
+
+UPGRADE --> CONVERSION
+
+CONVERSION --> CURRENT
+
+CURRENT --> MAINTENANCE
 
 ```
 
