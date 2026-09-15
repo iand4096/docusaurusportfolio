@@ -57,11 +57,11 @@ I defined the documentation strategy and information architecture, worked with t
 
 I reviewed developer portals from PayPal, Braintree and Stripe and used the findings to help define the features of the new site; how it should organise products, guides and API references; and the requirements for the documentation tool chain.
 
-From this research, I designed the overall information architecture, including product landing pages, hierarchical navigation, and the structure for API / SDK reference guides and other integration content. I also defined search requirements and validated the implementation.
+From this research, I designed the overall information architecture, including product landing pages, hierarchical navigation, and the structure for API / SDK reference guides and other integration content.
 
-Working with Paysafe's web development team and an external consultancy, I defined and established the documentation creation and publishing workflow. Source was maintained in Git, with changes to the main branch triggering automated builds and deployment to a staging environment for review. Approved content was then promoted from staging to the public site through a custom CMS integration.
+Working with Paysafe's web development team and an external consultancy, I defined and established the documentation creation and publishing workflow. Source was maintained in Git, with changes to the main branch triggering automated builds and deployment to a staging environment for review. Approved content was then promoted from staging to the public site through a custom CMS integration. I also defined search requirements and validated the implementation.
 
-As Documentation Manager, I managed three technical writers and prioritised work across API documentation, SDK documentation, and platform improvements.
+As Documentation Manager, I managed three technical writers and prioritised work across API / SDK documentation, and platform improvements.
 
 ## Implementation
 
@@ -70,7 +70,7 @@ The Developer Center consisted of:
 * Product landing pages and hierarchical navigation for API, SDK and integration documentation.
 * Git-based source control and documentation review.
 * An automated CI pipeline for building and deploying documentation from Git to staging, with controlled promotion to production.
-* Integration with the TYPO3 content-management system.
+* A custom integration with the TYPO3 content-management system to publish from Flare to the staging / production environments.
 * Updated getting-started and integration documentation for the different Paysafe APIs.
 * Search functionality based on requirements I helped define and test.
 * Rendered-page review using Hypothesis annotations, allowing reviewers to comment directly on pages rather than reviewing source files in isolation in Git.
