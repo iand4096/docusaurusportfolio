@@ -55,14 +55,12 @@ tags:
   - visio
 ---
 
-Strong practical experience creating and maintaining **technical diagrams, architectural diagrams, and process flows** to support API documentation, system documentation, tutorials, learning materials, and docs-as-code environments. Experienced selecting the appropriate diagram type and tooling for the intended audience.
+Practical experience creating and maintaining **technical diagrams such as architectural diagrams, and process flows diagrams** to support API or SDK documentation, system documentation, and tutorials.
 
 ## Diagrams-as-Code and Docs-as-Code
 
-* Strong advocate for **text-based, version-controlled diagrams** that can be maintained alongside documentation and source code in Git with tracked changes.
-* Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-based approaches** for producing reproducible architecture, sequence, class, flow, and developer-focused diagrams.
-* I maintain diagram source alongside Markdown documentation in **Git-based docs-as-code environments**, keeping visual content reviewable, reproducible, and aligned with the documentation it supports.
-* I prefer source-controlled diagram definitions over manually maintained binary image formats where practical, reducing maintenance effort as systems and terminology evolve.
+* Strong advocate for **text-based, version-controlled diagrams** such as SVG or diagrams-as-code formats that can be easily maintained alongside documentation and source code in Git with tracked changes.
+* Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-Architecture diagrams**
 
 ## Graphviz and documentation navigation
 
@@ -70,14 +68,12 @@ Strong practical experience creating and maintaining **technical diagrams, archi
 
 ## Visual tools, SVG and supporting graphics
 
-* Experienced with **Microsoft Visio, Adobe Illustrator, and Inkscape** for diagrams requiring greater graphical control than diagrams-as-code tools provide.
-* Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. I prefer vector formats where possible because they support scalable output and efficient relabelling or terminology updates.
-* Created and annotated **screenshots** for tutorials, walkthroughs, and troubleshooting material.
+* Experienced using tools such as **Microsoft Visio, Adobe Illustrator, and Inkscape** to create diagrams that don't fit the common diagrams-as-code types.
+* Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. I prefer vector formats over binary images where possible because they don't blur and support efficient relabelling.
 
 ## Diagram maintenance
 
-* Adapted diagrams to different audiences, from **high-level architectural overviews** to detailed sequence, component, and integration diagrams for developers.
-* Experienced maintaining large sets of legacy visual assets, including using **OCR to identify outdated terminology** to fix in screenshots and raster diagrams.
+* Experienced maintaining large diagram sets including using **OCR to identify outdated terminology** to fix in screenshots and other bitmap / raster based diagrams.
 
 ## CAD diagrams
 
