@@ -45,7 +45,7 @@ I wanted the repository to enforce the metadata model rather than rely on contri
 * One authoritative list of valid values.
 * Authoring tools that use that list.
 * Automatic detection of invalid metadata.
-* Reproducible generated files such as Docusaurus tags.
+* Reproducible generation of dependent downstream files such as Docusaurus tags.
 * Explicit handling of renames, corrections, replacements, and deprecations.
 * A way to see the effect of a taxonomy change before applying it.
 
@@ -55,7 +55,7 @@ This meant treating the taxonomy as a repository artefact rather than editorial 
 
 One rule drives the implementation:
 
-> *AI can propose semantic intent, but humans must approve it. Central tooling is used to change the canonical taxonomy.*
+> *AI can propose changes to the central taxonomy and metadata applied to documents, but humans must approve them. Central tooling is used to change the canonical taxonomy in place of manual modification*
 
 AI can make a useful first pass at questions such as which existing terms apply to a document or whether the vocabulary lacks an important concept. However, I do not let the model determine whether the taxonomy is valid or whether a new term becomes canonical.
 
@@ -64,7 +64,7 @@ A central set of tools is used to validate IDs and cardinality, check migration 
 The design uses these constraints:
 
 * *One source of truth.* Docusaurus, the authoring environment, and navigation use views generated from the same taxonomy.
-* *Preflight before mutation.* The tooling checks taxonomy changes against the documentation corpus before changing files.
+* *Dry runs before applying changes.* The tooling checks taxonomy changes against the documentation corpus before changing files.
 * *Explicit migrations.* Vocabulary changes have their own reviewable records.
 * *Deprecation rather than automatic deletion.* The taxonomy retains old IDs and replacement relationships.
 * *Human review for semantic changes.* Automation can suggest a change but cannot silently redefine the vocabulary.
@@ -76,7 +76,7 @@ The system includes:
 
 * A canonical taxonomy in YAML under Git version control.
 * Controlled dimensions for content type, audience, topic, technology, and lifecycle.
-* Tools for validation of taxonomy and document metadata.
+* Tools for validating taxonomy and document metadata.
 * Generation of Docusaurus tags, editor controls, and navigation data.
 * AI-assisted classification and vocabulary-gap detection.
 * Reviewed taxonomy migrations with preconditions and dry runs.
@@ -92,4 +92,4 @@ Canonical IDs and validation reduce vocabulary drift. The same source generates 
 
 AI-assisted classification is advisory only. It can suggest a classification or new term, but it cannot make either canonical.
 
-During one taxonomy correction, I prepared updates to five technology terms and ran the migration against all 26 portfolio documents. The first preflight run found stale derived state in a recently added document. I corrected that first, reran the checks, and then applied the migration.
+During one taxonomy correction, I prepared updates to five technology terms and ran the migration against all 26 portfolio documents. The first dry run found stale derived state in a recently added document. I corrected that first, reran the checks, and then applied the migration.
