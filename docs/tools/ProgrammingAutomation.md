@@ -123,4 +123,3 @@ I have nearly five years of C/C++ software engineering experience; this includes
 * Background in **C and assembly-language programming**, including kernel and user-mode device-driver development.
 * Experience with low-level systems debugging, including kernel and driver diagnostics, memory inspection and runtime analysis.
 
-My systems-programming and debugging experience supports my documentation work by helping me follow low-level implementation details.
