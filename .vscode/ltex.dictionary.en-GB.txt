@@ -46,3 +46,4 @@ GenAI-assisted
 toolset
 toolchain
 filesystem
+Structurizr

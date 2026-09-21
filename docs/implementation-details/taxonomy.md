@@ -525,7 +525,7 @@ This showed that the migration preflight was not only checking the requested voc
 | Should an unused term be deprecated?              | Human governance decision       |
 | Are generated files current?                      | Generated-state validation      |
 
-The distinction is straightforward: the LLM is used where semantic judgement is useful, while repository tooling validates structure, applies approved changes, checks generated state, and enforces the taxonomy rules.
+The distinction is clear: the LLM is used where semantic judgement is useful, while repository tooling validates structure, applies approved changes, checks generated state, and enforces the taxonomy rules.
 
 ## Generated repository state
 

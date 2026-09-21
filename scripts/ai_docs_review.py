@@ -731,17 +731,73 @@ class PortfolioReview(AIPageCheck):
     name = "PortfolioReview"
     allowed_categories = {"portfolio"}
     prompt = r"""
-Review this specifically as a technical-writing portfolio case study.
+Review this specifically as a Principal Technical Writer / Documentation Engineer
+portfolio case study.
+
+This portfolio covers both technical-writing work and documentation-engineering
+work. A valid deliverable does NOT have to be a document, article, guide or other
+piece of authored prose. Senior/principal-level documentation work can legitimately
+produce or improve the systems through which documentation is created, governed,
+tested, published, discovered and maintained.
+
+Valid portfolio deliverables can therefore include, among other things:
+- documentation portals, developer centres and documentation websites
+- documentation platforms and docs-as-code architectures
+- information architecture, navigation and content-model improvements
+- build, publishing and deployment pipelines
+- CI/CD documentation quality gates, linting and validation systems
+- API-reference generation and OpenAPI-based documentation tooling
+- software, API and integration testing performed to validate documentation against
+  actual product or API behaviour, including examples, requests, responses, error
+  handling, workflows and documented procedures
+- test harnesses, scripts, fixtures or reproducible validation workflows used to
+  verify documentation accuracy and prevent regressions
+- search, discoverability and developer-experience improvements
+- reusable components, templates and documentation design systems
+- migrations between documentation platforms or toolchains
+- content-management, authoring and contributor workflows
+- automation, integrations and maintenance tooling
+- governance, quality, observability or consistency improvements
+
+Do not assume that personally writing a documentation artefact is inherently more
+important than designing, building, migrating, automating or improving a
+documentation system. Do not penalise a case study merely because its principal
+deliverable is a platform, workflow, architecture, tool or engineering improvement.
+Treat testing the software or API itself as relevant portfolio evidence when the
+purpose is to verify that documentation, examples, procedures or reference material
+match real system behaviour. This is documentation validation, not merely generic QA.
 
 Consider whether the supplied page effectively communicates, where relevant:
-- what the documentation deliverable was
-- who it was for
-- what the author contributed
-- what made the work useful or challenging
-- the relationship between the portfolio description and the published work
+- what was delivered or materially improved
+- the users or stakeholders served by the work, when that context is necessary to
+  understand its value; these may be documentation readers, developers,
+  documentation contributors, maintainers, engineering teams or internal users
+- what the author personally owned, designed, built, implemented, migrated,
+  structured, automated, authored, tested, validated or otherwise contributed
+- the problem, constraint or opportunity the work addressed
+- what made the work useful, difficult, technically significant or operationally
+  valuable
+- the relationship between the portfolio description and any evidence that is
+  actually available, such as a live site, repository, architecture, workflow,
+  implementation, test or validation approach, generated output or published
+  documentation
+
+A contribution can be clear even when it is expressed as ownership of scope,
+architecture, implementation, migration, tooling, automation, software/API
+testing used to validate documentation, delivery approach or cross-functional
+technical leadership. Do not require the page to separately state
+that the author "wrote" an artefact when the supplied text already establishes a
+credible documentation-engineering contribution.
+
+Do not report an issue merely because a conventional technical-writer case study
+might include an audience statement, list of pages written or named prose artefact.
+Only report missing context when its absence materially prevents a portfolio reader
+from understanding the author's contribution, the nature of the deliverable or why
+the work matters.
 
 Identify places where the page spends substantially more space explaining the
-technology than demonstrating the documentation work.
+underlying product or technology than demonstrating the documentation or
+documentation-engineering work.
 
 Do not invent project results, metrics, responsibilities, audiences, business
 impact, design decisions or technical facts.
@@ -929,7 +985,20 @@ class SiteWideConsistencyReview(BaseCheck):
     allowed_categories = {"consistency", "structure", "portfolio"}
 
     PROMPT = r"""
-Compare the supplied documentation as one technical-writing portfolio.
+Compare the supplied documentation as one Principal Technical Writer /
+Documentation Engineer portfolio.
+
+The portfolio may demonstrate both authored documentation and documentation
+engineering. Treat documentation platforms, developer portals, publishing systems,
+information architecture, automation, migrations, tooling, CI/CD quality systems,
+API documentation infrastructure, software/API testing used to validate
+documentation, reproducible documentation test workflows and contributor workflows
+as legitimate portfolio deliverables alongside conventional written documentation.
+
+Do not assume every case study should name a prose artefact the author personally
+wrote. Evaluate whether each page makes the author's actual contribution and the
+value of the work understandable in the context of that kind of project.
+
 Do not perform grammar, spelling or sentence-level editing.
 Do not report cross-page repetition; that is handled by another check.
 
@@ -954,8 +1023,15 @@ Do not report harmless stylistic variation.
 3. Portfolio effectiveness
 - recurring structural patterns make it difficult to compare case studies
 - case studies systematically explain technology more strongly than they
-  demonstrate the documentation work
+  demonstrate the documentation or documentation-engineering work
+- documentation-engineering case studies fail to make system ownership,
+  implementation, architecture, automation, migration, documentation validation
+  through software/API testing, or operational impact clear enough to understand the
+  author's contribution
 - information architecture could be consolidated or reorganised across the site
+
+Do not treat variation between writing-focused and engineering-focused case studies
+as inconsistency by itself. Their evidence and deliverables are expected to differ.
 
 Do not invent missing project information. If a useful field appears absent,
 describe only the kind of information that could strengthen comparable pages.

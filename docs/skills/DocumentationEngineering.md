@@ -44,13 +44,11 @@ technologies:
   - vale
   - flexsearch
   - rag
-  - codetreedocs
   - react
 lifecycle:
   - current
 tags:
   - c4-model
-  - codetreedocs
   - confluence
   - docs-as-code
   - documentation-engineering
@@ -83,8 +81,8 @@ My docs-as-code experience includes:
 
 * Markdown authoring
 * Using Git branching and pull-request workflows to update the documentation
-* Command-line Git, including rebasing and resolving merge conflicts.
-* Documentation stored alongside source code, including the benefits and trade-offs of this approach.
+* Command-line Git, including rebasing and resolving merge conflicts
+* Documentation stored alongside source code, including the benefits and trade-offs of this approach
 * Hosting documentation in large repositories and monorepos
 * Automating builds and publishing
 * Promoting and enabling engineering documentation contributions
@@ -212,8 +210,8 @@ My experience engineering documentation systems for scale includes:
 * Supporting distributed engineering contributions
 * Developing documentation standards and tooling
 
-A key example is **Codetreedocs**, an internal developer-documentation platform at Morgan Stanley. I led the platform as product owner, defined its requirements, contributed to the design, did the majority of the testing, and later contributed directly to its development. The platform combined Markdown, Git, Jenkins, an IDE-based authoring experience, custom static-site generation, search and migration tooling.
+A key example is an internal developer-documentation platform at Morgan Stanley. I led the platform as product owner, defined its requirements, contributed to the design, did the majority of the testing, and later contributed directly to its development. The platform combined Markdown, Git, CI/CD, an IDE-based authoring experience, custom static-site generation, search and migration tooling.
 
 Over three years, the documentation estate grew from approximately **700 pages to more than 3,200 pages**, supported by contributions from the wider engineering community. I also developed migration tooling that converted approximately **900 legacy pages** into the platform's extended Markdown format.
 
-[Read the Codetreedocs case study →](../case-studies/ScalingADeveloperDocsPlatform.md)
+[Read the developer docs platform case study →](../case-studies/ScalingADeveloperDocsPlatform.md)

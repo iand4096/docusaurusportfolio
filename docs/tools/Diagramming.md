@@ -59,8 +59,8 @@ Practical experience creating and maintaining **technical diagrams such as archi
 
 ## Diagrams-as-Code and Docs-as-Code
 
-* Strong advocate for **text-based, version-controlled diagrams** such as SVG or diagrams-as-code formats that can be easily maintained alongside documentation and source code in Git with tracked changes.
-* Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-Architecture diagrams**
+* Strong advocate for **text-based, version-controlled diagrams** such as SVG or diagrams-as-code formats that can be maintained alongside documentation and source code in Git with tracked changes unlike their raster-based equivalents.
+* Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-Architecture diagrams**.
 
 ## Graphviz and documentation navigation
 
