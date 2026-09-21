@@ -102,25 +102,25 @@ I worked with engineers from the internal tooling team to improve the authoring 
 
 * **Markdown-based documentation stored and reviewed in Git alongside the code**. This provided stronger version control than the previous wiki-based platforms, allowing users to update multiple pages in a single, reviewable atomic change. It also made the documentation easier to integrate with GenAI workflows.
 
-* **A Jenkins-based documentation build and publishing pipeline with automated quality checks**. Checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
+* **A CI/CD-based documentation build and publishing pipeline with automated quality checks**. Checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
 
 * **An IntelliJ plugin for documentation authoring and live preview**. This lowered the barrier for developers to contribute documentation by allowing them to edit and preview changes directly within their existing development environment.
 
 * **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without requiring specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
 
-* **Search and navigation for a growing documentation set**. I designed the search approach, combining fast JavaScript client-side lookup and slower RAG-based search for complex natural-language queries. I also tested search behaviour and retrieval quality; the engineering team implemented the solution.
+* **Search and navigation for a growing documentation set**. I designed the search approach, combining keyword based JavaScript client-side lookup and slower RAG-based search for more complex natural-language queries. I also tested search behaviour and retrieval quality; the engineering team implemented the solution.
 
 * **The ability to reuse content in multiple locations and embed code samples directly from source**. This reduced duplication and maintenance effort by allowing shared content and code examples to be updated centrally.
 
-### Docker migration
+### Containerised hosting migration
 
-I led the successful migration of the documentation platform to the firm’s new Docker-based hosting solution and domain, implementing redirects for legacy URLs and resolving post-launch issues. A major contribution was my proposal to serve the generated documentation from an attached file system instead of copying the content into the container reducing the build time by approximately **15 minutes**.
+I led the successful migration of the documentation platform to the firm’s new containerised hosting solution with a custom domain, implementing redirects for legacy URLs and resolving post-launch issues. A major contribution was my proposal to serve the generated documentation from an attached file system instead of copying the content into the container reducing the build time by approximately **15 minutes**.
 
 ### Content migration
 
 I developed automated content migration tooling for several legacy documentation systems, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. I subsequently created IDE-based tooling to allow content owners to migrate and validate their own documentation, making the process more scalable.
 
-As the platform matured, I contributed directly to its codebase using Amp and agentic AI-assisted development. This work included adding support for a variety of diagrams-as-code formats including PlantUML, Mermaid as well as C4 / Structurizr architecture diagrams. I also personally diagnosed and fixed bugs in the link-checking implementation.
+As the platform matured, I contributed directly to its codebase using agentic AI-assisted development. This work included adding support for a variety of diagrams-as-code formats including PlantUML, Mermaid as well as C4 / Structurizr architecture diagrams. I also personally diagnosed and fixed bugs in the link-checking implementation.
 
 ## Impact
 
