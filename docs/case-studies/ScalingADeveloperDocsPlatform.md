@@ -72,30 +72,41 @@ At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom 
 
 Codetreedocs was designed to replace fragmented wiki-based documentation with a Git-based publishing workflow to make it easier for engineers and technical writers to create, maintain, review, and discover documentation.
 
-I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and later contributed directly to the codebase, once they had implemented the main features, to extend the platform and resolve issues as the site scaled.
+I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and later contributed directly to the codebase, once they had implemented the main features. My efforts included extending the platform and resolving issues as the site scaled.
 
 ## Challenge
 
 * Replace fragmented documentation spread across legacy wiki and docs-as-code-based systems with a single platform.
 * Make documentation contributions practical and as easy as possible for a large engineering community.
-* Support documentation stored in Git alongside the code in a large monorepo.
-* Provide scalable documentation publishing, search, and navigation.
+* Store the documentation in Git alongside the code in a large monorepo.
+* Provide scalable publishing, search, and navigation.
 * Migrate valuable legacy content without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.
 
 ## Approach
 
-I worked with engineers from the internal tooling team to improve the authoring experience and create a published developer portal.
+### Why docs as code and why build a custom platform
 
-The approach focused on:
+Developers were already writing simple Markdown files alongside their code instead of using the existing wiki-based authoring tools, but they had no dedicated tooling or publishing environment to support that way of working.
 
-* Storing and reviewing documentation in Git alongside source code.
-* Reducing friction for documentation contributions.
-* Designing search and information architecture for a large technical documentation set.
-* Using analytics to identify high-value legacy content and prioritise migration.
-* Supporting documentation authoring within engineers' existing development environment.
+Instead of trying to move developers back into a separate documentation system, I chose to support the way they were already working and keep ownership with the teams closest to the technical knowledge.
+
+Initially, I built a docs-as-code pilot using MkDocs, a migrated version of the existing content, and multiple customised plugins. The pilot helped test the approach in practice and showed the limitations of an off-the-shelf solution.
+
+It became clear that to meet the full set of requirements, we would need a custom platform. That required more investment, but gave us capabilities existing tools could not provide, including Markdown extensions such as source-code injection combined with tight IDE integration, and documentation that rendered the same within the IDE as on the published site.
+
+### Design priorities
+
+The design focused on four priorities:
+
+* reducing friction for documentation contributions and corrections
+* supporting authoring within engineers' existing development environment
+* designing search and information architecture that could scale with a large technical documentation set
+* using analytics to identify high-value legacy content and prioritise migration.
 
 ## Implementation
+
+I worked with engineers from the internal tooling team to improve the authoring experience and create a published developer portal.
 
 * **Markdown-based documentation stored and reviewed in Git alongside the code**. This provided stronger version control than the previous wiki-based platforms, allowing users to update multiple pages in a single, reviewable atomic change. It also made the documentation easier to integrate with GenAI workflows.
 
@@ -111,17 +122,17 @@ The approach focused on:
 
 ### Docker migration
 
-I led the successful migration of the documentation platform to the firm’s new Docker-based hosting solution and domain, implementing redirects for legacy URLs and resolving post-launch issues.
+I led the successful migration of the documentation platform to the firm’s new Docker-based hosting solution and domain, implementing redirects for legacy URLs and resolving post-launch issues. A major contribution was my proposal to serve the generated documentation from an attached file system instead of copying the content into the container reducing the build time by approximately **15 minutes**.
 
 ### Content migration
 
-I developed automated content migration tooling for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 wiki pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. The subsequent IDE-based tooling allowed content owners to migrate and validate their own documentation, making the process more scalable.
+I developed automated content migration tooling for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 wiki pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. I subsequently created IDE-based tooling to allow content owners to migrate and validate their own documentation, making the process more scalable.
 
-As the platform matured, I contributed directly to its codebase using Amp and agentic AI-assisted development. This work included adding support for PlantUML, Mermaid, and C4 diagrams and LaTeX mathematical notation, as well as diagnosing and fixing bugs in the link-checking implementation.
+As the platform matured, I contributed directly to its codebase using Amp and agentic AI-assisted development. This work included adding support for a variety of diagrams-as-code formats including PlantUML, Mermaid as well as C4 / Structurizr architecture diagrams. I also personally diagnosed and fixed bugs in the link-checking implementation.
 
 ## Impact
 
-Codetreedocs grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work and contributions from the wider engineering community.
+Codetreedocs grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work, content migrations, and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
 
