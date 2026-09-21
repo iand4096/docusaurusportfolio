@@ -1489,7 +1489,6 @@
         "information-architecture"
       ],
       "technologies": [
-        "codetreedocs",
         "git",
         "docker",
         "github-actions",
@@ -1730,16 +1729,12 @@
         "documentation-governance"
       ],
       "technologies": [
-        "codetreedocs",
         "git",
         "markdown",
-        "jenkins",
         "intellij-idea",
         "plantuml",
         "mermaid",
         "c4-model",
-        "sphinx",
-        "docker",
         "amp",
         "agentic-ai",
         "vale",
