@@ -93,7 +93,7 @@ Instead of trying to move developers back into a separate documentation system, 
 
 Initially, I built a docs-as-code pilot using MkDocs, a migrated version of the existing content, and multiple customised plugins. The pilot helped test the approach in practice and showed the limitations of an off-the-shelf solution.
 
-It became clear that to meet the full set of requirements, we would need a custom platform. That required more investment, but gave us capabilities existing tools could not provide, including Markdown extensions such as source-code injection combined with tight IDE integration, and documentation that rendered the same within the IDE as on the published site.
+It became clear that to meet the full set of requirements, would require a custom platform. That required more investment, but provided capabilities existing tools could not offer, including Markdown extensions such as source-code injection combined with tight IDE integration, and documentation that rendered the same within the IDE as on the published site.
 
 ### Design priorities
 

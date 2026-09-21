@@ -478,3 +478,14 @@
 .theme-doc-markdown a.skill-card .skill-card__link {
   color: var(--ifm-color-primary) !important;
 }
+
+.diagram-wrap {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin: 2rem auto;
+}
+
+.diagram-wrap .mermaid {
+  min-width: 760px;
+}
