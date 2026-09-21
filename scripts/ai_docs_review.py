@@ -17,7 +17,11 @@ import requests
 
 
 API_URL = "https://api.deepseek.com/chat/completions"
-MODEL = "deepseek-v4-flash"
+# DeepSeek retired V4-Flash on 10 September 2026. The supported rolling Flash
+# alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
+# DeepSeek exposes a pinned model identifier in future.
+MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
+AI_REVIEW_POLICY_VERSION = "2026-09-21-conservative-v1"
 
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
@@ -121,14 +125,34 @@ FILTER_LABELS = {
 COMMON_AI_RULES = r"""
 Use British English.
 
-Be conservative. Report only meaningful issues. A good page may legitimately
-return no issues.
+This is a defect review, not a copy-editing exercise.
+
+Be conservative. Report only meaningful issues. The expected result for a
+professionally written page is often ZERO issues. Do not manufacture a finding
+merely because you were asked to review the page.
+
+NEVER report an issue solely because:
+- wording could be shorter, smoother, punchier or more elegant
+- another writer might choose different wording
+- a sentence could be split or combined without materially improving comprehension
+- active voice might be preferable to passive voice
+- a heading could be phrased differently while remaining accurate
+- paragraph or sentence length is merely a stylistic preference
+- information could theoretically be presented as bullets
+- terminology is unusual but clear and internally consistent
+- the prose does not match your preferred writing style
+
+A stylistic preference is NOT a defect.
+
+Before reporting any issue, verify all three conditions:
+1. There is a concrete problem in the supplied text.
+2. You can explain a material reader impact.
+3. The proposed change is more than a stylistic alternative.
+If any condition is not satisfied, DO NOT report the issue.
 
 Do not:
 - invent facts, responsibilities, metrics, audiences, outcomes, technical
   relationships or source text
-- manufacture findings merely because you were asked to review the page
-- rewrite text only because another style is possible
 - claim technical information is incorrect unless the supplied text itself
   demonstrates the inconsistency
 - include the artificial line-number prefix in the quoted source text
@@ -137,20 +161,25 @@ Every issue must include exact source text copied verbatim from the supplied
 file in "original". The quoted text must be sufficient to identify the issue.
 Do not paraphrase "original".
 
-Severity means impact:
-- high: materially misleading, broken, contradictory or publication-blocking
-- medium: meaningful comprehension, structure or portfolio-quality problem
-- low: worthwhile but non-blocking improvement
+Severity is strict and means impact:
+- high: publication-blocking, materially false, materially contradictory or broken
+- medium: a substantive problem that materially impairs comprehension or correctness
+- low: a worthwhile non-blocking improvement
+
+Never assign high or medium severity to a purely stylistic improvement.
+Improvements and diagram opportunities should normally be low severity.
 
 Confidence means certainty that the issue is genuinely present:
-- high: directly supported by the supplied text
-- medium: well supported but involves some editorial judgement
-- low: plausible but subjective
+- high: objectively demonstrated by the supplied text
+- medium: well supported but includes editorial judgement
+- low: subjective or weakly supported
+
+Omit low-confidence findings unless they identify a clear concrete risk.
 
 Use issue type:
 - defect: something is objectively or substantively wrong
-- improvement: a defensible editorial or information-design improvement
-- diagram: an optional Mermaid visualisation opportunity
+- improvement: optional editorial or information-design improvement
+- diagram: optional Mermaid visualisation opportunity
 
 Return JSON only. Do not include Markdown fences or commentary.
 """
@@ -496,6 +525,16 @@ def normalise_ai_issue(issue, content, file_path, allowed_categories):
 
     if actual_line is None:
         return None
+
+    # Enforce semantic invariants in code instead of trusting model labels.
+    # Optional/editorial AI findings remain visible in the report but cannot
+    # masquerade as high- or medium-severity defects because a model became
+    # more aggressive after a backend update.
+    if issue_type in {"improvement", "diagram"}:
+        severity = "low"
+
+    if confidence == "low":
+        severity = "low"
 
     # Source is assigned by the implementation rather than trusted from AI.
     return make_issue(
@@ -2688,21 +2727,54 @@ def run_site_checks(paths, checks, api_key):
 # ---------------------------------------------------------------------------
 
 
+def is_ci_threshold_eligible(issue):
+    """Return True when an issue is allowed to contribute to CI thresholds.
+
+    Deterministic checks retain their existing severity behaviour. AI findings
+    are intentionally stricter: only high-confidence substantive defects can
+    contribute to the high/medium CI thresholds. Editorial improvements, diagram
+    suggestions and uncertain AI judgements remain report-only.
+    """
+
+    if issue.get("source") != "ai":
+        return True
+
+    return (
+        issue.get("type") == "defect"
+        and issue.get("confidence") == "high"
+    )
+
+
 def evaluate_ci(issues, errors, fail_high, fail_medium, fail_api_errors):
-    high_count = sum(1 for issue in issues if issue["severity"] == "high")
-    medium_count = sum(1 for issue in issues if issue["severity"] == "medium")
+    threshold_eligible = [
+        issue for issue in issues
+        if is_ci_threshold_eligible(issue)
+    ]
+
+    high_count = sum(
+        1 for issue in threshold_eligible
+        if issue["severity"] == "high"
+    )
+    medium_count = sum(
+        1 for issue in threshold_eligible
+        if issue["severity"] == "medium"
+    )
+    advisory_ai_count = sum(
+        1 for issue in issues
+        if issue.get("source") == "ai" and not is_ci_threshold_eligible(issue)
+    )
     api_error_count = len(errors)
 
     failures = []
 
     if high_count > fail_high:
         failures.append(
-            f"high issues {high_count} > allowed {fail_high}"
+            f"CI-eligible high issues {high_count} > allowed {fail_high}"
         )
 
     if medium_count > fail_medium:
         failures.append(
-            f"medium issues {medium_count} > allowed {fail_medium}"
+            f"CI-eligible medium issues {medium_count} > allowed {fail_medium}"
         )
 
     if api_error_count > fail_api_errors:
@@ -2714,8 +2786,14 @@ def evaluate_ci(issues, errors, fail_high, fail_medium, fail_api_errors):
         "passed": not failures,
         "high_count": high_count,
         "medium_count": medium_count,
+        "threshold_eligible_issue_count": len(threshold_eligible),
+        "advisory_ai_issue_count": advisory_ai_count,
         "api_error_count": api_error_count,
         "failures": failures,
+        "policy": (
+            "Deterministic findings use their normal severity. "
+            "AI findings count towards CI only when type=defect and confidence=high."
+        ),
         "thresholds": {
             "high": fail_high,
             "medium": fail_medium,
@@ -3180,7 +3258,8 @@ def generate_html_report(issues, errors, metadata, ci_result):
         ({html.escape(metadata['report_time_zone'])})<br>
         Mode: {html.escape(metadata['mode'])} ·
         Checks: {html.escape(metadata['filter_label'])} ·
-        Model: {html.escape(metadata['model'])}
+        Model: {html.escape(metadata['model'])} ·
+        AI policy: {html.escape(metadata['ai_review_policy_version'])}
     </p>
 
     <div class="cards">
@@ -3189,13 +3268,17 @@ def generate_html_report(issues, errors, metadata, ci_result):
         <div class="card"><strong>{high_count}</strong><span>high</span></div>
         <div class="card"><strong>{medium_count}</strong><span>medium</span></div>
         <div class="card"><strong>{low_count}</strong><span>low</span></div>
+        <div class="card"><strong>{ci_result['high_count']}</strong><span>CI-eligible high</span></div>
+        <div class="card"><strong>{ci_result['medium_count']}</strong><span>CI-eligible medium</span></div>
+        <div class="card"><strong>{ci_result['advisory_ai_issue_count']}</strong><span>advisory AI</span></div>
         <div class="card"><strong>{len(errors)}</strong><span>API/check errors</span></div>
     </div>
 
     <div class="ci-box {ci_class}">
         <strong>CI threshold result: {ci_label}</strong><br>
         {html.escape(failure_text)}<br>
-        Thresholds: high &gt; {ci_result['thresholds']['high']},
+        {html.escape(ci_result['policy'])}<br>
+        Thresholds apply to CI-eligible findings only: high &gt; {ci_result['thresholds']['high']},
         medium &gt; {ci_result['thresholds']['medium']},
         API/check errors &gt; {ci_result['thresholds']['api_errors']}.
     </div>
@@ -3357,8 +3440,29 @@ def parse_args():
     return parser.parse_args()
 
 
+def _assert_ci_policy_invariants():
+    """Fail fast if the AI CI policy is accidentally weakened by a code change."""
+
+    probes = [
+        ({"source": "ai", "type": "improvement", "confidence": "high"}, False),
+        ({"source": "ai", "type": "diagram", "confidence": "high"}, False),
+        ({"source": "ai", "type": "defect", "confidence": "medium"}, False),
+        ({"source": "ai", "type": "defect", "confidence": "high"}, True),
+        ({"source": "vale", "type": "improvement", "confidence": "high"}, True),
+    ]
+
+    for issue, expected in probes:
+        actual = is_ci_threshold_eligible(issue)
+        if actual != expected:
+            raise RuntimeError(
+                "Internal CI policy self-check failed for "
+                f"{issue!r}: expected {expected}, got {actual}."
+            )
+
+
 def main():
     args = parse_args()
+    _assert_ci_policy_invariants()
 
     api_key = os.environ.get("DEEPSEEK_API_KEY")
 
@@ -3516,6 +3620,7 @@ def main():
         "filter": filter_name,
         "filter_label": FILTER_LABELS[filter_name],
         "model": MODEL if DEEPSEEK_AI_CHECKS_ENABLED else f"{MODEL} (disabled)",
+        "ai_review_policy_version": AI_REVIEW_POLICY_VERSION,
         "ai_checks_enabled": DEEPSEEK_AI_CHECKS_ENABLED,
         "files_reviewed": len(files),
         "checks": [check.name for check in checks],
@@ -3544,10 +3649,14 @@ def main():
     print()
 
     print(
-        "CI thresholds: "
+        "CI thresholds (deterministic findings + high-confidence AI defects only): "
         f"high > {args.fail_high}, "
         f"medium > {args.fail_medium}, "
         f"API/check errors > {args.fail_api_errors}"
+    )
+    print(
+        "AI advisory findings excluded from CI thresholds: "
+        f"{ci_result['advisory_ai_issue_count']}"
     )
 
     if ci_result["passed"]:
