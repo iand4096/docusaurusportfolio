@@ -17,7 +17,6 @@ topics:
   - information-architecture
   - documentation-governance
 technologies:
-  - codetreedocs
   - git
   - markdown
   - jenkins
@@ -26,7 +25,6 @@ technologies:
   - mermaid
   - c4-model
   - sphinx
-  - docker
   - amp
   - agentic-ai
   - vale
@@ -48,9 +46,7 @@ tags:
   - agentic-ai
   - amp
   - c4-model
-  - codetreedocs
   - developer-experience
-  - docker
   - docs-as-code
   - documentation-engineering
   - documentation-governance
@@ -68,17 +64,17 @@ tags:
 
 ## Context
 
-At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a custom internal docs-as-code platform and developer portal that consolidated existing documentation into a single modern system. It hosted documentation for a large internal API platform with a developer mailing list of approximately 1,200 subscribers. The documentation was used by quantitative analysts and developers building applications for Morgan Stanley’s Institutional Securities business.
+At Morgan Stanley, I led the design and evolution of a custom internal docs-as-code platform and developer portal that consolidated existing documentation into a single modern system. It hosted documentation for a large internal API platform with a large developer audience. The documentation was used by quantitative analysts and developers building applications across the business.
 
-Codetreedocs was designed to replace fragmented wiki-based documentation with a Git-based publishing workflow to make it easier for engineers and technical writers to create, maintain, review, and discover documentation.
+The new platform was designed to replace fragmented legacy documentation with a Git-based publishing workflow to make it easier for engineers and technical writers to create, maintain, review, and discover documentation.
 
 I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and later contributed directly to the codebase, once they had implemented the main features. My efforts included extending the platform and resolving issues as the site scaled.
 
 ## Challenge
 
-* Replace fragmented documentation spread across legacy wiki and docs-as-code-based systems with a single platform.
+* Replace fragmented documentation spread across legacy documentation systems with a single platform.
 * Make documentation contributions practical and as easy as possible for a large engineering community.
-* Store the documentation in Git alongside the code in a large monorepo.
+* Store the documentation in Git alongside application source.
 * Provide scalable publishing, search, and navigation.
 * Migrate valuable legacy content without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.

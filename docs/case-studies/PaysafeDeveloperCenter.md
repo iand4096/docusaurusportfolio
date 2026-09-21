@@ -43,6 +43,8 @@ Following Optimal Payments' acquisition of Skrill Group in August 2015 and the c
 
 I defined the documentation strategy and information architecture, specified the authoring and publishing platform, planned the legacy-content migration, and worked with Paysafe's web development team and an external consultancy on the implementation. I led a team of three technical writers while remaining hands-on, authoring new API and integration documentation.
 
+See current version of the [Paysafe Developer Center](https://developer.paysafe.com) for reference.
+
 ## Challenge
 
 The project involved:
@@ -67,7 +69,7 @@ Documentation changes were developed in Git feature branches and built for revie
 
 Flare served as the authoritative documentation source, while TYPO3 acted as the delivery CMS; a custom publishing tool incrementally synchronised the two.
 
-The TYPO3 integration created records for new content, updated changed records, removed deleted content, and synchronised changes to the Flare table of contents with the site's navigation. Because synchronisation applied only the required deltas, unchanged CMS records were not recreated and their cached pages were not unnecessarily invalidated.
+The TYPO3 integration created records for new content, updated changed records, removed deleted content, and synchronised changes to the Flare table of contents with the site's navigation. Because synchronisation applied only the required deltas, unchanged CMS records were not recreated and users' cached browser pages were not unnecessarily invalidated.
 
 For urgent production fixes, changes could be made directly in TYPO3 and subsequently backported into Flare/Git, ensuring that the authoritative source was brought back into sync with production.
 
