@@ -25,7 +25,6 @@ topics:
   - developer-experience
   - information-architecture
 technologies:
-  - codetreedocs
   - git
   - docker
   - github-actions
@@ -33,7 +32,6 @@ technologies:
 lifecycle:
   - current
 tags:
-  - codetreedocs
   - developer-experience
   - docker
   - docs-as-code
@@ -57,11 +55,11 @@ I have recruited, managed, and mentored technical writers delivering API, SDK, a
 
 ## Platform and product ownership
 
-At Morgan Stanley, I led the design and evolution of **Codetreedocs**, a large-scale internal docs-as-code platform and developer portal supporting an API platform with approximately 1,200 developer mailing-list subscribers.
+At Morgan Stanley, I led the design and evolution of a large-scale internal docs-as-code platform and developer portal supporting an API platform with a large internal developer audience.
 
 I owned product direction, requirements, solution design, testing, quality, and feature prioritisation. I initially worked with a dedicated engineering team on implementation and later contributed directly to the codebase as the platform evolved.
 
-The site grew from approximately **700 pages to more than 3,200 pages over three years**, supported by increasing contributions from the wider engineering community.
+The site grew from approximately **700 pages to more than 3,000 pages over three years**, supported by increasing contributions from the wider engineering community.
 
 ## Cross-functional delivery
 
@@ -70,6 +68,6 @@ I have worked closely with software engineering, web development, DevOps, IDE to
 * Launching and evolving developer portals.
 * Designing Git- and CI-based documentation workflows.
 * Delivering IDE plugins to help engineers create documentation.
-* Moving documentation infrastructure onto Docker-based hosting.
+* Moving documentation infrastructure onto containerized hosting.
 * Using analytics to prioritise migration and content improvements.
 * Introducing automation and AI-assisted workflows to improve documentation production and maintenance.

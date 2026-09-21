@@ -19,12 +19,10 @@ topics:
 technologies:
   - git
   - markdown
-  - jenkins
   - intellij-idea
   - plantuml
   - mermaid
   - c4-model
-  - sphinx
   - amp
   - agentic-ai
   - vale
@@ -38,7 +36,7 @@ sidebar_custom_props:
       pages for a large developer community
     highlights:
       - Documentation platform strategy and product ownership
-      - Git, Markdown and Jenkins publishing workflows
+      - Git, Markdown and CI/CD publishing workflows
       - IDE tooling, migration automation and diagrams-as-code
       - Large-scale adoption, governance and platform evolution
     ariaLabel: Read the enterprise developer documentation platform case study
@@ -53,12 +51,10 @@ tags:
   - git
   - information-architecture
   - intellij-idea
-  - jenkins
   - languagetool
   - markdown
   - mermaid
   - plantuml
-  - sphinx
   - vale
 ---
 
@@ -112,7 +108,7 @@ I worked with engineers from the internal tooling team to improve the authoring 
 
 * **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without requiring specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
 
-* **Search and navigation for a growing documentation set**. I designed the search approach, combining fast client-side lookup with FlexSearch.js and slower RAG-based search for complex natural-language queries. I also tested search behaviour and retrieval quality; the engineering team implemented the solution.
+* **Search and navigation for a growing documentation set**. I designed the search approach, combining fast JavaScript client-side lookup and slower RAG-based search for complex natural-language queries. I also tested search behaviour and retrieval quality; the engineering team implemented the solution.
 
 * **The ability to reuse content in multiple locations and embed code samples directly from source**. This reduced duplication and maintenance effort by allowing shared content and code examples to be updated centrally.
 
@@ -122,13 +118,13 @@ I led the successful migration of the documentation platform to the firm’s new
 
 ### Content migration
 
-I developed automated content migration tooling for the internal wiki and Sphinx, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 wiki pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. I subsequently created IDE-based tooling to allow content owners to migrate and validate their own documentation, making the process more scalable.
+I developed automated content migration tooling for several legacy documentation systems, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams. I subsequently created IDE-based tooling to allow content owners to migrate and validate their own documentation, making the process more scalable.
 
 As the platform matured, I contributed directly to its codebase using Amp and agentic AI-assisted development. This work included adding support for a variety of diagrams-as-code formats including PlantUML, Mermaid as well as C4 / Structurizr architecture diagrams. I also personally diagnosed and fixed bugs in the link-checking implementation.
 
 ## Impact
 
-The platform grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work, content migrations, and contributions from the wider engineering community.
+The platform grew from approximately **700 pages to more than 3,000 pages over three years**, through a combination of my own documentation work, content migrations, and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
 
