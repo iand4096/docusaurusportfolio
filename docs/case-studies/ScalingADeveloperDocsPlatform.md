@@ -87,6 +87,64 @@ The MkDocs pilot validated the docs-as-code model, but it also exposed limitatio
 
 A custom platform required greater investment, but gave us control of the complete rendering and publishing pipeline. We could ensure that features worked consistently in combination, provide the same rendering behaviour in the IDE and published site, and add capabilities such as source-code injection and other Markdown extensions precisely to our requirements. It also allowed the platform to be implemented in Scala, the primary language of the repository in which it lived, making it easier for the engineering community to maintain and extend.
 
+### Documentation platform workflow
+
+The platform supported the full documentation lifecycle, from Markdown authoring and Git-based review through automated build, publishing, and discovery.
+
+<div class="diagram-wrap">
+
+```mermaid
+%%{init: {
+  "flowchart": {
+    "useMaxWidth": false,
+    "nodeSpacing": 45,
+    "rankSpacing": 55
+  },
+  "themeVariables": {
+    "fontSize": "17px"
+  }
+}}%%
+
+flowchart TD
+
+    A["fa:fa-user Authoring<br/>Markdown · IntelliJ live preview"]
+
+    B["fa:fa-code-branch Review<br/>Git · pull requests"]
+
+    C["fa:fa-gears Build & quality<br/>Rendering · automated checks"]
+
+    D["fa:fa-rocket Publish<br/>CI/CD · containerised hosting"]
+
+    E["fa:fa-globe Developer portal<br/>Published documentation"]
+
+    F["fa:fa-magnifying-glass Discovery<br/>Keyword + RAG search"]
+
+    M["fa:fa-file-import Legacy migration<br/>Automated conversion tooling"]
+
+    P["fa:fa-diagram-project Platform capabilities<br/>Reusable content · code samples<br/>Diagrams-as-code"]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+
+    M --> B
+    P --> C
+
+    classDef author fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
+    classDef review fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
+    classDef build fill:#F4EEDF,stroke:#9A7B45,color:#1F2937,stroke-width:1.4px;
+    classDef publish fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.4px;
+    classDef support fill:#ECE8F2,stroke:#76658B,color:#1F2937,stroke-width:1.4px;
+
+    class A author;
+    class B review;
+    class C build;
+    class D,E,F publish;
+    class M,P support;
+```
+</div>
 
 ### Design priorities
 

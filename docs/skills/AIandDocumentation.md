@@ -70,7 +70,7 @@ I created **SKILL.md** guidance for developers using AI coding agents to generat
 
 ## AI-assisted development
 
-I have used agentic coding assistants including **Amp, Claude, and GitHub Copilot** while extending the documentation platform. Examples include adding PlantUML support, fixing problems with documentation link checking, and creating tooling for tasks such as content migration. For larger changes. I generally work from a written specification by defining the requirements in Markdown first and then use AI to help generate or modify the implementation. Finally, I test the resulting code extensively before accepting it.
+I have used agentic coding assistants including **Amp, Claude, and GitHub Copilot** while extending the documentation platform. Examples include adding PlantUML support, fixing problems with documentation link checking, and creating tooling for tasks such as content migration. For larger changes, I generally work from a written specification by defining the requirements in Markdown first and then use AI to help generate or modify the implementation. Finally, I test the resulting code extensively before accepting it.
 
 ## Retrieval and RAG
 
@@ -86,4 +86,4 @@ Where source material could not be sent to external services, I have used locall
 
 ## MCP and AI tooling experiments
 
-I built an experimental **Model Context Protocol (MCP)** server with **FastMCP** to test whether AI agents could call documentation tools such as link checkers etc.
+I built an experimental **Model Context Protocol (MCP)** server with **FastMCP** to test whether AI agents could call documentation tools such as link checkers.

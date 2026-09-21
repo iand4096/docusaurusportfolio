@@ -55,7 +55,7 @@ This meant treating the taxonomy as a repository artefact rather than editorial 
 
 One rule drives the implementation:
 
-> *AI can propose changes to the central taxonomy and metadata applied to documents, but humans must approve them. Central tooling is used to change the canonical taxonomy in place of manual modification*
+> *AI can propose changes to the central taxonomy and metadata applied to documents, but humans must approve them. Central tooling is used to change the canonical taxonomy in place of manual modification*.
 
 AI can make a useful first pass at questions such as which existing terms apply to a document or whether the vocabulary lacks an important concept. However, I do not let the model determine whether the taxonomy is valid or whether a new term becomes canonical.
 

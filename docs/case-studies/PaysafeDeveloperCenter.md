@@ -73,7 +73,10 @@ The TYPO3 integration created records for new content, updated changed records, 
 
 For urgent production fixes, changes could be made directly in TYPO3 and subsequently backported into Flare/Git, ensuring that the authoritative source was brought back into sync with production.
 
-The following diagram summarizes the implementation:
+### Developer Center authoring and publishing workflow
+
+The diagram below shows how the Developer Center’s documentation workflow connected Git-based authoring and review with a custom publishing pipeline into Paysafe’s TYPO3-based web platform.
+
 
 <div class="diagram-wrap">
 
@@ -163,7 +166,6 @@ To make the new workflow sustainable beyond the initial implementation, I traine
 The first phase of the Developer Center soft-launched in December 2016 during a period of rapid growth and change at Paysafe. The company reported 2016 revenue of just over $1 billion while continuing to integrate the Skrill and Optimal Payments businesses.
 
 The Developer Center had visibility at company level: Paysafe included its launch in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf) as one of the achievements supporting its “State-of-the-art technology” strategy and also mentioned it in its January 2017 trading update.
-
 
 ## Lessons learned
 

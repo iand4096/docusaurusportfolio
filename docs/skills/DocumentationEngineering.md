@@ -121,7 +121,7 @@ I have evaluated, extended and developed documentation platforms to meet require
 * Contributor experience
 * User feedback collection
 
-I have modified existing MkDocs plugins where required. I also led and specified the requirements for a custom static-site generator, was closely involved in its technical design and testing, and later contributed directly to its development.
+I have modified existing MkDocs plugins where required. I also led and specified the requirements for a custom static-site generator, contributed to its technical design, carried out all the user testing, and later worked directly on its development.
 
 ## Markdown and parser engineering
 
@@ -148,7 +148,7 @@ My migration work has included:
 * Wiki-to-Markdown conversion
 * Sphinx-to-Markdown conversion
 * Confluence XHTML to MadCap Flare XHTML conversion
-* Link preservation and rewriting, including conversion of absolute links to relative link
+* Link preservation and rewriting, including conversion of absolute links to relative links
 * Front-matter and metadata generation
 * Structural content transformation
 * Reusable-content conversion

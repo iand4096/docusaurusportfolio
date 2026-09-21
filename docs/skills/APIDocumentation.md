@@ -93,7 +93,7 @@ My experience includes:
 * Describing REST endpoints, SDK methods, request and response models and authentication configuration
 * Outlining multistep API workflows and sequence diagrams
 * Documenting how to access and use APIs securely using authentication and encryption
-* Webhooks and asynchronous processing
+* Handling webhooks and other asynchronous processing
 * Describing error handling, error codes and retry strategies
 * Creating code examples designed around realistic developer tasks
 
