@@ -81,7 +81,7 @@ I owned the product direction, requirements, testing, and quality. I initially w
 
 Developers were already writing simple Markdown files alongside their code instead of using the existing wiki-based authoring tools, but they had no dedicated tooling or publishing environment to support that way of working.
 
-Instead of trying to move developers back into a separate documentation system, I chose to support the way they were already working and keep ownership with the teams closest to the technical knowledge.
+Instead of trying to corral developers back into a separate documentation system, I chose to support the way they were already working and keep ownership with the teams closest to the technical knowledge.
 
 The MkDocs pilot validated the docs-as-code model, but it also exposed limitations in relying on an ecosystem of independently developed plugins for a complex documentation set. We needed multiple plugins from different authors to support the required content features, and those plugins did not always work correctly in combination. For example, MkDocs' incremental build capability, which could have helped compensate for the lack of accurate IDE preview for plugin-generated content, failed when used with the combination of plugins we required.
 
@@ -183,7 +183,7 @@ I subsequently created IDE-based tooling that allowed content owners to migrate 
 
 ### Platform evolution
 
-I led the migration of the documentation platform to the firm’s new containerised hosting solution with a custom domain, implementing redirects for legacy URLs and resolving post-launch issues. A major contribution was my proposal to serve the generated documentation from an attached filesystem instead of copying the content into the container, reducing build time by approximately **15 minutes**.
+I led the migration of the documentation platform to the firm’s new containerised hosting solution with a custom domain, implementing redirects for legacy URLs and resolving minor post-launch issues. A major contribution was my proposal to serve the generated documentation from an attached filesystem instead of copying the content into the container, reducing build time by approximately **15 minutes**.
 
 As the platform matured, I also began contributing directly to its codebase using agentic AI-assisted development. This included adding support for additional diagrams-as-code formats, including PlantUML, Mermaid, and C4/Structurizr architecture diagrams. I also personally diagnosed and fixed bugs in the link-checking implementation.
 

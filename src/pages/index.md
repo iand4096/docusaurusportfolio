@@ -11,7 +11,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a <Link to="#engineering-background">software-engineering background</Link>.
 
-I combine in-depth knowledge management experience with hands-on engineering. My experience includes:
+My experience includes:
 
 <CapabilityGrid variant="checklist"> 
 
@@ -63,7 +63,7 @@ API implementation and testing, security validation, software debugging, automat
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
 
   <div className="card-description">
-  Led the design and evolution of Codetreedocs, an internal documentation platform that grew from 700 pages to more than 3,200 for a developer mailing-list containing approximately 1,200 subscribers. My responsibilities also included creating documentation for Optimus, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
+  Led the design and evolution of an internal enterprise documentation platform that grew from 700 pages to more than 3,000 for an audience of quantative analysts and application developers.  My responsibilities also included creating documentation for [Optimus Cirrus](https://github.com/morganstanley/optimus-cirrus), a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
 </div>
 
   <span className="card-link">Read case study →</span>
@@ -93,7 +93,7 @@ API implementation and testing, security validation, software debugging, automat
 
 I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C, and C++/STL. Recent development work includes using Scala for documentation engineering and building full-stack test API integrations with Python/Flask and JavaScript to validate technical documentation. This engineering background informs my approach to technical writing by helping me verify implementation details, work effectively with APIs and docs-as-code tool chains, and test documentation against real software behaviour.
 
-## Professional profile
+## Employment history
 
 For employment history and professional experience, visit my
 [LinkedIn profile](https://www.linkedin.com/in/ian-drewett/).
