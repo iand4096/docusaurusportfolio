@@ -64,6 +64,7 @@ The Digital Enablement API provides access to Mastercard Digital Enablement Serv
 * Test an API that did not work with standard REST API testing tools such as Postman.
 * Receive and validate asynchronous webhook notifications during end-to-end testing.
 * Identify and resolve problems in the Mastercard Digital Enablement API reference documentation which the guide depended on.
+* Work with a custom CMS integration that had major authoring and publishing limitations, including reliability problems, poor code-block formatting, limited preview, unreliable publishing, and inadequate support for content reuse and automated validation.
 
 ## My approach
 
@@ -81,6 +82,13 @@ While testing the documented workflows, I found some issues and omissions in the
 * Technical guidance for OAuth 1.0 authentication, field-level encryption, API requests, responses, and webhook notifications.
 * Corrections and improvements to the supporting Digital Enablement API reference documentation in OpenAPI schema format.
 
+
+:::note[Published guide]
+
+The guide is no longer available on Mastercard Developers as MDES for Merchants is being withdrawn at the end of this year. You can find a version on the [Web Archive](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/)
+
+:::
+
 ### Internal deliverables
 
 To encourage a culture of end-to-end product testing, I also provided the product owner and other technical writers with:
@@ -88,11 +96,9 @@ To encourage a culture of end-to-end product testing, I also provided the produc
 * Custom Python code used to test and validate the integration.
 * A cloud-hosted Flask implementation used to receive webhook notifications.
 
-:::note[Published guide]
+Additionally:
 
-The guide is no longer available on Mastercard Developers as MDES for Merchants is being withdrawn at the end of this year. You can find a version on the [Web Archive](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/)
-
-:::
+* I helped recommend and test an early version of the replacement doc-as-code system for authoring technical content after completing this guide. Mastercard subsequently adopted docs-as-code for their Developer Center.
 
 ## Outcome
 

@@ -85,3 +85,4 @@
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QThe diagram below shows how the Developer Center's documentation workflow connected Git-based authoring and review with a custom publishing pipeline into Paysafe's TYPO3-based web platform.\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QDeveloper Center authoring and publishing workflow\\E$"}
 {"rule":"NOW","sentence":"^\\QNo\nIs a migration structurally valid?\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QMastercard subsequently adopted docs-as-code for their Developer Center.\\E$"}
