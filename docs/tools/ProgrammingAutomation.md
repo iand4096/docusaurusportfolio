@@ -76,8 +76,6 @@ tags:
 
 ## Programming and automation
 
-### Engineering background
-
 ### Python
 
 * Practical **Python** experience covering documentation tooling, content migration, API integrations, data processing and workflow automation.
@@ -122,4 +120,3 @@ I have nearly five years of C/C++ software engineering experience; this includes
 
 * Background in **C and assembly-language programming**, including kernel and user-mode device-driver development.
 * Experience with low-level systems debugging, including kernel and driver diagnostics, memory inspection and runtime analysis.
-

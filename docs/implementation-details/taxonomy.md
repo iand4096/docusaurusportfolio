@@ -511,7 +511,7 @@ This showed that the migration preflight was not only checking the requested voc
 
 ## AI and repository tooling responsibilities
 
-| Question                                          | Mechanism                       |
+| Question                                          | Answer                          |
 | ------------------------------------------------- | ------------------------------- |
 | What is this document about?                      | AI semantic classification      |
 | Is `openapi` a valid active canonical ID?         | Repository validation           |

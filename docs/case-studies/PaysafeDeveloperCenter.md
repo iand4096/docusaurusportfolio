@@ -43,7 +43,7 @@ Following Optimal Payments' acquisition of Skrill Group in August 2015 and the c
 
 I defined the documentation strategy and information architecture, specified the authoring and publishing platform, planned the legacy-content migration, and worked with Paysafe's web development team and an external consultancy on the implementation. I led a team of three technical writers while remaining hands-on, authoring new API and integration documentation.
 
-See current version of the [Paysafe Developer Center](https://developer.paysafe.com) for reference.
+See the current version of the [Paysafe Developer Center](https://developer.paysafe.com) for reference.
 
 ## Challenge
 
@@ -76,7 +76,6 @@ For urgent production fixes, changes could be made directly in TYPO3 and subsequ
 ### Developer Center authoring and publishing workflow
 
 The diagram below shows how the Developer Center’s documentation workflow connected Git-based authoring and review with a custom publishing pipeline into Paysafe’s TYPO3-based web platform.
-
 
 <div class="diagram-wrap">
 

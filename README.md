@@ -24,7 +24,7 @@ A QA report is generated for every change to the site and published at:
 
 https://iand4096.github.io/docusaurusportfolio/qa/
 
-The pipeline is implemented in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.
+I implemented the pipeline in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.
 
 ### What it checks
 

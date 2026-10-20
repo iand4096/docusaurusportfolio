@@ -63,7 +63,7 @@ API implementation and testing, security validation, software debugging, automat
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
 
   <div className="card-description">
-  Led the design and evolution of an internal enterprise documentation platform that grew from 700 pages to more than 3,000 for an audience of quantitative analysts and application developers.  My responsibilities also included creating documentation for [Optimus Cirrus](https://github.com/morganstanley/optimus-cirrus), a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
+  Led the design and evolution of an internal enterprise documentation platform that grew from 700 pages to more than 3,000 for an audience of quantitative analysts and software developers. My responsibilities also included creating documentation for [Optimus Cirrus](https://github.com/morganstanley/optimus-cirrus), a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
 </div>
 
   <span className="card-link">Read case study →</span>
@@ -100,7 +100,7 @@ For employment history and professional experience, visit my
 
 :::tip[Automated documentation QA]
 
-My portfolio has a QA pipeline implemented using GitHub Actions which runs automatically on any committed changes as part of Continuous Integration. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link, and spelling checks.
+My portfolio has a QA pipeline implemented using GitHub Actions which runs automatically on any committed changes as part of Continuous Integration. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link and spelling checks.
 
 **[View the live report →](pathname:///qa/)**
 :::
