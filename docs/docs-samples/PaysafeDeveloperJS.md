@@ -84,6 +84,12 @@ I tested the documented workflow against the Paysafe.js implementation, with inp
 * Supporting configuration, validation, styling, and error-handling guidance.
 * API reference documentation.
 
+:::note[Published guide]
+
+The current version of the Paysafe JS developer guide can be found here on the [Paysafe Developer Center](https://developer.paysafe.com/en/api-docs/paysafe-js/overview/)
+
+:::
+
 ## Outcome
 
 The guide gave developers a practical route from understanding Paysafe.js and its compliance benefits to completing a working browser-based payment-tokenisation integration.

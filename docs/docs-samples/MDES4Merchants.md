@@ -90,7 +90,7 @@ To encourage a culture of end-to-end product testing, I also provided the produc
 
 :::note[Published guide]
 
-The guide is publicly available on Mastercard Developers. A direct link is omitted to comply with the site’s linking terms. Search for **"MDES for Merchants Use Case Guide"** to view the current publication.
+The guide is no longer available on Mastercard Developers as MDES for Merchants is being withdrawn at the end of this year. You can find a version on the [Web Archive](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/)
 
 :::
 
