@@ -85,7 +85,7 @@ While testing the documented workflows, I found some issues and omissions in the
 
 :::note[Published guide]
 
-The guide is no longer available on Mastercard Developers as MDES for Merchants is being withdrawn at the end of this year. You can find a version on the [Web Archive](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/)
+The guide is no longer available on Mastercard Developers as MDES for Merchants is being withdrawn at the end of this year. You can find a version on the [Web Archive](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/). You may have click the 5 captures link and select Nov 1st 2021 from the calendar.
 
 :::
 
