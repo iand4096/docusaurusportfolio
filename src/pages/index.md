@@ -91,7 +91,7 @@ API implementation and testing, security validation, software debugging, automat
 
 ## Software engineering background {/* #engineering-background */}
 
-I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C, and C++/STL. Recent development work includes using Scala for documentation engineering and building full-stack test API integrations with Python/Flask and JavaScript to validate technical documentation. This engineering background informs my approach to technical writing by helping me verify implementation details, work effectively with APIs and docs-as-code tool chains, and test documentation against real software behaviour.
+I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C, and C++/STL. Recent development work includes using Scala for documentation engineering and building full-stack test API integrations with Python/Flask and JavaScript to validate technical documentation. This engineering background informs my approach to technical writing: it helps me verify implementation details, work effectively with APIs and docs-as-code tool chains, and test documentation against real software behaviour.
 
 ## Employment history
 
