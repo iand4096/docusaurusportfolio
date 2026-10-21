@@ -20,7 +20,7 @@ API_URL = "https://api.deepseek.com/chat/completions"
 # alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
 # DeepSeek exposes a pinned model identifier in future.
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
-AI_REVIEW_POLICY_VERSION = "2026-09-21-conservative-v1"
+AI_REVIEW_POLICY_VERSION = "2026-10-21-portfolio-precision-v2"
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
 # Set it back to True when AI review should be re-enabled.
@@ -674,6 +674,65 @@ structure, scannability, over-explanation
 These findings will normally use type "improvement".
 """
 
+# Conservative portfolio calibration. These phrases identify optional requests for
+# supplementary evidence rather than demonstrated defects. They are not used to
+# suppress objective discrepancies, grammar errors or other QA tools' findings.
+PORTFOLIO_OPTIONAL_CONTEXT_PATTERNS = tuple(re.compile(pattern, re.I) for pattern in (
+    r"\b(no|without|lacks?|missing|does not|doesn't|not)\b.{0,100}\b(scale|metrics?|figures?|baseline|percentage|adoption|audience|users|outcome|impact|scope|detail|context|evidence|constraint|stakeholders?)\b",
+    r"\b(add|include|provide|state|describe|expand|clarify|indicate|mention)\b.{0,95}\b(scale|metrics?|figures?|baseline|percentage|adoption|audience|outcome|impact|scope|detail|context|evidence|constraint|stakeholders?)\b",
+    r"\b(cannot|can't|unable to)\b.{0,65}\b(judge|assess|tell|evaluate)\b.{0,65}\b(significance|scale|impact|value|scope)\b",
+))
+
+
+def is_optional_portfolio_expansion(issue):
+    """Conservatively suppress suggestions to add more evidence/context.
+
+    Never suppress a demonstrated contradiction, a false claim, or actual
+    language error. This intentionally only applies to optional portfolio
+    improvements, not grammar, linting, link or consistency checks.
+    """
+    if issue.get("category") != "portfolio" or issue.get("type") != "improvement":
+        return False
+    combined = f"{issue.get('message', '')} {issue.get('suggestion', '')}"
+    if re.search(r"\b(inconsistent|contradict|incorrect|wrong|misleading|conflict|discrepanc|confus(?:ing|ion)|ambiguous|factually)\b", combined, re.I):
+        return False
+    return any(pattern.search(combined) for pattern in PORTFOLIO_OPTIONAL_CONTEXT_PATTERNS)
+
+
+def filter_portfolio_findings(issues, include_advisory=False):
+    """Remove low-value expansion requests unless explicitly requested."""
+    if include_advisory:
+        return list(issues), 0
+    kept = [issue for issue in issues if not is_optional_portfolio_expansion(issue)]
+    return kept, len(issues) - len(kept)
+
+
+def deduplicate_ai_findings(issues):
+    """Collapse repeated AI feedback about the same quoted passage.
+
+    Prefer defects over suggestions, then higher confidence; do not remove
+    distinct deterministic-check findings or distinct concerns in other lines.
+    """
+    priority = {"defect": 2, "improvement": 1, "diagram": 0}
+    conf = {"high": 2, "medium": 1, "low": 0}
+    chosen = {}
+    for index, issue in enumerate(issues):
+        if issue.get("source") != "ai":
+            chosen[("other", index)] = issue
+            continue
+        raw = str(issue.get("original", ""))
+        normalized = re.sub(r"\s+", " ", raw).strip().casefold()
+        key = ("ai", issue.get("file"), issue.get("line"), normalized)
+        if key not in chosen or (
+            priority.get(issue.get("type"), 0), conf.get(issue.get("confidence"), 0)
+        ) > (
+            priority.get(chosen[key].get("type"), 0),
+            conf.get(chosen[key].get("confidence"), 0),
+        ):
+            chosen[key] = issue
+    return list(chosen.values())
+
+
 class PortfolioReview(AIPageCheck):
     name = "PortfolioReview"
     allowed_categories = {"portfolio"}
@@ -749,6 +808,30 @@ Allowed category:
 portfolio
 
 Use type "improvement".
+
+CALIBRATION: This is a professional portfolio, NOT a mandatory set of case
+studies. Legitimate content types include brief achievement summaries, skills
+inventories, homepage/navigation cards, and detailed case studies. Assess the
+text against its actual purpose. Never require every brief achievement to
+include audience size, implementation details, baselines, adoption statistics,
+formal problem/action/result structure, or a quantified outcome.
+
+Absence of optional additional information is NOT itself a deficiency.
+Do not suggest more metrics, baselines, measurements, technical architecture,
+background constraints, stakeholder counts, or links to private work unless
+without them the existing claim is actually misleading, contradictory, or
+materially unintelligible. Approximate and qualitative outcomes are valid.
+
+Do not assume technical readers need common technologies explained. Do not
+turn concise credible engineering achievements into expanded case studies.
+Do not conflate a possible expansion with a fix. Prefer zero findings when
+the contribution, purpose and professional relevance are already apparent.
+
+Before emitting each suggestion, answer internally:
+- What concrete problem will a reader encounter with the current wording?
+- Is this demonstrable from the supplied text rather than hypothetical?
+- Is it significant enough to justify adding length?
+If not, omit the finding.
 """
 
 class DiagramReview(AIPageCheck):
@@ -3296,6 +3379,12 @@ def parse_args():
     )
 
     parser.add_argument(
+        "--include-advisory",
+        action="store_true",
+        help="Include optional portfolio-context and metrics suggestions (hidden by default).",
+    )
+
+    parser.add_argument(
         "--fail-api-errors",
         type=int,
         default=DEFAULT_FAIL_API_ERRORS,
@@ -3459,6 +3548,18 @@ def main():
                     "error": str(error),
                 }
             )
+    # Consolidate duplicate AI observations and hide speculative requests
+    # for supplementary portfolio context in routine QA runs.
+    before_dedup = len(issues)
+    issues = deduplicate_ai_findings(issues)
+    duplicates_removed = before_dedup - len(issues)
+    issues, optional_suppressed = filter_portfolio_findings(
+        issues, include_advisory=args.include_advisory
+    )
+    print(
+        f"AI quality calibration: {duplicates_removed} duplicates merged, "
+        f"{optional_suppressed} optional portfolio expansions suppressed."
+    )
     ci_result = evaluate_ci(
         issues,
         errors,
@@ -3473,6 +3574,9 @@ def main():
         "filter_label": FILTER_LABELS[filter_name],
         "model": MODEL if DEEPSEEK_AI_CHECKS_ENABLED else f"{MODEL} (disabled)",
         "ai_review_policy_version": AI_REVIEW_POLICY_VERSION,
+        "include_advisory": args.include_advisory,
+        "duplicate_ai_findings_removed": duplicates_removed,
+        "optional_portfolio_suggestions_suppressed": optional_suppressed,
         "ai_checks_enabled": DEEPSEEK_AI_CHECKS_ENABLED,
         "files_reviewed": len(files),
         "checks": [check.name for check in checks],
