@@ -59,7 +59,7 @@ At Morgan Stanley, I led the design and evolution of a large-scale internal docs
 
 I owned product direction, requirements, solution design, testing, quality, and feature prioritisation. I initially worked with a dedicated engineering team on implementation and later contributed directly to the codebase as the platform evolved.
 
-The site grew from approximately **700 pages to more than 3,000 pages over three years**, supported by increasing contributions from the wider engineering community.
+The site grew from approximately **700 pages to more than 3,200 pages over three years**, supported by increasing contributions from the wider engineering community.
 
 ## Cross-functional delivery
 

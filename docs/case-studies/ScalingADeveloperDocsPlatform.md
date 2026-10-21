@@ -1,7 +1,7 @@
 ---
 title: Scaling an Enterprise Developer Docs Platform
 description: How I scaled a custom enterprise docs-as-code platform from 700 to 
-  over 3,000 pages for a large developer community
+  over 3,200 pages for a large developer community
 slug: /case-studies/scalingdeveloperdocs
 sidebar_position: 1
 type:
@@ -189,7 +189,7 @@ As the platform matured, I also began contributing directly to its codebase usin
 
 ## Impact
 
-The platform grew from approximately **700 pages to more than 3,000 pages over three years**, through a combination of my own documentation work, content migrations, and contributions from the wider engineering community.
+The platform grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work, content migrations, and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
 
