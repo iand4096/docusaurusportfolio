@@ -68,6 +68,6 @@ I have worked closely with software engineering, web development, DevOps, IDE to
 * Launching and evolving developer portals.
 * Designing Git- and CI-based documentation workflows.
 * Delivering IDE plugins to help engineers create documentation.
-* Moving documentation infrastructure onto containerized hosting.
+* Moving documentation infrastructure onto containerised hosting.
 * Using analytics to prioritise migration and content improvements.
 * Introducing automation and AI-assisted workflows to improve documentation production and maintenance.
