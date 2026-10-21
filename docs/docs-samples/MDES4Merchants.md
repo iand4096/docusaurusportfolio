@@ -90,7 +90,7 @@ Once I had working integrations, I used them to test the API workflows and check
 
 I structured the guide around the tasks merchants needed to perform, rather than individual API endpoints. It covered tokenising new and existing cards, managing token lifecycle events, displaying payment information, making payments and handling customer service scenarios.
 
-I also included practical guidance on bulk-tokenisation rate limits, using webhook notifications to maintain token state rather than polling the API, and the requirements for recurring payments and cryptogram storage.
+I created PlantUML sequence diagrams to illustrate the API interactions. The guide also included practical guidance on bulk-tokenisation rate limits, using webhook notifications to maintain token state rather than polling the API, and the requirements for recurring payments and cryptogram storage.
 
 ## Deliverables
 
