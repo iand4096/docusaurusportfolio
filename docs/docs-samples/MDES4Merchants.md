@@ -49,63 +49,71 @@ tags:
   - technical-validation
 ---
 
-## Project overview
+### Project overview
 
-I wrote the first version of the **MDES for Merchants Use Case Guide** while working at Mastercard. The guide explains how merchant developers can use the Mastercard Digital Enablement API to replace payment card numbers - Primary Account Numbers, or PANs - with securely stored payment tokens to reduce the security risks associated with storing payment cards.
+I wrote the first version of the MDES for Merchants Use Case Guide in late 2017, during my first few months at Mastercard. The guide explained how merchant developers can use the MDES Digital Enablement API to replace payment card numbers (PANs) with secure payment tokens, reducing the need to store card details.
 
-Unlike card numbers, tokens can continue to work when the underlying card is replaced or reported lost, making them particularly useful for recurring and subscription payments.
+This API provides access to Mastercard Digital Enablement Service (MDES), the tokenisation technology that also supports digital wallets such as **Apple Pay**.
 
-The Digital Enablement API provides access to Mastercard Digital Enablement Service (MDES), Mastercard’s card-tokenisation platform. The published guide has since received minor updates from other contributors.
+In addition to their security benefits, tokens can often remain valid when the underlying payment card is replaced or reported lost, helping to avoid interruptions to recurring payments.
+
+Other contributors subsequently made minor updates to the published guide.
 
 ## The challenge
 
-* Explain a technically complex and unfamiliar tokenisation workflow to merchant developers.
-* Document non-standard API security requirements, including OAuth 1.0 authentication and field-level encryption.
-* Test an API that did not work with standard REST API testing tools such as Postman.
-* Receive and validate asynchronous webhook notifications during end-to-end testing.
-* Identify and resolve problems in the Mastercard Digital Enablement API reference documentation which the guide depended on.
-* Work with a custom CMS integration that had major authoring and publishing limitations, including reliability problems, poor code-block formatting, limited preview, unreliable publishing, and inadequate support for content reuse and automated validation.
+- Explain an unfamiliar and technically complex tokenisation workflow to merchant developers alongside its API security requirements.
+- Test the MDES Digital Enablement API, which could not be tested using Postman at the time because:
+  - Postman did not support [RSA signatures for OAuth 1.0](https://github.com/postmanlabs/postman-app-support/issues/2302), as required by Mastercard. Support was added in 2020.
+  - Mastercard's field-level encryption and decryption required custom cryptographic code that Postman did not provide.
+- Test asynchronous webhook notifications, which were blocked by the corporate firewall.
+- Identify and resolve errors and omissions in the supporting Digital Enablement API reference.
+- Work with Mastercard's custom CMS integration, which had reliability problems affecting both authoring and publishing. It also had poor code-block formatting, limited preview capabilities and inadequate support for content reuse.
 
 ## My approach
 
-To understand and verify the complete integration workflow, I created custom test code in Python using the Requests library and open-source cryptography libraries. This allowed me to generate the required OAuth 1.0 authentication data, encrypt and decrypt protected fields, send API requests, and inspect the responses.
+I had little previous practical experience of cryptography and had never used cryptographic libraries in Python. To understand and test the Digital Enablement API, I developed an end-to-end Python integration for tokenisation and webhook handling, using Flask, Requests and open-source cryptography libraries.
 
-I also developed a cloud-hosted Flask application on PythonAnywhere to provide a publicly accessible endpoint for receiving and examining webhook notifications. This provided the means to test and document asynchronous parts of the merchant tokenisation lifecycle that could not be validated within the corporate firewall.
+Mastercard's field-level encryption combined symmetric (AES) and asymmetric (RSA) encryption. Sensitive cardholder data was encrypted using a one-time AES session key. The session key was then encrypted using Mastercard's RSA public key and sent with the encrypted data.
 
-While testing the documented workflows, I found some issues and omissions in the supporting API reference. I worked with the product owner to correct these problems.
+I had to learn how to:
+
+1. Load RSA keys and certificates in the formats required by the Python libraries.
+2. Implement Mastercard's OAuth 1.0 RSA-SHA256 request signing, including request-body hashing.
+3. Implement AES encryption and RSA session-key encryption.
+4. Decrypt the encrypted API responses.
+
+Getting the integration to work involved extensive research and trial and error, particularly with binary data and character encoding, AES and RSA padding, request-body hashing and certificate formats. I spent several weekends investigating and resolving these problems.
+
+I also developed a small cloud-hosted Flask application on PythonAnywhere to receive and decrypt asynchronous webhook notifications, which were blocked within the corporate firewall.
+
+Once I had working integrations, I used them to test the API workflows and check the reference documentation. I found errors and omissions in the OpenAPI definitions and worked with the product owner to correct them.
+
+I structured the guide around the tasks merchants needed to perform, rather than individual API endpoints. It covered tokenising new and existing cards, managing token lifecycle events, displaying payment information, making payments and handling customer service scenarios.
+
+I also included practical guidance on bulk-tokenisation rate limits, using webhook notifications to maintain token state rather than polling the API, and the requirements for recurring payments and cryptogram storage.
 
 ## Deliverables
 
-### Published deliverables
+### Published guide
 
-* The first version of the **MDES for Merchants Use Case Guide**, covering the end-to-end merchant tokenisation workflow.
-* Technical guidance for OAuth 1.0 authentication, field-level encryption, API requests, responses, and webhook notifications.
-* Corrections and improvements to the supporting Digital Enablement API reference documentation in OpenAPI schema format.
+The first version of the **MDES for Merchants Use Case Guide** was published on Mastercard Developers.
 
-
-:::note[Published guide]
-
-The guide is no longer available on Mastercard Developers as MDES for Merchants is being withdrawn at the end of this year. You can find a version on the [Web Archive](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/). You may have to click the 5 captures link and select Nov 1st 2021 from the calendar.
-
-:::
+The guide is no longer available on the live site, but an [archived version](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/) is available through the Internet Archive. You may need to select the capture dated 1 November 2021.
 
 ### Internal deliverables
 
-To encourage a culture of end-to-end product testing, I also provided the product owner and other technical writers with:
+I shared my Python integration code and Flask webhook receiver with the product owner and other technical writers so they could test the API themselves.
 
-* Custom Python code used to test and validate the integration.
-* A cloud-hosted Flask implementation used to receive webhook notifications.
-
-Additionally:
-
-* I helped recommend and test an early version of the replacement doc-as-code system for authoring technical content after completing this guide. Mastercard subsequently adopted docs-as-code for their Developer Center.
+After completing the guide, I also helped recommend and test an early version of Mastercard's replacement docs-as-code authoring system. Mastercard subsequently adopted docs-as-code for its Developer Center.
 
 ## Outcome
 
-The guide gave merchant developers a practical explanation of how to integrate with a complex tokenisation API whose security and testing requirements could not be demonstrated using standard REST API tools.
+The integration testing led to corrections and improvements to the supporting OpenAPI reference and helped me write accurate integration documentation for MDES for Merchants. Sharing the test code also gave other technical writers and the product owner a way to investigate the API directly, helping to encourage a culture of hands-on API testing that had previously been hindered by the API's technical complexity.
 
-The investigation required to produce the guide also led to extensive improvements to the underlying API reference documentation. The original guide was published on Mastercard Developers and has since received minor updates from other contributors.
+The project required me to learn an unfamiliar technical subject, test the API myself and apply what I learned to the developer documentation.
 
 ## What I would change
 
-If security restrictions allowed, I would provide developers with public runnable examples demonstrating authentication, encryption, decryption, and webhook handling. This was originally omitted due to the burden of maintaining this security-critical code in multiple target languages using approved cryptography libraries.
+If security restrictions allowed, I would provide public runnable examples demonstrating authentication, encryption, decryption and webhook handling.
+
+I did not include these originally because maintaining security-sensitive code in multiple programming languages, using approved cryptography libraries, would have required significant ongoing work.

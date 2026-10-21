@@ -86,3 +86,4 @@
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QDeveloper Center authoring and publishing workflow\\E$"}
 {"rule":"NOW","sentence":"^\\QNo\nIs a migration structurally valid?\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QMastercard subsequently adopted docs-as-code for their Developer Center.\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QMastercard subsequently adopted docs-as-code for its Developer Center.\\E$"}
