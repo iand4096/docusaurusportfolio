@@ -60,11 +60,15 @@ tags:
 
 ## Context
 
-At Morgan Stanley, I led the design and evolution of a custom internal docs-as-code platform and developer portal that consolidated existing documentation into a single modern system. It hosted documentation for a large internal API platform used by a broad community of developers and quantitative analysts.
+At Morgan Stanley, I led the design and evolution of a custom internal docs-as-code platform and developer portal, alongside my work as lead technical writer for the Optimus and RICE frameworks. The platform replaced fragmented legacy documentation for these frameworks with a centralised system using Git-based workflows that made it easier for engineers and technical writers to create, maintain, review and discover content.
 
-The new platform was designed to replace fragmented legacy documentation with a Git-based publishing workflow to make it easier for engineers and technical writers to create, maintain, review, and discover documentation.
+I owned platform direction, requirements, testing and quality, working with a dedicated engineering team on the initial implementation. I later contributed directly to the codebase, extending functionality and resolving issues as adoption grew.
 
-I owned the product direction, requirements, testing, and quality. I initially worked with a dedicated engineering team on the design and later contributed directly to the codebase, once they had implemented the main features. My coding efforts included extending the platform and resolving issues as the site scaled.
+### Documentation content
+
+Optimus and RICE are internal frameworks used by developers and quantitative analysts at Morgan Stanley. Optimus provides a distributed computing and simulation engine for large-scale calculations and *what-if* scenarios, a common UI framework, and an abstraction layer for bitemporal data storage. RICE supports business logic and financial risk calculations. Some of the underlying technology is publicly available in the [Optimus Cirrus GitHub repository](https://github.com/morganstanley/optimus-cirrus).
+
+The initial content consisted of Scala API references, developer onboarding guides, tutorials with Scala code examples, and technical architecture documentation, but the scope expanded as other teams migrated their documentation to the platform due to its ease of use.
 
 ## Challenge
 
