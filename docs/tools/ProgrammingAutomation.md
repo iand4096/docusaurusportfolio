@@ -79,7 +79,7 @@ tags:
 ### Python
 
 * Practical **Python** experience covering documentation tooling, content migration, API integrations, data processing and workflow automation.
-* Developed scripts to migrate and transform large documentation sets into extended **Markdown**, initially using regex replacement lambdas and then more sophisticated class-based handlers as the transformation logic became more complex.
+* Developed scripts to migrate and transform large documentation sets into extended **Markdown**, initially using regexp replacement lambdas and then more sophisticated class-based handlers as the transformation logic became more complex.
 * Used **`pathlib`** to reconstruct documentation links following content migration and restructuring; this includes converting absolute links to relative links and re-linking moved content.
 * Extended an existing **MkDocs** plugin to support additional **Graphviz** diagram-generation modes, including hyperlink-enabled diagrams, using Python `subprocess` to invoke Graphviz.
 * Used Requests and authentication libraries to integrate with REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authentication, JSON payloads, and JSON/XML responses.
