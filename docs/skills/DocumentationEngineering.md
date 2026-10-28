@@ -79,13 +79,13 @@ I build documentation systems using software-engineering practices such as sourc
 
 My docs-as-code experience includes:
 
-* Markdown authoring
-* Using Git branching and pull-request workflows to update the documentation
+* Markdown authoring including using extended versions of Markdown
+* Using Git branching and pull-request workflows to update and version control documentation
 * Command-line Git, including rebasing and resolving merge conflicts
 * Documentation stored alongside source code, including the benefits and trade-offs of this approach
-* Hosting documentation in large repositories and monorepos
+* Hosting documentation in large repositories and monorepos. Knowing when to host documentation alongside code and when to host in a separate repo
 * Automating builds and publishing
-* Promoting and enabling engineering documentation contributions
+* Promoting and enabling engineers to contribute to documentation
 * Review, versioning and traceability through Git
 
 I have also designed contributor workflows, standards and tooling that enable engineers to contribute documentation through normal development workflows.
@@ -194,7 +194,7 @@ On large repositories, these checks catch broken links, invalid Markdown and sty
 
 Documentation engineering also includes making content discoverable once it has been published.
 
-I have integrated traditional enterprise search and fast browser-based search using tools such as central RAG-based retrieval services and FlexSearch.js. 
+I have integrated and tested different types of search from traditional enterprise search and fast browser-based search (using tools like FlexSearch.js) to RAG-based retrieval.
 
 My RAG work has included generating sitemaps for indexing, testing retrieval quality and identifying issues such as the search returning deprecated content. For the latter, I proposed metadata filtering to improve the results.
 

@@ -62,7 +62,7 @@ I designed and built this portfolio as a production-style Docusaurus documentati
 
 ## Challenge
 
-* Build a production-style documentation site using Docusaurus, React/JSX, TypeScript and GitHub Actions.
+* Build a portfolio site using Docusaurus, React/JSX, TypeScript and GitHub Actions.
 * Integrate an LLM API into an automated QA workflow.
 * Combine AI review with deterministic checks such as Markdown linting as well as accessibility, style, and link checks.
 

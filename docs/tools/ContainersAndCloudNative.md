@@ -55,7 +55,7 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 
 * Led a project to migrate a large internal documentation platform to **Docker**, working with a software engineer from the central digital-modernisation team.
 * Defined documentation-platform requirements and helped migrate the web hosting and publishing environment to **Nginx running in Docker**. Built redirect logic so that old links continued to work.
-* Identified a build-performance issue caused by copying approximately **3,000 generated documentation pages into the container**.
+* Identified a build-performance issue caused by copying approximately **3,200 generated documentation pages into the container**.
 * Proposed serving the generated documentation from an attached file system instead, reducing build time by approximately **15 minutes**.
 * Gained experience troubleshooting containerised documentation builds.
 * Built a personal Kubernetes cluster on Proxmox.
@@ -68,7 +68,7 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 
 ### Linux and networking
 
-* Comfortable working in **Linux/Unix environments** and troubleshooting differences between local and CI builds.
-* Practical and theoretical understanding of **TCP/IP networking** developed in my M.Sc. in Computer Science and while documenting networked audio/video and digital-signage systems.
+* Comfortable working in **Linux/Unix environments** and troubleshooting differences between local and CI builds. Extensive experience with Bash, vi, ssh, grep, sed, cURL, etc.
+* Practical and theoretical understanding of **TCP/IP networking** developed during my M.Sc. in Computer Science and while documenting networked audio/video and digital-signage systems.
 * Personal experience configuring **OpenWrt**, firewalls and network services.
 * Basic use of **Wireshark** and **Fiddler** for network troubleshooting.
