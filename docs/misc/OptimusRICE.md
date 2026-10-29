@@ -1,9 +1,5 @@
 # Optimus and RICE - distributed Computing and financial analytics
 
-**Organisation:** Morgan Stanley  
-**Domain:** Enterprise Software, Distributed Computing, Financial Technology, Quantitative Risk Analytics  
-**Technologies:** Scala, Java, JVM, Functional Programming, Graph-Based Computation, Bitemporal Data Storage, Distributed Computing, MongoDB, PostgreSQL, Apache Kafka
-
 ## Overview
 
 Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications. **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Originally associated with the Fixed Income business, it is also being adopted for Commodities products and workflows.
@@ -23,6 +19,8 @@ The ecosystem also includes declarative reactive interfaces for presenting finan
 ### 2. Graph Computational framework - Optimus
 
 Optimus uses a dependency-driven computation graph. Methods annotated with `@node` participate in that graph, allowing the runtime to manage dependencies and coordinate execution. Its model supports asynchronous evaluation, automatic parallelisation, memoization and caching.
+
+Optimus builds a dependency graph from computations defined using `@node`. A node can invoke other nodes, which may themselves have further dependencies, creating a graph of interconnected calculations.
 
 **Referential transparency** is an important principle: results can be reused safely when a function's inputs and execution context remain unchanged. For scenario analysis, `@tweaks` allow tweakable nodes to be evaluated under alternative assumptions without modifying the underlying immutable domain objects. This supports recalculation under alternative market conditions or risk scenarios. A very simple example is shown below.
 
@@ -46,7 +44,7 @@ given(trade.price := 120.0) {
 trade.marketValue  // 1000 (original value)
 ```
 
-
+This generates the following dependency graph:
 
 ```mermaid
 flowchart TD
@@ -73,8 +71,8 @@ flowchart TD
     class P,Q input
     class MV,TMV result
     class TP tweak
-```
 
+```
 
 ### 3. Data access layer - DAL
 
