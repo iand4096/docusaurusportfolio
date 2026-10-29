@@ -1,4 +1,4 @@
-# Optimus and RICE - distributed Computing and financial analytics
+# Optimus and RICE - distributed computing and financial analytics
 
 ## Overview
 
