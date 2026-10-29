@@ -43,7 +43,7 @@ tags:
 
 I designed and implemented a governed taxonomy for a Docusaurus documentation site. The project combined information architecture, docs-as-code automation, editor integration, and AI-assisted classification.
 
-My goal was not only to generate tags, but also to build a system in which writers could classify content efficiently while canonical metadata remained consistent, reviewable, and auditable.
+My goal was just to generate tags, but also to build a system in which writers could classify content efficiently while the canonical set of metadata remained consistent, reviewable, and auditable.
 
 I implemented the taxonomy schema, validation and migration tooling, AI review workflow, and editor integration to make it easy for writers to select appropriate tags from controlled metadata when tagging their documents. The system validates taxonomy changes against the entire documentation set before applying them. All AI suggestions are reviewed by a human before they can affect document metadata or the canonical taxonomy.
 
