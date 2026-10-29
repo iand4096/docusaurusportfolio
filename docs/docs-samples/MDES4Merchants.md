@@ -82,15 +82,22 @@ I had to learn how to:
 3. Implement AES encryption and RSA session-key encryption.
 4. Decrypt the encrypted API responses.
 
-Getting the integration to work involved extensive research and trial and error, particularly with binary data and character encoding, AES and RSA padding, request-body hashing and certificate formats. I spent several weekends investigating and resolving these problems.
+Getting the integration to work involved extensive research and trial and error, particularly with 
 
-I also developed a small cloud-hosted Flask application on PythonAnywhere to receive and decrypt asynchronous webhook notifications, which were blocked within the corporate firewall.
+* binary data and character encoding
+* AES and RSA padding
+* request-body hashing
+* certificate formats
 
-Once I had working integrations, I used them to test the API workflows and check the reference documentation. I found errors and omissions in the OpenAPI definitions and worked with the product owner to correct them.
+I spent several weekends investigating and resolving these problems.
+
+I also developed a small cloud-hosted Flask application on [PythonAnywhere](https://www.pythonanywhere.com/) to receive and decrypt asynchronous webhook notifications, which were blocked within the corporate firewall.
+
+Once I had working integrations, I tested the API workflows and checked the OpenAPI-based reference documentation. I subsequently worked with the product owner to correct these errors and omissions in the OpenAPI definitions.
 
 I structured the guide around the tasks merchants needed to perform, rather than individual API endpoints. It covered tokenising new and existing cards, managing token lifecycle events, displaying payment information, making payments and handling customer service scenarios.
 
-I created PlantUML sequence diagrams to illustrate the API interactions. The guide also included practical guidance on bulk-tokenisation rate limits, using webhook notifications to maintain token state rather than polling the API, and the requirements for recurring payments and cryptogram storage.
+The guide also included practical guidance on bulk-tokenisation rate limits, using webhook notifications to maintain token state rather than polling the API, and the requirements for recurring payments and cryptogram storage. Finally, I created PlantUML sequence diagrams to illustrate the API interactions.
 
 ## Deliverables
 
