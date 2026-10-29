@@ -66,30 +66,36 @@ I owned platform direction, requirements, testing and quality, working with a de
 
 ### Documentation content
 
-Optimus and RICE are internal frameworks used by developers and quantitative analysts at Morgan Stanley. Optimus provides a distributed computing and simulation engine for large-scale calculations and *what-if* scenarios, a common UI framework, and an abstraction layer for bitemporal data storage. RICE supports business logic and financial risk calculations. Some of the underlying technology is publicly available in the [Optimus Cirrus GitHub repository](https://github.com/morganstanley/optimus-cirrus).
+Optimus and RICE are closely related internal platforms used by developers and quantitative analysts at Morgan Stanley.
 
-The initial content consisted of Scala API references, developer onboarding guides, tutorials with Scala code examples, and technical architecture documentation, but the scope expanded as other teams migrated their documentation to the platform due to its ease of use.
+Built on Scala and functional programming principles, **Optimus** provides a graph-based distributed computation engine that supports automatic parallelisation, caching and large-scale *what-if* scenario analysis. Its `@node` and `@tweak` mechanisms enable calculations to be evaluated under alternative financial scenarios without modifying underlying objects.
+
+The platform also includes a common UI framework and a Data Access Layer (DAL) for bitemporal data storage, supporting historical data queries and integrating with Apache Kafka.
+
+**RICE** provides the financial modelling and application environment, supporting business logic, pricing, valuation and risk calculations.
+
+Some of the underlying technology is publicly available in the [Optimus Cirrus GitHub repository](https://github.com/morganstanley/optimus-cirrus). The technology is described in more detail [in this article](../misc/OptimusRICE.md).
 
 ## Challenge
 
 * Replace fragmented documentation spread across legacy documentation systems with a single platform.
 * Make documentation contributions practical and as easy as possible for a large engineering community.
-* Store the documentation in Git alongside application source.
+* Store the documentation in Git alongside the code in the main monorepo.
 * Provide scalable publishing, search, and navigation.
 * Migrate valuable legacy content without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.
 
 ## Approach
 
-### Why docs as code and why build a custom platform
+### Why docs as code and why build a custom platform?
 
 Developers were already writing simple Markdown files alongside their code instead of using the existing wiki-based authoring tools, but they had no dedicated tooling or publishing environment to support that way of working.
 
 Instead of trying to corral developers back into a separate documentation system, I chose to support the way they were already working and keep ownership with the teams closest to the technical knowledge.
 
-The MkDocs pilot validated the docs-as-code model, but it also exposed limitations in relying on an ecosystem of independently developed plugins for a complex documentation set. We needed multiple plugins from different authors to support the required content features, and those plugins did not always work correctly in combination. For example, MkDocs' incremental build capability, which could have helped compensate for the lack of accurate IDE preview for plugin-generated content, failed when used with the combination of plugins we required.
+I built an initial MkDocs pilot that validated the docs-as-code model, but it exposed limitations in relying on a large collection of independently developed plugins for Morgan Stanley's complex documentation set. I needed multiple plugins from different authors to support the required content features, and those plugins did not always work together correctly in combination. For example, MkDocs' incremental build capability, which could have helped compensate for the lack of an accurate IDE preview for plugin-generated content, failed to work correctly when used with our required plugin set. In addition, I had to extend some of the default MkDocs plugins with custom code.
 
-A custom platform required greater investment, but gave us control of the complete rendering and publishing pipeline. We could ensure that features worked consistently in combination, provide the same rendering behaviour in the IDE and published site, and add capabilities such as source-code injection and other Markdown extensions precisely to our requirements. It also allowed the platform to be implemented in Scala, the primary language of the repository in which it lived, making it easier for the engineering community to maintain and extend.
+A custom platform required greater investment, but gave us control of the complete rendering and publishing pipeline. We could ensure that all features worked consistently in combination not just separately and provide the same rendering behaviour both in the IDE and published site. Additionally, we could add capabilities such as source-code injection and other Markdown extensions that fully met our requirements. Finally, it allowed us to implement the platform in Scala, the primary language of our monorepo, making it easier for the wider engineering community to maintain and extend.
 
 ### Documentation platform workflow
 
@@ -161,7 +167,7 @@ The design focused on four priorities:
 
 ## Implementation
 
-I worked with engineers from the internal tooling team to improve the authoring experience and create a published developer portal.
+I worked with engineers from the internal tooling team to build the authoring experience within the IDE and create a published developer portal.
 
 ### Authoring and publishing
 
@@ -171,13 +177,13 @@ I worked with engineers from the internal tooling team to improve the authoring 
 
 * **An IntelliJ plugin for documentation authoring and live preview**. This lowered the barrier for developers to contribute documentation by allowing them to edit and preview changes directly within their existing development environment.
 
-* **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without requiring specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
+* **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
 
 * **The ability to reuse content in multiple locations and embed code samples directly from source**. This reduced duplication and maintenance effort by allowing shared content and code examples to be updated centrally.
 
 ### Search and navigation
 
-I designed the search approach for a growing documentation set, combining fast, keyword-based JavaScript client-side search with slower RAG-based search for more complex natural-language queries. I also tested search behaviour and retrieval quality; the engineering team implemented the production solution.
+I designed the search approach for a growing documentation set, combining fast, keyword-based JavaScript client-side search with the slower corporate RAG-based search for more complex natural-language queries. I also tested search behaviour and retrieval quality; the engineering team implemented the production solution.
 
 ### Content migration
 
