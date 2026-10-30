@@ -60,7 +60,7 @@ tags:
 
 ## Context
 
-At Morgan Stanley, I led the design and evolution of a custom internal docs-as-code platform and developer portal, alongside my work as lead technical writer for the Optimus and RICE frameworks. The platform replaced fragmented legacy documentation for these frameworks with a centralised system using Git-based workflows that made it easier for engineers and technical writers to create, maintain, review and discover content.
+At Morgan Stanley, I led the design, launch and evolution of a custom internal docs-as-code platform and developer portal, alongside my work as lead technical writer for the Optimus and RICE frameworks. The platform replaced fragmented legacy documentation for these frameworks with a centralised system using Git-based workflows that made it easier for engineers and technical writers to create, maintain, review and discover content. Initially developed to support Optimus and RICE, the platform expanded to serve the documentation needs of the wider Codetree ecosystem - a large-scale monorepo containing more than 40 million lines of code.
 
 I owned platform direction, requirements, testing and quality, working with a dedicated engineering team on the initial implementation. I later contributed directly to the codebase, extending functionality and resolving issues as adoption grew.
 
@@ -80,9 +80,9 @@ Some of the underlying technology is publicly available in the [Optimus Cirrus G
 
 * Replace fragmented documentation spread across legacy documentation systems with a single platform.
 * Make documentation contributions practical and as easy as possible for a large engineering community.
-* Store the documentation in Git alongside the code in the main monorepo.
+* Store the documentation in Git alongside the code in the main Codetree monorepo.
 * Provide scalable publishing, search, and navigation.
-* Migrate valuable legacy content without manually rewriting hundreds of pages.
+* Migrate valuable legacy content to the new platform without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.
 
 ## Approach

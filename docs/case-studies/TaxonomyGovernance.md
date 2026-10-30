@@ -31,9 +31,9 @@ tags:
 
 ## Context
 
-In a large documentation repository, structured metadata and taxonomy can improve navigation and search while also supporting content ownership, documentation lifecycle management, publishing automation, and consistent vocabulary.
+Structured metadata and taxonomy can improve navigation and search in a large documentation repository. They also support content ownership, documentation lifecycle management, publishing automation, and can be used to maintain consistent vocabulary for better alignment across an organization.
 
-I built the taxonomy for this Docusaurus portfolio after encountering these problems in a much larger docs-as-code portal at a financial institution. GenAI now makes it increasingly practical to automate the application and validation of structured metadata. I therefore wanted to build a smaller implementation of the metadata controls that would have been useful in that environment.
+I built the taxonomy for this Docusaurus portfolio after encountering these problems in a much larger docs-as-code portal at a financial institution. GenAI now makes it increasingly practical to automate the application and validation of structured metadata. As a result, I wanted to build a smaller implementation of the metadata controls that would have been useful in that environment.
 
 The taxonomy uses a *Git-versioned controlled vocabulary* rather than free-form tags. That vocabulary drives document metadata, Docusaurus tags, editor controls, and faceted navigation — see [the browse page](pathname:///browse/) for an example of the latter.
 

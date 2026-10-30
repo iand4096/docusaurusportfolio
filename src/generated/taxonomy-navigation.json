@@ -572,6 +572,12 @@
           "kind": "collaboration-project-tool"
         },
         {
+          "id": "jni",
+          "label": "JNI",
+          "description": "Java Native Interface, a framework for interoperability between Java and native code.",
+          "kind": "standard-specification"
+        },
+        {
           "id": "jose",
           "label": "JOSE",
           "description": "JSON Object Signing and Encryption standards.",
@@ -590,10 +596,22 @@
           "kind": "programming-language"
         },
         {
+          "id": "jvm",
+          "label": "JVM",
+          "description": "The Java Virtual Machine, a runtime environment for executing Java and other JVM languages such as Scala.",
+          "kind": "runtime"
+        },
+        {
           "id": "jwt",
           "label": "JWT",
           "description": "JSON Web Token, a standard for secure token-based authentication.",
           "kind": "standard-specification"
+        },
+        {
+          "id": "kafka",
+          "label": "Kafka",
+          "description": "A distributed event streaming platform.",
+          "kind": "software-platform"
         },
         {
           "id": "kubernetes",
@@ -722,6 +740,12 @@
           "kind": "operating-system-firmware"
         },
         {
+          "id": "optimus",
+          "label": "Optimus",
+          "description": "A Scala-based framework for building reactive user interfaces and data processing applications.",
+          "kind": "framework"
+        },
+        {
           "id": "owasp",
           "label": "OWASP",
           "description": "Open Web Application Security Project.",
@@ -798,6 +822,12 @@
           "label": "REST",
           "description": "An architectural style for designing networked applications.",
           "kind": "architecture-style"
+        },
+        {
+          "id": "rice",
+          "label": "RICE",
+          "description": "An internal framework for regression testing and data ingestion at Morgan Stanley.",
+          "kind": "framework"
         },
         {
           "id": "saq-a",
@@ -1279,7 +1309,6 @@
         "vale",
         "flexsearch",
         "rag",
-        "codetreedocs",
         "react"
       ],
       "audiences": [
@@ -1335,6 +1364,39 @@
       ],
       "technologies": [],
       "audiences": [
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "case-studies/DocumentingComplexDeveloperFrameworks",
+      "title": "Documenting Complex Enterprise Developer Frameworks",
+      "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
+      "source": "docs/case-studies/DocumentingComplexDeveloperFrameworks.md",
+      "description": "How I reverse-engineered and documented complex Scala frameworks at Morgan Stanley, covering UI development, testing, interoperability and data ingestion.",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "api-documentation",
+        "developer-experience",
+        "information-architecture",
+        "technical-writing"
+      ],
+      "technologies": [
+        "scala",
+        "c-plus-plus",
+        "jvm",
+        "jni",
+        "kafka",
+        "optimus",
+        "rice"
+      ],
+      "audiences": [
+        "developers",
+        "documentation-managers",
         "technical-writers"
       ],
       "lifecycle": [
@@ -1637,6 +1699,32 @@
       ]
     },
     {
+      "id": "misc/OptimusRICE",
+      "title": "Optimus and RICE",
+      "path": "/docs/misc/OptimusRICE",
+      "source": "docs/misc/OptimusRICE.md",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "information-architecture",
+        "technical-writing"
+      ],
+      "technologies": [
+        "kafka",
+        "optimus",
+        "rice"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
       "id": "docs-samples/PaysafeDeveloperJS",
       "title": "Paysafe.js Developer Guide",
       "path": "/docs/docs-samples/PaysafeDeveloperJS",
@@ -1825,6 +1913,33 @@
       ],
       "technologies": [],
       "audiences": [
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "skills/UX",
+      "title": "User Experience and User Interface Design",
+      "path": "/docs/ux",
+      "source": "docs/skills/UX.md",
+      "description": "Designing and improving UX and UI",
+      "type": [
+        "skill"
+      ],
+      "topics": [
+        "developer-experience",
+        "information-architecture",
+        "technical-writing"
+      ],
+      "technologies": [
+        "agentic-ai",
+        "whisper"
+      ],
+      "audiences": [
+        "developers",
+        "end-users",
         "technical-writers"
       ],
       "lifecycle": [

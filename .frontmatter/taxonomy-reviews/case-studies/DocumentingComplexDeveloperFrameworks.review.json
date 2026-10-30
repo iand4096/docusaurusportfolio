@@ -1,0 +1,349 @@
+{
+  "taxonomy_version": 2,
+  "model": "deepseek-v4-flash",
+  "introduced_date": "2026-10-30",
+  "results": [
+    {
+      "page_field_suggestions": {},
+      "metadata": {
+        "type": [
+          "case-study"
+        ],
+        "audiences": [
+          "developers",
+          "documentation-managers",
+          "technical-writers"
+        ],
+        "topics": [
+          "api-documentation",
+          "developer-experience",
+          "information-architecture",
+          "technical-writing"
+        ],
+        "technologies": [
+          "scala",
+          "c-plus-plus",
+          "jvm",
+          "jni",
+          "kafka",
+          "optimus",
+          "rice"
+        ],
+        "lifecycle": [
+          "current"
+        ]
+      },
+      "selection_reasons": {
+        "type": "The page is a documented example of work, approach and outcomes, matching the case study definition.",
+        "audiences": "The content is aimed at developers using the frameworks, documentation managers overseeing documentation strategy, and technical writers creating similar documentation.",
+        "topics": "The page covers API documentation for Scala frameworks, developer experience through improved documentation, information architecture via structured outlines, and technical writing practice.",
+        "technologies": "Scala, C++, JVM, JNI, Kafka, Optimus and RICE are materially used and documented in the case study.",
+        "lifecycle": "The content represents current practice and portfolio material."
+      },
+      "proposed_taxonomy_terms": [
+        {
+          "dimension": "technologies",
+          "id": "jvm",
+          "label": "JVM",
+          "description": "The Java Virtual Machine, a runtime environment for executing Java and other JVM languages such as Scala.",
+          "parent": null,
+          "aliases": [
+            "Java Virtual Machine"
+          ],
+          "reason": "The JVM is a foundational runtime platform materially referenced in the document as part of the technology stack, but no existing term accurately represents it.",
+          "evidence": [
+            "JVM/native interoperability",
+            "Scala, C++, JVM/native interoperability",
+            "This required a strong understanding of Scala, C++, JVM/native interoperability and bitemporal database concepts."
+          ],
+          "evidence_hints": [
+            "JVM/native interoperability",
+            "Scala, C++, JVM/native interoperability"
+          ],
+          "kind": "runtime"
+        },
+        {
+          "dimension": "technologies",
+          "id": "jni",
+          "label": "JNI",
+          "description": "Java Native Interface, a framework for interoperability between Java and native code.",
+          "parent": null,
+          "aliases": [
+            "Java Native Interface"
+          ],
+          "reason": "JNI is a specific interoperability technology materially documented in the case study, and no existing term covers it.",
+          "evidence": [
+            "JNI-based mechanisms",
+            "Scala/C++ interoperability",
+            "Created developer documentation covering integration between Scala and native C++ code through JNI-based mechanisms, explaining cross-language interaction from the perspective of Scala developers."
+          ],
+          "evidence_hints": [
+            "JNI-based mechanisms",
+            "Scala/C++ interoperability"
+          ],
+          "kind": "standard-specification"
+        },
+        {
+          "dimension": "technologies",
+          "id": "optimus",
+          "label": "Optimus",
+          "description": "A Scala-based framework for building reactive user interfaces and data processing applications.",
+          "parent": null,
+          "aliases": [
+            "Optimus Cirrus"
+          ],
+          "reason": "Optimus is a significant framework documented in the case study, and no existing term represents it.",
+          "evidence": [
+            "Optimus and RICE frameworks",
+            "Optimus UI",
+            "Alongside leading the development of Morgan Stanley's new [custom docs-as-code platform](ScalingADeveloperDocsPlatform.md), I served as the lead and sole technical writer for the Optimus and RICE frameworks."
+          ],
+          "evidence_hints": [
+            "Optimus and RICE frameworks",
+            "Optimus UI"
+          ],
+          "kind": "framework"
+        },
+        {
+          "dimension": "technologies",
+          "id": "rice",
+          "label": "RICE",
+          "description": "An internal framework for regression testing and data ingestion at Morgan Stanley.",
+          "parent": null,
+          "aliases": [],
+          "reason": "RICE is a framework documented in the case study, and no existing term represents it.",
+          "evidence": [
+            "Optimus and RICE frameworks",
+            "Regression testing framework",
+            "Alongside leading the development of Morgan Stanley's new [custom docs-as-code platform](ScalingADeveloperDocsPlatform.md), I served as the lead and sole technical writer for the Optimus and RICE frameworks."
+          ],
+          "evidence_hints": [
+            "Optimus and RICE frameworks",
+            "Regression testing framework"
+          ],
+          "kind": "framework"
+        },
+        {
+          "dimension": "technologies",
+          "id": "kafka",
+          "label": "Kafka",
+          "description": "A distributed event streaming platform.",
+          "parent": null,
+          "aliases": [
+            "Apache Kafka"
+          ],
+          "reason": "Kafka is materially used for event-stream processing in the Backfiller framework, and no existing term covers it.",
+          "evidence": [
+            "Kafka-based event-stream processing",
+            "Documented historical data backfilling, Kafka-based event-stream processing and writing external data into a bitemporal data store."
+          ],
+          "evidence_hints": [
+            "Kafka-based event-stream processing"
+          ],
+          "kind": "software-platform"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "canonicalised-metadata",
+          "message": "Resolved metadata.technologies 'jvm' to canonical ID 'jvm'."
+        },
+        {
+          "code": "canonicalised-metadata",
+          "message": "Resolved metadata.technologies 'jni' to canonical ID 'jni'."
+        },
+        {
+          "code": "canonicalised-metadata",
+          "message": "Resolved metadata.technologies 'kafka' to canonical ID 'kafka'."
+        },
+        {
+          "code": "canonicalised-metadata",
+          "message": "Resolved metadata.technologies 'optimus' to canonical ID 'optimus'."
+        },
+        {
+          "code": "canonicalised-metadata",
+          "message": "Resolved metadata.technologies 'rice' to canonical ID 'rice'."
+        }
+      ],
+      "file": "docs/case-studies/DocumentingComplexDeveloperFrameworks.md",
+      "current_metadata": {
+        "title": "Documenting Complex Enterprise Developer Frameworks",
+        "description": "How I reverse-engineered and documented complex Scala frameworks at Morgan Stanley, covering UI development, testing, interoperability and data ingestion.",
+        "sidebar_custom_props": {
+          "caseStudyCard": {
+            "tag": "Developer Frameworks · API Documentation",
+            "description": "Reverse-engineering and documenting complex Scala-based frameworks for enterprise software engineers",
+            "highlights": [
+              "Lead technical writing for Optimus and RICE frameworks",
+              "Source-code analysis and reverse engineering of undocumented APIs",
+              "SME interviews and consolidation of legacy documentation",
+              "Scala code examples, compilation and technical validation",
+              "Reactive UI, regression testing, interoperability and data ingestion"
+            ],
+            "ariaLabel": "Read the enterprise developer framework documentation case study"
+          }
+        },
+        "slug": "/case-studies/documenting-enterprise-developer-frameworks",
+        "type": [
+          "case-study"
+        ],
+        "audiences": [
+          "developers",
+          "documentation-managers",
+          "technical-writers"
+        ],
+        "topics": [
+          "api-documentation",
+          "developer-experience",
+          "information-architecture",
+          "technical-writing"
+        ],
+        "technologies": [
+          "scala",
+          "cpp",
+          "jvm",
+          "jni",
+          "kafka",
+          "optimus",
+          "rice"
+        ],
+        "lifecycle": [
+          "current"
+        ],
+        "tags": [
+          "api-documentation",
+          "cpp",
+          "developer-experience",
+          "framework-documentation",
+          "jni",
+          "kafka",
+          "optimus",
+          "reverse-engineering",
+          "rice",
+          "scala",
+          "technical-writing"
+        ]
+      }
+    }
+  ],
+  "consolidated_proposals": [
+    {
+      "dimension": "technologies",
+      "id": "jni",
+      "label": "JNI",
+      "description": "Java Native Interface, a framework for interoperability between Java and native code.",
+      "parent": null,
+      "aliases": [
+        "Java Native Interface"
+      ],
+      "reason": "JNI is a specific interoperability technology materially documented in the case study, and no existing term covers it.",
+      "evidence": [
+        "JNI-based mechanisms",
+        "Scala/C++ interoperability",
+        "Created developer documentation covering integration between Scala and native C++ code through JNI-based mechanisms, explaining cross-language interaction from the perspective of Scala developers."
+      ],
+      "evidence_hints": [
+        "JNI-based mechanisms",
+        "Scala/C++ interoperability"
+      ],
+      "kind": "standard-specification",
+      "proposed_by_files": [
+        "docs/case-studies/DocumentingComplexDeveloperFrameworks.md"
+      ]
+    },
+    {
+      "dimension": "technologies",
+      "id": "jvm",
+      "label": "JVM",
+      "description": "The Java Virtual Machine, a runtime environment for executing Java and other JVM languages such as Scala.",
+      "parent": null,
+      "aliases": [
+        "Java Virtual Machine"
+      ],
+      "reason": "The JVM is a foundational runtime platform materially referenced in the document as part of the technology stack, but no existing term accurately represents it.",
+      "evidence": [
+        "JVM/native interoperability",
+        "Scala, C++, JVM/native interoperability",
+        "This required a strong understanding of Scala, C++, JVM/native interoperability and bitemporal database concepts."
+      ],
+      "evidence_hints": [
+        "JVM/native interoperability",
+        "Scala, C++, JVM/native interoperability"
+      ],
+      "kind": "runtime",
+      "proposed_by_files": [
+        "docs/case-studies/DocumentingComplexDeveloperFrameworks.md"
+      ]
+    },
+    {
+      "dimension": "technologies",
+      "id": "kafka",
+      "label": "Kafka",
+      "description": "A distributed event streaming platform.",
+      "parent": null,
+      "aliases": [
+        "Apache Kafka"
+      ],
+      "reason": "Kafka is materially used for event-stream processing in the Backfiller framework, and no existing term covers it.",
+      "evidence": [
+        "Kafka-based event-stream processing",
+        "Documented historical data backfilling, Kafka-based event-stream processing and writing external data into a bitemporal data store."
+      ],
+      "evidence_hints": [
+        "Kafka-based event-stream processing"
+      ],
+      "kind": "software-platform",
+      "proposed_by_files": [
+        "docs/case-studies/DocumentingComplexDeveloperFrameworks.md"
+      ]
+    },
+    {
+      "dimension": "technologies",
+      "id": "optimus",
+      "label": "Optimus",
+      "description": "A Scala-based framework for building reactive user interfaces and data processing applications.",
+      "parent": null,
+      "aliases": [
+        "Optimus Cirrus"
+      ],
+      "reason": "Optimus is a significant framework documented in the case study, and no existing term represents it.",
+      "evidence": [
+        "Optimus and RICE frameworks",
+        "Optimus UI",
+        "Alongside leading the development of Morgan Stanley's new [custom docs-as-code platform](ScalingADeveloperDocsPlatform.md), I served as the lead and sole technical writer for the Optimus and RICE frameworks."
+      ],
+      "evidence_hints": [
+        "Optimus and RICE frameworks",
+        "Optimus UI"
+      ],
+      "kind": "framework",
+      "proposed_by_files": [
+        "docs/case-studies/DocumentingComplexDeveloperFrameworks.md"
+      ]
+    },
+    {
+      "dimension": "technologies",
+      "id": "rice",
+      "label": "RICE",
+      "description": "An internal framework for regression testing and data ingestion at Morgan Stanley.",
+      "parent": null,
+      "aliases": [],
+      "reason": "RICE is a framework documented in the case study, and no existing term represents it.",
+      "evidence": [
+        "Optimus and RICE frameworks",
+        "Regression testing framework",
+        "Alongside leading the development of Morgan Stanley's new [custom docs-as-code platform](ScalingADeveloperDocsPlatform.md), I served as the lead and sole technical writer for the Optimus and RICE frameworks."
+      ],
+      "evidence_hints": [
+        "Optimus and RICE frameworks",
+        "Regression testing framework"
+      ],
+      "kind": "framework",
+      "proposed_by_files": [
+        "docs/case-studies/DocumentingComplexDeveloperFrameworks.md"
+      ]
+    }
+  ],
+  "global_warnings": [],
+  "errors": []
+}

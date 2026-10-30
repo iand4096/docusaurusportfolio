@@ -12,28 +12,28 @@ def taxonomy_review_paths(
     *,
     create_parent: bool = False,
 ) -> tuple[Path, Path]:
-    """Return persistent review paths mirroring the document path under src/."""
-    src_root = (root / "src").resolve()
+    """Return persistent review paths mirroring the document path under docs/."""
+    docs_root = (root / "docs").resolve()
     document = document.resolve()
 
     try:
-        relative_to_src = document.relative_to(src_root)
+        relative_to_docs = document.relative_to(docs_root)
     except ValueError as error:
         raise ValueError(
-            f"document must be inside the workspace src directory: {document}"
+            f"document must be inside the workspace docs directory: {document}"
         ) from error
 
     review_dir = (
         root
         / ".frontmatter"
         / "taxonomy-reviews"
-        / relative_to_src.parent
+        / relative_to_docs.parent
     )
 
     if create_parent:
         review_dir.mkdir(parents=True, exist_ok=True)
 
-    stem = relative_to_src.stem
+    stem = relative_to_docs.stem
 
     return (
         review_dir / f"{stem}.review.md",

@@ -159,6 +159,9 @@ jinja:
 jira:
   description: An issue tracking and project management tool.
   label: Jira
+jni:
+  description: Java Native Interface, a framework for interoperability between Java and native code.
+  label: JNI
 jose:
   description: JSON Object Signing and Encryption standards.
   label: JOSE
@@ -168,9 +171,16 @@ json:
 jsx:
   description: A syntax extension for JavaScript used with React.
   label: JSX
+jvm:
+  description: The Java Virtual Machine, a runtime environment for executing Java and other JVM languages
+    such as Scala.
+  label: JVM
 jwt:
   description: JSON Web Token, a standard for secure token-based authentication.
   label: JWT
+kafka:
+  description: A distributed event streaming platform.
+  label: Kafka
 kubernetes:
   description: A container orchestration platform.
   label: Kubernetes
@@ -231,6 +241,9 @@ openssl:
 openwrt:
   description: A Linux-based firmware for routers.
   label: OpenWrt
+optimus:
+  description: A Scala-based framework for building reactive user interfaces and data processing applications.
+  label: Optimus
 owasp:
   description: Open Web Application Security Project.
   label: OWASP
@@ -274,6 +287,9 @@ requests:
 rest:
   description: An architectural style for designing networked applications.
   label: REST
+rice:
+  description: An internal framework for regression testing and data ingestion at Morgan Stanley.
+  label: RICE
 saq-a:
   description: Self-Assessment Questionnaire A for PCI DSS.
   label: SAQ A

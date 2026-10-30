@@ -1,0 +1,243 @@
+{
+  "taxonomy_version": 2,
+  "model": "deepseek-v4-flash",
+  "introduced_date": "2026-10-30",
+  "results": [
+    {
+      "page_field_suggestions": {
+        "description": "An overview of Morgan Stanley's RICE financial analytics platform and the Optimus graph computation framework, covering architecture, distributed execution, bitemporal data storage, and engineering significance."
+      },
+      "metadata": {
+        "type": [
+          "case-study"
+        ],
+        "audiences": [
+          "developers",
+          "technical-writers"
+        ],
+        "topics": [
+          "documentation-engineering",
+          "information-architecture",
+          "technical-writing"
+        ],
+        "technologies": [
+          "scala",
+          "mermaid",
+          "rest",
+          "optimus",
+          "rice",
+          "bitemporal-storage"
+        ],
+        "lifecycle": [
+          "current"
+        ]
+      },
+      "selection_reasons": {
+        "type": "The document is a documented example of a technical platform (RICE and Optimus), describing architecture, workflow, and engineering significance, matching the case-study type.",
+        "audiences": "The content is aimed at developers who need to understand the platform's computation model and data access, and at technical writers who may document such systems.",
+        "topics": "The page demonstrates documentation engineering through its structured explanation of a complex system, information architecture in its layered breakdown, and technical writing in its clear prose and examples.",
+        "technologies": "Scala is the implementation language of Optimus; Mermaid is used for the dependency graph diagram; Kafka, MongoDB, and PostgreSQL are named as data technologies in DAL; REST is implied by the reactive interfaces and data services.",
+        "lifecycle": "The content describes a current platform and is presented as current portfolio material."
+      },
+      "proposed_taxonomy_terms": [
+        {
+          "dimension": "technologies",
+          "id": "optimus",
+          "label": "Optimus",
+          "description": "A Scala-based graph-oriented computation framework for distributed financial analytics.",
+          "parent": null,
+          "aliases": [
+            "Optimus Cirrus"
+          ],
+          "reason": "Optimus is a central technology in the document, materially described and demonstrated, but no existing term covers it.",
+          "evidence": [
+            "Optimus uses a dependency-driven computation graph",
+            "Optimus Cirrus",
+            "# Optimus and RICE - distributed computing and financial analytics"
+          ],
+          "evidence_hints": [
+            "Optimus is a Scala-based, graph-oriented computation framework",
+            "Optimus uses a dependency-driven computation graph",
+            "Optimus Cirrus"
+          ],
+          "kind": "framework"
+        },
+        {
+          "dimension": "technologies",
+          "id": "rice",
+          "label": "RICE",
+          "description": "Morgan Stanley's Risk Calculation Environment for financial analytics and risk management.",
+          "parent": null,
+          "aliases": [
+            "Risk Calculation Environment"
+          ],
+          "reason": "RICE is a major platform described in the document, but it is not represented in the existing taxonomy.",
+          "evidence": [
+            "RICE is the broader financial risk platform",
+            "# Optimus and RICE - distributed computing and financial analytics",
+            "Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications."
+          ],
+          "evidence_hints": [
+            "RICE (RIsk Calculation Environment)",
+            "RICE provides the financial analytics environment",
+            "RICE is the broader financial risk platform"
+          ],
+          "kind": "software-platform"
+        },
+        {
+          "dimension": "technologies",
+          "id": "bitemporal-storage",
+          "label": "Bitemporal storage",
+          "description": "A data storage technique that tracks both valid time and transaction time for historical reconstruction.",
+          "parent": null,
+          "aliases": [
+            "bitemporal object storage"
+          ],
+          "reason": "Bitemporal storage is a key technical concept explained in the document, but no existing term captures it.",
+          "evidence": [
+            "bitemporal object storage",
+            "tracks two distinct dimensions",
+            "Valid time"
+          ],
+          "evidence_hints": [
+            "bitemporal object storage",
+            "tracks two distinct dimensions",
+            "Valid time",
+            "Transaction time"
+          ],
+          "kind": "technical-technique"
+        }
+      ],
+      "warnings": [
+        {
+          "code": "unknown-metadata-term",
+          "message": "Dropped unresolved metadata.technologies value 'kafka'."
+        },
+        {
+          "code": "unknown-metadata-term",
+          "message": "Dropped unresolved metadata.technologies value 'mongodb'."
+        },
+        {
+          "code": "unknown-metadata-term",
+          "message": "Dropped unresolved metadata.technologies value 'postgresql'."
+        },
+        {
+          "code": "added-proposed-term-to-metadata",
+          "message": "Added proposed term 'optimus' to metadata.technologies because the proposal has verified document evidence."
+        },
+        {
+          "code": "added-proposed-term-to-metadata",
+          "message": "Added proposed term 'rice' to metadata.technologies because the proposal has verified document evidence."
+        },
+        {
+          "code": "added-proposed-term-to-metadata",
+          "message": "Added proposed term 'bitemporal-storage' to metadata.technologies because the proposal has verified document evidence."
+        }
+      ],
+      "file": "docs/misc/OptimusRICE.md",
+      "current_metadata": {
+        "title": "Optimus and RICE",
+        "type": [
+          "case-study"
+        ],
+        "audiences": [
+          "developers",
+          "technical-writers"
+        ],
+        "topics": [
+          "documentation-engineering",
+          "information-architecture",
+          "technical-writing"
+        ],
+        "technologies": [
+          "kafka",
+          "optimus",
+          "rice"
+        ],
+        "lifecycle": [
+          "current"
+        ]
+      }
+    }
+  ],
+  "consolidated_proposals": [
+    {
+      "dimension": "technologies",
+      "id": "bitemporal-storage",
+      "label": "Bitemporal storage",
+      "description": "A data storage technique that tracks both valid time and transaction time for historical reconstruction.",
+      "parent": null,
+      "aliases": [
+        "bitemporal object storage"
+      ],
+      "reason": "Bitemporal storage is a key technical concept explained in the document, but no existing term captures it.",
+      "evidence": [
+        "bitemporal object storage",
+        "tracks two distinct dimensions",
+        "Valid time"
+      ],
+      "evidence_hints": [
+        "bitemporal object storage",
+        "tracks two distinct dimensions",
+        "Valid time",
+        "Transaction time"
+      ],
+      "kind": "technical-technique",
+      "proposed_by_files": [
+        "docs/misc/OptimusRICE.md"
+      ]
+    },
+    {
+      "dimension": "technologies",
+      "id": "optimus",
+      "label": "Optimus",
+      "description": "A Scala-based graph-oriented computation framework for distributed financial analytics.",
+      "parent": null,
+      "aliases": [
+        "Optimus Cirrus"
+      ],
+      "reason": "Optimus is a central technology in the document, materially described and demonstrated, but no existing term covers it.",
+      "evidence": [
+        "Optimus uses a dependency-driven computation graph",
+        "Optimus Cirrus",
+        "# Optimus and RICE - distributed computing and financial analytics"
+      ],
+      "evidence_hints": [
+        "Optimus is a Scala-based, graph-oriented computation framework",
+        "Optimus uses a dependency-driven computation graph",
+        "Optimus Cirrus"
+      ],
+      "kind": "framework",
+      "proposed_by_files": [
+        "docs/misc/OptimusRICE.md"
+      ]
+    },
+    {
+      "dimension": "technologies",
+      "id": "rice",
+      "label": "RICE",
+      "description": "Morgan Stanley's Risk Calculation Environment for financial analytics and risk management.",
+      "parent": null,
+      "aliases": [
+        "Risk Calculation Environment"
+      ],
+      "reason": "RICE is a major platform described in the document, but it is not represented in the existing taxonomy.",
+      "evidence": [
+        "RICE is the broader financial risk platform",
+        "# Optimus and RICE - distributed computing and financial analytics",
+        "Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications."
+      ],
+      "evidence_hints": [
+        "RICE (RIsk Calculation Environment)",
+        "RICE provides the financial analytics environment",
+        "RICE is the broader financial risk platform"
+      ],
+      "kind": "software-platform",
+      "proposed_by_files": [
+        "docs/misc/OptimusRICE.md"
+      ]
+    }
+  ],
+  "global_warnings": [],
+  "errors": []
+}

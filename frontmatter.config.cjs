@@ -34,6 +34,13 @@ module.exports = async (config) => {
         "script": "./scripts/frontmatter_taxonomy_apply.py",
         "command": "python",
         "type": "content"
+      },
+      {
+        "id": "generate-taxonomy-migration",
+        "title": "Generate draft taxonomy migration",
+        "script": "./scripts/frontmatter_taxonomy_migration.py",
+        "command": "python",
+        "type": "content"
       }
     ]
   };

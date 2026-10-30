@@ -1316,6 +1316,63 @@ dimensions:
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+      jni:
+        label: JNI
+        description: Java Native Interface, a framework for interoperability between Java and native
+          code.
+        kind: standard-specification
+        aliases:
+          - Java Native Interface
+        governance:
+          status: active
+          introduced: '2026-10-30'
+          source: ai-proposed
+          review: annual
+      jvm:
+        label: JVM
+        description: The Java Virtual Machine, a runtime environment for executing Java and other 
+          JVM languages such as Scala.
+        kind: runtime
+        aliases:
+          - Java Virtual Machine
+        governance:
+          status: active
+          introduced: '2026-10-30'
+          source: ai-proposed
+          review: annual
+      kafka:
+        label: Kafka
+        description: A distributed event streaming platform.
+        kind: software-platform
+        aliases:
+          - Apache Kafka
+        governance:
+          status: active
+          introduced: '2026-10-30'
+          source: ai-proposed
+          review: annual
+      optimus:
+        label: Optimus
+        description: A Scala-based framework for building reactive user interfaces and data 
+          processing applications.
+        kind: framework
+        aliases:
+          - Optimus Cirrus
+        governance:
+          status: active
+          introduced: '2026-10-30'
+          source: ai-proposed
+          review: annual
+      rice:
+        label: RICE
+        description: An internal framework for regression testing and data ingestion at Morgan 
+          Stanley.
+        kind: framework
+        governance:
+          status: active
+          introduced: '2026-10-30'
+          source: ai-proposed
+          review: annual
   lifecycle:
     description: The publication lifecycle state of the content.
     metadata_field: lifecycle

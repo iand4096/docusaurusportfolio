@@ -1,0 +1,7 @@
+{
+  "id": "generate-taxonomy-migration",
+  "title": "Generate draft taxonomy migration",
+  "script": "./scripts/frontmatter_taxonomy_migration.py",
+  "command": "python",
+  "type": "content"
+}

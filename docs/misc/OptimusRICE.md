@@ -1,3 +1,29 @@
+---
+title: Optimus and RICE
+type:
+  - case-study
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - documentation-engineering
+  - information-architecture
+  - technical-writing
+technologies:
+  - kafka
+  - optimus
+  - rice
+lifecycle:
+  - current
+tags:
+  - documentation-engineering
+  - information-architecture
+  - kafka
+  - optimus
+  - rice
+  - technical-writing
+---
+
 # Optimus and RICE - distributed computing and financial analytics
 
 ## Overview
@@ -143,5 +169,3 @@ Developers must understand **calculation dependencies and execution contexts** t
 7. **Morgan Stanley — Commodities Strategist**  
    Public evidence of Commodities products and workflows being migrated to the RICE platform.  
    https://ms.wd5.myworkdayjobs.com/en-US/External/job/Commodities-Strategist_JR041944
-
-*Architecture note: These components are a conceptual organisation of publicly documented responsibilities, not an official Morgan Stanley system diagram or disclosure of proprietary implementation details.*

@@ -1,0 +1,54 @@
+schema_version: 2
+id: 2026-10-30-ai-documentingcomplexdeveloperframeworks
+description: Review proposed taxonomy additions for 
+  docs/case-studies/DocumentingComplexDeveloperFrameworks.md.
+change_type: vocabulary-expansion
+trigger: content-driven
+governance:
+  date: '2026-10-30'
+  source: ai-proposed
+  reason: 'DeepSeek review of docs/case-studies/DocumentingComplexDeveloperFrameworks.md: technologies.jni:
+    JNI is a specific interoperability technology materially documented in the case study, and no existing
+    term covers it. technologies.jvm: The JVM is a foundational runtime platform materially referenced
+    in the document as part of the technology stack, but no existing term accurately represents it. technologies.kafka:
+    Kafka is materially used for event-stream processing in the Backfiller framework, and no existing
+    term covers it. technologies.optimus: Optimus is a significant framework documented in the case study,
+    and no existing term represents it. technologies.rice: RICE is a framework documented in the case
+    study, and no existing term represents it.'
+preconditions:
+  taxonomy_version: 2
+changes:
+  technologies:
+    add:
+      jni:
+        label: JNI
+        description: Java Native Interface, a framework for interoperability between Java and native
+          code.
+        kind: standard-specification
+        aliases:
+        - Java Native Interface
+      jvm:
+        label: JVM
+        description: The Java Virtual Machine, a runtime environment for executing Java and other 
+          JVM languages such as Scala.
+        kind: runtime
+        aliases:
+        - Java Virtual Machine
+      kafka:
+        label: Kafka
+        description: A distributed event streaming platform.
+        kind: software-platform
+        aliases:
+        - Apache Kafka
+      optimus:
+        label: Optimus
+        description: A Scala-based framework for building reactive user interfaces and data 
+          processing applications.
+        kind: framework
+        aliases:
+        - Optimus Cirrus
+      rice:
+        label: RICE
+        description: An internal framework for regression testing and data ingestion at Morgan 
+          Stanley.
+        kind: framework

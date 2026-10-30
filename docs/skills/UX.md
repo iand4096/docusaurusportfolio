@@ -8,12 +8,36 @@ sidebar_custom_props:
   sampleCard:
     tag: User Experience and User Interface Design
     description: Designing and improving UX and UI
-    highlights:
-      - 
+    highlights: []
     ariaLabel: Explore my UX and UI experience
+
 type:
   - skill
+
+audiences:
+  - developers
+  - end-users
+  - technical-writers
+
+topics:
+  - developer-experience
+  - information-architecture
+  - technical-writing
+
+technologies:
+  - agentic-ai
+  - whisper
+
+lifecycle:
+  - current
+tags:
+  - agentic-ai
+  - developer-experience
+  - information-architecture
+  - technical-writing
+  - whisper
 ---
+
 
 - Designing AI-powered LLM chatbots and speech-to-text interfaces as alternatives to traditional user interfaces.
 - Creating accessible, easy-to-use developer portals.

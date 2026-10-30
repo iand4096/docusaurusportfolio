@@ -86,10 +86,13 @@
         "jetty",
         "jinja",
         "jira",
+        "jni",
         "jose",
         "json",
         "jsx",
+        "jvm",
         "jwt",
+        "kafka",
         "kubernetes",
         "languagetool",
         "ldap",
@@ -110,6 +113,7 @@
         "openapi",
         "openssl",
         "openwrt",
+        "optimus",
         "owasp",
         "paysafe-js",
         "pci-dss",
@@ -123,6 +127,7 @@
         "react",
         "requests",
         "rest",
+        "rice",
         "saq-a",
         "scala",
         "spec-driven-development",
@@ -782,10 +787,13 @@
     "jetty",
     "jinja",
     "jira",
+    "jni",
     "jose",
     "json",
     "jsx",
+    "jvm",
     "jwt",
+    "kafka",
     "kubernetes",
     "languagetool",
     "ldap",
@@ -806,6 +814,7 @@
     "openapi",
     "openssl",
     "openwrt",
+    "optimus",
     "owasp",
     "payments",
     "paysafe-js",
@@ -820,6 +829,7 @@
     "react",
     "requests",
     "rest",
+    "rice",
     "saq-a",
     "scala",
     "spec-driven-development",
@@ -1033,7 +1043,9 @@
     ],
     "framework": [
       "fastmcp",
-      "flask"
+      "flask",
+      "optimus",
+      "rice"
     ],
     "library": [
       "flexsearch",
@@ -1043,11 +1055,13 @@
       "requests"
     ],
     "runtime": [
+      "jvm",
       "node-js"
     ],
     "standard-specification": [
       "api-blueprint",
       "finos-calm",
+      "jni",
       "jose",
       "jwt",
       "openapi",
@@ -1176,6 +1190,7 @@
     ],
     "software-platform": [
       "amx-composer",
+      "kafka",
       "masterpass",
       "mdes"
     ]

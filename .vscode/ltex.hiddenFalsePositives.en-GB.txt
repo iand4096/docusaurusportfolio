@@ -90,3 +90,4 @@
 {"rule":"COMMA_COMPOUND_SENTENCE_2","sentence":"^\\QWhy docs as code and why build a custom platform?\\E$"}
 {"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QMorgan Stanley's RICE (RIsk Calculation Environment) and Optimus support computationally intensive financial applications.\\E$"}
 {"rule":"UPPERCASE_SENTENCE_START","sentence":"^\\Qbinary data and character encoding\nAES and RSA padding\nrequest-body hashing\ncertificate formats\\E$"}
+{"rule":"MORFOLOGIK_RULE_EN_GB","sentence":"^\\QCreated Scala API documentation for an MVVM (Model-View-ViewModel) UI framework that enabled developers to construct reactive user interfaces for server and desktop-based business applications using a single Scala domain-specific language (DSL).\\E$"}
