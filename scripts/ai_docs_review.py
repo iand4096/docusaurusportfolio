@@ -42,6 +42,7 @@ IGNORED_PATHS = [
     ".git",
     "static",
     "taxonomy",
+    ".frontmatter",
 ]
 
 SEVERITIES = {"high", "medium", "low"}
