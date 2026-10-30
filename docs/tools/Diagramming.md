@@ -55,16 +55,16 @@ tags:
   - visio
 ---
 
-Practical experience creating and maintaining **technical diagrams such as architectural diagrams, and process flows diagrams** to support API or SDK documentation, system documentation, and tutorials.
+Practical experience creating and maintaining **technical diagrams such as architectural diagrams and process flow diagrams** to support API or SDK documentation, system documentation, and tutorials.
 
 ## Diagrams-as-Code and Docs-as-Code
 
 * Strong advocate for **text-based, version-controlled diagrams** such as SVG or diagrams-as-code formats that can be maintained alongside documentation and source code in Git with tracked changes unlike their raster-based equivalents.
 * Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-Architecture diagrams**.
 
-## Graphviz and documentation navigation
+## Trail diagrams for documentation navigation
 
-* Advanced experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams**. These diagrams provided structured learning paths through related developer documentation improving the site navigation.
+* Advanced experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams**. These diagrams provided structured learning paths through related developer documentation, improving the site navigation.
 
 ## Visual tools, SVG and supporting graphics
 
@@ -73,7 +73,7 @@ Practical experience creating and maintaining **technical diagrams such as archi
 
 ## Diagram maintenance
 
-* Experienced maintaining large diagram sets including using **OCR to identify outdated terminology** to fix in screenshots and other bitmap / raster based diagrams.
+* Experienced maintaining large diagram sets including using **OCR to identify outdated terminology** to fix in screenshots and other bitmap/raster-based diagrams.
 
 ## CAD diagrams
 

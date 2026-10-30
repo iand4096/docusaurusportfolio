@@ -4,7 +4,7 @@ sidebar_position: 3
 slug: /gitandci
 sidebar_custom_props:
   sampleCard:
-    tag: Git and CI/CD
+    tag: Git and CI / CD
     description: Using Git, GitHub, Bitbucket and CI/CD to review, validate, build and publish 
       documentation, with hands-on experience implementing QA gates and troubleshooting build 
       issues.
@@ -46,10 +46,10 @@ tags:
 
 ## Git, GitHub, GitHub Actions and Jenkins
 
-* Diagnosed and resolved Git issues for my technical writing team including resolving **merge conflicts**.
+* Diagnosed and resolved Git issues for my technical writing team, including **merge conflicts**.
 * Experienced using command-line Git, including **rebase** and **commit squashing**, to resolve integration issues and maintain cleaner repository history.
 * 9 years using **GitHub and Bitbucket pull-request workflows** to review and integrate changes to documentation and code.
 * Used **GitHub Actions** for Continuous Integration and Deployment (CI / CD) to automatically build and publish my Docusaurus portfolio site when content changes are pushed.
 * Worked with Jenkins CI / CD pipelines for documentation builds, QA, and deployment at Morgan Stanley. Able to read and understand pipeline configurations, identify issues and potential improvements, and work with development teams to resolve any problems.
-* Implemented automated internal-link validation in the documentation CI/CD pipelines at Morgan Stanley, preventing pull requests containing broken links from being merged.
+* Implemented automated internal-link validation in the documentation CI / CD pipelines at Morgan Stanley, preventing pull requests containing broken links from being merged.
 * Diagnosed Jenkins and documentation build failures, including environment-specific issues that occurred under Linux or CI but could not be reproduced in local development environments.

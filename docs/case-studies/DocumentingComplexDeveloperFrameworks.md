@@ -51,7 +51,6 @@ tags:
   - technical-writing
 ---
 
-
 ## Context
 
 Alongside leading the development of Morgan Stanley's new [custom docs-as-code platform](ScalingADeveloperDocsPlatform.md), I served as the lead and sole technical writer for the Optimus and RICE frameworks.
@@ -100,7 +99,6 @@ Documented historical data backfilling, Kafka-based event-stream processing and 
 - [Optimus Cirrus — Scala Days Seattle 2023](https://www.youtube.com/watch?v=g1jt3YLnRmk) — Public engineering presentation.
 - [Optimus Cirrus — ScalaCon 2021](https://www.youtube.com/watch?v=V0jJvgiI_xs) — Public presentation on Optimus Cirrus.
 - [Optimus — Scala Days 2018](https://www.youtube.com/watch?v=BW8S92jP5sE) — Earlier public presentation on Optimus.
-
 
 ## Other references
 

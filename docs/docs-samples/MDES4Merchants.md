@@ -63,6 +63,7 @@ Other contributors subsequently made minor updates to the published guide.
 
 - Explain an unfamiliar and technically complex tokenisation workflow to developers.
 - Test the MDES Digital Enablement API, which could not be tested using Postman at the time because of the API's unusual security requirements:
+
   - Postman did not support [RSA signatures for OAuth 1.0](https://github.com/postmanlabs/postman-app-support/issues/2302), as required by Mastercard. Support was added in 2020.
   - Mastercard's field-level encryption and decryption required custom cryptographic code that Postman did not provide.
 - Test asynchronous webhook notifications, which were blocked by the corporate firewall.

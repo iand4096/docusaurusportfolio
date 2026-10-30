@@ -83,7 +83,7 @@ My docs-as-code experience includes:
 * Using Git branching and pull-request workflows to update and version control documentation
 * Command-line Git, including rebasing and resolving merge conflicts
 * Documentation stored alongside source code, including the benefits and trade-offs of this approach
-* Hosting documentation in large repositories and monorepos. Knowing when to host documentation alongside code and when to host in a separate repo
+* Hosting documentation in large repositories and monorepos, and knowing when to host alongside code versus in a separate repo
 * Automating builds and publishing
 * Promoting and enabling engineers to contribute to documentation
 * Review, versioning and traceability through Git
@@ -129,13 +129,13 @@ Standard Markdown is not always sufficient for complex developer documentation.
 
 I have extended Markdown parsers and static-site tooling to support features including:
 
-* Diagrams-as-code formats such as PlantUML, Mermaid, and Graphviz
+* Diagrams-as-code formats such as PlantUML, Mermaid and Graphviz
 * C4 software architecture diagrams
 * LaTeX mathematical notation
 * Content reuse and conditional text
 * Code-sample injection
 
-I have also built tools to convert complex HTML into clean embedded HTML or mixed Markdown and HTML for structures that standard Markdown cannot represent, such as complex tables using `rowspan`, `colspan`, or multi-line cell content.
+I have also built tools to convert complex HTML into clean embedded HTML or mixed Markdown and HTML for structures that standard Markdown cannot represent, such as complex tables using `rowspan`, `colspan` or multi-line cell content.
 
 ## Content migration and transformation
 

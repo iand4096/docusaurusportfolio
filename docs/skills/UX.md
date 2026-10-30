@@ -38,7 +38,6 @@ tags:
   - whisper
 ---
 
-
 - Designing AI-powered LLM chatbots and speech-to-text interfaces as alternatives to traditional user interfaces.
 - Creating accessible, easy-to-use developer portals.
   - Integrating interactive product demos directly into documentation.
