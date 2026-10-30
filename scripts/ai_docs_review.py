@@ -32,14 +32,17 @@ JSON_REPORT = Path("ai-doc-review.json")
 
 PORTFOLIO_URL = "https://iand4096.github.io/docusaurusportfolio"
 GITHUB_REPOSITORY_FALLBACK = "iand4096/docusaurusportfolio"
-EXCLUDED_DIRS = {
+# Paths are relative to the project directory (ROOT). Each entry excludes
+# the named file or directory and, for directories, everything beneath it.
+# Use forward slashes even when running on Windows.
+IGNORED_PATHS = [
     "node_modules",
     "build",
     ".docusaurus",
     ".git",
     "static",
     "taxonomy",
-}
+]
 
 SEVERITIES = {"high", "medium", "low"}
 CONFIDENCE_LEVELS = {"high", "medium", "low"}
@@ -220,16 +223,29 @@ Return {"issues": []} when there are no meaningful findings.
 # ---------------------------------------------------------------------------
 
 
+def is_ignored_path(path):
+    """Check whether a project-relative path is excluded, including children."""
+    relative_path = path.relative_to(ROOT).as_posix()
+    for ignored in IGNORED_PATHS:
+        ignored = ignored.replace("\\", "/").strip("/")
+        if ignored.startswith("./"):
+            ignored = ignored[2:]
+        if ignored and (
+            relative_path == ignored or relative_path.startswith(ignored + "/")
+        ):
+            return True
+    return False
+
+
 def markdown_files():
     """Yield Markdown and MDX files that should be reviewed."""
 
     for path in sorted(ROOT.rglob("*")):
+        if is_ignored_path(path):
+            continue
         if not path.is_file():
             continue
-
         if path.suffix.lower() not in {".md", ".mdx"}:
-            continue
-        if any(part in EXCLUDED_DIRS for part in path.parts):
             continue
 
         yield path
@@ -2301,7 +2317,7 @@ class LycheeCheck(BaseCheck):
         root_dir = str(ROOT.resolve())
         # Feed the exact file list over stdin instead of relying on shell globs.
         # This avoids Windows glob/path quoting differences and keeps Lychee's
-        # scope identical to markdown_files(), including EXCLUDED_DIRS.
+        # scope identical to markdown_files(), including IGNORED_PATHS.
         command = [
             executable,
             "--root-dir",
