@@ -28,7 +28,9 @@ Commands:
   python scripts/taxonomy.py audit-technologies
   python scripts/taxonomy.py audit-unused
   python scripts/taxonomy.py audit-unused --dimension technologies
-  python scripts/taxonomy.py migrate taxonomy/migrations/<migration>.yml
+  python scripts/taxonomy.py migrate preview taxonomy/migrations/<migration>.yml
+  python scripts/taxonomy.py migrate apply taxonomy/migrations/<migration>.yml
+  python scripts/taxonomy.py migrate status
 
 `generate` writes deterministic projections derived from the canonical taxonomy
 and, for navigation, validated document metadata:
@@ -51,9 +53,11 @@ those warnings into a non-zero exit code.
 governed document metadata. Unused terms are contraction candidates only; the
 command never mutates taxonomy.yml. Use --strict to make candidates fail CI.
 
-`migrate` validates and previews a declarative taxonomy migration. It is dry-run
-by default. Schema v2 migrations explicitly declare change_type and trigger
-provenance. Use --apply only after reviewing the migration and its impact.
+`migrate preview` validates a declarative migration without writing.
+`migrate apply` writes the approved migration. Add-only changes update the
+canonical vocabulary without requiring unrelated documents to validate.
+Contractions and replacements retain strict document-wide validation.
+`migrate status` reports manifests; it does not claim to track applied IDs.
 """
 
 from __future__ import annotations
@@ -1846,8 +1850,41 @@ def restore_snapshots(snapshots: dict[Path, bytes | None]) -> None:
         path.write_bytes(content)
 
 
+def command_migration_status(args: argparse.Namespace) -> int:
+    """Report manifests and vocabulary health; no invented applied-migration ledger."""
+    root = args.root.resolve()
+    try:
+        taxonomy = load_and_validate_taxonomy(root)
+        manifests = sorted((root / MIGRATIONS_PATH).glob("*.yml"))
+        print(f"canonical taxonomy: valid ({TAXONOMY_PATH})")
+        print(f"migration manifests: {len(manifests)}")
+        for path in manifests:
+            try:
+                migration = load_yaml(path)
+                validate_migration_schema(migration, root / MIGRATION_SCHEMA_PATH)
+                adds = [(d, term) for d, operations in migration.get("changes", {}).items()
+                        for term in operations.get("add", {})]
+                if adds:
+                    present = sum(term in taxonomy["dimensions"][d]["terms"]
+                                  for d, term in adds if d in taxonomy["dimensions"])
+                    note = f"{present}/{len(adds)} added IDs present (not proof of application)"
+                else:
+                    note = "manifest valid; application not tracked"
+                print(f"  {path.name}: {note}")
+            except (ValidationError, OSError, KeyError, TypeError, ValueError) as exc:
+                print(f"  {path.name}: INVALID ({exc})")
+        print("Applied migration IDs are not tracked by this repository.")
+        print("Run 'check --all' separately for document and generated-file health.")
+        return 0
+    except (ValidationError, OSError, json.JSONDecodeError) as exc:
+        print(f"ERROR: {exc}", file=sys.stderr)
+        return 1
+
+
 def command_migrate(args: argparse.Namespace) -> int:
     root = args.root.resolve()
+    if args.action == "status":
+        return command_migration_status(args)
     migration_path = args.migration
     if not migration_path.is_absolute():
         migration_path = root / migration_path
@@ -1873,22 +1910,27 @@ def command_migrate(args: argparse.Namespace) -> int:
         validate_taxonomy_schema(candidate, root / SCHEMA_PATH)
         validate_taxonomy_semantics(candidate)
 
-        changed_docs, front_matter_overrides, document_errors = preflight_migration_documents(
-            root,
-            candidate,
-            replacements,
+        counts = migration_operation_counts(migration)
+        additive = counts["add"] > 0 and all(
+            counts[kind] == 0 for kind in ("update", "deprecate", "replace", "configuration")
         )
+        if additive:
+            # Additive vocabulary changes do not rewrite existing pages. Unrelated
+            # broken front matter must not block their review or application.
+            changed_docs, front_matter_overrides, document_errors = {}, {}, []
+        else:
+            changed_docs, front_matter_overrides, document_errors = preflight_migration_documents(
+                root, candidate, replacements,
+            )
 
         # Build every derived projection in memory against the candidate taxonomy
         # and simulated document front matter. This ensures --apply does not begin
         # writing until the complete candidate repository state is derivable.
-        expected_derived_files(
-            root,
-            candidate,
-            front_matter_overrides=front_matter_overrides,
-        )
+        if not additive:
+            expected_derived_files(
+                root, candidate, front_matter_overrides=front_matter_overrides,
+            )
 
-        counts = migration_operation_counts(migration)
         print(f"migration: {migration['id']}")
         print(f"description: {migration['description']}")
         if migration.get("schema_version") == 2:
@@ -1900,8 +1942,10 @@ def command_migrate(args: argparse.Namespace) -> int:
             "operations: "
             + ", ".join(f"{name}={count}" for name, count in counts.items() if count)
         )
-        print(f"documents scanned: {len(all_docs(root))}")
+        print(f"documents scanned: {0 if additive else len(all_docs(root))}")
         print(f"documents requiring deterministic rewrite: {len(changed_docs)}")
+        if additive:
+            print("scope: additive vocabulary only; document validation deferred to check --all")
 
         if document_errors:
             print("semantic/document conflicts:", file=sys.stderr)
@@ -1914,9 +1958,24 @@ def command_migrate(args: argparse.Namespace) -> int:
             )
             return 1
 
-        if not args.apply:
-            print("dry-run passed; no files changed")
-            print("use --apply to write the migration")
+        if args.action == "preview":
+            print("preview passed; no files changed")
+            print("use 'migrate apply <file>' after reviewing the proposed changes")
+            return 0
+
+        if additive:
+            # Vocabulary-first workflow: never regenerate navigation until broken
+            # documents have been fixed. Canonical file write is atomic on success.
+            snapshots = snapshot_paths([taxonomy_path])
+            try:
+                write_yaml(taxonomy_path, candidate)
+                validate_taxonomy_schema(load_round_trip_yaml(taxonomy_path), root / SCHEMA_PATH)
+                validate_taxonomy_semantics(load_round_trip_yaml(taxonomy_path))
+            except Exception:
+                restore_snapshots(snapshots)
+                raise
+            print(f"applied migration {migration['id']} to {TAXONOMY_PATH.as_posix()}")
+            print("derived files not regenerated; run sync, generate and check after repairing documents")
             return 0
 
         derived_paths = [root / path for path in expected_derived_files(root, candidate)]
@@ -2166,20 +2225,12 @@ def build_parser() -> argparse.ArgumentParser:
         help="Return exit code 1 if unused active terms are found",
     )
 
-    migrate = subparsers.add_parser(
-        "migrate",
-        help="Preview or apply a declarative taxonomy migration",
-    )
-    migrate.add_argument(
-        "migration",
-        type=Path,
-        help="Taxonomy migration YAML manifest",
-    )
-    migrate.add_argument(
-        "--apply",
-        action="store_true",
-        help="Apply the validated migration; default is dry-run only",
-    )
+    migrate = subparsers.add_parser("migrate", help="Preview, apply or inspect taxonomy migrations")
+    migration_actions = migrate.add_subparsers(dest="action", required=True)
+    for action in ("preview", "apply"):
+        sub = migration_actions.add_parser(action, help=f"{action.capitalize()} a migration manifest")
+        sub.add_argument("migration", type=Path, help="Migration YAML manifest")
+    migration_actions.add_parser("status", help="Show migration manifests and canonical taxonomy health")
 
     return parser
 

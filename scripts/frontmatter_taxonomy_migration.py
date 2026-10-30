@@ -170,8 +170,8 @@ def generate(root: Path, document: Path) -> Path | None:
     with path.open("x", encoding="utf-8") as out:
         out_yaml.dump(migration, out)
     print(f"Created REVIEW-ONLY taxonomy migration: {path.relative_to(root).as_posix()}")
-    print(f"Review the YAML, then run: python scripts/taxonomy.py migrate {path.relative_to(root).as_posix()}")
-    print("Only after approving it, rerun that command with --apply.")
+    print(f"Review the YAML, then run: python scripts/taxonomy.py migrate preview {path.relative_to(root).as_posix()}")
+    print("Only after approving it, run migrate apply with the same migration filename.")
     return path
 
 

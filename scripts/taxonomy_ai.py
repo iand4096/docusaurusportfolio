@@ -25,6 +25,9 @@ Examples:
   python scripts/taxonomy_ai.py --all
   python scripts/taxonomy_ai.py --apply-from taxonomy/taxonomy-ai-suggestions.json
 
+Documents with no YAML front matter can be reviewed; apply creates the block.
+Malformed existing YAML remains an error.
+
 Normal classification runs are review-only: they write Markdown and JSON review
 artifacts without modifying repository state. `--apply-from` applies the exact
 saved JSON artifact without calling the model again, but only when every saved
@@ -350,7 +353,15 @@ def plain_value(value: Any) -> Any:
 
 
 def document_payload(path: Path, root: Path, max_chars: int) -> tuple[dict[str, Any], str]:
-    front_matter, body = taxonomy_tools.load_front_matter(path)
+    # Missing front matter is normal for a new document undergoing review.
+    # Existing but malformed YAML still raises, rather than being silently ignored.
+    source = path.read_text(encoding="utf-8-sig")
+    if taxonomy_tools.split_front_matter(source) is None:
+        if source.lstrip().startswith("---"):
+            raise ValueError(f"{path}: YAML front matter starts but has no closing delimiter")
+        front_matter, body = {}, source
+    else:
+        front_matter, body = taxonomy_tools.load_front_matter(path)
     dimensions = taxonomy_tools.load_and_validate_taxonomy(root)["dimensions"]
     current = {}
 
@@ -1563,7 +1574,14 @@ def apply_results(
 
     for result in results:
         path = root / result["file"]
-        front_matter, body = taxonomy_tools.load_front_matter(path)
+        source = path.read_text(encoding="utf-8-sig")
+        if taxonomy_tools.split_front_matter(source) is None:
+            if source.lstrip().startswith("---"):
+                raise ValueError(f"{path}: cannot apply to an unclosed YAML front matter block")
+            from ruamel.yaml.comments import CommentedMap
+            front_matter, body = CommentedMap(), source
+        else:
+            front_matter, body = taxonomy_tools.load_front_matter(path)
 
         # Page-field suggestions are intentionally conservative: --apply fills
         # only missing/blank top-level title/description fields and never

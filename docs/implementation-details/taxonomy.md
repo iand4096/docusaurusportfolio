@@ -45,7 +45,7 @@ I designed and implemented a governed taxonomy for a Docusaurus documentation si
 
 My goal was not just to generate tags, but also to build a system in which writers could classify content efficiently while the canonical set of metadata remained consistent, reviewable, and auditable.
 
-I implemented the taxonomy schema, validation and migration tooling, AI review workflow, and editor integration to make it easy for writers to select appropriate tags from controlled metadata when tagging their documents. The system validates taxonomy changes against the entire documentation set before applying them. All AI suggestions are reviewed by a human before they can affect document metadata or the canonical taxonomy.
+I implemented the taxonomy schema, validation and migration tooling, AI review workflow, and editor integration to make it easy for writers to select appropriate tags from controlled metadata when tagging their documents. The system validates the proposed taxonomy change before application. Add-only migrations can proceed independently of unrelated document errors; migrations that affect existing terms retain document-impact checks. All AI suggestions are reviewed by a human before they can affect document metadata or the canonical taxonomy.
 
 The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is used to generate Docusaurus tags, the metadata choices available to users in VS Code Front Matter, and the site's taxonomy navigation index — see the [browse page](pathname:///browse/).
 
@@ -92,7 +92,7 @@ It does not call an LLM and is suitable for blocking CI checks.
 
 ### Human review separates proposals from repository changes
 
-A semantic proposal is not automatically a taxonomy change. New or modified vocabulary must be represented by a reviewed migration file before `taxonomy.py migrate` can change `taxonomy.yml`.
+A semantic proposal is not automatically a taxonomy change. New or modified vocabulary must be represented by a reviewed migration file before `taxonomy.py migrate apply` can change `taxonomy.yml`.
 
 ## Architecture
 
@@ -102,7 +102,7 @@ flowchart TD
     REVIEW["`Human review Markdown / JSON artefacts`"]
     APPLY["`taxonomy_ai.py --apply-from Apply reviewed document metadata`"]
     MIGRATION["`taxonomy/migrations/*.yml Reviewed vocabulary change`"]
-    ENGINE["`taxonomy.py migrate Taxonomy migration and validation engine`"]
+    ENGINE["`taxonomy.py migrate preview / apply Migration engine`"]
     DOCS["`docs/**/*.md[x] Governed document metadata`"]
     TAXONOMY["`taxonomy/taxonomy.yml Canonical controlled vocabulary`"]
     DERIVED["`Derived state docs/tags.yml Front Matter projection Navigation projection`"]
@@ -110,8 +110,8 @@ flowchart TD
     AI --> REVIEW
     REVIEW -->|"approved classification"| APPLY
     APPLY --> DOCS
-    REVIEW -->|"approved vocabulary proposal"| MIGRATION
-    MIGRATION -->|"dry-run / --apply"| ENGINE
+    REVIEW -->|"draft migration generator + human approval"| MIGRATION
+    MIGRATION -->|"preview / apply"| ENGINE
     ENGINE -->|"sole supported taxonomy change path"| TAXONOMY
     TAXONOMY --> DERIVED
     DOCS --> DERIVED
@@ -133,6 +133,7 @@ The important boundary is that there is no direct write path from `taxonomy_ai.p
 | `frontmatter.config.cjs`                  | Loads the generated Front Matter projection and registers repository actions       | Editor integration                                      |
 | `scripts/frontmatter_taxonomy.py`         | Creates a persistent single-document AI review                                     | UI convenience; review-only                             |
 | `scripts/frontmatter_taxonomy_apply.py`   | Applies the saved single-document review through `taxonomy_ai.py --apply-from`     | UI convenience; applies saved reviewed metadata         |
+| `scripts/frontmatter_taxonomy_migration.py` | Creates a draft expansion migration from saved review proposals | Review-only; does not change the taxonomy |
 | `docs/tags.yml`                           | Docusaurus tag definitions                                                         | Generated projection                                    |
 | `src/generated/taxonomy-navigation.json`  | Faceted navigation data                                                            | Generated projection                                    |
 | `generate_taxonomy.py`                    | Initial AI-assisted taxonomy discovery                                             | Bootstrap only                                          |
@@ -144,7 +145,7 @@ Front Matter CMS is the editor-based content-management layer for the Docusaurus
 
 In this project, Front Matter is used primarily as a **controlled authoring interface**, not as the source of truth for the taxonomy.
 
-The integration has four responsibilities:
+The integration has five responsibilities:
 
 1. **Structured metadata editing.** The extension presents governed front-matter fields as editor controls instead of requiring authors to remember canonical IDs and YAML structure manually.
 
@@ -152,7 +153,9 @@ The integration has four responsibilities:
 
 3. **Single-document AI review.** Users can click a custom Front Matter action to launch `frontmatter_taxonomy.py` for the active document. That wrapper runs `taxonomy_ai.py` in review-only mode, which calls the LLM to suggest changes to the document's metadata. It stores document-specific review artefacts in `.frontmatter/taxonomy-reviews/`.
 
-4. **Reviewed apply.** Users can click a second custom Front Matter action to update the current document's metadata with the reviewed AI suggestions. It launches `frontmatter_taxonomy_apply.py`, which delegates to `frontmatter_taxonomy.py --apply`. This wrapper then calls `taxonomy_ai.py --apply-from <saved-review.json>` to apply the saved changes to the document. No new classification request is made during this step.
+4. **Draft migration generation.** A separate action runs `frontmatter_taxonomy_migration.py` to create a review-only vocabulary-expansion manifest from genuinely new terms proposed in the saved JSON review. It does not adopt those terms.
+
+5. **Reviewed apply.** Users can apply the saved classification with `frontmatter_taxonomy_apply.py`, which calls `taxonomy_ai.py --apply-from <saved-review.json>`. No new classification request is made during this step. If the document has no YAML front matter, the explicit apply operation creates it; malformed existing front matter still fails.
 
 The registered actions are shown below. The `title` value is the UI button text for each action:
 
@@ -169,6 +172,13 @@ The registered actions are shown below. The `title` value is the UI button text 
     "id": "apply-taxonomy-review",
     "title": "Apply reviewed taxonomy metadata",
     "script": "./scripts/frontmatter_taxonomy_apply.py",
+    "command": "python",
+    "type": "content"
+  },
+  {
+    "id": "generate-taxonomy-migration",
+    "title": "Generate draft taxonomy migration",
+    "script": "./scripts/frontmatter_taxonomy_migration.py",
     "command": "python",
     "type": "content"
   }
@@ -208,7 +218,7 @@ Front Matter CMS
 taxonomy/taxonomy.yml
     = canonical controlled vocabulary
 
-taxonomy.py migrate
+taxonomy.py migrate apply
     = sole supported path for changing the canonical vocabulary
 ```
 
@@ -225,8 +235,8 @@ flowchart TD
     ARTEFACTS["`Persistent review artefacts .review.md + .review.json`"]
     HUMAN["`Human review in VS Code`"]
     PROPOSAL{"`New vocabulary proposed?`"}
-    MIGRATION["`Schema-v2 vocabulary-expansion migration`"]
-    ENGINE["`taxonomy.py migrate dry-run / --apply`"]
+    MIGRATION["`Draft schema-v2 vocabulary-expansion migration`"]
+    ENGINE["`taxonomy.py migrate preview / apply`"]
     TAXONOMY["`taxonomy.yml`"]
     APPLY_ACTION["`Front Matter action Apply reviewed taxonomy metadata`"]
     APPLY_WRAPPER["`frontmatter_taxonomy_apply.py`"]
@@ -240,7 +250,7 @@ flowchart TD
     AI --> ARTEFACTS
     ARTEFACTS --> HUMAN
     HUMAN --> PROPOSAL
-    PROPOSAL -->|"yes"| MIGRATION
+    PROPOSAL -->|"yes: generate and approve"| MIGRATION
     MIGRATION --> ENGINE
     ENGINE --> TAXONOMY
     PROPOSAL -->|"no"| APPLY_ACTION
@@ -251,11 +261,11 @@ flowchart TD
     UPDATED_DOC --> GENERATED
 ```
 
-If a review proposes a new taxonomy term, the new term cannot be applied as metadata to the current document until it has been reviewed and adopted using the migration workflow. This keeps the single-document editor experience consistent with the wider governance model.
+If a review proposes a new taxonomy term, the new term cannot be applied as metadata to the current document until it has been reviewed and adopted using `migrate preview` followed by `migrate apply`. A document with no YAML front matter can still be reviewed; applying its saved review creates the block. This keeps the single-document editor experience consistent with the wider governance model.
 
 ## Taxonomy maintenance workflow
 
-The core maintenance commands are:
+The core maintenance commands (run from the repository root) are:
 
 ```powershell
 python scripts/taxonomy.py check --all
@@ -274,7 +284,9 @@ These work as follows:
 | `generate`           | Are generated repository projections current?                           |
 | `audit-technologies` | Are technology terms and kinds internally credible?                     |
 | `audit-unused`       | Which active terms have zero direct document references?                |
-| `migrate`            | Can an approved taxonomy change be applied safely?                      |
+| `migrate preview`    | Is the migration valid, and what would change?                          |
+| `migrate apply`      | Apply a reviewed migration.                                             |
+| `migrate status`     | List migration manifests and inspect canonical taxonomy health.        |
 
 `audit-unused` is intentionally read-only. A zero-reference term is a contraction candidate, not an instruction to delete it.
 
@@ -293,7 +305,7 @@ A review run can:
 * propose missing title or description metadata;
 * identify vocabulary gaps;
 * produce Markdown and JSON review artefacts;
-* produce a draft migration manifest for genuinely missing terms.
+* propose genuinely missing terms in the review artefacts (the Front Matter migration action can then create a draft manifest).
 
 Reviewed document metadata is applied separately:
 
@@ -301,7 +313,7 @@ Reviewed document metadata is applied separately:
 python scripts/taxonomy_ai.py --apply-from taxonomy/taxonomy-ai-suggestions.json
 ```
 
-`--apply-from` is the only way to modify document metadata in `taxonomy_ai.py`. Fresh classification runs are review-only.
+`--apply-from` is the recommended way to apply a saved classification. Targeted `--apply` remains available for backwards compatibility; fresh review-only runs do not modify documents. A document without front matter can be reviewed as empty metadata and receives a YAML block only when an approved review is applied.
 
 This application step cannot adopt a new canonical term. If the reviewed metadata references a proposed term that has not been added to the taxonomy through a migration, the apply step fails.
 
@@ -351,7 +363,7 @@ This separates *why* a migration exists from the individual operations it perfor
 
 ### Content-driven expansion
 
-When a new document contains a reusable concept that is not represented by the existing controlled vocabulary, `taxonomy_ai.py` can propose an expansion migration.
+When a new document contains a reusable concept that is not represented by the existing controlled vocabulary, `taxonomy_ai.py` can propose a new term. The Front Matter migration generator creates a draft expansion manifest from the saved review.
 
 ```text
 content added
@@ -364,7 +376,7 @@ vocabulary-expansion candidate
     ↓
 human review
     ↓
-taxonomy.py migrate
+taxonomy.py migrate preview / apply
 ```
 
 AI proposes the term; it does not add the term directly.
@@ -455,59 +467,31 @@ changes:
 
 The `expect` values act as stale-state guards. If another change has already modified one of those terms, the migration fails rather than silently overwriting the newer state.
 
-## Migration preflight
+## Migration preview, apply, and status
 
-Migrations carry out a dry-run by default:
-
-```powershell
-python scripts/taxonomy.py migrate `
-  taxonomy/migrations/2026-09-01-correct-technology-kinds.yml
-```
-
-A successful dry-run produces:
-
-```text
-migration: 2026-09-01-correct-technology-kinds
-description: Correct technology kinds that conflict with the controlled kind definitions.
-operations: update=5
-documents scanned: 26
-documents requiring deterministic rewrite: 0
-dry-run passed; no files changed
-use --apply to write the migration
-```
-
-The `documents requiring deterministic rewrite` wording above is the literal command output. In practice, this check identifies documents whose front matter would need to be rewritten because of canonical ID changes.
-
-The engine constructs and validates the candidate taxonomy before changing repository state. It also scans the document corpus to determine whether canonical ID changes would require front-matter rewrites.
-
-The migration is only written after an explicit:
+Use the explicit migration subcommands from the repository root:
 
 ```powershell
-python scripts/taxonomy.py migrate `
-  taxonomy/migrations/2026-09-01-correct-technology-kinds.yml `
-  --apply
+python scripts/taxonomy.py migrate preview taxonomy/migrations/<migration>.yml
+python scripts/taxonomy.py migrate apply taxonomy/migrations/<migration>.yml
+python scripts/taxonomy.py migrate status
 ```
 
-## Preflight caught unrelated repository drift
+`preview` validates a manifest, its preconditions, and the candidate canonical taxonomy without writing files. `apply` performs the approved change. `status` inspects migration manifests and canonical taxonomy health; it **does not maintain an applied-migration history** and cannot prove that a particular migration has been run.
 
-The first dry-run of the same migration reported that one document required an update. Running the full repository check showed that the newly added taxonomy case study document had governed taxonomy metadata but contained an empty derived `tags` field, and the navigation projection was also stale.
+**Add-only vocabulary migrations** are validated independently of unrelated broken documents. Applying them writes `taxonomy/taxonomy.yml` but intentionally defers generating derived files until document metadata is repaired. **Non-additive migrations** (for example, term replacements, deprecations, or policy changes) retain document-impact and derived-state checks because they may require changes to existing pages.
 
-I corrected the derived state as follows:
+After completing metadata changes, synchronise and validate the repository:
 
 ```powershell
-python scripts/taxonomy.py sync docs/case-studies/taxonomy.md
+python scripts/taxonomy.py sync --all
+python scripts/taxonomy.py generate
 python scripts/taxonomy.py check --all
 ```
 
-After that, the migration dry-run reported:
+### Historical preflight example
 
-```text
-documents scanned: 26
-documents requiring deterministic rewrite: 0
-dry-run passed; no files changed
-```
-
-This showed that the migration preflight was not only checking the requested vocabulary changes. It also prevented an unrelated repository inconsistency from being carried into the migration.
+Before the migration interface was simplified, the technology-kind correction was previewed using `migrate <file>` and applied using `--apply`. That historical run scanned 26 documents and reported no deterministic rewrites. Those are observations about the earlier version, **not the current command syntax or the behaviour of add-only migrations**. The previous preflight also exposed unrelated derived-state drift, which was repaired before completion. Under the revised workflow, an unrelated document issue no longer blocks an add-only vocabulary expansion, while full repository checks remain mandatory before publishing.
 
 ## AI and repository tooling responsibilities
 
@@ -565,14 +549,14 @@ The resulting system:
 * restricts taxonomy changes to reviewable YAML migration files;
 * separates AI semantic classification from the authority to change canonical repository state;
 * rejects stale migrations when the current taxonomy state no longer matches the migration's expected preconditions;
-* identifies required document metadata rewrites before applying taxonomy changes;
+* identifies required document metadata rewrites for migrations that affect existing terms;
 * supports controlled vocabulary expansion for genuinely new concepts;
 * supports deprecation of unused vocabulary while preserving an audit trail;
 * generates Docusaurus tags, Front Matter choices, and navigation projections from canonical taxonomy state;
 * provides a VS Code workflow for reviewing and applying AI-assisted metadata;
 * uses the pull-request Git diff as the final human review step.
 
-In the example correction migration, five vocabulary changes were validated against all 26 portfolio documents before any repository state was changed, and no document rewrites were required because the canonical IDs did not change.
+In the historical correction-migration example, five vocabulary changes were validated against 26 portfolio documents, and no document rewrites were required because the canonical IDs did not change. The current add-only migration path does not scan unrelated documents.
 
 ## Trade-offs and next steps
 
@@ -580,7 +564,7 @@ The current design deliberately favours explicit review over automation. That ma
 
 Further improvements include:
 
-* content/taxonomy fingerprints on AI review artefacts so `--apply-from` can reject stale reviews more precisely;
+* stronger content/taxonomy fingerprints on AI review artefacts so `--apply-from` can reject stale reviews more precisely;
 * a local content-addressed AI response cache for unchanged documents;
 * retiring or archiving historical bootstrap and v1-to-v2 migration tooling;
 * continued semantic review of terms where the existing technology-kind model does not yet provide an unambiguous classification.
