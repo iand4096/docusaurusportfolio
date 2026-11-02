@@ -1,7 +1,7 @@
 ---
 title: Optimus and RICE
 type:
-  - case-study
+  - reference-material
 audiences:
   - developers
   - technical-writers

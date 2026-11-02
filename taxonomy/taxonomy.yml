@@ -191,6 +191,14 @@ dimensions:
           introduced: '2026-09-01'
           source: human-proposed
           review: annual
+      reference-material:
+        label: Reference material
+        description: Reference material to complement other content
+        governance:
+          status: active
+          introduced: '2026-11-02'
+          source: human-proposed
+          review: annual
   audiences:
     description: Audiences for whom the content is materially relevant.
     metadata_field: audiences

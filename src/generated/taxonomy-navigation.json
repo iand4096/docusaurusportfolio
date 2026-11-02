@@ -229,6 +229,11 @@
           "description": "A page that introduces a section and provides navigation to its contents."
         },
         {
+          "id": "reference-material",
+          "label": "Reference material",
+          "description": "Reference material to complement other content"
+        },
+        {
           "id": "skill",
           "label": "Skill",
           "description": "A page describing a professional capability or area of expertise."

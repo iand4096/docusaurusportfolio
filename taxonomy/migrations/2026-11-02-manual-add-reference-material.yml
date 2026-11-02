@@ -1,0 +1,17 @@
+schema_version: 2
+id: 2026-11-02-manual-add-reference-material
+description: Manually reviewed add taxonomy terms.
+change_type: vocabulary-expansion
+trigger: taxonomy-review
+governance:
+  date: '2026-11-02'
+  source: human-proposed
+  reason: Manually dded a new content type - reference material
+preconditions:
+  taxonomy_version: 2
+changes:
+  content_types:
+    add:
+      reference-material:
+        label: Reference material
+        description: Reference material to complement other content
