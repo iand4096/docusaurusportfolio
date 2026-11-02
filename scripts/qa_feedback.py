@@ -13,6 +13,9 @@ import re
 import subprocess
 import sys
 import tempfile
+from urllib.parse import urlsplit
+
+import requests
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -61,19 +64,27 @@ def git_document_revision(path: str) -> dict:
 
 
 def decorate_issues(issues: list[dict]) -> None:
-    """Assign deterministic IDs; reject truly identical duplicate findings."""
+    """Assign stable IDs and consolidate duplicate reports of the same claim.
+
+    A duplicate is possible when multiple check passes report an identical
+    criticism. That must never prevent report generation. Different criticisms
+    of the same passage remain distinct because finding_id includes message.
+    """
     seen = set()
     revisions = {}
+    unique = []
     for issue in issues:
         identity = finding_id(issue)
         if identity in seen:
-            raise ValueError(f'Duplicate QA finding with identical identity: {identity}')
+            continue
         seen.add(identity)
         issue['issue_id'] = identity
         path = str(issue['file'])
         if path not in revisions:
             revisions[path] = git_document_revision(path)
         issue['document_revision'] = dict(revisions[path])
+        unique.append(issue)
+    issues[:] = unique
 
 
 def _json_read(path: Path, default: dict) -> dict:
@@ -286,9 +297,84 @@ Do not include artificial line-number prefixes in quotations.
         'decision', 'reason', 'evidence', 'revised_message', 'revised_suggestion')}
 
 
+# Only reports published by this portfolio are accepted as remote evidence.
+REPORT_HOST = 'iand4096.github.io'
+REPORT_PREFIX = '/docusaurusportfolio/qa/'
+GITHUB_RAW_PREFIX = 'https://raw.githubusercontent.com/iand4096/docusaurusportfolio/'
+
+
+def load_report(report: str | Path) -> tuple[dict, str]:
+    """Load an exact local report or a versioned, trusted GitHub Pages JSON report."""
+    reference = str(report)
+    url = urlsplit(reference)
+    if url.scheme or url.netloc:
+        if (url.scheme != 'https' or url.netloc != REPORT_HOST
+                or not url.path.startswith(REPORT_PREFIX)
+                or not re.fullmatch(r'report-[A-Fa-f0-9]{12,40}\.json', url.path.rsplit('/', 1)[-1])
+                or url.username or url.password or url.query or url.fragment):
+            raise ValueError('Only immutable JSON reports on the configured GitHub Pages QA origin are accepted')
+        response = requests.get(reference, timeout=30, allow_redirects=False)
+        response.raise_for_status()
+        if len(response.content) > 12_000_000:
+            raise ValueError('Remote report is too large')
+        payload = response.json()
+    else:
+        location = Path(reference)
+        if not location.is_file():
+            raise ValueError(f'Report file not found: {location}')
+        payload = json.loads(location.read_text(encoding='utf-8'))
+    if not isinstance(payload, dict) or not isinstance(payload.get('issues'), list):
+        raise ValueError('Report must contain an issues array')
+    metadata = payload.get('metadata', {})
+    if url.scheme and (not isinstance(metadata, dict)
+                       or metadata.get('github_repository') != 'iand4096/docusaurusportfolio'):
+        raise ValueError('Remote report repository identity is not valid')
+    return payload, reference
+
+
+def _source_for_report_finding(issue: dict, *, historical: bool) -> str:
+    """Verify exact original source bytes; permit historical source for explicit reports."""
+    file_name = issue.get('file')
+    if (not isinstance(file_name, str) or not file_name or '\\' in file_name
+            or Path(file_name).is_absolute() or '..' in Path(file_name).parts):
+        raise ValueError('Invalid repository-relative source path in finding')
+    sha = (issue.get('document_revision') or {}).get('content_sha256')
+    if not isinstance(sha, str) or not re.fullmatch(r'[a-fA-F0-9]{64}', sha):
+        raise ValueError('Finding has no verifiable source SHA-256')
+    local = Path(file_name)
+    if local.is_file():
+        raw = local.read_bytes()
+        if hashlib.sha256(raw).hexdigest() == sha:
+            return raw.decode('utf-8')
+    if not historical:
+        if not local.is_file():
+            raise ValueError(f'Source file is unavailable: {local}')
+        raise ValueError('Source has changed since QA; rerun QA before challenging')
+    commit = (issue.get('document_revision') or {}).get('git_commit')
+    if not isinstance(commit, str) or not re.fullmatch(r'[0-9a-fA-F]{40}', commit):
+        raise ValueError('Original source revision cannot be verified (missing full Git commit)')
+    # Prefer the checked-out repository's original immutable Git object.
+    try:
+        result = subprocess.run(['git', 'show', f'{commit}:{file_name}'],
+                                capture_output=True, check=False, timeout=15)
+        raw = result.stdout if result.returncode == 0 else None
+    except (OSError, subprocess.TimeoutExpired):
+        raw = None
+    if raw is None or hashlib.sha256(raw).hexdigest() != sha:
+        # Retrieve the public source at the immutable commit, not a moving branch.
+        from urllib.parse import quote
+        url = GITHUB_RAW_PREFIX + commit + '/' + quote(file_name, safe='/')
+        response = requests.get(url, timeout=30, allow_redirects=False)
+        response.raise_for_status()
+        raw = response.content
+    if hashlib.sha256(raw).hexdigest() != sha:
+        raise ValueError('Original Git source does not match the finding source SHA-256')
+    return raw.decode('utf-8')
+
+
 def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False, findings_path: Path = DEFAULT_FINDINGS,
               feedback_path: Path = DEFAULT_FEEDBACK, api_key: str,
-              request_review) -> dict:
+              request_review, report: str | Path | None = None) -> dict:
     """Save the human challenge first; save adjudication only after validation.
 
     API errors leave the rebuttal as pending so it can be retried without loss.
@@ -298,19 +384,19 @@ def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False
             raise ValueError('Retry cannot include a new rebuttal')
     elif not rebuttal or not rebuttal.strip():
         raise ValueError('Rebuttal must not be empty')
-    findings = _json_read(findings_path, {'schema_version': SCHEMA_VERSION, 'issues': []})
-    matches = [item for item in findings.get('issues', []) if item.get('issue_id') == issue_id]
+    if report is None:
+        findings = _json_read(findings_path, {'schema_version': SCHEMA_VERSION, 'issues': []})
+        provenance = str(findings_path)
+    else:
+        findings, provenance = load_report(report)
+    matches = [item for item in findings.get('issues', []) if isinstance(item, dict)
+               and item.get('issue_id') == issue_id]
     if len(matches) != 1:
-        raise ValueError(f'Finding {issue_id!r} not uniquely present in {findings_path}; rerun QA')
+        raise ValueError(f'Finding {issue_id!r} not uniquely present in report {provenance}')
     issue = dict(matches[0])
-    file_path = Path(str(issue['file']))
-    if not file_path.is_file():
-        raise ValueError(f'Source file is unavailable: {file_path}')
-    source = file_path.read_text(encoding='utf-8')
-    expected = issue.get('document_revision', {}).get('content_sha256')
-    actual = hashlib.sha256(file_path.read_bytes()).hexdigest()
-    if expected is None or actual != expected:
-        raise ValueError('Source has changed since QA; rerun QA before challenging')
+    if issue.get('source') != 'ai':
+        raise ValueError('Only AI-origin findings can be challenged with DeepSeek')
+    source = _source_for_report_finding(issue, historical=report is not None)
     line, context = _source_excerpt(source, issue['original'])
     issue['_source_full'] = source
     issue['_source_context'] = context
@@ -319,6 +405,7 @@ def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False
     record = records.setdefault(issue_id, {
         'issue_id': issue_id, 'status': 'unreviewed',
         'human_resolution': None, 'discussion': [], 'adjudications': []})
+    record['report_source'] = provenance
     record['latest_finding'] = {k: issue.get(k) for k in (
         'file', 'category', 'source', 'original', 'message', 'suggestion', 'document_revision')}
     if retry:
