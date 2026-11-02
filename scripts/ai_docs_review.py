@@ -3232,7 +3232,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
         <a href="{html.escape(PORTFOLIO_URL, quote=True)}">← Back to Portfolio</a>
     </p>
     <div class="report-actions">
-        <a id="latestReportLink" href="#">Load latest report</a>
+        <a id="latestReportLink" href="./">Load latest report</a>
         <a href="{html.escape(MARKDOWN_REPORT.name, quote=True)}">AI-readable Markdown report</a>
         <a href="{html.escape(JSON_REPORT.name, quote=True)}">Full report JSON</a>
     </div>
@@ -3336,12 +3336,21 @@ def generate_html_report(issues, errors, metadata, ci_result):
     const sourceFilter = document.getElementById('sourceFilter');
     const latestReportLink = document.getElementById('latestReportLink');
     if (latestReportLink) {{
-        latestReportLink.addEventListener('click', (event) => {{
-            event.preventDefault();
-            const url = new URL(window.location.href);
-            url.searchParams.set('_qa_refresh', Date.now().toString());
-            window.location.assign(url.toString());
-        }});
+        // Published reports are immutable /qa/report-<commit>.html files.
+        // The /qa/ index is the authoritative latest-version loader.
+        const isPublishedReport = /\/qa\/report-[a-f0-9]+\.html$/i.test(window.location.pathname);
+        if (isPublishedReport) {{
+            latestReportLink.href = new URL('./', window.location.href).toString();
+        }} else {{
+            // Locally generated HTML: reload the current file, bypassing cache.
+            latestReportLink.href = window.location.href;
+            latestReportLink.addEventListener('click', (event) => {{
+                event.preventDefault();
+                const url = new URL(window.location.href);
+                url.searchParams.set('_qa_refresh', Date.now().toString());
+                window.location.assign(url.toString());
+            }});
+        }}
     }}
     function applyFilters() {{
         const severity = severityFilter.value;

@@ -593,6 +593,7 @@ jobs:
           path: |
             ai-doc-review.html
             ai-doc-review.json
+            ai-doc-review.md
           if-no-files-found: warn
 
       # Publish the QA report under a commit-specific filename. /qa/index.html is
@@ -658,6 +659,54 @@ jobs:
           </body>
           </html>
           EOF
+          fi
+
+          # QA_LINKS_PUBLISH_V1: publish matching machine-readable reports with the HTML.
+
+          # Each deployment uses commit-specific filenames to keep report links in sync.
+
+          if [ -f ai-doc-review.html ]; then
+
+            if [ ! -s ai-doc-review.json ] || [ ! -s ai-doc-review.md ]; then
+
+              echo "::error::HTML QA report was generated without matching JSON and Markdown files."
+
+              exit 1
+
+            fi
+
+            cp ai-doc-review.json "build/qa/report-${QA_VERSION}.json"
+
+            cp ai-doc-review.md "build/qa/report-${QA_VERSION}.md"
+
+            QA_VERSION="$QA_VERSION" python - <<'PY_QA_LINKS'
+
+          from pathlib import Path
+
+          import os
+
+          version = os.environ["QA_VERSION"]
+
+          report = Path("build/qa") / f"report-{version}.html"
+
+          html = report.read_text(encoding="utf-8")
+
+          for extension in ("json", "md"):
+
+              html = html.replace(
+
+                  f'href="ai-doc-review.{extension}"',
+
+                  f'href="report-{version}.{extension}"',
+
+              )
+
+          report.write_text(html, encoding="utf-8")
+
+          PY_QA_LINKS
+
+            echo "Published QA HTML, JSON and Markdown for ${QA_VERSION}."
+
           fi
 
           # A small machine-readable pointer to the report from this deployment.
