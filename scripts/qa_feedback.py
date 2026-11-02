@@ -31,11 +31,15 @@ def normalise(value: Any) -> str:
 
 
 def finding_id(issue: dict) -> str:
-    """Stable across changed line numbers, run dates, and Git revisions."""
+    """Order-independent identity for a particular criticism of a source passage.
+
+    Ignore line, severity, confidence, suggested fix and revision. Include the
+    criticism to distinguish separate claims citing identical text.
+    """
     parts = [str(issue.get('file', '')).replace('\\', '/').removeprefix('./'),
              normalise(issue.get('source')), normalise(issue.get('category')),
-             normalise(issue.get('original'))]
-    fingerprint = hashlib.sha256('\0'.join(parts).encode('utf-8')).hexdigest()[:20]
+             normalise(issue.get('original')), normalise(issue.get('message'))]
+    fingerprint = hashlib.sha256('\0'.join(parts).encode('utf-8')).hexdigest()[:24]
     return 'qa-' + fingerprint
 
 
@@ -56,16 +60,13 @@ def git_document_revision(path: str) -> dict:
 
 
 def decorate_issues(issues: list[dict]) -> None:
-    """Add identity and revision; fail on collisions rather than misattribute comments."""
+    """Assign deterministic IDs; reject truly identical duplicate findings."""
     seen = set()
     revisions = {}
     for issue in issues:
         identity = finding_id(issue)
         if identity in seen:
-            # Different criticisms of the same literal excerpt must not share a thread.
-            identity += '-' + hashlib.sha256(normalise(issue.get('message')).encode()).hexdigest()[:10]
-        if identity in seen:
-            raise ValueError(f'Ambiguous duplicate QA finding: {identity}')
+            raise ValueError(f'Duplicate QA finding with identical identity: {identity}')
         seen.add(identity)
         issue['issue_id'] = identity
         path = str(issue['file'])
@@ -111,6 +112,12 @@ def feedback_records(path: Path = DEFAULT_FEEDBACK) -> dict:
 def attach_feedback_status(issues: list[dict], feedback_path: Path = DEFAULT_FEEDBACK) -> None:
     records = feedback_records(feedback_path)['records']
     for issue in issues:
+        if issue.get('source') != 'ai':
+            # These checks have no DeepSeek challenge or human feedback state.
+            issue.pop('feedback_status', None)
+            issue.pop('human_resolution', None)
+            issue.pop('latest_ai_decision', None)
+            continue
         record = records.get(issue['issue_id'], {})
         issue['feedback_status'] = record.get('status', 'unreviewed')
         issue['human_resolution'] = record.get('human_resolution')
@@ -172,14 +179,17 @@ No decision constitutes a human resolution.'''
         'decision', 'reason', 'evidence', 'revised_message', 'revised_suggestion')}
 
 
-def challenge(issue_id: str, rebuttal: str, *, findings_path: Path = DEFAULT_FINDINGS,
+def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False, findings_path: Path = DEFAULT_FINDINGS,
               feedback_path: Path = DEFAULT_FEEDBACK, api_key: str,
               request_review) -> dict:
     """Save the human challenge first; save adjudication only after validation.
 
     API errors leave the rebuttal as pending so it can be retried without loss.
     """
-    if not rebuttal.strip():
+    if retry:
+        if rebuttal is not None:
+            raise ValueError('Retry cannot include a new rebuttal')
+    elif not rebuttal or not rebuttal.strip():
         raise ValueError('Rebuttal must not be empty')
     findings = _json_read(findings_path, {'schema_version': SCHEMA_VERSION, 'issues': []})
     matches = [item for item in findings.get('issues', []) if item.get('issue_id') == issue_id]
@@ -204,14 +214,51 @@ def challenge(issue_id: str, rebuttal: str, *, findings_path: Path = DEFAULT_FIN
         'human_resolution': None, 'discussion': [], 'adjudications': []})
     record['latest_finding'] = {k: issue.get(k) for k in (
         'file', 'category', 'source', 'original', 'message', 'suggestion', 'document_revision')}
-    record['status'] = 'challenged'
-    record['discussion'].append({'role': 'human', 'text': rebuttal.strip(), 'at': utc_now()})
+    if retry:
+        if record.get('status') != 'challenged':
+            raise ValueError('Only a pending challenge may be retried')
+        humans = [x for x in record.get('discussion', []) if x.get('role') == 'human']
+        if not humans:
+            raise ValueError('No previous human rebuttal to retry')
+        rebuttal = humans[-1]['text']
+    else:
+        record['status'] = 'challenged'
+        record['discussion'].append({'role': 'human', 'text': rebuttal.strip(), 'at': utc_now()})
+    record.setdefault('attempts', []).append({'at': utc_now(), 'result': 'pending', 'retry': retry})
     write_atomic(feedback_path, store)
-    decision = adjudicate(issue, rebuttal.strip(), record['discussion'], api_key,
-                          request_review, prior_decisions=record.get('adjudications'))
+    try:
+        decision = adjudicate(issue, rebuttal.strip(), record['discussion'], api_key,
+                              request_review, prior_decisions=record.get('adjudications'))
+    except Exception as error:
+        record['attempts'][-1]['result'] = 'failed'
+        record['attempts'][-1]['error'] = f'{type(error).__name__}: {error}'[:500]
+        write_atomic(feedback_path, store)
+        raise
+    record['attempts'][-1]['result'] = 'succeeded'
     record['adjudications'].append({'at': utc_now(), **decision, 'document_revision': issue['document_revision']})
     record['discussion'].append({'role': 'ai', 'text': decision['reason'],
                                  'decision': decision['decision'], 'at': utc_now()})
     record['status'] = 'adjudicated'
     write_atomic(feedback_path, store)
     return decision
+
+
+HUMAN_DECISIONS = {'accepted', 'dismissed', 'change_requested', 'pending'}
+
+
+def resolve(issue_id: str, decision: str, reason: str, *,
+            feedback_path: Path = DEFAULT_FEEDBACK) -> dict:
+    """Record an explicit human decision without altering AI adjudication."""
+    if decision not in HUMAN_DECISIONS:
+        raise ValueError(f'Unknown human decision: {decision}')
+    if not reason.strip():
+        raise ValueError('Human resolution requires a reason')
+    store = feedback_records(feedback_path)
+    record = store['records'].get(issue_id)
+    if record is None:
+        raise ValueError(f'No feedback record found for {issue_id}; challenge it first')
+    event = {'decision': decision, 'reason': reason.strip(), 'at': utc_now()}
+    record['human_resolution'] = decision
+    record.setdefault('resolution_history', []).append(event)
+    write_atomic(feedback_path, store)
+    return event

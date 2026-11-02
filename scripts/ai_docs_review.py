@@ -15,7 +15,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
 
-from qa_feedback import (decorate_issues, attach_feedback_status, save_findings,
+from qa_feedback import (decorate_issues, attach_feedback_status, save_findings, resolve as resolve_finding,
                          challenge as challenge_finding, DEFAULT_FEEDBACK, DEFAULT_FINDINGS)
 
 API_URL = "https://api.deepseek.com/chat/completions"
@@ -48,6 +48,9 @@ EXCLUDED_DIRS = {
     ".git",
     "static",
     "taxonomy",
+    ".frontmatter",  # Front Matter taxonomy-review drafts are not published docs.
+    ".qa",           # Locally generated QA reports are not documentation.
+    "qa",            # QA state, not documentation source.
 }
 
 SEVERITIES = {"high", "medium", "low"}
@@ -2489,6 +2492,7 @@ def choose_review_mode():
     print("Review mode:")
     print("  1. Per page")
     print("  2. Site wide")
+    print("  3. All (page and site checks)")
     print()
     while True:
         try:
@@ -2502,8 +2506,10 @@ def choose_review_mode():
 
         if choice == "2":
             return "site-wide"
+        if choice == "3":
+            return "all"
 
-        print("Please enter 1 or 2.")
+        print("Please enter 1, 2 or 3.")
 
 def choose_filter():
     print()
@@ -2562,7 +2568,7 @@ def selected_checks(filter_name):
 
 def resolve_mode_for_filter(mode, filter_name):
     """Handle presets that only make sense in one review scope."""
-    if filter_name == "site-wide-consistency" and mode != "site-wide":
+    if filter_name == "site-wide-consistency" and mode == "per-page":
         print("Site-wide consistency requires site-wide mode; switching to site-wide.")
         return "site-wide"
 
@@ -2574,7 +2580,7 @@ def resolve_mode_for_filter(mode, filter_name):
         "links",
     }
 
-    if filter_name in page_only_filters and mode != "per-page":
+    if filter_name in page_only_filters and mode == "site-wide":
         print(f"{FILTER_LABELS[filter_name]} requires per-page mode; switching to per-page.")
         return "per-page"
     return mode
@@ -2891,8 +2897,9 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
     for number, issue in enumerate(ordered, 1):
         lines += [
             f"### Issue {number}", "",
-            f"- ID: `{issue.get('issue_id', 'not-assigned')}`",
-            f"- Feedback: {issue.get('feedback_status', 'unreviewed')}",
+            *([f"- ID: `{issue.get('issue_id', 'not-assigned')}`",
+               f"- Feedback: {issue.get('feedback_status', 'unreviewed')}"]
+              if issue.get('source') == 'ai' else []),
             f"- Document revision: `{issue.get('document_revision', {}).get('content_sha256') or 'unknown'}`",
             f"- File: `{value(issue['file'])}`",
             f"- Line: {issue['line']}",
@@ -2941,6 +2948,17 @@ def generate_html_report(issues, errors, metadata, ci_result):
             + html.escape(issue_id, quote=True) + '">Challenge AI</button>'
             if issue.get("source") == "ai" and issue_id else ""
         )
+        # Feedback is an AI adjudication concept. Static, Vale, LTeX+, and
+        # other deterministic findings must not suggest they can be challenged.
+        if issue.get("source") == "ai":
+            file_cell = (
+                f'<small><strong>ID:</strong> <code>{html.escape(issue_id)}</code></small><br>'
+                f'{file_link}<br>'
+                f'<small><strong>Status:</strong> {html.escape(issue.get("feedback_status", "unreviewed"))}</small><br>'
+                f'{challenge_control}'
+            )
+        else:
+            file_cell = file_link
         rows.append(
             f"""
             <tr
@@ -2948,7 +2966,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 data-source="{html.escape(issue['source'])}"
                 data-category="{html.escape(issue['category'])}"
             >
-                <td><code>{html.escape(issue_id)}</code><br>{file_link}<br><small>{html.escape(issue.get("feedback_status", "unreviewed"))}</small><br>{challenge_control}</td>
+                <td>{file_cell}</td>
                 <td>{line_link}<br><small>{html.escape(issue.get("document_revision", {}).get("content_sha256") or "revision unavailable")[:12]}</small></td>
                 <td><span class="badge severity-{html.escape(issue['severity'])}">{html.escape(issue['severity'])}</span></td>
                 <td><span class="badge confidence-{html.escape(issue['confidence'])}">{html.escape(issue['confidence'])}</span></td>
@@ -3397,10 +3415,12 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Run documentation QA checks or challenge an AI finding."
     )
-    parser.add_argument("command", nargs="?", choices=["challenge"],
+    parser.add_argument("command", nargs="?", choices=["challenge", "resolve"],
                         help="Challenge an existing finding using DeepSeek")
     parser.add_argument("--issue", help="Stable QA issue ID for challenge mode")
-    parser.add_argument("--reason", help="Your rebuttal to the AI criticism")
+    parser.add_argument("--reason", help="Rebuttal or human resolution explanation")
+    parser.add_argument("--retry", action="store_true", help="Retry pending challenge without adding a new rebuttal")
+    parser.add_argument("--decision", choices=["accepted", "dismissed", "change_requested", "pending"], help="Human resolution for resolve command")
     parser.add_argument("--reason-file", type=Path, help="Read rebuttal from a UTF-8 text file")
     parser.add_argument("--findings-file", type=Path, default=DEFAULT_FINDINGS)
     parser.add_argument("--feedback-file", type=Path, default=DEFAULT_FEEDBACK)
@@ -3415,7 +3435,7 @@ def parse_args():
     )
     parser.add_argument(
         "--mode",
-        choices=["per-page", "site-wide"],
+        choices=["per-page", "site-wide", "all"],
         help="Review scope. Defaults to per-page in CI mode.",
     )
 
@@ -3487,14 +3507,26 @@ def main():
     REPORT = report_dir / "ai-doc-review.html"
     JSON_REPORT = report_dir / "ai-doc-review.json"
     MARKDOWN_REPORT = report_dir / "ai-doc-review.md"
-    if args.command != "challenge":
+    if args.command not in {"challenge", "resolve"}:
         report_dir.mkdir(parents=True, exist_ok=True)
     _assert_ci_policy_invariants()
+    if args.command == "resolve":
+        if not args.issue or not args.decision or not args.reason or args.reason_file or args.retry:
+            print("Resolve requires --issue, --decision and --reason", file=sys.stderr)
+            return 2
+        try:
+            result = resolve_finding(args.issue, args.decision, args.reason,
+                                     feedback_path=args.feedback_file)
+        except (ValueError, OSError, json.JSONDecodeError) as error:
+            print(f"Resolve failed: {error}", file=sys.stderr)
+            return 1
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        return 0
     if args.command == "challenge":
         if not args.issue:
             print("Challenge requires --issue", file=sys.stderr)
             return 2
-        if bool(args.reason) == bool(args.reason_file):
+        if (args.retry and (args.reason is not None or args.reason_file is not None)) or (not args.retry and bool(args.reason) == bool(args.reason_file)):
             print("Provide exactly one of --reason or --reason-file", file=sys.stderr)
             return 2
         if not DEEPSEEK_AI_CHECKS_ENABLED:
@@ -3505,8 +3537,8 @@ def main():
             print("DEEPSEEK_API_KEY is required", file=sys.stderr)
             return 2
         try:
-            rebuttal = args.reason if args.reason is not None else args.reason_file.read_text(encoding="utf-8")
-            decision = challenge_finding(args.issue, rebuttal,
+            rebuttal = None if args.retry else (args.reason if args.reason is not None else args.reason_file.read_text(encoding="utf-8"))
+            decision = challenge_finding(args.issue, rebuttal, retry=args.retry,
                 findings_path=args.findings_file, feedback_path=args.feedback_file,
                 api_key=api_key, request_review=request_review)
         except (ValueError, OSError, requests.RequestException, KeyError, json.JSONDecodeError) as error:
@@ -3556,7 +3588,7 @@ def main():
     # Only retain implementations that can actually run in the chosen scope.
     if mode == "per-page":
         scoped_checks = [check for check in scoped_checks if check.supports_page]
-    else:
+    elif mode == "site-wide":
         scoped_checks = [check for check in scoped_checks if check.supports_site]
 
     checks = scoped_checks + file_checks
@@ -3615,18 +3647,17 @@ def main():
 
     print()
 
-    if mode == "per-page":
-        issues, errors = run_per_page_checks(
-            files,
-            scoped_checks,
-            api_key,
-        )
-    else:
-        issues, errors = run_site_checks(
-            files,
-            scoped_checks,
-            api_key,
-        )
+    issues, errors = [], []
+    if mode in {"per-page", "all"}:
+        page_issues, page_errors = run_per_page_checks(
+            files, [check for check in scoped_checks if check.supports_page], api_key)
+        issues.extend(page_issues)
+        errors.extend(page_errors)
+    if mode in {"site-wide", "all"}:
+        site_issues, site_errors = run_site_checks(
+            files, [check for check in scoped_checks if check.supports_site], api_key)
+        issues.extend(site_issues)
+        errors.extend(site_errors)
     for check in file_checks:
         print(f"[{check.source}] {check.name}")
         try:
