@@ -3338,7 +3338,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
     if (latestReportLink) {{
         // Published reports are immutable /qa/report-<commit>.html files.
         // The /qa/ index is the authoritative latest-version loader.
-        const isPublishedReport = /\/qa\/report-[a-f0-9]+\.html$/i.test(window.location.pathname);
+        const isPublishedReport = new RegExp('/qa/report-[a-f0-9]+[.]html$', 'i').test(window.location.pathname);
         if (isPublishedReport) {{
             latestReportLink.href = new URL('./', window.location.href).toString();
         }} else {{
@@ -3373,8 +3373,14 @@ def generate_html_report(issues, errors, metadata, ci_result):
         button.addEventListener('click', async () => {{
             const issueId = button.dataset.issueId;
             if (!/^qa-[A-Za-z0-9_-]+$/.test(issueId || '')) return;
-            const command = 'python scripts/ai_docs_review.py challenge --issue ' + issueId
-                + ' --reason "Explain why you disagree with this finding"';
+            const reportRef = (window.location.protocol === 'https:' &&
+                window.location.hostname === 'iand4096.github.io' &&
+                new RegExp('^/docusaurusportfolio/qa/report-[a-f0-9]{{12,40}}[.]html$', 'i').test(window.location.pathname))
+                ? window.location.origin + window.location.pathname.replace(/[.]html$/i, '.json')
+                : {json.dumps(os.path.relpath(JSON_REPORT, PROJECT_ROOT) if JSON_REPORT.is_absolute() else JSON_REPORT.as_posix())};
+            const command = 'python scripts/ai_docs_review.py challenge --report ' +
+                JSON.stringify(reportRef) + ' --issue ' + issueId +
+                ' --reason "Explain why you disagree with this finding"';
             const status = document.getElementById('copyStatus');
             try {{
                 if (!navigator.clipboard || !navigator.clipboard.writeText) {{
@@ -3427,6 +3433,7 @@ def parse_args():
     parser.add_argument("command", nargs="?", choices=["challenge", "resolve"],
                         help="Challenge an existing finding using DeepSeek")
     parser.add_argument("--issue", help="Stable QA issue ID for challenge mode")
+    parser.add_argument("--report", help="Exact local report JSON path or immutable published GitHub Pages JSON URL for challenge mode")
     parser.add_argument("--reason", help="Rebuttal or human resolution explanation")
     parser.add_argument("--retry", action="store_true", help="Retry pending challenge without adding a new rebuttal")
     parser.add_argument("--decision", choices=["accepted", "dismissed", "change_requested", "pending"], help="Human resolution for resolve command")
@@ -3549,7 +3556,7 @@ def main():
             rebuttal = None if args.retry else (args.reason if args.reason is not None else args.reason_file.read_text(encoding="utf-8"))
             decision = challenge_finding(args.issue, rebuttal, retry=args.retry,
                 findings_path=args.findings_file, feedback_path=args.feedback_file,
-                api_key=api_key, request_review=request_review)
+                api_key=api_key, request_review=request_review, report=args.report)
         except (ValueError, OSError, requests.RequestException, KeyError, json.JSONDecodeError) as error:
             print(f"Challenge failed: {error}", file=sys.stderr)
             return 1
