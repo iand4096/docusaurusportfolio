@@ -48,6 +48,9 @@ EXCLUDED_DIRS = {
     ".git",
     "static",
     "taxonomy",
+    ".qa",          # Local generated report output; never review QA reports
+    ".frontmatter", # Generated taxonomy/metadata review work products
+    "qa",           # Review findings and feedback, not portfolio documentation
 }
 
 SEVERITIES = {"high", "medium", "low"}
@@ -239,6 +242,12 @@ def markdown_files():
         if path.suffix.lower() not in {".md", ".mdx"}:
             continue
         if any(part in EXCLUDED_DIRS for part in path.parts):
+            continue
+        # The report may also be emitted at repository root in GitHub Actions.
+        # Do not feed generated report Markdown back into the review engine.
+        if path.name == "ai-doc-review.md" or (
+            path.name.startswith("report-") and path.parent.name == "qa"
+        ):
             continue
 
         yield path
@@ -2892,10 +2901,13 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
     if not ordered:
         lines += ["No issues found by the selected checks.", ""]
     for number, issue in enumerate(ordered, 1):
+        lines += [f"### Issue {number}", ""]
+        if issue.get("source") == "ai":
+            issue_id = issue.get("issue_id")
+            if issue_id:
+                lines.append(f"- ID: `{value(issue_id)}`")
+            lines.append(f"- Feedback: {value(issue.get('feedback_status') or 'unreviewed')}")
         lines += [
-            f"### Issue {number}", "",
-            f"- ID: `{issue.get('issue_id', 'not-assigned')}`",
-            f"- Feedback: {issue.get('feedback_status', 'unreviewed')}",
             f"- Document revision: `{issue.get('document_revision', {}).get('content_sha256') or 'unknown'}`",
             f"- File: `{value(issue['file'])}`",
             f"- Line: {issue['line']}",
@@ -2944,6 +2956,14 @@ def generate_html_report(issues, errors, metadata, ci_result):
             + html.escape(issue_id, quote=True) + '">Challenge AI</button>'
             if issue.get("source") == "ai" and issue_id else ""
         )
+        file_detail = file_link
+        if issue.get("source") == "ai" and issue_id:
+            file_detail = (
+                '<small><strong>ID:</strong> <code>' + html.escape(issue_id) +
+                '</code></small><br>' + file_link + '<br><small>Status: ' +
+                html.escape(issue.get("feedback_status", "unreviewed")) +
+                '</small><br>' + challenge_control
+            )
         rows.append(
             f"""
             <tr
@@ -2951,7 +2971,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 data-source="{html.escape(issue['source'])}"
                 data-category="{html.escape(issue['category'])}"
             >
-                <td><code>{html.escape(issue_id)}</code><br>{file_link}<br><small>{html.escape(issue.get("feedback_status", "unreviewed"))}</small><br>{challenge_control}</td>
+                <td>{file_detail}</td>
                 <td>{line_link}<br><small>{html.escape(issue.get("document_revision", {}).get("content_sha256") or "revision unavailable")[:12]}</small></td>
                 <td><span class="badge severity-{html.escape(issue['severity'])}">{html.escape(issue['severity'])}</span></td>
                 <td><span class="badge confidence-{html.escape(issue['confidence'])}">{html.escape(issue['confidence'])}</span></td>
