@@ -170,4 +170,4 @@ The Developer Center had visibility at company level: Paysafe included its launc
 
 - Today, I would prefer a docs-as-code approach using extended Markdown and automated quality checks. This would lower the barrier to contributions for engineers and support staff while still supporting reuse, conditional content, linting, and link checking. In 2016, however, the hybrid Flare/Git approach was a pragmatic choice: it introduced source control and automated publishing without requiring the team to abandon a familiar structured authoring environment.
 
-- For large-scale HTML migration, I would now use DOM-aware parsing and transformation, for example with Python and Beautiful Soup, rather than relying primarily on regular-expression transformations. The regex-based approach worked, but required more manual clean-up.
+- For large-scale HTML migration, I would now use DOM-aware parsing and transformation, for example with Python and Beautiful Soup, rather than relying primarily on regular-expression transformations. The regexp-based approach worked, but required more manual clean-up.

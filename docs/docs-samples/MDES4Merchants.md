@@ -83,7 +83,7 @@ I had to learn how to:
 3. Implement AES encryption and RSA session-key encryption.
 4. Decrypt the encrypted API responses.
 
-Getting the integration to work involved extensive research and trial and error, particularly with 
+Getting the integration to work involved extensive research and trial and error, particularly with the following:
 
 * binary data and character encoding
 * AES and RSA padding
@@ -124,4 +124,4 @@ The project required me to learn an unfamiliar technical subject, test the API m
 
 If security restrictions allowed, I would provide public runnable examples demonstrating authentication, encryption, decryption and webhook handling.
 
-I did not include these originally because maintaining security-sensitive code in multiple programming languages, using approved cryptography libraries, would have required significant ongoing work.
+I did not include these originally because maintaining security-sensitive code in multiple programming languages, using approved cryptography libraries, would have required substantial ongoing work.

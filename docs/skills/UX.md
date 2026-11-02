@@ -40,6 +40,7 @@ tags:
 
 - Designing AI-powered LLM chatbots and speech-to-text interfaces as alternatives to traditional user interfaces.
 - Creating accessible, easy-to-use developer portals.
+
   - Integrating interactive product demos directly into documentation.
   - Implementing intuitive site navigation, including hierarchical structures and cross-topic learning paths.
 - Advising on clear, concise user interface text.

@@ -2,7 +2,7 @@
 title: Docusaurus Portfolio
 description: A case study of building a Docusaurus portfolio site with docs-as-code workflows, 
   React/MDX customisation, automated QA, and CI/CD.
-sidebar_position: 7
+sidebar_position: 5
 type:
   - case-study
 audiences:

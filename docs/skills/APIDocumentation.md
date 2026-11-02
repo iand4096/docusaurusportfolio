@@ -81,7 +81,7 @@ tags:
 
 I have twelve years of experience creating API and SDK documentation for fintech and financial-services companies such as Morgan Stanley, Mastercard and Paysafe, supported by my software-development background.
 
-I don't rely solely on specifications or subject-matter expert interviews. Where practical, I build and test realistic full-stack integrations, reproduce developer workflows and validate security and API behaviour before I write the documentation. This helps me not only to identify any gaps between specification and implementation but also to provide additional guidance based on practical experience with the API.
+I don't just rely on specifications or subject-matter expert interviews. Where practical, I build and test realistic full-stack integrations, reproduce developer workflows and validate API behaviour, or review source code before I write the documentation. This helps me to identify any gaps between specification and implementation and to provide additional guidance based on practical experience with the API.
 
 ## API and SDK documentation
 
@@ -104,10 +104,9 @@ I focus on the complete developer journey rather than documenting individual end
 I build working integrations where possible. My integration experience includes:
 
 * Python applications using `requests` for authenticated API calls
-* Flask applications exposing API endpoints and rendering browser-based workflows
-* Java integrations using embedded Jetty services
+* Flask applications exposing API endpoints and rendering browser-based workflows using Jinja templates
+* Java integrations using Jetty web application server
 * JavaScript and browser-based integrations
-* Postman, Insomnia and cURL
 * Cloud-hosted Flask applications for receiving and processing webhooks
 * Multistep synchronous and asynchronous transaction flows
 * Sandbox and production-like test environments
@@ -120,16 +119,14 @@ At Mastercard, for example, internal network restrictions made webhook or redire
 
 I also use ad-hoc API testing as part of the documentation process. This includes:
 
-* Building reusable Postman or Insomnia request collections to test APIs
+* Building reusable Postman or Insomnia request collections to test APIs.
+* Using cURL to test endpoints from the command line. 
 * Testing request parameters, headers and payloads
 * Exercising authentication and encryption flows
 * Testing error responses and edge cases
 * Validating webhook and callback behaviour
-* Creating repeatable scenarios for multistep API workflows
 * Comparing observed behaviour with OpenAPI definitions, generated clients and written documentation
 * Testing documented procedures and code examples before publication
-
-I have also extended developer tooling as necessary. For example, I created Node.js extensions for Insomnia to add support for Mastercard OAuth 1.0 authentication which was not offered by either Postman or Insomnia by default.
 
 ## Authentication and encryption
 
@@ -153,7 +150,7 @@ I have experience of web security through annual security training covering comm
 
 ### Security validation in practice
 
-At Mastercard, I identified a weakness in an early Click to Pay integration where I noticed from my testing that security-relevant values were supplied through custom HTTP headers that were not covered by OAuth request signing. I raised the issue with the API team, resulting in a change to the API design.
+At Mastercard, I identified a weakness in an early Click-to-Pay integration where I noticed from my testing that security-relevant values were supplied through custom HTTP headers that were not covered by OAuth request signing. I raised the issue with the API team, resulting in a change to the API design.
 
 This is representative of my approach to API documentation: implementation and validation can uncover issues that are difficult to identify from specifications alone.
 
@@ -161,7 +158,7 @@ This is representative of my approach to API documentation: implementation and v
 
 My software-development background is useful when API behaviour is poorly documented or the original subject-matter expertise is no longer available.
 
-For example, I have analysed complex Scala implementation code to reconstruct undocumented API behaviour and then validated my understanding before documenting it.
+For example, I have analysed complex Scala implementation code to reconstruct undocumented API behaviour before documenting it.
 
 I am comfortable moving between specifications, source code, logs, API clients, working integrations and developer documentation to establish what a system actually does.
 
@@ -169,7 +166,7 @@ I am comfortable moving between specifications, source code, logs, API clients, 
 
 My testing experience extends beyond documentation-specific validation.
 
-I have performed black-box, component, integration, release and usability testing and have experience:
+I have performed black-box, component, integration, and usability testing and have experience:
 
 * Identifying and reproducing software defects
 * Recording expected and actual behaviour
@@ -177,9 +174,9 @@ I have performed black-box, component, integration, release and usability testin
 * Raising and managing defects through Jira
 * Working with engineers to clarify issues
 * Retesting fixes
-* Helping prioritise defects based on severity, customer impact, security and release readiness
+* Helping prioritise defects based on severity and customer impact
 
-Earlier in my career, I took on dedicated QA responsibilities for a software project alongside my documentation work. I raised approximately **600 issues**, helping the team move the product towards a more stable and releasable state.
+Earlier in my career, I took on dedicated QA responsibilities for a software project alongside my documentation work. I raised approximately **600 issues**, helping the team move the product towards a stable and releasable state.
 
 ## Documentation grounded in working software
 

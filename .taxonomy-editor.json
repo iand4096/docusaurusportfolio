@@ -1,0 +1,14 @@
+{
+  "sources": [
+    {
+      "name": "Docusaurus canonical taxonomy",
+      "file": "taxonomy/taxonomy.yml",
+      "schema": "taxonomy/schema.json",
+      "collectionPaths": ["/dimensions/*/terms"],
+      "adapter": "docusaurus",
+      "migrationSchema": "taxonomy/taxonomy-migration.schema.json",
+      "migrationDir": "taxonomy/migrations",
+      "migrationScript": "scripts/taxonomy.py"
+    }
+  ]
+}

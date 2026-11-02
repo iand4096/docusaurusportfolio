@@ -8,7 +8,7 @@ sidebar_custom_props:
     description: Designing scalable documentation structures, navigation models, metadata, content 
       inventories and search experiences for complex technical content.
     highlights:
-      - 400-page site IA redesign
+      - 500-page site IA redesign
       - Graphviz-based learning paths
       - 900-page content inventory
       - Metadata strategy for RAG search

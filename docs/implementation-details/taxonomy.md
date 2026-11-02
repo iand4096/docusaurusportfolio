@@ -139,7 +139,7 @@ The important boundary is that there is no direct write path from `taxonomy_ai.p
 | `generate_taxonomy.py`                    | Initial AI-assisted taxonomy discovery                                             | Bootstrap only                                          |
 | `upgrade_taxonomy.py`                     | Historical v1 to v2 transition                                                     | Legacy migration tooling                                |
 
-## VS Code Front Matter CMS integration
+## Visual Studio Code front matter CMS integration
 
 Front Matter CMS is the editor-based content-management layer for the Docusaurus repository used by writers. It provides a CMS-style interface inside VS Code for Markdown and MDX content, including structured metadata editing.
 

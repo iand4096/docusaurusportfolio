@@ -63,7 +63,7 @@ API implementation and testing, security validation, software debugging, automat
   <h3>Scaling an Enterprise Developer Documentation Platform</h3>
 
   <div className="card-description">
-  Led the design and evolution of an internal enterprise documentation platform that grew from 700 pages to more than 3,200 for an audience of quantitative analysts and software developers. My responsibilities also included creating documentation for [Optimus Cirrus](https://github.com/morganstanley/optimus-cirrus), a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income risk framework.
+  Led the design and evolution of an internal enterprise documentation platform that grew from 700 pages to more than 3,200 for an audience of quantitative analysts and software developers. My responsibilities also included creating documentation for [Optimus Cirrus](https://github.com/morganstanley/optimus-cirrus), a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income pricing and risk framework.
 </div>
 
   <span className="card-link">Read case study →</span>
