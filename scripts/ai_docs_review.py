@@ -48,9 +48,6 @@ EXCLUDED_DIRS = {
     ".git",
     "static",
     "taxonomy",
-    ".frontmatter",  # Front Matter taxonomy-review drafts are not published docs.
-    ".qa",           # Locally generated QA reports are not documentation.
-    "qa",            # QA state, not documentation source.
 }
 
 SEVERITIES = {"high", "medium", "low"}
@@ -2897,9 +2894,8 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
     for number, issue in enumerate(ordered, 1):
         lines += [
             f"### Issue {number}", "",
-            *([f"- ID: `{issue.get('issue_id', 'not-assigned')}`",
-               f"- Feedback: {issue.get('feedback_status', 'unreviewed')}"]
-              if issue.get('source') == 'ai' else []),
+            f"- ID: `{issue.get('issue_id', 'not-assigned')}`",
+            f"- Feedback: {issue.get('feedback_status', 'unreviewed')}",
             f"- Document revision: `{issue.get('document_revision', {}).get('content_sha256') or 'unknown'}`",
             f"- File: `{value(issue['file'])}`",
             f"- Line: {issue['line']}",
@@ -2948,17 +2944,6 @@ def generate_html_report(issues, errors, metadata, ci_result):
             + html.escape(issue_id, quote=True) + '">Challenge AI</button>'
             if issue.get("source") == "ai" and issue_id else ""
         )
-        # Feedback is an AI adjudication concept. Static, Vale, LTeX+, and
-        # other deterministic findings must not suggest they can be challenged.
-        if issue.get("source") == "ai":
-            file_cell = (
-                f'<small><strong>ID:</strong> <code>{html.escape(issue_id)}</code></small><br>'
-                f'{file_link}<br>'
-                f'<small><strong>Status:</strong> {html.escape(issue.get("feedback_status", "unreviewed"))}</small><br>'
-                f'{challenge_control}'
-            )
-        else:
-            file_cell = file_link
         rows.append(
             f"""
             <tr
@@ -2966,7 +2951,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 data-source="{html.escape(issue['source'])}"
                 data-category="{html.escape(issue['category'])}"
             >
-                <td>{file_cell}</td>
+                <td><code>{html.escape(issue_id)}</code><br>{file_link}<br><small>{html.escape(issue.get("feedback_status", "unreviewed"))}</small><br>{challenge_control}</td>
                 <td>{line_link}<br><small>{html.escape(issue.get("document_revision", {}).get("content_sha256") or "revision unavailable")[:12]}</small></td>
                 <td><span class="badge severity-{html.escape(issue['severity'])}">{html.escape(issue['severity'])}</span></td>
                 <td><span class="badge confidence-{html.escape(issue['confidence'])}">{html.escape(issue['confidence'])}</span></td>
@@ -3232,7 +3217,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
         <a href="{html.escape(PORTFOLIO_URL, quote=True)}">← Back to Portfolio</a>
     </p>
     <div class="report-actions">
-        <a id="latestReportLink" href="./">Load latest report</a>
+        <a id="latestReportLink" href="#">Load latest report</a>
         <a href="{html.escape(MARKDOWN_REPORT.name, quote=True)}">AI-readable Markdown report</a>
         <a href="{html.escape(JSON_REPORT.name, quote=True)}">Full report JSON</a>
     </div>
@@ -3336,21 +3321,12 @@ def generate_html_report(issues, errors, metadata, ci_result):
     const sourceFilter = document.getElementById('sourceFilter');
     const latestReportLink = document.getElementById('latestReportLink');
     if (latestReportLink) {{
-        // Published reports are immutable /qa/report-<commit>.html files.
-        // The /qa/ index is the authoritative latest-version loader.
-        const isPublishedReport = new RegExp('/qa/report-[a-f0-9]+[.]html$', 'i').test(window.location.pathname);
-        if (isPublishedReport) {{
-            latestReportLink.href = new URL('./', window.location.href).toString();
-        }} else {{
-            // Locally generated HTML: reload the current file, bypassing cache.
-            latestReportLink.href = window.location.href;
-            latestReportLink.addEventListener('click', (event) => {{
-                event.preventDefault();
-                const url = new URL(window.location.href);
-                url.searchParams.set('_qa_refresh', Date.now().toString());
-                window.location.assign(url.toString());
-            }});
-        }}
+        latestReportLink.addEventListener('click', (event) => {{
+            event.preventDefault();
+            const url = new URL(window.location.href);
+            url.searchParams.set('_qa_refresh', Date.now().toString());
+            window.location.assign(url.toString());
+        }});
     }}
     function applyFilters() {{
         const severity = severityFilter.value;
@@ -3375,9 +3351,9 @@ def generate_html_report(issues, errors, metadata, ci_result):
             if (!/^qa-[A-Za-z0-9_-]+$/.test(issueId || '')) return;
             const reportRef = (window.location.protocol === 'https:' &&
                 window.location.hostname === 'iand4096.github.io' &&
-                new RegExp('^/docusaurusportfolio/qa/report-[a-f0-9]{{12,40}}[.]html$', 'i').test(window.location.pathname))
-                ? window.location.origin + window.location.pathname.replace(/[.]html$/i, '.json')
-                : {json.dumps(os.path.relpath(JSON_REPORT, PROJECT_ROOT) if JSON_REPORT.is_absolute() else JSON_REPORT.as_posix())};
+                /^\/docusaurusportfolio\/qa\/report-[a-f0-9]{{12,40}}\.html$/i.test(window.location.pathname))
+                ? window.location.origin + window.location.pathname.replace(/\.html$/i, '.json')
+                : {json.dumps(JSON_REPORT.relative_to(PROJECT_ROOT).as_posix())};
             const command = 'python scripts/ai_docs_review.py challenge --report ' +
                 JSON.stringify(reportRef) + ' --issue ' + issueId +
                 ' --reason "Explain why you disagree with this finding"';

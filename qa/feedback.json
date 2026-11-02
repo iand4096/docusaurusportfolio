@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "records": {
+    "qa-eec47f2dcf0f3d8bee2ffdaf": {
+      "issue_id": "qa-eec47f2dcf0f3d8bee2ffdaf",
+      "status": "adjudicated",
+      "human_resolution": null,
+      "discussion": [
+        {
+          "role": "human",
+          "text": "the pilot partfly function but was missing important functionality i.e. regenerating only the pages that changed for quick previews. This is discussed lower down the page",
+          "at": "2026-11-02T18:21:53+00:00"
+        },
+        {
+          "role": "ai",
+          "text": "The human objection is partly supported: the source does describe a concrete limitation of the pilot (missing incremental regeneration for quick previews) and does so in the surrounding context, not on line 70 itself. However, the original criticism is not fully answered. The supplied context does not state the pilot's outcome (adoption or success), the scale of the source Wiki, or a clear separation of the author's personal contribution from what the plugins provided. Line 71 does indicate the author modified plugin code and line 72 that they recompiled plugins, which partially addresses the ownership point. The finding should therefore be narrowed: the outcome and scale remain unstated, but the claim that nothing is said about what was validated or owned is overstated.",
+          "decision": "revised",
+          "at": "2026-11-02T18:21:56+00:00"
+        },
+        {
+          "role": "human",
+          "text": "the pilot partfly function but was missing important functionality i.e. regenerating only the pages that changed for quick previews. This is discussed lower down the page",
+          "at": "2026-11-02T18:30:22+00:00"
+        },
+        {
+          "role": "ai",
+          "text": "The human objection is partly supported by the source: the section does describe a concrete limitation of the pilot (missing incremental regeneration for quick previews) and does so in the surrounding context, not on line 70 itself. However, the original criticism is not fully answered. The supplied context does not state the pilot's outcome (adoption or success), the scale of the source Wiki, or a clear separation of the author's personal contribution from what the plugins provided. Line 71 does indicate the author modified plugin code and line 72 that they recompiled plugins, which partially addresses the ownership point. The finding should therefore be narrowed: the outcome and scale remain unstated, but the claim that nothing is said about what was validated or owned is overstated.",
+          "decision": "revised",
+          "at": "2026-11-02T18:30:25+00:00"
+        }
+      ],
+      "adjudications": [
+        {
+          "at": "2026-11-02T18:21:56+00:00",
+          "decision": "revised",
+          "reason": "The human objection is partly supported: the source does describe a concrete limitation of the pilot (missing incremental regeneration for quick previews) and does so in the surrounding context, not on line 70 itself. However, the original criticism is not fully answered. The supplied context does not state the pilot's outcome (adoption or success), the scale of the source Wiki, or a clear separation of the author's personal contribution from what the plugins provided. Line 71 does indicate the author modified plugin code and line 72 that they recompiled plugins, which partially addresses the ownership point. The finding should therefore be narrowed: the outcome and scale remain unstated, but the claim that nothing is said about what was validated or owned is overstated.",
+          "evidence": [
+            "Used **MkDocs and a number of plugins** to recreate functionality from a large internal Wiki documentation site as a pilot project.",
+            "Integrated multiple plugins to support the advanced features from the Wiki site and modified plugin code to add the remaining unsupported features.",
+            "Recompiled the modified plugins as standalone executables for deployment.",
+            "Defined and tested fast client-side documentation search using FlexSearch, alongside integrating the slower central search service for broader queries."
+          ],
+          "revised_message": "The MkDocs entry describes the pilot and the plugin work, and the surrounding section covers testing of search and the plugin modifications, but the outcome and scale of the pilot are not stated. A portfolio reader cannot tell whether the pilot was adopted, what it demonstrated, or how large the source Wiki was.",
+          "revised_suggestion": "State the pilot's outcome or purpose (for example, whether it was adopted or what it demonstrated) and the approximate scale of the source Wiki. The personal contribution to plugin modification and recompilation is already covered on lines 71-72 and need not be repeated.",
+          "document_revision": {
+            "git_commit": "8453b7a9eb3fcaaacbefb3c3790383dfd1e2f59f",
+            "content_sha256": "81988a81c69a19893ee4b42ab3edde6e7624e46702550a4904ffb9f281252f4e"
+          }
+        },
+        {
+          "at": "2026-11-02T18:30:25+00:00",
+          "decision": "revised",
+          "reason": "The human objection is partly supported by the source: the section does describe a concrete limitation of the pilot (missing incremental regeneration for quick previews) and does so in the surrounding context, not on line 70 itself. However, the original criticism is not fully answered. The supplied context does not state the pilot's outcome (adoption or success), the scale of the source Wiki, or a clear separation of the author's personal contribution from what the plugins provided. Line 71 does indicate the author modified plugin code and line 72 that they recompiled plugins, which partially addresses the ownership point. The finding should therefore be narrowed: the outcome and scale remain unstated, but the claim that nothing is said about what was validated or owned is overstated.",
+          "evidence": [
+            "Used **MkDocs and a number of plugins** to recreate functionality from a large internal Wiki documentation site as a pilot project.",
+            "Integrated multiple plugins to support the advanced features from the Wiki site and modified plugin code to add the remaining unsupported features.",
+            "Recompiled the modified plugins as standalone executables for deployment.",
+            "Defined and tested fast client-side documentation search using FlexSearch, alongside integrating the slower central search service for broader queries."
+          ],
+          "revised_message": "The MkDocs entry describes the pilot and the plugin work, and the surrounding section covers testing of search and the plugin modifications, but the outcome and scale of the pilot are not stated. A portfolio reader cannot tell whether the pilot was adopted, what it demonstrated, or how large the source Wiki was.",
+          "revised_suggestion": "State the pilot's outcome or purpose (for example, whether it was adopted or what it demonstrated) and the approximate scale of the source Wiki. The personal contribution to plugin modification and recompilation is already covered on lines 71-72 and need not be repeated.",
+          "document_revision": {
+            "git_commit": "8453b7a9eb3fcaaacbefb3c3790383dfd1e2f59f",
+            "content_sha256": "81988a81c69a19893ee4b42ab3edde6e7624e46702550a4904ffb9f281252f4e"
+          }
+        }
+      ],
+      "report_source": "https://iand4096.github.io/docusaurusportfolio/qa/report-8453b7a9eb3f.json",
+      "latest_finding": {
+        "file": "docs/tools/DocusaurusAndMkdocs.md",
+        "category": "portfolio",
+        "source": "ai",
+        "original": "Used **MkDocs and a number of plugins** to recreate functionality from a large internal Wiki documentation site as a pilot project.",
+        "message": "The MkDocs work is described only as a pilot recreation of an internal Wiki, without stating the outcome, scale or what was validated. A portfolio reader cannot tell whether the pilot succeeded, what was learned, or what the author personally owned versus what the plugins provided.",
+        "suggestion": "Add the concrete outcome or purpose of the pilot (for example, whether it was adopted, what it demonstrated, or the scale of the source Wiki) and clarify the author's personal contribution to the plugin modifications and recompilation.",
+        "document_revision": {
+          "git_commit": "8453b7a9eb3fcaaacbefb3c3790383dfd1e2f59f",
+          "content_sha256": "81988a81c69a19893ee4b42ab3edde6e7624e46702550a4904ffb9f281252f4e"
+        }
+      },
+      "attempts": [
+        {
+          "at": "2026-11-02T18:21:53+00:00",
+          "result": "succeeded",
+          "retry": false
+        },
+        {
+          "at": "2026-11-02T18:30:22+00:00",
+          "result": "succeeded",
+          "retry": false
+        }
+      ]
+    }
+  }
+}
