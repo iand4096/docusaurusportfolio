@@ -53,7 +53,7 @@ tags:
 
 I wrote the first version of the MDES for Merchants Use Case Guide in late 2017, during my first few months at Mastercard. The guide explained how merchant developers can use the MDES Digital Enablement API to replace payment card numbers (PANs) with secure payment tokens, reducing the need to store card details.
 
-This API provides access to Mastercard Digital Enablement Service (MDES), the tokenisation technology that also supports digital wallets such as **Apple Pay**.
+This API provides access to Mastercard's Digital Enablement Service (MDES), the tokenisation technology that also supports digital wallets such as **Apple Pay**.
 
 In addition to their security benefits, tokens can often remain valid when the underlying payment card is replaced or reported lost, helping to avoid interruptions to recurring payments.
 

@@ -62,13 +62,17 @@ Practical experience creating and maintaining **technical diagrams such as archi
 * Strong advocate for **text-based, version-controlled diagrams** such as SVG or diagrams-as-code formats that can be maintained alongside documentation and source code in Git with tracked changes unlike their raster-based equivalents.
 * Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-Architecture diagrams**.
 
-## Trail diagrams for documentation navigation
+## Documentation navigation tooling
 
-* Advanced experience with **Graphviz/DOT**, including developing an internal Graphviz-based tool at Morgan Stanley that generated hyperlinked **trail diagrams**. These diagrams provided structured learning paths through related developer documentation, improving the site navigation.
+At Morgan Stanley, I developed an **IDE plugin for creating hyperlinked documentation navigation diagrams** using Graphviz/DOT.
+
+The plugin allowed documentation contributors to select Markdown files directly in the IDE and automatically add them as hyperlinked nodes to a Graphviz tree diagram. Contributors could then connect nodes with edges to create structured learning paths spanning different parts of the developer documentation, **without having to write complex Graphviz/DOT syntax manually**.
+
+This made it easier to build and maintain visual navigation paths through related documentation, helping developers discover relevant content beyond the site's standard navigation hierarchy.
 
 ## Visual tools, SVG and supporting graphics
 
-* Experienced using tools such as **Microsoft Visio, Adobe Illustrator, and Inkscape** to create diagrams that don't fit the common diagrams-as-code types.
+* Experienced using tools such as **Microsoft Visio, Adobe Illustrator, and Inkscape** for custom diagrams.
 * Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. I prefer vector formats over binary images where possible because they don't blur and support efficient relabelling.
 
 ## Diagram maintenance

@@ -102,7 +102,7 @@ For employment history and professional experience, visit my
 
 :::tip[Automated documentation QA]
 
-My portfolio has a QA pipeline implemented using GitHub Actions which runs automatically on any committed changes as part of Continuous Integration. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, link and spelling checks.
+My portfolio has a QA pipeline implemented using GitHub Actions which runs automatically on any committed changes as part of Continuous Integration. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, links and spelling.
 
 **[View the live report →](pathname:///qa/)**
 :::

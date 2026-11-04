@@ -51,7 +51,7 @@ tags:
 
 * Led the delivery of a project to migrate the documentation portal I managed to **a Docker-based web hosting platform**, owning work from planning through to production release.
 * Defined delivery milestones and ensured progress toward release goals.
-* Performed hands-on technical troubleshooting during the migration, such as suggesting a way to save 15 minutes on each documentation build, and personally resolved most of the minor post-deployment issues
+* Performed hands-on technical troubleshooting during the migration, such as suggesting a way to save 15 minutes on each documentation build, and personally resolved most of the minor post-deployment issues.
 
 ## Jira and delivery management
 
