@@ -109,7 +109,7 @@ I have published 131 posts on the MadCap Flare user forum under the username **i
 
 One example is my proposed workaround for a long-running Flare limitation: [how to support code syntax highlighting in both HTML and PDF output](https://forums.madcapsoftware.com/viewtopic.php?p=99025&hilit=iand#p99025).
 
-See all [posts](https://forums.madcapsoftware.com/search.php?st=0&sk=t&sd=d&sr=posts&author_id=7956)
+See all my [posts](https://forums.madcapsoftware.com/search.php?st=0&sk=t&sd=d&sr=posts&author_id=7956).
 
 ## Flare automation, integration and migration {/* #automation */}
 
@@ -133,4 +133,4 @@ In another role, I built a **C# release-notes tool** that:
   1. Queried the Jira REST API for tickets tagged to a specific release
   2. Extracted and transformed issue data
   3. Parsed and generated Flare-compatible XHTML
-  4. Created consistently structured release documentation using a predefined topic template
+  4. Created the final structured release documentation using a predefined topic template

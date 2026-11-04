@@ -63,7 +63,7 @@ tags:
 * Created reusable React components such as responsive skill grids driven by simple Markdown content.
 * Generated landing-page cards automatically from Markdown front matter.
 * Used **GitHub Actions** for automated builds and deployment to GitHub Pages.
-* Used plugins such as **LTeX+** and **Vale** in VS Code for spelling, grammar, and style guide checks.
+* Used plugins such as **LTeX+** and **Vale** in VS Code for spelling, grammar and style guide checks.
 
 ### MkDocs
 

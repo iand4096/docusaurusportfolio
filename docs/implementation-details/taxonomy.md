@@ -279,7 +279,7 @@ These work as follows:
 
 | Command              | Purpose                                                                 |
 | -------------------- | ----------------------------------------------------------------------- |
-| `check`              | Is the taxonomy, document metadata, and generated state valid?          |
+| `check`              | Are the taxonomy, document metadata, and generated state valid?          |
 | `sync`               | Are derived document tags consistent with governed taxonomy dimensions? |
 | `generate`           | Are generated repository projections current?                           |
 | `audit-technologies` | Are technology terms and kinds internally credible?                     |
