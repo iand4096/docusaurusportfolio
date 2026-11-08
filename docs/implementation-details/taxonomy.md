@@ -122,6 +122,8 @@ The important boundary is that there is no direct write path from `taxonomy_ai.p
 
 ## Components
 
+<p className="mobile-table-hint">↔ Swipe or scroll horizontally to view all table columns.</p>
+
 | Component                                 | Responsibility                                                                     | Authority                                               |
 | ----------------------------------------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------- |
 | `taxonomy/taxonomy.yml`                   | Controlled vocabulary and taxonomy policy                                          | **Canonical state**                                     |

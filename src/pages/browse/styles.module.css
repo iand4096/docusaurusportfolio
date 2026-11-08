@@ -262,3 +262,58 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+/* Compact taxonomy: the full list remains available on demand. */
+.moreTags {
+  appearance: none;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  background: transparent;
+  border: 1px solid var(--browse-border);
+  border-radius: 0.35rem;
+  padding: 0.2rem 0.5rem;
+}
+.moreTags:hover,
+.moreTags:focus-visible {
+  border-color: var(--ifm-color-primary);
+  text-decoration: underline;
+}
+
+.mobileFiltersToggle {
+  display: none;
+}
+.filterGroups {
+  display: block;
+}
+
+/* Keep search exposed, but collapse the advanced taxonomy on mobile/tablet. */
+@media (max-width: 996px) {
+  .mobileFiltersToggle {
+    display: block;
+    width: 100%;
+    padding: 0.8rem 1rem;
+    margin: 0.25rem 0 0;
+    border: 1px solid var(--browse-border);
+    border-radius: 0.5rem;
+    color: var(--ifm-font-color-base);
+    background: var(--ifm-background-color);
+    font: inherit;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+  }
+  .mobileFiltersToggle:focus-visible {
+    outline: 2px solid var(--ifm-color-primary);
+    outline-offset: 2px;
+  }
+  .filterGroups {
+    display: none;
+  }
+  .filterGroupsOpen {
+    display: block;
+  }
+}

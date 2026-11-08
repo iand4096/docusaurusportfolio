@@ -45,3 +45,4 @@ tags:
   - Implementing intuitive site navigation, including hierarchical structures and cross-topic learning paths.
 - Advising on clear, concise user interface text.
 - Writing and implementing context-sensitive help.
+- Collaborating with professional UX designers.

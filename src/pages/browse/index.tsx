@@ -218,8 +218,50 @@ function technologyGroups(dimension: TaxonomyDimension): TechnologyGroup[] {
     .sort((left, right) => left.label.localeCompare(right.label));
 }
 
+function DocumentTags({
+  document,
+  labels,
+}: {
+  document: NavigationDocument;
+  labels: Map<string, string>;
+}): React.JSX.Element {
+  const [expanded, setExpanded] = useState(false);
+  const tags = DIMENSION_ORDER.flatMap((dimensionId) => {
+    const dimension = data.dimensions[dimensionId];
+    return dimension
+      ? valuesForDimension(document, dimension).map((termId) => ({dimensionId, termId}))
+      : [];
+  });
+  const visibleTags = expanded ? tags : tags.slice(0, 5);
+
+  return (
+    <div className={styles.metadata} aria-label={`Taxonomy for ${document.title}`}>
+      {visibleTags.map(({dimensionId, termId}) => (
+        <span
+          className={styles.metadataTag}
+          key={`${dimensionId}:${termId}`}
+          title={data.dimensions[dimensionId].label || DEFAULT_DIMENSION_LABELS[dimensionId]}
+        >
+          {labels.get(`${dimensionId}:${termId}`) ?? termId}
+        </span>
+      ))}
+      {tags.length > 5 ? (
+        <button
+          type="button"
+          className={styles.moreTags}
+          aria-expanded={expanded}
+          onClick={() => setExpanded((value) => !value)}
+        >
+          {expanded ? 'Show fewer' : `+${tags.length - 5} more`}
+        </button>
+      ) : null}
+    </div>
+  );
+}
+
 export default function BrowsePage(): React.JSX.Element {
   const [query, setQuery] = useState('');
+  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selected, setSelected] = useState<SelectedFilters>(() => emptyFilters());
 
   const labels = useMemo(() => termLabelMap(data.dimensions), []);
@@ -310,6 +352,20 @@ export default function BrowsePage(): React.JSX.Element {
               />
             </div>
 
+            <button
+              type="button"
+              className={styles.mobileFiltersToggle}
+              aria-controls="browse-taxonomy-filters"
+              aria-expanded={mobileFiltersOpen}
+              onClick={() => setMobileFiltersOpen((open) => !open)}
+            >
+              {mobileFiltersOpen ? 'Hide advanced filters' : 'Show advanced filters'}
+              {activeFilterCount > 0 ? ` (${activeFilterCount} selected)` : ''}
+            </button>
+            <div
+              id="browse-taxonomy-filters"
+              className={`${styles.filterGroups} ${mobileFiltersOpen ? styles.filterGroupsOpen : ''}`}
+            >
             {DIMENSION_ORDER.map((dimensionId) => {
               const dimension = data.dimensions[dimensionId];
 
@@ -419,6 +475,7 @@ export default function BrowsePage(): React.JSX.Element {
                 </section>
               );
             })}
+            </div>
           </aside>
 
           <section className={styles.results} aria-live="polite">
@@ -451,34 +508,7 @@ export default function BrowsePage(): React.JSX.Element {
                       </p>
                     ) : null}
 
-                    <div
-                      className={styles.metadata}
-                      aria-label={`Taxonomy for ${document.title}`}
-                    >
-                      {DIMENSION_ORDER.flatMap((dimensionId) => {
-                        const dimension = data.dimensions[dimensionId];
-
-                        if (!dimension) {
-                          return [];
-                        }
-
-                        return valuesForDimension(document, dimension).map(
-                          (termId) => (
-                            <span
-                              className={styles.metadataTag}
-                              key={`${dimensionId}:${termId}`}
-                              title={
-                                dimension.label ||
-                                DEFAULT_DIMENSION_LABELS[dimensionId]
-                              }
-                            >
-                              {labels.get(`${dimensionId}:${termId}`) ?? termId}
-                            </span>
-                          ),
-                        );
-                      })}
-                    </div>
-
+                    <DocumentTags document={document} labels={labels} />
                     <Link className={styles.readLink} to={document.path}>
                       Open content →
                     </Link>

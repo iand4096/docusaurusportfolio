@@ -7,24 +7,81 @@ hide_table_of_contents: true
 import Link from '@docusaurus/Link';
 import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
-# Ian Drewett
+<div className="portfolio-hero">
+  <p className="portfolio-eyebrow">API documentation · Developer platforms · Documentation engineering</p>
+  <h1>Ian Drewett</h1>
+  <p className="portfolio-lead">I document complex software and build the tools behind the documentation.</p>
+  <p className="portfolio-intro">Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a <Link to="#engineering-background">software-engineering background</Link>.</p>
+  <div className="portfolio-hero-actions">
+    <Link className="button button--primary" to="#case-studies">Explore selected work</Link>
+    <Link className="button button--secondary" to="/browse">Browse all work</Link>
+  </div>
+</div>
 
-Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a <Link to="#engineering-background">software-engineering background</Link>.
+## Case studies
 
-My experience includes:
+<div className="portfolio-grid">
 
-<CapabilityGrid variant="checklist"> 
 
-* End-to-End API testing
-* Docs-as-code
-* CI/CD
-* Automation
-* Information Architecture
-* Taxonomy and Content Governance
-* Python & Scala
-* API security & OpenAPI
+<div className="portfolio-card">
+  <span className="card-tag">
+    Docs-as-Code · Developer Portal · Platform Strategy
+  </span>
 
-</CapabilityGrid>
+  <h3>Scaling an Enterprise Developer Documentation Platform</h3>
+
+  <div className="card-description">
+    Led the design and evolution of an internal enterprise documentation
+    platform that grew from 700 pages to more than 3,200 for an audience
+    of quantitative analysts and software developers. My responsibilities
+    also included creating documentation for
+    [Optimus Cirrus](https://github.com/morganstanley/optimus-cirrus),
+    a distributed Scala graph-based compute engine, and RICE,
+    Morgan Stanley’s fixed-income pricing and risk framework.
+  </div>
+
+  <Link
+    className="card-link"
+    to="/docs/case-studies/scalingdeveloperdocs"
+    aria-label="Read the Scaling an Enterprise Developer Documentation Platform case study"
+  >
+    Read case study →
+  </Link>
+</div>
+
+
+<Link
+  className="portfolio-card"
+  to="/docs/case-studies/paysafedevcenter"
+  aria-label="Read the Paysafe Developer Center case study"
+>
+  <span className="card-tag">
+    Developer Portal · API Documentation · Platform Delivery
+  </span>
+
+  <h3>Building the Paysafe Developer Center</h3>
+
+ <div className="card-description">
+  Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion as the company delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.
+</div>
+
+  <span className="card-link">Read case study →</span>
+</Link>
+
+<Link
+  className="portfolio-card"
+  to="/docs/docs-samples/MDES4Merchants"
+  aria-label="Read the Mastercard MDES for Merchants case study"
+>
+  <span className="card-tag">Secure REST API · Python · Integration validation</span>
+  <h3>Mastercard MDES for Merchants</h3>
+  <div className="card-description">
+    Developed and tested a complete payment API integration using Python, OAuth 1.0 RSA-SHA256, encryption and asynchronous webhooks. Used the working implementation to validate complex merchant workflows and identify documentation defects.
+  </div>
+  <span className="card-link">Read case study →</span>
+</Link>
+
+</div>
 
 ## Core expertise
 
@@ -46,48 +103,6 @@ My experience includes:
 API implementation and testing, security validation, software debugging, automation, and developer tooling
 
 </CapabilityGrid>
-
-## Case studies
-
-<div className="portfolio-grid">
-
-<Link
-  className="portfolio-card"
-  to="/docs/case-studies/scalingdeveloperdocs"
-  aria-label="Read the Scaling an Enterprise Developer Documentation Platform case study"
->
-  <span className="card-tag">
-    Docs-as-Code · Developer Portal · Platform Strategy
-  </span>
-
-  <h3>Scaling an Enterprise Developer Documentation Platform</h3>
-
-  <div className="card-description">
-  Led the design and evolution of an internal enterprise documentation platform that grew from 700 pages to more than 3,200 for an audience of quantitative analysts and software developers. My responsibilities also included creating documentation for [Optimus Cirrus](https://github.com/morganstanley/optimus-cirrus), a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income pricing and risk framework.
-</div>
-
-  <span className="card-link">Read case study →</span>
-</Link>
-
-<Link
-  className="portfolio-card"
-  to="/docs/case-studies/paysafedevcenter"
-  aria-label="Read the Paysafe Developer Center case study"
->
-  <span className="card-tag">
-    Developer Portal · API Documentation · Platform Delivery
-  </span>
-
-  <h3>Building the Paysafe Developer Center</h3>
-
- <div className="card-description">
-  Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion as the company delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.
-</div>
-
-  <span className="card-link">Read case study →</span>
-</Link>
-
-</div>
 
 ## Software engineering background {/* #engineering-background */}
 
