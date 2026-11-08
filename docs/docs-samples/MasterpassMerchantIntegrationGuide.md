@@ -74,7 +74,7 @@ Brightspot made structured authoring, content reuse, version control, and techni
 * PlantUML sequence diagrams illustrating the interactions within each checkout flow.
 * Corrections and improvements to the OpenAPI-based API reference.
 * Updated Masterpass mobile SDK integration guides.
-* Requirements and testing feedback for Mastercard’s first docs-as-code developer-documentation platform with features such as conditional text and content re-use.
+* Requirements and testing feedback for Mastercard’s first docs-as-code developer-documentation platform with features such as conditional text and content reuse.
 
 :::note[Published guide]
 

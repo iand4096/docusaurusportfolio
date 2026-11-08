@@ -1,0 +1,15 @@
+services:
+  knowledge-api:
+    build:
+      context: ./knowledge-api
+    env_file:
+      - ./knowledge-api/.env
+    ports:
+      - "127.0.0.1:8000:8000"
+    volumes:
+      - ./:/workspace:ro
+      - ./knowledge-api/data:/app/data
+      - rag-model-cache:/cache/huggingface
+    # Repo remains read-only; only data and model cache are writable.
+volumes:
+  rag-model-cache:

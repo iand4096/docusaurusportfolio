@@ -252,4 +252,26 @@ const config: Config = {
   } satisfies Preset.ThemeConfig,
 };
 
+// RAG_SEARCH_FEATURE_FLAG_BEGIN
+// Opt-in at build/start time. Unset/false leaves GitHub Pages unchanged.
+const ragSearchEnabled = process.env.RAG_SEARCH_ENABLED?.trim().toLowerCase() === 'true';
+if (ragSearchEnabled) {
+  const ragApiUrl = (process.env.RAG_API_URL?.trim() || 'http://localhost:8000').replace(/\/+$/, '');
+  if (process.env.NODE_ENV === 'production' && !ragApiUrl.startsWith('https://')) {
+    throw new Error('RAG_SEARCH_ENABLED=true in production requires an HTTPS RAG_API_URL.');
+  }
+  config.plugins = [...(config.plugins ?? []), './plugins/rag-search.cjs'];
+  config.customFields = {...(config.customFields ?? {}), ragApiUrl};
+  const ragTheme = config.themeConfig as unknown as {
+    navbar?: {items?: Array<Record<string, unknown>>};
+  };
+  if (ragTheme?.navbar) {
+    ragTheme.navbar.items = [
+      ...(ragTheme.navbar.items ?? []),
+      {label: 'AI search', to: '/ai-search', position: 'left'},
+    ];
+  }
+}
+// RAG_SEARCH_FEATURE_FLAG_END
+
 export default config;

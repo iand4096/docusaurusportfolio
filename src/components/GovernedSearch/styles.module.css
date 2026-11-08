@@ -1,0 +1,28 @@
+.page {max-width: 900px; margin: 0 auto;}
+.intro {color: var(--ifm-color-emphasis-700); max-width: 75ch;}
+.form {border: 1px solid var(--ifm-color-emphasis-300); border-radius: 10px; padding: 1.2rem; background: var(--ifm-background-surface-color);}
+.fieldLabel {display: block; margin-bottom: .5rem; font-weight: 700;}
+.query {width: 100%; border-radius: 6px; border: 1px solid var(--ifm-color-emphasis-400); padding: .8rem; background: var(--ifm-background-color); color: var(--ifm-font-color-base); font: inherit;}
+.query:focus, .filter select:focus {outline: 2px solid var(--ifm-color-primary); outline-offset: 2px;}
+.group {border: none; padding: 0; margin: 1rem 0; display: flex; flex-wrap: wrap; gap: .6rem 1.2rem;}
+.group legend {font-weight: 700; padding: 0; margin-bottom: .5rem; width: 100%;}
+.option {display: inline-flex; align-items: center; gap: .4rem; cursor: pointer; font-weight: normal;}
+.filtersToggle {margin-bottom: .8rem;}
+.filters {border-top: 1px solid var(--ifm-color-emphasis-200); padding-top: 1rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); gap: .75rem;}
+.filter {display: flex; flex-direction: column; gap: .3rem; font-weight: 600;}
+.filter select {padding: .5rem; color: var(--ifm-font-color-base); background: var(--ifm-background-color); border: 1px solid var(--ifm-color-emphasis-400); border-radius: 6px; width: 100%;}
+.filters > .option, .filters > .warning {grid-column: 1 / -1;}
+.actions {margin-top: 1.2rem;}
+.error {color: var(--ifm-color-danger-darkest); border-left: 4px solid var(--ifm-color-danger); padding: .7rem 1rem; margin-top: 1rem; background: var(--ifm-color-danger-contrast-background);}
+.warning {color: var(--ifm-color-warning-darkest);}
+.answer, .results {margin-top: 2rem;}
+.answer {background: var(--ifm-color-emphasis-100); border-radius: 10px; padding: 1.2rem;}
+.answerText {white-space: pre-wrap; overflow-wrap: anywhere;}
+.small {color: var(--ifm-color-emphasis-700); font-size: .85rem;}
+.resultList {list-style: decimal; padding-left: 1.8rem;}
+.result {padding: .8rem .3rem; border-bottom: 1px solid var(--ifm-color-emphasis-200); overflow-wrap: anywhere;}
+.heading {color: var(--ifm-color-emphasis-700);}
+.excerpt {white-space: pre-wrap; margin: .5rem 0; line-height: 1.6;}
+
+/* RAG_SEARCH_SESSION_STYLES */
+.actions {display: flex; flex-wrap: wrap; gap: .65rem;}

@@ -94,7 +94,7 @@ I spent several weekends investigating and resolving these problems.
 
 I also developed a small cloud-hosted Flask application on [PythonAnywhere](https://www.pythonanywhere.com/) to receive and decrypt asynchronous webhook notifications, which were blocked within the corporate firewall.
 
-Once I had working integrations, I tested the API workflows and checked the OpenAPI-based reference documentation. I subsequently worked with the product owner to correct these errors and omissions in the OpenAPI definitions.
+Once I had working integrations, I tested the API workflows and checked the OpenAPI-based reference documentation. I subsequently worked with the product owner to correct the errors and omissions I had identified in the OpenAPI definitions.
 
 I structured the guide around the tasks merchants needed to perform, rather than individual API endpoints. It covered tokenising new and existing cards, managing token lifecycle events, displaying payment information, making payments and handling customer service scenarios.
 

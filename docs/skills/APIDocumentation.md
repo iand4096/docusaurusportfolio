@@ -166,7 +166,7 @@ I am comfortable moving between specifications, source code, logs, API clients, 
 
 My testing experience extends beyond documentation-specific validation.
 
-I have performed black-box, component, integration, and usability testing and have experience:
+I have performed black-box, component, integration and usability testing and have experience of:
 
 * Identifying and reproducing software defects
 * Recording expected and actual behaviour

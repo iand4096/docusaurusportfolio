@@ -1,0 +1,12 @@
+.root { max-width: 760px; margin: 1.5rem auto; }
+.notice { color: var(--ifm-color-emphasis-700); font-size: .9rem; }
+.form { display:flex; flex-direction:column; gap: .7rem; }
+.form textarea { background:var(--ifm-background-color); color:var(--ifm-font-color-base); border:1px solid var(--ifm-color-emphasis-400); border-radius:.4rem; padding:.7rem; font:inherit; }
+.actions { display:flex; align-items:center; flex-wrap:wrap; gap:1rem; }
+.actions label { display:flex; align-items:center; gap:.3rem; }
+.actions button { border:0; background:var(--ifm-color-primary); color:white; border-radius:.4rem; padding:.5rem 1rem; cursor:pointer; }
+.actions button:disabled { opacity:.6; cursor:not-allowed; }
+.error { color:var(--ifm-color-danger); }
+.answer { padding:1rem; border:1px solid var(--ifm-color-emphasis-300); border-radius:.5rem; }
+.pre { white-space:pre-wrap; }
+.excerpt { color:var(--ifm-color-emphasis-700); font-size:.9rem; }

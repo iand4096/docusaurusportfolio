@@ -77,7 +77,7 @@ This made it easier to build and maintain visual navigation paths through relate
 
 ## Diagram maintenance
 
-* Experienced maintaining large diagram sets including using **OCR to identify outdated terminology** to fix in screenshots and other bitmap/raster-based diagrams.
+* Experienced maintaining large sets of diagrams, including developing a Python script using OCR to identify outdated terminology in raster images across a large collection of Markdown files. I then manually corrected the affected images, matching fonts and adjusting graphical elements where necessary to accommodate replacement text.
 
 ## CAD diagrams
 

@@ -37,3 +37,24 @@ taxonomy/taxonomy-ai-suggestions.json
 taxonomy/taxonomy-ai-suggestions.md
 
 .frontmatter/taxonomy-review-*/
+
+
+# Locally generated documentation QA reports
+.qa/
+
+# Regenerated AI findings
+qa/findings.json
+
+# Keep persistent human/AI review history
+!qa/feedback.json
+knowledge-api/.env
+
+# Terraform
+**/.terraform/
+*.tfstate
+*.tfstate.*
+*.tfvars
+*.tfvars.json
+crash.log
+crash.*.log
+*.tfplan

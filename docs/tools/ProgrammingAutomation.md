@@ -108,7 +108,7 @@ tags:
 
 ### C, C++ and C#
 
-I have nearly five years of C/C++ software engineering experience; this includes work in 2D/3D graphics, GIS, CAD/VR systems, and graphics device drivers at STMicroelectronics. Additionally, I developed cross-platform C code for Windows and Unix, to modify and extend a 3D CAD application. In later roles, I worked with STL containers and data structures for application logic and data processing. My C# experience includes developing tooling to automate the generation of release-notes from tagged JIRA tickets using the JIRA REST API, inserting the retrieved data into MadCap Flare XHTML templates to produce the final document.
+I have nearly five years of C/C++ software engineering experience; this includes work in 2D/3D graphics, GIS, CAD/VR systems and graphics device drivers at ST Microelectronics. Additionally, I developed cross-platform C code for Windows and Unix, to modify and extend a 3D CAD application. In later roles, I worked with STL containers and data structures for application logic and data processing. My C# experience includes developing tooling to automate the generation of release-notes from tagged JIRA tickets using the JIRA REST API, inserting the retrieved data into MadCap Flare XHTML templates to produce the final document.
 
 ### Automation and scripting
 
