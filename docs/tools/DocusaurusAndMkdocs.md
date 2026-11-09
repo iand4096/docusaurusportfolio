@@ -5,13 +5,12 @@ slug: /staticsitedocsplatforms
 sidebar_custom_props:
   sampleCard:
     tag: Documentation platforms
-    description: Building and extending scalable documentation platforms using Docusaurus, MkDocs, 
-      custom plugins, search integrations and automated publishing workflows.
+    description: >-
+      Engineering extensible static-site documentation platforms with reusable
+      components, search and automated publishing.
     highlights:
-      - Docusaurus, MkDocs and static-site generators
-      - React, JavaScript and Python platform extensions
-      - Client-side, central and RAG search integration
-      - Scalable builds for thousands of documentation pages
+      - Built reusable React components and front-matter-driven cards
+      - Integrated FlexSearch and tested RAG indexing workflows
     ariaLabel: Explore my documentation platform engineering skills
 type:
   - tool

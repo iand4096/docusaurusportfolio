@@ -5,14 +5,10 @@ slug: /documentationeng
 sidebar_custom_props:
   sampleCard:
     tag: Documentation engineering
-    description: Docs-as-code, documentation-platform ownership, CI/CD, static-site generators, 
-      parser extensions, migration automation, validation, search and custom tooling for large-scale
-      technical content.
+    description: Designing and maintaining scalable docs-as-code platforms using software-engineering practices, automation, and continuous integration.
     highlights:
-      - Built and operated a custom docs-as-code platform
-      - Scaled documentation from 700 to 3,200 pages
-      - Automated migration of approximately 900 legacy pages
-      - CI/CD, parser extensions, validation and search
+      - Helped scale a documentation platform from 700 to 3,200 pages
+      - Built tooling to migrate approximately 900 legacy pages
     ariaLabel: Explore my documentation engineering skills
 type:
   - skill

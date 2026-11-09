@@ -6,9 +6,11 @@ slug: /ux
 
 sidebar_custom_props:
   sampleCard:
-    tag: User Experience and User Interface Design
-    description: Designing and improving UX and UI
-    highlights: []
+    tag: UX and Developer Experience
+    description: Designing intuitive developer portals and user interfaces that improve content discoverability, accessibility and self-service support.
+    highlights:
+    - Designed AI-powered chat and speech-to-text interfaces
+    - Integrated interactive demos and contextual help into documentation
     ariaLabel: Explore my UX and UI experience
 
 type:

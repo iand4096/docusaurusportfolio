@@ -6,13 +6,10 @@ sidebar_custom_props:
   sampleCard:
     tag: API documentation
     description: >-
-      API and SDK documentation validated through working integrations, API testing,
-      authentication and encryption workflows, and hands-on technical investigation.
+      Creating accurate API and SDK documentation grounded in real-world integration testing, software behaviour, and developer workflows.
     highlights:
-      - OpenAPI, SDK and integration documentation
-      - Python, Java and JavaScript test integrations
-      - Authentication, encryption and webhook validation
-      - Test-driven documentation and defect investigation
+     - Developed Python, Java, and JavaScript integrations to validate APIs
+     - Identified an API security weakness through hands-on testing
     ariaLabel: Explore my API documentation and technical validation skills
 type:
   - skill

@@ -5,13 +5,11 @@ slug: /governancedocs
 sidebar_custom_props:
   sampleCard:
     tag: Content operations
-    description: Standards, review processes, ownership models, quality controls and governance 
+    description: Establishing standards, review processes, ownership models, quality controls and governance 
       practices for large documentation estates.
     highlights:
-      - Documentation standards and templates
-      - Review and approval workflows
-      - Content ownership and lifecycle management
-      - Quality, consistency and compliance controls
+    - Developed a docs-as-code plugin for version-controlled C4 architecture diagrams
+    - Automated governance templates and metadata using LDAP
     ariaLabel: Explore my documentation-governance skills
 type:
   - skill
@@ -57,7 +55,7 @@ My experience includes:
 
 ## Architecture diagrams and architecture as code
 
-I built a documentation-platform plugin for embedding C4 architecture diagrams in Markdown. Diagram definitions were stored as text alongside the supporting documentation, allowing diagrams and content to be version-controlled, reviewed and audited together.
+At Morgan Stanley, I developed a plugin for a custom docs-as-code platform that enabled C4 architecture diagrams to be embedded directly in Markdown using PlantUML or Structurizr. Diagram definitions were maintained as text, either alongside the supporting documentation or in separate Structurizr files, allowing architecture diagrams and documentation to be version-controlled, peer-reviewed, and audited together.
 
 I have also explored emerging architecture-as-code standards, including FINOS CALM, for representing software architectures in structured, machine-readable formats.
 

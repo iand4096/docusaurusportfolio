@@ -5,13 +5,12 @@ slug: /containersandcloud
 sidebar_custom_props:
   sampleCard:
     tag: Containers and networking
-    description: Practical experience using Docker, Linux, networking and hosted environments for 
-      documentation platforms, API testing and CI troubleshooting.
+    description: >-
+      Supporting documentation platforms and API integration testing through
+      containerised hosting, Linux administration and network troubleshooting.
     highlights:
-      - Docker and Nginx documentation-platform migration
-      - 15-minute build-time reduction
-      - Linux, TCP/IP and firewall troubleshooting
-      - Cloud-hosted webhook and integration testing
+      - Led migration of a documentation platform to Docker and Nginx hosting
+      - Reduced container build time by approximately 15 minutes
     ariaLabel: Explore my containers and networking skills
 type:
   - tool

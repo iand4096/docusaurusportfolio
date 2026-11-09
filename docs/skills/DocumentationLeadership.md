@@ -5,13 +5,10 @@ slug: /docsleadership
 sidebar_custom_props:
   sampleCard:
     tag: Documentation Strategy
-    description: Leading documentation teams, strategy, platforms and operating models across 
-      complex developer and enterprise environments.
+    description: Defining documentation strategy, leading technical-writing teams, and shaping developer-documentation platforms across enterprise and financial-services environments.
     highlights:
-      - Documentation strategy and product ownership
-      - Hiring, mentoring and team leadership
-      - Cross-functional platform delivery
-      - Scalable contribution and governance models
+      - Led documentation strategy for the first Paysafe Developer Center
+      - Recruited, managed, and mentored technical-writing teams
     ariaLabel: Explore my documentation leadership and strategy skills
 type:
   - skill

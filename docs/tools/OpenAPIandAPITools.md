@@ -5,13 +5,12 @@ slug: /openapitools
 sidebar_custom_props:
   sampleCard:
     tag: API specifications
-    description: Creating and maintaining OpenAPI specifications, API collections, structured data 
-      and validation workflows for developer documentation and integration testing.
+    description: >-
+      Maintaining API contracts and executable integration tests to improve the
+      accuracy and usability of developer documentation.
     highlights:
-      - Swagger 2.0 / OpenAPI 2.0
-      - Postman and Insomnia collections
-      - Custom authentication and encryption plugins
-      - JSON and YAML automation with Python and Scala
+      - Designed reusable OpenAPI schemas and security definitions
+      - Extended Insomnia plugins for custom authentication and encryption
     ariaLabel: Explore my API specification and API testing tools
 type:
   - tool

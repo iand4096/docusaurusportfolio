@@ -4,13 +4,10 @@ sidebar_position: 2
 sidebar_custom_props:
   sampleCard:
     tag: API integration
-    description: Mastercard tokenisation documentation developed through custom Python integration 
-      testing, OAuth 1.0 authentication, field-level encryption, and webhook validation.
+    description: Developer documentation for integrating Mastercard's Digital Enablement Service (MDES) to support secure payment tokenisation in merchant applications.
     highlights:
       - Wrote the first MDES for Merchants use-case guide
-      - Built custom Python test integrations
-      - Validated OAuth, encryption, and webhooks
-      - Improved the supporting OpenAPI reference
+      - Built custom cryptographic Python test integrations
     ariaLabel: View the MDES for Merchants documentation sample
 type:
   - doc-sample
@@ -62,9 +59,9 @@ Other contributors subsequently made minor updates to the published guide.
 ## The challenge
 
 - Explain an unfamiliar and technically complex tokenisation workflow to developers.
-- Test the MDES Digital Enablement API, which could not be tested using Postman at the time because of the API's unusual security requirements:
+- Test the complex MDES Digital Enablement API, without using Postman or similar because of the API's unusual security requirements:
 
-  - Postman did not support [RSA signatures for OAuth 1.0](https://github.com/postmanlabs/postman-app-support/issues/2302), as required by Mastercard. Support was added in 2020.
+  - Postman did not support [RSA signatures for OAuth 1.0](https://github.com/postmanlabs/postman-app-support/issues/2302), as required by Mastercard. Support was only added in 2020.
   - Mastercard's field-level encryption and decryption required custom cryptographic code that Postman did not provide.
 - Test asynchronous webhook notifications, which were blocked by the corporate firewall.
 - Identify and resolve errors and omissions in the supporting Digital Enablement API reference.

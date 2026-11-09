@@ -4,15 +4,13 @@ sidebar_position: 3
 slug: /gitandci
 sidebar_custom_props:
   sampleCard:
-    tag: Git and CI / CD
-    description: Using Git, GitHub, Bitbucket and CI/CD to review, validate, build and publish 
-      documentation, with hands-on experience implementing QA gates and troubleshooting build 
-      issues.
+    tag: Git and CI/CD
+    description: >-
+      Using version control and continuous integration to review, validate, build
+      and publish documentation reliably.
     highlights:
-      - Git, GitHub and pull-request workflows
-      - CI link checking that blocks broken documentation merges
-      - GitHub Actions and Jenkins publishing workflows
-      - Cross-platform CI and build-failure troubleshooting
+      - Implemented CI link checks that block merges containing broken links
+      - Automated Docusaurus builds and publishing with GitHub Actions
     ariaLabel: Explore my Git and CI/CD skills
 type:
   - tool

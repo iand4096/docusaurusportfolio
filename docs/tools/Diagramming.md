@@ -5,13 +5,12 @@ slug: /diagramsandvisuals
 sidebar_custom_props:
   sampleCard:
     tag: Technical diagrams
-    description: Creating clear technical diagrams for software architecture, APIs, system 
-      interactions and developer workflows using both diagrams-as-code and traditional visual tools.
+    description: >-
+      Creating maintainable architecture diagrams, visual documentation and
+      navigation aids for complex technical content.
     highlights:
-      - Architecture, sequence and API interaction diagrams
-      - C4 modelling and system visualisation
-      - Mermaid, PlantUML and Graphviz diagrams as code
-      - Visio, SVG and developer-focused visual documentation
+      - Developed an IDE plugin for hyperlinked Graphviz learning paths
+      - Automated detection of outdated diagram terminology using Python and OCR
     ariaLabel: Explore my technical diagramming skills
 type:
   - tool

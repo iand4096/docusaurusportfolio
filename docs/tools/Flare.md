@@ -5,13 +5,12 @@ slug: /flare
 sidebar_custom_props:
   sampleCard:
     tag: Structured authoring
-    description: Advanced single-sourcing, custom styling, publishing automation, Git integration, 
-      content migration and complex output troubleshooting.
+    description: >-
+      Managing structured, multi-output documentation with single-sourcing,
+      content reuse and integration into development workflows.
     highlights:
-      - Nearly eight years of experience
-      - HTML and PDF single-sourcing
-      - C# and REST API automation
-      - 131 community-forum contributions
+      - Developed scripts to migrate Confluence content into Flare XHTML topics
+      - Built C# tooling to generate structured release notes using the Jira REST API
     ariaLabel: Explore my MadCap Flare skills
 type:
   - tool

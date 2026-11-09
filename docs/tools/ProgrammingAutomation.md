@@ -5,14 +5,12 @@ slug: /programming
 sidebar_custom_props:
   sampleCard:
     tag: Programming and automation
-    description: Using Python, JavaScript and scripting to build documentation tooling, API 
-      integrations, test applications, migration utilities and automated docs-as-code workflows.
+    description: >-
+      Developing scripts, applications and platform extensions for documentation
+      engineering and API validation.
     highlights:
-      - Python, Flask and REST API integration
-      - JavaScript, Node.js and React documentation tooling
-      - Bash, PowerShell and Linux automation
-      - Multi-language code analysis and technical validation
-      - API client and SDK testing and validation
+      - Built Python tooling for documentation migration and link reconstruction
+      - Extended Scala parsers and IDE plugins with documentation features
     ariaLabel: Explore my programming and automation skills
 type:
   - tool

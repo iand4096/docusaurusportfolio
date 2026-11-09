@@ -4,13 +4,10 @@ sidebar_position: 4
 sidebar_custom_props:
   sampleCard:
     tag: JavaScript integration
-    description: Paysafe.js developer documentation covering hosted payment fields, tokenisation, 
-      PCI DSS scope reduction, and browser-based integration workflows.
+    description: Developer documentation for integrating Paysafe.js hosted payment fields, covering secure tokenisation, PCI DSS scope reduction, and browser-based payment workflows.
     highlights:
       - Wrote the first Paysafe.js Developer Guide
-      - Created working CodePen integration examples
-      - Built an interactive inline Try Now demonstration
-      - Documented hosted fields, tokenisation, validation, and error handling
+      - Built working CodePen examples and an interactive Try Now demonstration
     ariaLabel: View the Paysafe.js Developer Guide documentation sample
 type:
   - doc-sample

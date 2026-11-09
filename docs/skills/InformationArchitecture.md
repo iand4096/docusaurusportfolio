@@ -5,13 +5,10 @@ slug: /informationarch
 sidebar_custom_props:
   sampleCard:
     tag: Content structure
-    description: Designing scalable documentation structures, navigation models, metadata, content 
-      inventories and search experiences for complex technical content.
+    description: Organising complex technical content into discoverable, navigable, and maintainable documentation structures for developers and enterprise users.
     highlights:
-      - 500-page site IA redesign
-      - Graphviz-based learning paths
-      - 900-page content inventory
-      - Metadata strategy for RAG search
+      - Redesigned the information architecture of a 500-page documentation site
+      - Built Graphviz-based, interactive learning paths
     ariaLabel: Explore my information architecture skills
 type:
   - skill

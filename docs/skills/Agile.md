@@ -4,18 +4,19 @@ sidebar_label: Agile Project Delivery
 sidebar_position: 11
 slug: /agile
 
+
 sidebar_custom_props:
   sampleCard:
     tag: Agile Delivery
-    description: Agile delivery of documentation and platform initiatives, combining sprint 
-      planning, backlog management, technical ownership and release automation across engineering 
-      teams.
+    description: >-
+      Leading documentation and platform initiatives through Agile
+      planning, backlog management, cross-functional coordination
+      and release management.
     highlights:
-      - Sprint planning, backlog refinement and cross-team coordination
-      - End-to-end ownership of documentation platform migration
-      - Technical troubleshooting and post-deployment support
-      - Automated release documentation using Jira workflows
+      - Led end-to-end migration of a documentation portal to Docker-based hosting
+      - Led sprint planning, backlog refinement and delivery across engineering teams
     ariaLabel: Explore my Agile project delivery experience
+
 type:
   - skill
 audiences:

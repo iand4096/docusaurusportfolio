@@ -98,6 +98,29 @@ function valuesForDimension(
   return document[dimension.metadataField] ?? [];
 }
 
+
+function initialFilters(): SelectedFilters {
+  const filters = emptyFilters();
+
+  if (typeof window === 'undefined') {
+    return filters;
+  }
+
+  const params = new URLSearchParams(window.location.search);
+  const validTypes = new Set(
+    data.dimensions.content_types.terms.map((term) => term.id),
+  );
+
+  params.getAll('contentType').forEach((type) => {
+    if (validTypes.has(type)) {
+      filters.content_types.add(type);
+    }
+  });
+
+  return filters;
+}
+
+
 function termLabelMap(
   dimensions: Record<DimensionId, TaxonomyDimension>,
 ): Map<string, string> {
@@ -262,7 +285,7 @@ function DocumentTags({
 export default function BrowsePage(): React.JSX.Element {
   const [query, setQuery] = useState('');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
-  const [selected, setSelected] = useState<SelectedFilters>(() => emptyFilters());
+  const [selected, setSelected] = useState<SelectedFilters>(initialFilters);
 
   const labels = useMemo(() => termLabelMap(data.dimensions), []);
 
