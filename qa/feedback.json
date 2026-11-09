@@ -147,6 +147,63 @@
           "retry": false
         }
       ]
+    },
+    "qa-f369dedd2eb66bfa8340fa68": {
+      "issue_id": "qa-f369dedd2eb66bfa8340fa68",
+      "status": "adjudicated",
+      "human_resolution": null,
+      "discussion": [
+        {
+          "role": "human",
+          "text": "I disagree the large size of the company and rapid growth had a direct effect on the size of the task of creating a combined developer portal for the newly formed group",
+          "at": "2026-11-09T11:43:26+00:00"
+        },
+        {
+          "role": "ai",
+          "text": "The original criticism has two distinct claims. (1) That the company-level revenue metrics are not connected to the documentation work, so a reader cannot tell what the author personally delivered or why the work mattered. This is refuted: the card explicitly states the author 'Led the documentation work for the first Paysafe Developer Center', which identifies the personal contribution, and the surrounding context (the card tag 'Developer Portal · API Documentation · Platform Delivery' and the case-study link) frames the work. The human's rebuttal is also supported by the document: the growth context is presented as the setting in which the first combined developer centre was built, not as a substitute for the author's contribution. (2) That the card omits any indication of scope (platform, API reference, portal structure) that other cards provide. This is also refuted within the supplied document: the card tag reads 'Developer Portal · API Documentation · Platform Delivery', which supplies exactly the scope categories the reviewer says are missing. The reviewer's suggestion to replace the revenue figures with a scope statement is therefore an optional editorial preference, not a demonstrated defect causing concrete reader harm. No independently significant original defect survives.",
+          "decision": "withdrawn",
+          "at": "2026-11-09T11:43:29+00:00"
+        }
+      ],
+      "adjudications": [
+        {
+          "at": "2026-11-09T11:43:29+00:00",
+          "decision": "withdrawn",
+          "reason": "The original criticism has two distinct claims. (1) That the company-level revenue metrics are not connected to the documentation work, so a reader cannot tell what the author personally delivered or why the work mattered. This is refuted: the card explicitly states the author 'Led the documentation work for the first Paysafe Developer Center', which identifies the personal contribution, and the surrounding context (the card tag 'Developer Portal · API Documentation · Platform Delivery' and the case-study link) frames the work. The human's rebuttal is also supported by the document: the growth context is presented as the setting in which the first combined developer centre was built, not as a substitute for the author's contribution. (2) That the card omits any indication of scope (platform, API reference, portal structure) that other cards provide. This is also refuted within the supplied document: the card tag reads 'Developer Portal · API Documentation · Platform Delivery', which supplies exactly the scope categories the reviewer says are missing. The reviewer's suggestion to replace the revenue figures with a scope statement is therefore an optional editorial preference, not a demonstrated defect causing concrete reader harm. No independently significant original defect survives.",
+          "evidence": [
+            "Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion as the company delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.",
+            "Developer Portal · API Documentation · Platform Delivery",
+            "Building the Paysafe Developer Center",
+            "Read case study →"
+          ],
+          "revised_message": null,
+          "revised_suggestion": null,
+          "document_revision": {
+            "git_commit": "2397483a0b66c304bc23b889de5647d64ba92fd7",
+            "content_sha256": "6c3db7fb5c4294336a5263fa70a1e3a368d8f3775ed0c93927aa41cee851b1a6"
+          }
+        }
+      ],
+      "report_source": "https://iand4096.github.io/docusaurusportfolio/qa/report-2397483a0b66.json",
+      "latest_finding": {
+        "file": "src/pages/index.md",
+        "category": "portfolio",
+        "source": "ai",
+        "original": "Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion as the company delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.",
+        "message": "The company-level revenue metrics are not connected to the documentation work, so a portfolio reader cannot tell what the author personally delivered or why the work mattered. The card also omits any indication of scope (platform, API reference, portal structure) that the other cards provide.",
+        "suggestion": "Replace or supplement the company revenue figures with a concise statement of the documentation scope and the author's contribution, for example the developer centre's structure, API reference, guides or platform delivery the author owned.",
+        "document_revision": {
+          "git_commit": "2397483a0b66c304bc23b889de5647d64ba92fd7",
+          "content_sha256": "6c3db7fb5c4294336a5263fa70a1e3a368d8f3775ed0c93927aa41cee851b1a6"
+        }
+      },
+      "attempts": [
+        {
+          "at": "2026-11-09T11:43:26+00:00",
+          "result": "succeeded",
+          "retry": false
+        }
+      ]
     }
   }
 }

@@ -7,7 +7,12 @@ class Settings(BaseSettings):
     repo_root: Path = Path('/workspace')
     index_dir: Path = Path('/app/data')
     site_base_url: str = 'https://iand4096.github.io/docusaurusportfolio/'
-    cors_origins: str = 'http://localhost:3000,http://localhost:3001'
+    cors_origins: str = (
+    'http://localhost:3000,'
+    'http://localhost:3001,'
+    'http://127.0.0.1:3000,'
+    'http://127.0.0.1:3001'
+    )
     embedding_model: str = 'sentence-transformers/all-MiniLM-L6-v2'
     deepseek_api_key: str = ''
     deepseek_base_url: str = 'https://api.deepseek.com'
