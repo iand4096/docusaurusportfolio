@@ -1,4 +1,3 @@
-
 terraform {
   required_version = ">= 1.5.0"
 
@@ -117,10 +116,30 @@ resource "azurerm_container_app" "rag" {
 
     container {
       name   = "knowledge-api"
-      image  = "${azurerm_container_registry.rag.login_server}/portfolio-rag:v2"
+      image  = "${azurerm_container_registry.rag.login_server}/portfolio-rag:v3"
       cpu    = 1.0
       memory = "2Gi"
+
+      # The actual DeepSeek key is stored with Azure CLI as a
+      # Container Apps secret, not in this Terraform file.
+      env {
+        name        = "DEEPSEEK_API_KEY"
+        secret_name = "deepseek-api-key"
+      }
+
+      # Keep paid generation disabled until deliberately enabled
+      # after deploying and testing the protected backend.
+      env {
+        name  = "RAG_CHAT_ENABLED"
+        value = "true"
+      }
     }
+  }
+
+  # The secret is created and updated outside Terraform using Azure CLI.
+  # Preserve it when Terraform updates the Container App.
+  lifecycle {
+    ignore_changes = [secret]
   }
 
   depends_on = [azurerm_role_assignment.rag_pull]
@@ -129,4 +148,3 @@ resource "azurerm_container_app" "rag" {
 output "api_url" {
   value = "https://${azurerm_container_app.rag.ingress[0].fqdn}"
 }
-

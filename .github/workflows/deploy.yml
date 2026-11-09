@@ -49,6 +49,8 @@ jobs:
           # uses a versioned report file below, so this is safe even if the site
           # configuration does not currently consume QA_VERSION.
           QA_VERSION: ${{ github.sha }}
+          RAG_SEARCH_ENABLED: "true"
+          RAG_API_URL: "https://ca-portfolio-rag.calmpebble-4a73febf.uksouth.azurecontainerapps.io"
         run: npm run build
 
       - name: Set up Python
