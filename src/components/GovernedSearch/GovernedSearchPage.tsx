@@ -62,10 +62,20 @@ function errorMessage(detail: unknown): string {
   return 'The API returned an error.';
 }
 
-// The backend now supplies an authoritative URL, including a fragment only
-// when the index has a verified explicit heading ID.
+// The current index stores a document URL and heading text separately, rather
+// than an exact heading ID. Match Docusaurus's common auto-generated IDs as a
+// best-effort fallback. Explicit IDs and duplicate headings require an anchor
+// stored by the indexing pipeline for guaranteed precision.
 function sourceUrl(item: Evidence): string {
-  return item.url;
+  if (!item.heading || item.url.includes('#')) return item.url;
+  const slug = item.heading
+    .replace(/<[^>]*>/g, '')
+    .replace(/\{#[^}]+\}\s*$/, '')
+    .trim()
+    .toLowerCase()
+    .replace(/[^\p{L}\p{N}\p{M}_\-\s]/gu, '')
+    .replace(/\s/g, '-');
+  return slug ? `${item.url}#${encodeURIComponent(slug)}` : item.url;
 }
 
 function isMissingDeepSeekKey(detail: unknown): boolean {
@@ -286,7 +296,16 @@ export default function GovernedSearchPage(): React.JSX.Element {
       });
       const data: ApiResponse = await response.json();
       if (!response.ok) {
-        if (responseMode === 'chat' && isMissingDeepSeekKey(data.detail)) {
+        if (response.status === 429) {
+          const seconds = response.headers.get('Retry-After');
+          throw new Error(seconds
+            ? `Search limit reached. Please retry in ${seconds} seconds.`
+            : 'Search limit reached. Please try again shortly.');
+        }
+        if (response.status === 503 && String(data.detail ?? '').includes('Search capacity reached')) {
+          throw new Error('The search service is busy. Please try again shortly.');
+        }
+        if (responseMode === 'chat' && (isMissingDeepSeekKey(data.detail) || String(data.detail ?? '').includes('AI answers are not available'))) {
           throw new Error('AI answers are not available because DeepSeek is not configured. Choose Sources to view matching passages without AI generation.');
         }
         throw new Error(errorMessage(data.detail));

@@ -1,6 +1,8 @@
 """FastAPI for canonical-facet search and DeepSeek grounded answer generation."""
 from __future__ import annotations
 import json
+import threading
+from contextlib import contextmanager
 from functools import lru_cache
 from typing import Literal
 from fastapi import FastAPI, HTTPException
@@ -10,9 +12,30 @@ from app.config import get_settings
 from app.ingest import taxonomy
 from app.governance_filters import taxonomy_dimensions, validate_filters
 from app.retrieval import search
+from app.abuse_protection import RateLimitMiddleware, env_bool
 
 cfg = get_settings()
 app = FastAPI(title='Portfolio Governed Knowledge API', version='0.2.0')
+# Apply rate limiting inside CORS so browsers can read HTTP 429 and Retry-After.
+app.add_middleware(
+    RateLimitMiddleware,
+    enabled=env_bool('RAG_RATE_LIMIT_ENABLED', True),
+    trust_azure_xff=env_bool('RAG_TRUST_AZURE_XFF', False),
+)
+SEARCH_SLOTS = threading.BoundedSemaphore(2)
+CHAT_SLOTS = threading.BoundedSemaphore(1)
+
+
+@contextmanager
+def capacity_slot(semaphore: threading.BoundedSemaphore):
+    if not semaphore.acquire(blocking=False):
+        raise HTTPException(503, 'Search capacity reached. Please try again shortly.',
+                            headers={'Retry-After': '2'})
+    try:
+        yield
+    finally:
+        semaphore.release()
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[x.strip() for x in cfg.cors_origins.split(',') if x.strip()],
@@ -24,7 +47,7 @@ class SearchRequest(BaseModel):
     query: str = Field(min_length=2, max_length=500)
     filters: dict[str, list[str]] = Field(default_factory=dict)
     include_archived: bool = False
-    top_k: int = Field(default=5, ge=1, le=20)
+    top_k: int = Field(default=5, ge=1, le=10)
     mode: Literal['bm25', 'semantic', 'hybrid'] = 'hybrid'
 
 
@@ -71,8 +94,7 @@ def validated_filters(filters: dict[str, list[str]]) -> dict[str, list[str]]:
     return validate_filters(filters, get_taxonomy()['dimensions'])
 
 
-@app.post('/search')
-def search_api(request: SearchRequest):
+def perform_search(request: SearchRequest):
     state = snapshot()
     if state is None:
         raise HTTPException(503, 'Index missing. Run the index builder first.')
@@ -87,15 +109,27 @@ def search_api(request: SearchRequest):
             'index_version': manifest['source_hash'][:12]}
 
 
+@app.post('/search')
+def search_api(request: SearchRequest):
+    with capacity_slot(SEARCH_SLOTS):
+        return perform_search(request)
+
+
 @app.post('/chat')
 def chat(request: ChatRequest):
+    if not env_bool('RAG_CHAT_ENABLED', False) or not cfg.deepseek_api_key:
+        raise HTTPException(503, 'AI answers are not available. Use Sources (/search) instead.')
+    with capacity_slot(CHAT_SLOTS):
+        return perform_chat(request)
+
+
+def perform_chat(request: ChatRequest):
+    # Share the search capacity budget with /search requests.
     evidence = search_api(request)
     results = evidence['results']
     if not results:
         return {'answer': 'I could not find relevant portfolio evidence for that question.',
                 'sources': [], 'mode': evidence['mode'], 'index_version': evidence['index_version']}
-    if not cfg.deepseek_api_key:
-        raise HTTPException(503, 'DEEPSEEK_API_KEY not configured. /search works without it.')
     from openai import OpenAI
     client = OpenAI(api_key=cfg.deepseek_api_key, base_url=cfg.deepseek_base_url, timeout=45.0)
     context = '\n\n'.join(
