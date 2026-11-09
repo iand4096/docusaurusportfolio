@@ -1,0 +1,33 @@
+# Production image built from a minimal, explicitly staged context.
+# Use scripts/build-azure-image.ps1 from the repository root.
+FROM python:3.11-slim
+
+ENV PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PYTHONPATH=/app \
+    REPO_ROOT=/app/repo \
+    INDEX_DIR=/app/data \
+    HF_HOME=/opt/huggingface \
+    HF_HUB_OFFLINE=1 \
+    EMBEDDING_MODEL=sentence-transformers/all-MiniLM-L6-v2
+
+WORKDIR /app
+
+COPY knowledge-api/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Download model during the build, not when an Azure replica wakes from zero.
+# Turn off offline mode only for this build command.
+RUN HF_HUB_OFFLINE=0 python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2')"
+
+COPY knowledge-api/app /app/app
+COPY knowledge-api/data /app/data
+COPY taxonomy/taxonomy.yml /app/repo/taxonomy/taxonomy.yml
+
+# Restrict container privileges; data and cached model remain readable.
+RUN useradd --create-home --uid 10001 rag \
+    && chmod -R a+rX /app /opt/huggingface
+USER rag
+
+EXPOSE 8000
+CMD ["python", "-m", "uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]
