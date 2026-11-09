@@ -8,7 +8,7 @@ import Link from '@docusaurus/Link';
 import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 <div className="portfolio-hero">
-  <p className="portfolio-eyebrow">API documentation · Developer platforms · Documentation engineering</p>
+  <p className="portfolio-eyebrow">API documentation · Developer platforms · Documentation engineering · AI knowledge systems</p>
   <h1>Ian Drewett</h1>
   <p className="portfolio-lead">Documenting complex software & frameworks and building the tools behind the documentation.</p>
   <p className="portfolio-intro">Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a <Link to="#engineering-background">software-engineering background</Link>.</p>
