@@ -29,7 +29,7 @@ tags:
   - yaml
 ---
 
-## Context
+## Context {/* #context */}
 
 Structured metadata and taxonomy can improve navigation and search in a large documentation repository. They also support content ownership, documentation lifecycle management, publishing automation, and can be used to maintain consistent vocabulary for better alignment across an organisation.
 
@@ -37,7 +37,7 @@ I built the taxonomy for this Docusaurus portfolio after encountering these prob
 
 The taxonomy uses a *Git-versioned controlled vocabulary* rather than free-form tags. That vocabulary drives document metadata, Docusaurus tags, editor controls, and faceted navigation — see [the browse page](pathname:///browse/) for an example of the latter.
 
-## Challenge
+## Challenge {/* #challenge */}
 
 I wanted the repository to enforce the metadata model rather than rely on contributors to remember conventions. This required:
 
@@ -51,7 +51,7 @@ I wanted the repository to enforce the metadata model rather than rely on contri
 
 This meant treating the taxonomy as a repository artefact rather than editorial guidance.
 
-## Approach
+## Approach {/* #approach */}
 
 One rule drives the implementation:
 
@@ -70,7 +70,7 @@ The design uses these constraints:
 * *Human review for semantic changes.* Automation can suggest a change but cannot silently redefine the vocabulary.
 * *Controlled authoring.* Writers select governed values without needing to know how the taxonomy works internally.
 
-## Implementation
+## Implementation {/* #implementation */}
 
 The system includes:
 
@@ -84,7 +84,7 @@ The system includes:
 
 Because this repository is small, I can show the implementation in [full](../implementation-details/taxonomy.md).
 
-## Impact
+## Impact {/* #impact */}
 
 The portfolio now has one canonical vocabulary and one supported path for changing it.
 

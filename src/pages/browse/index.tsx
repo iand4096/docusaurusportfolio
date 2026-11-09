@@ -135,35 +135,92 @@ function termLabelMap(
   return labels;
 }
 
-function documentMatchesSearch(
-  document: NavigationDocument,
-  query: string,
-  labels: Map<string, string>,
-): boolean {
-  if (!query) {
-    return true;
+// A dependency-free ranked search over the build-generated navigation metadata.
+// It does not search full Markdown/MDX body text; that requires a richer build index.
+function normalizeSearch(value: string): string {
+  return value
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLocaleLowerCase()
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+}
+
+function editDistanceAtMostOne(left: string, right: string): boolean {
+  if (Math.abs(left.length - right.length) > 1) return false;
+  let i = 0;
+  let j = 0;
+  let edits = 0;
+  while (i < left.length && j < right.length) {
+    if (left[i] === right[j]) {
+      i += 1;
+      j += 1;
+      continue;
+    }
+    if (++edits > 1) return false;
+    if (left.length >= right.length) i += 1;
+    if (right.length >= left.length) j += 1;
+  }
+  return edits + Number(i < left.length || j < right.length) <= 1;
+}
+
+function tokenStrength(token: string, normalizedText: string): number {
+  if (!normalizedText) return 0;
+  const words = normalizedText.split(' ');
+  if (words.includes(token)) return 1;
+  if (words.some(word => word.startsWith(token))) return 0.75;
+  if (token.length >= 5 && words.some(word => word.length >= 5 && editDistanceAtMostOne(token, word))) {
+    return 0.48;
+  }
+  return 0;
+}
+
+type RankedDocument = {document: NavigationDocument; score: number; matchedIn: string};
+
+type SearchableDocument = {
+  document: NavigationDocument;
+  title: string;
+  description: string;
+  taxonomy: string;
+  path: string;
+};
+
+function rankDocument(entry: SearchableDocument, query: string): RankedDocument | null {
+  const normalized = normalizeSearch(query);
+  if (!normalized) return {document: entry.document, score: 0, matchedIn: ''};
+  const terms = [...new Set(normalized.split(' ').filter(Boolean))];
+  let score = 0;
+  let bestField = 'Taxonomy';
+  let bestContribution = 0;
+
+  for (const term of terms) {
+    const fields = [
+      {text: entry.title, weight: 10, label: 'Title'},
+      {text: entry.description, weight: 4, label: 'Description'},
+      {text: entry.taxonomy, weight: 3, label: 'Taxonomy'},
+      {text: entry.path, weight: 1, label: 'Path'},
+    ];
+    const matching = fields.map(field => ({
+      ...field,
+      strength: tokenStrength(term, field.text),
+    }));
+    matching.sort((a, b) => b.strength * b.weight - a.strength * a.weight);
+    const best = matching[0];
+    if (!best || best.strength === 0) return null; // Require every query term.
+    const contribution = best.strength * best.weight;
+    score += contribution;
+    if (contribution > bestContribution) {
+      bestContribution = contribution;
+      bestField = best.label;
+    }
   }
 
-  const taxonomyLabels = DIMENSION_ORDER.flatMap((dimensionId) => {
-    const dimension = data.dimensions[dimensionId];
-    if (!dimension) {
-      return [];
-    }
+  // Prefer phrase matches while still allowing words spread across fields.
+  if (entry.title.includes(normalized)) score += 18;
+  else if (entry.description.includes(normalized)) score += 7;
+  else if (entry.taxonomy.includes(normalized)) score += 5;
 
-    return valuesForDimension(document, dimension).map(
-      (termId) => labels.get(`${dimensionId}:${termId}`) ?? termId,
-    );
-  });
-
-  const haystack = [
-    document.title,
-    document.description ?? '',
-    ...taxonomyLabels,
-  ]
-    .join(' ')
-    .toLocaleLowerCase();
-
-  return haystack.includes(query.toLocaleLowerCase());
+  return {document: entry.document, score, matchedIn: bestField};
 }
 
 function documentMatchesFilters(
@@ -289,12 +346,35 @@ export default function BrowsePage(): React.JSX.Element {
 
   const labels = useMemo(() => termLabelMap(data.dimensions), []);
 
+  // Precompute normalized text once; only ranking and faceting change as users type.
+  const searchableDocuments = useMemo<SearchableDocument[]>(() => data.documents.map(document => {
+    const taxonomyLabels = DIMENSION_ORDER.flatMap(dimensionId => {
+      const dimension = data.dimensions[dimensionId];
+      return dimension
+        ? valuesForDimension(document, dimension).map(termId =>
+            labels.get(`${dimensionId}:${termId}`) ?? termId)
+        : [];
+    });
+    return {
+      document,
+      title: normalizeSearch(document.title),
+      description: normalizeSearch(document.description ?? ''),
+      taxonomy: normalizeSearch(taxonomyLabels.join(' ')),
+      path: normalizeSearch(document.path),
+    };
+  }), [labels]);
+
   const filteredDocuments = useMemo(() => {
-    return data.documents
-      .filter((document) => documentMatchesSearch(document, query.trim(), labels))
-      .filter((document) => documentMatchesFilters(document, selected))
-      .sort((left, right) => left.title.localeCompare(right.title));
-  }, [query, selected, labels]);
+    const searching = Boolean(normalizeSearch(query));
+    const ranked = searchableDocuments
+      .filter(entry => documentMatchesFilters(entry.document, selected))
+      .map(entry => rankDocument(entry, query))
+      .filter((match): match is RankedDocument => match !== null);
+    ranked.sort((left, right) => searching
+      ? right.score - left.score || left.document.title.localeCompare(right.document.title)
+      : left.document.title.localeCompare(right.document.title));
+    return ranked;
+  }, [query, selected, searchableDocuments]);
 
   const activeFilterCount = useMemo(
     () =>
@@ -371,8 +451,10 @@ export default function BrowsePage(): React.JSX.Element {
                 className={styles.searchInput}
                 value={query}
                 onChange={(event) => setQuery(event.target.value)}
-                placeholder="Search titles, descriptions, taxonomy…"
+                placeholder="Try OpenAPI, sample, or Docusaurus…"
+                autoComplete="off"
               />
+              <p className={styles.searchHelp}>Ranked search of titles, summaries and taxonomy.</p>
             </div>
 
             <button
@@ -508,6 +590,7 @@ export default function BrowsePage(): React.JSX.Element {
                   {filteredDocuments.length}{' '}
                   {filteredDocuments.length === 1 ? 'result' : 'results'}
                 </p>
+                {query.trim() && <p className={styles.rankingNote}>Sorted by relevance · All search terms must match</p>}
                 {activeFilterCount > 0 ? (
                   <p className={styles.filterSummary}>
                     {activeFilterCount}{' '}
@@ -519,8 +602,9 @@ export default function BrowsePage(): React.JSX.Element {
 
             {filteredDocuments.length > 0 ? (
               <div className={styles.resultGrid}>
-                {filteredDocuments.map((document) => (
+                {filteredDocuments.map(({document, matchedIn}) => (
                   <article className={styles.card} key={document.id}>
+                    {query.trim() && <span className={styles.matchBadge}>Matched in {matchedIn.toLowerCase()}</span>}
                     <h2 className={styles.cardTitle}>
                       <Link to={document.path}>{document.title}</Link>
                     </h2>
@@ -542,7 +626,7 @@ export default function BrowsePage(): React.JSX.Element {
               <div className={styles.emptyState}>
                 <h2>No matching content</h2>
                 <p>
-                  Try removing a filter or using a broader search term.
+                  Try fewer search words, check the spelling, or remove a taxonomy filter.
                 </p>
                 <button
                   type="button"

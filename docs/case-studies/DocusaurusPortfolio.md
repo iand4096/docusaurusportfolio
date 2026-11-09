@@ -56,17 +56,17 @@ tags:
   - vale
 ---
 
-## Context
+## Context {/* #context */}
 
 I designed and built this portfolio as a production-style Docusaurus documentation site to demonstrate documentation engineering, docs-as-code workflows, React/MDX customisation, automated QA, and CI/CD.
 
-## Challenge
+## Challenge {/* #challenge */}
 
 * Build a portfolio site using Docusaurus, React/JSX, TypeScript and GitHub Actions.
 * Integrate an LLM API into an automated QA workflow.
 * Combine AI review with deterministic checks such as Markdown linting as well as accessibility, style, and link checks.
 
-## Approach
+## Approach {/* #approach */}
 
 Docusaurus provides the documentation framework. I used Markdown and MDX for content, and React components for reusable custom presentation.
 
@@ -74,7 +74,7 @@ GitHub Actions automate deployment and documentation QA.
 
 For quality assurance, I wrote a Python script that combines the AI review with the deterministic checks such as link checking. The script validates the AI findings against the source to guard against hallucination, and generates a report containing the identified issues and suggested improvements.
 
-## Implementation
+## Implementation {/* #implementation */}
 
 The portfolio includes:
 
@@ -100,10 +100,10 @@ The checks are combined into HTML and JSON reports and run automatically when an
 
 The implementation includes the portfolio published on GitHub Pages, a [Documentation QA report](pathname:///qa/) for the current site, and the GitHub repository containing the source, QA tooling, and deployment workflow.
 
-## Impact
+## Impact {/* #impact */}
 
 This portfolio demonstrates a modern docs-as-code workflow, reusable documentation components, and automated deployment and quality checks.
 
-## Lessons learned
+## Lessons learned {/* #lessons-learned */}
 
 * A dashboard showing QA trends would help track issue counts and severity over time.

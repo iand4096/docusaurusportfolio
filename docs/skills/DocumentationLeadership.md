@@ -42,15 +42,15 @@ tags:
 
 I have led documentation teams, platforms, and strategy across financial services, payments, and enterprise software environments. My experience includes documentation product ownership, team leadership, developer-portal strategy, content architecture, docs-as-code adoption, leading migration programmes, and improving engineering participation in documentation.
 
-## Strategy
+## Strategy {/* #strategy */}
 
 At Paysafe, I defined the documentation strategy and publishing approach for the first Paysafe Developer Center following the merger of Skrill and Optimal Payments. During my time at Morgan Stanley, I owned requirements and priorities for the development of a custom docs-as-code system to replace legacy documentation platforms. I used analytics alongside developer feedback to prioritise content for migration to the new platform and used the same approach to prioritise documentation and platform improvements. I developed the information architecture for the sites I managed at both Paysafe and Morgan Stanley and created contributor and review workflows, documentation standards, and content migration strategies.
 
-## Leadership and team development
+## Leadership and team development {/* #leadership-and-team-development */}
 
 I have recruited, managed, and mentored technical writers delivering API, SDK, and integration documentation, including a team of three writers at Paysafe. At Paysafe and Morgan Stanley, I led cross-functional teams of technical writers and software engineers to build public and internal developer portals. My work at both companies included establishing review processes, documentation standards, and shared working practices. Throughout my career, I have encouraged writers to test APIs and SDKs directly and build working integrations to improve technical accuracy. I have also worked to increase engineering ownership of documentation; this helps improve accuracy with fast-changing software and is often essential for keeping documentation updated when there are few technical writers.
 
-## Platform and product ownership
+## Platform and product ownership {/* #platform-and-product-ownership */}
 
 At Morgan Stanley, I led the design and evolution of a large-scale internal docs-as-code platform and developer portal supporting an API platform with a large internal developer audience.
 
@@ -58,7 +58,7 @@ I owned product direction, requirements, solution design, testing, quality, and 
 
 The site grew from approximately **700 pages to more than 3,200 pages over three years**, supported by increasing contributions from the wider engineering community.
 
-## Cross-functional delivery
+## Cross-functional delivery {/* #cross-functional-delivery */}
 
 I have worked closely with software engineering, web development, DevOps, IDE tooling, product management, and infrastructure teams to deliver documentation platforms and developer experiences. Examples include:
 

@@ -26,23 +26,23 @@ tags:
 
 # Optimus and RICE - distributed computing and financial analytics
 
-## Overview
+## Overview {/* #overview */}
 
 Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications. **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Originally associated with the Fixed Income business, it is also being adopted for Commodities products and workflows.
 
 **Optimus** is a Scala-based, graph-oriented computation framework built on functional programming principles. It manages computational dependencies and supports automatic parallelisation, asynchronous execution, caching and scenario evaluation. It uses a **Data Access Layer (DAL)** that supplies distributed data services, including bitemporal storage and retrieval.
 
-## Platform architecture
+## Platform architecture {/* #platform-architecture */}
 
 These components describe architectural responsibilities, not a strict product hierarchy. Infrastructure and tooling cut across them.
 
-### 1. Financial applications and analytics - RICE
+### 1. Financial applications and analytics - RICE {/* #1-financial-applications-and-analytics---rice */}
 
 RICE provides the domain-specific environment for developing quantitative models and applications involving financial instruments, trading positions, pricing, valuations, profit and loss, and risk. Applications initiate calculations and consume results without implementing execution or data management themselves.
 
 The ecosystem also includes declarative reactive interfaces for presenting financial data and results.
 
-### 2. Graph Computational framework - Optimus
+### 2. Graph Computational framework - Optimus {/* #2-graph-computational-framework---optimus */}
 
 Optimus uses a dependency-driven computation graph. Methods annotated with `@node` participate in that graph, allowing the runtime to manage dependencies and coordinate execution. Its model supports asynchronous evaluation, automatic parallelisation, memoization and caching.
 
@@ -100,7 +100,7 @@ flowchart TD
 
 ```
 
-### 3. Data access layer - DAL
+### 3. Data access layer - DAL {/* #3-data-access-layer---dal */}
 
 DAL provides data storage, retrieval and distribution capabilities. A defining feature is **bitemporal object storage**, which tracks two distinct dimensions:
 
@@ -111,19 +111,19 @@ This distinction supports historical reconstruction, risk analysis, reporting, a
 
 Morgan Stanley describes DAL as distributed, strongly consistent data infrastructure integrating technologies including MongoDB, PostgreSQL and Apache Kafka. It serves applications and large compute grids.
 
-### 4. Distributed execution and infrastructure
+### 4. Distributed execution and infrastructure {/* #4-distributed-execution-and-infrastructure */}
 
 The computation and data services operate on large-scale distributed infrastructure. At Scala Days 2023, Morgan Stanley described **Optimus Cirrus** as running across thousands of compute nodes with more than a petabyte of aggregate RAM.
 
 RICE also integrates distributed data services with internal and external cloud platforms.
 
-### 5. Developer tooling and compiler infrastructure
+### 5. Developer tooling and compiler infrastructure {/* #5-developer-tooling-and-compiler-infrastructure */}
 
 The ecosystem includes specialised Scala compiler development, asynchronous programming semantics, embedded query languages and developer tooling.
 
 One related capability is the **Optimus Build Tool (OBT)**, which applies distributed computation and caching techniques to software compilation. Morgan Stanley has demonstrated the approach on a codebase containing approximately 21 million lines of Scala and Java. OBT applies Optimus concepts outside the financial calculation workflow.
 
-## End-to-end calculation workflow
+## End-to-end calculation workflow {/* #end-to-end-calculation-workflow */}
 
 A conceptual valuation or risk calculation proceeds as follows:
 
@@ -134,13 +134,13 @@ A conceptual valuation or risk calculation proceeds as follows:
 
 The sequence is illustrative, not prescriptive. **RICE is the broader financial risk platform; Optimus and DAL provide complementary computational and data capabilities within that ecosystem.**
 
-## Engineering significance
+## Engineering significance {/* #engineering-significance */}
 
 The architecture separates financial-domain concerns from general-purpose execution and data services. This reduces the need for application teams to implement their own dependency scheduling, result reuse and historical data access, while introducing important design considerations.
 
 Developers must understand **calculation dependencies and execution contexts** to reason about caching and scenario behaviour. They must also distinguish **business-effective history from system-recorded history** when reproducing a past valuation or explaining a risk result. At deployment scale, distributed computation and strongly consistent data access introduce additional operational and integration concerns.
 
-## Public references
+## Public references {/* #public-references */}
 
 1. **Morgan Stanley — Optimus Cirrus GitHub Repository**  
    Public source code, project scope, licensing and technical presentations.  

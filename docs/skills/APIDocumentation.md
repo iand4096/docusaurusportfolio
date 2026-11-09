@@ -80,7 +80,7 @@ I have twelve years of experience creating API and SDK documentation for fintech
 
 I don't just rely on specifications or subject-matter expert interviews. Where practical, I build and test realistic full-stack integrations, reproduce developer workflows and validate API behaviour, or review source code before I write the documentation. This helps me to identify any gaps between specification and implementation and to provide additional guidance based on practical experience with the API.
 
-## API and SDK documentation
+## API and SDK documentation {/* #api-and-sdk-documentation */}
 
 My experience includes:
 
@@ -96,7 +96,7 @@ My experience includes:
 
 I focus on the complete developer journey rather than documenting individual endpoints in isolation.
 
-## Integration development and technical validation
+## Integration development and technical validation {/* #integration-development-and-technical-validation */}
 
 I build working integrations where possible. My integration experience includes:
 
@@ -112,7 +112,7 @@ I use these integrations to compare documented behaviour with actual system beha
 
 At Mastercard, for example, internal network restrictions made webhook or redirect URL based workflows difficult to test. As a result, I created cloud-hosted Python code implementing encryption, decryption and webhook handling to validate real API behaviour including asynchronous notifications rather than relying entirely on mocked responses or specifications.
 
-## API testing and developer tooling
+## API testing and developer tooling {/* #api-testing-and-developer-tooling */}
 
 I also use ad-hoc API testing as part of the documentation process. This includes:
 
@@ -125,7 +125,7 @@ I also use ad-hoc API testing as part of the documentation process. This include
 * Comparing observed behaviour with OpenAPI definitions, generated clients and written documentation
 * Testing documented procedures and code examples before publication
 
-## Authentication and encryption
+## Authentication and encryption {/* #authentication-and-encryption */}
 
 I have practical experience testing and documenting security mechanisms used by financial-services and payment APIs, including:
 
@@ -141,17 +141,17 @@ I have practical experience testing and documenting security mechanisms used by 
 * Certificate and cryptographic-key handling
 * Secure webhook and callback processing
 
-## Web and API security
+## Web and API security {/* #web-and-api-security */}
 
 I have experience of web security through annual security training covering common OWASP vulnerabilities. I have also written Python code to process certificates, encrypt and decrypt payloads, create and validate tokens, and test secure integrations in sandbox environments. This allows me to investigate security-sensitive API behaviour directly, translate complex authentication and cryptographic requirements into accurate developer documentation, and help developers implement secure API integrations.
 
-### Security validation in practice
+### Security validation in practice {/* #security-validation-in-practice */}
 
 At Mastercard, I identified a weakness in an early Click-to-Pay integration where I noticed from my testing that security-relevant values were supplied through custom HTTP headers that were not covered by OAuth request signing. I raised the issue with the API team, resulting in a change to the API design.
 
 This is representative of my approach to API documentation: implementation and validation can uncover issues that are difficult to identify from specifications alone.
 
-## Technical investigation
+## Technical investigation {/* #technical-investigation */}
 
 My software-development background is useful when API behaviour is poorly documented or the original subject-matter expertise is no longer available.
 
@@ -159,7 +159,7 @@ For example, I have analysed complex Scala implementation code to reconstruct un
 
 I am comfortable moving between specifications, source code, logs, API clients, working integrations and developer documentation to establish what a system actually does.
 
-## Defect investigation and release readiness
+## Defect investigation and release readiness {/* #defect-investigation-and-release-readiness */}
 
 My testing experience extends beyond documentation-specific validation.
 
@@ -175,7 +175,7 @@ I have performed black-box, component, integration and usability testing and hav
 
 Earlier in my career, I took on dedicated QA responsibilities for a software project alongside my documentation work. I raised approximately **600 issues**, helping the team move the product towards a stable and releasable state.
 
-## Documentation grounded in working software
+## Documentation grounded in working software {/* #documentation-grounded-in-working-software */}
 
 My development and testing experience allows me to work as both a technical writer and a technical investigator.
 

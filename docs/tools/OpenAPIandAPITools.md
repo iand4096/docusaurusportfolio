@@ -54,7 +54,7 @@ tags:
   - yaml
 ---
 
-## OpenAPI, Postman, Insomnia, cURL
+## OpenAPI, Postman, Insomnia, cURL {/* #openapi-postman-insomnia-curl */}
 
 * Maintained **Swagger 2.0 / OpenAPI 2.0 specifications** at Mastercard covering HTTP methods, status codes, headers, query string & path parameters, request and response bodies, and authentication mechanisms, supporting automated generation of API reference documentation. Used similar technology, API Blueprint, at Paysafe.
 * Designed reusable OpenAPI definitions using **`$ref`, shared schemas, parameters, responses and security definitions** to reduce duplication and maintain consistency across large API specifications.

@@ -39,7 +39,7 @@ tags:
   - technical-writing
 ---
 
-## Project overview
+## Project overview {/* #project-overview */}
 
 I maintained and updated the existing **Masterpass Merchant Integration Guide** while working at Mastercard. The guide explained how merchant developers could integrate Masterpass's digital-wallet checkout into their websites and applications.
 
@@ -47,14 +47,14 @@ My main contribution was to build test integrations for each checkout flow and u
 
 The content has received minor updates from other contributors since I left Mastercard but is mostly unchanged as it is now a legacy product replaced by Click to Pay.
 
-## The challenge
+## The challenge {/* #the-challenge */}
 
 * Understand and test several related checkout flows with different request, response, and callback sequences.
 * Explain interactions between merchant systems, Masterpass services, and users clearly.
 * Identify and correct inconsistencies between the integration guides and the API reference maintained in OpenAPI format.
 * Maintain developer documentation in Brightspot, a marketing-focused content-management system that was not designed for structured technical documentation.
 
-## My approach
+## My approach {/* #my-approach */}
 
 I built working test integrations for the supported Masterpass flows to validate the documented procedures against actual API behaviour. This helped me identify missing steps, unclear explanations, and discrepancies in the supporting API reference, which I then worked with the product owner to correct.
 
@@ -64,7 +64,7 @@ When I found errors or omissions in the API reference, I corrected the underlyin
 
 Brightspot made structured authoring, content reuse, version control, and technical review difficult. I worked with another technical writer to advocate for a docs-as-code alternative. Together, we specified the requirements for the first version of the new platform and tested early prototypes.
 
-## Deliverables
+## Deliverables {/* #deliverables */}
 
 * Updated Masterpass merchant integration documentation covering the supported checkout flows.
 * Working test integrations used to validate the documented procedures.
@@ -79,12 +79,12 @@ The guide is publicly available on Mastercard Developers. A direct link is omitt
 
 :::
 
-## Outcome
+## Outcome {/* #outcome */}
 
 * Provided clearer and more accurate instructions based on tested checkout integrations. The sequence diagrams made the relationships between systems and the order of API interactions easier for merchant developers to understand.
 * Corrected the underlying OpenAPI definitions to improve the consistency between the narrative guides and the API reference.
 * The docs-as-code platform that we advocated for, specified, and tested was subsequently adopted by Mastercard.
 
-## What I would change
+## What I would change {/* #what-i-would-change */}
 
 * Move the documentation to a docs-as-code workflow earlier in the project to reduce the time spent working around the limitations of the Brightspot CMS.

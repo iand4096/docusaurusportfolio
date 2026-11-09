@@ -37,7 +37,7 @@ tags:
   - typo3
 ---
 
-## Context
+## Context {/* #context */}
 
 Following Optimal Payments' acquisition of Skrill Group in August 2015 and the combined business's subsequent rebranding as Paysafe, I led the documentation work for a ten-month project to create a unified Developer Center for the newly integrated company. The site brought together API and SDK reference documentation, integration guides, and product information for merchants integrating Paysafe's payment methods, replacing documentation previously distributed across the two businesses.
 
@@ -45,7 +45,7 @@ I defined the documentation strategy and information architecture, specified the
 
 See the current version of the [Paysafe Developer Center](https://developer.paysafe.com) for reference.
 
-## Challenge
+## Challenge {/* #challenge */}
 
 The project involved:
 
@@ -59,7 +59,7 @@ The project involved:
 
 The documentation team needed a structured authoring and source-control workflow, while the public Developer Center had to operate within Paysafe's existing TYPO3-based web platform. The publishing process therefore needed to connect two very different content models without recreating the documentation manually in the CMS.
 
-## Approach
+## Approach {/* #approach */}
 
 I reviewed developer portals from PayPal, Braintree, and Stripe to identify effective patterns in developer experience, navigation, API reference documentation, and integration guidance, and used the findings to define requirements for both the Developer Center and its documentation toolchain.
 
@@ -73,7 +73,7 @@ The TYPO3 integration created records for new content, updated changed records, 
 
 For urgent production fixes, changes could be made directly in TYPO3 and subsequently backported into Flare/Git, ensuring that the authoritative source was brought back into sync with production.
 
-### Developer Center authoring and publishing workflow
+### Developer Center authoring and publishing workflow {/* #developer-center-authoring-and-publishing-workflow */}
 
 The diagram below shows how the Developer Center’s documentation workflow connected Git-based authoring and review with a custom publishing pipeline into Paysafe’s TYPO3-based web platform.
 
@@ -148,7 +148,7 @@ flowchart TD
 ```    
 </div>
 
-## Implementation
+## Implementation {/* #implementation */}
 
 I built post-build automation that published rendered Flare output to temporary PythonAnywhere review environments and integrated the open-source Hypothesis annotation tool. This allowed reviewers to comment directly on the rendered pages, rather than reviewing source files in isolation, before changes were merged and promoted through the publishing workflow.
 
@@ -160,13 +160,13 @@ My team and I migrated API reference material to API Blueprint, a machine-readab
 
 To make the new workflow sustainable beyond the initial implementation, I trained the three writers in MadCap Flare, Git, REST APIs, CSS, JavaScript, and the architecture of the Developer Center's build and publishing system. During adoption, I supported the team with source-control issues and merge conflicts and reviewed documentation changes for technical accuracy, clarity, and consistency. This combined hands-on support with capability development so that the team could increasingly operate and maintain the documentation platform independently.
 
-## Impact
+## Impact {/* #impact */}
 
 The first phase of the Developer Center soft-launched in December 2016 during a period of rapid growth and change at Paysafe. The company reported 2016 revenue of just over $1 billion while continuing to integrate the Skrill and Optimal Payments businesses.
 
 The Developer Center had visibility at company level: Paysafe included its launch in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf) as one of the achievements supporting its “State-of-the-art technology” strategy and also mentioned it in its January 2017 trading update.
 
-## Lessons learned
+## Lessons learned {/* #lessons-learned */}
 
 - Today, I would prefer a docs-as-code approach using extended Markdown and automated quality checks. This would lower the barrier to contributions for engineers and support staff while still supporting reuse, conditional content, linting, and link checking. In 2016, however, the hybrid Flare/Git approach was a pragmatic choice: it introduced source control and automated publishing without requiring the team to abandon a familiar structured authoring environment.
 

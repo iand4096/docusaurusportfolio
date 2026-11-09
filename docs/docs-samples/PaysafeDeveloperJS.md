@@ -42,7 +42,7 @@ tags:
   - tokenisation
 ---
 
-## Project overview
+## Project overview {/* #project-overview */}
 
 I was tasked with creating the first version of the **Paysafe.js Developer Guide** for the newly released Paysafe.js product.
 
@@ -54,7 +54,7 @@ I also created the original CodePen examples and an interactive inline **Try Now
 
 The guide has since been expanded by other contributors to cover features including 3D Secure, Google Pay, Apple Pay, and Instant Withdrawal.
 
-## The challenge
+## The challenge {/* #the-challenge */}
 
 * Explain the security and compliance advantages of using Paysafe-hosted fields over collecting sensitive card data directly.
 * Clarify how the iframe-based fields reduced the merchant’s PCI DSS scope and supported SAQ A compliance.
@@ -63,7 +63,7 @@ The guide has since been expanded by other contributors to cover features includ
 * Make a security-sensitive integration approachable without omitting the configuration, validation, and error handling required for production use.
 * Deliver the guide while managing the wider Paysafe Developer Centre and leading a team of three technical writers.
 
-## My approach
+## My approach {/* #my-approach */}
 
 I structured the guide around the full integration workflow instead of documenting the JavaScript API operation by operation. This allowed developers to begin with a basic working implementation before adding configuration, validation, styling, and error handling.
 
@@ -71,7 +71,7 @@ The guide first explained the purpose of the hosted fields and tokenisation mode
 
 I tested the documented workflow against the Paysafe.js implementation, with input from product and engineering teams to ensure that the instructions and examples reflected the expected behaviour.
 
-## Deliverables
+## Deliverables {/* #deliverables */}
 
 * The first version of the **Paysafe.js Developer Guide**.
 * An explanation of the product’s hosted-field architecture, tokenisation model, and PCI DSS advantages.
@@ -87,11 +87,11 @@ The current version of the Paysafe JS developer guide can be found here on the [
 
 :::
 
-## Outcome
+## Outcome {/* #outcome */}
 
 The guide gave developers a practical route from understanding Paysafe.js and its compliance benefits to completing a working browser-based payment-tokenisation integration.
 
-## What I would change
+## What I would change {/* #what-i-would-change */}
 
 * Maintain the examples alongside the documentation source in place of a separate platform such as CodePen. This would make them easier to version, review, test, and migrate with the guide.
 * Introduce automated checks to confirm that the examples continue to work with each supported version of Paysafe.js.

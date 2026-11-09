@@ -56,12 +56,12 @@ tags:
 
 Practical experience creating and maintaining **technical diagrams such as architectural diagrams and process flow diagrams** to support API or SDK documentation, system documentation, and tutorials.
 
-## Diagrams-as-Code and Docs-as-Code
+## Diagrams-as-Code and Docs-as-Code {/* #diagrams-as-code-and-docs-as-code */}
 
 * Strong advocate for **text-based, version-controlled diagrams** such as SVG or diagrams-as-code formats that can be maintained alongside documentation and source code in Git with tracked changes unlike their raster-based equivalents.
 * Experienced with **PlantUML, Mermaid, Graphviz/DOT, and C4-Architecture diagrams**.
 
-## Documentation navigation tooling
+## Documentation navigation tooling {/* #documentation-navigation-tooling */}
 
 At Morgan Stanley, I developed an **IDE plugin for creating hyperlinked documentation navigation diagrams** using Graphviz/DOT.
 
@@ -69,15 +69,15 @@ The plugin allowed documentation contributors to select Markdown files directly 
 
 This made it easier to build and maintain visual navigation paths through related documentation, helping developers discover relevant content beyond the site's standard navigation hierarchy.
 
-## Visual tools, SVG and supporting graphics
+## Visual tools, SVG and supporting graphics {/* #visual-tools-svg-and-supporting-graphics */}
 
 * Experienced using tools such as **Microsoft Visio, Adobe Illustrator, and Inkscape** for custom diagrams.
 * Comfortable creating, editing, and integrating **SVG and other vector graphics** into web-based documentation. I prefer vector formats over binary images where possible because they don't blur and support efficient relabelling.
 
-## Diagram maintenance
+## Diagram maintenance {/* #diagram-maintenance */}
 
 * Experienced maintaining large sets of diagrams, including developing a Python script using OCR to identify outdated terminology in raster images across a large collection of Markdown files. I then manually corrected the affected images, matching fonts and adjusting graphical elements where necessary to accommodate replacement text.
 
-## CAD diagrams
+## CAD diagrams {/* #cad-diagrams */}
 
 * Early career experience with **CAD software** including CATIA and other 3D design environments.

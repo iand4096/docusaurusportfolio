@@ -49,7 +49,7 @@ I implemented the taxonomy schema, validation and migration tooling, AI review w
 
 The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is used to generate Docusaurus tags, the metadata choices available to users in VS Code Front Matter, and the site's taxonomy navigation index — see the [browse page](pathname:///browse/).
 
-## Problem
+## Problem {/* #problem */}
 
 Documentation metadata helps with:
 
@@ -74,27 +74,27 @@ Free-form content tags are easy to add but difficult to govern consistently over
 * used AI for semantic classification without making an LLM authoritative;
 * evolved safely when terms were added, corrected, replaced, or deprecated.
 
-## Design principles
+## Design principles {/* #design-principles */}
 
-### One canonical vocabulary
+### One canonical vocabulary {/* #one-canonical-vocabulary */}
 
 `taxonomy/taxonomy.yml` is the source of truth. Generated files are projections of that canonical state and are not intended to be maintained independently.
 
-### AI is advisory
+### AI is advisory {/* #ai-is-advisory */}
 
 `taxonomy_ai.py` performs semantic classification on a Markdown file or set of files and identifies potential vocabulary gaps. It produces review artefacts rather than directly changing the canonical taxonomy.
 
-### Central taxonomy validation, auditing, and modification tooling
+### Central taxonomy validation, auditing, and modification tooling {/* #central-taxonomy-validation-auditing-and-modification-tooling */}
 
 `taxonomy.py` validates taxonomy structure and semantics as well as document front matter. It synchronises derived tags, regenerates projections, audits the taxonomy for quality issues such as unused metadata, and applies reviewed migration files.
 
 It does not call an LLM and is suitable for blocking CI checks.
 
-### Human review separates proposals from repository changes
+### Human review separates proposals from repository changes {/* #human-review-separates-proposals-from-repository-changes */}
 
 A semantic proposal is not automatically a taxonomy change. New or modified vocabulary must be represented by a reviewed migration file before `taxonomy.py migrate apply` can change `taxonomy.yml`.
 
-## Architecture
+## Architecture {/* #architecture */}
 
 ```mermaid
 flowchart TD
@@ -120,7 +120,7 @@ flowchart TD
 
 The important boundary is that there is no direct write path from `taxonomy_ai.py` to `taxonomy.yml`.
 
-## Components
+## Components {/* #components */}
 
 <p className="mobile-table-hint">↔ Swipe or scroll horizontally to view all table columns.</p>
 
@@ -141,7 +141,7 @@ The important boundary is that there is no direct write path from `taxonomy_ai.p
 | `generate_taxonomy.py`                    | Initial AI-assisted taxonomy discovery                                             | Bootstrap only                                          |
 | `upgrade_taxonomy.py`                     | Historical v1 to v2 transition                                                     | Legacy migration tooling                                |
 
-## Visual Studio Code front matter CMS integration
+## Visual Studio Code front matter CMS integration {/* #visual-studio-code-front-matter-cms-integration */}
 
 Front Matter CMS is the editor-based content-management layer for the Docusaurus repository used by writers. It provides a CMS-style interface inside VS Code for Markdown and MDX content, including structured metadata editing.
 
@@ -204,7 +204,7 @@ the review wrapper persists:
 
 The Markdown file is the human-readable review surface. The JSON file is the exact machine-readable artefact used by `--apply-from`.
 
-### Front Matter features versus repository authority
+### Front Matter features versus repository authority {/* #front-matter-features-versus-repository-authority */}
 
 Front Matter's taxonomy UI can add, edit, merge, move, and delete taxonomy values. This project does **not** treat those actions as the supported way to change the canonical controlled vocabulary. Direct editor-side taxonomy changes would bypass migration preconditions, corpus validation, and review of the resulting Git diff.
 
@@ -226,7 +226,7 @@ taxonomy.py migrate apply
 
 This lets the extension provide CMS convenience without becoming a second taxonomy authority.
 
-### Single-document front matter workflow
+### Single-document front matter workflow {/* #single-document-front-matter-workflow */}
 
 ```mermaid
 flowchart TD
@@ -265,7 +265,7 @@ flowchart TD
 
 If a review proposes a new taxonomy term, the new term cannot be applied as metadata to the current document until it has been reviewed and adopted using `migrate preview` followed by `migrate apply`. A document with no YAML front matter can still be reviewed; applying its saved review creates the block. This keeps the single-document editor experience consistent with the wider governance model.
 
-## Taxonomy maintenance workflow
+## Taxonomy maintenance workflow {/* #taxonomy-maintenance-workflow */}
 
 The core maintenance commands (run from the repository root) are:
 
@@ -292,7 +292,7 @@ These work as follows:
 
 `audit-unused` is intentionally read-only. A zero-reference term is a contraction candidate, not an instruction to delete it.
 
-## AI-assisted classification workflow
+## AI-assisted classification workflow {/* #ai-assisted-classification-workflow */}
 
 The AI layer can classify selected documents or the full set of documents:
 
@@ -341,7 +341,7 @@ taxonomy.py migrate
 canonical taxonomy
 ```
 
-## Governed taxonomy migrations
+## Governed taxonomy migrations {/* #governed-taxonomy-migrations */}
 
 Taxonomy changes are represented as declarative YAML manifests validated against `taxonomy/taxonomy-migration.schema.json`.
 
@@ -363,7 +363,7 @@ Supported **triggers** include:
 
 This separates *why* a migration exists from the individual operations it performs.
 
-### Content-driven expansion
+### Content-driven expansion {/* #content-driven-expansion */}
 
 When a new document contains a reusable concept that is not represented by the existing controlled vocabulary, `taxonomy_ai.py` can propose a new term. The Front Matter migration generator creates a draft expansion manifest from the saved review.
 
@@ -383,7 +383,7 @@ taxonomy.py migrate preview / apply
 
 AI proposes the term; it does not add the term directly.
 
-### Content-driven contraction
+### Content-driven contraction {/* #content-driven-contraction */}
 
 When content is deleted or reclassified, an existing taxonomy term may become unused. `taxonomy.py audit-unused` detects active terms with zero direct references.
 
@@ -405,13 +405,13 @@ The system prefers **deprecation to deletion** so stable IDs, Git history, prove
 
 A contraction migration is rejected if documents still reference the term being deprecated.
 
-### Taxonomy correction
+### Taxonomy correction {/* #taxonomy-correction */}
 
 Vocabulary can also change independently of content. A taxonomy-quality review may find that an existing term has the wrong classification, description, parent, alias, or other governed property.
 
 That is represented as a `taxonomy-correction` migration rather than a content-driven expansion or contraction.
 
-## Example: correcting technology kinds
+## Example: correcting technology kinds {/* #example-correcting-technology-kinds */}
 
 A taxonomy review found that several technology terms conflicted with the controlled technology-kind definitions. For example, JSON, YAML, and XML were classified as markup/content languages even though the taxonomy defines them as structured data formats. Apple Pay and Google Pay were classified as generic software platforms even though the taxonomy has a payment-specific technology kind.
 
@@ -469,7 +469,7 @@ changes:
 
 The `expect` values act as stale-state guards. If another change has already modified one of those terms, the migration fails rather than silently overwriting the newer state.
 
-## Migration preview, apply, and status
+## Migration preview, apply, and status {/* #migration-preview-apply-and-status */}
 
 Use the explicit migration subcommands from the repository root:
 
@@ -491,11 +491,11 @@ python scripts/taxonomy.py generate
 python scripts/taxonomy.py check --all
 ```
 
-### Historical preflight example
+### Historical preflight example {/* #historical-preflight-example */}
 
 Before the migration interface was simplified, the technology-kind correction was previewed using `migrate <file>` and applied using `--apply`. That historical run scanned 26 documents and reported no deterministic rewrites. Those are observations about the earlier version, **not the current command syntax or the behaviour of add-only migrations**. The previous preflight also exposed unrelated derived-state drift, which was repaired before completion. Under the revised workflow, an unrelated document issue no longer blocks an add-only vocabulary expansion, while full repository checks remain mandatory before publishing.
 
-## AI and repository tooling responsibilities
+## AI and repository tooling responsibilities {/* #ai-and-repository-tooling-responsibilities */}
 
 | Question                                          | Answer                          |
 | ------------------------------------------------- | ------------------------------- |
@@ -513,7 +513,7 @@ Before the migration interface was simplified, the technology-kind correction wa
 
 The distinction is clear: the LLM is used where semantic judgement is useful, while repository tooling validates structure, applies approved changes, checks generated state, and enforces the taxonomy rules.
 
-## Generated repository state
+## Generated repository state {/* #generated-repository-state */}
 
 The canonical taxonomy and validated document metadata generate three main repository projections:
 
@@ -523,7 +523,7 @@ The canonical taxonomy and validated document metadata generate three main repos
 
 Generated files are checked against the expected output derived from the canonical taxonomy and document metadata, so manual edits are detected as drift.
 
-## Evolution of the tooling
+## Evolution of the tooling {/* #evolution-of-the-tooling */}
 
 The implementation evolved in stages:
 
@@ -543,7 +543,7 @@ steady-state governed maintenance
 
 The earlier scripts were useful during discovery and migration, but the steady-state architecture deliberately reduces the number of components with authority over canonical state.
 
-## Outcomes
+## Outcomes {/* #outcomes */}
 
 The resulting system:
 
@@ -560,7 +560,7 @@ The resulting system:
 
 In the historical correction-migration example, five vocabulary changes were validated against 26 portfolio documents, and no document rewrites were required because the canonical IDs did not change. The current add-only migration path does not scan unrelated documents.
 
-## Trade-offs and next steps
+## Trade-offs and next steps {/* #trade-offs-and-next-steps */}
 
 The current design deliberately favours explicit review over automation. That makes taxonomy evolution slower than automatically accepting AI suggestions or deleting unused terms, but it keeps the authority model auditable and predictable.
 

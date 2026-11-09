@@ -42,7 +42,7 @@ tags:
   - technical-validation
 ---
 
-## Git, GitHub, GitHub Actions and Jenkins
+## Git, GitHub, GitHub Actions and Jenkins {/* #git-github-github-actions-and-jenkins */}
 
 * Diagnosed and resolved Git issues for my technical writing team, including **merge conflicts**.
 * Experienced using command-line Git, including **rebase** and **commit squashing**, to resolve integration issues and maintain cleaner repository history.

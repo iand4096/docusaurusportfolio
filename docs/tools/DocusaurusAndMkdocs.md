@@ -54,9 +54,9 @@ tags:
   - vs-code
 ---
 
-## Static site generators and documentation platforms
+## Static site generators and documentation platforms {/* #static-site-generators-and-documentation-platforms */}
 
-### Docusaurus
+### Docusaurus {/* #docusaurus */}
 
 * Built my portfolio using **Docusaurus, MDX, React, JSX and JavaScript**.
 * Created reusable React components such as responsive skill grids driven by simple Markdown content.
@@ -64,13 +64,13 @@ tags:
 * Used **GitHub Actions** for automated builds and deployment to GitHub Pages.
 * Used plugins such as **LTeX+** and **Vale** in VS Code for spelling, grammar and style guide checks.
 
-### MkDocs
+### MkDocs {/* #mkdocs */}
 
 * Used **MkDocs and a number of plugins** to recreate functionality from a large internal Wiki documentation site as a pilot project.
 * Integrated multiple plugins to support the advanced features from the Wiki site and modified plugin code to add the remaining unsupported features.
 * Recompiled the modified plugins as standalone executables for deployment.
 
-### Documentation platform engineering
+### Documentation platform engineering {/* #documentation-platform-engineering */}
 
 * Selected static site generators based on documentation, scale and extensibility requirements.
 * Scaled documentation sites to **thousands of pages**.

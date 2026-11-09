@@ -10,6 +10,7 @@ services:
       - ./:/workspace:ro
       - ./knowledge-api/data:/app/data
       - rag-model-cache:/cache/huggingface
+      - ./knowledge-api/app:/app/app:ro
     # Repo remains read-only; only data and model cache are writable.
 volumes:
   rag-model-cache:

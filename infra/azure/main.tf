@@ -44,6 +44,12 @@ resource "azurerm_container_app_environment" "rag" {
   resource_group_name        = azurerm_resource_group.rag.name
   location                   = azurerm_resource_group.rag.location
   log_analytics_workspace_id = azurerm_log_analytics_workspace.rag.id
+
+  lifecycle {
+    ignore_changes = [
+      workload_profile
+    ]
+  }
 }
 
 variable "registry_name" {
@@ -77,6 +83,7 @@ resource "azurerm_container_app" "rag" {
   resource_group_name          = azurerm_resource_group.rag.name
   container_app_environment_id = azurerm_container_app_environment.rag.id
   revision_mode                = "Single"
+  workload_profile_name        = "Consumption"
 
   identity {
     type         = "UserAssigned"
@@ -110,7 +117,7 @@ resource "azurerm_container_app" "rag" {
 
     container {
       name   = "knowledge-api"
-      image  = "${azurerm_container_registry.rag.login_server}/portfolio-rag:v1"
+      image  = "${azurerm_container_registry.rag.login_server}/portfolio-rag:v2"
       cpu    = 1.0
       memory = "2Gi"
     }

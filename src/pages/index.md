@@ -10,7 +10,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 <div className="portfolio-hero">
   <p className="portfolio-eyebrow">API documentation · Developer platforms · Documentation engineering · AI knowledge systems</p>
   <h1>Ian Drewett</h1>
-  <p className="portfolio-lead">Documenting complex software & frameworks and building the tools behind the documentation.</p>
+  <p className="portfolio-lead">Documenting complex software & frameworks and building public and internal Developer Portals</p>
   <p className="portfolio-intro">Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a <Link to="#engineering-background">software-engineering background</Link>.</p>
   <div className="portfolio-hero-actions">
     <Link className="button button--primary" to="#case-studies">Explore selected work</Link>
@@ -18,7 +18,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
   </div>
 </div>
 
-## Case studies
+## Case studies {/* #case-studies */}
 
 <div className="portfolio-grid">
 
@@ -83,7 +83,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 </div>
 
-## Core expertise
+## Core expertise {/* #core-expertise */}
 
 <CapabilityGrid> 
 
@@ -110,7 +110,7 @@ I have an M.Sc. in Computer Science and a degree in Physics, with professional s
 
 Recent development work includes using Scala for documentation engineering and building full-stack test API integrations with Python/Flask and JavaScript to validate technical documentation. This engineering background informs my approach to technical writing: it helps me verify implementation details, work effectively and quickly with Subject-Matter Experts, APIs and docs-as-code tool chains, and test documentation against real software behaviour.
 
-## Employment history
+## Employment history {/* #employment-history */}
 
 For employment history and professional experience, visit my
 [LinkedIn profile](https://www.linkedin.com/in/ian-drewett/).

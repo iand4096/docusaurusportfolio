@@ -71,7 +71,7 @@ tags:
 
 I build documentation systems using software-engineering practices such as source control, CI/CD, parser and platform extensions, migration tooling, search and publishing automation.
 
-## Docs-as-code
+## Docs-as-code {/* #docs-as-code */}
 
 My docs-as-code experience includes:
 
@@ -86,7 +86,7 @@ My docs-as-code experience includes:
 
 I have also designed contributor workflows, standards and tooling that enable engineers to contribute documentation through normal development workflows.
 
-## CI/CD and publishing
+## CI/CD and publishing {/* #cicd-and-publishing */}
 
 I use CI/CD to automate documentation build, validation and publishing workflows. My experience includes:
 
@@ -100,7 +100,7 @@ I use CI/CD to automate documentation build, validation and publishing workflows
 
 My current portfolio, for example, uses GitHub Actions to build and publish the site and to run automated documentation quality checks.
 
-## Static-site generators and platform engineering
+## Static-site generators and platform engineering {/* #static-site-generators-and-platform-engineering */}
 
 I have worked with Docusaurus, MkDocs and custom Markdown-based static-site generators.
 
@@ -119,7 +119,7 @@ I have evaluated, extended and developed documentation platforms to meet require
 
 I have modified existing MkDocs plugins where required. I also led and specified the requirements for a custom static-site generator, contributed to its technical design, carried out all the user testing, and later worked directly on its development.
 
-## Markdown and parser engineering
+## Markdown and parser engineering {/* #markdown-and-parser-engineering */}
 
 Standard Markdown is not always sufficient for complex developer documentation.
 
@@ -133,7 +133,7 @@ I have extended Markdown parsers and static-site tooling to support features inc
 
 I have also built tools to convert complex HTML into clean embedded HTML or mixed Markdown and HTML for structures that standard Markdown cannot represent, such as complex tables using `rowspan`, `colspan` or multi-line cell content.
 
-## Content migration and transformation
+## Content migration and transformation {/* #content-migration-and-transformation */}
 
 I use automation wherever possible when moving large documentation sets between platforms.
 
@@ -152,7 +152,7 @@ My migration work has included:
 
 For large migrations, I use analytics such as page views to identify high-value content and flag potentially obsolete material for review or archival.
 
-## Documentation tooling and automation
+## Documentation tooling and automation {/* #documentation-tooling-and-automation */}
 
 I build tools to remove repetitive documentation work and make documentation systems easier to maintain.
 
@@ -169,7 +169,7 @@ Examples include:
 
 I also use web-development techniques where appropriate. This portfolio, for example, combines Docusaurus and React components to turn structured Markdown content into responsive visual layouts.
 
-## Validation and quality engineering
+## Validation and quality engineering {/* #validation-and-quality-engineering */}
 
 I treat documentation as something that can be tested rather than relying entirely on manual review.
 
@@ -186,7 +186,7 @@ Examples include:
 
 On large repositories, these checks catch broken links, invalid Markdown and style problems before merge, reducing the dependence on manual reviews.
 
-## Search and retrieval
+## Search and retrieval {/* #search-and-retrieval */}
 
 Documentation engineering also includes making content discoverable once it has been published.
 
@@ -194,7 +194,7 @@ I have integrated and tested different types of search from traditional enterpri
 
 My RAG work has included generating sitemaps for indexing, testing retrieval quality and identifying issues such as the search returning deprecated content. For the latter, I proposed metadata filtering to improve the results.
 
-## Engineering for scale
+## Engineering for scale {/* #engineering-for-scale */}
 
 My experience engineering documentation systems for scale includes:
 

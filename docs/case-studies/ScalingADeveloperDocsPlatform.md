@@ -58,13 +58,13 @@ tags:
   - vale
 ---
 
-## Context
+## Context {/* #context */}
 
 At Morgan Stanley, I led the design, launch and evolution of a custom internal docs-as-code platform and developer portal, alongside my work as lead technical writer for the Optimus and RICE frameworks. The platform replaced fragmented legacy documentation for these frameworks with a centralised system using Git-based workflows that made it easier for engineers and technical writers to create, maintain, review and discover content. Initially developed to support Optimus and RICE, the platform expanded to serve the documentation needs of the wider Codetree ecosystem - a large-scale monorepo containing more than 40 million lines of code.
 
 I owned platform direction, requirements, testing and quality, working with a dedicated engineering team on the initial implementation. I later contributed directly to the codebase, extending functionality and resolving issues as adoption grew.
 
-### Documentation content
+### Documentation content {/* #documentation-content */}
 
 Optimus and RICE are closely related internal platforms used by developers and quantitative analysts at Morgan Stanley.
 
@@ -76,7 +76,7 @@ The platform also includes a common UI framework and a Data Access Layer (DAL) f
 
 Some of the underlying technology is publicly available in the [Optimus Cirrus GitHub repository](https://github.com/morganstanley/optimus-cirrus). The technology is described in more detail [in this article](../misc/OptimusRICE.md).
 
-## Challenge
+## Challenge {/* #challenge */}
 
 * Replace fragmented documentation spread across legacy documentation systems with a single platform.
 * Make documentation contributions practical and as easy as possible for a large engineering community.
@@ -85,9 +85,9 @@ Some of the underlying technology is publicly available in the [Optimus Cirrus G
 * Migrate valuable legacy content to the new platform without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.
 
-## Approach
+## Approach {/* #approach */}
 
-### Why docs as code and why build a custom platform?
+### Why docs as code and why build a custom platform? {/* #why-docs-as-code-and-why-build-a-custom-platform */}
 
 Developers were already writing simple Markdown files alongside their code instead of using the existing wiki-based authoring tools, but they had no dedicated tooling or publishing environment to support that way of working.
 
@@ -97,7 +97,7 @@ I built an initial MkDocs pilot that validated the docs-as-code model, but it ex
 
 A custom platform required greater investment, but gave us control of the complete rendering and publishing pipeline. We could ensure that all features worked consistently in combination, not just separately, and provide the same rendering behaviour both in the IDE and published site. Additionally, we could add capabilities such as source-code injection and other Markdown extensions that fully met our requirements. Finally, it allowed us to implement the platform in Scala, the primary language of our monorepo, making it easier for the wider engineering community to maintain and extend.
 
-### Documentation platform workflow
+### Documentation platform workflow {/* #documentation-platform-workflow */}
 
 The platform supported the full documentation lifecycle, from Markdown authoring and Git-based review through automated build, publishing, and discovery.
 
@@ -156,7 +156,7 @@ flowchart TD
 ```
 </div>
 
-### Design priorities
+### Design priorities {/* #design-priorities */}
 
 The design focused on four priorities:
 
@@ -165,11 +165,11 @@ The design focused on four priorities:
 * designing search and information architecture that could scale with a large technical documentation set
 * using analytics to identify high-value legacy content and prioritise migration.
 
-## Implementation
+## Implementation {/* #implementation */}
 
 I worked with engineers from the internal tooling team to build the authoring experience within the IDE and create a published developer portal.
 
-### Authoring and publishing
+### Authoring and publishing {/* #authoring-and-publishing */}
 
 * **Markdown-based documentation stored and reviewed in Git alongside the code**. Storing documentation in Git provided stronger change control than the previous wiki-based systems. Related updates across multiple pages could be reviewed and merged as a single atomic change, reducing the risk of publishing partially updated or internally inconsistent documentation. It also made the documentation easier to integrate with GenAI workflows.
 
@@ -181,29 +181,29 @@ I worked with engineers from the internal tooling team to build the authoring ex
 
 * **The ability to reuse content in multiple locations and embed code samples directly from source**. This reduced duplication and maintenance effort by allowing shared content and code examples to be updated centrally.
 
-### Search and navigation
+### Search and navigation {/* #search-and-navigation */}
 
 I designed the search approach for a growing documentation set, combining fast, keyword-based JavaScript client-side search with the slower corporate RAG-based search for more complex natural-language queries. I also tested search behaviour and retrieval quality; the engineering team implemented the production solution.
 
-### Content migration
+### Content migration {/* #content-migration */}
 
 I developed automated content migration tooling for several legacy documentation systems, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams.
 
 I subsequently created IDE-based tooling that allowed content owners to migrate and validate their own documentation, making the migration process more scalable.
 
-### Platform evolution
+### Platform evolution {/* #platform-evolution */}
 
 I led the migration of the documentation platform to the firm’s new containerised hosting solution with a custom domain, implementing redirects for legacy URLs and resolving minor post-launch issues. A major contribution was my proposal to serve the generated documentation from an attached filesystem instead of copying the content into the container, reducing build time by approximately **15 minutes**.
 
 As the platform matured, I also began contributing directly to its codebase using agentic AI-assisted development. This included adding support for additional diagrams-as-code formats, including PlantUML, Mermaid, and C4/Structurizr architecture diagrams. I also personally diagnosed and fixed bugs in the link-checking implementation.
 
-## Impact
+## Impact {/* #impact */}
 
 The platform grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work, content migrations, and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
 
-## Lessons learned
+## Lessons learned {/* #lessons-learned */}
 
 * Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, early in the development of a documentation platform. My current portfolio integrates [a canonical taxonomy and associated governance system](./TaxonomyGovernance.md).
 

@@ -58,38 +58,81 @@ def doc_url(path: Path, docs: Path, meta: dict, base_url: str) -> str:
     return base_url.rstrip('/') + '/docs/' + quote(tail.strip('/'), safe='/-')
 
 
-def chunks_from_body(body: str, max_chars: int = 1500) -> list[tuple[str, str]]:
-    """Heading-aware, paragraph-aligned chunks; no tokenizer dependency."""
-    sections: list[tuple[str, str]] = []
+# Match Docusaurus explicit heading IDs, e.g.
+# ## Heading {/* #stable-id */}
+EXPLICIT_HEADING_ID = re.compile(r"\s*\{/\*\s*#([A-Za-z][A-Za-z0-9_.:-]*)\s*\*/\}\s*$")
+HEADING_LINE = re.compile(r"^ {0,3}(#{1,6})[ \t]+(.+?)\s*$")
+FENCE_LINE = re.compile(r"^ {0,3}(`{3,}|~{3,})")
+
+
+def section_chunks(body: str, max_chars: int = 1500) -> list[tuple[str, str | None, str]]:
+    """Create section-aligned chunks with *verified explicit* Docusaurus anchors.
+
+    Auto-generated heading IDs are deliberately not guessed. A heading without
+    an explicit ID falls back to the document URL. This avoids broken links for
+    duplicate, custom or MDX-generated headings.
+    """
+    sections: list[tuple[str, str | None, str]] = []
     heading = ''
+    heading_id: str | None = None
     lines: list[str] = []
+    fence_char = ''
+    fence_width = 0
+    seen_ids: set[str] = set()
+
+    def flush() -> None:
+        text = strip_mdx('\n'.join(lines))
+        if text:
+            sections.append((heading, heading_id, text))
+
     for line in body.splitlines():
-        if re.match(r'^#{1,6}\s+', line):
-            if lines:
-                sections.append((heading, '\n'.join(lines).strip()))
-            heading = re.sub(r'^#{1,6}\s+', '', line).strip()
+        fence = FENCE_LINE.match(line)
+        if fence:
+            marker = fence.group(1)
+            if not fence_char:
+                fence_char, fence_width = marker[0], len(marker)
+            elif marker[0] == fence_char and len(marker) >= fence_width:
+                fence_char, fence_width = '', 0
+            lines.append(line)
+            continue
+
+        match = HEADING_LINE.match(line) if not fence_char else None
+        if match:
+            flush()
+            raw_heading = match.group(2)
+            id_match = EXPLICIT_HEADING_ID.search(raw_heading)
+            heading_id = id_match.group(1) if id_match else None
+            if heading_id:
+                if heading_id in seen_ids:
+                    raise ValueError(f'Duplicate explicit heading ID in document: {heading_id}')
+                seen_ids.add(heading_id)
+                raw_heading = raw_heading[:id_match.start()]
+            # Remove common inline formatting for the retrieval heading label.
+            heading = strip_mdx(raw_heading).strip().strip('#').strip()
             lines = []
         else:
             lines.append(line)
-    if lines:
-        sections.append((heading, '\n'.join(lines).strip()))
-    output = []
-    for heading, section in sections:
-        if not section:
-            continue
+    flush()
+
+    output: list[tuple[str, str | None, str]] = []
+    for heading, heading_id, section in sections:
         paragraphs = re.split(r'\n\s*\n', section)
         current = ''
         for paragraph in paragraphs:
-            # Split unusually long paragraphs to guarantee a size bound.
             blocks = [paragraph[i:i+max_chars] for i in range(0, len(paragraph), max_chars)]
             for block in blocks:
                 if current and len(current) + len(block) + 2 > max_chars:
-                    output.append((heading, current))
+                    output.append((heading, heading_id, current))
                     current = ''
                 current = (current + '\n\n' + block).strip()
         if current:
-            output.append((heading, current))
+            output.append((heading, heading_id, current))
     return output
+
+
+def chunks_from_body(body: str, max_chars: int = 1500) -> list[tuple[str, str]]:
+    """Backwards-compatible two-field helper used by existing callers/tests."""
+    return [(heading, text) for heading, _id, text in section_chunks(body, max_chars)]
 
 
 def documents(repo: Path, base_url: str) -> list[dict]:
@@ -106,14 +149,16 @@ def documents(repo: Path, base_url: str) -> list[dict]:
             lifecycle = [lifecycle]
         # archived is intentionally *indexed* and filtered at query time.
         facets = {field: (value if isinstance(value := fm.get(field, []), list) else [value]) for field in FIELDS}
-        cleaned = strip_mdx(body)
         url = doc_url(path, docs, fm, base_url)
         rel = path.relative_to(repo).as_posix()
         title = str(fm.get('title') or path.stem)
-        for ix, (heading, chunk) in enumerate(chunks_from_body(cleaned)):
+        for ix, (heading, heading_id, chunk) in enumerate(section_chunks(body)):
             cid = hashlib.sha256(f'{rel}::{ix}::{chunk}'.encode()).hexdigest()[:24]
+            # The returned URL is authoritative: the React UI must not slugify headings.
+            source_url = f'{url}#{quote(heading_id, safe="-_.:")}' if heading_id else url
             records.append({'id':cid, 'source':rel, 'title':title, 'heading':heading,
-                            'url':url, 'text':chunk, 'facets':facets})
+                            'heading_id':heading_id, 'url':source_url,
+                            'text':chunk, 'facets':facets})
     return records
 
 

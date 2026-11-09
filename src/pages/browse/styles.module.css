@@ -317,3 +317,30 @@
     display: block;
   }
 }
+
+/* Relevance-ranked local metadata search */
+.searchHelp {
+  margin: 0.45rem 0 0;
+  font-size: 0.76rem;
+  line-height: 1.45;
+  color: var(--browse-muted);
+}
+.rankingNote {
+  margin: 0.3rem 0 0;
+  font-size: 0.82rem;
+  color: var(--browse-muted);
+}
+.matchBadge {
+  display: inline-flex;
+  align-self: flex-start;
+  margin-bottom: 0.7rem;
+  padding: 0.18rem 0.55rem;
+  border-radius: 999px;
+  background: var(--ifm-color-emphasis-200);
+  color: var(--ifm-color-emphasis-800);
+  font-size: 0.73rem;
+  font-weight: 600;
+}
+.card:focus-within, .card:hover {
+  border-color: var(--ifm-color-primary-light);
+}

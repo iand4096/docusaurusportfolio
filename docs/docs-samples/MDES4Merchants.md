@@ -46,7 +46,7 @@ tags:
   - technical-validation
 ---
 
-### Project overview
+### Project overview {/* #project-overview */}
 
 I wrote the first version of the MDES for Merchants Use Case Guide in late 2017, during my first few months at Mastercard. The guide explained how merchant developers can use the MDES Digital Enablement API to replace payment card numbers (PANs) with secure payment tokens, reducing the need to store card details.
 
@@ -56,7 +56,7 @@ In addition to their security benefits, tokens can often remain valid when the u
 
 Other contributors subsequently made minor updates to the published guide.
 
-## The challenge
+## The challenge {/* #the-challenge */}
 
 - Explain an unfamiliar and technically complex tokenisation workflow to developers.
 - Test the complex MDES Digital Enablement API, without using Postman or similar because of the API's unusual security requirements:
@@ -67,7 +67,7 @@ Other contributors subsequently made minor updates to the published guide.
 - Identify and resolve errors and omissions in the supporting Digital Enablement API reference.
 - Work with Mastercard's custom CMS integration, which had reliability problems affecting both authoring and publishing. It also had poor code-block formatting, limited preview capabilities and inadequate support for content reuse.
 
-## My approach
+## My approach {/* #my-approach */}
 
 I had little previous practical experience of cryptography and had never used cryptographic libraries in Python. To understand and test the Digital Enablement API, I developed an end-to-end Python integration for tokenisation and webhook handling, using Flask, Requests and open-source cryptography libraries.
 
@@ -97,27 +97,27 @@ I structured the guide around the tasks merchants needed to perform, rather than
 
 The guide also included practical guidance on bulk-tokenisation rate limits, using webhook notifications to maintain token state rather than polling the API, and the requirements for recurring payments and cryptogram storage. Finally, I created PlantUML sequence diagrams to illustrate the API interactions.
 
-## Deliverables
+## Deliverables {/* #deliverables */}
 
-### Published guide
+### Published guide {/* #published-guide */}
 
 The first version of the **MDES for Merchants Use Case Guide** was published on Mastercard Developers.
 
 The guide is no longer available on the live site, but an [archived version](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/) is available through the Internet Archive. You may need to select the capture dated 1 November 2021.
 
-### Internal deliverables
+### Internal deliverables {/* #internal-deliverables */}
 
 I shared my Python integration code and Flask webhook receiver with the product owner and other technical writers so they could test the API themselves.
 
 After completing the guide, I also helped recommend and test an early version of Mastercard's replacement docs-as-code authoring system. Mastercard subsequently adopted docs-as-code for its Developer Center.
 
-## Outcome
+## Outcome {/* #outcome */}
 
 The integration testing led to corrections and improvements to the supporting OpenAPI reference and helped me write accurate integration documentation for MDES for Merchants. Sharing the test code also gave other technical writers and the product owner a way to investigate the API directly, helping to encourage a culture of hands-on API testing that had previously been hindered by the API's technical complexity.
 
 The project required me to learn an unfamiliar technical subject, test the API myself and apply what I learned to the developer documentation.
 
-## What I would change
+## What I would change {/* #what-i-would-change */}
 
 If security restrictions allowed, I would provide public runnable examples demonstrating authentication, encryption, decryption and webhook handling.
 

@@ -72,9 +72,9 @@ tags:
   - yaml
 ---
 
-## Programming and automation
+## Programming and automation {/* #programming-and-automation */}
 
-### Python
+### Python {/* #python */}
 
 * Practical **Python** experience covering documentation tooling, content migration, API integrations, data processing and workflow automation.
 * Developed scripts to migrate and transform large documentation sets into extended **Markdown**, initially using regexp replacement lambdas and then more sophisticated class-based handlers as the transformation logic became more complex.
@@ -87,34 +87,34 @@ tags:
 * Added validation, exception handling and structured logging to tooling for migration and integration to diagnose failures.
 * Debugged Python applications, scripts and integrations using PyCharm IDE debugging, logging and runtime inspection.
 
-### Scala
+### Scala {/* #scala */}
 
 * Used **Scala** for scripting, data processing and transformation of structured formats such as JSON and YAML.
 * Modified and extended **AST-based parsing code** to introduce new documentation features, including support for **PlantUML blocks**.
 * Developed IntelliJ plugins including one that allowed developers to quickly create "learning paths", consisting of tree-like hyperlinked topic navigation diagrams, from selected content files.
 
-### Java
+### Java {/* #java */}
 
 * Built **Java** API and sandbox integrations used to test and validate developer documentation. Used Java to complete assignments during my M.Sc. in Computer Science.
 
-### JavaScript, Node.js, front-end
+### JavaScript, Node.js, front-end {/* #javascript-nodejs-front-end */}
 
 * Used JavaScript, jQuery, AJAX, HTML, CSS / SCSS to build and extend interactive documentation-portal features, including user-feedback submission, page ratings, syntax-highlighted code examples and expandable hierarchical navigation.
 * Developed browser-based test integrations using asynchronous requests to submit data and process responses.
 * Worked with React/JSX components and modified Insomnia authentication plugins for API tooling and integration testing.
 * Used SCSS/Sass, CSS and client-side scripting to customise documentation-site layout, styling, behaviour and interaction beyond standard theme capabilities.
 
-### C, C++ and C#
+### C, C++ and C# {/* #c-c-and-c */}
 
 I have nearly five years of C/C++ software engineering experience; this includes work in 2D/3D graphics, GIS, CAD/VR systems and graphics device drivers at ST Microelectronics. Additionally, I developed cross-platform C code for Windows and Unix, to modify and extend a 3D CAD application. In later roles, I worked with STL containers and data structures for application logic and data processing. My C# experience includes developing tooling to automate the generation of release-notes from tagged JIRA tickets using the JIRA REST API, inserting the retrieved data into MadCap Flare XHTML templates to produce the final document.
 
-### Automation and scripting
+### Automation and scripting {/* #automation-and-scripting */}
 
 * Automated documentation migration, validation, build and publishing tasks using **Python, Bash and PowerShell**.
 * Used **Unix/Linux command-line tools** such as `grep`, `sed`, `find`, pipes and redirection for repository maintenance, bulk file processing and content transformation.
 * Integrated documentation workflows with **GitHub Actions** and **Jenkins** CI pipelines for build, validation and publishing.
 
-### Systems programming and debugging
+### Systems programming and debugging {/* #systems-programming-and-debugging */}
 
 * Background in **C and assembly-language programming**, including kernel and user-mode device-driver development.
 * Experience with low-level systems debugging, including kernel and driver diagnostics, memory inspection and runtime analysis.

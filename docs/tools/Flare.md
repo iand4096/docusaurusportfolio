@@ -56,7 +56,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 I am a MadCap Flare specialist with nearly eight years of experience using Flare at AMX, Monitise (now Fiserv) and Paysafe.
 
-## Core Flare skills
+## Core Flare skills {/* #core-flare-skills */}
 
 <CapabilityGrid variant="checklist">
 
@@ -72,7 +72,7 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 </CapabilityGrid>
 
-## Advanced Flare skills
+## Advanced Flare skills {/* #advanced-flare-skills */}
 
 <CapabilityGrid>
 
@@ -98,11 +98,11 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 I applied these capabilities to the automation, integration and migration projects described in the [Flare Automation, Integration and Migration](#automation) section.
 
-## Flare user documentation
+## Flare user documentation {/* #flare-user-documentation */}
 
 At AMX, I used MadCap Flare and single-sourcing techniques to develop two comprehensive manuals and integrated HTML help for administrators and end users of a [networked digital signage CMS](../docs-samples/AMXInspiredSignageComposer.md).
 
-## Flare community contributions
+## Flare community contributions {/* #flare-community-contributions */}
 
 I have published 131 posts on the MadCap Flare user forum under the username **iand**, contributing answers, troubleshooting guidance and practical workarounds for other Flare users.
 
