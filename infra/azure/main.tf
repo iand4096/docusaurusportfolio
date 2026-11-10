@@ -127,6 +127,11 @@ resource "azurerm_container_app" "rag" {
         secret_name = "deepseek-api-key"
       }
 
+      env {
+        name  = "CORS_ORIGINS"
+        value = "https://iand4096.github.io,http://localhost:3000,http://localhost:3001,http://127.0.0.1:3000,http://127.0.0.1:3001"
+      }
+
       # Keep paid generation disabled until deliberately enabled
       # after deploying and testing the protected backend.
       env {
