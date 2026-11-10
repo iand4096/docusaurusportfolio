@@ -170,10 +170,10 @@ const config: Config = {
           activeBasePath: '/docs',
         },
         {
-          label: 'Browse',
-          to: '/browse',
-          position: 'left',
-          activeBasePath: '/browse',
+          label: 'Explore',
+      to: '/explore',
+      position: 'left',
+      activeBasePath: '/explore',
         },
         {
           label: 'QA report',
@@ -222,8 +222,8 @@ const config: Config = {
               to: '/docs/tools',
             },
             {
-              label: 'Browse',
-              to: '/browse',
+              label: 'Explore',
+              to: '/explore',
             },
           ],
         },
@@ -268,7 +268,6 @@ if (ragSearchEnabled) {
   if (ragTheme?.navbar) {
     ragTheme.navbar.items = [
       ...(ragTheme.navbar.items ?? []),
-      {label: 'AI search', to: '/ai-search', position: 'left'},
     ];
   }
 }

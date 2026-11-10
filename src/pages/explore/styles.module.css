@@ -1,0 +1,27 @@
+/* Match the existing Browse page: colours come from the site's Infima variables. */
+.page {min-width: 0;}
+.header {max-width: 60rem; margin-bottom: 1.5rem;}
+.eyebrow {
+  margin-bottom: .35rem; font-size: .8rem; font-weight: 700;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--ifm-color-primary);
+}
+.intro {max-width: 50rem; margin: 0; color: var(--ifm-color-emphasis-700); font-size: 1.05rem;}
+.tabs {
+  display: inline-flex; flex-wrap: wrap; gap: .25rem; padding: .25rem;
+  margin-bottom: 1.5rem; border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: .75rem; background: var(--ifm-background-surface-color);
+}
+.tab {
+  min-width: 130px; min-height: 44px; padding: .6rem 1.25rem;
+  border: 0; border-radius: .5rem; background: transparent;
+  color: var(--ifm-font-color-base); font: inherit; font-weight: 700; cursor: pointer;
+}
+.tabSelected {background: var(--ifm-color-primary); color: var(--ifm-color-white);}
+.tab:focus-visible {outline: 2px solid var(--ifm-color-primary); outline-offset: 3px;}
+.panel {min-width: 0;}
+.panel[hidden] {display: none;}
+@media (max-width: 700px) {
+  .header {margin-bottom: 1.15rem;}
+  .tabs {display: flex; width: 100%; margin-bottom: 1.1rem;}
+  .tab {flex: 1 1 0; min-width: 0; padding: .65rem .7rem;}
+}

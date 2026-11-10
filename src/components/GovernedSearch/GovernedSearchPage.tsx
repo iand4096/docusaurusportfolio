@@ -1,25 +1,50 @@
 import React, {useEffect, useState} from 'react';
 import Layout from '@theme/Layout';
 import Heading from '@theme/Heading';
+import {Redirect} from '@docusaurus/router';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
+import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
+import browseStyles from '@site/src/pages/browse/styles.module.css';
 
 type RetrievalMode = 'bm25' | 'semantic' | 'hybrid';
 type ResponseMode = 'search' | 'chat';
 type FacetKey = 'type' | 'audiences' | 'topics' | 'technologies' | 'lifecycle';
+type SelectedFacets = Partial<Record<FacetKey, string[]>>;
 const FACETS: {key: FacetKey; label: string}[] = [
   {key: 'type', label: 'Content type'},
-  {key: 'audiences', label: 'Audience'},
   {key: 'topics', label: 'Topic'},
   {key: 'technologies', label: 'Technology'},
+  {key: 'audiences', label: 'Audience'},
   {key: 'lifecycle', label: 'Lifecycle'},
 ];
 
 type TaxonomyDimension = {label: string; terms: Record<string, string>};
 type TaxonomyResponse = {version: number; dimensions: Record<string, TaxonomyDimension>};
-type TaxonomyStatus = 'loading' | 'retrying' | 'ready' | 'error';
+// Browse and AI Search use the same build-generated, active-only taxonomy.
+// The search backend still validates submitted filter IDs against its own taxonomy.
+type NavigationTaxonomy = {
+  taxonomyVersion?: number;
+  dimensions: Record<string, {
+    label: string;
+    metadataField: string;
+    terms: {id: string; label: string}[];
+  }>;
+};
+const navigationTaxonomy = navigationIndex as NavigationTaxonomy;
+const LOCAL_TAXONOMY: TaxonomyResponse = {
+  version: navigationTaxonomy.taxonomyVersion ?? 0,
+  dimensions: Object.fromEntries(
+    Object.values(navigationTaxonomy.dimensions).map(({label, metadataField, terms}) => [
+      metadataField,
+      {label, terms: Object.fromEntries(terms.map(({id, label}) => [id, label]))},
+    ]),
+  ),
+};
 type Evidence = {
   id?: string | number;
   title: string;
@@ -46,7 +71,7 @@ type SavedSearch = {
   query: string;
   retrieval: RetrievalMode;
   responseMode: ResponseMode;
-  facets: Partial<Record<FacetKey, string>>;
+  facets: SelectedFacets;
   includeArchived: boolean;
   showFilters: boolean;
   items: Evidence[];
@@ -54,6 +79,7 @@ type SavedSearch = {
   actualMode: string;
   version: string;
   hasSearched?: boolean;
+  lastSubmittedFilterSignature?: string;
 };
 
 function errorMessage(detail: unknown): string {
@@ -83,15 +109,24 @@ function isMissingDeepSeekKey(detail: unknown): boolean {
     /deepseek_api_key\s+not\s+configured|deepseek.*(?:not configured|disabled|unavailable)/i.test(detail);
 }
 
-export default function GovernedSearchPage(): React.JSX.Element {
+// Compare the actual facet arrays and archived toggle used by the last successful
+// request. Sorting ensures changes to selection order do not trigger a warning.
+function filterSignature(selected: SelectedFacets, includeArchived: boolean): string {
+  return JSON.stringify({
+    includeArchived,
+    facets: FACETS.map(({key}) => [key, [...(selected[key] ?? [])].sort()]),
+  });
+}
+
+export function GovernedSearchExperience({embedded = false}: {embedded?: boolean} = {}): React.JSX.Element {
   const {siteConfig} = useDocusaurusContext();
   // This URL is public configuration, not a secret. DeepSeek keys stay in FastAPI.
   const apiUrl = String(siteConfig.customFields?.ragApiUrl || '').replace(/\/+$/, '');
+  const taxonomy = LOCAL_TAXONOMY;
   const [query, setQuery] = useState('');
   const [retrieval, setRetrieval] = useState<RetrievalMode>('hybrid');
   const [responseMode, setResponseMode] = useState<ResponseMode>('search');
-  const [taxonomy, setTaxonomy] = useState<TaxonomyResponse | null>(null);
-  const [facets, setFacets] = useState<Partial<Record<FacetKey, string>>>({});
+  const [facets, setFacets] = useState<SelectedFacets>({});
   const [includeArchived, setIncludeArchived] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [items, setItems] = useState<Evidence[]>([]);
@@ -99,12 +134,9 @@ export default function GovernedSearchPage(): React.JSX.Element {
   const [actualMode, setActualMode] = useState<string>('');
   const [version, setVersion] = useState('');
   const [hasSearched, setHasSearched] = useState(false);
+  const [lastSubmittedFilterSignature, setLastSubmittedFilterSignature] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
-  const [taxonomyError, setTaxonomyError] = useState('');
-  const [taxonomyStatus, setTaxonomyStatus] = useState<TaxonomyStatus>('loading');
-  const [taxonomyAttempt, setTaxonomyAttempt] = useState(1);
-  const [taxonomyReload, setTaxonomyReload] = useState(0);
   // Avoid overwriting a saved search with the default React state on first mount.
   const [sessionRestored, setSessionRestored] = useState(false);
 
@@ -121,9 +153,16 @@ export default function GovernedSearchPage(): React.JSX.Element {
           setResponseMode(saved.responseMode);
         }
         if (saved.facets && typeof saved.facets === 'object' && !Array.isArray(saved.facets)) {
-          const validFacets: Partial<Record<FacetKey, string>> = {};
+          // Migrate previous single-select sessions (string) to multi-select arrays.
+          // JSON data is untrusted; ignore values that are not non-empty strings.
+          const savedSelections = saved.facets as Partial<Record<FacetKey, string | string[]>>;
+          const validFacets: SelectedFacets = {};
           for (const {key} of FACETS) {
-            if (typeof saved.facets[key] === 'string') validFacets[key] = saved.facets[key];
+            const value = savedSelections[key];
+            const terms = Array.isArray(value) ? value : typeof value === 'string' ? [value] : [];
+            const selected = [...new Set(terms.filter((term): term is string =>
+              typeof term === 'string' && Object.prototype.hasOwnProperty.call(LOCAL_TAXONOMY.dimensions[key]?.terms ?? {}, term)))];
+            if (selected.length > 0) validFacets[key] = selected;
           }
           setFacets(validFacets);
         }
@@ -141,6 +180,9 @@ export default function GovernedSearchPage(): React.JSX.Element {
           if (typeof saved.actualMode === 'string') setActualMode(saved.actualMode);
           if (typeof saved.version === 'string') setVersion(saved.version);
           if (typeof saved.hasSearched === 'boolean') setHasSearched(saved.hasSearched);
+          if (typeof saved.lastSubmittedFilterSignature === 'string') {
+            setLastSubmittedFilterSignature(saved.lastSubmittedFilterSignature);
+          }
         }
       }
     } catch {
@@ -156,13 +198,25 @@ export default function GovernedSearchPage(): React.JSX.Element {
       const saved: SavedSearch = {
         apiUrl, query, retrieval, responseMode, facets, includeArchived, showFilters,
         items, answer, actualMode, version, hasSearched,
+        ...(lastSubmittedFilterSignature !== null ? {lastSubmittedFilterSignature} : {}),
       };
       window.sessionStorage.setItem(SEARCH_SESSION_KEY, JSON.stringify(saved));
     } catch {
       // Quota restrictions/private browsing: search continues without persistence.
     }
   }, [sessionRestored, apiUrl, query, retrieval, responseMode, facets,
-    includeArchived, showFilters, items, answer, actualMode, version, hasSearched]);
+    includeArchived, showFilters, items, answer, actualMode, version, hasSearched,
+    lastSubmittedFilterSignature]);
+
+  function toggleFacet(key: FacetKey, term: string) {
+    setFacets((current) => {
+      const selected = current[key] ?? [];
+      const next = selected.includes(term)
+        ? selected.filter((item) => item !== term)
+        : [...selected, term];
+      return {...current, [key]: next};
+    });
+  }
 
   function resetFilters() {
     setFacets({});
@@ -188,96 +242,9 @@ export default function GovernedSearchPage(): React.JSX.Element {
     setActualMode('');
     setVersion('');
     setHasSearched(false);
+    setLastSubmittedFilterSignature(null);
     setError('');
   }
-
-  // A cold-started Container App may take time to respond. Retry transient failures,
-  // but don't repeatedly retry client errors (for example 403 from an IP allowlist).
-  useEffect(() => {
-    if (!apiUrl) {
-      setTaxonomy(null);
-      setTaxonomyError('No API URL is configured for this site build.');
-      setTaxonomyStatus('error');
-      return;
-    }
-
-    let cancelled = false;
-    let activeRequest: AbortController | null = null;
-    let delayTimer: ReturnType<typeof setTimeout> | undefined;
-    let timeoutTimer: ReturnType<typeof setTimeout> | undefined;
-    let resumeDelay: (() => void) | undefined;
-    const maxAttempts = 3;
-    const retryDelaysMs = [1500, 3500];
-
-    setTaxonomy(null);
-    setTaxonomyError('');
-    setTaxonomyStatus('loading');
-    setTaxonomyAttempt(1);
-
-    async function loadTaxonomy() {
-      for (let attempt = 1; attempt <= maxAttempts && !cancelled; attempt++) {
-        setTaxonomyAttempt(attempt);
-        setTaxonomyStatus(attempt === 1 ? 'loading' : 'retrying');
-        const controller = new AbortController();
-        activeRequest = controller;
-        let shouldRetry = true;
-
-        try {
-          // Bound each attempt so a stalled connection doesn't disable filters forever.
-          timeoutTimer = setTimeout(() => controller.abort(), 20000);
-          const response = await fetch(`${apiUrl}/taxonomy`, {signal: controller.signal});
-          if (!response.ok) {
-            shouldRetry = response.status === 408 || response.status === 429 || response.status >= 500;
-            let message = `Taxonomy API returned HTTP ${response.status}`;
-            try {
-              const data = await response.json();
-              if (data && data.detail) message = `${message}: ${errorMessage(data.detail)}`;
-            } catch { /* Error response need not be JSON. */ }
-            throw new Error(message);
-          }
-          const data: TaxonomyResponse = await response.json();
-          if (!data || !data.dimensions || typeof data.dimensions !== 'object') {
-            shouldRetry = false;
-            throw new Error('Taxonomy response has an unexpected format.');
-          }
-          if (cancelled) return;
-          setTaxonomy(data);
-          setTaxonomyError('');
-          setTaxonomyStatus('ready');
-          return;
-        } catch (err) {
-          if (cancelled) return;
-          const message = controller.signal.aborted
-            ? 'Taxonomy request timed out.'
-            : err instanceof Error ? err.message : 'Could not load taxonomy.';
-          if (!shouldRetry || attempt === maxAttempts) {
-            setTaxonomyError(message);
-            setTaxonomyStatus('error');
-            return;
-          }
-          setTaxonomyStatus('retrying');
-          await new Promise<void>(resolve => {
-            resumeDelay = resolve;
-            delayTimer = setTimeout(() => {
-              resumeDelay = undefined;
-              resolve();
-            }, retryDelaysMs[attempt - 1]);
-          });
-        } finally {
-          if (timeoutTimer !== undefined) clearTimeout(timeoutTimer);
-          activeRequest = null;
-        }
-      }
-    }
-    void loadTaxonomy();
-    return () => {
-      cancelled = true;
-      activeRequest?.abort();
-      if (timeoutTimer !== undefined) clearTimeout(timeoutTimer);
-      if (delayTimer !== undefined) clearTimeout(delayTimer);
-      resumeDelay?.();
-    };
-  }, [apiUrl, taxonomyReload]);
 
   async function submit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -285,7 +252,8 @@ export default function GovernedSearchPage(): React.JSX.Element {
     setBusy(true); setError(''); setItems([]); setAnswer(''); setActualMode(''); setVersion(''); setHasSearched(false);
     const filters: Record<string, string[]> = {};
     for (const {key} of FACETS) {
-      if (facets[key]) filters[key] = [facets[key]!];
+      const selected = facets[key] ?? [];
+      if (selected.length > 0) filters[key] = [...selected];
     }
     try {
       const response = await fetch(`${apiUrl}/${responseMode}`, {
@@ -315,6 +283,7 @@ export default function GovernedSearchPage(): React.JSX.Element {
       setActualMode(data.mode || retrieval);
       setVersion(data.index_version || '');
       setHasSearched(true);
+      setLastSubmittedFilterSignature(filterSignature(facets, includeArchived));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Request failed. Check Docker and the API URL.');
     } finally {
@@ -322,34 +291,29 @@ export default function GovernedSearchPage(): React.JSX.Element {
     }
   }
 
-  const activeFilters = FACETS.filter(({key}) => Boolean(facets[key]));
+  const activeFilters = FACETS.flatMap(({key, label}) =>
+    (facets[key] ?? []).map(value => ({key, label, value})));
+  const filtersNeedRefresh = hasSearched && lastSubmittedFilterSignature !== null &&
+    lastSubmittedFilterSignature !== filterSignature(facets, includeArchived);
+  const savedResultsUnverified = hasSearched && lastSubmittedFilterSignature === null;
   const modeLabel = (mode: string) => mode === 'bm25' ? 'Keyword / BM25' : mode === 'semantic' ? 'Semantic / FAISS' : 'Hybrid / both';
 
-  return (
-    <Layout title="Search Portfolio" description="Search portfolio content using keyword, semantic and hybrid retrieval, with optional AI-generated answers linked to sources">
-      <main className={styles.page}>
-        <section className={styles.hero} aria-labelledby="rag-page-title">
-          <div className={styles.heroGlow} aria-hidden="true" />
-          <div className={styles.heroContent}>
-            <span className={styles.eyebrow}><span className={styles.sparkle} aria-hidden="true">✦</span> PORTFOLIO SEARCH</span>
-            <Heading as="h1" id="rag-page-title" className={styles.heroTitle}>
-              Search <span className={styles.heroAccent}>Portfolio.</span>
-            </Heading>
-            <p className={styles.intro}>
-              Search portfolio content using keyword, semantic and hybrid retrieval,
-              or generate AI-assisted answers grounded in linked source documents.
-            </p>
-            <div className={styles.heroMeta} aria-label="Search capabilities">
-              <span>◇ Governed taxonomy</span>
-              <span>◇ BM25 + FAISS</span>
-              <span>◇ Source-linked evidence</span>
-              <span>◇ RAG-powered AI answers</span>
-            </div>
-          </div>
-        </section>
+  const Container = embedded ? 'div' : 'main';
+  const content = (
+    <Container className={`${styles.page} ${embedded ? styles.embeddedPage : ''}`}>
+      {!embedded && (
+        <header className={styles.hero} aria-labelledby="rag-page-title">
+          <p className={styles.eyebrow}>Governed taxonomy</p>
+          <Heading as="h1" id="rag-page-title" className={styles.heroTitle}>Search knowledge</Heading>
+          <p className={styles.intro}>
+            Search portfolio content using keywords, concepts or questions.
+            Refine results using the governed taxonomy and explore the original source documents.
+          </p>
+        </header>
+      )}
 
-        <div className={styles.workspace}>
-          <form onSubmit={submit} className={styles.form} aria-label="Search portfolio knowledge">
+      <div className={styles.workspace}>
+        <form onSubmit={submit} className={styles.form} aria-label="Search portfolio knowledge">
             <div className={styles.searchTopline}>
               <label className={styles.fieldLabel} htmlFor="rag-query">What would you like to search?</label>
               <span className={styles.characterCount}>{query.length}/500</span>
@@ -395,73 +359,6 @@ export default function GovernedSearchPage(): React.JSX.Element {
                 Always check the linked source documents before relying on an answer.
               </p>
             )}
-            <div className={styles.toolbar}>
-              <button type="button" className={styles.filterButton} aria-expanded={showFilters}
-                aria-controls="rag-taxonomy-filters" onClick={() => setShowFilters(v => !v)}>
-                <span aria-hidden="true">☷</span> {showFilters ? 'Hide filters' : 'Taxonomy filters'}
-                {activeFilters.length > 0 && <span className={styles.filterCount}>{activeFilters.length}</span>}
-              </button>
-              <button type="button" className={styles.resetFiltersButton}
-                onClick={resetFilters} disabled={busy || (activeFilters.length === 0 && !includeArchived)}>
-                Reset filters
-              </button>
-              <span className={styles.toolbarHint} role="status" aria-live="polite">
-                {taxonomyStatus === 'loading' && 'Loading taxonomy filters…'}
-                {taxonomyStatus === 'retrying' && `Waking API / retrying taxonomy (${taxonomyAttempt}/3)…`}
-                {taxonomyStatus === 'ready' && 'Taxonomy filters ready'}
-                {taxonomyStatus === 'error' && 'Taxonomy filters unavailable'}
-              </span>
-            </div>
-            {showFilters && (
-              <div id="rag-taxonomy-filters" className={styles.filters}>
-                {FACETS.map(({key, label}) => (
-                  <label className={styles.filter} key={key}>
-                    <span>{label}</span>
-                    <select value={facets[key] || ''}
-                      onChange={e => setFacets(prev => ({...prev, [key]: e.target.value}))}
-                      disabled={!taxonomy?.dimensions[key]}>
-                      <option value="">All {label.toLowerCase()}</option>
-                      {Object.entries(taxonomy?.dimensions[key]?.terms || {})
-                        .sort((a, b) => a[1].localeCompare(b[1]))
-                        .map(([id, name]) => <option key={id} value={id}>{name}</option>)}
-                    </select>
-                  </label>
-                ))}
-                <label className={styles.archivedOption}>
-                  <input type="checkbox" checked={includeArchived}
-                    onChange={e => setIncludeArchived(e.target.checked)} />
-                  Include archived content when lifecycle is not explicitly filtered
-                </label>
-                {(taxonomyStatus === 'loading' || taxonomyStatus === 'retrying') && (
-                  <p className={styles.taxonomyNotice} role="status" aria-live="polite">
-                    <span className={styles.loadingDot} aria-hidden="true" />
-                    {taxonomyStatus === 'retrying'
-                      ? `The API may be starting up. Retrying taxonomy (${taxonomyAttempt} of 3)…`
-                      : 'Loading taxonomy options…'}
-                  </p>
-                )}
-                {taxonomyStatus === 'error' && (
-                  <div className={styles.taxonomyError} role="alert">
-                    <span>Could not load taxonomy filters. {taxonomyError}</span>
-                    <button type="button" className="button button--secondary button--sm"
-                      disabled={!apiUrl} onClick={() => setTaxonomyReload(n => n + 1)}>
-                      Retry loading filters
-                    </button>
-                  </div>
-                )}
-              </div>
-            )}
-            {activeFilters.length > 0 && (
-              <div className={styles.activeFilters} aria-label="Active taxonomy filters">
-                {activeFilters.map(({key, label}) => (
-                  <button key={key} type="button" className={styles.activeFilter}
-                    title={`Remove ${label} filter`}
-                    onClick={() => setFacets(prev => ({...prev, [key]: ''}))}>
-                    {label}: {taxonomy?.dimensions[key]?.terms[facets[key]!] || facets[key]} <span aria-hidden="true">×</span>
-                  </button>
-                ))}
-              </div>
-            )}
             <div className={styles.actions}>
               <button type="submit" className={`button button--primary ${styles.submitButton}`}
                 disabled={busy || query.trim().length < 2 || !apiUrl}>
@@ -476,6 +373,65 @@ export default function GovernedSearchPage(): React.JSX.Element {
             </p>
           </form>
 
+          <aside className={`${styles.filterPanel} ${browseStyles.filters}`} aria-label="Taxonomy filters">
+            <div className={browseStyles.filterHeader}>
+              <h2>Filter</h2>
+              <button type="button" className={browseStyles.clearButton}
+                onClick={resetFilters} disabled={busy || (activeFilters.length === 0 && !includeArchived)}>
+                Clear filters
+              </button>
+            </div>
+            <div className={styles.toolbar}>
+              <button type="button" className={browseStyles.mobileFiltersToggle} aria-expanded={showFilters}
+                aria-controls="rag-taxonomy-filters" onClick={() => setShowFilters(v => !v)}>
+                {showFilters ? 'Hide filters' : 'Show filters'}
+                {activeFilters.length > 0 ? ` (${activeFilters.length} selected)` : ''}
+              </button>
+            </div>
+            <div id="rag-taxonomy-filters" className={`${browseStyles.filterGroups} ${showFilters ? browseStyles.filterGroupsOpen : ''}`}>
+                <ExploreTaxonomyFilterGroups
+                  disabled={busy}
+                  isSelected={(dimensionId, termId) => {
+                    const key = navigationTaxonomy.dimensions[dimensionId].metadataField as FacetKey;
+                    return (facets[key] ?? []).includes(termId);
+                  }}
+                  onToggle={(dimensionId, termId) => {
+                    const key = navigationTaxonomy.dimensions[dimensionId].metadataField as FacetKey;
+                    toggleFacet(key, termId);
+                  }}
+                />
+                <label className={styles.archivedOption}>
+                  <input type="checkbox" checked={includeArchived} disabled={busy}
+                    onChange={e => setIncludeArchived(e.target.checked)} />
+                  Include archived content when lifecycle is not explicitly filtered
+                </label>
+            </div>
+            {activeFilters.length > 0 && (
+              <div className={styles.activeFilters} aria-label="Active taxonomy filters">
+                {activeFilters.map(({key, label, value}) => (
+                  <button key={`${key}:${value}`} type="button" className={styles.activeFilter}
+                    title={`Remove ${label}: ${taxonomy?.dimensions[key]?.terms[value] || value}`}
+                    disabled={busy}
+                    onClick={() => toggleFacet(key, value)}>
+                    {label}: {taxonomy?.dimensions[key]?.terms[value] || value} <span aria-hidden="true">×</span>
+                  </button>
+                ))}
+              </div>
+            )}
+            <p className={styles.toolbarHint}>
+              Filters apply on your next search. AI Search excludes archived passages by default;
+              Browse includes archived catalogue documents.
+            </p>
+          </aside>
+
+          <div className={styles.output}>
+          {(filtersNeedRefresh || savedResultsUnverified) && (
+            <p className={styles.filterUpdateNotice} role="status" aria-live="polite">
+              {filtersNeedRefresh
+                ? 'Filters changed — search again to update these results.'
+                : 'These saved results may not reflect the current filters. Search again to refresh them.'}
+            </p>
+          )}
           {!apiUrl && <div role="alert" className={styles.error}>No RAG API URL configured for this site build.</div>}
           {error && (
             <div role="alert" className={styles.error}>
@@ -535,14 +491,13 @@ export default function GovernedSearchPage(): React.JSX.Element {
                       <article>
                         <div className={styles.cardTop}>
                           <span className={styles.rank}>SOURCE {String(index + 1).padStart(2, '0')}</span>
-                          <a className={styles.sourceLink} href={sourceUrl(item)} target="_blank" rel="noopener noreferrer">
-                            Open source <span aria-hidden="true">↗</span>
-                          </a>
                         </div>
+                        {item.heading?.trim() && <p className={styles.parentTitle}>{item.title}</p>}
                         <h3 className={styles.resultTitle}>
-                          <a href={sourceUrl(item)} target="_blank" rel="noopener noreferrer">{item.title}</a>
+                          <a href={sourceUrl(item)} target="_blank" rel="noopener noreferrer">
+                            {item.heading?.trim() || item.title}
+                          </a>
                         </h3>
-                        {item.heading && <p className={styles.heading}>{item.heading}</p>}
                         {item.text && (
                           <details className={styles.snippetDetails}>
                             <summary className={styles.snippetSummary}>
@@ -567,11 +522,16 @@ export default function GovernedSearchPage(): React.JSX.Element {
                               ))}
                           </div>
                         )}
-                        {typeof item.score === 'number' && (
-                          <div className={styles.score} title="Raw retrieval rank score; not a confidence percentage">
-                            Rank score {item.score.toFixed(4)}
-                          </div>
-                        )}
+                        <div className={styles.cardFooter}>
+                          {typeof item.score === 'number' && (
+                            <span className={styles.score} title="Raw retrieval rank score; not a confidence percentage">
+                              Rank score {item.score.toFixed(4)}
+                            </span>
+                          )}
+                          <a className={styles.sourceLink} href={sourceUrl(item)} target="_blank" rel="noopener noreferrer">
+                            {item.heading?.trim() ? 'Open matched section' : 'Open source'} <span aria-hidden="true">↗</span>
+                          </a>
+                        </div>
                       </article>
                     </li>
                   ))}
@@ -588,8 +548,27 @@ export default function GovernedSearchPage(): React.JSX.Element {
               </div>
             </div>
           )}
+          <details className={styles.howWorks}>
+            <summary>How search works</summary>
+            <p>
+              Search uses the governed taxonomy and BM25, FAISS or hybrid retrieval.
+              Optional AI answers are grounded in linked source passages.
+            </p>
+          </details>
+          </div>
         </div>
-      </main>
+    </Container>
+  );
+
+  return embedded ? content : (
+    <Layout title="Search knowledge" description="Search portfolio content using keyword, semantic and hybrid retrieval, with optional AI-generated answers linked to sources">
+      {content}
     </Layout>
   );
+}
+
+// Legacy RAG plugin route: only the Explore tab renders the search experience.
+export default function GovernedSearchPage(): React.JSX.Element {
+  const exploreUrl = useBaseUrl('/explore');
+  return <Redirect to={`${exploreUrl}?view=ai-search`} />;
 }

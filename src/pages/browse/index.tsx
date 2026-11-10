@@ -1,9 +1,12 @@
-import React, {useMemo, useState} from 'react';
+import React, {useEffect, useMemo, useState} from 'react';
 import Link from '@docusaurus/Link';
 import Layout from '@theme/Layout';
+import {Redirect, useLocation} from '@docusaurus/router';
+import useBaseUrl from '@docusaurus/useBaseUrl';
 
 import styles from './styles.module.css';
 import navigationIndex from '../../generated/taxonomy-navigation.json';
+import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
 
 type DimensionId =
   | 'content_types'
@@ -248,56 +251,6 @@ function documentMatchesFilters(
   });
 }
 
-function countDocumentsForTerm(
-  documents: NavigationDocument[],
-  dimension: TaxonomyDimension,
-  termId: string,
-): number {
-  return documents.reduce((count, document) => {
-    return valuesForDimension(document, dimension).includes(termId)
-      ? count + 1
-      : count;
-  }, 0);
-}
-
-
-type TechnologyGroup = {
-  id: string;
-  label: string;
-  description?: string;
-  terms: TaxonomyTerm[];
-};
-
-function technologyGroups(dimension: TaxonomyDimension): TechnologyGroup[] {
-  const groups = new Map<string, TechnologyGroup>();
-  const kinds = data.technologyKinds ?? {};
-
-  dimension.terms.forEach((term) => {
-    const kindId = term.kind ?? 'other';
-    const kind = kinds[kindId];
-
-    if (!groups.has(kindId)) {
-      groups.set(kindId, {
-        id: kindId,
-        label: kind?.label ?? (kindId === 'other' ? 'Other' : kindId),
-        description: kind?.description,
-        terms: [],
-      });
-    }
-
-    groups.get(kindId)?.terms.push(term);
-  });
-
-  return [...groups.values()]
-    .map((group) => ({
-      ...group,
-      terms: [...group.terms].sort((left, right) =>
-        left.label.localeCompare(right.label),
-      ),
-    }))
-    .sort((left, right) => left.label.localeCompare(right.label));
-}
-
 function DocumentTags({
   document,
   labels,
@@ -339,10 +292,30 @@ function DocumentTags({
   );
 }
 
-export default function BrowsePage(): React.JSX.Element {
+export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}): React.JSX.Element {
   const [query, setQuery] = useState('');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selected, setSelected] = useState<SelectedFilters>(initialFilters);
+  const {search: locationSearch} = useLocation();
+
+  // Home-page links use /browse?contentType=... . When Explore stays mounted,
+  // a new contentType in the URL must also update the Browse selection. Depend
+  // only on the contentType values: switching tabs must not reset manual filters.
+  const requestedContentTypes = JSON.stringify(
+    new URLSearchParams(locationSearch).getAll('contentType'),
+  );
+  useEffect(() => {
+    const requested = JSON.parse(requestedContentTypes) as string[];
+    const validTypes = new Set(data.dimensions.content_types.terms.map(term => term.id));
+    const nextTypes = new Set(requested.filter(type => validTypes.has(type)));
+    setSelected(current => {
+      const previous = current.content_types;
+      if (previous.size === nextTypes.size && [...previous].every(type => nextTypes.has(type))) {
+        return current;
+      }
+      return {...current, content_types: nextTypes};
+    });
+  }, [requestedContentTypes]);
 
   const labels = useMemo(() => termLabelMap(data.dimensions), []);
 
@@ -404,16 +377,16 @@ export default function BrowsePage(): React.JSX.Element {
 
   function clearFilters(): void {
     setSelected(emptyFilters());
+  }
+
+  function clearQuery(): void {
     setQuery('');
   }
 
-  return (
-    <Layout
-      title="Browse knowledge"
-      description="Browse portfolio content using the governed taxonomy."
-    >
-      <main className={`container margin-vert--lg ${styles.page}`}>
-        <header className={styles.header}>
+  const Container = embedded ? 'div' : 'main';
+  const content = (
+      <Container className={embedded ? styles.page : `container margin-vert--lg ${styles.page}`}>
+        {!embedded && <header className={styles.header}>
           <p className={styles.eyebrow}>Governed taxonomy</p>
           <h1>Browse knowledge</h1>
           <p className={styles.intro}>
@@ -424,21 +397,20 @@ export default function BrowsePage(): React.JSX.Element {
               taxonomy governance case study.
             </Link>{' '}
           </p>
-        </header>
+        </header>}
 
         <div className={styles.browser}>
           <aside className={styles.filters} aria-label="Taxonomy filters">
             <div className={styles.filterHeader}>
               <h2>Filter</h2>
-              {activeFilterCount > 0 || query ? (
-                <button
-                  type="button"
-                  className={styles.clearButton}
-                  onClick={clearFilters}
-                >
-                  Clear all
-                </button>
-              ) : null}
+              <button
+                type="button"
+                className={styles.clearButton}
+                onClick={clearFilters}
+                disabled={activeFilterCount === 0}
+              >
+                Clear filters
+              </button>
             </div>
 
             <div className={styles.searchGroup}>
@@ -455,6 +427,11 @@ export default function BrowsePage(): React.JSX.Element {
                 autoComplete="off"
               />
               <p className={styles.searchHelp}>Ranked search of titles, summaries and taxonomy.</p>
+              {query && (
+                <button type="button" className={styles.clearButton} onClick={clearQuery}>
+                  Clear search
+                </button>
+              )}
             </div>
 
             <button
@@ -464,122 +441,17 @@ export default function BrowsePage(): React.JSX.Element {
               aria-expanded={mobileFiltersOpen}
               onClick={() => setMobileFiltersOpen((open) => !open)}
             >
-              {mobileFiltersOpen ? 'Hide advanced filters' : 'Show advanced filters'}
+              {mobileFiltersOpen ? 'Hide filters' : 'Show filters'}
               {activeFilterCount > 0 ? ` (${activeFilterCount} selected)` : ''}
             </button>
             <div
               id="browse-taxonomy-filters"
               className={`${styles.filterGroups} ${mobileFiltersOpen ? styles.filterGroupsOpen : ''}`}
             >
-            {DIMENSION_ORDER.map((dimensionId) => {
-              const dimension = data.dimensions[dimensionId];
-
-              if (!dimension || dimension.terms.length === 0) {
-                return null;
-              }
-
-              return (
-                <section className={styles.filterGroup} key={dimensionId}>
-                  <h3 className={styles.filterLabel}>
-                    {dimension.label || DEFAULT_DIMENSION_LABELS[dimensionId]}
-                  </h3>
-
-                  {dimensionId === 'technologies' && data.technologyKinds ? (
-                    <div className={styles.filterOptions}>
-                      {technologyGroups(dimension).map((group) => {
-                        const hasSelectedTerm = group.terms.some((term) =>
-                          selected.technologies.has(term.id),
-                        );
-
-                        return (
-                          <details
-                            key={group.id}
-                            defaultOpen={hasSelectedTerm}
-                            title={group.description}
-                            style={{
-                              width: '100%',
-                              flexBasis: '100%',
-                              marginTop: '0.35rem',
-                            }}
-                          >
-                            <summary
-                              style={{
-                                cursor: 'pointer',
-                                fontWeight: 600,
-                              }}
-                            >
-                              {group.label} ({group.terms.length})
-                            </summary>
-
-                            <div className={styles.filterOptions}>
-                              {group.terms.map((term) => {
-                                const isSelected = selected.technologies.has(
-                                  term.id,
-                                );
-                                const count = countDocumentsForTerm(
-                                  data.documents,
-                                  dimension,
-                                  term.id,
-                                );
-
-                                return (
-                                  <button
-                                    key={term.id}
-                                    type="button"
-                                    className={`${styles.filterChip} ${
-                                      isSelected
-                                        ? styles.filterChipSelected
-                                        : ''
-                                    }`}
-                                    aria-pressed={isSelected}
-                                    onClick={() =>
-                                      toggleFilter('technologies', term.id)
-                                    }
-                                    title={term.description}
-                                  >
-                                    <span>{term.label}</span>
-                                    <span className={styles.count}>
-                                      {count}
-                                    </span>
-                                  </button>
-                                );
-                              })}
-                            </div>
-                          </details>
-                        );
-                      })}
-                    </div>
-                  ) : (
-                    <div className={styles.filterOptions}>
-                      {dimension.terms.map((term) => {
-                        const isSelected = selected[dimensionId].has(term.id);
-                        const count = countDocumentsForTerm(
-                          data.documents,
-                          dimension,
-                          term.id,
-                        );
-
-                        return (
-                          <button
-                            key={term.id}
-                            type="button"
-                            className={`${styles.filterChip} ${
-                              isSelected ? styles.filterChipSelected : ''
-                            }`}
-                            aria-pressed={isSelected}
-                            onClick={() => toggleFilter(dimensionId, term.id)}
-                            title={term.description}
-                          >
-                            <span>{term.label}</span>
-                            <span className={styles.count}>{count}</span>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  )}
-                </section>
-              );
-            })}
+            <ExploreTaxonomyFilterGroups
+              isSelected={(dimensionId, termId) => selected[dimensionId].has(termId)}
+              onToggle={(dimensionId, termId) => toggleFilter(dimensionId, termId)}
+            />
             </div>
           </aside>
 
@@ -628,18 +500,36 @@ export default function BrowsePage(): React.JSX.Element {
                 <p>
                   Try fewer search words, check the spelling, or remove a taxonomy filter.
                 </p>
-                <button
-                  type="button"
-                  className="button button--secondary"
-                  onClick={clearFilters}
-                >
-                  Clear filters
-                </button>
+                {(activeFilterCount > 0 || query) && (
+                  <button
+                    type="button"
+                    className="button button--secondary"
+                    onClick={activeFilterCount > 0 ? clearFilters : clearQuery}
+                  >
+                    {activeFilterCount > 0 ? 'Clear filters' : 'Clear search'}
+                  </button>
+                )}
               </div>
             )}
           </section>
         </div>
-      </main>
+      </Container>
+  );
+
+  return embedded ? content : (
+    <Layout title="Browse knowledge" description="Browse portfolio content using the governed taxonomy.">
+      {content}
     </Layout>
   );
+}
+
+// Keep older /browse links working; Explore is the only discovery page.
+export default function BrowsePage(): React.JSX.Element {
+  const exploreUrl = useBaseUrl('/explore');
+  const {search, hash} = useLocation();
+  // Preserve contentType (including repeated values) when redirecting old
+  // home-page links into the unified Explore page.
+  const params = new URLSearchParams(search);
+  params.set('view', 'browse');
+  return <Redirect to={`${exploreUrl}?${params.toString()}${hash}`} />;
 }
