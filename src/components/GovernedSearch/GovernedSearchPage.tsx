@@ -326,23 +326,24 @@ export default function GovernedSearchPage(): React.JSX.Element {
   const modeLabel = (mode: string) => mode === 'bm25' ? 'Keyword / BM25' : mode === 'semantic' ? 'Semantic / FAISS' : 'Hybrid / both';
 
   return (
-    <Layout title="AI knowledge search" description="Explore governed portfolio knowledge using hybrid retrieval">
+    <Layout title="Search Portfolio" description="Search portfolio content using keyword, semantic and hybrid retrieval, with optional AI-generated answers linked to sources">
       <main className={styles.page}>
         <section className={styles.hero} aria-labelledby="rag-page-title">
           <div className={styles.heroGlow} aria-hidden="true" />
           <div className={styles.heroContent}>
-            <span className={styles.eyebrow}><span className={styles.sparkle} aria-hidden="true">✦</span> KNOWLEDGE EXPLORER</span>
+            <span className={styles.eyebrow}><span className={styles.sparkle} aria-hidden="true">✦</span> PORTFOLIO SEARCH</span>
             <Heading as="h1" id="rag-page-title" className={styles.heroTitle}>
-              Explore ideas. <span className={styles.heroAccent}>Find the evidence.</span>
+              Search <span className={styles.heroAccent}>Portfolio.</span>
             </Heading>
             <p className={styles.intro}>
-              Search documentation engineering, API design and knowledge governance with
-              keyword, semantic and hybrid retrieval.
+              Search portfolio content using keyword, semantic and hybrid retrieval,
+              or generate AI-assisted answers grounded in linked source documents.
             </p>
             <div className={styles.heroMeta} aria-label="Search capabilities">
               <span>◇ Governed taxonomy</span>
               <span>◇ BM25 + FAISS</span>
               <span>◇ Source-linked evidence</span>
+              <span>◇ RAG-powered AI answers</span>
             </div>
           </div>
         </section>
@@ -350,7 +351,7 @@ export default function GovernedSearchPage(): React.JSX.Element {
         <div className={styles.workspace}>
           <form onSubmit={submit} className={styles.form} aria-label="Search portfolio knowledge">
             <div className={styles.searchTopline}>
-              <label className={styles.fieldLabel} htmlFor="rag-query">What would you like to explore?</label>
+              <label className={styles.fieldLabel} htmlFor="rag-query">What would you like to search?</label>
               <span className={styles.characterCount}>{query.length}/500</span>
             </div>
             <textarea
@@ -388,6 +389,12 @@ export default function GovernedSearchPage(): React.JSX.Element {
                 </div>
               </fieldset>
             </div>
+            {responseMode === 'chat' && (
+              <p className={styles.privacyNote} role="note">
+                AI-generated answers can be inaccurate, incomplete or misleading.
+                Always check the linked source documents before relying on an answer.
+              </p>
+            )}
             <div className={styles.toolbar}>
               <button type="button" className={styles.filterButton} aria-expanded={showFilters}
                 aria-controls="rag-taxonomy-filters" onClick={() => setShowFilters(v => !v)}>
@@ -458,7 +465,7 @@ export default function GovernedSearchPage(): React.JSX.Element {
             <div className={styles.actions}>
               <button type="submit" className={`button button--primary ${styles.submitButton}`}
                 disabled={busy || query.trim().length < 2 || !apiUrl}>
-                {busy ? 'Searching…' : responseMode === 'chat' ? 'Generate answer ↗' : 'Explore knowledge ↗'}
+                {busy ? 'Searching…' : responseMode === 'chat' ? 'Generate answer ↗' : 'Search portfolio ↗'}
               </button>
               <button type="button" className={styles.clearButton} onClick={clearSearch} disabled={busy}>
                 Clear saved search
@@ -577,7 +584,7 @@ export default function GovernedSearchPage(): React.JSX.Element {
               <div className={styles.welcomeIcon} aria-hidden="true">⌕</div>
               <div>
                 <strong>Start with a question.</strong>
-                <p>Explore the knowledge base by concept, technology or documentation practice. Results link to their original source.</p>
+                <p>Search the portfolio by concept, technology or documentation practice. Results link to their original source.</p>
               </div>
             </div>
           )}
