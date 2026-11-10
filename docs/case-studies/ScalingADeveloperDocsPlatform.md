@@ -84,6 +84,7 @@ Some of the underlying technology is publicly available in the [Optimus Cirrus G
 * Provide scalable publishing, search, and navigation.
 * Migrate valuable legacy content to the new platform without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.
+* Provide live IntelliJ previews of complex documentation, including embedded source code, diagrams and mathematical equations, with consistent rendering on the published website.
 
 ## Approach {/* #approach */}
 
@@ -95,7 +96,7 @@ Instead of trying to corral developers back into a separate documentation system
 
 I built an initial MkDocs pilot that validated the docs-as-code model, but it exposed limitations in relying on a large collection of independently developed plugins for Morgan Stanley's complex documentation set. I needed multiple plugins from different authors to support the required content features, and those plugins did not always work together correctly in combination. For example, MkDocs' incremental build capability, which could have helped compensate for the lack of an accurate IDE preview for plugin-generated content, failed to work correctly when used with our required plugin set. In addition, I had to extend some of the default MkDocs plugins with custom code.
 
-A custom platform required greater investment, but gave us control of the complete rendering and publishing pipeline. We could ensure that all features worked consistently in combination, not just separately, and provide the same rendering behaviour both in the IDE and published site. Additionally, we could add capabilities such as source-code injection and other Markdown extensions that fully met our requirements. Finally, it allowed us to implement the platform in Scala, the primary language of our monorepo, making it easier for the wider engineering community to maintain and extend.
+A custom platform required greater investment, but gave us control over the complete rendering and publishing pipeline. We could ensure that all features worked reliably together and add capabilities tailored to our requirements, such as source-code injection and custom Markdown extensions. Rather than building a Markdown renderer from scratch, we extended an existing Markdown rendering engine and reused it for both live IDE previews and website generation. This provided consistent rendering without maintaining separate implementations for authoring and publishing. The website generator added publishing-specific capabilities such as navigation and fast JavaScript-based search. Implementing the platform in Scala, the primary language of the monorepo, also allowed the wider engineering community to maintain and extend it.
 
 ### Documentation platform workflow {/* #documentation-platform-workflow */}
 
@@ -161,7 +162,7 @@ flowchart TD
 The design focused on four priorities:
 
 * reducing friction for documentation contributions and corrections
-* supporting authoring within engineers' existing development environment
+* encouraging adoption by allowing developers to edit code and documentation together, use familiar IDE tools such as project-wide find and replace, and accurately preview documentation without switching environments or running local website builds
 * designing search and information architecture that could scale with a large technical documentation set
 * using analytics to identify high-value legacy content and prioritise migration.
 
@@ -173,13 +174,13 @@ I worked with engineers from the internal tooling team to build the authoring ex
 
 * **Markdown-based documentation stored and reviewed in Git alongside the code**. Storing documentation in Git provided stronger change control than the previous wiki-based systems. Related updates across multiple pages could be reviewed and merged as a single atomic change, reducing the risk of publishing partially updated or internally inconsistent documentation. It also made the documentation easier to integrate with GenAI workflows.
 
-* **A CI/CD-based documentation build and publishing pipeline with automated quality checks**. Checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
+* **A CI/CD-based documentation build and publishing pipeline with automated quality checks**. Documentation changes in the monorepo were incorporated into automated website builds, while checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
 
-* **An IntelliJ plugin for documentation authoring and live preview**. This lowered the barrier for developers to contribute documentation by allowing them to edit and preview changes directly within their existing development environment.
+* **An IntelliJ plugin for documentation authoring and live preview**. The plugin supported embedded source-code fragments, LaTeX equations and multiple diagram formats, including Graphviz, PlantUML, Mermaid and C4/Structurizr. This lowered the barrier for developers to contribute documentation by allowing them to edit and preview complex content directly within their existing development environment, with rendering consistent with the published website.
 
 * **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
 
-* **The ability to reuse content in multiple locations and embed code samples directly from source**. This reduced duplication and maintenance effort by allowing shared content and code examples to be updated centrally.
+* **The ability to reuse content across documentation pages and embed complete source files or selected code fragments identified by delimiters**. This reduced duplication and maintenance effort by allowing code examples to be maintained alongside the source code they documented.
 
 ### Search and navigation {/* #search-and-navigation */}
 
