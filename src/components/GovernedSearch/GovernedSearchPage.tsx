@@ -419,7 +419,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
               </div>
             )}
             <p className={styles.toolbarHint}>
-              Filters apply on your next search. AI Search excludes archived passages by default;
+              Filters apply on your next search. Search excludes archived passages by default;
               Browse includes archived catalogue documents.
             </p>
           </aside>

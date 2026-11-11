@@ -85,7 +85,7 @@ export default function ExplorePage(): React.JSX.Element {
             className={`${styles.tab} ${view === 'ai-search' ? styles.tabSelected : ''}`}
             onClick={() => chooseView('ai-search')}
             onKeyDown={event => handleTabKeys(event, 'ai-search')}>
-            AI Search
+            Search
           </button>
         </div>
 
