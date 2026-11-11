@@ -98,12 +98,13 @@ resource "azurerm_container_app" "rag" {
     external_enabled = true
     target_port      = 8000
 
+/*
     ip_security_restriction {
       name             = "my-development-pc"
       action           = "Allow"
       ip_address_range = var.development_ip_cidr
     }
-
+*/
     traffic_weight {
       latest_revision = true
       percentage      = 100
