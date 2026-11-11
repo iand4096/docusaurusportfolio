@@ -55,33 +55,25 @@ tags:
 
 Alongside leading the development of Morgan Stanley's new [custom docs-as-code platform](ScalingADeveloperDocsPlatform.md), I served as the lead and sole technical writer for the Optimus and RICE frameworks.
 
-My work involved creating developer documentation for sophisticated Scala-based systems, including reactive UI development, automated regression testing, cross-language interoperability and data ingestion.
-
-## Challenge {/* #challenge */}
-
-These frameworks exposed complex programming abstractions and development workflows that required more than conventional API reference documentation. Engineers needed documentation that explained the underlying concepts, demonstrated how to use the framework capabilities, and provided practical guidance for implementing applications. The challenge was to translate highly technical engineering concepts into clear, accurate and maintainable developer documentation.
-
-## My role {/* #my-role */}
-
-I produced documentation for developers and quantitative analysts building applications using Optimus and RICE. This required a strong understanding of Scala, C++, JVM/native interoperability and bitemporal database concepts.
+I produced developer documentation for engineers and quantitative analysts building applications with these sophisticated Scala-based systems. The documentation covered Scala and C++ interoperability, bitemporal data, reactive UI development, automated regression testing and data ingestion.
 
 ## Documentation approach {/* #documentation-approach */}
 
-To understand undocumented framework behaviour, I reverse-engineered functionality by reading source code and tracing execution paths through the monorepo. This research, combined with information gathered from multiple legacy documentation platforms, helped me prepare for interviews with subject-matter experts. The findings were used to create structured API documentation outlines for technical review, helping to resolve knowledge gaps and ensure accuracy. Where possible, Scala code examples were built, compiled and tested to ensure that documented functionality and usage patterns reflected the framework's actual behaviour.
+To understand undocumented framework behaviour, I reverse-engineered functionality by reading source code and tracing execution paths through the monorepo. I compared what I found in the source code with legacy documentation, where present, and used the gaps and inconsistencies to prepare questions for subject-matter experts. I drafted API documentation outlines for technical review before developing the full content. Where possible, I compiled and ran the Scala examples to check that they worked as documented.
 
 ## Sample technical documentation delivered {/* #sample-technical-documentation-delivered */}
 
 ### Optimus UI {/* #optimus-ui */}
 
-Created Scala API documentation for an MVVM (Model-View-ViewModel) UI framework that enabled developers to construct reactive user interfaces for server and desktop-based business applications using a single Scala domain-specific language (DSL).
+Created Scala API documentation for an MVVM (Model-View-ViewModel) UI framework that enabled developers to construct reactive user interfaces for server- and desktop-based business applications using a single Scala domain-specific language (DSL).
 
-Covered dependency-graph-based computation, interaction with bitemporal data, and the concepts and usage patterns needed for building reactive applications.
+Explained dependency-graph-based computation, interaction with bitemporal data, and the concepts and usage patterns needed for building reactive applications.
 
 ### Regression testing framework {/* #regression-testing-framework */}
 
 Documented a large-scale internal automated testing framework supporting 400,000 tests, including functional tests, numerical regression tests and UI tests.
 
-Covered test execution workflows, result interpretation and techniques for investigating potential regressions.
+Provided guidance on test execution workflows, result interpretation and techniques for investigating potential regressions.
 
 ### Scala/C++ interoperability {/* #scalac-interoperability */}
 

@@ -28,10 +28,31 @@ api-security:
 apple-pay:
   description: A mobile payment service by Apple.
   label: Apple Pay
+azure-application-insights:
+  description: An application performance management service in Azure.
+  label: Azure Application Insights
+azure-container-apps:
+  description: A serverless container hosting service on Azure.
+  label: Azure Container Apps
+azure-container-registry:
+  description: A private Docker container registry service on Azure.
+  label: Azure Container Registry
+azure-log-analytics:
+  description: A log analytics service in Azure Monitor.
+  label: Azure Log Analytics
+azure-managed-identity:
+  description: A managed identity feature in Azure for secure authentication to resources.
+  label: Azure managed identity
+azure-monitor:
+  description: A comprehensive monitoring service in Azure.
+  label: Azure Monitor
 bash:
   description: A Unix shell and command language used for interactive command-line work, scripting, automation,
     and build or deployment workflows.
   label: Bash
+bm25:
+  description: A ranking function used in information retrieval.
+  label: BM25
 brightspot-cms:
   description: A content management system.
   label: Brightspot CMS
@@ -57,6 +78,9 @@ codetreedocs:
 confluence:
   description: A collaboration and documentation platform.
   label: Confluence
+cors:
+  description: Cross-Origin Resource Sharing, a mechanism for allowing web requests from different origins.
+  label: CORS
 csharp:
   description: A general-purpose programming language in the .NET ecosystem used to build applications,
     services, and tooling.
@@ -92,6 +116,12 @@ documentation-governance:
 docusaurus:
   description: A static site generator for building documentation websites.
   label: Docusaurus
+faiss:
+  description: A library for efficient similarity search and clustering of dense vectors.
+  label: FAISS
+fastapi:
+  description: A modern Python web framework for building APIs.
+  label: FastAPI
 fastmcp:
   description: A framework for building MCP servers.
   label: FastMCP
@@ -122,6 +152,9 @@ github-pages:
 google-pay:
   description: A digital wallet platform by Google.
   label: Google Pay
+grafana:
+  description: An open-source analytics and monitoring platform.
+  label: Grafana
 graphviz:
   description: A graph visualisation software.
   label: Graphviz
@@ -238,6 +271,9 @@ openapi:
 openssl:
   description: A cryptography library and toolkit.
   label: OpenSSL
+opentelemetry:
+  description: An observability framework for cloud-native software.
+  label: OpenTelemetry
 openwrt:
   description: A Linux-based firmware for routers.
   label: OpenWrt
@@ -268,6 +304,9 @@ postman:
 pycharm:
   description: An IDE for Python development.
   label: PyCharm
+pydantic:
+  description: A data validation library for Python.
+  label: Pydantic
 python:
   description: A general-purpose programming language used for scripting, automation, tooling, data processing,
     and software development.
@@ -281,6 +320,9 @@ rag:
 react:
   description: A JavaScript library for building user interfaces.
   label: React
+reciprocal-rank-fusion:
+  description: A method for combining ranked lists from multiple retrieval systems.
+  label: Reciprocal Rank Fusion
 requests:
   description: A Python library for making HTTP requests.
   label: Requests
@@ -297,6 +339,9 @@ scala:
   description: A general-purpose programming language for the JVM that combines object-oriented and functional
     programming paradigms.
   label: Scala
+sentence-transformers:
+  description: A Python library for generating sentence embeddings.
+  label: sentence-transformers
 spec-driven-development:
   description: A development approach using specifications.
   label: Spec-driven development
@@ -319,6 +364,9 @@ technical-validation:
 technical-writing:
   description: The practice of creating technical documentation and content.
   label: Technical writing
+terraform:
+  description: An infrastructure-as-code tool for provisioning cloud resources.
+  label: Terraform
 tls:
   description: Transport Layer Security protocol.
   label: TLS

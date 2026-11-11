@@ -54,3 +54,11 @@ Codetree
 Backfiller
 ScalaCon
 subcommands
+FastAPI
+AzureRM
+OpenTelemetry
+FAISS
+vCPU
+Pydantic
+frontmatter
+Model-View-ViewModel

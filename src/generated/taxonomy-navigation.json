@@ -355,10 +355,52 @@
           "kind": "payment-technology"
         },
         {
+          "id": "azure-application-insights",
+          "label": "Azure Application Insights",
+          "description": "An application performance management service in Azure.",
+          "kind": "cloud-hosting-platform"
+        },
+        {
+          "id": "azure-container-apps",
+          "label": "Azure Container Apps",
+          "description": "A serverless container hosting service on Azure.",
+          "kind": "container-platform"
+        },
+        {
+          "id": "azure-container-registry",
+          "label": "Azure Container Registry",
+          "description": "A private Docker container registry service on Azure.",
+          "kind": "container-platform"
+        },
+        {
+          "id": "azure-log-analytics",
+          "label": "Azure Log Analytics",
+          "description": "A log analytics service in Azure Monitor.",
+          "kind": "cloud-hosting-platform"
+        },
+        {
+          "id": "azure-managed-identity",
+          "label": "Azure managed identity",
+          "description": "A managed identity feature in Azure for secure authentication to resources.",
+          "kind": "security-cryptography"
+        },
+        {
+          "id": "azure-monitor",
+          "label": "Azure Monitor",
+          "description": "A comprehensive monitoring service in Azure.",
+          "kind": "cloud-hosting-platform"
+        },
+        {
           "id": "bash",
           "label": "Bash",
           "description": "A Unix shell and command language used for interactive command-line work, scripting, automation, and build or deployment workflows.",
           "kind": "shell-scripting"
+        },
+        {
+          "id": "bm25",
+          "label": "BM25",
+          "description": "A ranking function used in information retrieval.",
+          "kind": "technical-technique"
         },
         {
           "id": "brightspot-cms",
@@ -415,6 +457,12 @@
           "kind": "cms-wiki"
         },
         {
+          "id": "cors",
+          "label": "CORS",
+          "description": "Cross-Origin Resource Sharing, a mechanism for allowing web requests from different origins.",
+          "kind": "standard-specification"
+        },
+        {
           "id": "css",
           "label": "CSS",
           "description": "A stylesheet language used to control the presentation and layout of HTML, XML, and related structured documents.",
@@ -449,6 +497,18 @@
           "label": "Docusaurus",
           "description": "A static site generator for building documentation websites.",
           "kind": "documentation-platform"
+        },
+        {
+          "id": "faiss",
+          "label": "FAISS",
+          "description": "A library for efficient similarity search and clustering of dense vectors.",
+          "kind": "library"
+        },
+        {
+          "id": "fastapi",
+          "label": "FastAPI",
+          "description": "A modern Python web framework for building APIs.",
+          "kind": "framework"
         },
         {
           "id": "fastmcp",
@@ -509,6 +569,12 @@
           "label": "Google Pay",
           "description": "A digital wallet platform by Google.",
           "kind": "payment-technology"
+        },
+        {
+          "id": "grafana",
+          "label": "Grafana",
+          "description": "An open-source analytics and monitoring platform.",
+          "kind": "data-analysis-tool"
         },
         {
           "id": "graphviz",
@@ -739,6 +805,12 @@
           "kind": "security-cryptography"
         },
         {
+          "id": "opentelemetry",
+          "label": "OpenTelemetry",
+          "description": "An observability framework for cloud-native software.",
+          "kind": "technical-technique"
+        },
+        {
           "id": "openwrt",
           "label": "OpenWrt",
           "description": "A Linux-based firmware for routers.",
@@ -793,6 +865,12 @@
           "kind": "ide-editor"
         },
         {
+          "id": "pydantic",
+          "label": "Pydantic",
+          "description": "A data validation library for Python.",
+          "kind": "library"
+        },
+        {
           "id": "python",
           "label": "Python",
           "description": "A general-purpose programming language used for scripting, automation, tooling, data processing, and software development.",
@@ -815,6 +893,12 @@
           "label": "React",
           "description": "A JavaScript library for building user interfaces.",
           "kind": "library"
+        },
+        {
+          "id": "reciprocal-rank-fusion",
+          "label": "Reciprocal Rank Fusion",
+          "description": "A method for combining ranked lists from multiple retrieval systems.",
+          "kind": "technical-technique"
         },
         {
           "id": "requests",
@@ -847,6 +931,12 @@
           "kind": "programming-language"
         },
         {
+          "id": "sentence-transformers",
+          "label": "sentence-transformers",
+          "description": "A Python library for generating sentence embeddings.",
+          "kind": "library"
+        },
+        {
           "id": "spec-driven-development",
           "label": "Spec-driven development",
           "description": "A development approach using specifications.",
@@ -869,6 +959,12 @@
           "label": "TCP/IP",
           "description": "The Internet protocol suite.",
           "kind": "protocol"
+        },
+        {
+          "id": "terraform",
+          "label": "Terraform",
+          "description": "An infrastructure-as-code tool for provisioning cloud resources.",
+          "kind": "infrastructure-platform"
         },
         {
           "id": "tls",
@@ -1239,6 +1335,59 @@
       "audiences": [
         "technical-writers",
         "documentation-managers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
+      "id": "case-studies/RagSearchCloudArchitecture",
+      "title": "Designing Cloud-Based RAG search for technical documentation",
+      "path": "/docs/case-studies/RagSearchCloudArchitecture",
+      "source": "docs/case-studies/RagSearchCloudArchitecture.md",
+      "description": "Designing and deploying cloud-based, metadata-governed retrieval-augmented generation with Docker, Terraform and Azure.",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "documentation-governance",
+        "docs-as-code",
+        "information-architecture",
+        "taxonomy",
+        "developer-experience"
+      ],
+      "technologies": [
+        "rag",
+        "docker",
+        "terraform",
+        "azure-container-apps",
+        "azure-container-registry",
+        "azure-log-analytics",
+        "azure-managed-identity",
+        "github-actions",
+        "github-pages",
+        "docusaurus",
+        "fastapi",
+        "pydantic",
+        "deepseek-api",
+        "sentence-transformers",
+        "faiss",
+        "bm25",
+        "reciprocal-rank-fusion",
+        "mermaid",
+        "markdown",
+        "mdx",
+        "python",
+        "https",
+        "cors",
+        "opentelemetry",
+        "azure-application-insights",
+        "azure-monitor",
+        "grafana"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
       ],
       "lifecycle": [
         "current"

@@ -1,0 +1,105 @@
+schema_version: 2
+id: 2026-11-11-ai-ragsearchcloudarchitecture
+description: Review proposed taxonomy additions for docs/case-studies/RagSearchCloudArchitecture.md.
+change_type: vocabulary-expansion
+trigger: content-driven
+governance:
+  date: '2026-11-11'
+  source: ai-proposed
+  reason: 'DeepSeek review of docs/case-studies/RagSearchCloudArchitecture.md: technologies.azure-application-insights:
+    The document plans to export telemetry to Azure Application Insights; no existing term covers this
+    service. technologies.azure-container-apps: The document describes deploying FastAPI on Azure Container
+    Apps, including configuration and scaling, but no existing term covers this specific Azure container
+    platform. technologies.azure-container-registry: The document uses Azure Container Registry to store
+    Docker images and configures access via managed identity; no existing term covers this service. technologies.azure-log-analytics:
+    The document provisions and uses a Log Analytics workspace for platform and console logs; no existing
+    term covers this Azure service. technologies.azure-managed-identity: The document uses a user-assigned
+    managed identity to grant AcrPull permission without passwords; no existing term covers this Azure
+    security feature. technologies.azure-monitor: The document plans to use Azure Monitor alongside Application
+    Insights; no existing term covers this service. technologies.bm25: The document implements BM25 for
+    keyword search; no existing term covers BM25. technologies.cors: The document configures CORS and
+    discusses CORS preflight issues; no existing term covers CORS. technologies.faiss: The document uses
+    FAISS for vector search; no existing term covers FAISS. technologies.fastapi: The document implements
+    a FastAPI service with endpoints and validation; no existing term covers FastAPI. technologies.grafana:
+    The document mentions evaluating Grafana for dashboards; no existing term covers Grafana. technologies.opentelemetry:
+    The document plans to use OpenTelemetry for tracing and metrics; no existing term covers OpenTelemetry.
+    technologies.pydantic: The document uses Pydantic for request validation; no existing term covers
+    Pydantic. technologies.reciprocal-rank-fusion: The document uses Reciprocal Rank Fusion to combine
+    BM25 and semantic rankings; no existing term covers this technique. technologies.sentence-transformers:
+    The document uses sentence-transformers/all-MiniLM-L6-v2 to generate embeddings; no existing term
+    covers this library. technologies.terraform: The document uses Terraform with the AzureRM provider
+    to provision Azure resources; no existing term covers Terraform.'
+preconditions:
+  taxonomy_version: 2
+changes:
+  technologies:
+    add:
+      azure-application-insights:
+        label: Azure Application Insights
+        description: An application performance management service in Azure.
+        kind: cloud-hosting-platform
+      azure-container-apps:
+        label: Azure Container Apps
+        description: A serverless container hosting service on Azure.
+        kind: container-platform
+      azure-container-registry:
+        label: Azure Container Registry
+        description: A private Docker container registry service on Azure.
+        kind: container-platform
+        aliases:
+        - ACR
+      azure-log-analytics:
+        label: Azure Log Analytics
+        description: A log analytics service in Azure Monitor.
+        kind: cloud-hosting-platform
+      azure-managed-identity:
+        label: Azure managed identity
+        description: A managed identity feature in Azure for secure authentication to resources.
+        kind: security-cryptography
+      azure-monitor:
+        label: Azure Monitor
+        description: A comprehensive monitoring service in Azure.
+        kind: cloud-hosting-platform
+      bm25:
+        label: BM25
+        description: A ranking function used in information retrieval.
+        kind: technical-technique
+      cors:
+        label: CORS
+        description: Cross-Origin Resource Sharing, a mechanism for allowing web requests from 
+          different origins.
+        kind: standard-specification
+      faiss:
+        label: FAISS
+        description: A library for efficient similarity search and clustering of dense vectors.
+        kind: library
+      fastapi:
+        label: FastAPI
+        description: A modern Python web framework for building APIs.
+        kind: framework
+      grafana:
+        label: Grafana
+        description: An open-source analytics and monitoring platform.
+        kind: data-analysis-tool
+      opentelemetry:
+        label: OpenTelemetry
+        description: An observability framework for cloud-native software.
+        kind: technical-technique
+      pydantic:
+        label: Pydantic
+        description: A data validation library for Python.
+        kind: library
+      reciprocal-rank-fusion:
+        label: Reciprocal Rank Fusion
+        description: A method for combining ranked lists from multiple retrieval systems.
+        kind: technical-technique
+        aliases:
+        - RRF
+      sentence-transformers:
+        label: sentence-transformers
+        description: A Python library for generating sentence embeddings.
+        kind: library
+      terraform:
+        label: Terraform
+        description: An infrastructure-as-code tool for provisioning cloud resources.
+        kind: infrastructure-platform

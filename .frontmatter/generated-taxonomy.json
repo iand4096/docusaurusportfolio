@@ -50,7 +50,14 @@
         "amx-composer",
         "api-blueprint",
         "apple-pay",
+        "azure-application-insights",
+        "azure-container-apps",
+        "azure-container-registry",
+        "azure-log-analytics",
+        "azure-managed-identity",
+        "azure-monitor",
         "bash",
+        "bm25",
         "brightspot-cms",
         "c-plus-plus",
         "c4-model",
@@ -59,6 +66,7 @@
         "codepen",
         "codetreedocs",
         "confluence",
+        "cors",
         "csharp",
         "css",
         "curl",
@@ -66,6 +74,8 @@
         "digital-enablement-api",
         "docker",
         "docusaurus",
+        "faiss",
+        "fastapi",
         "fastmcp",
         "finos-calm",
         "flask",
@@ -76,6 +86,7 @@
         "github-copilot",
         "github-pages",
         "google-pay",
+        "grafana",
         "graphviz",
         "https",
         "hypothesis",
@@ -113,6 +124,7 @@
         "ocr",
         "openapi",
         "openssl",
+        "opentelemetry",
         "openwrt",
         "optimus",
         "owasp",
@@ -122,19 +134,23 @@
         "plantuml",
         "postman",
         "pycharm",
+        "pydantic",
         "python",
         "pythonanywhere",
         "rag",
         "react",
+        "reciprocal-rank-fusion",
         "requests",
         "rest",
         "rice",
         "saq-a",
         "scala",
+        "sentence-transformers",
         "spec-driven-development",
         "sphinx",
         "svg",
         "tcp-ip",
+        "terraform",
         "tls",
         "tokenisation",
         "twiki",
@@ -828,7 +844,14 @@
     "api-documentation",
     "api-security",
     "apple-pay",
+    "azure-application-insights",
+    "azure-container-apps",
+    "azure-container-registry",
+    "azure-log-analytics",
+    "azure-managed-identity",
+    "azure-monitor",
     "bash",
+    "bm25",
     "brightspot-cms",
     "c-plus-plus",
     "c4-model",
@@ -837,6 +860,7 @@
     "codepen",
     "codetreedocs",
     "confluence",
+    "cors",
     "csharp",
     "css",
     "curl",
@@ -848,6 +872,8 @@
     "documentation-engineering",
     "documentation-governance",
     "docusaurus",
+    "faiss",
+    "fastapi",
     "fastmcp",
     "finos-calm",
     "flask",
@@ -858,6 +884,7 @@
     "github-copilot",
     "github-pages",
     "google-pay",
+    "grafana",
     "graphviz",
     "https",
     "hypothesis",
@@ -896,6 +923,7 @@
     "ocr",
     "openapi",
     "openssl",
+    "opentelemetry",
     "openwrt",
     "optimus",
     "owasp",
@@ -906,15 +934,18 @@
     "plantuml",
     "postman",
     "pycharm",
+    "pydantic",
     "python",
     "pythonanywhere",
     "rag",
     "react",
+    "reciprocal-rank-fusion",
     "requests",
     "rest",
     "rice",
     "saq-a",
     "scala",
+    "sentence-transformers",
     "spec-driven-development",
     "sphinx",
     "svg",
@@ -922,6 +953,7 @@
     "tcp-ip",
     "technical-validation",
     "technical-writing",
+    "terraform",
     "tls",
     "tokenisation",
     "twiki",
@@ -1125,17 +1157,21 @@
       "xhtml"
     ],
     "framework": [
+      "fastapi",
       "fastmcp",
       "flask",
       "optimus",
       "rice"
     ],
     "library": [
+      "faiss",
       "flexsearch",
       "jinja",
       "paysafe-js",
+      "pydantic",
       "react",
-      "requests"
+      "requests",
+      "sentence-transformers"
     ],
     "runtime": [
       "jvm",
@@ -1143,6 +1179,7 @@
     ],
     "standard-specification": [
       "api-blueprint",
+      "cors",
       "finos-calm",
       "jni",
       "jose",
@@ -1213,10 +1250,14 @@
       "git"
     ],
     "container-platform": [
+      "azure-container-apps",
+      "azure-container-registry",
       "docker",
       "kubernetes"
     ],
-    "infrastructure-platform": [],
+    "infrastructure-platform": [
+      "terraform"
+    ],
     "operating-system-firmware": [
       "linux",
       "openwrt"
@@ -1226,6 +1267,9 @@
       "nginx"
     ],
     "cloud-hosting-platform": [
+      "azure-application-insights",
+      "azure-log-analytics",
+      "azure-monitor",
       "github-pages",
       "pythonanywhere"
     ],
@@ -1242,11 +1286,15 @@
       "rest"
     ],
     "technical-technique": [
+      "bm25",
       "ocr",
+      "opentelemetry",
       "rag",
+      "reciprocal-rank-fusion",
       "spec-driven-development"
     ],
     "security-cryptography": [
+      "azure-managed-identity",
       "mtls",
       "openssl",
       "pki"
@@ -1259,7 +1307,9 @@
       "github-copilot",
       "whisper"
     ],
-    "data-analysis-tool": [],
+    "data-analysis-tool": [
+      "grafana"
+    ],
     "design-graphics-tool": [
       "adobe-illustrator",
       "inkscape"

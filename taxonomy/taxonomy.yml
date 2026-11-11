@@ -1381,6 +1381,155 @@ dimensions:
           introduced: '2026-10-30'
           source: ai-proposed
           review: annual
+      azure-application-insights:
+        label: Azure Application Insights
+        description: An application performance management service in Azure.
+        kind: cloud-hosting-platform
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      azure-container-apps:
+        label: Azure Container Apps
+        description: A serverless container hosting service on Azure.
+        kind: container-platform
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      azure-container-registry:
+        label: Azure Container Registry
+        description: A private Docker container registry service on Azure.
+        kind: container-platform
+        aliases:
+          - ACR
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      azure-log-analytics:
+        label: Azure Log Analytics
+        description: A log analytics service in Azure Monitor.
+        kind: cloud-hosting-platform
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      azure-managed-identity:
+        label: Azure managed identity
+        description: A managed identity feature in Azure for secure authentication to resources.
+        kind: security-cryptography
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      azure-monitor:
+        label: Azure Monitor
+        description: A comprehensive monitoring service in Azure.
+        kind: cloud-hosting-platform
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      bm25:
+        label: BM25
+        description: A ranking function used in information retrieval.
+        kind: technical-technique
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      cors:
+        label: CORS
+        description: Cross-Origin Resource Sharing, a mechanism for allowing web requests from 
+          different origins.
+        kind: standard-specification
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      faiss:
+        label: FAISS
+        description: A library for efficient similarity search and clustering of dense vectors.
+        kind: library
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      fastapi:
+        label: FastAPI
+        description: A modern Python web framework for building APIs.
+        kind: framework
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      grafana:
+        label: Grafana
+        description: An open-source analytics and monitoring platform.
+        kind: data-analysis-tool
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      opentelemetry:
+        label: OpenTelemetry
+        description: An observability framework for cloud-native software.
+        kind: technical-technique
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      pydantic:
+        label: Pydantic
+        description: A data validation library for Python.
+        kind: library
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      reciprocal-rank-fusion:
+        label: Reciprocal Rank Fusion
+        description: A method for combining ranked lists from multiple retrieval systems.
+        kind: technical-technique
+        aliases:
+          - RRF
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      sentence-transformers:
+        label: sentence-transformers
+        description: A Python library for generating sentence embeddings.
+        kind: library
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
+      terraform:
+        label: Terraform
+        description: An infrastructure-as-code tool for provisioning cloud resources.
+        kind: infrastructure-platform
+        governance:
+          status: active
+          introduced: '2026-11-11'
+          source: ai-proposed
+          review: annual
   lifecycle:
     description: The publication lifecycle state of the content.
     metadata_field: lifecycle
