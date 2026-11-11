@@ -1,0 +1,474 @@
+name: Set up documentation QA
+description: Install documentation QA runtimes, dependencies and configuration on Ubuntu runners.
+
+# Call after checkout from the repository root. This action needs no provider key.
+# Tool versions and preflight checks are shared by PR review and deployment.
+runs:
+  using: composite
+  steps:
+    - name: Set up Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version: 20
+        cache: npm
+
+    - name: Install site and Remark dependencies
+      shell: bash
+      run: npm ci
+
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version: "3.12"
+
+    - name: Install documentation QA dependencies
+      shell: bash
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install -r requirements-doc-review.txt
+
+    # The Python QA script invokes Vale directly and parses its JSON
+    # output into the unified documentation QA report. Vale uses
+    # mdx2vast as an external parser for MDX files.
+    #
+    # Install Vale as a normal Linux binary rather than through Snap.
+    # A Snap-confined Vale process may not be able to execute the
+    # globally installed mdx2vast binary even when the Actions shell
+    # itself can find mdx2vast in PATH.
+    - name: Install Vale and MDX support
+      shell: bash
+      run: |
+        VALE_VERSION="3.17.1"
+        curl -fsSL \
+          "https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
+          -o /tmp/vale.tar.gz
+
+        mkdir -p /tmp/vale
+        tar -xzf /tmp/vale.tar.gz -C /tmp/vale
+        sudo install /tmp/vale/vale /usr/local/bin/vale
+
+        # Vale requires mdx2vast to lint MDX files.
+        npm install --global mdx2vast
+
+        echo "Vale:"
+        command -v vale
+        vale --version
+
+        echo "mdx2vast:"
+        command -v mdx2vast
+
+    # Validate the repository Vale configuration and MDX parser before
+    # running the documentation QA script.
+    - name: Validate Vale configuration
+      shell: bash
+      run: |
+        if [ ! -f ".vale.ini" ]; then
+          echo "::error::.vale.ini was not found at the repository root."
+          exit 1
+        fi
+
+        if ! command -v vale >/dev/null 2>&1; then
+          echo "::error::Vale was not found in PATH."
+          exit 1
+        fi
+
+        if ! command -v mdx2vast >/dev/null 2>&1; then
+          echo "::error::mdx2vast was not found in PATH. Vale cannot lint MDX files."
+          exit 1
+        fi
+
+        echo "Vale configuration found."
+        echo "Vale: $(command -v vale)"
+        echo "mdx2vast: $(command -v mdx2vast)"
+
+        vale sync
+        vale ls-config
+
+        # Exercise Vale against a real MDX file before the documentation
+        # QA step consumes API credits. This catches parser/runtime issues
+        # such as "mdx2vast not found" during the preflight.
+        TEST_MDX="$(find . -type f -name '*.mdx' -not -path './node_modules/*' | head -n 1)"
+
+        if [ -n "$TEST_MDX" ]; then
+          echo "Testing Vale MDX parsing with: $TEST_MDX"
+          vale --output=JSON --no-exit "$TEST_MDX" >/tmp/vale-mdx-preflight.json
+          echo "Vale MDX parsing: OK"
+        else
+          echo "No MDX files found; skipping the MDX parser preflight."
+        fi
+
+    # LTeX+ 18.7.0 requires Java 21.
+    #
+    # Explicitly install/select Java 21 so the LTeX+ launcher does not
+    # fall back to the GitHub runner's Java 17 runtime.
+    - name: Set up Java for LTeX+
+      uses: actions/setup-java@v5
+      with:
+        distribution: temurin
+        java-version: "21"
+
+    - name: Verify Java for LTeX+
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        echo "JAVA_HOME=$JAVA_HOME"
+
+        echo "Java executable:"
+        command -v java
+
+        echo "Java version:"
+        java --version
+
+    # LTeX+ provides grammar and spelling checks for Markdown and MDX.
+    # Use the standalone Linux bundle and run it with the Java 21
+    # runtime configured above.
+    - name: Install LTeX+
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        LTEX_VERSION="18.7.0"
+        LTEX_DIR="/opt/ltex-ls-plus"
+        LTEX_ARCHIVE="/tmp/ltex-ls-plus.tar.gz"
+        LTEX_EXTRACT="/tmp/ltex-ls-plus-extract"
+
+        echo "Downloading LTeX+ ${LTEX_VERSION}..."
+
+        curl -fsSL \
+          "https://github.com/ltex-plus/ltex-ls-plus/releases/download/${LTEX_VERSION}/ltex-ls-plus-${LTEX_VERSION}-linux-x64.tar.gz" \
+          -o "$LTEX_ARCHIVE"
+
+        echo "Archive contents (first 30 entries):"
+        tar -tzf "$LTEX_ARCHIVE" | sed -n '1,30p'
+
+        rm -rf "$LTEX_EXTRACT"
+        mkdir -p "$LTEX_EXTRACT"
+        tar -xzf "$LTEX_ARCHIVE" -C "$LTEX_EXTRACT"
+
+        echo "Locating ltex-cli-plus..."
+
+        LTEX_CLI="$(
+          find "$LTEX_EXTRACT" \
+            -type f \
+            -path '*/bin/ltex-cli-plus' \
+            -print \
+            -quit
+        )"
+
+        if [ -z "$LTEX_CLI" ]; then
+          echo "::error::ltex-cli-plus was not found in the extracted LTeX+ archive."
+          echo "Extracted files:"
+          find "$LTEX_EXTRACT" -maxdepth 4 -type f | sort | sed -n '1,100p'
+          exit 1
+        fi
+
+        echo "Found CLI: $LTEX_CLI"
+
+        # bin/ltex-cli-plus -> bin -> installation root
+        LTEX_ROOT="$(dirname "$(dirname "$LTEX_CLI")")"
+        echo "Detected LTeX+ root: $LTEX_ROOT"
+
+        sudo rm -rf "$LTEX_DIR"
+        sudo mkdir -p "$LTEX_DIR"
+
+        # Preserve the complete installation tree because the launcher
+        # expects sibling lib/runtime files relative to this root.
+        sudo cp -a "$LTEX_ROOT"/. "$LTEX_DIR"/
+
+        sudo chmod +x "$LTEX_DIR/bin/ltex-cli-plus"
+
+        if [ -f "$LTEX_DIR/bin/ltex-ls-plus" ]; then
+          sudo chmod +x "$LTEX_DIR/bin/ltex-ls-plus"
+        fi
+
+        # GITHUB_PATH applies to subsequent workflow steps.
+        echo "$LTEX_DIR/bin" >> "$GITHUB_PATH"
+
+        echo "Installed LTeX+ bin directory:"
+        ls -la "$LTEX_DIR/bin"
+
+        echo "Java being used:"
+        echo "JAVA_HOME=$JAVA_HOME"
+        command -v java
+        java --version
+
+        echo "Bundled Java executables, if any:"
+        find "$LTEX_DIR" \
+          -maxdepth 5 \
+          -type f \
+          -path '*/bin/java' \
+          -print || true
+
+        echo "LTeX+:"
+        "$LTEX_DIR/bin/ltex-cli-plus" --version
+
+    # Build the effective LTeX+ configuration used by CI.
+    #
+    # VS Code stores workspace-folder quick-fix data in these external files:
+    #   .vscode/ltex.dictionary.en-GB.txt
+    #   .vscode/ltex.disabledRules.en-GB.txt
+    #   .vscode/ltex.hiddenFalsePositives.en-GB.txt
+    #
+    # External setting files are handled by the VS Code client, so the
+    # standalone CLI does not automatically import them from .vscode.
+    # Convert each file into the language-specific arrays expected by LTeX+
+    # and merge them with the committed .ltex.json base configuration.
+    - name: Build LTeX+ CI configuration
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        BASE_CONFIG=".ltex.json"
+        CI_CONFIG=".ltex-ci.json"
+
+        DICTIONARY_FILE=".vscode/ltex.dictionary.en-GB.txt"
+        DISABLED_RULES_FILE=".vscode/ltex.disabledRules.en-GB.txt"
+        HIDDEN_FALSE_POSITIVES_FILE=".vscode/ltex.hiddenFalsePositives.en-GB.txt"
+
+        for file in \
+          "$BASE_CONFIG" \
+          "$DICTIONARY_FILE" \
+          "$DISABLED_RULES_FILE" \
+          "$HIDDEN_FALSE_POSITIVES_FILE"
+        do
+          if [ ! -f "$file" ]; then
+            echo "::error::Required LTeX+ configuration file was not found: $file"
+            exit 1
+          fi
+        done
+
+        node <<'NODE'
+        const fs = require('fs');
+
+        const baseConfigPath = '.ltex.json';
+        const ciConfigPath = '.ltex-ci.json';
+
+        const dictionaryPath = '.vscode/ltex.dictionary.en-GB.txt';
+        const disabledRulesPath = '.vscode/ltex.disabledRules.en-GB.txt';
+        const hiddenFalsePositivesPath =
+          '.vscode/ltex.hiddenFalsePositives.en-GB.txt';
+
+        function readLines(path) {
+          return fs
+            .readFileSync(path, 'utf8')
+            .replace(/^\uFEFF/, '')
+            .split(/\r?\n/)
+            .map((line) => line.trim())
+            .filter((line) => line.length > 0);
+        }
+
+        const config = JSON.parse(
+          fs.readFileSync(baseConfigPath, 'utf8').replace(/^\uFEFF/, '')
+        );
+
+        config.ltex ??= {};
+
+        const dictionary = readLines(dictionaryPath);
+        const disabledRules = readLines(disabledRulesPath);
+        const hiddenFalsePositives = readLines(hiddenFalsePositivesPath);
+
+        // hiddenFalsePositives entries are JSON strings containing rule and
+        // sentence information. Validate each source-file line before
+        // writing it into the generated LTeX+ configuration.
+        hiddenFalsePositives.forEach((entry, index) => {
+          try {
+            JSON.parse(entry);
+          } catch (error) {
+            throw new Error(
+              `${hiddenFalsePositivesPath}:${index + 1} is not valid JSON: ` +
+                error.message
+            );
+          }
+        });
+
+        config.ltex.dictionary = {
+          'en-GB': dictionary
+        };
+
+        config.ltex.disabledRules = {
+          'en-GB': disabledRules
+        };
+
+        config.ltex.hiddenFalsePositives = {
+          'en-GB': hiddenFalsePositives
+        };
+
+        // configurationTarget is a VS Code client setting that controls
+        // where quick fixes are written. It is not needed by the CLI.
+        delete config.ltex.configurationTarget;
+
+        fs.writeFileSync(
+          ciConfigPath,
+          JSON.stringify(config, null, 2) + '\n',
+          'utf8'
+        );
+
+        console.log(`Dictionary entries: ${dictionary.length}`);
+        console.log(`Disabled rules: ${disabledRules.length}`);
+        console.log(
+          `Hidden false positives: ${hiddenFalsePositives.length}`
+        );
+        NODE
+
+        echo "Validating generated LTeX+ configuration JSON..."
+        python -m json.tool "$CI_CONFIG" >/dev/null
+        echo "$CI_CONFIG syntax: OK"
+
+        # Keep .ltex-ci.json for explicit preflight use, and replace only the
+        # runner workspace copy of .ltex.json so any existing QA code that
+        # reads .ltex.json automatically receives the same effective config.
+        cp "$CI_CONFIG" "$BASE_CONFIG"
+
+        echo "Effective .ltex.json prepared for CI."
+        echo "Generated LTeX+ settings:"
+        node <<'NODE'
+        const config = require('./.ltex-ci.json');
+
+        console.log(
+          JSON.stringify(
+            {
+              language: config.ltex?.language,
+              enabled: config.ltex?.enabled,
+              dictionaryEntries:
+                config.ltex?.dictionary?.['en-GB']?.length ?? 0,
+              disabledRules:
+                config.ltex?.disabledRules?.['en-GB']?.length ?? 0,
+              hiddenFalsePositives:
+                config.ltex?.hiddenFalsePositives?.['en-GB']?.length ?? 0
+            },
+            null,
+            2
+          )
+        );
+        NODE
+
+    # Validate both the LTeX+ runtime and the effective CI configuration.
+    # .ltex-ci.json contains the committed base settings plus the three
+    # workspace external setting files converted to en-GB arrays.
+    - name: Validate LTeX+ installation and configuration
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        if ! command -v ltex-cli-plus >/dev/null 2>&1; then
+          echo "::error::ltex-cli-plus was not found in PATH."
+          exit 1
+        fi
+
+        if [ ! -f ".ltex.json" ]; then
+          echo "::error::.ltex.json was not found at the repository root."
+          exit 1
+        fi
+
+        echo "Java:"
+        echo "JAVA_HOME=$JAVA_HOME"
+        command -v java
+        java --version
+
+        echo "LTeX+ CLI: $(command -v ltex-cli-plus)"
+        ltex-cli-plus --version
+
+        if [ ! -f ".ltex-ci.json" ]; then
+          echo "::error::.ltex-ci.json was not generated."
+          exit 1
+        fi
+
+        echo "Effective .ltex.json configuration found."
+        python -m json.tool .ltex.json >/dev/null
+        echo ".ltex.json syntax: OK"
+
+        echo "Generated .ltex-ci.json configuration found."
+        python -m json.tool .ltex-ci.json >/dev/null
+        echo ".ltex-ci.json syntax: OK"
+
+        # Exercise the CLI with the generated British-English CI configuration.
+        PREFLIGHT_FILE=".ltex-preflight.md"
+        trap 'rm -f "$PREFLIGHT_FILE"' EXIT
+        printf '# LTeX+ preflight\n\nThe colour of the centre is blue.\n' > "$PREFLIGHT_FILE"
+
+        set +e
+        ltex-cli-plus \
+          --client-configuration=.ltex-ci.json \
+          "$PREFLIGHT_FILE"
+        LTEX_EXIT=$?
+        set -e
+
+        if [ "$LTEX_EXIT" -eq 0 ]; then
+          echo "LTeX+ installation and configuration: OK"
+        elif [ "$LTEX_EXIT" -eq 3 ]; then
+          # Exit 3 means the check ran successfully and produced diagnostics.
+          echo "LTeX+ installation and configuration: OK (diagnostics produced)"
+        else
+          echo "::error::LTeX+ preflight failed with exit code $LTEX_EXIT."
+          exit "$LTEX_EXIT"
+        fi
+
+    # Install the standalone Lychee Linux binary instead of using Snap.
+    # The Python QA script invokes lychee directly and parses its JSON output.
+    - name: Install Lychee
+      shell: bash
+      run: |
+        set -euo pipefail
+
+        LYCHEE_VERSION="0.24.2"
+        LYCHEE_ARCHIVE="/tmp/lychee.tar.gz"
+        LYCHEE_EXTRACT="/tmp/lychee-extract"
+
+        curl -fsSL --retry 3 \
+          "https://github.com/lycheeverse/lychee/releases/download/lychee-v${LYCHEE_VERSION}/lychee-x86_64-unknown-linux-gnu.tar.gz" \
+          -o "$LYCHEE_ARCHIVE"
+
+        mkdir -p "$LYCHEE_EXTRACT"
+        tar -xzf "$LYCHEE_ARCHIVE" -C "$LYCHEE_EXTRACT"
+
+        # Release archives can place the executable in a subdirectory.
+        LYCHEE_BIN="$(find "$LYCHEE_EXTRACT" -type f -name lychee -print -quit)"
+        if [ -z "$LYCHEE_BIN" ]; then
+          echo "::error::Lychee executable was not found in the downloaded archive."
+          exit 1
+        fi
+
+        sudo install -m 0755 "$LYCHEE_BIN" /usr/local/bin/lychee
+        command -v lychee
+        lychee --version
+
+    # Validate the effective Lychee configuration used by the Python QA script.
+    # lychee.toml and .lycheeignore are optional; if present, Lychee loads them
+    # during this preflight and fails here if the configuration is invalid.
+    - name: Validate Lychee configuration
+      shell: bash
+      run: |
+        if [ -f "lychee.toml" ]; then
+          echo "lychee.toml configuration found."
+        else
+          echo "No lychee.toml found; using Lychee defaults plus QA-script options."
+        fi
+
+        if [ -f ".lycheeignore" ]; then
+          echo ".lycheeignore exclusions found."
+        else
+          echo "No .lycheeignore found; no repository-level URL exclusions configured."
+        fi
+
+        # Exercise the same core options used by scripts/ai_docs_review.py
+        # without making a network request. A malformed lychee.toml causes
+        # Lychee to fail here before the documentation QA step consumes API credits.
+        PREFLIGHT_FILE=".lychee-preflight.md"
+        trap 'rm -f "$PREFLIGHT_FILE"' EXIT
+        printf '# Lychee configuration preflight\n' > "$PREFLIGHT_FILE"
+
+        lychee \
+          --root-dir "$(pwd)" \
+          --include '^https?://' \
+          --format json \
+          --no-progress \
+          "$PREFLIGHT_FILE"
+
+        echo "Lychee configuration: OK"
+
+    - name: Validate Remark installation
+      shell: bash
+      run: |
+        test -f .remarkrc.mjs
+        node_modules/.bin/remark --version

@@ -1,15 +1,31 @@
-# Ian Drewett - technical writing portfolio
+# Documentation Engineering Portfolio
 
-A Docusaurus portfolio presenting selected technical-writing work in API
-documentation, payments, developer experience, and software user
-documentation. See the site at https://iand4096.github.io/docusaurusportfolio/.
+A Docusaurus-based technical documentation portfolio demonstrating docs-as-code workflows, automated documentation quality assurance, AI-assisted review, taxonomy governance and cloud-based retrieval-augmented search.
 
-## Technology
+The repository contains the portfolio website, its documentation tooling, CI/CD workflows, a Python-based knowledge API and Terraform infrastructure for deployment to Azure Container Apps.
 
-- Docusaurus
-- Markdown and MDX
-- TypeScript
-- GitHub Pages
+[Live portfolio](https://iand4096.github.io/docusaurusportfolio/)
+
+The accompanying [case studies](docs/case-studies/) explain the engineering decisions, implementation approaches, validation methods and limitations of the projects, alongside selected technical-writing work in API documentation, payments, developer experience and software user documentation.
+
+## Licence and permitted use
+
+This repository is published solely for portfolio review by potential employers, recruiters and their evaluation teams. It is not open source. Original code and portfolio content may be inspected and run locally for that purpose; reuse, modification, redistribution and public deployment require prior written permission. Third-party material retains its own terms. See [LICENSE.md](LICENSE.md) for the full terms.
+
+## Architecture overview
+
+Markdown and MDX content carry governed metadata validated against a canonical taxonomy. GitHub Actions validates metadata, builds the Docusaurus site, runs documentation QA and publishes the site and review reports to GitHub Pages.
+
+The published AI search page calls a separate FastAPI backend on Azure Container Apps. The backend searches a prebuilt documentation index using BM25 and optional FAISS semantic retrieval, with optional DeepSeek answer generation grounded in retrieved passages. Terraform defines the Azure infrastructure; backend image packaging is separate from the website deployment workflow.
+
+| Subsystem | Implementation and documentation |
+| --- | --- |
+| Portfolio website | [Documentation content](docs/), [pages and components](src/), and [Docusaurus configuration](docusaurus.config.ts). |
+| Taxonomy governance | [Canonical vocabulary](taxonomy/taxonomy.yml), [validation and generation CLI](scripts/taxonomy.py), and [governance case study](docs/case-studies/TaxonomyGovernance.md). |
+| Documentation QA | [AI-assisted review and deterministic checks](scripts/ai_docs_review.py), [review workflow](.github/workflows/docs-review.yml), and the detailed guide below. |
+| CI/CD | [Site deployment and QA reports](.github/workflows/deploy.yml) and [pull-request metadata validation](.github/workflows/taxonomy-validation.yml). |
+| Knowledge API and search | [API architecture, setup and security controls](knowledge-api/README.md), [search frontend](src/components/GovernedSearch/GovernedSearchPage.tsx), and [cloud search case study](docs/case-studies/RagSearchCloudArchitecture.md). |
+| Azure infrastructure | [Terraform configuration](infra/azure/main.tf) and [backend image packaging script](scripts/build-azure-image.ps1). |
 
 ## Local development
 
@@ -17,6 +33,8 @@ documentation. See the site at https://iand4096.github.io/docusaurusportfolio/.
 npm install
 npm run start
 ```
+
+For the local search backend and frontend feature flags, follow the [Knowledge API setup guide](knowledge-api/README.md#local-setup).
 
 ## Documentation QA
 
@@ -103,6 +121,8 @@ Because failure occurs when a count exceeds its threshold, one high issue, six m
 Thresholds can be configured with `--fail-high`, `--fail-medium`, and `--fail-api-errors`.
 
 ### GitHub Actions integration
+
+The pull-request review and deployment workflows use the same [local composite action](.github/actions/setup-docs-qa/action.yml) to install Node.js, Python, Vale, LTeX+, Lychee and their configuration. The DeepSeek API key is injected only into the QA execution step.
 
 The deployment workflow builds the Docusaurus site, installs the QA dependencies, runs the full review, and publishes the HTML and JSON reports.
 

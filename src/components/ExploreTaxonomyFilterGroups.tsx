@@ -65,7 +65,7 @@ function TechnologyFilterGroup({
     if (hasSelected && detailsRef.current) detailsRef.current.open = true;
   }, [hasSelected]);
   return (
-    <details ref={detailsRef} defaultOpen={hasSelected} title={description}
+    <details ref={detailsRef} title={description}
       style={{width: '100%', flexBasis: '100%', marginTop: '0.35rem'}}>
       <summary style={{cursor: 'pointer', fontWeight: 600}}>
         {label} ({terms.length})

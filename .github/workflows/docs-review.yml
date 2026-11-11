@@ -27,6 +27,15 @@ on:
       - "lychee.toml"
       - ".lycheeignore"
 
+      # Shared setup and its configuration must also trigger PR validation.
+      - ".github/actions/setup-docs-qa/**"
+      - ".github/workflows/deploy.yml"
+      - "package.json"
+      - "package-lock.json"
+      - ".remarkrc*"
+      - ".remarkignore"
+      - ".ltex.json"
+      - ".vscode/ltex.*.txt"
       - ".github/workflows/docs-review.yml"
 
 permissions:
@@ -52,153 +61,8 @@ jobs:
       - name: Check out repository
         uses: actions/checkout@v7
 
-      - name: Set up Python
-        uses: actions/setup-python@v7
-        with:
-          python-version: "3.12"
-
-      - name: Install documentation QA dependencies
-        run: |
-          python -m pip install --upgrade pip
-          python -m pip install -r requirements-doc-review.txt
-
-      # The Python QA script invokes Vale directly and parses its JSON
-      # output into the unified documentation QA report. Vale uses
-      # mdx2vast as an external parser for MDX files.
-      #
-      # Install Vale as a normal Linux binary rather than through Snap.
-      # A Snap-confined Vale process may not be able to execute the
-      # globally installed mdx2vast binary even when the Actions shell
-      # itself can find mdx2vast in PATH.
-      - name: Install Vale and MDX support
-        shell: bash
-        run: |
-          VALE_VERSION="3.17.1"
-          curl -fsSL \
-            "https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
-            -o /tmp/vale.tar.gz
-
-          mkdir -p /tmp/vale
-          tar -xzf /tmp/vale.tar.gz -C /tmp/vale
-          sudo install /tmp/vale/vale /usr/local/bin/vale
-
-          # Vale requires mdx2vast to lint MDX files.
-          npm install --global mdx2vast
-
-          echo "Vale:"
-          command -v vale
-          vale --version
-
-          echo "mdx2vast:"
-          command -v mdx2vast
-
-      # Validate the repository Vale configuration and MDX parser before
-      # running the documentation QA script.
-      - name: Validate Vale configuration
-        shell: bash
-        run: |
-          if [ ! -f ".vale.ini" ]; then
-            echo "::error::.vale.ini was not found at the repository root."
-            exit 1
-          fi
-
-          if ! command -v mdx2vast >/dev/null 2>&1; then
-            echo "::error::mdx2vast was not found in PATH. Vale cannot lint MDX files."
-            exit 1
-          fi
-
-          echo "Vale configuration found."
-          echo "mdx2vast: $(command -v mdx2vast)"
-
-          vale sync
-          vale ls-config
-
-      # Install the standalone Lychee Linux binary instead of using Snap.
-      # The Python QA script invokes lychee directly and parses its JSON output.
-      - name: Install Lychee
-        shell: bash
-        run: |
-          set -euo pipefail
-
-          LYCHEE_VERSION="0.24.2"
-          LYCHEE_ARCHIVE="/tmp/lychee.tar.gz"
-          LYCHEE_EXTRACT="/tmp/lychee-extract"
-
-          curl -fsSL --retry 3 \
-            "https://github.com/lycheeverse/lychee/releases/download/lychee-v${LYCHEE_VERSION}/lychee-x86_64-unknown-linux-gnu.tar.gz" \
-            -o "$LYCHEE_ARCHIVE"
-
-          mkdir -p "$LYCHEE_EXTRACT"
-          tar -xzf "$LYCHEE_ARCHIVE" -C "$LYCHEE_EXTRACT"
-
-          # Release archives can place the executable in a subdirectory.
-          LYCHEE_BIN="$(find "$LYCHEE_EXTRACT" -type f -name lychee -print -quit)"
-          if [ -z "$LYCHEE_BIN" ]; then
-            echo "::error::Lychee executable was not found in the downloaded archive."
-            exit 1
-          fi
-
-          sudo install -m 0755 "$LYCHEE_BIN" /usr/local/bin/lychee
-          command -v lychee
-          lychee --version
-
-      # Validate that Lychee starts successfully with the same core options
-      # used by scripts/ai_docs_review.py. lychee.toml and .lycheeignore are
-      # optional; Lychee will load them automatically when present.
-      - name: Validate Lychee configuration
-        env:
-          GITHUB_TOKEN: ${{ github.token }}
-        shell: bash
-        run: |
-          echo "Lychee configuration:"
-          if [ -f "lychee.toml" ]; then
-            echo "  lychee.toml: found"
-          else
-            echo "  lychee.toml: not present (using defaults)"
-          fi
-
-          if [ -f ".lycheeignore" ]; then
-            echo "  .lycheeignore: found"
-          else
-            echo "  .lycheeignore: not present"
-          fi
-
-          # GitHub Actions runs Bash with `-e`; temporarily disable it so
-          # Lychee exit code 2 can be inspected rather than aborting this step.
-          set +e
-          printf '%s\n' "README.md" | lychee \
-            --files-from - \
-            --root-dir "$(pwd)" \
-            --include '^https?://' \
-            --format json \
-            --no-progress \
-            > /tmp/lychee-preflight.json
-          LYCHEE_EXIT=$?
-          set -e
-
-          # Exit code 0 means all links passed. Exit code 2 means broken links
-          # were found, which still proves that Lychee and its configuration
-          # loaded successfully. Exit codes 1 and 3 indicate execution/config
-          # problems and should stop the workflow before paid AI checks run.
-          if [ "$LYCHEE_EXIT" -ne 0 ] && [ "$LYCHEE_EXIT" -ne 2 ]; then
-            echo "::error::Lychee preflight failed with exit code $LYCHEE_EXIT."
-            cat /tmp/lychee-preflight.json || true
-            exit "$LYCHEE_EXIT"
-          fi
-
-          echo "Lychee configuration loaded successfully."
-
-      - name: Verify DeepSeek API key
-        env:
-          DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
-        shell: bash
-        run: |
-          if [ -z "$DEEPSEEK_API_KEY" ]; then
-            echo "::error::DEEPSEEK_API_KEY repository secret is not configured."
-            exit 1
-          fi
-
-          echo "DeepSeek API key is configured."
+      - name: Prepare documentation QA
+        uses: ./.github/actions/setup-docs-qa
 
       - name: Run documentation QA
         env:
@@ -206,6 +70,11 @@ jobs:
           GITHUB_TOKEN: ${{ github.token }}
         shell: bash
         run: |
+          if [ -z "$DEEPSEEK_API_KEY" ]; then
+            echo "::error::DEEPSEEK_API_KEY repository secret is not configured."
+            exit 1
+          fi
+
           echo "Python:"
           python --version
 
@@ -214,6 +83,12 @@ jobs:
 
           echo "mdx2vast:"
           command -v mdx2vast
+
+          echo "Java:"
+          java --version
+
+          echo "LTeX+:"
+          ltex-cli-plus --version
 
           echo "Lychee:"
           lychee --version
@@ -251,6 +126,7 @@ jobs:
             echo "- AI documentation review — DeepSeek"
             echo "- Static documentation checks"
             echo "- Vale prose/style checks"
+            echo "- LTeX+ grammar/spelling checks — British English (en-GB)"
             echo "- Lychee external HTTP(S) link checks"
             echo ""
             echo "Vale findings are incorporated into the unified reports with source \`vale\`."
