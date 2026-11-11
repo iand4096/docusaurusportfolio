@@ -62,22 +62,32 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-doc-review.txt
 
-      # The Python QA script invokes the Vale executable directly and parses
-      # its JSON output into the unified documentation QA report. Vale uses
+      # The Python QA script invokes Vale directly and parses its JSON
+      # output into the unified documentation QA report. Vale uses
       # mdx2vast as an external parser for MDX files.
+      #
+      # Install Vale as a normal Linux binary rather than through Snap.
+      # A Snap-confined Vale process may not be able to execute the
+      # globally installed mdx2vast binary even when the Actions shell
+      # itself can find mdx2vast in PATH.
       - name: Install Vale and MDX support
         shell: bash
         run: |
-          sudo snap install vale
+          VALE_VERSION="3.17.1"
+          curl -fsSL \
+            "https://github.com/vale-cli/vale/releases/download/v${VALE_VERSION}/vale_${VALE_VERSION}_Linux_64-bit.tar.gz" \
+            -o /tmp/vale.tar.gz
 
-          # Make Vale available to all following workflow steps.
-          echo "/snap/bin" >> "$GITHUB_PATH"
+          mkdir -p /tmp/vale
+          tar -xzf /tmp/vale.tar.gz -C /tmp/vale
+          sudo install /tmp/vale/vale /usr/local/bin/vale
 
           # Vale requires mdx2vast to lint MDX files.
           npm install --global mdx2vast
 
           echo "Vale:"
-          /snap/bin/vale --version
+          command -v vale
+          vale --version
 
           echo "mdx2vast:"
           command -v mdx2vast
@@ -103,16 +113,34 @@ jobs:
           vale sync
           vale ls-config
 
-      # The Python QA script invokes Lychee directly to check external HTTP(S)
-      # links and parses its JSON output into the unified QA report.
+      # Install the standalone Lychee Linux binary instead of using Snap.
+      # The Python QA script invokes lychee directly and parses its JSON output.
       - name: Install Lychee
         shell: bash
         run: |
-          sudo snap install lychee
+          set -euo pipefail
 
-          # /snap/bin is already added above for Vale, but use the absolute
-          # path here so installation is verified immediately.
-          /snap/bin/lychee --version
+          LYCHEE_VERSION="0.24.2"
+          LYCHEE_ARCHIVE="/tmp/lychee.tar.gz"
+          LYCHEE_EXTRACT="/tmp/lychee-extract"
+
+          curl -fsSL --retry 3 \
+            "https://github.com/lycheeverse/lychee/releases/download/lychee-v${LYCHEE_VERSION}/lychee-x86_64-unknown-linux-gnu.tar.gz" \
+            -o "$LYCHEE_ARCHIVE"
+
+          mkdir -p "$LYCHEE_EXTRACT"
+          tar -xzf "$LYCHEE_ARCHIVE" -C "$LYCHEE_EXTRACT"
+
+          # Release archives can place the executable in a subdirectory.
+          LYCHEE_BIN="$(find "$LYCHEE_EXTRACT" -type f -name lychee -print -quit)"
+          if [ -z "$LYCHEE_BIN" ]; then
+            echo "::error::Lychee executable was not found in the downloaded archive."
+            exit 1
+          fi
+
+          sudo install -m 0755 "$LYCHEE_BIN" /usr/local/bin/lychee
+          command -v lychee
+          lychee --version
 
       # Validate that Lychee starts successfully with the same core options
       # used by scripts/ai_docs_review.py. lychee.toml and .lycheeignore are

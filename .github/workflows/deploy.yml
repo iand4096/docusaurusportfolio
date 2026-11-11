@@ -440,18 +440,34 @@ jobs:
             exit "$LTEX_EXIT"
           fi
 
-      # The Python QA script invokes Lychee directly and parses its JSON
-      # output into the unified documentation QA report.
+      # Install the standalone Lychee Linux binary instead of using Snap.
+      # The Python QA script invokes lychee directly and parses its JSON output.
       - name: Install Lychee
         shell: bash
         run: |
-          sudo snap install lychee
+          set -euo pipefail
 
-          # Make Lychee available to all following workflow steps.
-          echo "/snap/bin" >> "$GITHUB_PATH"
+          LYCHEE_VERSION="0.24.2"
+          LYCHEE_ARCHIVE="/tmp/lychee.tar.gz"
+          LYCHEE_EXTRACT="/tmp/lychee-extract"
 
-          # Verify the installation immediately using the absolute path.
-          /snap/bin/lychee --version
+          curl -fsSL --retry 3 \
+            "https://github.com/lycheeverse/lychee/releases/download/lychee-v${LYCHEE_VERSION}/lychee-x86_64-unknown-linux-gnu.tar.gz" \
+            -o "$LYCHEE_ARCHIVE"
+
+          mkdir -p "$LYCHEE_EXTRACT"
+          tar -xzf "$LYCHEE_ARCHIVE" -C "$LYCHEE_EXTRACT"
+
+          # Release archives can place the executable in a subdirectory.
+          LYCHEE_BIN="$(find "$LYCHEE_EXTRACT" -type f -name lychee -print -quit)"
+          if [ -z "$LYCHEE_BIN" ]; then
+            echo "::error::Lychee executable was not found in the downloaded archive."
+            exit 1
+          fi
+
+          sudo install -m 0755 "$LYCHEE_BIN" /usr/local/bin/lychee
+          command -v lychee
+          lychee --version
 
       # Validate the effective Lychee configuration used by the Python QA script.
       # lychee.toml and .lycheeignore are optional; if present, Lychee loads them
