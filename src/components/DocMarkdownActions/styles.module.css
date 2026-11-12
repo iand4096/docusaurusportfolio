@@ -1,0 +1,32 @@
+.actions {margin: .5rem 0 1.25rem;}
+.buttons {display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .5rem;}
+.control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: .4rem .75rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: .45rem;
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: .85rem;
+  line-height: 1.4;
+  cursor: pointer;
+}
+.control:hover {border-color: var(--ifm-color-primary); color: var(--ifm-color-primary); text-decoration: none;}
+.control:focus-visible {outline: 2px solid var(--ifm-color-primary); outline-offset: 3px;}
+.control:disabled {opacity: .65; cursor: wait;}
+.status {margin: .5rem 0 0; font-size: .85rem; text-align: right;}
+.status:empty {display: none;}
+.srOnly {position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0;}
+.manualCopy {margin-top: .75rem;}
+.manualCopy label {display: block; font-size: .9rem; font-weight: 600;}
+.manualCopy textarea {display: block; width: 100%; margin: .5rem 0; padding: .75rem; border: 1px solid var(--ifm-color-emphasis-400); border-radius: .45rem; background: var(--ifm-background-color); color: var(--ifm-font-color-base); font-family: var(--ifm-font-family-monospace); font-size: .85rem;}
+@media (max-width: 576px) {
+  .buttons {justify-content: flex-start;}
+  .control {min-height: 44px;}
+  .status {text-align: left;}
+}
+@media print {.actions {display: none;}}

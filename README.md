@@ -43,6 +43,11 @@ For the local search backend and frontend feature flags, follow the [Knowledge A
 The Markdown copies retain the governed taxonomy fields. These files are
 generated during production builds, not by `npm run start`.
 
+Documentation pages include **Copy page as Markdown** and **View Markdown**
+controls. Copy uses the generated export and offers manual copying if clipboard
+access is unavailable. Preview working exports locally with `npm run build`
+followed by `npm run serve`.
+
 After deployment, the index is available at
 `https://iand4096.github.io/docusaurusportfolio/llms.txt`.
 
