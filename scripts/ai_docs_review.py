@@ -16,14 +16,14 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 import requests
 
 from qa_feedback import (decorate_issues, attach_feedback_status, save_findings, resolve as resolve_finding,
-                         challenge as challenge_finding, DEFAULT_FEEDBACK, DEFAULT_FINDINGS)
+                         challenge as challenge_finding, load_report, DEFAULT_FEEDBACK, DEFAULT_FINDINGS)
 
 API_URL = "https://api.deepseek.com/chat/completions"
 # DeepSeek retired V4-Flash on 10 September 2026. The supported rolling Flash
 # alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
 # DeepSeek exposes a pinned model identifier in future.
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
-AI_REVIEW_POLICY_VERSION = "2026-11-12-prose-metadata-v2"
+AI_REVIEW_POLICY_VERSION = "2026-11-12-ai-severity-cap-v3"
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
 # Set it back to True when AI review should be re-enabled.
@@ -164,10 +164,12 @@ Every issue must include exact source text copied verbatim from the supplied
 file in "original". The quoted text must be sufficient to identify the issue.
 Do not paraphrase "original".
 Severity is strict and means impact:
-- high: publication-blocking, materially false, materially contradictory or broken
+- high: never permitted for AI-origin findings; use medium at most
 - medium: a substantive problem that materially impairs comprehension or correctness
 - low: a worthwhile non-blocking improvement
 
+Never assign high severity to any finding.
+Do not report heading-capitalisation-only issues; Vale checks heading case.
 Never assign high or medium severity to a purely stylistic improvement.
 Improvements and diagram opportunities should normally be low severity.
 Confidence means certainty that the issue is genuinely present:
@@ -189,7 +191,7 @@ Return exactly this structure:
 {
   "issues": [
     {
-      "severity": "high|medium|low",
+      "severity": "medium|low",
       "confidence": "high|medium|low",
       "type": "defect|improvement|diagram",
       "category": "CATEGORY_FROM_THIS_CHECK",
@@ -210,7 +212,7 @@ Return exactly this structure:
   "issues": [
     {
       "file": "docs/example.mdx",
-      "severity": "high|medium|low",
+      "severity": "medium|low",
       "confidence": "high|medium|low",
       "type": "defect|improvement|diagram",
       "category": "CATEGORY_FROM_THIS_CHECK",
@@ -470,6 +472,14 @@ def source_line_text(content, line_number):
 
     return ""
 
+def apply_ai_severity_policy(issue):
+    """Enforce the ceiling for new and saved AI findings, preserving audit data."""
+    if issue.get('source') == 'ai' and issue.get('severity') == 'high':
+        issue.setdefault('model_reported_severity', 'high')
+        issue['severity'] = 'medium'
+    return issue
+
+
 def make_issue(
     *,
     file,
@@ -563,13 +573,18 @@ def normalise_ai_issue(issue, content, file_path, allowed_categories):
     # Optional/editorial AI findings remain visible in the report but cannot
     # masquerade as high- or medium-severity defects because a model became
     # more aggressive after a backend update.
+    # Do not let an explicitly non-defect criticism become a CI-blocking defect.
+    if re.search(r"\b(?:rather than a defect|not a defect|purely stylistic)\b", message, re.IGNORECASE):
+        issue_type = 'improvement'
+        if 'consistency' in allowed_categories:
+            category = 'consistency'
     if issue_type in {"improvement", "diagram"}:
         severity = "low"
 
     if confidence == "low":
         severity = "low"
     # Source is assigned by the implementation rather than trusted from AI.
-    return make_issue(
+    normalised = make_issue(
         file=file_path,
         line=actual_line,
         severity=severity,
@@ -581,6 +596,8 @@ def normalise_ai_issue(issue, content, file_path, allowed_categories):
         suggestion=suggestion.strip(),
         source="ai",
     )
+    normalised['model_reported_severity'] = issue['severity']
+    return apply_ai_severity_policy(normalised)
 
 def normalise_model_path(raw_path, known_paths):
     """Match a model-returned path to an exact supplied file path."""
@@ -2730,6 +2747,8 @@ def is_ci_threshold_eligible(issue):
 
     if issue.get("source") != "ai":
         return True
+    if issue.get("human_resolution") == "dismissed":
+        return False
 
     return (
         issue.get("type") == "defect"
@@ -2737,6 +2756,8 @@ def is_ci_threshold_eligible(issue):
     )
 
 def evaluate_ci(issues, errors, fail_high, fail_medium, fail_api_errors):
+    for issue in issues:
+        apply_ai_severity_policy(issue)
     threshold_eligible = [
         issue for issue in issues
         if is_ci_threshold_eligible(issue)
@@ -2751,7 +2772,8 @@ def evaluate_ci(issues, errors, fail_high, fail_medium, fail_api_errors):
     )
     advisory_ai_count = sum(
         1 for issue in issues
-        if issue.get("source") == "ai" and not is_ci_threshold_eligible(issue)
+        if issue.get("source") == "ai" and issue.get("human_resolution") != "dismissed"
+        and not is_ci_threshold_eligible(issue)
     )
     api_error_count = len(errors)
 
@@ -2780,7 +2802,9 @@ def evaluate_ci(issues, errors, fail_high, fail_medium, fail_api_errors):
         "failures": failures,
         "policy": (
             "Deterministic findings use their normal severity. "
-            "AI findings count towards CI only when type=defect and confidence=high."
+            "AI findings count towards CI only when type=defect and confidence=high, "
+            "unless explicitly dismissed by a human. AI severity is capped at medium. "
+            "AI withdrawal alone does not change CI eligibility."
         ),
         "thresholds": {
             "high": fail_high,
@@ -2904,10 +2928,88 @@ def sort_issues(issues):
         ),
     )
 
+def feedback_state(issue):
+    if issue.get('source') != 'ai':
+        return 'unreviewed'
+    if issue.get('feedback_needs_revalidation'):
+        return 'needs_revalidation'
+    if issue.get('human_resolution') == 'dismissed':
+        return 'dismissed'
+    if issue.get('feedback_status') == 'challenged':
+        return 'challenged'
+    if issue.get('human_resolution') in {'accepted', 'change_requested'}:
+        return issue['human_resolution']
+    return issue.get('effective_ai_decision') or 'unreviewed'
+
+
+def is_history_issue(issue):
+    return feedback_state(issue) in {'withdrawn', 'dismissed'}
+
+
+def feedback_label(issue):
+    if issue.get('feedback_match') == 'ambiguous':
+        return 'Unreviewed — multiple previous issues match; link not applied'
+    if issue.get('feedback_needs_revalidation'):
+        return 'Needs revalidation — exact claim matched; source or proposed fix changed'
+    return {
+        'unreviewed': 'Unreviewed', 'challenged': 'Challenged — awaiting decision',
+        'withdrawn': 'Withdrawn by AI — awaiting human resolution',
+        'dismissed': 'Dismissed by human', 'upheld': 'Upheld',
+        'revised': 'Revised', 'needs_evidence': 'Needs evidence',
+        'accepted': 'Accepted by human', 'change_requested': 'Change requested by human',
+    }.get(feedback_state(issue), 'Unreviewed')
+
+
+def report_counts(issues):
+    active = [issue for issue in issues if not is_history_issue(issue)]
+    return {
+        'active': len(active), 'history': len(issues) - len(active),
+        'pending': sum(feedback_state(issue) == 'challenged' for issue in active),
+        'needs_revalidation': sum(feedback_state(issue) == 'needs_revalidation' for issue in active),
+        **{level: sum(issue['severity'] == level for issue in active)
+           for level in ('high', 'medium', 'low')},
+    }
+
+
+def feedback_html(issue):
+    if issue.get('source') != 'ai':
+        return ''
+    parts = []
+    if issue.get('feedback_needs_revalidation'):
+        parts.append('<p>Previous feedback is linked to this exact claim, but the source or proposed fix has changed. It does not dismiss or revise this occurrence.</p>')
+    for entry in issue.get('feedback_discussion', []):
+        parts.append('<p><strong>' + html.escape(str(entry.get('role', '')).title()) +
+                     '</strong> ' + html.escape(str(entry.get('at', ''))) + '</p><p>' +
+                     html.escape(str(entry.get('text', ''))) + '</p>')
+    for entry in issue.get('feedback_adjudications', []):
+        parts.append('<p><strong>AI decision: ' + html.escape(str(entry.get('decision', ''))) +
+                     '</strong></p><p>' + html.escape(str(entry.get('reason', ''))) + '</p>')
+        parts.extend('<blockquote>' + html.escape(str(quote)) + '</blockquote>'
+                     for quote in entry.get('evidence', []))
+    for entry in issue.get('feedback_resolution_history', []):
+        parts.append('<p><strong>Human resolution: ' + html.escape(str(entry.get('decision', ''))) +
+                     '</strong></p><p>' + html.escape(str(entry.get('reason', ''))) + '</p>')
+    if issue.get('feedback_attempts') and issue['feedback_attempts'][-1].get('result') == 'failed':
+        parts.append('<p>Last adjudication attempt failed. The challenge remains pending; retry from the CLI.</p>')
+    if not parts:
+        return ''
+    return '<details class="feedback-details"><summary>Challenge discussion and evidence</summary>' + ''.join(parts) + '</details>'
+
+
+def issue_table(rows, table_id):
+    headers = ('File', 'Line', 'Severity', 'Confidence', 'Type', 'Category', 'Source',
+               'Original', 'Issue', 'Suggestion')
+    return '<div class="table-wrap"><table id="' + table_id + '"><thead><tr>' + ''.join(
+        '<th>' + heading + '</th>' for heading in headers) + '</tr></thead><tbody>' + ''.join(rows) + '</tbody></table></div>'
+
+
 def generate_json_report(issues, errors, metadata, ci_result):
+    for issue in issues:
+        apply_ai_severity_policy(issue)
     payload = {
         "metadata": metadata,
         "ci": ci_result,
+        "summary": report_counts(issues),
         "issues": sort_issues(issues),
         "errors": errors,
     }
@@ -2924,9 +3026,12 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
     Keep detailed findings as paragraphs rather than a wide Markdown table: long
     messages, multiline quotations and suggestions remain straightforward to parse.
     """
-    ordered = sort_issues(issues)
-    counts = {level: sum(i["severity"] == level for i in ordered)
-              for level in ("high", "medium", "low")}
+    for issue in issues:
+        apply_ai_severity_policy(issue)
+    active = sort_issues([issue for issue in issues if not is_history_issue(issue)])
+    history = sort_issues([issue for issue in issues if is_history_issue(issue)])
+    ordered = active + history
+    counts = report_counts(issues)
 
     def value(text):
         # Preserve content while preventing unintended Markdown headings in values.
@@ -2945,7 +3050,11 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
         "## Summary", "",
         f"- Files reviewed: {metadata['files_reviewed']}",
         f"- Total issues: {len(ordered)}",
-        *[f"- {level.title()} severity: {counts[level]}" for level in ("high", "medium", "low")],
+        f"- Active findings: {counts['active']}",
+        f"- Pending challenges: {counts['pending']}",
+        f"- Needs revalidation: {counts['needs_revalidation']}",
+        f"- Withdrawn / dismissed: {counts['history']}",
+        *[f"- Active {level} severity: {counts[level]}" for level in ("high", "medium", "low")],
         f"- CI-eligible high: {ci_result['high_count']}",
         f"- CI-eligible medium: {ci_result['medium_count']}",
         f"- Advisory AI: {ci_result['advisory_ai_issue_count']}",
@@ -2955,15 +3064,23 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
         "Failures: " + ("; ".join(ci_result['failures']) if ci_result['failures'] else "None"),
         "", "## Issues", "",
     ]
+    if metadata.get('feedback_updated_at'):
+        lines.insert(4, 'Feedback updated: ' + value(metadata['feedback_updated_at']))
+    if not active:
+        lines += ['No active findings.', '']
     if not ordered:
         lines += ["No issues found by the selected checks.", ""]
     for number, issue in enumerate(ordered, 1):
+        if history and number == len(active) + 1:
+            lines += ['## Withdrawn / dismissed', '']
         lines += [f"### Issue {number}", ""]
         if issue.get("source") == "ai":
             issue_id = issue.get("issue_id")
             if issue_id:
                 lines.append(f"- ID: `{value(issue_id)}`")
-            lines.append(f"- Feedback: {value(issue.get('feedback_status') or 'unreviewed')}")
+            lines.append(f"- Feedback: {value(feedback_label(issue))}")
+            lines.append(f"- Persistent issue: `{value(issue.get('persistent_issue_id') or 'not linked')}`")
+            lines.append(f"- Occurrence: `{value(issue.get('occurrence_id') or 'unknown')}`")
         lines += [
             f"- Document revision: `{issue.get('document_revision', {}).get('content_sha256') or 'unknown'}`",
             f"- File: `{value(issue['file'])}`",
@@ -2975,9 +3092,20 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
             f"- Source: {issue['source']}",
             f"- Source link: {github_file_url(issue['file'], issue['line']) or 'Not available'}",
             "", "**Original:**", "", quote_block(issue['original']), "",
-            "**Issue:**", "", value(issue['message']), "",
-            "**Suggestion:**", "", value(issue['suggestion']), "",
+            "**Issue:**", "", value(issue.get('effective_message', issue['message'])), "",
+            "**Suggestion:**", "", value(issue.get('effective_suggestion', issue['suggestion'])), "",
         ]
+        if issue.get('effective_ai_decision') == 'revised':
+            lines += ['**Original criticism:**', '', value(issue['message']), '',
+                      '**Original suggestion:**', '', value(issue['suggestion']), '']
+        for entry in issue.get('feedback_discussion', []):
+            lines += ['**' + value(entry.get('role', '')).title() + ' discussion:**', '', value(entry.get('text', '')), '']
+        for entry in issue.get('feedback_adjudications', []):
+            lines += ['**AI decision: ' + value(entry.get('decision', '')) + '**', '', value(entry.get('reason', '')), '']
+            for evidence in entry.get('evidence', []):
+                lines += [quote_block(evidence), '']
+        for entry in issue.get('feedback_resolution_history', []):
+            lines += ['**Human resolution: ' + value(entry.get('decision', '')) + '**', '', value(entry.get('reason', '')), '']
     lines += ["## API/check errors", ""]
     if not errors:
         lines += ["No API or check errors.", ""]
@@ -2992,12 +3120,20 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
 
 
 def generate_html_report(issues, errors, metadata, ci_result):
+    for issue in issues:
+        apply_ai_severity_policy(issue)
     issues = sort_issues(issues)
-    high_count = sum(1 for issue in issues if issue["severity"] == "high")
-    medium_count = sum(1 for issue in issues if issue["severity"] == "medium")
-    low_count = sum(1 for issue in issues if issue["severity"] == "low")
-
+    counts = report_counts(issues)
+    high_count, medium_count, low_count = (counts[level] for level in ('high', 'medium', 'low'))
+    pinned_report = metadata.get('review_report_reference')
+    pinned_report_json = json.dumps(pinned_report).replace('<', '\u003c')
+    try:
+        local_report = JSON_REPORT.relative_to(PROJECT_ROOT).as_posix()
+    except ValueError:
+        local_report = JSON_REPORT.as_posix()
+    local_report_json = json.dumps(local_report).replace('<', '\u003c')
     rows = []
+    history_rows = []
 
     for issue in issues:
         file_link = html_file_link(issue["file"], line=issue["line"])
@@ -3018,10 +3154,18 @@ def generate_html_report(issues, errors, metadata, ci_result):
             file_detail = (
                 '<small><strong>ID:</strong> <code>' + html.escape(issue_id) +
                 '</code></small><br>' + file_link + '<br><small>Status: ' +
-                html.escape(issue.get("feedback_status", "unreviewed")) +
-                '</small><br>' + challenge_control
+                html.escape(feedback_label(issue)) +
+                '</small><br><small>Persistent issue: <code>' +
+                html.escape(issue.get('persistent_issue_id') or 'not linked') +
+                '</code><br>Occurrence: <code>' + html.escape(issue.get('occurrence_id') or 'unknown') +
+                '</code></small><br>' + challenge_control
             )
-        rows.append(
+        message = html.escape(issue.get('effective_message', issue['message']))
+        suggestion = html.escape(issue.get('effective_suggestion', issue['suggestion']))
+        if issue.get('effective_ai_decision') == 'revised':
+            message += '<details><summary>Original criticism and suggestion</summary><p>' + html.escape(issue['message']) + '</p><p>' + html.escape(issue['suggestion']) + '</p></details>'
+        message += feedback_html(issue)
+        (history_rows if is_history_issue(issue) else rows).append(
             f"""
             <tr
                 data-severity="{html.escape(issue['severity'])}"
@@ -3036,8 +3180,8 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 <td>{html.escape(issue['category'])}</td>
                 <td><span class="badge source-{html.escape(issue['source'])}">{html.escape(issue['source'])}</span></td>
                 <td><code>{html.escape(issue['original'])}</code></td>
-                <td>{html.escape(issue['message'])}</td>
-                <td>{html.escape(issue['suggestion'])}</td>
+                <td>{message}</td>
+                <td>{suggestion}</td>
             </tr>
             """
         )
@@ -3046,12 +3190,16 @@ def generate_html_report(issues, errors, metadata, ci_result):
             """
             <tr>
                 <td colspan="10" class="empty-state">
-                    No issues found by the selected checks.
+                    No active findings.
                 </td>
             </tr>
             """
         )
 
+    history_markup = ('<details class="feedback-history"><summary>Withdrawn / dismissed (' + str(len(history_rows)) + ')</summary>' + issue_table(history_rows, 'historyTable') + '</details>') if history_rows else ''
+    feedback_timestamp = ('<p>Feedback updated: ' + html.escape(str(metadata['feedback_updated_at'])) + '</p>') if metadata.get('feedback_updated_at') else ''
+    snapshot_link = ('<a href="original-report.json">Original review snapshot</a>'
+                     if metadata.get('original_report_snapshot') == 'original-report.json' else '')
     error_rows = []
 
     for error in errors:
@@ -3275,6 +3423,9 @@ def generate_html_report(issues, errors, metadata, ci_result):
         }}
         .challenge-button:hover {{ background: #dbeafe; }}
         .challenge-button:focus-visible {{ outline: 2px solid #2563eb; outline-offset: 2px; }}
+        .feedback-details, .feedback-history {{ margin: 1rem 0; }}
+        .feedback-details summary, .feedback-history summary {{ cursor: pointer; font-weight: 600; }}
+        .feedback-details p, .feedback-details blockquote {{ white-space: pre-wrap; }}
         .copy-status {{ margin: 10px 0; font-size: 13px; }}
         .empty-state {{ text-align: center; padding: 30px; color: #6b7280; }}
         @media (prefers-color-scheme: dark) {{
@@ -3297,6 +3448,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
         <a id="latestReportLink" href="#">Load latest report</a>
         <a href="{html.escape(MARKDOWN_REPORT.name, quote=True)}">AI-readable Markdown report</a>
         <a href="{html.escape(JSON_REPORT.name, quote=True)}">Full report JSON</a>
+        {snapshot_link}
     </div>
     <p>All findings are included in this HTML document, without requiring JavaScript.
        AI readers can also use the linked Markdown or JSON files when published alongside this page.</p>
@@ -3308,12 +3460,17 @@ def generate_html_report(issues, errors, metadata, ci_result):
         Model: {html.escape(metadata['model'])} ·
         AI policy: {html.escape(metadata['ai_review_policy_version'])}
     </p>
+    {feedback_timestamp}
     <div class="cards">
         <div class="card"><strong>{metadata['files_reviewed']}</strong><span>files reviewed</span></div>
         <div class="card"><strong>{len(issues)}</strong><span>total issues</span></div>
-        <div class="card"><strong>{high_count}</strong><span>high</span></div>
-        <div class="card"><strong>{medium_count}</strong><span>medium</span></div>
-        <div class="card"><strong>{low_count}</strong><span>low</span></div>
+        <div class="card"><strong>{counts['active']}</strong><span>active findings</span></div>
+        <div class="card"><strong>{counts['pending']}</strong><span>pending challenges</span></div>
+        <div class="card"><strong>{counts['needs_revalidation']}</strong><span>needs revalidation</span></div>
+        <div class="card"><strong>{counts['history']}</strong><span>withdrawn / dismissed</span></div>
+        <div class="card"><strong>{high_count}</strong><span>active high</span></div>
+        <div class="card"><strong>{medium_count}</strong><span>active medium</span></div>
+        <div class="card"><strong>{low_count}</strong><span>active low</span></div>
         <div class="card"><strong>{ci_result['high_count']}</strong><span>CI-eligible high</span></div>
         <div class="card"><strong>{ci_result['medium_count']}</strong><span>CI-eligible medium</span></div>
         <div class="card"><strong>{ci_result['advisory_ai_issue_count']}</strong><span>advisory AI</span></div>
@@ -3328,7 +3485,9 @@ def generate_html_report(issues, errors, metadata, ci_result):
         API/check errors &gt; {ci_result['thresholds']['api_errors']}.
     </div>
 
-    <h2>Issues</h2>
+    <h2>Active findings</h2>
+    <p>Withdrawn and human-dismissed findings remain in the history below. An AI withdrawal alone
+       does not remove a substantive defect from CI counts; explicit human dismissal is required.</p>
     <p>For AI findings, select <strong>Challenge AI</strong> to copy a terminal command.
        Replace the placeholder reason with your rebuttal, then run it locally with
        <code>DEEPSEEK_API_KEY</code> configured. The published report does not send requests to DeepSeek.</p>
@@ -3356,27 +3515,8 @@ def generate_html_report(issues, errors, metadata, ci_result):
             </select>
         </label>
     </div>
-    <div class="table-wrap">
-        <table id="issuesTable">
-            <thead>
-                <tr>
-                    <th>File</th>
-                    <th>Line</th>
-                    <th>Severity</th>
-                    <th>Confidence</th>
-                    <th>Type</th>
-                    <th>Category</th>
-                    <th>Source</th>
-                    <th>Original</th>
-                    <th>Issue</th>
-                    <th>Suggestion</th>
-                </tr>
-            </thead>
-            <tbody>
-                {''.join(rows)}
-            </tbody>
-        </table>
-    </div>
+    {issue_table(rows, 'issuesTable')}
+    {history_markup}
     <h2>API/check errors</h2>
     <div class="table-wrap">
         <table>
@@ -3408,7 +3548,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
     function applyFilters() {{
         const severity = severityFilter.value;
         const source = sourceFilter.value;
-        const rows = document.querySelectorAll('#issuesTable tbody tr[data-severity]');
+        const rows = document.querySelectorAll('tr[data-severity]');
 
         for (const row of rows) {{
             const severityMatch = !severity || row.dataset.severity === severity;
@@ -3426,12 +3566,12 @@ def generate_html_report(issues, errors, metadata, ci_result):
         button.addEventListener('click', async () => {{
             const issueId = button.dataset.issueId;
             if (!/^qa-[A-Za-z0-9_-]+$/.test(issueId || '')) return;
-            const reportRef = (window.location.protocol === 'https:' &&
+            const reportRef = {pinned_report_json} || ((window.location.protocol === 'https:' &&
                 window.location.hostname === 'iand4096.github.io' &&
                 /^\/docusaurusportfolio\/qa\/report-[a-f0-9]{{12,40}}\.html$/i.test(window.location.pathname))
                 ? window.location.origin + window.location.pathname.replace(/\.html$/i, '.json')
-                : {json.dumps(JSON_REPORT.relative_to(PROJECT_ROOT).as_posix())};
-            const command = 'python scripts/ai_docs_review.py challenge --report ' +
+                : {local_report_json});
+            const command = 'python3 scripts/ai_docs_review.py challenge --report ' +
                 JSON.stringify(reportRef) + ' --issue ' + issueId +
                 ' --reason "Explain why you disagree with this finding"';
             const status = document.getElementById('copyStatus');
@@ -3463,6 +3603,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
     machine_payload = {
         "metadata": metadata,
         "ci": ci_result,
+        "summary": report_counts(issues),
         "issues": issues,
         "errors": errors,
     }
@@ -3479,14 +3620,56 @@ def generate_html_report(issues, errors, metadata, ci_result):
 # ---------------------------------------------------------------------------
 
 
+def render_saved_report(reference, feedback_path, output_dir):
+    """Render saved findings with current feedback; never execute review checks."""
+    payload, reference = load_report(reference)
+    source_path = Path(reference) if not urlsplit(reference).scheme else None
+    raw_snapshot = source_path.read_bytes() if source_path else (
+        json.dumps(payload, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
+    output_dir = Path(output_dir).resolve()
+    global REPORT, JSON_REPORT, MARKDOWN_REPORT
+    REPORT = output_dir / 'ai-doc-review.html'
+    JSON_REPORT = output_dir / 'ai-doc-review.json'
+    MARKDOWN_REPORT = output_dir / 'ai-doc-review.md'
+    snapshot_path = output_dir / 'original-report.json'
+    if source_path and source_path.resolve() in {REPORT, JSON_REPORT, MARKDOWN_REPORT}:
+        raise ValueError('Choose a different output directory; the original report must not be overwritten')
+    if snapshot_path.exists() and snapshot_path.read_bytes() != raw_snapshot:
+        raise ValueError('Output directory contains a different original report; choose a new directory')
+    issues = payload['issues']
+    metadata = dict(payload['metadata'])
+    errors = payload.get('errors', [])
+    thresholds = payload['ci']['thresholds']
+    if not all(isinstance(thresholds.get(key), int) for key in ('high', 'medium', 'api_errors')):
+        raise ValueError('Saved report must include its original CI thresholds')
+    attach_feedback_status(issues, feedback_path)
+    ci_result = evaluate_ci(issues, errors, thresholds['high'], thresholds['medium'], thresholds['api_errors'])
+    metadata['feedback_updated_at'] = london_now().isoformat(timespec='seconds')
+    metadata['review_report_reference'] = str(source_path.resolve()) if source_path else reference
+    metadata['original_report_snapshot'] = snapshot_path.name
+    metadata['feedback_view'] = True
+    output_dir.mkdir(parents=True, exist_ok=True)
+    if not snapshot_path.exists():
+        snapshot_path.write_bytes(raw_snapshot)
+    generate_html_report(issues, errors, metadata, ci_result)
+    generate_json_report(issues, errors, metadata, ci_result)
+    generate_markdown_report(issues, errors, metadata, ci_result)
+    counts = report_counts(issues)
+    print(f"Rendered saved report: {REPORT}")
+    print(f"Active: {counts['active']}; pending: {counts['pending']}; withdrawn/dismissed: {counts['history']}")
+    print('No checks or AI calls were run. Original snapshot: ' + str(snapshot_path))
+    print('CI result: ' + ('PASS' if ci_result['passed'] else 'FAIL'))
+    return ci_result
+
+
 def parse_args():
     parser = argparse.ArgumentParser(
         description="Run documentation QA checks or challenge an AI finding."
     )
-    parser.add_argument("command", nargs="?", choices=["challenge", "resolve"],
-                        help="Challenge an existing finding using DeepSeek")
+    parser.add_argument("command", nargs="?", choices=["challenge", "resolve", "render"],
+                        help="Challenge or resolve a finding, or render a saved report without running checks")
     parser.add_argument("--issue", help="Stable QA issue ID for challenge mode")
-    parser.add_argument("--report", help="Exact local report JSON path or immutable published GitHub Pages JSON URL for challenge mode")
+    parser.add_argument("--report", help="Exact local report JSON path or versioned GitHub Pages JSON URL for challenge, resolve or render")
     parser.add_argument("--reason", help="Rebuttal or human resolution explanation")
     parser.add_argument("--retry", action="store_true", help="Retry pending challenge without adding a new rebuttal")
     parser.add_argument("--decision", choices=["accepted", "dismissed", "change_requested", "pending"], help="Human resolution for resolve command")
@@ -3546,6 +3729,8 @@ def _assert_ci_policy_invariants():
         ({"source": "ai", "type": "diagram", "confidence": "high"}, False),
         ({"source": "ai", "type": "defect", "confidence": "medium"}, False),
         ({"source": "ai", "type": "defect", "confidence": "high"}, True),
+        ({"source": "ai", "type": "defect", "confidence": "high", "human_resolution": "dismissed"}, False),
+        ({"source": "ai", "type": "defect", "confidence": "high", "effective_ai_decision": "withdrawn"}, True),
         ({"source": "vale", "type": "improvement", "confidence": "high"}, True),
     ]
     for issue, expected in probes:
@@ -3571,22 +3756,34 @@ def main():
     report_dir = args.report_dir if args.report_dir is not None else (
         Path(".") if os.environ.get("GITHUB_ACTIONS", "").lower() == "true" else Path(".qa")
     )
+    if args.command == 'render' and args.report_dir is None:
+        report_dir = Path('.qa') / 'feedback-view'
     if not report_dir.is_absolute():
         report_dir = PROJECT_ROOT / report_dir
     REPORT = report_dir / "ai-doc-review.html"
     JSON_REPORT = report_dir / "ai-doc-review.json"
     MARKDOWN_REPORT = report_dir / "ai-doc-review.md"
-    if args.command not in {"challenge", "resolve"}:
+    if args.command not in {"challenge", "resolve", "render"}:
         report_dir.mkdir(parents=True, exist_ok=True)
     _assert_ci_policy_invariants()
+    if args.command == 'render':
+        if not args.report:
+            print('Render requires --report with the saved report JSON path or versioned URL', file=sys.stderr)
+            return 2
+        try:
+            result = render_saved_report(args.report, args.feedback_file, report_dir)
+        except (ValueError, OSError, requests.RequestException, KeyError, json.JSONDecodeError) as error:
+            print(f'Render failed: {error}', file=sys.stderr)
+            return 1
+        return 1 if args.ci and not result['passed'] else 0
     if args.command == "resolve":
         if not args.issue or not args.decision or not args.reason or args.reason_file or args.retry:
             print("Resolve requires --issue, --decision and --reason", file=sys.stderr)
             return 2
         try:
             result = resolve_finding(args.issue, args.decision, args.reason,
-                                     feedback_path=args.feedback_file)
-        except (ValueError, OSError, json.JSONDecodeError) as error:
+                                     feedback_path=args.feedback_file, report=args.report)
+        except (ValueError, OSError, requests.RequestException, KeyError, json.JSONDecodeError) as error:
             print(f"Resolve failed: {error}", file=sys.stderr)
             return 1
         print(json.dumps(result, ensure_ascii=False, indent=2))

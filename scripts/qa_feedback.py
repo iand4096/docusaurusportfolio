@@ -47,6 +47,37 @@ def finding_id(issue: dict) -> str:
     return 'qa-' + fingerprint
 
 
+def occurrence_id(issue: dict) -> str:
+    """Identify one exact finding at a particular document/Git revision."""
+    revision = issue.get('document_revision') or {}
+    value = '\0'.join((finding_id(issue), str(revision.get('git_commit') or ''),
+                       str(revision.get('content_sha256') or '')))
+    return 'qao-' + hashlib.sha256(value.encode()).hexdigest()[:24]
+
+
+def persistent_id(record_key: str, record: dict) -> str:
+    # Derive legacy IDs once from the original record key. Future matching can
+    # add occurrences without changing this identity or rewriting old reports.
+    return record.get('persistent_issue_id') or (
+        'qai-' + hashlib.sha256(record_key.encode()).hexdigest()[:24])
+
+
+def match_feedback(issue: dict, records: dict) -> tuple[str | None, dict, str]:
+    """Link only an unambiguous exact normalized claim; never use meaning alone."""
+    if issue.get('source') != 'ai':
+        return None, {}, 'none'
+    signature = finding_id(issue)
+    candidates = [(key, record) for key, record in records.items()
+                  if record.get('latest_finding') and
+                  finding_id(record['latest_finding']) == signature]
+    if len(candidates) > 1:
+        return None, {}, 'ambiguous'
+    if not candidates:
+        return None, {}, 'none'
+    key, record = candidates[0]
+    return key, record, 'exact'
+
+
 def git_document_revision(path: str) -> dict:
     """Record Git revision and actual on-disk bytes (including uncommitted edits)."""
     source = Path(path)
@@ -83,6 +114,7 @@ def decorate_issues(issues: list[dict]) -> None:
         if path not in revisions:
             revisions[path] = git_document_revision(path)
         issue['document_revision'] = dict(revisions[path])
+        issue['occurrence_id'] = occurrence_id(issue)
         unique.append(issue)
     issues[:] = unique
 
@@ -124,10 +156,38 @@ def feedback_records(path: Path = DEFAULT_FEEDBACK) -> dict:
 def attach_feedback_status(issues: list[dict], feedback_path: Path = DEFAULT_FEEDBACK) -> None:
     records = feedback_records(feedback_path)['records']
     for issue in issues:
-        record = records.get(issue['issue_id'], {})
-        issue['feedback_status'] = record.get('status', 'unreviewed')
-        issue['human_resolution'] = record.get('human_resolution')
-        issue['latest_ai_decision'] = (record.get('adjudications') or [{}])[-1].get('decision') if record.get('adjudications') else None
+        key, record, match = match_feedback(issue, records)
+        issue['feedback_match'] = match
+        issue['persistent_issue_id'] = (
+            None if match == 'ambiguous' else persistent_id(key, record) if key
+            else persistent_id(issue.get('issue_id') or finding_id(issue), {}))
+        issue['occurrence_id'] = occurrence_id(issue)
+        expected = (record.get('latest_finding', {}).get('document_revision') or {}).get('content_sha256')
+        actual = (issue.get('document_revision') or {}).get('content_sha256')
+        suggestion_changed = bool(record) and normalise(issue.get('suggestion')) != normalise(record.get('latest_finding', {}).get('suggestion'))
+        stale = bool(record) and (not expected or expected != actual or suggestion_changed)
+        issue['feedback_stale'] = stale
+        issue['feedback_needs_revalidation'] = stale
+        issue['feedback_revalidation_reason'] = ('suggestion_changed' if expected == actual and suggestion_changed
+                                                  else 'source_changed') if stale else None
+        # Keep the linked history visible even when its decisions are stale.
+        issue['feedback_record_id'] = key
+        issue['feedback_status'] = 'needs_revalidation' if stale else record.get('status', 'unreviewed')
+        issue['human_resolution'] = None if stale else record.get('human_resolution')
+        issue['feedback_discussion'] = record.get('discussion', [])
+        issue['feedback_adjudications'] = record.get('adjudications', [])
+        issue['feedback_resolution_history'] = record.get('resolution_history', [])
+        issue['feedback_attempts'] = record.get('attempts', [])
+        latest = (record.get('adjudications') or [{}])[-1]
+        issue['latest_ai_decision'] = latest.get('decision')
+        decision_sha = (latest.get('document_revision') or {}).get('content_sha256')
+        effective = latest if (not stale and record.get('status') == 'adjudicated'
+                               and decision_sha == actual) else {}
+        issue['effective_ai_decision'] = effective.get('decision')
+        issue['effective_message'] = (effective.get('revised_message')
+            if effective.get('decision') == 'revised' else None) or issue['message']
+        issue['effective_suggestion'] = (effective.get('revised_suggestion')
+            if effective.get('decision') == 'revised' else None) or issue['suggestion']
 
 
 def _source_excerpt(source: str, original: str, context: int = 15) -> tuple[int, str]:
@@ -402,9 +462,29 @@ def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False
     issue['_source_context'] = context
     store = feedback_records(feedback_path)
     records = store['records']
-    record = records.setdefault(issue_id, {
+    record_key, matched_record, match = match_feedback(issue, records)
+    if match == 'ambiguous':
+        raise ValueError('Multiple feedback records match this claim; resolve the duplicate records first')
+    record_key = record_key or issue_id
+    if record_key in records and match != 'exact':
+        raise ValueError('This report ID is already associated with a different claim')
+    record = records.setdefault(record_key, {
         'issue_id': issue_id, 'status': 'unreviewed',
         'human_resolution': None, 'discussion': [], 'adjudications': []})
+    record['persistent_issue_id'] = persistent_id(record_key, record)
+    occurrence = {'occurrence_id': occurrence_id(issue), 'issue_id': issue_id,
+                  'document_revision': issue['document_revision'], 'report_source': provenance}
+    occurrences = record.setdefault('occurrences', [])
+    if not any(item['occurrence_id'] == occurrence['occurrence_id'] for item in occurrences):
+        occurrences.append(occurrence)
+    previous_revision = (record.get('latest_finding', {}).get('document_revision') or {}).get('content_sha256')
+    if retry and (previous_revision != issue['document_revision']['content_sha256'] or
+                  normalise(record.get('latest_finding', {}).get('suggestion')) != normalise(issue.get('suggestion'))):
+        raise ValueError('Retry must use the same document revision and proposed fix as the pending challenge')
+    if previous_revision and previous_revision != issue['document_revision']['content_sha256']:
+        # Preserve the audit history, but never carry a human dismissal to a
+        # different version of the document when a new challenge is opened.
+        record['human_resolution'] = None
     record['report_source'] = provenance
     record['latest_finding'] = {k: issue.get(k) for k in (
         'file', 'category', 'source', 'original', 'message', 'suggestion', 'document_revision')}
@@ -429,7 +509,7 @@ def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False
         write_atomic(feedback_path, store)
         raise
     record['attempts'][-1]['result'] = 'succeeded'
-    record['adjudications'].append({'at': utc_now(), **decision, 'document_revision': issue['document_revision']})
+    record['adjudications'].append({'at': utc_now(), **decision, 'occurrence_id': occurrence_id(issue), 'document_revision': issue['document_revision']})
     record['discussion'].append({'role': 'ai', 'text': decision['reason'],
                                  'decision': decision['decision'], 'at': utc_now()})
     record['status'] = 'adjudicated'
@@ -441,17 +521,44 @@ HUMAN_DECISIONS = {'accepted', 'dismissed', 'change_requested', 'pending'}
 
 
 def resolve(issue_id: str, decision: str, reason: str, *,
-            feedback_path: Path = DEFAULT_FEEDBACK) -> dict:
+            feedback_path: Path = DEFAULT_FEEDBACK, report: str | Path | None = None) -> dict:
     """Record an explicit human decision without altering AI adjudication."""
     if decision not in HUMAN_DECISIONS:
         raise ValueError(f'Unknown human decision: {decision}')
     if not reason.strip():
         raise ValueError('Human resolution requires a reason')
     store = feedback_records(feedback_path)
-    record = store['records'].get(issue_id)
-    if record is None:
-        raise ValueError(f'No feedback record found for {issue_id}; challenge it first')
-    event = {'decision': decision, 'reason': reason.strip(), 'at': utc_now()}
+    if report is not None:
+        payload, provenance = load_report(report)
+        matches = [item for item in payload['issues'] if item.get('issue_id') == issue_id]
+        if len(matches) != 1:
+            raise ValueError('Finding is not uniquely present in the supplied report')
+        issue = matches[0]
+        key, record, match = match_feedback(issue, store['records'])
+        if match != 'exact':
+            raise ValueError('No unambiguous previous feedback matches this exact claim')
+        source = _source_for_report_finding(issue, historical=True)
+        if issue.get('original') not in source:
+            raise ValueError('Finding quotation is absent from the verified source')
+        old_sha = (record.get('latest_finding', {}).get('document_revision') or {}).get('content_sha256')
+        new_sha = issue['document_revision']['content_sha256']
+        if old_sha != new_sha or normalise(record.get('latest_finding', {}).get('suggestion')) != normalise(issue.get('suggestion')):
+            record['status'] = 'unreviewed'
+        record['latest_finding'] = {k: issue.get(k) for k in (
+            'file', 'category', 'source', 'original', 'message', 'suggestion', 'document_revision')}
+        record['persistent_issue_id'] = persistent_id(key, record)
+        record['report_source'] = provenance
+        occurrence = {'occurrence_id': occurrence_id(issue), 'issue_id': issue_id,
+                      'document_revision': issue['document_revision'], 'report_source': provenance}
+        occurrences = record.setdefault('occurrences', [])
+        if not any(item['occurrence_id'] == occurrence['occurrence_id'] for item in occurrences):
+            occurrences.append(occurrence)
+    else:
+        record = store['records'].get(issue_id)
+        if record is None:
+            raise ValueError(f'No feedback record found for {issue_id}; challenge it first or provide --report')
+    event = {'decision': decision, 'reason': reason.strip(), 'at': utc_now(),
+             'document_revision': record.get('latest_finding', {}).get('document_revision')}
     record['human_resolution'] = decision
     record.setdefault('resolution_history', []).append(event)
     write_atomic(feedback_path, store)

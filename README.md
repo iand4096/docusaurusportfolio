@@ -54,6 +54,51 @@ https://iand4096.github.io/docusaurusportfolio/qa/
 
 I implemented the pipeline in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.
 
+### Challenge feedback and saved reports
+
+The report's **Challenge AI** button copies a CLI command for that exact saved
+finding. Run it locally with `DEEPSEEK_API_KEY` configured. A challenge records
+the rebuttal and adjudication in `qa/feedback.json`; it does not rerun the review.
+
+Refresh the displayed report from the same saved JSON without running any checks
+or making AI calls:
+
+```bash
+python3 scripts/ai_docs_review.py render \
+  --report .qa/ai-doc-review.json \
+  --report-dir .qa/feedback-view
+```
+
+`--report` also accepts the exact versioned GitHub Pages JSON URL copied by the
+report. The output directory contains HTML, Markdown and JSON views, plus an
+`original-report.json` snapshot. The original review date and finding IDs are
+preserved; a separate feedback timestamp identifies when the view was refreshed.
+Use a separate output directory for each original report. To publish a feedback
+view, serve this output directory alongside the original versioned report; the
+render command itself does not deploy or modify GitHub Pages.
+For a view that will be published, use the versioned report URL as `--report`
+so copied challenge commands retain the public original-report reference.
+
+The active list shows upheld, revised and pending findings. Withdrawn findings
+remain in an expandable history section with human-dismissed findings. Revised
+wording appears first, with the original criticism and challenge evidence retained.
+An AI withdrawal alone does not change CI eligibility. Explicit human dismissal
+removes an AI finding from CI counts:
+
+```bash
+python3 scripts/ai_docs_review.py resolve \
+  --issue qa-REPLACE_WITH_FINDING_ID \
+  --decision dismissed \
+  --reason "The supplied source already answers this criticism."
+```
+
+Run `render` again after recording a resolution. Commit `qa/feedback.json` to
+preserve decisions for other checkouts. Feedback is only applied when the saved
+finding's source hash and proposed fix match the challenged version. Exact
+recurring claims in changed documents keep the earlier discussion and are
+marked **Needs revalidation**. See [QA finding identity and feedback continuity](qa/README.md)
+for supported cases, revalidation commands and remaining limitations.
+
 ### What it checks
 
 The **AI review** uses DeepSeek for conservative analysis of:
