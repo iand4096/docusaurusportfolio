@@ -46,11 +46,11 @@ tags:
   - wireshark
 ---
 
-## Containers, Cloud and networking {/* #containers-cloud-and-networking */}
+## Containers, cloud and networking {/* #containers-cloud-and-networking */}
 
 Practical experience using **Docker, Linux, networking and cloud-hosted environments** for documentation platforms and API integration testing, with basic exposure to Kubernetes.
 
-### Docker and Containers {/* #docker-and-containers */}
+### Docker and containers {/* #docker-and-containers */}
 
 * Led a project to migrate a large internal documentation platform to **Docker**, working with a software engineer from the central digital-modernisation team.
 * Defined documentation-platform requirements and helped migrate the web hosting and publishing environment to **Nginx running in Docker**. Built redirect logic so that old links continued to work.
@@ -59,7 +59,7 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 * Gained experience troubleshooting containerised documentation builds.
 * Built a personal Kubernetes cluster on Proxmox.
 
-### Cloud-Hosted integration testing {/* #cloud-hosted-integration-testing */}
+### Cloud-hosted integration testing {/* #cloud-hosted-integration-testing */}
 
 * Used **PythonAnywhere** to host generated public documentation for SME review.
 * Built externally accessible Python integrations to receive and test **webhooks** that could not reach internal development environments due to the corporate firewall.
