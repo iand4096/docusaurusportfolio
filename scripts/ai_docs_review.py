@@ -23,7 +23,7 @@ API_URL = "https://api.deepseek.com/chat/completions"
 # alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
 # DeepSeek exposes a pinned model identifier in future.
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
-AI_REVIEW_POLICY_VERSION = "2026-11-12-ai-severity-cap-v3"
+AI_REVIEW_POLICY_VERSION = "2026-11-12-prose-metadata-context-v4"
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
 # Set it back to True when AI review should be re-enabled.
@@ -132,6 +132,15 @@ COMMON_AI_RULES = r"""
 Use British English.
 
 This is a defect review, not a copy-editing exercise.
+
+The supplied documents are editorial review views, not complete raw source.
+Within YAML front matter, only reader-facing prose is retained. Technical fields
+are deliberately replaced by spaces while preserving source positions and the
+opening/closing delimiters. Blank lines and incomplete-looking YAML structures
+inside that block are filtering artefacts, not evidence of unfinished content.
+Review the retained metadata values for prose quality only. Do not report YAML
+syntax, missing metadata, placeholders or unfinished content based on masked
+front matter. The Markdown/MDX body after the closing delimiter is unchanged.
 
 Be conservative. Report only meaningful issues. The expected result for a
 professionally written page is often ZERO issues. Do not manufacture a finding
@@ -316,6 +325,10 @@ AI_PROSE_METADATA_PATHS = {
     ('sidebar_custom_props', 'sampleCard', 'description'),
     ('sidebar_custom_props', 'sampleCard', 'highlights'),
     ('sidebar_custom_props', 'sampleCard', 'ariaLabel'),
+    ('sidebar_custom_props', 'skillCard', 'tag'),
+    ('sidebar_custom_props', 'skillCard', 'description'),
+    ('sidebar_custom_props', 'skillCard', 'highlights'),
+    ('sidebar_custom_props', 'skillCard', 'ariaLabel'),
 }
 
 
@@ -357,8 +370,7 @@ def ai_review_content(content):
                     retain(item.start_mark.index, item.end_mark.index)
 
     visit(root)
-    blank = lambda line: ''.join(char if char in '\r\n' else ' ' for char in line)
-    return blank(lines[0]) + ''.join(masked) + blank(lines[end]) + ''.join(lines[end + 1:])
+    return lines[0] + ''.join(masked) + lines[end] + ''.join(lines[end + 1:])
 
 
 def add_line_numbers(text):

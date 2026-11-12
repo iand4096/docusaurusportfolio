@@ -53,6 +53,35 @@ class ProseMetadataTests(unittest.TestCase):
         self.assertNotIn('internal_id', filtered)
         self.assertEqual(len(source.splitlines()), len(filtered.splitlines()))
 
+    def test_front_matter_boundaries_and_body_are_preserved(self):
+        for ending in ('---', '...'):
+            for newline in ('\n', '\r\n'):
+                source = CONTENT.replace('---\n\nUsing', ending + '\n\nUsing').replace('\n', newline)
+                filtered = review.ai_review_content(source)
+                original_lines = source.splitlines(keepends=True)
+                filtered_lines = filtered.splitlines(keepends=True)
+                end = next(i for i in range(1, len(original_lines))
+                           if original_lines[i].strip() == ending)
+                self.assertEqual(filtered_lines[0], original_lines[0])
+                self.assertEqual(filtered_lines[end:], original_lines[end:])
+                self.assertEqual(len(filtered), len(source))
+
+    def test_skill_cards_include_prose_but_hide_technical_fields(self):
+        source = CONTENT.replace('sampleCard:', 'skillCard:')
+        filtered = review.ai_review_content(source)
+        self.assertIn('Card description.', filtered)
+        self.assertIn('A visible highlight.', filtered)
+        self.assertNotIn('hidden-id', filtered)
+
+    def test_published_false_positive_files_keep_delimiters_and_body(self):
+        for name in ('docs/skills/AIandDocumentation.md',
+                     'docs/tools/ContainersAndCloudNative.md'):
+            source = (review.PROJECT_ROOT / name).read_text()
+            filtered = review.ai_review_content(source)
+            self.assertEqual(filtered.splitlines()[0], '---')
+            end = source.splitlines().index('---', 1)
+            self.assertEqual(filtered.splitlines()[end:], source.splitlines()[end:])
+
     def test_all_ai_entry_points_filter_metadata(self):
         path = Path('example.md')
         with patch.object(review, 'request_review', return_value={'issues': []}) as request:
@@ -62,6 +91,8 @@ class ProseMetadataTests(unittest.TestCase):
             review.SiteWideConsistencyReview().run_site([path], {str(path): CONTENT}, 'unused')
         self.assertEqual(request.call_count, 4)
         for call in request.call_args_list:
+            self.assertIn('filtering artefacts', call.args[0])
+            self.assertIn('body after the closing delimiter is unchanged', call.args[0])
             prompt = call.args[1]
             self.assertNotIn('[curl, openapi]', prompt)
             self.assertNotIn('hidden-id', prompt)
