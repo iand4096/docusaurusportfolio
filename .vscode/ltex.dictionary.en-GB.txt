@@ -62,3 +62,8 @@ vCPU
 Pydantic
 frontmatter
 Model-View-ViewModel
+GiB
+writable
+Uvicorn
+pytest
+npm

@@ -12,6 +12,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
   <h1>Ian Drewett</h1>
   <p className="portfolio-lead">Documenting complex software & frameworks and building public and internal Developer Portals</p>
   <p className="portfolio-intro">Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a <Link to="#engineering-background">software-engineering background</Link>.</p>
+
   <div className="portfolio-hero-actions">
     <Link className="button button--primary" to="#case-studies">Explore selected work</Link>
     <Link className="button button--secondary" to="/browse?contentType=case-study&contentType=doc-sample">Browse all work</Link>
@@ -49,7 +50,6 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
   </Link>
 </div>
 
-
 <Link
   className="portfolio-card"
   to="/docs/case-studies/paysafedevcenter"
@@ -75,9 +75,11 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 >
   <span className="card-tag">Secure REST API · Python · Integration validation</span>
   <h3>Mastercard MDES for Merchants</h3>
+
   <div className="card-description">
     Developed and tested a complete payment API integration using Python, OAuth 1.0 RSA-SHA256, encryption and asynchronous webhooks. Used the working implementation to validate complex merchant workflows and identify documentation defects.
   </div>
+
   <span className="card-link">Read case study →</span>
 </Link>
 

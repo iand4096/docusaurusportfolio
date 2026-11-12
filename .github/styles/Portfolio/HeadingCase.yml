@@ -8,6 +8,9 @@ exceptions:
   - I
   - API
   - APIs
+  - LLM
+  - LLMs
+  - RAG
   - SDK
   - SDKs
   - OpenAPI

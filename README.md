@@ -1,6 +1,6 @@
-# Documentation Engineering Portfolio
+# Documentation engineering portfolio
 
-A Docusaurus-based technical documentation portfolio demonstrating docs-as-code workflows, automated documentation quality assurance, AI-assisted review, taxonomy governance and cloud-based retrieval-augmented search.
+A technical documentation portfolio built with Docusaurus, demonstrating docs-as-code workflows, automated documentation quality assurance, AI-assisted review, taxonomy governance and cloud-based retrieval-augmented search.
 
 The repository contains the portfolio website, its documentation tooling, CI/CD workflows, a Python-based knowledge API and Terraform infrastructure for deployment to Azure Container Apps.
 
@@ -10,11 +10,11 @@ The accompanying [case studies](docs/case-studies/) explain the engineering deci
 
 ## Licence and permitted use
 
-This repository is published solely for portfolio review by potential employers, recruiters and their evaluation teams. It is not open source. Original code and portfolio content may be inspected and run locally for that purpose; reuse, modification, redistribution and public deployment require prior written permission. Third-party material retains its own terms. See [LICENSE.md](LICENSE.md) for the full terms.
+This repository is published solely for portfolio review by potential employers, recruiters and their evaluation teams. It is not open source. Original code and portfolio content may be inspected and run locally for that purpose; reuse, modification, redistribution and public deployment require prior written permission. Third-party material retains its own terms. See [`LICENSE.md`](LICENSE.md) for the full terms.
 
 ## Architecture overview
 
-Markdown and MDX content carry governed metadata validated against a canonical taxonomy. GitHub Actions validates metadata, builds the Docusaurus site, runs documentation QA and publishes the site and review reports to GitHub Pages.
+Markdown and MDX content carry governed metadata validated against a canonical taxonomy. GitHub Actions validates metadata, builds the Docusaurus site, runs documentation QA and publishes the site together with its documentation QA reports to GitHub Pages.
 
 The published AI search page calls a separate FastAPI backend on Azure Container Apps. The backend searches a prebuilt documentation index using BM25 and optional FAISS semantic retrieval, with optional DeepSeek answer generation grounded in retrieved passages. Terraform defines the Azure infrastructure; backend image packaging is separate from the website deployment workflow.
 

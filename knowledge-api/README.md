@@ -56,7 +56,7 @@ Open `/docusaurusportfolio/explore?view=ai-search` for the AI Search tab. The le
 
 ## API
 
-| Endpoint | Behavior |
+| Endpoint | Behaviour |
 | --- | --- |
 | `GET /health` | Returns the index manifest and `index_loaded`; a missing index still returns `status: "ok"`, so check `index_loaded` for readiness. |
 | `GET /taxonomy` | Returns active canonical controlled-vocabulary terms; returns 503 if the taxonomy is unavailable. |
@@ -75,7 +75,7 @@ Queries must contain 2–500 characters; `top_k` defaults to 5 and must be 1–1
 
 The API is configured for public access without application authentication. The implemented controls in [main.py](app/main.py) and [abuse_protection.py](app/abuse_protection.py) limit resource use; they do not provide a distributed abuse-prevention service.
 
-| Control | Implemented behavior |
+| Control | Implemented behaviour |
 | --- | --- |
 | Rate limits | Enabled by default: per client identity, per rolling 60 seconds, 20 `POST /search`, 60 `GET /taxonomy`, and 3 `POST /chat` requests. Rejections return 429 with `Retry-After`. `/health` is not rate limited. |
 | Limiter memory | Tracks at most 10,000 client/route keys; refuses new keys if expired entries cannot free capacity. Counters are in memory, reset on restart or scale-to-zero, and are not shared across workers or replicas. |
@@ -107,4 +107,4 @@ cd knowledge-api
 python -m pytest -q
 ```
 
-The tests cover retrieval modes, taxonomy filters, ingestion and heading links, API behavior, and abuse controls without requiring a provider key or embedding-model download.
+The tests cover retrieval modes, taxonomy filters, ingestion and heading links, API behaviour, and abuse controls without requiring a provider key or embedding-model download.

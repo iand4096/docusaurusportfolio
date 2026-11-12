@@ -23,7 +23,7 @@ API_URL = "https://api.deepseek.com/chat/completions"
 # alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
 # DeepSeek exposes a pinned model identifier in future.
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
-AI_REVIEW_POLICY_VERSION = "2026-09-21-conservative-v1"
+AI_REVIEW_POLICY_VERSION = "2026-11-12-prose-metadata-v2"
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
 # Set it back to True when AI review should be re-enabled.
@@ -304,6 +304,59 @@ def report_run_metadata():
         "report_run_at_display": run_time.strftime("%d %B %Y, %H:%M:%S %Z"),
         "report_time_zone": "Europe/London",
     }
+
+
+# Only reader-facing front matter belongs in editorial AI input. Taxonomy IDs,
+# routing, flags and other technical settings are checked by deterministic tools.
+AI_PROSE_METADATA_PATHS = {
+    ('title',), ('description',), ('sidebar_label',),
+    ('sidebar_custom_props', 'sampleCard', 'tag'),
+    ('sidebar_custom_props', 'sampleCard', 'description'),
+    ('sidebar_custom_props', 'sampleCard', 'highlights'),
+    ('sidebar_custom_props', 'sampleCard', 'ariaLabel'),
+}
+
+
+def ai_review_content(content):
+    """Keep prose metadata and body verbatim, blanking other YAML at source lines."""
+    lines = content.splitlines(keepends=True)
+    if not lines or lines[0].strip() != '---':
+        return content
+    end = next((i for i in range(1, len(lines))
+                if lines[i].strip() in {'---', '...'}), None)
+    if end is None:
+        raise ValueError('Unterminated YAML front matter in AI review input')
+
+    from ruamel.yaml import YAML
+    from ruamel.yaml.nodes import MappingNode, ScalarNode, SequenceNode
+    root = YAML(typ='safe').compose(''.join(lines[1:end]))
+    metadata = ''.join(lines[1:end])
+    # Mask characters rather than whole lines: a flow-style YAML mapping can
+    # put an approved description and a technical identifier on the same line.
+    masked = [char if char in '\r\n' else ' ' for char in metadata]
+
+    def retain(start, stop):
+        masked[start:stop] = metadata[start:stop]
+
+    def visit(node, path=(), ancestors=()):
+        if isinstance(node, MappingNode):
+            for key, value in node.value:
+                next_path = path + (key.value,)
+                if any(allowed[:len(next_path)] == next_path for allowed in AI_PROSE_METADATA_PATHS):
+                    visit(value, next_path, ancestors + (key,))
+        elif path in AI_PROSE_METADATA_PATHS:
+            nodes = node.value if isinstance(node, SequenceNode) else [node]
+            for item in nodes:
+                if isinstance(item, ScalarNode) and item.tag == 'tag:yaml.org,2002:str':
+                    for key in ancestors:
+                        retain(key.start_mark.index, key.end_mark.index)
+                        if metadata[key.end_mark.index:key.end_mark.index + 1] == ':':
+                            retain(key.end_mark.index, key.end_mark.index + 1)
+                    retain(item.start_mark.index, item.end_mark.index)
+
+    visit(root)
+    blank = lambda line: ''.join(char if char in '\r\n' else ' ' for char in line)
+    return blank(lines[0]) + ''.join(masked) + blank(lines[end]) + ''.join(lines[end + 1:])
 
 
 def add_line_numbers(text):
@@ -597,6 +650,7 @@ class AIPageCheck(BaseCheck):
     prompt = ""
 
     def run_page(self, path, content, api_key):
+        content = ai_review_content(content)
         system_prompt = (
             COMMON_AI_RULES
             + "\n\n"
@@ -851,6 +905,7 @@ Use type "improvement".
 """
 
     def run_page(self, path, content, api_key):
+        content = ai_review_content(content)
         system_prompt = (
             COMMON_AI_RULES
             + "\n\n"
@@ -883,6 +938,7 @@ Use type "improvement".
         return validated
 
     def run_site(self, paths, contents, api_key):
+        contents = {path: ai_review_content(content) for path, content in contents.items()}
         sections = []
 
         for path in paths:
@@ -986,6 +1042,7 @@ Use type "improvement" unless the inconsistency is objectively defective.
 """
 
     def run_site(self, paths, contents, api_key):
+        contents = {path: ai_review_content(content) for path, content in contents.items()}
         sections = []
 
         for path in paths:

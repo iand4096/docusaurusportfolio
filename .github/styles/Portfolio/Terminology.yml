@@ -2,6 +2,10 @@ extends: substitution
 message: "Use '%s' instead of '%s'."
 level: warning
 ignorecase: true
+# URL destinations can surface as text when Markdown links appear inside JSX.
+# Exempt the whole URL, keeping visible labels and surrounding prose eligible.
+exceptions:
+  - 'https?://[^\s<>"''`()\[\]{}]+'
 swap:
   'open[\s-]?api': OpenAPI
   'node[.]?js': Node.js
