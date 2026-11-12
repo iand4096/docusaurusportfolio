@@ -5,6 +5,7 @@ import {Redirect} from '@docusaurus/router';
 import useBaseUrl from '@docusaurus/useBaseUrl';
 import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
+import {documentInSearchScope} from './searchScope';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
@@ -72,6 +73,7 @@ type SavedSearch = {
   retrieval: RetrievalMode;
   responseMode: ResponseMode;
   facets: SelectedFacets;
+  excludedFacets?: SelectedFacets;
   includeArchived: boolean;
   showFilters: boolean;
   items: Evidence[];
@@ -111,9 +113,10 @@ function isMissingDeepSeekKey(detail: unknown): boolean {
 
 // Compare the actual facet arrays and archived toggle used by the last successful
 // request. Sorting ensures changes to selection order do not trigger a warning.
-function filterSignature(selected: SelectedFacets, includeArchived: boolean): string {
+function filterSignature(selected: SelectedFacets, includeArchived: boolean, excluded: SelectedFacets = {}): string {
   return JSON.stringify({
     includeArchived,
+    excluded: FACETS.map(({key}) => [key, [...(excluded[key] ?? [])].sort()]),
     facets: FACETS.map(({key}) => [key, [...(selected[key] ?? [])].sort()]),
   });
 }
@@ -127,6 +130,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
   const [retrieval, setRetrieval] = useState<RetrievalMode>('hybrid');
   const [responseMode, setResponseMode] = useState<ResponseMode>('search');
   const [facets, setFacets] = useState<SelectedFacets>({});
+  const [excludedFacets, setExcludedFacets] = useState<SelectedFacets>({});
   const [includeArchived, setIncludeArchived] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [items, setItems] = useState<Evidence[]>([]);
@@ -166,6 +170,15 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
           }
           setFacets(validFacets);
         }
+        if (saved.excludedFacets && typeof saved.excludedFacets === 'object') {
+          const valid: SelectedFacets = {};
+          for (const {key} of FACETS) {
+            const terms = saved.excludedFacets[key];
+            if (Array.isArray(terms)) valid[key] = terms.filter(term => typeof term === 'string' &&
+              Object.prototype.hasOwnProperty.call(LOCAL_TAXONOMY.dimensions[key]?.terms ?? {}, term));
+          }
+          setExcludedFacets(valid);
+        }
         if (typeof saved.includeArchived === 'boolean') setIncludeArchived(saved.includeArchived);
         if (typeof saved.showFilters === 'boolean') setShowFilters(saved.showFilters);
         // Do not display results from a different configured backend.
@@ -196,7 +209,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
     if (!sessionRestored) return;
     try {
       const saved: SavedSearch = {
-        apiUrl, query, retrieval, responseMode, facets, includeArchived, showFilters,
+        apiUrl, query, retrieval, responseMode, facets, excludedFacets, includeArchived, showFilters,
         items, answer, actualMode, version, hasSearched,
         ...(lastSubmittedFilterSignature !== null ? {lastSubmittedFilterSignature} : {}),
       };
@@ -204,11 +217,19 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
     } catch {
       // Quota restrictions/private browsing: search continues without persistence.
     }
-  }, [sessionRestored, apiUrl, query, retrieval, responseMode, facets,
+  }, [sessionRestored, apiUrl, query, retrieval, responseMode, facets, excludedFacets,
     includeArchived, showFilters, items, answer, actualMode, version, hasSearched,
     lastSubmittedFilterSignature]);
 
+  function toggleExcludedFacet(key: FacetKey, term: string) {
+    setExcludedFacets(current => ({...current, [key]: (current[key] ?? []).includes(term)
+      ? (current[key] ?? []).filter(value => value !== term) : [...(current[key] ?? []), term]}));
+    setFacets(current => ({...current, [key]: (current[key] ?? []).filter(value => value !== term)}));
+    if (key === 'lifecycle' && term === 'archived') setIncludeArchived(false);
+  }
+
   function toggleFacet(key: FacetKey, term: string) {
+    setExcludedFacets(current => ({...current, [key]: (current[key] ?? []).filter(value => value !== term)}));
     setFacets((current) => {
       const selected = current[key] ?? [];
       const next = selected.includes(term)
@@ -220,6 +241,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
 
   function resetFilters() {
     setFacets({});
+    setExcludedFacets({});
     setIncludeArchived(false);
     // Preserve query, retrieval mode, results and saved session.
     // Filters take effect on the next submitted search.
@@ -235,6 +257,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
     setRetrieval('hybrid');
     setResponseMode('search');
     setFacets({});
+    setExcludedFacets({});
     setIncludeArchived(false);
     setShowFilters(false);
     setItems([]);
@@ -260,7 +283,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
         method: 'POST',
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({query: query.trim(), top_k: 5, mode: retrieval,
-          filters, include_archived: includeArchived}),
+          filters, exclude_filters: Object.fromEntries(Object.entries(excludedFacets).filter(([, values]) => values.length > 0)), include_archived: includeArchived}),
       });
       const data: ApiResponse = await response.json();
       if (!response.ok) {
@@ -283,7 +306,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
       setActualMode(data.mode || retrieval);
       setVersion(data.index_version || '');
       setHasSearched(true);
-      setLastSubmittedFilterSignature(filterSignature(facets, includeArchived));
+      setLastSubmittedFilterSignature(filterSignature(facets, includeArchived, excludedFacets));
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Request failed. Check Docker and the API URL.');
     } finally {
@@ -292,9 +315,14 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
   }
 
   const activeFilters = FACETS.flatMap(({key, label}) =>
-    (facets[key] ?? []).map(value => ({key, label, value})));
+    [...(facets[key] ?? []).map(value => ({key, label, value, excluded: false})),
+      ...(excludedFacets[key] ?? []).map(value => ({key, label, value, excluded: true}))]);
+  const scopedDocumentCount = navigationIndex.documents.filter(document =>
+    documentInSearchScope(document, facets, excludedFacets, includeArchived)).length;
+  const defaultArchiveExclusion = !includeArchived && !(facets.lifecycle ?? []).includes('archived') &&
+    !(excludedFacets.lifecycle ?? []).includes('archived');
   const filtersNeedRefresh = hasSearched && lastSubmittedFilterSignature !== null &&
-    lastSubmittedFilterSignature !== filterSignature(facets, includeArchived);
+    lastSubmittedFilterSignature !== filterSignature(facets, includeArchived, excludedFacets);
   const savedResultsUnverified = hasSearched && lastSubmittedFilterSignature === null;
   const modeLabel = (mode: string) => mode === 'bm25' ? 'Keyword / BM25' : mode === 'semantic' ? 'Semantic / FAISS' : 'Hybrid / both';
 
@@ -314,16 +342,6 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
 
       <div className={styles.workspace}>
         <form onSubmit={submit} className={styles.form} aria-label="Search portfolio knowledge">
-            <div className={styles.searchTopline}>
-              <label className={styles.fieldLabel} htmlFor="rag-query">What would you like to search?</label>
-              <span className={styles.characterCount}>{query.length}/500</span>
-            </div>
-            <textarea
-              id="rag-query" rows={3} maxLength={500} value={query}
-              onChange={e => setQuery(e.target.value)}
-              placeholder="e.g. How is documentation governance enforced?"
-              className={styles.query}
-            />
             <div className={styles.formOptions}>
               <fieldset className={styles.group}>
                 <legend>Search method</legend>
@@ -353,6 +371,35 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
                 </div>
               </fieldset>
             </div>
+            <div className={styles.searchTopline}>
+              <label className={styles.fieldLabel} htmlFor="rag-query">What would you like to search?</label>
+              <span className={styles.characterCount}>{query.length}/500</span>
+            </div>
+            <textarea
+              id="rag-query" rows={3} maxLength={500} value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder="e.g. How is documentation governance enforced?"
+              className={styles.query}
+            />
+            <section className={styles.scopeSummary} aria-label="Search scope">
+              <p className={styles.scopeCount} role="status">
+                {scopedDocumentCount} {scopedDocumentCount === 1 ? 'document' : 'documents'} in scope
+              </p>
+              <div className={styles.scopeTags}>
+                {activeFilters.map(({key, label, value, excluded}) => <button type="button"
+                  key={`${key}:${value}`} disabled={busy}
+                  className={`${browseStyles.filterChip} ${excluded ? browseStyles.filterExclude : browseStyles.filterInclude}`}
+                  aria-label={`Remove ${excluded ? 'exclude' : 'include'} ${label}: ${taxonomy.dimensions[key]?.terms[value] ?? value}`}
+                  onClick={() => excluded ? toggleExcludedFacet(key, value) : toggleFacet(key, value)}>
+                  {excluded ? '− Exclude' : '+ Include'} · {label}: {taxonomy.dimensions[key]?.terms[value] ?? value} ×
+                </button>)}
+                {defaultArchiveExclusion && <span className={`${browseStyles.filterChip} ${browseStyles.filterExclude}`}>
+                  − Exclude · Lifecycle: Archived (default)
+                </span>}
+                {activeFilters.length === 0 && !defaultArchiveExclusion && <span>All metadata values included.</span>}
+              </div>
+              <p className={styles.scopeHint}>Catalogue documents matching your metadata filters, before query matching. Search results depend on the API index.</p>
+            </section>
             {responseMode === 'chat' && (
               <p className={styles.privacyNote} role="note">
                 AI-generated answers can be inaccurate, incomplete or misleading.
@@ -395,6 +442,8 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
                     const key = navigationTaxonomy.dimensions[dimensionId].metadataField as FacetKey;
                     return (facets[key] ?? []).includes(termId);
                   }}
+                  isExcluded={(dimensionId, termId) => (excludedFacets[navigationTaxonomy.dimensions[dimensionId].metadataField as FacetKey] ?? []).includes(termId)}
+                  onExcludeToggle={(dimensionId, termId) => toggleExcludedFacet(navigationTaxonomy.dimensions[dimensionId].metadataField as FacetKey, termId)}
                   onToggle={(dimensionId, termId) => {
                     const key = navigationTaxonomy.dimensions[dimensionId].metadataField as FacetKey;
                     toggleFacet(key, termId);
@@ -402,18 +451,22 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
                 />
                 <label className={styles.archivedOption}>
                   <input type="checkbox" checked={includeArchived} disabled={busy}
-                    onChange={e => setIncludeArchived(e.target.checked)} />
+                    onChange={e => {
+                      setIncludeArchived(e.target.checked);
+                      if (e.target.checked) setExcludedFacets(current => ({...current,
+                        lifecycle: (current.lifecycle ?? []).filter(term => term !== 'archived')}));
+                    }} />
                   Include archived content when lifecycle is not explicitly filtered
                 </label>
             </div>
             {activeFilters.length > 0 && (
               <div className={styles.activeFilters} aria-label="Active taxonomy filters">
-                {activeFilters.map(({key, label, value}) => (
-                  <button key={`${key}:${value}`} type="button" className={styles.activeFilter}
+                {activeFilters.map(({key, label, value, excluded}) => (
+                  <button key={`${key}:${value}`} type="button" className={`${styles.activeFilter} ${excluded ? browseStyles.filterExclude : browseStyles.filterInclude}`}
                     title={`Remove ${label}: ${taxonomy?.dimensions[key]?.terms[value] || value}`}
                     disabled={busy}
-                    onClick={() => toggleFacet(key, value)}>
-                    {label}: {taxonomy?.dimensions[key]?.terms[value] || value} <span aria-hidden="true">×</span>
+                    onClick={() => excluded ? toggleExcludedFacet(key, value) : toggleFacet(key, value)}>
+                    {excluded ? '− Exclude' : '+ Include'} · {label}: {taxonomy?.dimensions[key]?.terms[value] || value} <span aria-hidden="true">×</span>
                   </button>
                 ))}
               </div>

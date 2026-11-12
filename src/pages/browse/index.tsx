@@ -229,13 +229,10 @@ function rankDocument(entry: SearchableDocument, query: string): RankedDocument 
 function documentMatchesFilters(
   document: NavigationDocument,
   selected: SelectedFilters,
+  excluded: SelectedFilters,
 ): boolean {
   return DIMENSION_ORDER.every((dimensionId) => {
     const selectedTerms = selected[dimensionId];
-
-    if (selectedTerms.size === 0) {
-      return true;
-    }
 
     const dimension = data.dimensions[dimensionId];
     if (!dimension) {
@@ -243,6 +240,8 @@ function documentMatchesFilters(
     }
 
     const documentValues = new Set(valuesForDimension(document, dimension));
+    if ([...excluded[dimensionId]].some(termId => documentValues.has(termId))) return false;
+    if (selectedTerms.size === 0) return true;
 
     // OR within a dimension:
     // selecting Python + Docusaurus matches a document containing either.
@@ -296,6 +295,7 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
   const [query, setQuery] = useState('');
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
   const [selected, setSelected] = useState<SelectedFilters>(initialFilters);
+  const [excluded, setExcluded] = useState<SelectedFilters>(emptyFilters);
   const {search: locationSearch} = useLocation();
 
   // Home-page links use /browse?contentType=... . When Explore stays mounted,
@@ -340,25 +340,38 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
   const filteredDocuments = useMemo(() => {
     const searching = Boolean(normalizeSearch(query));
     const ranked = searchableDocuments
-      .filter(entry => documentMatchesFilters(entry.document, selected))
+      .filter(entry => documentMatchesFilters(entry.document, selected, excluded))
       .map(entry => rankDocument(entry, query))
       .filter((match): match is RankedDocument => match !== null);
     ranked.sort((left, right) => searching
       ? right.score - left.score || left.document.title.localeCompare(right.document.title)
       : left.document.title.localeCompare(right.document.title));
     return ranked;
-  }, [query, selected, searchableDocuments]);
+  }, [query, selected, excluded, searchableDocuments]);
 
   const activeFilterCount = useMemo(
     () =>
       DIMENSION_ORDER.reduce(
-        (count, dimensionId) => count + selected[dimensionId].size,
+        (count, dimensionId) => count + selected[dimensionId].size + excluded[dimensionId].size,
         0,
       ),
-    [selected],
+    [selected, excluded],
   );
 
+  function toggleExcludedFilter(dimensionId: DimensionId, termId: string): void {
+    setExcluded(current => {
+      const terms = new Set(current[dimensionId]);
+      if (terms.has(termId)) terms.delete(termId);
+      else terms.add(termId);
+      return {...current, [dimensionId]: terms};
+    });
+    setSelected(current => ({...current,
+      [dimensionId]: new Set([...current[dimensionId]].filter(term => term !== termId))}));
+  }
+
   function toggleFilter(dimensionId: DimensionId, termId: string): void {
+    setExcluded(current => ({...current,
+      [dimensionId]: new Set([...current[dimensionId]].filter(term => term !== termId))}));
     setSelected((current) => {
       const next: SelectedFilters = {
         ...current,
@@ -377,6 +390,7 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
 
   function clearFilters(): void {
     setSelected(emptyFilters());
+    setExcluded(emptyFilters());
   }
 
   function clearQuery(): void {
@@ -450,6 +464,8 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
             >
             <ExploreTaxonomyFilterGroups
               isSelected={(dimensionId, termId) => selected[dimensionId].has(termId)}
+              isExcluded={(dimensionId, termId) => excluded[dimensionId].has(termId)}
+              onExcludeToggle={toggleExcludedFilter}
               onToggle={(dimensionId, termId) => toggleFilter(dimensionId, termId)}
             />
             </div>
@@ -472,6 +488,17 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
               </div>
             </div>
 
+            {activeFilterCount > 0 && <div className={styles.filterOptions} aria-label="Active taxonomy filters" style={{marginBottom: '1rem'}}>
+              {DIMENSION_ORDER.flatMap(dimensionId => [
+                ...[...selected[dimensionId]].map(termId => ({termId, exclude: false})),
+                ...[...excluded[dimensionId]].map(termId => ({termId, exclude: true})),
+              ].map(({termId, exclude}) => <button key={`${dimensionId}:${termId}`} type="button"
+                className={`${styles.filterChip} ${exclude ? styles.filterExclude : styles.filterInclude}`}
+                aria-label={`Remove ${exclude ? 'exclude' : 'include'} ${labels.get(`${dimensionId}:${termId}`) ?? termId}`}
+                onClick={() => exclude ? toggleExcludedFilter(dimensionId, termId) : toggleFilter(dimensionId, termId)}>
+                {exclude ? '− Exclude' : '+ Include'}: {labels.get(`${dimensionId}:${termId}`) ?? termId} ×
+              </button>))}
+            </div>}
             {filteredDocuments.length > 0 ? (
               <div className={styles.resultGrid}>
                 {filteredDocuments.map(({document, matchedIn}) => (

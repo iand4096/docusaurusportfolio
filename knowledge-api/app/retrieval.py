@@ -13,8 +13,12 @@ def tokenize(text: str) -> list[str]:
     return re.findall(r'[a-z0-9][a-z0-9+_.-]*', text.lower())
 
 
-def matches(row: dict, filters: dict[str, list[str]], include_archived: bool) -> bool:
+def matches(row: dict, filters: dict[str, list[str]], include_archived: bool,
+            exclude_filters: dict[str, list[str]] | None = None) -> bool:
     facets = row.get('facets') or {}
+    if any(set(facets.get(field) or []) & set(values)
+           for field, values in (exclude_filters or {}).items()):
+        return False
     lifecycle = facets.get('lifecycle') or []
     explicit = filters.get('lifecycle', [])
     # Explicit lifecycle filter is authoritative; opt-in to archived in search UI.
@@ -48,13 +52,14 @@ def rrf(keyword_indices: list[int], semantic_indices: list[int], k: int = 60) ->
 
 def search(records: list[dict], question: str, filters: dict[str, list[str]] | None = None,
            include_archived: bool = False, top_k: int = 5, semantic_index: Any = None,
-           embedding_model: Any = None, mode: RetrievalMode = 'hybrid') -> list[dict]:
+           embedding_model: Any = None, mode: RetrievalMode = 'hybrid',
+           exclude_filters: dict[str, list[str]] | None = None) -> list[dict]:
     if mode not in ('bm25', 'semantic', 'hybrid'):
         raise ValueError(f'Unknown retrieval mode: {mode}')
     if mode == 'semantic' and (semantic_index is None or embedding_model is None):
         raise ValueError('Semantic index unavailable')
     filters = filters or {}
-    eligible = [i for i, row in enumerate(records) if matches(row, filters, include_archived)]
+    eligible = [i for i, row in enumerate(records) if matches(row, filters, include_archived, exclude_filters)]
     if not eligible:
         return []
     kw_rank: list[int] = []

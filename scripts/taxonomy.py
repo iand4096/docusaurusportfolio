@@ -903,6 +903,7 @@ def build_navigation_projection(
             "id": dimension_id,
             "label": NAVIGATION_DIMENSION_LABELS[dimension_id],
             "metadataField": dimension["metadata_field"],
+            "multiple": dimension["multiple"],
             "terms": projected_terms,
         }
 

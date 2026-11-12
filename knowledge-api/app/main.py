@@ -46,6 +46,7 @@ app.add_middleware(
 class SearchRequest(BaseModel):
     query: str = Field(min_length=2, max_length=500)
     filters: dict[str, list[str]] = Field(default_factory=dict)
+    exclude_filters: dict[str, list[str]] = Field(default_factory=dict)
     include_archived: bool = False
     top_k: int = Field(default=5, ge=1, le=10)
     mode: Literal['bm25', 'semantic', 'hybrid'] = 'hybrid'
@@ -104,7 +105,8 @@ def perform_search(request: SearchRequest):
     # Hybrid mode intentionally falls back to BM25 on a keyword-only index.
     effective_mode = ('bm25' if request.mode == 'hybrid' and idx is None else request.mode)
     results = search(rows, request.query, validated_filters(request.filters),
-                     request.include_archived, request.top_k, idx, encoder, effective_mode)
+                     request.include_archived, request.top_k, idx, encoder, effective_mode,
+                     exclude_filters=validated_filters(request.exclude_filters))
     return {'results': results, 'mode': effective_mode,
             'index_version': manifest['source_hash'][:12]}
 

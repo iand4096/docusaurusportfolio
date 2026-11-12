@@ -20,6 +20,7 @@ type NavigationDimension = {
   id: ExploreDimensionId;
   label: string;
   metadataField: string;
+  multiple: boolean;
   terms: NavigationTerm[];
 };
 type TechnologyKind = {label: string; description?: string};
@@ -78,21 +79,45 @@ function TechnologyFilterGroup({
 }
 
 export function ExploreTaxonomyFilterGroups({
-  isSelected, onToggle, disabled = false,
+  isSelected, onToggle, isExcluded, onExcludeToggle, disabled = false,
 }: {
   isSelected: (dimensionId: ExploreDimensionId, termId: string) => boolean;
   onToggle: (dimensionId: ExploreDimensionId, termId: string) => void;
+  isExcluded?: (dimensionId: ExploreDimensionId, termId: string) => boolean;
+  onExcludeToggle?: (dimensionId: ExploreDimensionId, termId: string) => void;
   disabled?: boolean;
 }): React.JSX.Element {
+  const helpId = React.useId();
+  const [modes, setModes] = React.useState<Record<string, string>>({});
+  function modeFor(dimensionId: ExploreDimensionId): string {
+    const dimension = catalogue.dimensions[dimensionId];
+    if (!dimension.multiple) {
+      if (dimension.terms.some(term => isSelected(dimensionId, term.id))) return 'include';
+      if (dimension.terms.some(term => isExcluded?.(dimensionId, term.id))) return 'exclude';
+    }
+    return modes[dimensionId] ?? 'include';
+  }
+
+  function changeMode(dimensionId: ExploreDimensionId, mode: string): void {
+    setModes(current => ({...current, [dimensionId]: mode}));
+    if (!catalogue.dimensions[dimensionId].multiple) {
+      for (const term of catalogue.dimensions[dimensionId].terms) {
+        if (mode === 'exclude' && isSelected(dimensionId, term.id)) onExcludeToggle?.(dimensionId, term.id);
+        if (mode === 'include' && isExcluded?.(dimensionId, term.id)) onToggle(dimensionId, term.id);
+      }
+    }
+  }
+
   function renderChip(dimensionId: ExploreDimensionId, term: NavigationTerm): React.JSX.Element {
     const selected = isSelected(dimensionId, term.id);
+    const excluded = isExcluded?.(dimensionId, term.id) ?? false;
     return (
       <button key={term.id} type="button"
-        className={`${browseStyles.filterChip} ${selected ? browseStyles.filterChipSelected : ''}`}
-        aria-pressed={selected} disabled={disabled}
+        className={`${browseStyles.filterChip} ${selected ? (onExcludeToggle ? browseStyles.filterInclude : browseStyles.filterChipSelected) : excluded ? browseStyles.filterExclude : ''}`}
+        aria-pressed={selected || excluded} disabled={disabled}
         title={term.description}
-        onClick={() => onToggle(dimensionId, term.id)}>
-        <span>{term.label}</span>
+        onClick={() => modeFor(dimensionId) === 'exclude' && onExcludeToggle ? onExcludeToggle(dimensionId, term.id) : onToggle(dimensionId, term.id)}>
+        <span>{selected && onExcludeToggle ? '+ ' : excluded ? '− ' : ''}{term.label}</span>
         <span className={browseStyles.count}>{DOCUMENT_COUNTS[dimensionId][term.id] ?? 0}</span>
       </button>
     );
@@ -124,7 +149,7 @@ export function ExploreTaxonomyFilterGroups({
                   <TechnologyFilterGroup key={kindId}
                     label={kind?.label ?? (kindId === 'other' ? 'Other' : kindId)}
                     description={kind?.description} terms={terms}
-                    hasSelected={terms.some(term => isSelected(dimensionId, term.id))}
+                    hasSelected={terms.some(term => isSelected(dimensionId, term.id) || isExcluded?.(dimensionId, term.id))}
                     renderChip={term => renderChip(dimensionId, term)}
                   />
                 );
@@ -141,6 +166,20 @@ export function ExploreTaxonomyFilterGroups({
         return (
           <section className={browseStyles.filterGroup} key={dimensionId} aria-label={`${dimension.label} filters`}>
             <h3 className={browseStyles.filterLabel}>{dimension.label}</h3>
+            {onExcludeToggle && <>
+              <div className={browseStyles.filterMode} role="group" aria-label={`${dimension.label} selection mode`}>
+                {['include', 'exclude'].map(mode => <button type="button" key={mode} disabled={disabled}
+                  aria-pressed={modeFor(dimensionId) === mode}
+                  className={modeFor(dimensionId) === mode ? (mode === 'include' ? browseStyles.filterInclude : browseStyles.filterExclude) : ''}
+                  aria-describedby={`${helpId}-${dimensionId}`}
+                  onClick={() => changeMode(dimensionId, mode)}>
+                  {mode === 'include' ? '+ Include' : '− Exclude'}
+                </button>)}
+              </div>
+              <p id={`${helpId}-${dimensionId}`} className={browseStyles.filterModeHint}>
+                {dimension.multiple ? 'Applies to your next selection.' : 'Applies to all selected tags.'}
+              </p>
+            </>}
             {options}
           </section>
         );

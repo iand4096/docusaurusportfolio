@@ -15,3 +15,11 @@ def test_explicit_archived():
 def test_filter():
     assert not matches(ROWS[0],{'technologies':['python']},False)
     assert len(search(ROWS,'OpenAPI',{'technologies':['openapi']}))==1
+
+
+def test_exclusions_win_over_inclusions_and_archive_opt_in():
+    assert search(ROWS, 'OpenAPI', filters={'lifecycle': ['archived']},
+                  include_archived=True, exclude_filters={'lifecycle': ['archived']}) == []
+    assert [r['id'] for r in search(ROWS, 'OpenAPI', include_archived=True,
+            exclude_filters={'lifecycle': ['archived']}, top_k=1)] == ['a']
+    assert matches({'facets': {}}, {}, True, {'technologies': ['openapi']})

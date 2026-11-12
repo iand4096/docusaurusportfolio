@@ -99,3 +99,18 @@ def test_api_returns_422_and_filtered_results(monkeypatch):
     archived = client.post('/search', json={'query': 'OpenAPI', 'filters': {'lifecycle': ['archived']}})
     assert archived.status_code == 200
     assert [x['id'] for x in archived.json()['results']] == ['b']
+
+
+def test_api_exclusions_are_validated_and_applied(monkeypatch):
+    from app import main
+    monkeypatch.setattr(main, 'taxonomy', lambda _repo: TAXONOMY)
+    monkeypatch.setattr(main, 'snapshot', lambda: (
+        {'source_hash': 'abcdef1234567890', 'semantic_enabled': False}, ROWS, None, None))
+    client = TestClient(main.app)
+    bad = client.post('/search', json={'query': 'OpenAPI',
+        'exclude_filters': {'lifecycle': ['invalid']}})
+    assert bad.status_code == 422
+    ok = client.post('/search', json={'query': 'OpenAPI', 'include_archived': True,
+        'exclude_filters': {'lifecycle': ['archived']}})
+    assert ok.status_code == 200
+    assert [row['id'] for row in ok.json()['results']] == ['a']

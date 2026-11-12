@@ -207,6 +207,7 @@
       "id": "content_types",
       "label": "Content type",
       "metadataField": "type",
+      "multiple": false,
       "terms": [
         {
           "id": "case-study",
@@ -249,6 +250,7 @@
       "id": "topics",
       "label": "Topic",
       "metadataField": "topics",
+      "multiple": true,
       "terms": [
         {
           "id": "api-documentation",
@@ -311,6 +313,7 @@
       "id": "technologies",
       "label": "Technology",
       "metadataField": "technologies",
+      "multiple": true,
       "terms": [
         {
           "id": "3d-secure",
@@ -1050,6 +1053,7 @@
       "id": "audiences",
       "label": "Audience",
       "metadataField": "audiences",
+      "multiple": true,
       "terms": [
         {
           "id": "developers",
@@ -1082,6 +1086,7 @@
       "id": "lifecycle",
       "label": "Lifecycle",
       "metadataField": "lifecycle",
+      "multiple": false,
       "terms": [
         {
           "id": "archived",

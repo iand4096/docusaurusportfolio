@@ -24,7 +24,7 @@
   padding: 1.15rem; border: 1px solid var(--rag-border);
   border-radius: .75rem; background: var(--rag-surface);
 }
-.searchTopline {display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: .65rem;}
+.searchTopline {display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-top: 1.5rem; margin-bottom: .65rem;}
 .fieldLabel {font-size: .95rem; font-weight: 700;}
 .characterCount {font-size: .76rem; color: var(--rag-muted); font-variant-numeric: tabular-nums;}
 .query {
@@ -231,3 +231,8 @@
   font-size: .85rem;
   line-height: 1.5;
 }
+
+.scopeSummary {padding: .85rem 1rem; border: 1px solid var(--rag-border); border-radius: .65rem; margin-top: .85rem;}
+.scopeCount {font-weight: 700; margin: 0 0 .65rem;}
+.scopeTags {display: flex; flex-wrap: wrap; gap: .5rem;}
+.scopeHint {font-size: .78rem; color: var(--ifm-color-emphasis-700); margin: .65rem 0 0;}

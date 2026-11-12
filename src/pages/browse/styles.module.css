@@ -344,3 +344,11 @@
 .card:focus-within, .card:hover {
   border-color: var(--ifm-color-primary-light);
 }
+
+.filterMode {display: inline-flex; gap: 3px; padding: 3px; border: 1px solid var(--ifm-color-emphasis-300); border-radius: 8px; margin-top: .6rem;}
+.filterMode button {border: 1px solid transparent; border-radius: 5px; background: transparent; color: var(--ifm-font-color-base); padding: .45rem .75rem; cursor: pointer; font-weight: 600;}
+.filterModeHint {font-weight: 700; font-size: .78rem; margin: .5rem 0;}
+.filterMode .filterInclude, .filterChip.filterInclude, .filterInclude {background: #e8f5ec; color: #185c32; border-color: #398552;}
+.filterMode .filterExclude, .filterChip.filterExclude, .filterExclude {background: #fceced; color: #972a36; border-color: #be525f;}
+:global([data-theme='dark']) .filterMode .filterInclude, :global([data-theme='dark']) .filterChip.filterInclude, :global([data-theme='dark']) .filterInclude {background: #173c29; color: #a0e9b8; border-color: #65b580;}
+:global([data-theme='dark']) .filterMode .filterExclude, :global([data-theme='dark']) .filterChip.filterExclude, :global([data-theme='dark']) .filterExclude {background: #46262c; color: #ffb7bf; border-color: #e5818d;}

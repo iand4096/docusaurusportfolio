@@ -108,3 +108,16 @@ python -m pytest -q
 ```
 
 The tests cover retrieval modes, taxonomy filters, ingestion and heading links, API behavior, and abuse controls without requiring a provider key or embedding-model download.
+
+### Excluding taxonomy values
+
+Both `/search` and `/chat` accept `exclude_filters`, using the same canonical
+fields and term IDs as `filters`. For example:
+
+```json
+{"query":"API documentation","exclude_filters":{"lifecycle":["archived"]}}
+```
+
+A passage matching any excluded value is removed before ranking and `top_k`.
+Exclusions override positive filters and `include_archived`. Missing fields pass
+exclusions. Positive filters retain OR within a field and AND across fields.
