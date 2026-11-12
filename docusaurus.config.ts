@@ -47,6 +47,14 @@ const config: Config = {
 
   plugins: [
     [
+      'docusaurus-plugin-llms',
+      {
+        generateMarkdownFiles: true,
+        excludeImports: true,
+        keepFrontMatter: ['type', 'audiences', 'topics', 'technologies', 'lifecycle'],
+      },
+    ],
+    [
       '@docusaurus/plugin-client-redirects',
       {
         redirects: [

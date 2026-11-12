@@ -36,6 +36,16 @@ npm run start
 
 For the local search backend and frontend feature flags, follow the [Knowledge API setup guide](knowledge-api/README.md#local-setup).
 
+### LLM-readable documentation
+
+`npm run build` uses `docusaurus-plugin-llms` to generate `build/llms.txt`,
+`build/llms-full.txt` and individual Markdown copies of the documentation.
+The Markdown copies retain the governed taxonomy fields. These files are
+generated during production builds, not by `npm run start`.
+
+After deployment, the index is available at
+`https://iand4096.github.io/docusaurusportfolio/llms.txt`.
+
 ## Documentation QA
 
 A QA report is generated for every change to the site and published at:
