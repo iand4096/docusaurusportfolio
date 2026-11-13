@@ -49,73 +49,6 @@ I implemented the taxonomy schema, validation and migration tooling, AI review w
 
 The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is used to generate Docusaurus tags, the metadata choices available to users in VS Code Front Matter, and the site's taxonomy navigation index — see the [browse page](pathname:///browse/).
 
-## Taxonomy v3: work organisations
-
-Taxonomy v3 adds optional `organisations` metadata as a whole-page employer classification. Use it only when all work described on the page was performed at one employer. The field remains a YAML list but accepts at most one value. A company mentioned in one example does not qualify the whole page. Career-wide skills and tools overviews, product-vendor references and personal projects leave the field unset.
-
-The vocabulary is AMX, Mastercard, Morgan Stanley and Paysafe. Seven case studies and documentation samples have assignments: one for AMX and two each for Mastercard, Morgan Stanley and Paysafe. Landing pages leave the field unset. These values appear in the generated editor choices, navigation data and public Docusaurus tags. Browse and AI Search discover non-empty filter groups from the generated dimension definitions, including Work organisation. Search ingestion reads the canonical metadata-field definitions; changes to assignments require a rebuilt index and an updated backend for deployed search.
-
-Organisation assignments are human-controlled. AI classification preserves existing assignments, and the apply step rejects attempts to change them.
-
-For a repository still on taxonomy v2, the migration sequence is:
-
-```bash
-python scripts/upgrade_taxonomy_v3.py
-python scripts/upgrade_taxonomy_v3.py --apply
-python scripts/taxonomy.py migrate preview taxonomy/migrations/2026-11-13-work-organisations.yml
-python scripts/taxonomy.py migrate apply taxonomy/migrations/2026-11-13-work-organisations.yml
-python scripts/apply_organisation_metadata.py taxonomy/migrations/2026-11-13-organisation-metadata.json
-python scripts/apply_organisation_metadata.py taxonomy/migrations/2026-11-13-organisation-metadata.json --apply
-python scripts/taxonomy.py migrate preview taxonomy/migrations/2026-11-13-organisation-tags.yml
-python scripts/taxonomy.py migrate apply taxonomy/migrations/2026-11-13-organisation-tags.yml
-python scripts/taxonomy.py generate
-python scripts/taxonomy.py check --all
-```
-
-The vocabulary migration adds four terms. The separate seven-document mapping records expected prior values, body-text evidence and a whole-page single-employer review for each assignment. Its preview checks every document before writing. Application updates organisation metadata and derived tags while preserving article text and other classifications. Reapplying the same document mapping makes no changes. The schema upgrade and vocabulary addition run once; their preconditions reject an incompatible or already-upgraded state.
-
-For an earlier v3 checkout with the broader assignments, first remove the classifications from the ten career-wide overviews, then apply the single-employer policy:
-
-```bash
-python scripts/apply_organisation_metadata.py taxonomy/migrations/2026-11-13-remove-overview-organisations.json
-python scripts/apply_organisation_metadata.py taxonomy/migrations/2026-11-13-remove-overview-organisations.json --apply
-python scripts/taxonomy.py migrate preview taxonomy/migrations/2026-11-13-single-employer-pages.yml
-python scripts/taxonomy.py migrate apply taxonomy/migrations/2026-11-13-single-employer-pages.yml
-python scripts/taxonomy.py generate
-python scripts/taxonomy.py check --all
-```
-
-Fresh v2 upgrades already use the single-employer configuration and do not need that corrective policy migration. The cleanup mapping checks the expected previous values, removes `organisations` rather than leaving an empty field, and synchronises the derived tags. Deciding whether the whole page qualifies requires human review; cardinality validation alone cannot establish that all work belongs to one employer.
-
-Existing migration manifests keep their original taxonomy-version preconditions. The migration-manifest format remains version 2; this is separate from canonical taxonomy version 3.
-
-## Problem {/* #problem */}
-
-Landing pages have the public tag `landing-page`, generated from the existing content-type term. They retain `type: [landing-page]` and lifecycle metadata but do not carry audience, topic, technology or employer classifications. The validator rejects those classifications on landing pages, the editor omits their fields, and AI classification leaves them empty. This keeps navigation overviews out of subject-specific tag and filter results.
-
-Documentation metadata helps with:
-
-* **Search and discovery** - improve filtering, faceting, ranking, and findability.
-* **Navigation generation** - automatically build menus, browse pages, indexes, and landing pages.
-* **Vocabulary control** - enforce preferred terms and approved taxonomy values.
-* **Lifecycle management** - track draft, current, deprecated, archived, and review status.
-* **Audience targeting** - identify content for specific user groups, roles, or experience levels.
-* **Related-content generation** - connect pages by topic, product, task, tool, or audience.
-* **QA and automation** - trigger validation rules, publishing logic, and CI checks.
-* **Content governance** - track ownership, review dates, product applicability, and maintenance responsibility.
-* **Analytics and gap analysis** - measure coverage and identify missing or under-documented areas.
-* **AI and semantic retrieval** - provide structured context for RAG, semantic search, and knowledge-graph generation.
-
-Free-form content tags are easy to add but difficult to govern consistently over time. As the portfolio expanded, I wanted metadata that:
-
-* used stable canonical IDs rather than inconsistent free-text labels;
-* supported content type, audience, topic, technology, and lifecycle dimensions;
-* remained valid across Markdown and MDX documents;
-* generated Docusaurus tags and navigation from the canonical taxonomy;
-* was convenient to edit through VS Code Front Matter;
-* used AI for semantic classification without making an LLM authoritative;
-* evolved safely when terms were added, corrected, replaced, or deprecated.
-
 ## Design principles {/* #design-principles */}
 
 ### One canonical vocabulary {/* #one-canonical-vocabulary */}
@@ -616,3 +549,72 @@ Further improvements include:
 The core rule remains:
 
 > The LLM proposes semantic changes; humans approve, reject, or modify them; `taxonomy.py` controls changes to the canonical taxonomy.
+
+## Appendix
+
+### Taxonomy v3: work organisations
+
+Taxonomy v3 adds optional `organisations` metadata as a whole-page employer classification. Use it only when all work described on the page was performed at one employer. The field remains a YAML list but accepts at most one value. A company mentioned in one example does not qualify the whole page. Career-wide skills and tools overviews, product-vendor references and personal projects leave the field unset.
+
+The vocabulary is AMX, Mastercard, Morgan Stanley and Paysafe. Seven case studies and documentation samples have assignments: one for AMX and two each for Mastercard, Morgan Stanley and Paysafe. Landing pages leave the field unset. These values appear in the generated editor choices, navigation data and public Docusaurus tags. Browse and AI Search discover non-empty filter groups from the generated dimension definitions, including Work organisation. Search ingestion reads the canonical metadata-field definitions; changes to assignments require a rebuilt index and an updated backend for deployed search.
+
+Organisation assignments are human-controlled. AI classification preserves existing assignments, and the apply step rejects attempts to change them.
+
+For a repository still on taxonomy v2, the migration sequence is:
+
+```bash
+python scripts/upgrade_taxonomy_v3.py
+python scripts/upgrade_taxonomy_v3.py --apply
+python scripts/taxonomy.py migrate preview taxonomy/migrations/2026-11-13-work-organisations.yml
+python scripts/taxonomy.py migrate apply taxonomy/migrations/2026-11-13-work-organisations.yml
+python scripts/apply_organisation_metadata.py taxonomy/migrations/2026-11-13-organisation-metadata.json
+python scripts/apply_organisation_metadata.py taxonomy/migrations/2026-11-13-organisation-metadata.json --apply
+python scripts/taxonomy.py migrate preview taxonomy/migrations/2026-11-13-organisation-tags.yml
+python scripts/taxonomy.py migrate apply taxonomy/migrations/2026-11-13-organisation-tags.yml
+python scripts/taxonomy.py generate
+python scripts/taxonomy.py check --all
+```
+
+The vocabulary migration adds four terms. The separate seven-document mapping records expected prior values, body-text evidence and a whole-page single-employer review for each assignment. Its preview checks every document before writing. Application updates organisation metadata and derived tags while preserving article text and other classifications. Reapplying the same document mapping makes no changes. The schema upgrade and vocabulary addition run once; their preconditions reject an incompatible or already-upgraded state.
+
+For an earlier v3 checkout with the broader assignments, first remove the classifications from the ten career-wide overviews, then apply the single-employer policy:
+
+```bash
+python scripts/apply_organisation_metadata.py taxonomy/migrations/2026-11-13-remove-overview-organisations.json
+python scripts/apply_organisation_metadata.py taxonomy/migrations/2026-11-13-remove-overview-organisations.json --apply
+python scripts/taxonomy.py migrate preview taxonomy/migrations/2026-11-13-single-employer-pages.yml
+python scripts/taxonomy.py migrate apply taxonomy/migrations/2026-11-13-single-employer-pages.yml
+python scripts/taxonomy.py generate
+python scripts/taxonomy.py check --all
+```
+
+Fresh v2 upgrades already use the single-employer configuration and do not need that corrective policy migration. The cleanup mapping checks the expected previous values, removes `organisations` rather than leaving an empty field, and synchronises the derived tags. Deciding whether the whole page qualifies requires human review; cardinality validation alone cannot establish that all work belongs to one employer.
+
+Existing migration manifests keep their original taxonomy-version preconditions. The migration-manifest format remains version 2; this is separate from canonical taxonomy version 3.
+
+### Problem {/* #problem */}
+
+Landing pages have the public tag `landing-page`, generated from the existing content-type term. They retain `type: [landing-page]` and lifecycle metadata but do not carry audience, topic, technology or employer classifications. The validator rejects those classifications on landing pages, the editor omits their fields, and AI classification leaves them empty. This keeps navigation overviews out of subject-specific tag and filter results.
+
+Documentation metadata helps with:
+
+* **Search and discovery** - improve filtering, faceting, ranking, and findability.
+* **Navigation generation** - automatically build menus, browse pages, indexes, and landing pages.
+* **Vocabulary control** - enforce preferred terms and approved taxonomy values.
+* **Lifecycle management** - track draft, current, deprecated, archived, and review status.
+* **Audience targeting** - identify content for specific user groups, roles, or experience levels.
+* **Related-content generation** - connect pages by topic, product, task, tool, or audience.
+* **QA and automation** - trigger validation rules, publishing logic, and CI checks.
+* **Content governance** - track ownership, review dates, product applicability, and maintenance responsibility.
+* **Analytics and gap analysis** - measure coverage and identify missing or under-documented areas.
+* **AI and semantic retrieval** - provide structured context for RAG, semantic search, and knowledge-graph generation.
+
+Free-form content tags are easy to add but difficult to govern consistently over time. As the portfolio expanded, I wanted metadata that:
+
+* used stable canonical IDs rather than inconsistent free-text labels;
+* supported content type, audience, topic, technology, and lifecycle dimensions;
+* remained valid across Markdown and MDX documents;
+* generated Docusaurus tags and navigation from the canonical taxonomy;
+* was convenient to edit through VS Code Front Matter;
+* used AI for semantic classification without making an LLM authoritative;
+* evolved safely when terms were added, corrected, replaced, or deprecated.
