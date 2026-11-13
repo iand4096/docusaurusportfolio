@@ -59,7 +59,7 @@ Other contributors subsequently made minor updates to the published guide.
 ## The challenge {/* #the-challenge */}
 
 - Explain an unfamiliar and technically complex tokenisation workflow to developers.
-- Test the complex MDES Digital Enablement API, without using Postman or similar because of the API's unusual security requirements:
+- Test the complex MDES Digital Enablement API without using Postman or similar because of the API's unusual security requirements:
 
   - Postman did not support [RSA signatures for OAuth 1.0](https://github.com/postmanlabs/postman-app-support/issues/2302), as required by Mastercard. Support was only added in 2020.
   - Mastercard's field-level encryption and decryption required custom cryptographic code that Postman did not provide.

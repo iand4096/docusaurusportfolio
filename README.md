@@ -75,9 +75,10 @@ python3 scripts/ai_docs_review.py render \
 ```
 
 `--report` also accepts the exact versioned GitHub Pages JSON URL copied by the
-report. The output directory contains HTML, Markdown and JSON views, plus an
-`original-report.json` snapshot. The original review date and finding IDs are
-preserved; a separate feedback timestamp identifies when the view was refreshed.
+report. The output directory contains HTML, Markdown and JSON views, plus a
+snapshot of the original report (`original-report.json`). The original review
+date and finding IDs are preserved; a separate feedback timestamp identifies
+when the view was refreshed.
 Use a separate output directory for each original report. To publish a feedback
 view, serve this output directory alongside the original versioned report; the
 render command itself does not deploy or modify GitHub Pages.
