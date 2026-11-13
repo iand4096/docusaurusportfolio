@@ -41,6 +41,8 @@ tags:
 
 Following Optimal Payments' acquisition of Skrill Group in August 2015 and the combined business's subsequent rebranding as Paysafe, I led the documentation work for a ten-month project to create a unified Developer Center for the newly integrated company. The site brought together API and SDK reference documentation, integration guides, and product information for merchants integrating Paysafe's payment methods, replacing documentation previously distributed across the two businesses.
 
+The project took place during rapid expansion: Paysafe reported 21% organic constant-currency revenue growth in 2016 and annual revenue of just over $1 billion, while integrating the Skrill and Optimal Payments businesses. These figures, recorded in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf), show the scale and pace of the business the Developer Center needed to support.
+
 I defined the documentation strategy and information architecture, specified the authoring and publishing platform, planned the legacy-content migration, and worked with Paysafe's web development team and an external consultancy on the implementation. I led a team of three technical writers while remaining hands-on, authoring new API and integration documentation.
 
 See the current version of the [Paysafe Developer Center](https://developer.paysafe.com) for reference.
@@ -162,7 +164,7 @@ To make the new workflow sustainable beyond the initial implementation, I traine
 
 ## Impact {/* #impact */}
 
-The first phase of the Developer Center soft-launched in December 2016 during a period of rapid growth and change at Paysafe. The company reported 2016 revenue of just over $1 billion while continuing to integrate the Skrill and Optimal Payments businesses.
+The first phase of the Developer Center soft-launched in December 2016.
 
 The Developer Center had visibility at company level: Paysafe included its launch in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf) as one of the achievements supporting its “State-of-the-art technology” strategy and also mentioned it in its January 2017 trading update.
 
