@@ -31,15 +31,13 @@ lifecycle:
   - current
 sidebar_custom_props:
   caseStudyCard:
-    tag: Docs-as-Code · Developer Portal
-    description: Scaling a custom enterprise documentation platform from 700 to more than 3,200 
-      pages for a large developer community
+    tag: Documentation platform
+    description: >-
+      Developing and maintaining an enterprise docs-as-code platform that grew from about 700 to more than 3,200 pages over three years.
     highlights:
-      - Documentation platform strategy and product ownership
-      - Git, Markdown and CI/CD publishing workflows
-      - IDE tooling, migration automation and diagrams-as-code
-      - Large-scale adoption, governance and platform evolution
-    ariaLabel: Read the enterprise developer documentation platform case study
+      - Led platform direction, requirements and quality, working with engineers to establish docs-as-code across a large developer community.
+      - Designed keyword and RAG search and tested retrieval quality; later extended the platform’s diagram support and fixed link-checking bugs.
+    ariaLabel: Read the enterprise documentation platform case study
 tags:
   - agentic-ai
   - amp

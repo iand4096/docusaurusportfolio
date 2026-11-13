@@ -1309,6 +1309,31 @@
       ]
     },
     {
+      "id": "case-studies/index",
+      "title": "Case Studies",
+      "path": "/docs/case-studies",
+      "source": "docs/case-studies/index.md",
+      "description": "Case studies of documentation platforms, developer documentation, metadata governance and search.",
+      "type": [
+        "landing-page"
+      ],
+      "topics": [
+        "technical-writing",
+        "documentation-engineering",
+        "documentation-governance",
+        "developer-experience"
+      ],
+      "technologies": [],
+      "audiences": [
+        "technical-writers",
+        "documentation-managers",
+        "developers"
+      ],
+      "lifecycle": [
+        "current"
+      ]
+    },
+    {
       "id": "tools/ContainersAndCloudNative",
       "title": "Containers and Cloud",
       "path": "/docs/containersandcloud",

@@ -155,7 +155,7 @@ const config: Config = {
       items: [
         {
           label: 'Case studies',
-          to: '/docs/case-studies/scalingdeveloperdocs',
+          to: '/docs/case-studies',
           position: 'left',
           activeBasePath: '/docs/case-studies',
         },
@@ -215,7 +215,7 @@ const config: Config = {
             },
             {
               label: 'Case studies',
-              to: '/docs/case-studies/scalingdeveloperdocs',
+              to: '/docs/case-studies',
             },
             {
               label: 'Documentation Samples',
