@@ -11,7 +11,6 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
   <p className="portfolio-eyebrow">Principal Technical Writer · Documentation Engineer · AI Information Architect</p>
   <h1>Ian Drewett</h1>
   <p className="portfolio-lead">I lead the design and delivery of developer documentation platforms, combining technical writing, software engineering and documentation strategy.</p>
-  <p className="portfolio-intro">My experience includes leading documentation teams, defining enterprise documentation architectures, and building tooling that enables developers and technical writers to create, maintain and validate documentation at scale.</p>
 
   <div className="portfolio-hero-actions">
     <Link className="button button--primary" to="#case-studies">Explore selected work</Link>
@@ -62,7 +61,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
   <h3>Building the Paysafe Developer Center</h3>
 
  <div className="card-description">
-  Led the documentation work for the first Paysafe Developer Center during a period of exceptional expansion as the company delivered 21% organic revenue growth, and surpassed $1 billion in annual revenue for the first time.
+  Delivered a unified developer site during Paysafe's rapid expansion to more than $1 billion in annual revenue. Brought together API and SDK references, integration guides and product information from the Optimal Payments and Skrill businesses. Built migration tools and connected the authoring, review and publishing systems.
 </div>
 
   <span className="card-link">Read case study →</span>
@@ -87,50 +86,62 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 ## Leadership and delivery {/* #leadership-and-delivery */}
 
-I combine hands-on documentation engineering with technical leadership, working across writing teams, software engineering and product stakeholders to deliver scalable developer documentation.
-
-<CapabilityGrid>
-
-* **Team leadership and capability development**
-
-  Led a team of three technical writers at Paysafe, establishing workflows, mentoring colleagues in Git and API technologies, and developing the team's ability to maintain its documentation platform independently.
-
-* **Architecture and technical direction**
-
-  Led the design and evolution of Morgan Stanley's internal developer documentation platform, defining requirements, technical direction, quality standards and the authoring experience in collaboration with an engineering team.
-
-* **Cross-functional project delivery**
-
-  Directed documentation strategy, information architecture, migration and publishing workflows for the Paysafe Developer Center, coordinating technical writers, developers and external specialists.
-
-</CapabilityGrid>
+<CapabilityGrid items={[
+  {
+    title: 'Team leadership and capability development',
+    icon: 'people-group',
+    summary: 'Led and developed a three-person team at Paysafe.',
+    detail: 'Established workflows and mentored colleagues in Git and API technologies. Trained the team to maintain the documentation platform independently.',
+  },
+  {
+    title: 'Architecture and technical direction',
+    icon: 'sitemap',
+    summary: "Set technical direction for Morgan Stanley's internal developer documentation platform.",
+    detail: 'Led its design and evolution, defining requirements, quality standards and the authoring experience in collaboration with an engineering team.',
+  },
+  {
+    title: 'Cross-functional project delivery',
+    icon: 'list-check',
+    summary: 'Coordinated delivery of the Paysafe Developer Center.',
+    detail: "Coordinated technical writers, Paysafe's web developers and external specialists on the migration and publishing work.",
+  },
+]} />
 
 ## Core expertise {/* #core-expertise */}
 
-<CapabilityGrid> 
-
-* **Developer documentation:**
-  APIs, SDKs, integration guides, tutorials, code examples, OpenAPI references, and developer portals
-
-* **User documentation:**
- User, administration and installation guides for complex SaaS products using single-sourcing techniques for scalability and maintenance
-
-* **Documentation engineering:**
-  Docs-as-code, CI/CD, documentation platforms, migrations, automation, testing, and quality tooling
-
-* **AI knowledge management & governance:**
-  Knowledge architecture, content and taxonomy governance, AI-ready documentation, and AI-assisted quality assurance
-
-* **Technical validation & engineering:**
-API implementation and testing, security validation, software debugging, automation, and developer tooling
-
-</CapabilityGrid>
+<CapabilityGrid items={[
+  {
+    title: 'Developer documentation',
+    icon: 'code',
+    summary: 'APIs, SDKs, integration guides, tutorials, code examples, OpenAPI references and developer portals',
+  },
+  {
+    title: 'User documentation',
+    icon: 'book-open',
+    summary: 'User, administration and installation guides for complex SaaS products using single-sourcing to reuse content across guides and outputs',
+  },
+  {
+    title: 'Documentation engineering',
+    icon: 'gears',
+    summary: 'Docs-as-code platforms, CI/CD publishing, content migrations, automation and quality tooling',
+  },
+  {
+    title: 'AI knowledge management & governance',
+    icon: 'diagram-project',
+    summary: 'Knowledge architecture, content and taxonomy governance, AI-ready documentation and AI-assisted quality assurance',
+  },
+  {
+    title: 'Technical validation',
+    icon: 'circle-check',
+    summary: 'API implementation and testing, security validation, software debugging and verification of documented behaviour',
+  },
+]} />
 
 ## Software engineering background {/* #engineering-background */}
 
 I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C, and C++/STL. 
 
-Recent development work includes using Scala for documentation engineering and building full-stack test API integrations with Python/Flask and JavaScript to validate technical documentation. This engineering background informs my approach to technical writing: it helps me verify implementation details, work effectively and quickly with Subject-Matter Experts, APIs and docs-as-code tool chains, and test documentation against real software behaviour.
+Recent development work includes Scala tooling and API test integrations using Python/Flask and JavaScript, including full-stack and cloud-based implementations.
 
 ## Employment history {/* #employment-history */}
 

@@ -10,7 +10,7 @@ The accompanying [case studies](docs/case-studies/) explain the engineering deci
 
 ## Licence and permitted use
 
-This repository is published solely for portfolio review by potential employers, recruiters and their evaluation teams. It is not open source. Original code and portfolio content may be inspected and run locally for that purpose; reuse, modification, redistribution and public deployment require prior written permission. Third-party material retains its own terms. See [`LICENSE.md`](LICENSE.md) for the full terms.
+This repository is published solely for portfolio review by potential employers, recruiters and their evaluation teams. It is not open source. Original code and portfolio content may be inspected and run locally for that purpose; reuse, modification, redistribution and public deployment require prior written permission. Third-party material retains its own terms. See [`LICENSE.md`](LICENSE.md) for the full terms and [third-party notices](src/pages/third-party-notices.md) for Font Awesome attribution and licences.
 
 ## Architecture overview
 

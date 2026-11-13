@@ -3,6 +3,7 @@ import styles from './styles.module.css';
 
 export default function CapabilityGrid({
   children,
+  items,
   variant = 'default',
 }) {
   const gridRef = useRef(null);
@@ -86,15 +87,39 @@ export default function CapabilityGrid({
       resizeObserver.disconnect();
       window.removeEventListener('resize', measureItems);
     };
-  }, [variant, children]);
+  }, [variant, children, items]);
 
   return (
     <div
       ref={gridRef}
       className={styles.grid}
       data-variant={variant}
+      data-cards={items ? 'true' : undefined}
     >
-      {children}
+      {items ? (
+        <ul>
+          {items.map(({title, summary, detail, icon}) => (
+            <li key={title} className={styles.card}>
+              {icon && (
+                <i
+                  className={`fa-solid fa-${icon} ${styles.icon}`}
+                  aria-hidden="true"
+                />
+              )}
+              <h3 className={styles.title}>{title}</h3>
+              <p className={styles.description}>{summary}</p>
+              {detail && (
+                <details className={styles.details}>
+                  <summary aria-label={`More detail about ${title}`}>
+                    More detail
+                  </summary>
+                  <p>{detail}</p>
+                </details>
+              )}
+            </li>
+          ))}
+        </ul>
+      ) : children}
     </div>
   );
 }

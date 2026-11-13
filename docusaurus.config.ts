@@ -233,6 +233,10 @@ const config: Config = {
               label: 'Explore',
               to: '/explore',
             },
+            {
+              label: 'Third-party notices',
+              to: '/third-party-notices',
+            },
           ],
         },
         {
