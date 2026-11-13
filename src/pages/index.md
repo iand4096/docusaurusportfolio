@@ -22,65 +22,33 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 <div className="portfolio-grid">
 
-
-<div className="portfolio-card">
-  <span className="card-tag">
-    Docs-as-Code · Developer Portal · Platform Strategy
-  </span>
-
-  <h3>Scaling an Enterprise Developer Documentation Platform</h3>
-
-  <div className="card-description">
-    Led the design and evolution of an internal enterprise documentation
-    platform that grew from 700 pages to more than 3,200 for an audience
-    of quantitative analysts and software developers. My responsibilities
-    also included creating documentation for
-    [Optimus Cirrus](https://github.com/morganstanley/optimus-cirrus),
-    a distributed Scala graph-based compute engine, and RICE,
-    Morgan Stanley’s fixed-income pricing and risk framework.
+  <div className="portfolio-card">
+    <span className="card-tag">Docs-as-Code · Developer Portal · Platform Strategy</span>
+    <h3>Scaling an Enterprise Developer Documentation Platform</h3>
+    <div className="card-description">
+      <p>Led the design and evolution of an internal enterprise documentation platform that grew from 700 pages to more than 3,200 for an audience of quantitative analysts and software developers. My responsibilities also included creating documentation for <a className="card-external-link" href="https://github.com/morganstanley/optimus-cirrus" target="_blank" rel="noopener noreferrer">Optimus Cirrus</a>, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income pricing and risk framework.</p>
+    </div>
+    <Link className="card-link card-stretched-link" to="/docs/case-studies/scalingdeveloperdocs" aria-label="Read the Scaling an Enterprise Developer Documentation Platform case study">Read case study →</Link>
   </div>
 
-  <Link
-    className="card-link"
-    to="/docs/case-studies/scalingdeveloperdocs"
-    aria-label="Read the Scaling an Enterprise Developer Documentation Platform case study"
-  >
-    Read case study →
-  </Link>
-</div>
-
-<Link
-  className="portfolio-card"
-  to="/docs/case-studies/paysafedevcenter"
-  aria-label="Read the Paysafe Developer Center case study"
->
-  <span className="card-tag">
-    Developer Portal · API Documentation · Platform Delivery
-  </span>
-
-  <h3>Building the Paysafe Developer Center</h3>
-
- <div className="card-description">
-  Delivered a unified developer site during Paysafe's rapid expansion to more than $1 billion in annual revenue. Brought together API and SDK references, integration guides and product information from the Optimal Payments and Skrill businesses. Built migration tools and connected the authoring, review and publishing systems.
-</div>
-
-  <span className="card-link">Read case study →</span>
-</Link>
-
-<Link
-  className="portfolio-card"
-  to="/docs/docs-samples/MDES4Merchants"
-  aria-label="Read the Mastercard MDES for Merchants case study"
->
-  <span className="card-tag">Secure REST API · Python · Integration validation</span>
-  <h3>Mastercard MDES for Merchants</h3>
-
-  <div className="card-description">
-    Developed and tested a complete payment API integration using Python, OAuth 1.0 RSA-SHA256, encryption and asynchronous webhooks. Used the working implementation to validate complex merchant workflows and identify documentation defects.
+  <div className="portfolio-card">
+    <span className="card-tag">Developer Portal · API Documentation · Platform Delivery</span>
+    <h3>Building the Paysafe Developer Center</h3>
+    <div className="card-description">
+      <p>Delivered a unified developer site during Paysafe's rapid expansion to more than $1 billion in annual revenue. Brought together API and SDK references, integration guides and product information from the <a className="card-external-link" href="https://www.paysafe.com/gb-en/paysafegroup/news/detail/optimal-payments-becomes-paysafe-in-game-changing-global-rebrand/" target="_blank" rel="noopener noreferrer">Optimal Payments</a> and <a className="card-external-link" href="https://www.skrill.com/" target="_blank" rel="noopener noreferrer">Skrill</a> businesses. Built migration tools and connected the authoring, review and publishing systems.</p>
+    </div>
+    <Link className="card-link card-stretched-link" to="/docs/case-studies/paysafedevcenter" aria-label="Read the Building the Paysafe Developer Center case study">Read case study →</Link>
   </div>
 
-  <span className="card-link">Read case study →</span>
-</Link>
+
+  <div className="portfolio-card">
+    <span className="card-tag">Secure REST API · Python · Integration validation</span>
+    <h3>Mastercard MDES for Merchants</h3>
+    <div className="card-description">
+      <p>Built and tested a Python payment API integration with Mastercard MDES, the tokenisation infrastructure behind <strong>Apple Pay</strong>. Developed custom OAuth authentication code, implemented encryption and asynchronous webhooks, validated merchant workflows, identified documentation defects and authored the MDES for Merchants Use-Case Guide.</p>
+    </div>
+    <Link className="card-link card-stretched-link" to="/docs/docs-samples/MDES4Merchants" aria-label="Read the Mastercard MDES for Merchants case study">Read case study →</Link>
+  </div>
 
 </div>
 
@@ -139,18 +107,18 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 ## Software engineering background {/* #engineering-background */}
 
-I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C, and C++/STL. 
+I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C, and C++/STL.
 
 Recent development work includes Scala tooling and API test integrations using Python/Flask and JavaScript, including full-stack and cloud-based implementations.
 
 ## Employment history {/* #employment-history */}
 
-For employment history and professional experience, visit my
-[LinkedIn profile](https://www.linkedin.com/in/ian-drewett/).
+For employment history and professional experience, visit my [LinkedIn profile](https://www.linkedin.com/in/ian-drewett/).
 
 :::tip[Automated documentation QA]
 
 My portfolio has a QA pipeline implemented using GitHub Actions which runs automatically on any committed changes as part of Continuous Integration. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, links and spelling.
 
-**[View the live report →](pathname:///qa/)**
+**[View the live report →](/qa/)**
+
 :::

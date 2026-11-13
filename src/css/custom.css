@@ -250,6 +250,35 @@
   line-height: 1.6;
 }
 
+.portfolio-card .card-description strong,
+.portfolio-card .card-description b {
+  font-weight: 700;
+}
+
+/* The card container handles navigation; external links remain independent. */
+.portfolio-card {
+  cursor: pointer;
+}
+
+.portfolio-card .card-description p {
+  display: block;
+  margin: 0;
+  line-height: inherit;
+}
+
+.portfolio-card .card-description a,
+.portfolio-card .card-description p a {
+  display: inline;
+  position: static;
+  margin: 0;
+  padding: 0;
+  color: var(--ifm-link-color);
+  text-decoration: underline;
+  line-height: inherit;
+  white-space: normal;
+  cursor: pointer;
+}
+
 .card-tag {
   display: block;
   margin-bottom: 0.65rem;
@@ -635,4 +664,35 @@
   .portfolio-hero h1 {
     font-size: 2.25rem;
   }
+}
+
+/* Portfolio cards: native full-card links without nested anchors. */
+.portfolio-grid .portfolio-card {
+  position: relative;
+  isolation: isolate;
+}
+
+/* An invisible hit area extending the case-study link over the whole card. */
+.portfolio-grid .portfolio-card .card-stretched-link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+/* External links must be painted above the stretched hit area. */
+.portfolio-grid .portfolio-card .card-description a.card-external-link {
+  position: relative;
+  z-index: 2;
+  display: inline;
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+  color: var(--ifm-link-color);
+  text-decoration: underline;
+}
+
+.portfolio-grid .portfolio-card:focus-within {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 3px;
 }
