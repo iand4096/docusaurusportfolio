@@ -70,6 +70,16 @@ test('body links suppress a destination once even when multiple sections or URL 
     .filter(item => item.id === 'target'), [{id: 'target', reason: 'already linked in article body'}]);
 });
 
+test('same-employer body links remain eligible but manual exclusions still apply', () => {
+  const documents = corpus();
+  documents[0].frontMatter.organisations = ['team'];
+  documents[1].frontMatter.organisations = ['team'];
+  documents[0].body = '[Target](./target.md#section)';
+  assert.equal(rankCandidates(documents, dimensions, config).pages.source.links[0].id, 'target');
+  documents[0].frontMatter.see_also = {exclude: ['target']};
+  assert.equal(rankCandidates(documents, dimensions, config).pages.source.links.length, 0);
+});
+
 test('manual exclusions are validated and another qualifying candidate fills the slot', () => {
   const documents = corpus();
   documents.push(doc('replacement', {topics: ['focused']}));
@@ -95,16 +105,98 @@ test('audience, employer, type and ubiquitous subject terms alone cannot create 
   assert.ok(Object.values(result.pages).every(page => !page.links.length));
 });
 
-test('more focused overlap wins over a long list of metadata and ties use document IDs', () => {
+test('extra destination topics do not dilute source coverage and ties use document IDs', () => {
   const documents = corpus();
   documents.push(doc('broad', {topics: ['focused', 'other', 'rare'], technologies: ['extra']}));
   documents.push(doc('another', {topics: ['focused']}));
   documents.push(doc('seventh', {topics: ['unrelated']}));
   const result = rankCandidates(documents, dimensions, config);
-  assert.deepEqual(result.pages.source.links.slice(0, 2).map(link => link.id), ['another', 'target']);
+  assert.deepEqual(result.pages.source.links.map(link => link.id), ['another', 'broad', 'target']);
+  assert.equal(result.pages.source.links[0].score, result.pages.source.links[1].score);
+  assert.equal(result.pages.source.links[1].score, result.pages.source.links[2].score);
   assert.ok(result.pages.source.links.length <= SETTINGS.limit);
   assert.deepEqual(rankCandidates(documents.toReversed(), dimensions, config).pages.source.links,
     result.pages.source.links);
+});
+
+test('shared employer raises a related page above a closer subject-only match', () => {
+  const documents = [
+    doc('source', {topics: ['focused', 'other'], organisations: ['team']}),
+    doc('subject-match', {topics: ['focused', 'other']}),
+    doc('employer-match', {topics: ['focused'], organisations: ['team']}),
+    doc('unrelated-employer', {topics: ['rare'], organisations: ['team']}),
+    doc('unrelated', {topics: ['rare']}),
+  ];
+  const result = rankCandidates(documents, dimensions, config);
+  assert.equal(result.pages.source.links[0].id, 'employer-match');
+  assert.ok(result.pages.source.links.some(link => link.id === 'subject-match'));
+  assert.ok(!result.pages.source.links.some(link => link.id === 'unrelated-employer'));
+});
+
+test('broad topics cannot establish relevance or affect scores and explanations', () => {
+  const documents = corpus();
+  documents.push(doc('broad-only', {topics: [...SETTINGS.ignoredTopics], organisations: ['team']}));
+  documents[0].frontMatter.organisations = ['team'];
+  const before = rankCandidates(documents, dimensions, config).pages.source.links;
+  documents[0].frontMatter.topics.push(...SETTINGS.ignoredTopics);
+  documents[1].frontMatter.topics.push(...SETTINGS.ignoredTopics);
+  const after = rankCandidates(documents, dimensions, config).pages.source.links;
+  assert.deepEqual(after, before);
+  assert.ok(!after.some(link => link.id === 'broad-only'));
+  assert.ok(after.every(link => link.reasons.every(reason =>
+    !SETTINGS.ignoredTopics.some(term => reason.includes(`(${term})`)))));
+});
+
+test('additional destination technologies do not dilute a technology match', () => {
+  const documents = corpus();
+  documents[0].frontMatter.technologies = ['focused'];
+  documents[1].frontMatter.technologies = ['focused'];
+  const before = rankCandidates(documents, dimensions, config).pages.source.links[0];
+  documents[1].frontMatter.technologies.push('extra', 'other', 'rare');
+  const after = rankCandidates(documents, dimensions, config).pages.source.links[0];
+  assert.equal(after.id, before.id);
+  assert.equal(after.score, before.score);
+});
+
+test('rare technologies outweigh common technology and topic-only matches', () => {
+  const documents = [
+    doc('source', {topics: ['focused'], technologies: ['rare', 'common']}),
+    doc('rare-match', {technologies: ['rare']}),
+    doc('common-match', {technologies: ['common']}),
+    doc('topic-match', {topics: ['focused']}),
+    ...Array.from({length: 6}, (_, i) => doc(`filler-${i}`, {technologies: ['common']})),
+  ];
+  const result = rankCandidates(documents, dimensions, config);
+  assert.equal(result.pages.source.links[0].id, 'rare-match');
+  assert.ok(result.pages.source.links[0].score >
+    result.pages.source.links.find(link => link.id === 'topic-match').score);
+  assert.ok(!result.pages.source.links.some(link => link.id === 'common-match'));
+});
+
+test('distinctive topics outrank secondary overlap without filling weak slots', () => {
+  const documents = [
+    doc('source', {topics: ['rare', 'common']}),
+    doc('specific', {topics: ['rare']}),
+    doc('generic', {topics: ['common']}),
+    doc('other', {topics: ['common']}),
+    doc('fourth', {topics: ['common']}),
+  ];
+  assert.deepEqual(rankCandidates(documents, dimensions, config).pages.source.links.map(link => link.id),
+    ['specific']);
+});
+
+test('portfolio recommendations preserve the reviewed relevance expectations', async () => {
+  const {index} = await generate(path.resolve('.'), {url: 'https://example.com', baseUrl: '/'});
+  const ids = id => index.pages[id].links.map(link => link.id);
+  const taxonomy = ids('case-studies/TaxonomyGovernance');
+  assert.equal(taxonomy[0], 'case-studies/RagSearchCloudArchitecture');
+  assert.ok(!taxonomy.includes('skills/DocumentationLeadership'));
+  assert.ok(!taxonomy.includes('skills/Agile'));
+  const frameworks = ids('case-studies/DocumentingComplexDeveloperFrameworks');
+  assert.equal(frameworks[0], 'case-studies/ScalingADeveloperDocsPlatform');
+  assert.ok(!frameworks.includes('skills/UX'));
+  assert.equal(ids('docs-samples/PaysafeDeveloperJS')[0], 'case-studies/PaysafeDeveloperCenter');
+  assert.equal(ids('tools/OpenAPIandAPITools')[0], 'skills/APIDocumentation');
 });
 
 test('frontmatter control types are strict, including on disabled pages', () => {

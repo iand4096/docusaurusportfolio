@@ -7,7 +7,9 @@ import remarkParse from 'remark-parse';
 import remarkMdx from 'remark-mdx';
 import remarkGfm from 'remark-gfm';
 
-export const SETTINGS = {limit: 3, threshold: 0.12, commonTermFraction: 0.65};
+export const SETTINGS = {limit: 3, threshold: 0.3, commonTermFraction: 0.65,
+  employerBoost: 0.8, topicWeight: 0.4, technologyWeight: 0.6, topicRarityPower: 2, technologyRarityPower: 2,
+  ignoredTopics: ['technical-writing', 'docs-as-code']};
 const compare = (a, b) => a < b ? -1 : a > b ? 1 : 0;
 const normalizePath = value => path.posix.normalize(value).replace(/\/$/, '') || '/';
 const array = value => Array.isArray(value) ? value : [];
@@ -138,22 +140,26 @@ export function createResolver(documents, config) {
   };
 }
 
-function overlap(left, right, frequencies, count) {
+function overlap(left, right, frequencies, count, {rarityPower, sourceCoverage = false} = {}) {
   const a = new Set(left), b = new Set(right);
   const union = new Set([...a, ...b]);
   const shared = [...a].filter(term => b.has(term)).sort(compare);
-  const weight = term => Math.log(1 + count / (frequencies.get(term) ?? 1));
-  const total = [...union].reduce((sum, term) => sum + weight(term), 0);
+  const weight = term => rarityPower
+    ? (count / (frequencies.get(term) ?? 1)) ** rarityPower
+    : Math.log(1 + count / (frequencies.get(term) ?? 1));
+  const total = [...(sourceCoverage ? a : union)].reduce((sum, term) => sum + weight(term), 0);
   return {shared, value: total ? shared.reduce((sum, term) => sum + weight(term), 0) / total : 0};
 }
 
 export function rankCandidates(documents, dimensions, config, settings = SETTINGS) {
   const candidates = documents.filter(document => !eligibility(document));
   const primary = ['topics', 'technologies'].filter(id => dimensions[id]);
+  const termsFor = (document, dimensionId) => array(document.frontMatter[dimensions[dimensionId]?.metadataField])
+    .filter(term => dimensionId !== 'topics' || !settings.ignoredTopics.includes(term));
   const frequencies = Object.fromEntries(primary.map(id => {
     const counts = new Map();
     for (const document of candidates) {
-      for (const term of new Set(array(document.frontMatter[dimensions[id].metadataField]))) {
+      for (const term of new Set(termsFor(document, id))) {
         counts.set(term, (counts.get(term) ?? 0) + 1);
       }
     }
@@ -179,26 +185,43 @@ export function rankCandidates(documents, dimensions, config, settings = SETTING
       if (result.id) linked.add(result.id);
       if (result.warning) details.warnings.push({line: link.line, reason: result.warning});
     }
+    const sourceTopics = termsFor(source, 'topics');
+    const minimumFrequency = Math.min(...sourceTopics.map(term => frequencies.topics?.get(term) ?? 1));
+    const distinctiveTopics = sourceTopics.filter(term =>
+      (frequencies.topics?.get(term) ?? 1) === minimumFrequency);
     for (const target of candidates) {
       if (target.id === source.id) continue;
+      const employerField = dimensions.organisations?.metadataField;
+      const sameEmployer = employerField && array(source.frontMatter[employerField])
+        .some(term => array(target.frontMatter[employerField]).includes(term));
       const excluded = options.exclude.includes(target.id) ? 'frontmatter exclusion'
-        : linked.has(target.id) ? 'already linked in article body' : null;
+        : linked.has(target.id) && !sameEmployer ? 'already linked in article body' : null;
       if (excluded) { details.excluded.push({id: target.id, reason: excluded}); continue; }
       let score = 0;
       let specific = false;
+      let distinctive = false;
+      let sharedTechnology = false;
       const reasons = [];
       for (const dimensionId of primary) {
         const dimension = dimensions[dimensionId];
-        const shared = overlap(array(source.frontMatter[dimension.metadataField]),
-          array(target.frontMatter[dimension.metadataField]), frequencies[dimensionId], candidates.length);
-        score += shared.value * (dimensionId === 'topics' ? 1 : 0.8) / 1.8;
+        const shared = overlap(termsFor(source, dimensionId),
+          termsFor(target, dimensionId), frequencies[dimensionId], candidates.length,
+          dimensionId === 'topics' ? {rarityPower: settings.topicRarityPower, sourceCoverage: true} : {rarityPower: settings.technologyRarityPower, sourceCoverage: true});
+        score += shared.value * (dimensionId === 'topics' ? settings.topicWeight : settings.technologyWeight);
         for (const term of shared.shared) {
+          if (dimensionId === 'topics' && distinctiveTopics.includes(term)) distinctive = true;
+          if (dimensionId === 'technologies' &&
+            frequencies[dimensionId].get(term) / candidates.length <= settings.commonTermFraction) sharedTechnology = true;
           if (frequencies[dimensionId].get(term) / candidates.length <= settings.commonTermFraction) specific = true;
           reasons.push(`${dimension.label}: ${dimension.terms.find(value => value.id === term)?.label ?? term} (${term})`);
         }
       }
       if (!specific) { details.excluded.push({id: target.id, reason: 'no shared specific topic or technology'}); continue; }
-      for (const [id, boost] of [['audiences', 0.04], ['organisations', 0.06]]) {
+      if (!distinctive && !sharedTechnology && !sameEmployer) {
+        details.excluded.push({id: target.id, reason: 'only secondary topics overlap; no shared distinctive topic, specific technology or employer'});
+        continue;
+      }
+      for (const [id, boost] of [['audiences', 0.04], ['organisations', settings.employerBoost]]) {
         const dimension = dimensions[id];
         if (!dimension) continue;
         const shared = overlap(array(source.frontMatter[dimension.metadataField]),
@@ -274,7 +297,9 @@ export function renderReport(index, review, config) {
   const lines = ['# Generated See also review', '', 'Generated by `npm run see-also:generate`. Do not edit this report.', '',
     `Input hash: \`${index.inputHash}\``, '',
     `Maximum links: ${index.settings.limit}; minimum score: ${index.settings.threshold}.`, '',
-    'Ranking uses rarity-weighted topic/technology overlap, normalised by the combined term sets. Audience and employer overlap supply small boosts. Shared terms appearing on more than 65% of eligible pages cannot establish relevance alone.', '',
+    `Topics contribute up to ${index.settings.topicWeight}, using inverse document frequency raised to ${index.settings.topicRarityPower} and coverage of the source page’s topics. Technologies contribute up to ${index.settings.technologyWeight}, using rarity-weighted coverage of the source page’s technologies. Additional destination topics and technologies do not dilute the match. A shared employer adds up to ${index.settings.employerBoost}; audience overlap adds up to 0.04. Employer and audience matches cannot establish relevance alone. Shared terms appearing on more than 65% of eligible pages cannot establish relevance alone.`, '',
+    'Candidates must share a least-frequent source topic (including ties), a specific technology, or the source employer. Existing body links are suppressed unless the employer matches; manual exclusions always apply. Scores and eligibility can differ by direction.', '',
+    `Topics ignored throughout recommendation matching and scoring: ${index.settings.ignoredTopics.map(term => `\`${term}\``).join(', ')}. They remain available as taxonomy metadata.`, '',
     'Scores order recommendations; they are not measured probabilities or retrieval-quality scores.', ''];
   for (const page of review) {
     lines.push(`## ${cell(page.title)}`, '', `Document ID: \`${page.id}\``, '');

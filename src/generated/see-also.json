@@ -1,10 +1,19 @@
 {
   "version": 1,
-  "inputHash": "f75a91eb63a625f3b1876c5b272bf020edc46ca5184b61e13ad262b496ea0fe5",
+  "inputHash": "b0c203f3ee334f0b6b91971ce81c6eaefa8fc2112ddbceb94cede886c963721f",
   "settings": {
     "limit": 3,
-    "threshold": 0.12,
-    "commonTermFraction": 0.65
+    "threshold": 0.3,
+    "commonTermFraction": 0.65,
+    "employerBoost": 0.8,
+    "topicWeight": 0.4,
+    "technologyWeight": 0.6,
+    "topicRarityPower": 2,
+    "technologyRarityPower": 2,
+    "ignoredTopics": [
+      "technical-writing",
+      "docs-as-code"
+    ]
   },
   "pages": {
     "case-studies/DocumentingComplexDeveloperFrameworks": {
@@ -14,44 +23,43 @@
       "status": null,
       "links": [
         {
-          "id": "misc/OptimusRICE",
-          "title": "Optimus and RICE",
-          "path": "/docs/misc/OptimusRICE",
-          "score": 0.425834,
-          "reasons": [
-            "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
-            "Technology: Kafka (kafka)",
-            "Technology: Optimus (optimus)",
-            "Technology: RICE (rice)",
-            "Audience: Developers (developers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "skills/UX",
-          "title": "User Experience and User Interface Design",
-          "path": "/docs/ux",
-          "score": 0.404157,
+          "id": "case-studies/ScalingADeveloperDocsPlatform",
+          "title": "Scaling an Enterprise Developer Docs Platform",
+          "path": "/docs/case-studies/scalingdeveloperdocs",
+          "score": 0.994634,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
             "Audience: Developers (developers)",
-            "Audience: Technical writers (technical-writers)"
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)",
+            "Work organisation: Morgan Stanley (morgan-stanley)"
           ]
         },
         {
           "id": "case-studies/PaysafeDeveloperCenter",
           "title": "Building the Paysafe Developer Center",
           "path": "/docs/case-studies/paysafedevcenter",
-          "score": 0.350042,
+          "score": 0.44,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
             "Topic: Information architecture (information-architecture)",
             "Audience: Developers (developers)",
             "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "tools/OpenAPIandAPITools",
+          "title": "OpenAPI and API tools",
+          "path": "/docs/openapitools",
+          "score": 0.389328,
+          "reasons": [
+            "Topic: API documentation (api-documentation)",
+            "Topic: Developer experience (developer-experience)",
+            "Technology: Scala (scala)",
+            "Audience: Developers (developers)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -64,24 +72,16 @@
       "status": null,
       "links": [
         {
-          "id": "tools/DocusaurusAndMkdocs",
-          "title": "Static Site Generators and Docs Platforms",
-          "path": "/docs/staticsitedocsplatforms",
-          "score": 0.571739,
+          "id": "tools/OpenAPIandAPITools",
+          "title": "OpenAPI and API tools",
+          "path": "/docs/openapitools",
+          "score": 0.450134,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Technology: Docusaurus (docusaurus)",
-            "Technology: GitHub Actions (github-actions)",
-            "Technology: GitHub Pages (github-pages)",
-            "Technology: JSX (jsx)",
-            "Technology: Markdown (markdown)",
-            "Technology: MDX (mdx)",
+            "Topic: Technical validation (technical-validation)",
+            "Technology: JavaScript (javascript)",
             "Technology: Python (python)",
-            "Technology: React (react)",
-            "Technology: Vale (vale)",
-            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Developers (developers)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
@@ -89,9 +89,8 @@
           "id": "tools/GitContinuousIntegration",
           "title": "Git and Continuous Integration",
           "path": "/docs/gitandci",
-          "score": 0.528309,
+          "score": 0.427621,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
             "Technology: Docusaurus (docusaurus)",
@@ -103,14 +102,22 @@
           ]
         },
         {
-          "id": "tools/ContainersAndCloudNative",
-          "title": "Containers and Cloud",
-          "path": "/docs/containersandcloud",
-          "score": 0.444675,
+          "id": "skills/DocumentationEngineering",
+          "title": "Documentation Engineering",
+          "path": "/docs/documentationeng",
+          "score": 0.412569,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
+            "Technology: Docusaurus (docusaurus)",
+            "Technology: Git (git)",
+            "Technology: GitHub Actions (github-actions)",
+            "Technology: Markdown (markdown)",
+            "Technology: Mermaid (mermaid)",
+            "Technology: Python (python)",
+            "Technology: React (react)",
+            "Technology: Vale (vale)",
+            "Audience: Developers (developers)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -124,46 +131,39 @@
       "status": null,
       "links": [
         {
-          "id": "skills/InformationArchitecture",
-          "title": "Information Architecture",
-          "path": "/docs/informationarch",
-          "score": 0.45231,
+          "id": "docs-samples/PaysafeDeveloperJS",
+          "title": "Paysafe.js Developer Guide",
+          "path": "/docs/docs-samples/PaysafeDeveloperJS",
+          "score": 1.035584,
           "reasons": [
+            "Topic: API documentation (api-documentation)",
+            "Audience: Developers (developers)",
+            "Work organisation: Paysafe (paysafe)"
+          ]
+        },
+        {
+          "id": "tools/OpenAPIandAPITools",
+          "title": "OpenAPI and API tools",
+          "path": "/docs/openapitools",
+          "score": 0.432726,
+          "reasons": [
+            "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Information architecture (information-architecture)",
-            "Technology: Git (git)",
-            "Audience: Documentation managers (documentation-managers)",
+            "Technology: API Blueprint (api-blueprint)",
+            "Technology: REST (rest)",
+            "Audience: Developers (developers)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
         {
-          "id": "skills/DocumentationLeadership",
-          "title": "Leadership & Strategy",
-          "path": "/docs/docsleadership",
-          "score": 0.373663,
+          "id": "case-studies/DocumentingComplexDeveloperFrameworks",
+          "title": "Documenting Complex Enterprise Developer Frameworks",
+          "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
+          "score": 0.402317,
           "reasons": [
+            "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
-            "Technology: Git (git)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "case-studies/ScalingADeveloperDocsPlatform",
-          "title": "Scaling an Enterprise Developer Docs Platform",
-          "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 0.37302,
-          "reasons": [
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Information architecture (information-architecture)",
-            "Technology: Git (git)",
             "Audience: Developers (developers)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
@@ -181,9 +181,8 @@
           "id": "implementation-details/taxonomy",
           "title": "AI-assisted taxonomy governance",
           "path": "/docs/implementation-details/taxonomy",
-          "score": 0.401039,
+          "score": 0.397028,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
             "Technology: DeepSeek LLM API (deepseek-api)",
@@ -196,34 +195,14 @@
           ]
         },
         {
-          "id": "skills/DocumentationLeadership",
-          "title": "Leadership & Strategy",
-          "path": "/docs/docsleadership",
-          "score": 0.374262,
+          "id": "case-studies/TaxonomyGovernance",
+          "title": "Governed documentation taxonomy",
+          "path": "/docs/case-studies/TaxonomyGovernance",
+          "score": 0.378259,
           "reasons": [
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
-            "Topic: Information architecture (information-architecture)",
-            "Technology: Docker (docker)",
+            "Topic: Taxonomy (taxonomy)",
             "Technology: Docusaurus (docusaurus)",
-            "Technology: GitHub Actions (github-actions)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "case-studies/ScalingADeveloperDocsPlatform",
-          "title": "Scaling an Enterprise Developer Docs Platform",
-          "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 0.37059,
-          "reasons": [
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation governance (documentation-governance)",
-            "Topic: Information architecture (information-architecture)",
-            "Technology: Markdown (markdown)",
-            "Technology: Mermaid (mermaid)",
-            "Audience: Developers (developers)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -236,13 +215,26 @@
       "status": null,
       "links": [
         {
+          "id": "case-studies/DocumentingComplexDeveloperFrameworks",
+          "title": "Documenting Complex Enterprise Developer Frameworks",
+          "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
+          "score": 0.980067,
+          "reasons": [
+            "Topic: Developer experience (developer-experience)",
+            "Topic: Information architecture (information-architecture)",
+            "Audience: Developers (developers)",
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)",
+            "Work organisation: Morgan Stanley (morgan-stanley)"
+          ]
+        },
+        {
           "id": "skills/DocumentationLeadership",
           "title": "Leadership & Strategy",
           "path": "/docs/docsleadership",
-          "score": 0.604259,
+          "score": 0.432166,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Information architecture (information-architecture)",
@@ -252,33 +244,17 @@
           ]
         },
         {
-          "id": "skills/InformationArchitecture",
-          "title": "Information Architecture",
-          "path": "/docs/informationarch",
-          "score": 0.465558,
+          "id": "case-studies/RagSearchCloudArchitecture",
+          "title": "Designing Cloud-Based RAG search for technical documentation",
+          "path": "/docs/case-studies/RagSearchCloudArchitecture",
+          "score": 0.408064,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Information architecture (information-architecture)",
-            "Technology: Git (git)",
-            "Technology: Markdown (markdown)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "skills/GovernanceDocs",
-          "title": "Documentation Governance",
-          "path": "/docs/governancedocs",
-          "score": 0.428623,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Information architecture (information-architecture)",
-            "Technology: C4 model (c4-model)",
             "Technology: Markdown (markdown)",
-            "Audience: Documentation managers (documentation-managers)",
+            "Technology: Mermaid (mermaid)",
+            "Audience: Developers (developers)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -291,43 +267,35 @@
       "status": null,
       "links": [
         {
-          "id": "skills/DocumentationLeadership",
-          "title": "Leadership & Strategy",
-          "path": "/docs/docsleadership",
-          "score": 0.418311,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Documentation governance (documentation-governance)",
-            "Technology: Docusaurus (docusaurus)",
-            "Technology: Git (git)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "skills/Agile",
-          "title": "Agile Delivery and Project Management",
-          "path": "/docs/agile",
-          "score": 0.371847,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Documentation governance (documentation-governance)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.351979,
+          "score": 0.511599,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
             "Technology: Docusaurus (docusaurus)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "tools/ProgrammingAutomation",
+          "title": "Programming and Automation",
+          "path": "/docs/programming",
+          "score": 0.457668,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: YAML (yaml)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "tools/OpenAPIandAPITools",
+          "title": "OpenAPI and API tools",
+          "path": "/docs/openapitools",
+          "score": 0.447414,
+          "reasons": [
+            "Technology: YAML (yaml)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -347,25 +315,15 @@
       "status": null,
       "links": [
         {
-          "id": "misc/OptimusRICE",
-          "title": "Optimus and RICE",
-          "path": "/docs/misc/OptimusRICE",
-          "score": 0.408752,
+          "id": "case-studies/ScalingADeveloperDocsPlatform",
+          "title": "Scaling an Enterprise Developer Docs Platform",
+          "path": "/docs/case-studies/scalingdeveloperdocs",
+          "score": 0.620619,
           "reasons": [
             "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "skills/UX",
-          "title": "User Experience and User Interface Design",
-          "path": "/docs/ux",
-          "score": 0.399283,
-          "reasons": [
-            "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
-            "Audience: End users (end-users)",
+            "Technology: LanguageTool (languagetool)",
+            "Technology: Mermaid (mermaid)",
+            "Technology: Vale (vale)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
@@ -373,13 +331,23 @@
           "id": "skills/DocumentationEngineering",
           "title": "Documentation Engineering",
           "path": "/docs/documentationeng",
-          "score": 0.298955,
+          "score": 0.560359,
           "reasons": [
             "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
             "Technology: MadCap Flare (madcap-flare)",
             "Technology: Mermaid (mermaid)",
             "Technology: Vale (vale)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "case-studies/RagSearchCloudArchitecture",
+          "title": "Designing Cloud-Based RAG search for technical documentation",
+          "path": "/docs/case-studies/RagSearchCloudArchitecture",
+          "score": 0.435298,
+          "reasons": [
+            "Topic: Information architecture (information-architecture)",
+            "Technology: Mermaid (mermaid)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -392,10 +360,23 @@
       "status": null,
       "links": [
         {
+          "id": "docs-samples/MasterpassMerchantIntegrationGuide",
+          "title": "Masterpass Integration Guide",
+          "path": "/docs/docs-samples/MasterpassMerchantIntegrationGuide",
+          "score": 0.96443,
+          "reasons": [
+            "Topic: API documentation (api-documentation)",
+            "Topic: Payments (payments)",
+            "Technology: OpenAPI (openapi)",
+            "Audience: Developers (developers)",
+            "Work organisation: Mastercard (mastercard)"
+          ]
+        },
+        {
           "id": "skills/APIDocumentation",
           "title": "API Documentation and Technical Validation",
           "path": "/docs/apidocumentation",
-          "score": 0.409612,
+          "score": 0.445357,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: API security (api-security)",
@@ -408,30 +389,6 @@
             "Technology: Requests (requests)",
             "Audience: Developers (developers)"
           ]
-        },
-        {
-          "id": "docs-samples/MasterpassMerchantIntegrationGuide",
-          "title": "Masterpass Integration Guide",
-          "path": "/docs/docs-samples/MasterpassMerchantIntegrationGuide",
-          "score": 0.299309,
-          "reasons": [
-            "Topic: API documentation (api-documentation)",
-            "Topic: Payments (payments)",
-            "Technology: OpenAPI (openapi)",
-            "Audience: Developers (developers)",
-            "Work organisation: Mastercard (mastercard)"
-          ]
-        },
-        {
-          "id": "docs-samples/PaysafeDeveloperJS",
-          "title": "Paysafe.js Developer Guide",
-          "path": "/docs/docs-samples/PaysafeDeveloperJS",
-          "score": 0.270049,
-          "reasons": [
-            "Topic: API documentation (api-documentation)",
-            "Topic: Payments (payments)",
-            "Audience: Developers (developers)"
-          ]
         }
       ]
     },
@@ -442,22 +399,10 @@
       "status": null,
       "links": [
         {
-          "id": "docs-samples/PaysafeDeveloperJS",
-          "title": "Paysafe.js Developer Guide",
-          "path": "/docs/docs-samples/PaysafeDeveloperJS",
-          "score": 0.419105,
-          "reasons": [
-            "Topic: API documentation (api-documentation)",
-            "Topic: Payments (payments)",
-            "Topic: Technical writing (technical-writing)",
-            "Audience: Developers (developers)"
-          ]
-        },
-        {
           "id": "docs-samples/MDES4Merchants",
           "title": "MDES for Merchants Guide",
           "path": "/docs/docs-samples/MDES4Merchants",
-          "score": 0.299309,
+          "score": 1.220614,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Payments (payments)",
@@ -467,16 +412,14 @@
           ]
         },
         {
-          "id": "case-studies/DocumentingComplexDeveloperFrameworks",
-          "title": "Documenting Complex Enterprise Developer Frameworks",
-          "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.290358,
+          "id": "docs-samples/PaysafeDeveloperJS",
+          "title": "Paysafe.js Developer Guide",
+          "path": "/docs/docs-samples/PaysafeDeveloperJS",
+          "score": 0.402778,
           "reasons": [
             "Topic: API documentation (api-documentation)",
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Technical writing (technical-writing)",
-            "Audience: Developers (developers)",
-            "Audience: Technical writers (technical-writers)"
+            "Topic: Payments (payments)",
+            "Audience: Developers (developers)"
           ]
         }
       ]
@@ -488,22 +431,21 @@
       "status": null,
       "links": [
         {
-          "id": "docs-samples/MasterpassMerchantIntegrationGuide",
-          "title": "Masterpass Integration Guide",
-          "path": "/docs/docs-samples/MasterpassMerchantIntegrationGuide",
-          "score": 0.419105,
+          "id": "case-studies/PaysafeDeveloperCenter",
+          "title": "Building the Paysafe Developer Center",
+          "path": "/docs/case-studies/paysafedevcenter",
+          "score": 0.875402,
           "reasons": [
             "Topic: API documentation (api-documentation)",
-            "Topic: Payments (payments)",
-            "Topic: Technical writing (technical-writing)",
-            "Audience: Developers (developers)"
+            "Audience: Developers (developers)",
+            "Work organisation: Paysafe (paysafe)"
           ]
         },
         {
           "id": "docs-samples/MDES4Merchants",
           "title": "MDES for Merchants Guide",
           "path": "/docs/docs-samples/MDES4Merchants",
-          "score": 0.270049,
+          "score": 0.44,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Payments (payments)",
@@ -511,13 +453,13 @@
           ]
         },
         {
-          "id": "case-studies/DocumentingComplexDeveloperFrameworks",
-          "title": "Documenting Complex Enterprise Developer Frameworks",
-          "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.224334,
+          "id": "docs-samples/MasterpassMerchantIntegrationGuide",
+          "title": "Masterpass Integration Guide",
+          "path": "/docs/docs-samples/MasterpassMerchantIntegrationGuide",
+          "score": 0.42,
           "reasons": [
             "Topic: API documentation (api-documentation)",
-            "Topic: Technical writing (technical-writing)",
+            "Topic: Payments (payments)",
             "Audience: Developers (developers)"
           ]
         }
@@ -537,29 +479,11 @@
       "status": null,
       "links": [
         {
-          "id": "case-studies/TaxonomyGovernance",
-          "title": "Governed documentation taxonomy",
-          "path": "/docs/case-studies/TaxonomyGovernance",
-          "score": 0.734018,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Documentation governance (documentation-governance)",
-            "Topic: Taxonomy (taxonomy)",
-            "Technology: Docusaurus (docusaurus)",
-            "Technology: Git (git)",
-            "Technology: YAML (yaml)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.401039,
+          "score": 0.622449,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
             "Technology: DeepSeek LLM API (deepseek-api)",
@@ -572,14 +496,32 @@
           ]
         },
         {
-          "id": "skills/Agile",
-          "title": "Agile Delivery and Project Management",
-          "path": "/docs/agile",
-          "score": 0.358514,
+          "id": "case-studies/TaxonomyGovernance",
+          "title": "Governed documentation taxonomy",
+          "path": "/docs/case-studies/TaxonomyGovernance",
+          "score": 0.53277,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Documentation governance (documentation-governance)",
+            "Topic: Taxonomy (taxonomy)",
+            "Technology: Docusaurus (docusaurus)",
+            "Technology: Git (git)",
+            "Technology: YAML (yaml)",
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "tools/DocusaurusAndMkdocs",
+          "title": "Static Site Generators and Docs Platforms",
+          "path": "/docs/staticsitedocsplatforms",
+          "score": 0.388475,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Docusaurus (docusaurus)",
+            "Technology: Markdown (markdown)",
+            "Technology: Python (python)",
+            "Technology: VS Code (vs-code)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -596,10 +538,9 @@
           "id": "case-studies/DocumentingComplexDeveloperFrameworks",
           "title": "Documenting Complex Enterprise Developer Frameworks",
           "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.425834,
+          "score": 0.893641,
           "reasons": [
             "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
             "Technology: Kafka (kafka)",
             "Technology: Optimus (optimus)",
             "Technology: RICE (rice)",
@@ -608,25 +549,25 @@
           ]
         },
         {
-          "id": "docs-samples/AMXInspiredSignageComposer",
-          "title": "AMX Digital Signage User Manual",
-          "path": "/docs/docs-samples/AMXInspiredSignageComposer",
-          "score": 0.408752,
+          "id": "case-studies/PaysafeDeveloperCenter",
+          "title": "Building the Paysafe Developer Center",
+          "path": "/docs/case-studies/paysafedevcenter",
+          "score": 0.426667,
           "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
+            "Audience: Developers (developers)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
         {
-          "id": "skills/DocumentationEngineering",
-          "title": "Documentation Engineering",
-          "path": "/docs/documentationeng",
-          "score": 0.347519,
+          "id": "case-studies/ScalingADeveloperDocsPlatform",
+          "title": "Scaling an Enterprise Developer Docs Platform",
+          "path": "/docs/case-studies/scalingdeveloperdocs",
+          "score": 0.426667,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
             "Audience: Developers (developers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -640,44 +581,44 @@
       "status": null,
       "links": [
         {
-          "id": "tools/ProgrammingAutomation",
-          "title": "Programming and Automation",
-          "path": "/docs/programming",
-          "score": 0.450903,
+          "id": "case-studies/ScalingADeveloperDocsPlatform",
+          "title": "Scaling an Enterprise Developer Docs Platform",
+          "path": "/docs/case-studies/scalingdeveloperdocs",
+          "score": 0.479784,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
+            "Topic: Developer experience (developer-experience)",
             "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
-            "Technology: Jira (jira)",
+            "Technology: Agentic AI (agentic-ai)",
+            "Technology: Amp (amp)",
             "Technology: Markdown (markdown)",
             "Audience: Developers (developers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "tools/Flare",
-          "title": "MadCap Flare",
-          "path": "/docs/flare",
-          "score": 0.447494,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
-            "Technology: Jira (jira)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
         {
-          "id": "tools/DocusaurusAndMkdocs",
-          "title": "Static Site Generators and Docs Platforms",
-          "path": "/docs/staticsitedocsplatforms",
-          "score": 0.428798,
+          "id": "case-studies/DocusaurusPortfolio",
+          "title": "Docusaurus Portfolio",
+          "path": "/docs/case-studies/DocusaurusPortfolio",
+          "score": 0.44089,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Markdown (markdown)",
+            "Audience: Developers (developers)",
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "case-studies/PaysafeDeveloperCenter",
+          "title": "Building the Paysafe Developer Center",
+          "path": "/docs/case-studies/paysafedevcenter",
+          "score": 0.44,
+          "reasons": [
+            "Topic: Developer experience (developer-experience)",
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Audience: Developers (developers)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -691,30 +632,10 @@
       "status": null,
       "links": [
         {
-          "id": "tools/OpenAPIandAPITools",
-          "title": "OpenAPI and API tools",
-          "path": "/docs/openapitools",
-          "score": 0.415257,
-          "reasons": [
-            "Topic: API documentation (api-documentation)",
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Technical validation (technical-validation)",
-            "Technology: cURL (curl)",
-            "Technology: Insomnia (insomnia)",
-            "Technology: Node.js (node-js)",
-            "Technology: OpenAPI (openapi)",
-            "Technology: Postman (postman)",
-            "Technology: Python (python)",
-            "Technology: REST (rest)",
-            "Audience: Developers (developers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
           "id": "docs-samples/MDES4Merchants",
           "title": "MDES for Merchants Guide",
           "path": "/docs/docs-samples/MDES4Merchants",
-          "score": 0.409612,
+          "score": 0.442579,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: API security (api-security)",
@@ -726,20 +647,6 @@
             "Technology: Python (python)",
             "Technology: Requests (requests)",
             "Audience: Developers (developers)"
-          ]
-        },
-        {
-          "id": "case-studies/DocumentingComplexDeveloperFrameworks",
-          "title": "Documenting Complex Enterprise Developer Frameworks",
-          "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.273665,
-          "reasons": [
-            "Topic: API documentation (api-documentation)",
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Technical writing (technical-writing)",
-            "Audience: Developers (developers)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
           ]
         }
       ]
@@ -754,9 +661,8 @@
           "id": "skills/DocumentationLeadership",
           "title": "Leadership & Strategy",
           "path": "/docs/docsleadership",
-          "score": 0.460892,
+          "score": 0.685455,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Documentation governance (documentation-governance)",
             "Technology: Docker (docker)",
@@ -765,27 +671,24 @@
           ]
         },
         {
-          "id": "skills/GovernanceDocs",
-          "title": "Documentation Governance",
-          "path": "/docs/governancedocs",
-          "score": 0.379999,
+          "id": "case-studies/RagSearchCloudArchitecture",
+          "title": "Designing Cloud-Based RAG search for technical documentation",
+          "path": "/docs/case-studies/RagSearchCloudArchitecture",
+          "score": 0.6008,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
-            "Technology: Jira (jira)",
-            "Audience: Documentation managers (documentation-managers)",
+            "Technology: Docker (docker)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
         {
-          "id": "case-studies/TaxonomyGovernance",
-          "title": "Governed documentation taxonomy",
-          "path": "/docs/case-studies/TaxonomyGovernance",
-          "score": 0.371847,
+          "id": "skills/GovernanceDocs",
+          "title": "Documentation Governance",
+          "path": "/docs/governancedocs",
+          "score": 0.491103,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Documentation governance (documentation-governance)",
+            "Technology: Jira (jira)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -799,29 +702,11 @@
       "status": null,
       "links": [
         {
-          "id": "tools/GitContinuousIntegration",
-          "title": "Git and Continuous Integration",
-          "path": "/docs/gitandci",
-          "score": 0.425608,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical validation (technical-validation)",
-            "Technology: Docusaurus (docusaurus)",
-            "Technology: Git (git)",
-            "Technology: GitHub Actions (github-actions)",
-            "Technology: Jenkins (jenkins)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.413251,
+          "score": 0.430206,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
             "Technology: Docusaurus (docusaurus)",
@@ -838,22 +723,30 @@
           ]
         },
         {
-          "id": "tools/ProgrammingAutomation",
-          "title": "Programming and Automation",
-          "path": "/docs/programming",
-          "score": 0.399799,
+          "id": "tools/GitContinuousIntegration",
+          "title": "Git and Continuous Integration",
+          "path": "/docs/gitandci",
+          "score": 0.403531,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
-            "Technology: Graphviz (graphviz)",
-            "Technology: MadCap Flare (madcap-flare)",
-            "Technology: Markdown (markdown)",
-            "Technology: MkDocs (mkdocs)",
-            "Technology: PlantUML (plantuml)",
-            "Technology: Python (python)",
-            "Technology: React (react)",
-            "Audience: Developers (developers)",
+            "Topic: Technical validation (technical-validation)",
+            "Technology: Docusaurus (docusaurus)",
+            "Technology: Git (git)",
+            "Technology: GitHub Actions (github-actions)",
+            "Technology: Jenkins (jenkins)",
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "tools/ContainersAndCloudNative",
+          "title": "Containers and Cloud",
+          "path": "/docs/containersandcloud",
+          "score": 0.336517,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Topic: Technical validation (technical-validation)",
+            "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -866,33 +759,17 @@
       "status": null,
       "links": [
         {
-          "id": "case-studies/ScalingADeveloperDocsPlatform",
-          "title": "Scaling an Enterprise Developer Docs Platform",
-          "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 0.604259,
+          "id": "case-studies/RagSearchCloudArchitecture",
+          "title": "Designing Cloud-Based RAG search for technical documentation",
+          "path": "/docs/case-studies/RagSearchCloudArchitecture",
+          "score": 0.932217,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Information architecture (information-architecture)",
-            "Technology: Git (git)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "skills/InformationArchitecture",
-          "title": "Information Architecture",
-          "path": "/docs/informationarch",
-          "score": 0.472943,
-          "reasons": [
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Information architecture (information-architecture)",
-            "Technology: Git (git)",
-            "Audience: Documentation managers (documentation-managers)",
+            "Technology: Docker (docker)",
+            "Technology: Docusaurus (docusaurus)",
+            "Technology: GitHub Actions (github-actions)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
@@ -900,12 +777,26 @@
           "id": "skills/Agile",
           "title": "Agile Delivery and Project Management",
           "path": "/docs/agile",
-          "score": 0.460892,
+          "score": 0.628399,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Documentation governance (documentation-governance)",
             "Technology: Docker (docker)",
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "case-studies/ScalingADeveloperDocsPlatform",
+          "title": "Scaling an Enterprise Developer Docs Platform",
+          "path": "/docs/case-studies/scalingdeveloperdocs",
+          "score": 0.4701,
+          "reasons": [
+            "Topic: Developer experience (developer-experience)",
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Topic: Documentation governance (documentation-governance)",
+            "Topic: Information architecture (information-architecture)",
+            "Technology: Git (git)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -922,9 +813,8 @@
           "id": "case-studies/ScalingADeveloperDocsPlatform",
           "title": "Scaling an Enterprise Developer Docs Platform",
           "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 0.428623,
+          "score": 0.445882,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Information architecture (information-architecture)",
             "Technology: C4 model (c4-model)",
@@ -937,9 +827,8 @@
           "id": "skills/DocumentationLeadership",
           "title": "Leadership & Strategy",
           "path": "/docs/docsleadership",
-          "score": 0.393967,
+          "score": 0.44,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Information architecture (information-architecture)",
             "Audience: Documentation managers (documentation-managers)",
@@ -947,15 +836,14 @@
           ]
         },
         {
-          "id": "skills/Agile",
-          "title": "Agile Delivery and Project Management",
-          "path": "/docs/agile",
-          "score": 0.379999,
+          "id": "case-studies/RagSearchCloudArchitecture",
+          "title": "Designing Cloud-Based RAG search for technical documentation",
+          "path": "/docs/case-studies/RagSearchCloudArchitecture",
+          "score": 0.415577,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation governance (documentation-governance)",
-            "Technology: Jira (jira)",
-            "Audience: Documentation managers (documentation-managers)",
+            "Topic: Information architecture (information-architecture)",
+            "Technology: Markdown (markdown)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -968,17 +856,18 @@
       "status": null,
       "links": [
         {
-          "id": "tools/Diagramming",
-          "title": "Diagramming and Technical Visualisation",
-          "path": "/docs/diagramsandvisuals",
-          "score": 0.497518,
+          "id": "skills/DocumentationEngineering",
+          "title": "Documentation Engineering",
+          "path": "/docs/documentationeng",
+          "score": 0.450474,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
             "Technology: Git (git)",
             "Technology: Graphviz (graphviz)",
             "Technology: Markdown (markdown)",
+            "Technology: RAG (rag)",
+            "Technology: Sphinx (sphinx)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -987,10 +876,9 @@
           "id": "skills/DocumentationLeadership",
           "title": "Leadership & Strategy",
           "path": "/docs/docsleadership",
-          "score": 0.472943,
+          "score": 0.443563,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
             "Technology: Git (git)",
@@ -1002,10 +890,9 @@
           "id": "case-studies/ScalingADeveloperDocsPlatform",
           "title": "Scaling an Enterprise Developer Docs Platform",
           "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 0.465558,
+          "score": 0.433794,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
             "Technology: Git (git)",
@@ -1023,41 +910,39 @@
       "status": null,
       "links": [
         {
-          "id": "case-studies/DocumentingComplexDeveloperFrameworks",
-          "title": "Documenting Complex Enterprise Developer Frameworks",
-          "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.404157,
-          "reasons": [
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
-            "Audience: Developers (developers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "docs-samples/AMXInspiredSignageComposer",
-          "title": "AMX Digital Signage User Manual",
-          "path": "/docs/docs-samples/AMXInspiredSignageComposer",
-          "score": 0.399283,
-          "reasons": [
-            "Topic: Information architecture (information-architecture)",
-            "Topic: Technical writing (technical-writing)",
-            "Audience: End users (end-users)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
           "id": "skills/AIandDocumentation",
           "title": "AI & Documentation",
           "path": "/docs/aianddocs",
-          "score": 0.334932,
+          "score": 0.804026,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Technical writing (technical-writing)",
             "Technology: Agentic AI (agentic-ai)",
             "Technology: Whisper (whisper)",
             "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "case-studies/ScalingADeveloperDocsPlatform",
+          "title": "Scaling an Enterprise Developer Docs Platform",
+          "path": "/docs/case-studies/scalingdeveloperdocs",
+          "score": 0.72,
+          "reasons": [
+            "Topic: Developer experience (developer-experience)",
+            "Topic: Information architecture (information-architecture)",
+            "Technology: Agentic AI (agentic-ai)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "skills/GovernanceDocs",
+          "title": "Documentation Governance",
+          "path": "/docs/governancedocs",
+          "score": 0.525974,
+          "reasons": [
+            "Topic: Information architecture (information-architecture)",
+            "Technology: Whisper (whisper)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -1080,9 +965,8 @@
           "id": "tools/GitContinuousIntegration",
           "title": "Git and Continuous Integration",
           "path": "/docs/gitandci",
-          "score": 0.63221,
+          "score": 0.472095,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
             "Technology: Linux (linux)",
@@ -1094,9 +978,8 @@
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.444675,
+          "score": 0.426667,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
             "Audience: Documentation managers (documentation-managers)",
@@ -1107,9 +990,8 @@
           "id": "skills/DocumentationEngineering",
           "title": "Documentation Engineering",
           "path": "/docs/documentationeng",
-          "score": 0.351929,
+          "score": 0.426667,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
             "Audience: Documentation managers (documentation-managers)",
@@ -1128,32 +1010,13 @@
           "id": "skills/InformationArchitecture",
           "title": "Information Architecture",
           "path": "/docs/informationarch",
-          "score": 0.497518,
+          "score": 0.447646,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
             "Technology: Git (git)",
             "Technology: Graphviz (graphviz)",
             "Technology: Markdown (markdown)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "case-studies/ScalingADeveloperDocsPlatform",
-          "title": "Scaling an Enterprise Developer Docs Platform",
-          "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 0.404124,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Information architecture (information-architecture)",
-            "Technology: C4 model (c4-model)",
-            "Technology: Git (git)",
-            "Technology: Markdown (markdown)",
-            "Technology: Mermaid (mermaid)",
-            "Technology: PlantUML (plantuml)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -1162,9 +1025,8 @@
           "id": "skills/DocumentationEngineering",
           "title": "Documentation Engineering",
           "path": "/docs/documentationeng",
-          "score": 0.394277,
+          "score": 0.446203,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
             "Technology: C4 model (c4-model)",
@@ -1173,6 +1035,19 @@
             "Technology: Markdown (markdown)",
             "Technology: Mermaid (mermaid)",
             "Technology: PlantUML (plantuml)",
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "skills/DocumentationLeadership",
+          "title": "Leadership & Strategy",
+          "path": "/docs/docsleadership",
+          "score": 0.4408,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Topic: Information architecture (information-architecture)",
+            "Technology: Git (git)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -1189,10 +1064,9 @@
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.571739,
+          "score": 0.696621,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Docusaurus (docusaurus)",
             "Technology: GitHub Actions (github-actions)",
@@ -1208,29 +1082,34 @@
           ]
         },
         {
-          "id": "skills/InformationArchitecture",
-          "title": "Information Architecture",
-          "path": "/docs/informationarch",
-          "score": 0.452776,
+          "id": "skills/DocumentationLeadership",
+          "title": "Leadership & Strategy",
+          "path": "/docs/docsleadership",
+          "score": 0.463441,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
-            "Technology: Markdown (markdown)",
+            "Technology: Docusaurus (docusaurus)",
+            "Technology: GitHub Actions (github-actions)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
         {
-          "id": "skills/AIandDocumentation",
-          "title": "AI & Documentation",
-          "path": "/docs/aianddocs",
-          "score": 0.428798,
+          "id": "skills/DocumentationEngineering",
+          "title": "Documentation Engineering",
+          "path": "/docs/documentationeng",
+          "score": 0.459221,
           "reasons": [
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Docusaurus (docusaurus)",
+            "Technology: FlexSearch (flexsearch)",
+            "Technology: GitHub Actions (github-actions)",
             "Technology: Markdown (markdown)",
+            "Technology: MkDocs (mkdocs)",
+            "Technology: Python (python)",
+            "Technology: React (react)",
+            "Technology: Vale (vale)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -1247,11 +1126,9 @@
           "id": "tools/ProgrammingAutomation",
           "title": "Programming and Automation",
           "path": "/docs/programming",
-          "score": 0.629155,
+          "score": 0.519985,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
             "Technology: C# (csharp)",
             "Technology: Jira (jira)",
             "Technology: MadCap Flare (madcap-flare)",
@@ -1260,32 +1137,29 @@
           ]
         },
         {
-          "id": "skills/AIandDocumentation",
-          "title": "AI & Documentation",
-          "path": "/docs/aianddocs",
-          "score": 0.447494,
+          "id": "skills/DocumentationEngineering",
+          "title": "Documentation Engineering",
+          "path": "/docs/documentationeng",
+          "score": 0.504699,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
-            "Technology: Jira (jira)",
+            "Technology: Confluence (confluence)",
+            "Technology: Git (git)",
+            "Technology: Jenkins (jenkins)",
+            "Technology: MadCap Flare (madcap-flare)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
         },
         {
-          "id": "skills/DocumentationEngineering",
-          "title": "Documentation Engineering",
-          "path": "/docs/documentationeng",
-          "score": 0.387623,
+          "id": "case-studies/PaysafeDeveloperCenter",
+          "title": "Building the Paysafe Developer Center",
+          "path": "/docs/case-studies/paysafedevcenter",
+          "score": 0.47333,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
-            "Technology: Confluence (confluence)",
             "Technology: Git (git)",
-            "Technology: Jenkins (jenkins)",
-            "Technology: MadCap Flare (madcap-flare)",
+            "Technology: Hypothes.is (hypothesis)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -1299,26 +1173,11 @@
       "status": null,
       "links": [
         {
-          "id": "tools/ContainersAndCloudNative",
-          "title": "Containers and Cloud",
-          "path": "/docs/containersandcloud",
-          "score": 0.63221,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical validation (technical-validation)",
-            "Technology: Linux (linux)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.528309,
+          "score": 0.69976,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
             "Technology: Docusaurus (docusaurus)",
@@ -1330,12 +1189,24 @@
           ]
         },
         {
+          "id": "tools/ContainersAndCloudNative",
+          "title": "Containers and Cloud",
+          "path": "/docs/containersandcloud",
+          "score": 0.66632,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Topic: Technical validation (technical-validation)",
+            "Technology: Linux (linux)",
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
           "id": "skills/DocumentationEngineering",
           "title": "Documentation Engineering",
           "path": "/docs/documentationeng",
-          "score": 0.425608,
+          "score": 0.574027,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
             "Technology: Docusaurus (docusaurus)",
@@ -1358,7 +1229,7 @@
           "id": "skills/APIDocumentation",
           "title": "API Documentation and Technical Validation",
           "path": "/docs/apidocumentation",
-          "score": 0.415257,
+          "score": 0.694993,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -1375,24 +1246,24 @@
           ]
         },
         {
-          "id": "case-studies/DocusaurusPortfolio",
-          "title": "Docusaurus Portfolio",
-          "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.30391,
+          "id": "docs-samples/MDES4Merchants",
+          "title": "MDES for Merchants Guide",
+          "path": "/docs/docs-samples/MDES4Merchants",
+          "score": 0.427403,
           "reasons": [
-            "Topic: Developer experience (developer-experience)",
+            "Topic: API documentation (api-documentation)",
             "Topic: Technical validation (technical-validation)",
-            "Technology: JavaScript (javascript)",
+            "Technology: OpenAPI (openapi)",
+            "Technology: Postman (postman)",
             "Technology: Python (python)",
-            "Audience: Developers (developers)",
-            "Audience: Technical writers (technical-writers)"
+            "Audience: Developers (developers)"
           ]
         },
         {
           "id": "case-studies/PaysafeDeveloperCenter",
           "title": "Building the Paysafe Developer Center",
           "path": "/docs/case-studies/paysafedevcenter",
-          "score": 0.291757,
+          "score": 0.349541,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -1414,11 +1285,9 @@
           "id": "tools/Flare",
           "title": "MadCap Flare",
           "path": "/docs/flare",
-          "score": 0.629155,
+          "score": 0.482185,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
             "Technology: C# (csharp)",
             "Technology: Jira (jira)",
             "Technology: MadCap Flare (madcap-flare)",
@@ -1427,29 +1296,12 @@
           ]
         },
         {
-          "id": "skills/AIandDocumentation",
-          "title": "AI & Documentation",
-          "path": "/docs/aianddocs",
-          "score": 0.450903,
-          "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
-            "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
-            "Technology: Jira (jira)",
-            "Technology: Markdown (markdown)",
-            "Audience: Developers (developers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
           "id": "skills/DocumentationEngineering",
           "title": "Documentation Engineering",
           "path": "/docs/documentationeng",
-          "score": 0.399799,
+          "score": 0.468567,
           "reasons": [
-            "Topic: Docs-as-code (docs-as-code)",
             "Topic: Documentation engineering (documentation-engineering)",
-            "Topic: Technical writing (technical-writing)",
             "Technology: Graphviz (graphviz)",
             "Technology: MadCap Flare (madcap-flare)",
             "Technology: Markdown (markdown)",
@@ -1457,6 +1309,20 @@
             "Technology: PlantUML (plantuml)",
             "Technology: Python (python)",
             "Technology: React (react)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "case-studies/ScalingADeveloperDocsPlatform",
+          "title": "Scaling an Enterprise Developer Docs Platform",
+          "path": "/docs/case-studies/scalingdeveloperdocs",
+          "score": 0.461457,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: IntelliJ IDEA (intellij-idea)",
+            "Technology: Markdown (markdown)",
+            "Technology: PlantUML (plantuml)",
             "Audience: Developers (developers)",
             "Audience: Technical writers (technical-writers)"
           ]
