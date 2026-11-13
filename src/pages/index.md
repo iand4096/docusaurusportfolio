@@ -10,7 +10,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 <div className="portfolio-hero">
   <p className="portfolio-eyebrow">Principal Technical Writer · Documentation Engineer · AI Information Architect</p>
   <h1>Ian Drewett</h1>
-  <p className="portfolio-lead">I lead the design and delivery of developer documentation platforms, combining technical writing, software engineering and documentation strategy.</p>
+  <p className="portfolio-lead">I lead the design and delivery of developer documentation platforms, combining technical writing, documentation engineering and strategy.</p>
 
   <div className="portfolio-hero-actions">
     <Link className="button button--primary" to="#case-studies">Explore selected work</Link>
