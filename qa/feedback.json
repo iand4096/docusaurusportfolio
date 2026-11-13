@@ -204,6 +204,212 @@
           "retry": false
         }
       ]
+    },
+    "qa-ce140ea912ccf58d415bb6b0": {
+      "issue_id": "qa-ce140ea912ccf58d415bb6b0",
+      "status": "adjudicated",
+      "human_resolution": null,
+      "discussion": [
+        {
+          "role": "human",
+          "text": "The quoted sentence contains “supporting” only once. “Contributions” is a different word with a different meaning. The claimed repetition is absent, so the suggested replacement is an optional wording preference. Please withdraw this finding.",
+          "at": "2026-11-13T10:45:22+00:00"
+        },
+        {
+          "role": "ai",
+          "text": "The sole allegation is that the sentence uses \"supporting\" twice in close succession. Checking the quoted sentence in the supplied document: \"This would lower the barrier to contributions for engineers and support staff while still supporting reuse, conditional content, linting, and link checking.\" The word \"supporting\" appears exactly once; the other word is \"support\", which is a distinct word with a different grammatical role and meaning. The claimed repetition is therefore refuted by the source text. The suggested replacement (\"allowing\") is an optional stylistic preference with no demonstrated reader harm, so no independently significant defect survives.",
+          "decision": "withdrawn",
+          "at": "2026-11-13T10:45:24+00:00"
+        }
+      ],
+      "adjudications": [
+        {
+          "at": "2026-11-13T10:45:24+00:00",
+          "decision": "withdrawn",
+          "reason": "The sole allegation is that the sentence uses \"supporting\" twice in close succession. Checking the quoted sentence in the supplied document: \"This would lower the barrier to contributions for engineers and support staff while still supporting reuse, conditional content, linting, and link checking.\" The word \"supporting\" appears exactly once; the other word is \"support\", which is a distinct word with a different grammatical role and meaning. The claimed repetition is therefore refuted by the source text. The suggested replacement (\"allowing\") is an optional stylistic preference with no demonstrated reader harm, so no independently significant defect survives.",
+          "evidence": [
+            "This would lower the barrier to contributions for engineers and support staff while still supporting reuse, conditional content, linting, and link checking."
+          ],
+          "revised_message": null,
+          "revised_suggestion": null,
+          "occurrence_id": "qao-05261c10b35c553c9c903baf",
+          "document_revision": {
+            "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+            "content_sha256": "effabc22783fc6e6951403db45b346fe4b2371820a81b31fd2963998f5dbbfc1"
+          }
+        }
+      ],
+      "persistent_issue_id": "qai-1fd629118e97c54619237d96",
+      "occurrences": [
+        {
+          "occurrence_id": "qao-05261c10b35c553c9c903baf",
+          "issue_id": "qa-ce140ea912ccf58d415bb6b0",
+          "document_revision": {
+            "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+            "content_sha256": "effabc22783fc6e6951403db45b346fe4b2371820a81b31fd2963998f5dbbfc1"
+          },
+          "report_source": "https://iand4096.github.io/docusaurusportfolio/qa/report-685833573274.json"
+        }
+      ],
+      "report_source": "https://iand4096.github.io/docusaurusportfolio/qa/report-685833573274.json",
+      "latest_finding": {
+        "file": "docs/case-studies/PaysafeDeveloperCenter.md",
+        "category": "consistency",
+        "source": "ai",
+        "original": "Today, I would prefer a docs-as-code approach using extended Markdown and automated quality checks. This would lower the barrier to contributions for engineers and support staff while still supporting reuse, conditional content, linting, and link checking.",
+        "message": "The sentence uses \"supporting\" twice in close succession (\"while still supporting reuse...\"), which reads awkwardly.",
+        "suggestion": "Replace the second instance, for example: \"while still allowing reuse, conditional content, linting, and link checking.\"",
+        "document_revision": {
+          "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+          "content_sha256": "effabc22783fc6e6951403db45b346fe4b2371820a81b31fd2963998f5dbbfc1"
+        }
+      },
+      "attempts": [
+        {
+          "at": "2026-11-13T10:45:22+00:00",
+          "result": "succeeded",
+          "retry": false
+        }
+      ]
+    },
+    "qa-30e942d2bc9de287dd8ff02f": {
+      "issue_id": "qa-30e942d2bc9de287dd8ff02f",
+      "status": "adjudicated",
+      "human_resolution": null,
+      "discussion": [
+        {
+          "role": "human",
+          "text": "This sentence continues a skills/experience bullet whose understood subject is the portfolio author. That construction is consistent with the surrounding bullets. The suggested fix reproduces the original sentence unchanged and therefore does not address the alleged problem. Please withdraw this finding.",
+          "at": "2026-11-13T10:45:24+00:00"
+        },
+        {
+          "role": "ai",
+          "text": "The original criticism has two distinct claims. (1) 'The sentence lacks a subject and reads as a fragment': this is refuted in context. The sentence 'Used similar technology, API Blueprint, at Paysafe.' sits inside a bulleted skills/experience list whose understood subject is the portfolio author, and the surrounding bullets use the same elliptical construction ('Maintained **Swagger 2.0 / OpenAPI 2.0 specifications** at Mastercard...', 'Designed reusable OpenAPI definitions...', 'Created and maintained **Postman and Insomnia collections**...'). The preceding sentence in the same bullet already establishes the author as the actor ('Maintained ... at Mastercard'), so the elided subject is unambiguous and consistent with the list style. (2) 'may momentarily confuse readers about who performed the action': this is unsubstantiated; the parallel structure and the immediately preceding clause make the actor clear, so no concrete reader harm is demonstrated. Additionally, the reviewer's own suggestion reproduces the original sentence verbatim ('Used similar technology, API Blueprint, at Paysafe.'), so it proposes no change and cannot remedy the alleged defect. The finding is therefore an optional stylistic preference rather than an established defect.",
+          "decision": "withdrawn",
+          "at": "2026-11-13T10:45:27+00:00"
+        }
+      ],
+      "adjudications": [
+        {
+          "at": "2026-11-13T10:45:27+00:00",
+          "decision": "withdrawn",
+          "reason": "The original criticism has two distinct claims. (1) 'The sentence lacks a subject and reads as a fragment': this is refuted in context. The sentence 'Used similar technology, API Blueprint, at Paysafe.' sits inside a bulleted skills/experience list whose understood subject is the portfolio author, and the surrounding bullets use the same elliptical construction ('Maintained **Swagger 2.0 / OpenAPI 2.0 specifications** at Mastercard...', 'Designed reusable OpenAPI definitions...', 'Created and maintained **Postman and Insomnia collections**...'). The preceding sentence in the same bullet already establishes the author as the actor ('Maintained ... at Mastercard'), so the elided subject is unambiguous and consistent with the list style. (2) 'may momentarily confuse readers about who performed the action': this is unsubstantiated; the parallel structure and the immediately preceding clause make the actor clear, so no concrete reader harm is demonstrated. Additionally, the reviewer's own suggestion reproduces the original sentence verbatim ('Used similar technology, API Blueprint, at Paysafe.'), so it proposes no change and cannot remedy the alleged defect. The finding is therefore an optional stylistic preference rather than an established defect.",
+          "evidence": [
+            "* Maintained **Swagger 2.0 / OpenAPI 2.0 specifications** at Mastercard covering HTTP methods, status codes, headers, query string & path parameters, request and response bodies, and authentication mechanisms, supporting automated generation of API reference documentation. Used similar technology, API Blueprint, at Paysafe.",
+            "* Designed reusable OpenAPI definitions using **`$ref`, shared schemas, parameters, responses and security definitions** to reduce duplication and maintain consistency across large API specifications.",
+            "* Created and maintained **Postman and Insomnia collections** containing executable API requests, authentication configuration and representative examples for use by external developers."
+          ],
+          "revised_message": null,
+          "revised_suggestion": null,
+          "occurrence_id": "qao-5cb3b4d8f1d41b5165fae0c6",
+          "document_revision": {
+            "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+            "content_sha256": "acc535f7f4944682a5f5f1471272b51fc5655a7124d24a9a237f5c878ce2b3e0"
+          }
+        }
+      ],
+      "persistent_issue_id": "qai-2d41546af1d7b636830ff181",
+      "occurrences": [
+        {
+          "occurrence_id": "qao-5cb3b4d8f1d41b5165fae0c6",
+          "issue_id": "qa-30e942d2bc9de287dd8ff02f",
+          "document_revision": {
+            "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+            "content_sha256": "acc535f7f4944682a5f5f1471272b51fc5655a7124d24a9a237f5c878ce2b3e0"
+          },
+          "report_source": "https://iand4096.github.io/docusaurusportfolio/qa/report-685833573274.json"
+        }
+      ],
+      "report_source": "https://iand4096.github.io/docusaurusportfolio/qa/report-685833573274.json",
+      "latest_finding": {
+        "file": "docs/tools/OpenAPIandAPITools.md",
+        "category": "clarity",
+        "source": "ai",
+        "original": "Used similar technology, API Blueprint, at Paysafe.",
+        "message": "The sentence lacks a subject and reads as a fragment following the previous sentence, which may momentarily confuse readers about who performed the action.",
+        "suggestion": "Used similar technology, API Blueprint, at Paysafe.",
+        "document_revision": {
+          "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+          "content_sha256": "acc535f7f4944682a5f5f1471272b51fc5655a7124d24a9a237f5c878ce2b3e0"
+        }
+      },
+      "attempts": [
+        {
+          "at": "2026-11-13T10:45:24+00:00",
+          "result": "succeeded",
+          "retry": false
+        }
+      ]
+    },
+    "qa-47c8371aa3ae3504a9639c42": {
+      "issue_id": "qa-47c8371aa3ae3504a9639c42",
+      "status": "adjudicated",
+      "human_resolution": null,
+      "discussion": [
+        {
+          "role": "human",
+          "text": "The review policy excludes stylistic preferences without material reader impact. This finding explicitly acknowledges that comprehension is unaffected. First-person wording also identifies personal ownership appropriately in a portfolio repository. Rephrasing impersonally is optional and removes that attribution. Please withdraw this finding.",
+          "at": "2026-11-13T10:45:27+00:00"
+        },
+        {
+          "role": "ai",
+          "text": "The original finding is a single tonal/stylistic allegation: that the first-person 'I implemented' sentence sits awkwardly and is inconsistent with otherwise impersonal prose. The finding itself concedes 'This is a minor tonal inconsistency rather than a comprehension problem', so no concrete reader harm is demonstrated. The document confirms the sentence exists verbatim at line 60, but the surrounding section is not uniformly impersonal: the same section uses first-person possessive 'The report's **Challenge AI** button' and imperative instructions ('Run it locally', 'Commit `qa/feedback.json`'), and the whole README is a personal portfolio ('A technical documentation portfolio', 'This repository is published solely for portfolio review'). First-person ownership is therefore contextually appropriate rather than anomalous. The suggested impersonal rephrasing is an optional stylistic preference with no material impact, and the human rebuttal is supported by the source. No independently significant defect survives.",
+          "decision": "withdrawn",
+          "at": "2026-11-13T10:45:30+00:00"
+        }
+      ],
+      "adjudications": [
+        {
+          "at": "2026-11-13T10:45:30+00:00",
+          "decision": "withdrawn",
+          "reason": "The original finding is a single tonal/stylistic allegation: that the first-person 'I implemented' sentence sits awkwardly and is inconsistent with otherwise impersonal prose. The finding itself concedes 'This is a minor tonal inconsistency rather than a comprehension problem', so no concrete reader harm is demonstrated. The document confirms the sentence exists verbatim at line 60, but the surrounding section is not uniformly impersonal: the same section uses first-person possessive 'The report's **Challenge AI** button' and imperative instructions ('Run it locally', 'Commit `qa/feedback.json`'), and the whole README is a personal portfolio ('A technical documentation portfolio', 'This repository is published solely for portfolio review'). First-person ownership is therefore contextually appropriate rather than anomalous. The suggested impersonal rephrasing is an optional stylistic preference with no material impact, and the human rebuttal is supported by the source. No independently significant defect survives.",
+          "evidence": [
+            "I implemented the pipeline in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.",
+            "The report's **Challenge AI** button copies a CLI command for that exact saved\nfinding. Run it locally with `DEEPSEEK_API_KEY` configured.",
+            "A technical documentation portfolio built with Docusaurus, demonstrating docs-as-code workflows",
+            "This repository is published solely for portfolio review by potential employers, recruiters and their evaluation teams."
+          ],
+          "revised_message": null,
+          "revised_suggestion": null,
+          "occurrence_id": "qao-278814723b605fb6755e5967",
+          "document_revision": {
+            "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+            "content_sha256": "180b8c1b268d3ea24c9761b13e95280cb8e5145c5d4acd0f91dabda7532f3d2e"
+          }
+        }
+      ],
+      "persistent_issue_id": "qai-f6b13a28efcd070f07d3bc03",
+      "occurrences": [
+        {
+          "occurrence_id": "qao-278814723b605fb6755e5967",
+          "issue_id": "qa-47c8371aa3ae3504a9639c42",
+          "document_revision": {
+            "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+            "content_sha256": "180b8c1b268d3ea24c9761b13e95280cb8e5145c5d4acd0f91dabda7532f3d2e"
+          },
+          "report_source": "https://iand4096.github.io/docusaurusportfolio/qa/report-685833573274.json"
+        }
+      ],
+      "report_source": "https://iand4096.github.io/docusaurusportfolio/qa/report-685833573274.json",
+      "latest_finding": {
+        "file": "README.md",
+        "category": "structure",
+        "source": "ai",
+        "original": "I implemented the pipeline in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.",
+        "message": "The first-person 'I implemented' sentence sits awkwardly between the report URL and the detailed subsections, and the surrounding section is otherwise written in impersonal, descriptive prose. This is a minor tonal inconsistency rather than a comprehension problem.",
+        "suggestion": "Consider rephrasing impersonally, e.g. 'The pipeline in scripts/ai_docs_review.py combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.'",
+        "document_revision": {
+          "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+          "content_sha256": "180b8c1b268d3ea24c9761b13e95280cb8e5145c5d4acd0f91dabda7532f3d2e"
+        }
+      },
+      "attempts": [
+        {
+          "at": "2026-11-13T10:45:27+00:00",
+          "result": "succeeded",
+          "retry": false
+        }
+      ]
     }
   }
 }
