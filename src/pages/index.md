@@ -8,10 +8,10 @@ import Link from '@docusaurus/Link';
 import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 <div className="portfolio-hero">
-  <p className="portfolio-eyebrow">API documentation · Developer platforms · Documentation engineering · AI knowledge systems</p>
+  <p className="portfolio-eyebrow">Principal Technical Writer · Documentation Engineer · AI Information Architect</p>
   <h1>Ian Drewett</h1>
-  <p className="portfolio-lead">Documenting complex software and frameworks, and building public and internal developer portals</p>
-  <p className="portfolio-intro">Principal Technical Writer, Documentation Engineer and AI Information Architect, with an M.Sc. in Computer Science and a <Link to="#engineering-background">software-engineering background</Link>.</p>
+  <p className="portfolio-lead">I lead the design and delivery of developer documentation platforms, combining technical writing, software engineering and documentation strategy.</p>
+  <p className="portfolio-intro">My experience includes leading documentation teams, defining enterprise documentation architectures, and building tooling that enables developers and technical writers to create, maintain and validate documentation at scale.</p>
 
   <div className="portfolio-hero-actions">
     <Link className="button button--primary" to="#case-studies">Explore selected work</Link>
@@ -84,6 +84,26 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 </Link>
 
 </div>
+
+## Leadership and delivery {/* #leadership-and-delivery */}
+
+I combine hands-on documentation engineering with technical leadership, working across writing teams, software engineering and product stakeholders to deliver scalable developer documentation.
+
+<CapabilityGrid>
+
+* **Team leadership and capability development**
+
+  Led a team of three technical writers at Paysafe, establishing workflows, mentoring colleagues in Git and API technologies, and developing the team's ability to maintain its documentation platform independently.
+
+* **Architecture and technical direction**
+
+  Led the design and evolution of Morgan Stanley's internal developer documentation platform, defining requirements, technical direction, quality standards and the authoring experience in collaboration with an engineering team.
+
+* **Cross-functional project delivery**
+
+  Directed documentation strategy, information architecture, migration and publishing workflows for the Paysafe Developer Center, coordinating technical writers, developers and external specialists.
+
+</CapabilityGrid>
 
 ## Core expertise {/* #core-expertise */}
 
