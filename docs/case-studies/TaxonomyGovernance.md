@@ -3,6 +3,15 @@ title: Governed documentation taxonomy
 description: A case study describing the design and implementation of a governed documentation 
   taxonomy for a Docusaurus portfolio, including AI-assisted classification and deterministic 
   validation.
+sidebar_custom_props:
+  caseStudyCard:
+    tag: Metadata governance
+    description: >-
+      Building a controlled vocabulary for document metadata, with validation and reviewed migrations stored in Git.
+    highlights:
+      - Designed a controlled vocabulary for content type, audience, topic, technology and lifecycle.
+      - Built validation and migration tools so AI-proposed classifications and vocabulary changes require review before becoming canonical.
+    ariaLabel: Read the documentation taxonomy case study
 type:
   - case-study
 audiences:

@@ -27,16 +27,13 @@ lifecycle:
   - current
 sidebar_custom_props:
   caseStudyCard:
-    tag: Developer Frameworks · API Documentation
-    description: Reverse-engineering and documenting complex Scala-based frameworks for enterprise 
-      software engineers
+    tag: Framework documentation
+    description: >-
+      Writing developer documentation for Optimus and RICE, covering Scala APIs and framework behaviour that required source-code investigation.
     highlights:
-      - Lead technical writing for Optimus and RICE frameworks
-      - Source-code analysis and reverse engineering of undocumented APIs
-      - SME interviews and consolidation of legacy documentation
-      - Scala code examples, compilation and technical validation
-      - Reactive UI, regression testing, interoperability and data ingestion
-    ariaLabel: Read the enterprise developer framework documentation case study
+      - Served as lead and sole technical writer for Morgan Stanley’s Optimus and RICE frameworks.
+      - Investigated undocumented Scala APIs through source-code analysis and SME interviews, compiling and running examples where possible.
+    ariaLabel: Read the Optimus and RICE documentation case study
 tags:
   - api-documentation
   - c-plus-plus

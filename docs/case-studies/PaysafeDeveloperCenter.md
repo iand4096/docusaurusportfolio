@@ -4,6 +4,15 @@ description: Case study of leading the documentation work for the launch of the
   Paysafe Developer Center
 slug: /case-studies/paysafedevcenter
 sidebar_position: 2
+sidebar_custom_props:
+  caseStudyCard:
+    tag: Developer portal
+    description: >-
+      Leading the documentation work for a ten-month project to bring Optimal Payments and Skrill content into one Paysafe Developer Center.
+    highlights:
+      - Defined the documentation strategy and information architecture for a unified payment API and SDK portal.
+      - Led three technical writers and trained them in API documentation, Git and the authoring and publishing system.
+    ariaLabel: Read the Paysafe Developer Center case study
 type:
   - case-study
 audiences:
