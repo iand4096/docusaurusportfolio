@@ -8,8 +8,6 @@ from pathlib import Path
 from urllib.parse import quote
 import yaml
 
-FIELDS = ('type', 'audiences', 'topics', 'technologies', 'lifecycle')
-
 
 def validate_source(repo: Path) -> None:
     cmd = ['python', 'scripts/taxonomy.py', 'check', '--all']
@@ -139,6 +137,7 @@ def documents(repo: Path, base_url: str) -> list[dict]:
     docs = repo / 'docs'
     if not docs.is_dir():
         raise FileNotFoundError(f'Missing docs directory: {docs}')
+    fields = [dimension['metadata_field'] for dimension in taxonomy(repo)['dimensions'].values()]
     records = []
     for path in sorted(docs.rglob('*')):
         if path.suffix not in ('.md', '.mdx'):
@@ -148,7 +147,7 @@ def documents(repo: Path, base_url: str) -> list[dict]:
         if isinstance(lifecycle, str):
             lifecycle = [lifecycle]
         # archived is intentionally *indexed* and filtered at query time.
-        facets = {field: (value if isinstance(value := fm.get(field, []), list) else [value]) for field in FIELDS}
+        facets = {field: (value if isinstance(value := fm.get(field, []), list) else [value]) for field in fields}
         url = doc_url(path, docs, fm, base_url)
         rel = path.relative_to(repo).as_posix()
         title = str(fm.get('title') or path.stem)

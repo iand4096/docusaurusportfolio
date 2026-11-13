@@ -1,13 +1,13 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://iand4096.github.io/docusaurusportfolio/taxonomy/schema-v2.json",
-  "title": "Docusaurus portfolio taxonomy v2",
+  "$id": "https://iand4096.github.io/docusaurusportfolio/taxonomy/schema-v3.json",
+  "title": "Docusaurus portfolio taxonomy v3",
   "type": "object",
   "additionalProperties": false,
   "required": ["version", "governance", "technology_kinds", "dimensions"],
   "properties": {
     "version": {
-      "const": 2
+      "const": 3
     },
     "governance": {
       "type": "object",
@@ -49,14 +49,16 @@
         "audiences",
         "topics",
         "technologies",
-        "lifecycle"
+        "lifecycle",
+        "organisations"
       ],
       "properties": {
         "content_types": {"$ref": "#/$defs/dimension"},
         "audiences": {"$ref": "#/$defs/dimension"},
         "topics": {"$ref": "#/$defs/dimension"},
         "technologies": {"$ref": "#/$defs/dimension"},
-        "lifecycle": {"$ref": "#/$defs/dimension"}
+        "lifecycle": {"$ref": "#/$defs/dimension"},
+        "organisations": {"$ref": "#/$defs/dimension"}
       }
     }
   },

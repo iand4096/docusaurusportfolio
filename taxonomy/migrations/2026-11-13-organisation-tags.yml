@@ -1,0 +1,18 @@
+schema_version: 2
+id: 2026-11-13-organisation-tags
+description: Publish reviewed work organisations as Docusaurus tags.
+change_type: policy-change
+trigger: policy-driven
+governance:
+  date: '2026-11-13'
+  source: human-proposed
+  reason: User requested Docusaurus tags for the newly added organisation metadata.
+preconditions:
+  taxonomy_version: 3
+changes:
+  organisations:
+    configuration:
+      expect:
+        docusaurus_tags: false
+      set:
+        docusaurus_tags: true

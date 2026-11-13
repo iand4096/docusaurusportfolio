@@ -37,3 +37,6 @@ jobs:
       - name: Validate taxonomy and changed documents
         run: |
           python scripts/taxonomy.py check --changed-base "${{ github.event.pull_request.base.sha }}"
+
+      - name: Test taxonomy policies and migrations
+        run: python -m unittest discover -s scripts/tests -p 'test_*taxonomy.py'

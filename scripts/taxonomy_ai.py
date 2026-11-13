@@ -84,12 +84,18 @@ CORE RULES:
 - Select only values materially supported by the supplied document.
 - Prefer precise metadata over indiscriminate tagging.
 - Respect global and content-type-specific cardinality constraints.
+- Landing pages use only the landing-page content type and lifecycle. Return
+  empty arrays for their audience, topic, technology and organisation fields.
 - Prefer exact existing IDs, but deterministic tooling will also resolve labels
   and aliases if necessary.
 - Never silently invent an ID and use it as though it already exists.
 - Lifecycle is policy-controlled: choose an existing lifecycle value and never
   propose a lifecycle term.
 - A new term may be proposed only in a dimension marked ai_managed=true.
+- Work organisations are human-controlled. Preserve current `organisations`
+  unchanged; do not infer associations from company or vendor mentions. The
+  field classifies the whole page only when all work belongs to one employer;
+  career-wide skills/tools overviews do not qualify.
 
 PAGE FIELD POLICY:
 
@@ -989,6 +995,12 @@ def validate_ai_result(
     clean_metadata: dict[str, Any] = {}
     for dimension_id, dimension in dimensions.items():
         field = dimension["metadata_field"]
+        if taxonomy_tools.effective_limits(dimension, type_value)[1] == 0:
+            clean_metadata[field] = []
+            continue
+        if dimension_id == "organisations":
+            clean_metadata[field] = list(current.get(field, []))
+            continue
         raw_value = metadata.get(field)
 
         if dimension_id == "content_types":
@@ -1557,6 +1569,9 @@ def apply_results(
     for result in results:
         relative = result["file"]
         metadata = result["metadata"]
+        existing, _ = taxonomy_tools.load_front_matter(root / relative)
+        if metadata.get("organisations", []) != list(existing.get("organisations", [])):
+            raise ValueError(f"{relative}: organisations are human-controlled; AI reviews cannot change them")
         for dimension in taxonomy["dimensions"].values():
             field = dimension["metadata_field"]
             values = metadata[field]
@@ -1594,6 +1609,12 @@ def apply_results(
 
         for dimension in taxonomy["dimensions"].values():
             field = dimension["metadata_field"]
+            if field == "organisations":
+                continue
+            content_type = result["metadata"][taxonomy["dimensions"]["content_types"]["metadata_field"]][0]
+            if taxonomy_tools.effective_limits(dimension, content_type)[1] == 0:
+                front_matter.pop(field, None)
+                continue
             value = result["metadata"][field]
             if dimension["required"] or value not in ([], "", None):
                 front_matter[field] = value

@@ -1,6 +1,8 @@
 ---
+organisations:
+  - morgan-stanley
 title: Documenting Complex Enterprise Developer Frameworks
-description: How I reverse-engineered and documented complex Scala frameworks at Morgan Stanley, 
+description: How I reverse-engineered and documented complex Scala frameworks at Morgan Stanley,
   covering UI development, testing, interoperability and data ingestion.
 slug: /case-studies/documenting-enterprise-developer-frameworks
 sidebar_position: 2
@@ -29,10 +31,12 @@ sidebar_custom_props:
   caseStudyCard:
     tag: Framework documentation
     description: >-
-      Writing developer documentation for Optimus and RICE, covering Scala APIs and framework behaviour that required source-code investigation.
+      Writing developer documentation for Optimus and RICE, covering Scala APIs and framework behaviour
+      that required source-code investigation.
     highlights:
       - Served as lead and sole technical writer for Morgan Stanley’s Optimus and RICE frameworks.
-      - Investigated undocumented Scala APIs through source-code analysis and SME interviews, compiling and running examples where possible.
+      - Investigated undocumented Scala APIs through source-code analysis and SME interviews,
+        compiling and running examples where possible.
     ariaLabel: Read the Optimus and RICE documentation case study
 tags:
   - api-documentation
@@ -42,6 +46,7 @@ tags:
   - jni
   - jvm
   - kafka
+  - morgan-stanley
   - optimus
   - rice
   - scala

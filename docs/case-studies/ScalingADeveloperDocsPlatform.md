@@ -1,7 +1,9 @@
 ---
+organisations:
+  - morgan-stanley
 title: Scaling an Enterprise Developer Docs Platform
-description: How I scaled a custom enterprise docs-as-code platform from 700 to 
-  over 3,200 pages for a large developer community
+description: How I scaled a custom enterprise docs-as-code platform from 700 to over 3,200 pages for
+  a large developer community
 slug: /case-studies/scalingdeveloperdocs
 sidebar_position: 3
 type:
@@ -33,10 +35,13 @@ sidebar_custom_props:
   caseStudyCard:
     tag: Documentation platform
     description: >-
-      Developing and maintaining an enterprise docs-as-code platform that grew from about 700 to more than 3,200 pages over three years.
+      Developing and maintaining an enterprise docs-as-code platform that grew from about 700 to more
+      than 3,200 pages over three years.
     highlights:
-      - Led platform direction, requirements and quality, working with engineers to establish docs-as-code across a large developer community.
-      - Designed keyword and RAG search and tested retrieval quality; later extended the platform’s diagram support and fixed link-checking bugs.
+      - Led platform direction, requirements and quality, working with engineers to establish
+        docs-as-code across a large developer community.
+      - Designed keyword and RAG search and tested retrieval quality; later extended the platform’s
+        diagram support and fixed link-checking bugs.
     ariaLabel: Read the enterprise documentation platform case study
 tags:
   - agentic-ai
@@ -52,6 +57,7 @@ tags:
   - languagetool
   - markdown
   - mermaid
+  - morgan-stanley
   - plantuml
   - vale
 ---

@@ -1,6 +1,6 @@
 # AI may propose changes, but only reviewed repository changes adopt them.
 
-version: 2
+version: 3
 governance:
   taxonomy_owner: repository reviewers
   ai_proposals_require_pr_review: true
@@ -8,11 +8,11 @@ governance:
 technology_kinds:
   data-format:
     label: Data format
-    description: A structured data serialisation or interchange format such as JSON, YAML, XML, or 
+    description: A structured data serialisation or interchange format such as JSON, YAML, XML, or
       SVG.
   payment-technology:
     label: Payment technology
-    description: A payment-specific technical product, wallet integration, tokenisation technology, 
+    description: A payment-specific technical product, wallet integration, tokenisation technology,
       checkout technology, or payment platform used in implementation work.
   programming-language:
     label: Programming language
@@ -64,7 +64,7 @@ technology_kinds:
     description: An integrated development environment or source-code editor.
   stylesheet-language:
     label: Stylesheet language
-    description: A language used to describe the presentation and visual styling of structured 
+    description: A language used to describe the presentation and visual styling of structured
       documents or web content.
   testing-debugging-tool:
     label: Testing or debugging tool
@@ -98,7 +98,7 @@ technology_kinds:
     description: A tool or language used to create diagrams, charts, or technical visualisations.
   modelling-methodology:
     label: Modelling methodology
-    description: A technical modelling notation, method, or structured architecture-modelling 
+    description: A technical modelling notation, method, or structured architecture-modelling
       approach.
   architecture-style:
     label: Architecture style
@@ -127,7 +127,7 @@ technology_kinds:
     description: A collaboration, annotation, issue-tracking, or project-management tool.
   software-platform:
     label: Software platform
-    description: A reusable software product or application platform not better represented by 
+    description: A reusable software product or application platform not better represented by
       another kind.
 dimensions:
   content_types:
@@ -150,7 +150,7 @@ dimensions:
           review: annual
       doc-sample:
         label: Documentation sample
-        description: A page describing documentation I created with a link to it or description of 
+        description: A page describing documentation I created with a link to it or description of
           where to find the content.
         governance:
           status: active
@@ -175,7 +175,7 @@ dimensions:
           review: annual
       tool:
         label: Tool
-        description: A page describing tools or technology used in technical writing or 
+        description: A page describing tools or technology used in technical writing or
           documentation engineering.
         governance:
           status: active
@@ -262,7 +262,7 @@ dimensions:
     terms:
       api-documentation:
         label: API documentation
-        description: Creation and maintenance of documentation for application programming 
+        description: Creation and maintenance of documentation for application programming
           interfaces.
         governance:
           status: active
@@ -271,7 +271,7 @@ dimensions:
           review: annual
       api-security:
         label: API security
-        description: Security mechanisms and practices for APIs, including authentication, 
+        description: Security mechanisms and practices for APIs, including authentication,
           encryption, and webhooks.
         governance:
           status: active
@@ -280,7 +280,7 @@ dimensions:
           review: annual
       developer-experience:
         label: Developer experience
-        description: Design and improvement of developer portals, documentation, and tooling for 
+        description: Design and improvement of developer portals, documentation, and tooling for
           developers.
         governance:
           status: active
@@ -289,7 +289,7 @@ dimensions:
           review: annual
       docs-as-code:
         label: Docs-as-code
-        description: Approach of treating documentation as code, using version control, CI/CD, and 
+        description: Approach of treating documentation as code, using version control, CI/CD, and
           automation.
         governance:
           status: active
@@ -298,7 +298,7 @@ dimensions:
           review: annual
       documentation-engineering:
         label: Documentation engineering
-        description: Application of software engineering techniques to documentation creation and 
+        description: Application of software engineering techniques to documentation creation and
           maintenance.
         governance:
           status: active
@@ -307,7 +307,7 @@ dimensions:
           review: annual
       documentation-governance:
         label: Documentation governance
-        description: Processes and standards for managing documentation quality, metadata, and 
+        description: Processes and standards for managing documentation quality, metadata, and
           lifecycle.
         governance:
           status: active
@@ -324,7 +324,7 @@ dimensions:
           review: annual
       payments:
         label: Payments
-        description: Payment systems, digital wallets, tokenisation, and related financial 
+        description: Payment systems, digital wallets, tokenisation, and related financial
           technology.
         governance:
           status: active
@@ -349,7 +349,7 @@ dimensions:
           review: annual
       taxonomy:
         label: Taxonomy
-        description: Controlled vocabulary design, classification structures, taxonomy management, 
+        description: Controlled vocabulary design, classification structures, taxonomy management,
           and taxonomy governance.
         governance:
           status: active
@@ -357,7 +357,7 @@ dimensions:
           source: human-proposed
           review: annual
   technologies:
-    description: Technologies, standards, tools, platforms, technical methods and techniques 
+    description: Technologies, standards, tools, platforms, technical methods and techniques
       materially used, documented or demonstrated.
     metadata_field: technologies
     required: false
@@ -444,7 +444,7 @@ dimensions:
           review: annual
       bash:
         label: Bash
-        description: A Unix shell and command language used for interactive command-line work, 
+        description: A Unix shell and command language used for interactive command-line work,
           scripting, automation, and build or deployment workflows.
         kind: shell-scripting
         aliases:
@@ -466,7 +466,7 @@ dimensions:
           review: annual
       c-plus-plus:
         label: C++
-        description: A general-purpose programming language used for systems software, embedded 
+        description: A general-purpose programming language used for systems software, embedded
           development, high-performance applications, and native tooling.
         kind: programming-language
         aliases:
@@ -533,7 +533,7 @@ dimensions:
           review: annual
       csharp:
         label: C#
-        description: A general-purpose programming language in the .NET ecosystem used to build 
+        description: A general-purpose programming language in the .NET ecosystem used to build
           applications, services, and tooling.
         kind: programming-language
         aliases:
@@ -956,7 +956,7 @@ dimensions:
           review: annual
       node-js:
         label: Node.js
-        description: A JavaScript runtime built on the V8 engine for running JavaScript outside the 
+        description: A JavaScript runtime built on the V8 engine for running JavaScript outside the
           browser.
         kind: runtime
         aliases:
@@ -1144,7 +1144,7 @@ dimensions:
           review: annual
       scala:
         label: Scala
-        description: A general-purpose programming language for the JVM that combines 
+        description: A general-purpose programming language for the JVM that combines
           object-oriented and functional programming paradigms.
         kind: programming-language
         governance:
@@ -1172,7 +1172,7 @@ dimensions:
           review: annual
       svg:
         label: SVG
-        description: An XML-based vector graphics format for describing scalable two-dimensional 
+        description: An XML-based vector graphics format for describing scalable two-dimensional
           graphics.
         kind: data-format
         aliases:
@@ -1202,7 +1202,7 @@ dimensions:
           review: annual
       tokenisation:
         label: Tokenisation
-        description: A payment and security technique that replaces sensitive payment data with 
+        description: A payment and security technique that replaces sensitive payment data with
           non-sensitive tokens for storage, transmission, or transaction processing.
         kind: payment-technology
         aliases:
@@ -1232,7 +1232,7 @@ dimensions:
           review: annual
       typo3:
         label: TYPO3
-        description: An open-source content management system used to build and manage websites and 
+        description: An open-source content management system used to build and manage websites and
           digital content.
         kind: cms-wiki
         governance:
@@ -1296,7 +1296,7 @@ dimensions:
           review: annual
       xhtml:
         label: XHTML
-        description: An XML-based reformulation of HTML used to author structured web content with 
+        description: An XML-based reformulation of HTML used to author structured web content with
           XML syntax rules.
         kind: markup-content-language
         aliases:
@@ -1338,7 +1338,7 @@ dimensions:
           review: annual
       jvm:
         label: JVM
-        description: The Java Virtual Machine, a runtime environment for executing Java and other 
+        description: The Java Virtual Machine, a runtime environment for executing Java and other
           JVM languages such as Scala.
         kind: runtime
         aliases:
@@ -1361,7 +1361,7 @@ dimensions:
           review: annual
       optimus:
         label: Optimus
-        description: A Scala-based framework for building reactive user interfaces and data 
+        description: A Scala-based framework for building reactive user interfaces and data
           processing applications.
         kind: framework
         aliases:
@@ -1373,7 +1373,7 @@ dimensions:
           review: annual
       rice:
         label: RICE
-        description: An internal framework for regression testing and data ingestion at Morgan 
+        description: An internal framework for regression testing and data ingestion at Morgan
           Stanley.
         kind: framework
         governance:
@@ -1448,7 +1448,7 @@ dimensions:
           review: annual
       cors:
         label: CORS
-        description: Cross-Origin Resource Sharing, a mechanism for allowing web requests from 
+        description: Cross-Origin Resource Sharing, a mechanism for allowing web requests from
           different origins.
         kind: standard-specification
         governance:
@@ -1558,10 +1558,56 @@ dimensions:
           review: annual
       archived:
         label: Archived
-        description: Content retained for record purposes but no longer treated as active portfolio 
+        description: Content retained for record purposes but no longer treated as active portfolio
           material.
         governance:
           status: active
           introduced: '2026-08-14'
           source: policy-seeded
+          review: annual
+  organisations:
+    description: The single employer for which all work described on the page was performed;
+      excludes career-wide overviews, vendor mentions and personal projects.
+    metadata_field: organisations
+    required: false
+    multiple: false
+    min: 0
+    max: 1
+    docusaurus_tags: true
+    ai_managed: false
+    terms:
+      amx:
+        label: AMX
+        description: Work performed for AMX, including digital-signage user documentation.
+        governance:
+          status: active
+          introduced: '2026-11-13'
+          source: human-proposed
+          review: annual
+      mastercard:
+        label: Mastercard
+        description: Work performed for Mastercard, including payment API and integration
+          documentation.
+        governance:
+          status: active
+          introduced: '2026-11-13'
+          source: human-proposed
+          review: annual
+      morgan-stanley:
+        label: Morgan Stanley
+        description: Work performed for Morgan Stanley, including developer documentation and
+          documentation platforms.
+        governance:
+          status: active
+          introduced: '2026-11-13'
+          source: human-proposed
+          review: annual
+      paysafe:
+        label: Paysafe
+        description: Work performed for Paysafe, including its Developer Center and payment
+          integration documentation.
+        governance:
+          status: active
+          introduced: '2026-11-13'
+          source: human-proposed
           review: annual

@@ -1,13 +1,16 @@
 ---
+organisations:
+  - amx
 title: AMX Digital Signage User Manual
 sidebar_position: 5
 sidebar_custom_props:
   sampleCard:
     tag: User documentation
-    description: User and administrator documentation for configuring, managing, and troubleshooting a networked digital-signage platform.
+    description: User and administrator documentation for configuring, managing, and troubleshooting
+      a networked digital-signage platform.
     highlights:
-       - Produced context-sensitive HTML help and PDF from one MadCap Flare project
-       - Used conditional text and reusable content to support multiple audiences
+      - Produced context-sensitive HTML help and PDF from one MadCap Flare project
+      - Used conditional text and reusable content to support multiple audiences
     ariaLabel: View the AMX Digital Signage User Manual documentation sample
 type:
   - doc-sample
@@ -27,6 +30,7 @@ technologies:
 lifecycle:
   - current
 tags:
+  - amx
   - information-architecture
   - languagetool
   - madcap-flare

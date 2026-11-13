@@ -1,10 +1,13 @@
 ---
+organisations:
+  - mastercard
 title: MDES for Merchants Guide
 sidebar_position: 2
 sidebar_custom_props:
   sampleCard:
     tag: API integration
-    description: Developer documentation for integrating Mastercard's Digital Enablement Service (MDES) to support secure payment tokenisation in merchant applications.
+    description: Developer documentation for integrating Mastercard's Digital Enablement Service
+      (MDES) to support secure payment tokenisation in merchant applications.
     highlights:
       - Wrote the first MDES for Merchants use-case guide
       - Built custom cryptographic Python test integrations
@@ -35,6 +38,7 @@ tags:
   - api-security
   - digital-enablement-api
   - flask
+  - mastercard
   - mdes
   - oauth
   - openapi

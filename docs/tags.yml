@@ -13,6 +13,9 @@ agentic-ai:
 amp:
   description: An AI coding tool.
   label: Amp
+amx:
+  description: Work performed for AMX, including digital-signage user documentation.
+  label: AMX
 amx-composer:
   description: A content management application for digital signage.
   label: AMX Composer
@@ -217,6 +220,9 @@ kafka:
 kubernetes:
   description: A container orchestration platform.
   label: Kubernetes
+landing-page:
+  description: A page that introduces a section and provides navigation to its contents.
+  label: Landing page
 languagetool:
   description: A grammar and style checker.
   label: LanguageTool
@@ -232,6 +238,9 @@ madcap-flare:
 markdown:
   description: A lightweight markup language for formatting text.
   label: Markdown
+mastercard:
+  description: Work performed for Mastercard, including payment API and integration documentation.
+  label: Mastercard
 masterpass:
   description: A digital wallet service by Mastercard.
   label: Masterpass
@@ -250,6 +259,10 @@ mermaid:
 mkdocs:
   description: A static site generator for project documentation.
   label: MkDocs
+morgan-stanley:
+  description: Work performed for Morgan Stanley, including developer documentation and documentation
+    platforms.
+  label: Morgan Stanley
 mtls:
   description: Mutual TLS authentication.
   label: mTLS
@@ -286,6 +299,9 @@ owasp:
 payments:
   description: Payment systems, digital wallets, tokenisation, and related financial technology.
   label: Payments
+paysafe:
+  description: Work performed for Paysafe, including its Developer Center and payment integration documentation.
+  label: Paysafe
 paysafe-js:
   description: A JavaScript library for payment integration.
   label: Paysafe.js

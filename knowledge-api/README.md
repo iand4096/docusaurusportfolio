@@ -54,6 +54,10 @@ RAG_SEARCH_ENABLED=true RAG_API_URL=http://localhost:8000 npm run start
 
 Open `/docusaurusportfolio/explore?view=ai-search` for the AI Search tab. The legacy `/docusaurusportfolio/ai-search` URL redirects there. Production frontend builds require an HTTPS API URL. For local chat, set both `DEEPSEEK_API_KEY` and `RAG_CHAT_ENABLED=true` in `knowledge-api/.env`, then recreate the API container. Without them, `/chat` returns 503 and `/search` remains available.
 
+Browse and AI Search render every non-empty dimension from the generated taxonomy navigation index. They use each dimension's metadata field for filtering, including `organisations`; no frontend group list needs updating when a dimension is added. Technology subgroups retain their kind-based layout. Browse URLs accept repeated dimension IDs or metadata-field names, such as `organisations=amx&organisations=paysafe`; the existing `contentType` parameter remains supported.
+
+Ingestion derives passage facet fields from the canonical taxonomy, and the API validates requested facets against that vocabulary. After adding a dimension or changing document assignments, regenerate the frontend data with `python scripts/taxonomy.py generate`, rebuild the backend index, and deploy the updated backend and frontend together. An older deployed backend or index cannot provide filtering for metadata that it does not contain. Browse uses the generated document catalogue and does not require an API call.
+
 ## API
 
 | Endpoint | Behaviour |

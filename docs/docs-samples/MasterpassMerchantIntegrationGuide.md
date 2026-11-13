@@ -1,13 +1,16 @@
 ---
+organisations:
+  - mastercard
 title: Masterpass Integration Guide
 sidebar_position: 3
 sidebar_custom_props:
   sampleCard:
     tag: API integration
-    description:  Developer documentation for integrating Mastercard's Masterpass digital wallet into merchant checkout flows across web and mobile applications.
+    description: Developer documentation for integrating Mastercard's Masterpass digital wallet into
+      merchant checkout flows across web and mobile applications.
     highlights:
-    - Built working integrations to validate multiple checkout flows
-    - Corrected OpenAPI reference issues and created PlantUML sequence diagrams
+      - Built working integrations to validate multiple checkout flows
+      - Corrected OpenAPI reference issues and created PlantUML sequence diagrams
     ariaLabel: View the Masterpass Integration Guide documentation sample
 type:
   - doc-sample
@@ -32,6 +35,7 @@ tags:
   - brightspot-cms
   - developer-experience
   - docs-as-code
+  - mastercard
   - masterpass
   - openapi
   - payments

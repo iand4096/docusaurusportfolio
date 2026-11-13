@@ -5,7 +5,8 @@ slug: /informationarch
 sidebar_custom_props:
   sampleCard:
     tag: Content structure
-    description: Organising complex technical content into discoverable, navigable, and maintainable documentation structures for developers and enterprise users.
+    description: Organising complex technical content into discoverable, navigable, and maintainable
+      documentation structures for developers and enterprise users.
     highlights:
       - Redesigned the information architecture of a 500-page documentation site
       - Built Graphviz-based, interactive learning paths

@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Upgrade an existing taxonomy v1 to taxonomy v2 with typed technologies.
+"""Upgrade taxonomy v1 with typed technologies and the current optional dimensions.
 
 The upgrade is deliberately review-first:
 
@@ -23,7 +23,7 @@ After reviewing the report:
 
   python scripts/upgrade_taxonomy.py --apply
 
-updates taxonomy/taxonomy.yml to version 2. Genuine technologies receive a
+updates taxonomy/taxonomy.yml to the current version. Genuine technologies receive a
 `kind`. Organisation-like entries are marked deprecated instead of being deleted. Existing document front matter is NOT rewritten by this migration;
 run taxonomy_ai.py afterwards to reclassify affected documents and review the
 git diff.
@@ -417,6 +417,7 @@ def apply_upgrade(
     )
 
     dimensions = taxonomy["dimensions"]
+    dimensions.setdefault("organisations", taxonomy_tools.organisation_dimension())
     technologies = dimensions["technologies"]
     content_type_ids = set(dimensions["content_types"]["terms"])
     constraints = {
@@ -468,10 +469,10 @@ def main() -> int:
     try:
         taxonomy = load_raw_taxonomy(root)
         version = taxonomy.get("version")
-        if version != 1 and not (args.recheck_v2 and version == taxonomy_tools.TAXONOMY_VERSION):
+        if version != 1 and not (args.recheck_v2 and version in (2, taxonomy_tools.TAXONOMY_VERSION)):
             raise ValueError(
                 f"expected taxonomy version 1; found {version!r}. "
-                "Use --recheck-v2 to audit an existing v2 taxonomy."
+                "Use --recheck-v2 to audit an existing v2 or v3 taxonomy."
             )
         terms = active_v1_technology_terms(taxonomy)
     except Exception as error:

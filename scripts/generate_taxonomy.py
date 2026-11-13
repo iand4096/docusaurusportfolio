@@ -1441,7 +1441,8 @@ def add_governance(term: dict[str, Any], introduced: str, source: str, review: s
     return governed
 
 
-def build_taxonomy(final_terms: dict[str, dict[str, Any]], introduced: str) -> dict[str, Any]:
+def build_taxonomy(final_terms: dict[str, dict[str, Any]], introduced: str,
+                   organisations: dict[str, Any] | None = None) -> dict[str, Any]:
     review = "annual"
     dimensions: dict[str, Any] = {}
     content_type_ids = set(final_terms["content_types"])
@@ -1468,6 +1469,10 @@ def build_taxonomy(final_terms: dict[str, dict[str, Any]], introduced: str) -> d
         for term_id, term in LIFECYCLE_DIMENSION["terms"].items()
     }
     dimensions["lifecycle"] = lifecycle
+    # AI regeneration must preserve the human-controlled organisation catalogue.
+    dimensions["organisations"] = json.loads(json.dumps(
+        organisations if organisations is not None else taxonomy_tools.organisation_dimension()
+    ))
 
     return {
         "version": taxonomy_tools.TAXONOMY_VERSION,
@@ -1743,7 +1748,11 @@ def main() -> int:
             "that consolidation omitted"
         )
 
-    taxonomy = build_taxonomy(final_terms, args.introduced_date)
+    existing_path = root / taxonomy_tools.TAXONOMY_PATH
+    existing_organisations = None
+    if existing_path.exists():
+        existing_organisations = taxonomy_tools.load_yaml(existing_path).get("dimensions", {}).get("organisations")
+    taxonomy = build_taxonomy(final_terms, args.introduced_date, existing_organisations)
     taxonomy_tools.validate_taxonomy_schema(taxonomy, root / taxonomy_tools.SCHEMA_PATH)
     taxonomy_tools.validate_taxonomy_semantics(taxonomy)
     write_yaml(output, taxonomy)

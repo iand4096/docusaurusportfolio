@@ -1,0 +1,26 @@
+schema_version: 2
+id: 2026-11-13-work-organisations
+description: Add the four reviewed work organisations to taxonomy v3.
+change_type: vocabulary-expansion
+trigger: content-driven
+governance:
+  date: '2026-11-13'
+  source: human-proposed
+  reason: User-approved work-organisation vocabulary; AMX explicitly confirmed. These terms identify organisations for which work was performed, not product vendors or legal employment arrangements.
+preconditions:
+  taxonomy_version: 3
+changes:
+  organisations:
+    add:
+      amx:
+        label: AMX
+        description: Work performed for AMX, including digital-signage user documentation.
+      mastercard:
+        label: Mastercard
+        description: Work performed for Mastercard, including payment API and integration documentation.
+      morgan-stanley:
+        label: Morgan Stanley
+        description: Work performed for Morgan Stanley, including developer documentation and documentation platforms.
+      paysafe:
+        label: Paysafe
+        description: Work performed for Paysafe, including its Developer Center and payment integration documentation.

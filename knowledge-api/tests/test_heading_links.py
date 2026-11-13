@@ -36,6 +36,8 @@ def test_multiple_chunks_preserve_section_anchor():
 def test_documents_return_complete_urls(tmp_path: Path):
     docs = tmp_path / 'docs'
     docs.mkdir()
+    (tmp_path / 'taxonomy').mkdir()
+    (tmp_path / 'taxonomy/taxonomy.yml').write_text('dimensions: {}\n')
     (docs / 'example.mdx').write_text('''---
 title: Example
 slug: /sample-doc

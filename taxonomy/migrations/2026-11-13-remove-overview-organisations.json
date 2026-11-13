@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "taxonomy_version": 3,
+  "description": "Remove whole-page employer classifications from ten career-wide skills and tools overviews.",
+  "documents": [
+    {
+      "file": "docs/skills/Agile.md",
+      "expect": [
+        "paysafe"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/skills/DocumentationEngineering.md",
+      "expect": [
+        "morgan-stanley"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/skills/InformationArchitecture.md",
+      "expect": [
+        "morgan-stanley",
+        "paysafe"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/skills/GovernanceDocs.md",
+      "expect": [
+        "morgan-stanley"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/skills/APIDocumentation.md",
+      "expect": [
+        "mastercard",
+        "morgan-stanley",
+        "paysafe"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/skills/DocumentationLeadership.md",
+      "expect": [
+        "morgan-stanley",
+        "paysafe"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/tools/GitContinuousIntegration.md",
+      "expect": [
+        "morgan-stanley"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/tools/Diagramming.md",
+      "expect": [
+        "morgan-stanley"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/tools/Flare.md",
+      "expect": [
+        "amx",
+        "paysafe"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    },
+    {
+      "file": "docs/tools/OpenAPIandAPITools.md",
+      "expect": [
+        "mastercard",
+        "paysafe"
+      ],
+      "organisations": [],
+      "evidence": {},
+      "reason": "Whole-page review: this skills/tools overview spans career experience rather than work exclusively at one employer."
+    }
+  ]
+}
