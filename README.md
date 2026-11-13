@@ -36,6 +36,42 @@ npm run start
 
 For the local search backend and frontend feature flags, follow the [Knowledge API setup guide](knowledge-api/README.md#local-setup).
 
+### Generated See also links
+
+The local Docusaurus plugin generates up to three related links after substantive documentation pages. It runs during `npm run start` and `npm run build`, and refreshes when documentation or the generated taxonomy navigation data changes. It does not call an AI service or the search API.
+
+To generate and review the results separately:
+
+```bash
+npm run see-also:generate
+npm run see-also:check
+npm run test:see-also
+```
+
+Generation writes [the related-document index](src/generated/see-also.json) and [the review report](reports/see-also.md). Commit both artifacts with content changes. The check command is read-only and fails if either artifact is missing or stale; CI runs it before any build can refresh the files. Run `npm run taxonomy:generate` first if the canonical vocabulary or navigation metadata needs regeneration.
+
+Recommendations use rarity-weighted, normalised topic and technology overlap. Audience and whole-page employer matches provide smaller boosts; they cannot establish relevance alone. Broad terms shared by more than 65% of eligible pages also cannot establish relevance alone. The minimum score is `0.12`; a page receives fewer than three links when insufficient candidates qualify. Scores explain ordering, not measured recommendation accuracy.
+
+Home and landing pages, drafts, unlisted pages, archived content and the current page are excluded. Historical samples remain eligible. A document already linked anywhere in the article body is excluded, including links to its sections. Markdown references, relative file links, canonical routes, published-site URLs, configured redirect aliases and literal MDX `href`/`to` attributes resolve to the same document. Code samples, images and comments do not count as body links. Dynamic MDX links and unresolved document links appear as warnings in the review report and require inspection.
+
+To exclude destinations, add their repository document IDs to the source page's frontmatter:
+
+```yaml
+see_also:
+  exclude:
+    - skills/DocumentationEngineering
+    - case-studies/TaxonomyGovernance
+```
+
+IDs are paths under `docs/`, without the `.md` or `.mdx` extension; they are not URLs. Invalid IDs and unsupported options fail generation. Another qualifying candidate can fill an excluded destination's place. To hide the section on one page, use:
+
+```yaml
+see_also:
+  enabled: false
+```
+
+This disables outgoing recommendations on that page; other pages can still recommend it. Do not edit the generated index or report to curate links.
+
 ### LLM-readable documentation
 
 `npm run build` uses `docusaurus-plugin-llms` to generate `build/llms.txt`,
