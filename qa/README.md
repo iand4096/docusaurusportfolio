@@ -39,7 +39,8 @@ Line numbers, severity and confidence do not identify the underlying claim.
 
 The matcher searches the feedback records rather than relying only on the new
 report's `issue_id`. More than one matching record is marked ambiguous; no
-resolution is automatically applied. Matching is limited to AI-origin findings.
+resolution is automatically applied. Matching is limited to AI-origin findings. Exact matching remains the only automatic path;
+reworded claims can now be proposed and explicitly linked as described below.
 
 | Case | Implemented behaviour |
 | --- | --- |
@@ -100,15 +101,73 @@ The render output retains an original-report snapshot and separate review and
 feedback timestamps. It refuses to overwrite the input report. Commit
 `qa/feedback.json` to share decisions with future checkouts and CI runs.
 
+## Reworded complaints and category changes
+
+For AI findings without an exact feedback match, report generation proposes up to
+five previous challenges in the same file. Candidate retrieval uses normalised
+quotation similarity (at least 0.7), including substantial containment. Categories
+and criticism wording do not have to match. Similarity only shortlists candidates;
+it does not establish that two allegations are equivalent.
+
+A full AI QA run compares candidates using DeepSeek. For an existing saved report,
+request comparisons without rerunning its documentation checks:
+
+```bash
+python3 scripts/ai_docs_review.py compare \
+  --report .qa/local-review-2026-11-13/ai-doc-review.json \
+  --report-dir .qa/recurrence-review
+```
+
+`compare` requires `DEEPSEEK_API_KEY`. The comparison receives the old and new
+allegations, complete hash-verified source documents, and the previous rebuttal
+and adjudication. It returns `same_complaint`, `different_complaint`, or `uncertain`,
+with exact evidence checked against the supplied allegations and sources. Partial
+overlap is uncertain; a shared quotation is insufficient. Responses are cached in
+`.qa/feedback-index/comparisons.json`, keyed by comparison policy, model, findings,
+source revisions and prior discussion. This disposable cache is not a vector
+database and is not authoritative feedback. Failed requests and unverifiable
+responses appear separately in the report and never dismiss a finding.
+
+The HTML report shows previous/current quotations and allegations, prior rebuttals
+and decisions, whether source hashes changed, and any AI comparison. It provides
+copy buttons for confirm/reject commands; edit the placeholder reason before
+running them. Markdown and JSON retain the comparison information too.
+
+```bash
+python3 scripts/ai_docs_review.py link \
+  --report .qa/recurrence-review/ai-doc-review.json \
+  --issue qa-NEW_FINDING \
+  --previous qa-PREVIOUS_RECORD \
+  --decision confirmed \
+  --reason "Both allegations concern the same missing subject."
+```
+
+Use `--decision rejected` to reject a proposed relationship. Leave unresolved by
+taking no action. These human commands require no AI key. They verify the source,
+proposal and previous record, then append an audit event in `qa/feedback.json`.
+A rejection suppresses that particular proposal while its finding snapshots remain
+unchanged; changed source or proposed fixes can warrant fresh review.
+
+Confirmation creates a separate record sharing the previous persistent issue ID,
+with a snapshot of earlier discussion and decisions. It does **not** inherit the
+previous human dismissal, AI withdrawal or revised wording, and it does not alter
+the old feedback record. The new finding remains active, labelled **Linked —
+awaiting human resolution**. Use the existing `resolve --report ...` command to
+record a separate human decision, or `challenge` for fresh AI adjudication. Later
+source or suggestion changes retain the existing revalidation safeguards.
+
+Run `render` on the saved report after recording a link or resolution, and commit
+`qa/feedback.json` to share the decisions. Render performs no AI calls. Report
+creation and AI comparison do not write to the feedback registry. Challenge records
+absent from the current findings are still not displayed as an independent archive.
+
 ## Not implemented
 
-- Semantic matching of differently worded criticisms, even when the document
-  is unchanged. These still become separate issues unless a future matching
-  mechanism links them.
-- Fuzzy matching of edited quotations, Git rename detection, or matching across
-  different files or categories.
+- Automatic semantic merging or dismissal. AI comparisons are recommendations only.
+- Git rename detection or candidate matching across different files.
 - Automatic assessment of whether changed context invalidates a dismissal.
-- A UI for confirming ambiguous matches or merging persistent records.
+- Browser-side writes or merging existing feedback records. Reports copy local CLI
+  commands; ambiguous exact matches still require manual investigation.
 - Reliable distinction between two identical quotations in different parts of
   the same file. The existing exact-finding deduplication remains in place.
 - Automatic closure when a finding disappears. Absence in a nondeterministic

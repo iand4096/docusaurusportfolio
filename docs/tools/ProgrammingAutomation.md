@@ -80,7 +80,7 @@ tags:
 * Developed scripts to migrate and transform large documentation sets into extended **Markdown**, initially using regexp replacement lambdas and then more sophisticated class-based handlers as the transformation logic became more complex.
 * Used **`pathlib`** to reconstruct documentation links following content migration and restructuring; this includes converting absolute links to relative links and re-linking moved content.
 * Extended an existing **MkDocs** plugin to support additional **Graphviz** diagram-generation modes, including hyperlink-enabled diagrams, using Python `subprocess` to invoke Graphviz.
-* Used Requests and authentication libraries to integrate with REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authentication, JSON payloads, and JSON/XML responses.
+* Used Requests and authentication libraries to integrate with REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authentication, JSON payloads and JSON/XML responses.
 * Built Flask applications with GET and POST endpoints, query parameters, form handling and Jinja-rendered pages for API and payment-integration testing.
 * Built sandbox integrations for testing payment and API workflows, including authentication, encryption, webhooks and asynchronous processing.
 * Used the **Pandas** data processing library, along with JSON and YAML processing and Excel generation, for structured data transformation and reporting, for example building workbooks with hyperlinks to candidate pages for migration.

@@ -1,4 +1,5 @@
 import argparse
+import shlex
 import html
 import json
 import os
@@ -2963,6 +2964,8 @@ def feedback_label(issue):
         return 'Unreviewed — multiple previous issues match; link not applied'
     if issue.get('feedback_needs_revalidation'):
         return 'Needs revalidation — exact claim matched; source or proposed fix changed'
+    if issue.get('feedback_link_confirmation') and feedback_state(issue) == 'unreviewed':
+        return 'Linked — awaiting human resolution'
     return {
         'unreviewed': 'Unreviewed', 'challenged': 'Challenged — awaiting decision',
         'withdrawn': 'Withdrawn by AI — awaiting human resolution',
@@ -2981,6 +2984,101 @@ def report_counts(issues):
         **{level: sum(issue['severity'] == level for issue in active)
            for level in ('high', 'medium', 'low')},
     }
+
+
+def ai_without_recurrence_concerns(issue):
+    """Display-only classification; never changes feedback or CI eligibility."""
+    return (issue.get('source') == 'ai' and not issue.get('feedback_link_confirmation')
+            and all((candidate.get('comparison') or {}).get('verdict') == 'different_complaint'
+                    for candidate in issue.get('recurrence_candidates', [])))
+
+
+def recurrence_command(command, report_reference, **options):
+    args = ['python3', 'scripts/ai_docs_review.py', command, '--report', str(report_reference)]
+    for name, value in options.items():
+        args.extend(['--' + name.replace('_', '-'), str(value)])
+    return shlex.join(args)
+
+
+def recurrence_html(issue, report_reference, feedback_path=DEFAULT_FEEDBACK):
+    candidates = issue.get('recurrence_candidates', [])
+    linked = issue.get('feedback_link_confirmation')
+    if not candidates and not linked:
+        return ''
+    escape = lambda value: html.escape(str(value))
+
+    def command_control(command, label):
+        return ('<div class="recurrence-action"><details class="recurrence-command">'
+                '<summary>Show command</summary><pre><code class="link-command" data-report-token="' +
+                html.escape(shlex.quote(str(report_reference)), quote=True) + '">' + escape(command) +
+                '</code></pre></details><button type="button" class="copy-link-command">' +
+                escape(label) + '</button></div>')
+
+    parts = ['<details class="feedback-details recurrence-details"><summary>Previous challenges and possible recurrence</summary>']
+    if linked:
+        parts.append('<p><strong>Human-confirmed link.</strong> The previous decision has not been applied automatically.</p>')
+        history = issue.get('feedback_linked_history') or {}
+        candidates = [{'record_id': linked['previous_record_id'],
+                       'previous_finding': history.get('latest_finding') or {},
+                       'previous_discussion': history.get('discussion') or [],
+                       'previous_adjudications': history.get('adjudications') or []}]
+    for candidate in candidates:
+        old = candidate['previous_finding']
+        comparison = candidate.get('comparison')
+        previous_decisions = candidate.get('previous_adjudications') or []
+        previous_decision = previous_decisions[-1].get('decision', 'Not adjudicated') if previous_decisions else 'Not adjudicated'
+        old_sha = (old.get('document_revision') or {}).get('content_sha256')
+        new_sha = (issue.get('document_revision') or {}).get('content_sha256')
+        source_status = 'Unchanged' if old_sha and old_sha == new_sha else 'Changed — review context'
+        verdict = (comparison['verdict'].replace('_', ' ') if comparison else
+                   'Human-confirmed link' if linked else 'Not compared')
+        parts.append('<section class="recurrence-candidate" aria-label="Challenge link comparison">'
+                     '<dl class="recurrence-summary"><dt>AI assessment</dt><dd><strong>AI comparison: ' +
+                     escape(verdict) + '</strong></dd><dt>Previous decision</dt><dd>' +
+                     escape(previous_decision.replace('_', ' ').capitalize()) +
+                     '</dd><dt>Source</dt><dd>' + escape(source_status) + '</dd></dl>')
+        if not linked:
+            parts.append('<div class="recurrence-actions">')
+            for decision, label in [('confirmed', 'Copy confirm link command'), ('rejected', 'Copy reject link command')]:
+                command = recurrence_command('link', report_reference, issue=issue['issue_id'],
+                    previous=candidate['record_id'], proposal=candidate['proposal_id'],
+                    decision=decision, reason='Explain your link decision', feedback_file=feedback_path)
+                parts.append(command_control(command, label))
+            if not comparison:
+                command = recurrence_command('compare', report_reference, feedback_file=feedback_path)
+                parts.append(command_control(command, 'Copy compare command'))
+            parts.append('</div><p class="recurrence-help">Copy a command, edit its reason and run locally. '
+                         'Confirming a link does not dismiss the finding. Take no action to leave unresolved.</p>')
+        parts.append('<details class="recurrence-evidence"><summary>Compare quotations and allegations</summary>')
+        if old.get('original') == issue.get('original'):
+            parts.append('<p><strong>Shared quotation</strong></p><blockquote>' + escape(issue.get('original', '')) + '</blockquote>')
+        else:
+            for label, finding in [('Previous', old), ('Current', issue)]:
+                parts.append('<p><strong>' + label + ' quotation</strong></p><blockquote>' + escape(finding.get('original', '')) + '</blockquote>')
+        for label, finding in [('Previous', old), ('Current', issue)]:
+            parts.append('<p><strong>' + label + ' allegation</strong></p><p>' + escape(finding.get('message', '')) + '</p>')
+        parts.append('</details>')
+        if comparison:
+            parts.append('<details class="recurrence-reasoning"><summary>AI reasoning and evidence</summary><p>' + escape(comparison['reason']) + '</p>')
+            for label, field in [('Previous finding evidence', 'old_evidence'), ('Current finding evidence', 'new_evidence')]:
+                parts.append('<p><strong>' + label + '</strong></p>')
+                for quote in comparison[field]:
+                    parts.append('<blockquote>' + escape(quote) + '</blockquote>')
+            parts.append('</details>')
+        parts.append('<details class="recurrence-history"><summary>Previous rebuttal and decision history</summary>')
+        parts.append('<p>Previous finding: <code>' + escape(candidate['record_id']) + '</code></p>')
+        if linked:
+            parts.append('<p><strong>Link confirmation reason</strong></p><p>' + escape(linked['reason']) + '</p>')
+        for entry in candidate.get('previous_discussion', []):
+            if entry.get('role') == 'human':
+                parts.append('<p><strong>Previous rebuttal</strong></p><p>' + escape(entry.get('text', '')) + '</p>')
+        for entry in previous_decisions:
+            parts.append('<p><strong>Previous AI decision: ' + escape(entry.get('decision', '')) + '</strong></p><p>' + escape(entry.get('reason', '')) + '</p>')
+        parts.append('</details></section>')
+    for error in issue.get('recurrence_comparison_errors', []):
+        parts.append('<p role="status">Recurrence comparison failed: ' + escape(error['error']) + '</p>')
+    parts.append('</details>')
+    return ''.join(parts)
 
 
 def feedback_html(issue):
@@ -3110,6 +3208,43 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
         if issue.get('effective_ai_decision') == 'revised':
             lines += ['**Original criticism:**', '', value(issue['message']), '',
                       '**Original suggestion:**', '', value(issue['suggestion']), '']
+        if issue.get('feedback_link_confirmation'):
+            lines += ['**Human-confirmed recurrence link:** ' + value(issue['feedback_link_confirmation']['previous_record_id']),
+                      '', 'Previous decisions are not applied automatically.', '']
+            linked_history = issue.get('feedback_linked_history') or {}
+            old = linked_history.get('latest_finding') or {}
+            lines += ['**Linked previous allegation:**', '', value(old.get('message', '')), '']
+            for entry in linked_history.get('discussion') or []:
+                if entry.get('role') == 'human':
+                    lines += ['**Previous rebuttal:**', '', value(entry.get('text', '')), '']
+            for entry in linked_history.get('adjudications') or []:
+                lines += ['**Previous decision:** ' + value(entry.get('decision', '')), '', value(entry.get('reason', '')), '']
+        for candidate in issue.get('recurrence_candidates', []):
+            old = candidate['previous_finding']
+            lines += ['**Possible recurrence:** ' + value(candidate['record_id']), '',
+                      '**Previous quotation:**', '', quote_block(old['original']), '',
+                      '**Previous allegation:**', '', value(old['message']), '',
+                      '**Current allegation:**', '', value(issue['message']), '']
+            for entry in candidate.get('previous_discussion', []):
+                if entry.get('role') == 'human':
+                    lines += ['**Previous rebuttal:**', '', value(entry['text']), '']
+            for entry in candidate.get('previous_adjudications', []):
+                lines += ['**Previous decision:** ' + value(entry['decision']), '', value(entry['reason']), '']
+            comparison = candidate.get('comparison')
+            if comparison:
+                lines += ['**AI comparison:** ' + comparison['verdict'], '', value(comparison['reason']), '']
+                for field in ('old_evidence', 'new_evidence'):
+                    for quote in comparison[field]:
+                        lines += [quote_block(quote), '']
+            else:
+                lines += ['Not compared by AI.', '']
+            for decision in ('confirmed', 'rejected'):
+                command = recurrence_command('link', metadata.get('review_report_reference') or str(JSON_REPORT),
+                    issue=issue['issue_id'], previous=candidate['record_id'], proposal=candidate['proposal_id'], decision=decision,
+                    reason='Explain your link decision', feedback_file=metadata.get('feedback_file', DEFAULT_FEEDBACK))
+                lines += ['```bash', command, '```', '']
+        for error in issue.get('recurrence_comparison_errors', []):
+            lines += ['**Recurrence comparison failed:** ' + value(error['error']), '']
         for entry in issue.get('feedback_discussion', []):
             lines += ['**' + value(entry.get('role', '')).title() + ' discussion:**', '', value(entry.get('text', '')), '']
         for entry in issue.get('feedback_adjudications', []):
@@ -3146,8 +3281,12 @@ def generate_html_report(issues, errors, metadata, ci_result):
     local_report_json = json.dumps(local_report).replace('<', '\u003c')
     rows = []
     history_rows = []
+    recurrence_overview_rows = []
+    possible_count = sum(bool(issue.get('recurrence_candidates')) for issue in issues)
+    linked_count = sum(bool(issue.get('feedback_link_confirmation')) for issue in issues)
+    ai_clear_count = sum(ai_without_recurrence_concerns(issue) for issue in issues)
 
-    for issue in issues:
+    for number, issue in enumerate(issues, 1):
         file_link = html_file_link(issue["file"], line=issue["line"])
         line_link = html_line_link(issue["file"], issue["line"])
         issue_id = str(issue.get("issue_id", ""))
@@ -3172,14 +3311,39 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 '</code><br>Occurrence: <code>' + html.escape(issue.get('occurrence_id') or 'unknown') +
                 '</code></small><br>' + challenge_control
             )
+        recurrence_state = ('possible' if issue.get('recurrence_candidates') else
+                            'confirmed' if issue.get('feedback_link_confirmation') else '')
+        if recurrence_state:
+            candidates = issue.get('recurrence_candidates') or [{
+                'previous_adjudications': (issue.get('feedback_linked_history') or {}).get('adjudications') or [],
+                'comparison': None}]
+            verdict_labels = {'same_complaint': 'Same complaint',
+                              'different_complaint': 'Different complaint', 'uncertain': 'Uncertain'}
+            assessments = []
+            decisions = []
+            for candidate in candidates:
+                comparison = candidate.get('comparison')
+                assessments.append(verdict_labels.get(comparison.get('verdict'), 'Not compared')
+                                   if comparison else 'Human-confirmed link' if recurrence_state == 'confirmed' else 'Not compared')
+                prior = candidate.get('previous_adjudications') or []
+                decisions.append(str(prior[-1].get('decision', 'Not adjudicated')).replace('_', ' ').title()
+                                 if prior else 'Not adjudicated')
+            recurrence_overview_rows.append(
+                '<tr><td>' + file_link + ' · line ' + str(issue['line']) + '</td><td>' +
+                html.escape(', '.join(dict.fromkeys(decisions))) + '</td><td>' +
+                html.escape(', '.join(dict.fromkeys(assessments))) + '</td><td>' +
+                '<a class="review-recurrence" href="#finding-' + str(number) +
+                '">Review comparison</a></td></tr>')
         message = html.escape(issue.get('effective_message', issue['message']))
         suggestion = html.escape(issue.get('effective_suggestion', issue['suggestion']))
         if issue.get('effective_ai_decision') == 'revised':
             message += '<details><summary>Original criticism and suggestion</summary><p>' + html.escape(issue['message']) + '</p><p>' + html.escape(issue['suggestion']) + '</p></details>'
         message += feedback_html(issue)
+        message += recurrence_html(issue, pinned_report or str(JSON_REPORT), metadata.get('feedback_file', DEFAULT_FEEDBACK))
         (history_rows if is_history_issue(issue) else rows).append(
             f"""
-            <tr
+            <tr id="finding-{number}" data-recurrence="{recurrence_state}"
+                data-ai-clear="{'true' if ai_without_recurrence_concerns(issue) else 'false'}"
                 data-severity="{html.escape(issue['severity'])}"
                 data-source="{html.escape(issue['source'])}"
                 data-category="{html.escape(issue['category'])}"
@@ -3209,6 +3373,17 @@ def generate_html_report(issues, errors, metadata, ci_result):
         )
 
     history_markup = ('<details class="feedback-history"><summary>Withdrawn / dismissed (' + str(len(history_rows)) + ')</summary>' + issue_table(history_rows, 'historyTable') + '</details>') if history_rows else ''
+    recurrence_overview = (
+        '<section id="possibleLinks" aria-labelledby="possibleLinksTitle">'
+        '<h2 id="possibleLinksTitle">Challenge links</h2><p>' + str(possible_count) +
+        ' findings with possible links · ' + str(linked_count) + ' human-confirmed links.</p>'
+        '<p><button type="button" id="showPossibleLinks">Show only possible links</button> '
+        '<button type="button" id="showAllFindings">Show all findings</button></p>'
+        '<div class="table-wrap recurrence-overview"><table><thead><tr><th>Location</th>'
+        '<th>Previous AI decision</th><th>Assessment</th><th>Action</th></tr></thead><tbody>' +
+        ''.join(recurrence_overview_rows) + '</tbody></table></div></section>'
+    ) if recurrence_overview_rows else (
+        '<section id="possibleLinks"><h2>Challenge links</h2><p>No possible or confirmed links in this report.</p></section>')
     feedback_timestamp = ('<p>Feedback updated: ' + html.escape(str(metadata['feedback_updated_at'])) + '</p>') if metadata.get('feedback_updated_at') else ''
     snapshot_link = ('<a href="original-report.json">Original review snapshot</a>'
                      if metadata.get('original_report_snapshot') == 'original-report.json' else '')
@@ -3448,6 +3623,29 @@ def generate_html_report(issues, errors, metadata, ci_result):
             th, td {{ border-bottom-color: #374151; }}
             .subtitle, .card span {{ color: #9ca3af; }}
         }}
+        .recurrence-candidate {{ padding: 12px 0; border-bottom: 1px solid #d1d5db; }}
+        .recurrence-candidate:last-child {{ border-bottom: 0; }}
+        .recurrence-summary {{ display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0 0 12px; }}
+        .recurrence-summary dt {{ color: #6b7280; }}
+        .recurrence-summary dd {{ margin: 0; }}
+        .recurrence-actions {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: start; }}
+        .recurrence-action {{ display: flex; flex-direction: column; gap: 6px; min-width: 0; max-width: 100%; }}
+        .recurrence-action button {{ order: -1; padding: 7px 10px; cursor: pointer; }}
+        .recurrence-command {{ max-width: 360px; }}
+        .recurrence-command summary, .recurrence-help {{ font-size: 12px; }}
+        .recurrence-command pre {{ max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }}
+        .recurrence-candidate > details {{ margin: 10px 0; }}
+        .recurrence-candidate > details > summary {{ font-weight: 500; }}
+        @media (prefers-color-scheme: dark) {{
+            .recurrence-summary dt {{ color: #9ca3af; }}
+            .recurrence-candidate {{ border-color: #374151; }}
+        }}
+        .recurrence-overview table {{ min-width: 0; }}
+        .recurrence-overview th, .recurrence-overview td {{ font-size: 14px; }}
+        #possibleLinks {{ margin: 24px 0; }}
+        #possibleLinks button, #showAIWithoutRecurrence {{ padding: 8px 12px; margin-right: 8px; cursor: pointer; }}
+        tr[id^="finding-"] {{ scroll-margin-top: 16px; }}
+        tr[id^="finding-"]:target {{ outline: 2px solid #2563eb; outline-offset: -2px; }}
     </style>
 </head>
 <body>
@@ -3457,6 +3655,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
         <a href="{html.escape(PORTFOLIO_URL, quote=True)}">← Back to Portfolio</a>
     </p>
     <div class="report-actions">
+        <a href="#possibleLinks">Challenge links ({possible_count} possible · {linked_count} confirmed)</a>
         <a id="latestReportLink" href="#">Load latest report</a>
         <a href="{html.escape(MARKDOWN_REPORT.name, quote=True)}">AI-readable Markdown report</a>
         <a href="{html.escape(JSON_REPORT.name, quote=True)}">Full report JSON</a>
@@ -3497,7 +3696,9 @@ def generate_html_report(issues, errors, metadata, ci_result):
         API/check errors &gt; {ci_result['thresholds']['api_errors']}.
     </div>
 
-    <h2>Active findings</h2>
+    {recurrence_overview}
+    <p><button type="button" id="showAIWithoutRecurrence">AI findings without recurrence concerns ({ai_clear_count})</button></p>
+    <h2 id="activeFindingsTitle">Active findings</h2>
     <p>Withdrawn and human-dismissed findings remain in the history below. An AI withdrawal alone
        does not remove a substantive defect from CI counts; explicit human dismissal is required.</p>
     <p>For AI findings, select <strong>Challenge AI</strong> to copy a terminal command.
@@ -3505,6 +3706,15 @@ def generate_html_report(issues, errors, metadata, ci_result):
        <code>DEEPSEEK_API_KEY</code> configured. The published report does not send requests to DeepSeek.</p>
     <p id="copyStatus" class="copy-status" role="status" aria-live="polite"></p>
     <div class="filters">
+        <label>
+            Challenge links
+            <select id="feedbackFilter">
+                <option value="">All findings</option>
+                <option value="ai-clear">AI findings without recurrence concerns ({ai_clear_count})</option>
+                <option value="possible">Possible links ({possible_count})</option>
+                <option value="confirmed">Human-confirmed links ({linked_count})</option>
+            </select>
+        </label>
         <label>
             Severity
             <select id="severityFilter">
@@ -3527,6 +3737,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
             </select>
         </label>
     </div>
+    <p id="findingFilterStatus" role="status" aria-live="polite"></p>
     {issue_table(rows, 'issuesTable')}
     {history_markup}
     <h2>API/check errors</h2>
@@ -3548,6 +3759,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
 <script>
     const severityFilter = document.getElementById('severityFilter');
     const sourceFilter = document.getElementById('sourceFilter');
+    const feedbackFilter = document.getElementById('feedbackFilter');
     const latestReportLink = document.getElementById('latestReportLink');
     if (latestReportLink) {{
         latestReportLink.addEventListener('click', (event) => {{
@@ -3560,16 +3772,79 @@ def generate_html_report(issues, errors, metadata, ci_result):
     function applyFilters() {{
         const severity = severityFilter.value;
         const source = sourceFilter.value;
+        const recurrence = feedbackFilter.value;
         const rows = document.querySelectorAll('tr[data-severity]');
-
+        let shown = 0;
         for (const row of rows) {{
-            const severityMatch = !severity || row.dataset.severity === severity;
-            const sourceMatch = !source || row.dataset.source === source;
-            row.style.display = severityMatch && sourceMatch ? '' : 'none';
+            const matches = (!severity || row.dataset.severity === severity) &&
+                (!source || row.dataset.source === source) &&
+                (!recurrence || (recurrence === 'ai-clear' ? row.dataset.aiClear === 'true' :
+                    row.dataset.recurrence === recurrence));
+            row.style.display = matches ? '' : 'none';
+            if (matches) shown++;
         }}
+        document.getElementById('findingFilterStatus').textContent = shown + ' of ' + rows.length +
+            ' findings shown' + (shown === 0 ? '. No findings match these filters.' : '.');
     }}
     severityFilter.addEventListener('change', applyFilters);
     sourceFilter.addEventListener('change', applyFilters);
+    feedbackFilter.addEventListener('change', () => {{
+        if (feedbackFilter.value === 'ai-clear') sourceFilter.value = 'ai';
+        applyFilters();
+    }});
+    function showLinkView(value) {{
+        severityFilter.value = '';
+        sourceFilter.value = '';
+        feedbackFilter.value = value;
+        applyFilters();
+    }}
+    const showAIWithoutRecurrence = document.getElementById('showAIWithoutRecurrence');
+    if (showAIWithoutRecurrence) showAIWithoutRecurrence.addEventListener('click', () => {{
+        showLinkView('ai-clear');
+        sourceFilter.value = 'ai';
+        applyFilters();
+        document.getElementById('activeFindingsTitle').scrollIntoView();
+    }});
+    const showPossibleLinks = document.getElementById('showPossibleLinks');
+    if (showPossibleLinks) showPossibleLinks.addEventListener('click', () => {{
+        showLinkView('possible');
+        document.getElementById('activeFindingsTitle').scrollIntoView();
+    }});
+    const showAllFindings = document.getElementById('showAllFindings');
+    if (showAllFindings) showAllFindings.addEventListener('click', () => showLinkView(''));
+    document.querySelectorAll('.review-recurrence').forEach(link => {{
+        link.addEventListener('click', () => {{
+            showLinkView('');
+            const row = document.getElementById(link.getAttribute('href').slice(1));
+            const details = row.querySelector('.recurrence-details');
+            if (details) details.open = true;
+            const history = row.closest('.feedback-history');
+            if (history) history.open = true;
+        }});
+    }});
+    applyFilters();
+
+    // Keep copied recurrence commands bound to the immutable published report.
+    const publishedReport = (window.location.protocol === 'https:' &&
+        window.location.hostname === 'iand4096.github.io' &&
+        /^\\/docusaurusportfolio\\/qa\\/report-[a-f0-9]{{12,40}}\\.html$/i.test(window.location.pathname))
+        ? window.location.origin + window.location.pathname.replace(/\\.html$/i, '.json') : null;
+    if (!{pinned_report_json} && publishedReport) {{
+        document.querySelectorAll('.link-command').forEach(code => {{
+            code.textContent = code.textContent.replace(code.dataset.reportToken, JSON.stringify(publishedReport));
+        }});
+    }}
+    document.querySelectorAll('.copy-link-command').forEach(button => {{
+        button.addEventListener('click', async () => {{
+            const command = button.previousElementSibling.querySelector('code').textContent;
+            try {{
+                await navigator.clipboard.writeText(command);
+                document.getElementById('copyStatus').textContent = 'Command copied. Edit the reason, run locally, then render the report again.';
+            }} catch (error) {{
+                window.prompt('Copy command and edit the reason:', command);
+            }}
+        }});
+    }});
 
     // Works on static GitHub Pages without an API key or a server component.
     // Single quotes around the reason are intentional: replace its contents
@@ -3632,7 +3907,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
 # ---------------------------------------------------------------------------
 
 
-def render_saved_report(reference, feedback_path, output_dir):
+def render_saved_report(reference, feedback_path, output_dir, *, compare=False):
     """Render saved findings with current feedback; never execute review checks."""
     payload, reference = load_report(reference)
     source_path = Path(reference) if not urlsplit(reference).scheme else None
@@ -3655,11 +3930,17 @@ def render_saved_report(reference, feedback_path, output_dir):
     if not all(isinstance(thresholds.get(key), int) for key in ('high', 'medium', 'api_errors')):
         raise ValueError('Saved report must include its original CI thresholds')
     attach_feedback_status(issues, feedback_path)
+    comparison_errors = []
+    if compare:
+        from qa_recurrence import compare_recurrences
+        comparison_errors = compare_recurrences(issues, feedback_path=feedback_path,
+            api_key=os.environ.get('DEEPSEEK_API_KEY'), request_review=request_review)
     ci_result = evaluate_ci(issues, errors, thresholds['high'], thresholds['medium'], thresholds['api_errors'])
     metadata['feedback_updated_at'] = london_now().isoformat(timespec='seconds')
     metadata['review_report_reference'] = str(source_path.resolve()) if source_path else reference
     metadata['original_report_snapshot'] = snapshot_path.name
     metadata['feedback_view'] = True
+    metadata['feedback_file'] = str(feedback_path)
     output_dir.mkdir(parents=True, exist_ok=True)
     if not snapshot_path.exists():
         snapshot_path.write_bytes(raw_snapshot)
@@ -3669,22 +3950,27 @@ def render_saved_report(reference, feedback_path, output_dir):
     counts = report_counts(issues)
     print(f"Rendered saved report: {REPORT}")
     print(f"Active: {counts['active']}; pending: {counts['pending']}; withdrawn/dismissed: {counts['history']}")
-    print('No checks or AI calls were run. Original snapshot: ' + str(snapshot_path))
+    print(('Compared possible recurrences; no review checks were rerun.' if compare else
+           'No checks or AI calls were run.') + ' Original snapshot: ' + str(snapshot_path))
+    if comparison_errors:
+        print(f'Recurrence comparison failures: {len(comparison_errors)}; findings remain unresolved.')
     print('CI result: ' + ('PASS' if ci_result['passed'] else 'FAIL'))
     return ci_result
 
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        description="Run documentation QA checks or challenge an AI finding."
+        description="Run documentation QA, compare recurring findings, or record human feedback."
     )
-    parser.add_argument("command", nargs="?", choices=["challenge", "resolve", "render"],
-                        help="Challenge or resolve a finding, or render a saved report without running checks")
+    parser.add_argument("command", nargs="?", choices=["challenge", "resolve", "render", "compare", "link"],
+                        help="Challenge/resolve findings, compare recurrences, confirm/reject links, or render saved reports")
+    parser.add_argument("--proposal", help="Source-bound proposal token copied from the report")
+    parser.add_argument("--previous", help="Previous feedback record ID for link confirmation/rejection")
     parser.add_argument("--issue", help="Stable QA issue ID for challenge mode")
     parser.add_argument("--report", help="Exact local report JSON path or versioned GitHub Pages JSON URL for challenge, resolve or render")
     parser.add_argument("--reason", help="Rebuttal or human resolution explanation")
     parser.add_argument("--retry", action="store_true", help="Retry pending challenge without adding a new rebuttal")
-    parser.add_argument("--decision", choices=["accepted", "dismissed", "change_requested", "pending"], help="Human resolution for resolve command")
+    parser.add_argument("--decision", choices=["accepted", "dismissed", "change_requested", "pending", "confirmed", "rejected"], help="Human resolution, or confirmed/rejected for the link command")
     parser.add_argument("--reason-file", type=Path, help="Read rebuttal from a UTF-8 text file")
     parser.add_argument("--findings-file", type=Path, default=DEFAULT_FINDINGS)
     parser.add_argument("--feedback-file", type=Path, default=DEFAULT_FEEDBACK)
@@ -3768,22 +4054,40 @@ def main():
     report_dir = args.report_dir if args.report_dir is not None else (
         Path(".") if os.environ.get("GITHUB_ACTIONS", "").lower() == "true" else Path(".qa")
     )
-    if args.command == 'render' and args.report_dir is None:
+    if args.command in {'render', 'compare'} and args.report_dir is None:
         report_dir = Path('.qa') / 'feedback-view'
     if not report_dir.is_absolute():
         report_dir = PROJECT_ROOT / report_dir
     REPORT = report_dir / "ai-doc-review.html"
     JSON_REPORT = report_dir / "ai-doc-review.json"
     MARKDOWN_REPORT = report_dir / "ai-doc-review.md"
-    if args.command not in {"challenge", "resolve", "render"}:
+    if args.command not in {"challenge", "resolve", "render", "compare", "link"}:
         report_dir.mkdir(parents=True, exist_ok=True)
     _assert_ci_policy_invariants()
-    if args.command == 'render':
+    if args.command == 'link':
+        if not args.report or not args.issue or not args.previous or not args.reason or args.decision not in {'confirmed', 'rejected'} or args.retry or args.reason_file:
+            print('Link requires --report, --issue, --previous, --decision confirmed/rejected and --reason', file=sys.stderr)
+            return 2
+        from qa_recurrence import decide_link
+        try:
+            result = decide_link(args.issue, args.previous, args.decision, args.reason,
+                                 report=args.report, proposal=args.proposal, feedback_path=args.feedback_file)
+        except (ValueError, OSError, requests.RequestException, KeyError) as error:
+            print(f'Link failed: {error}', file=sys.stderr)
+            return 1
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print('Link recorded. Confirmation does not dismiss or adjudicate the finding. Render the report again.')
+        return 0
+    if args.command in {'render', 'compare'}:
         if not args.report:
             print('Render requires --report with the saved report JSON path or versioned URL', file=sys.stderr)
             return 2
         try:
-            result = render_saved_report(args.report, args.feedback_file, report_dir)
+            if args.command == 'compare' and (not DEEPSEEK_AI_CHECKS_ENABLED or not os.environ.get('DEEPSEEK_API_KEY')):
+                print('Compare requires enabled DeepSeek checks and DEEPSEEK_API_KEY', file=sys.stderr)
+                return 2
+            result = render_saved_report(args.report, args.feedback_file, report_dir,
+                                         compare=args.command == 'compare')
         except (ValueError, OSError, requests.RequestException, KeyError, json.JSONDecodeError) as error:
             print(f'Render failed: {error}', file=sys.stderr)
             return 1
@@ -3957,6 +4261,12 @@ def main():
             )
     decorate_issues(issues)
     attach_feedback_status(issues, args.feedback_file)
+    if DEEPSEEK_AI_CHECKS_ENABLED and api_key:
+        from qa_recurrence import compare_recurrences
+        comparison_errors = compare_recurrences(issues, feedback_path=args.feedback_file,
+            api_key=api_key, request_review=request_review)
+        if comparison_errors:
+            print(f'Recurrence comparison failures: {len(comparison_errors)}; findings remain unresolved.')
     save_findings(issues, args.findings_file)
     ci_result = evaluate_ci(
         issues,
@@ -3968,6 +4278,7 @@ def main():
     metadata = {
         **report_run_metadata(),
         "mode": mode,
+        "feedback_file": str(args.feedback_file),
         "filter": filter_name,
         "filter_label": FILTER_LABELS[filter_name],
         "model": MODEL if DEEPSEEK_AI_CHECKS_ENABLED else f"{MODEL} (disabled)",

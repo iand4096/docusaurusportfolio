@@ -96,7 +96,7 @@ I am a MadCap Flare specialist with nearly eight years of experience using Flare
 
 </CapabilityGrid>
 
-I applied these capabilities to the automation, integration and migration projects described in the [Flare Automation, Integration and Migration](#automation) section.
+I applied these capabilities to the automation, integration and migration projects described in the [Flare automation, integration and migration](#automation) section.
 
 ## Flare user documentation {/* #flare-user-documentation */}
 
@@ -112,7 +112,7 @@ See all my [posts](https://forums.madcapsoftware.com/search.php?st=0&sk=t&sd=d&s
 
 ## Flare automation, integration and migration {/* #automation */}
 
-At Paysafe, I integrated Flare with development, publishing and review systems as part of a broader documentation tool chain used to manage all the non-API-reference documentation on the launch version of the [Paysafe Developer Centre](https://developer.paysafe.com).
+At Paysafe, I integrated Flare with development, publishing and review systems as part of a broader documentation tool chain used to manage all documentation other than the API reference on the launch version of the [Paysafe Developer Centre](https://developer.paysafe.com).
 
 My work included:
 

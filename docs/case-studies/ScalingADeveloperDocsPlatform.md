@@ -176,7 +176,7 @@ I worked with engineers from the internal tooling team to build the authoring ex
 
 * **A CI/CD-based documentation build and publishing pipeline with automated quality checks**. Documentation changes in the monorepo were incorporated into automated website builds, while checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
 
-* **An IntelliJ plugin for documentation authoring and live preview**. The plugin supported embedded source-code fragments, LaTeX equations and multiple diagram formats, including Graphviz, PlantUML, Mermaid and C4/Structurizr. This lowered the barrier for developers to contribute documentation by allowing them to edit and preview complex content directly within their existing development environment, with rendering consistent with the published website.
+* **An IntelliJ plugin for documentation authoring and live preview**. At release, the plugin supported embedded source-code fragments, LaTeX equations and Graphviz diagrams with hyperlinks. This lowered the barrier for developers to contribute documentation by allowing them to edit and preview complex content directly within their existing development environment, with rendering consistent with the published website. I later extended the diagram support, as described under [Platform evolution](#platform-evolution).
 
 * **Support for diagrams-as-code, including software architecture diagrams**. This enabled engineers to create and maintain explanatory diagrams without specialist graphical skills, while keeping diagrams version-controlled alongside the documentation.
 
@@ -196,7 +196,7 @@ I subsequently created IDE-based tooling that allowed content owners to migrate 
 
 I led the migration of the documentation platform to the firm’s new containerised hosting solution with a custom domain, implementing redirects for legacy URLs and resolving minor post-launch issues. A major contribution was my proposal to serve the generated documentation from an attached filesystem instead of copying the content into the container, reducing build time by approximately **15 minutes**.
 
-As the platform matured, I also began contributing directly to its codebase using agentic AI-assisted development. This included adding support for additional diagrams-as-code formats, including PlantUML, Mermaid, and C4/Structurizr architecture diagrams. I also personally diagnosed and fixed bugs in the link-checking implementation.
+As the platform matured, I contributed directly to its codebase using agentic AI-assisted development. I added PlantUML support, enabling C4 architecture diagrams, followed later by Mermaid and Structurizr. I also diagnosed and fixed bugs in the link-checking implementation.
 
 ## Impact {/* #impact */}
 

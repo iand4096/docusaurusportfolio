@@ -83,7 +83,7 @@ I tested the documented workflow against the Paysafe.js implementation, with inp
 
 :::note[Published guide]
 
-The current version of the Paysafe JS developer guide can be found here on the [Paysafe Developer Center](https://developer.paysafe.com/en/api-docs/paysafe-js/overview/)
+The current version of the Paysafe.js Developer Guide can be found here on the [Paysafe Developer Center](https://developer.paysafe.com/en/api-docs/paysafe-js/overview/).
 
 :::
 

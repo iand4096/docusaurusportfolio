@@ -50,6 +50,8 @@ exceptions:
   - Flare
   - Retrieval and RAG
   - Morgan Stanley and Optimus references
+  # Preserve product-name casing in this sentence-case heading.
+  - 'Cloud architecture: Docker, Terraform and Azure'
 
 action:
   name: replace

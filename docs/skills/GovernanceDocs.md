@@ -55,7 +55,7 @@ My experience includes:
 
 ## Architecture diagrams and architecture as code {/* #architecture-diagrams-and-architecture-as-code */}
 
-At Morgan Stanley, I developed a plugin for a custom docs-as-code platform that enabled C4 architecture diagrams to be embedded directly in Markdown using PlantUML or Structurizr. Diagram definitions were maintained as text, either alongside the supporting documentation or in separate Structurizr files, allowing architecture diagrams and documentation to be version-controlled, peer-reviewed, and audited together.
+At Morgan Stanley, I developed a plugin for a custom docs-as-code platform that enabled C4 architecture diagrams to be embedded directly in Markdown using PlantUML or Structurizr. Diagram definitions were maintained as text, either alongside the supporting documentation or in separate Structurizr files, allowing architecture diagrams and documentation to be version-controlled, peer-reviewed and audited together.
 
 I have also explored emerging architecture-as-code standards, including FINOS CALM, for representing software architectures in structured, machine-readable formats.
 

@@ -81,7 +81,7 @@ preserved; a separate feedback timestamp identifies when the view was refreshed.
 Use a separate output directory for each original report. To publish a feedback
 view, serve this output directory alongside the original versioned report; the
 render command itself does not deploy or modify GitHub Pages.
-For a view that will be published, use the versioned report URL as `--report`
+For a view that will be published, use the versioned report URL as `--report`,
 so copied challenge commands retain the public original-report reference.
 
 The active list shows upheld, revised and pending findings. Withdrawn findings
@@ -168,7 +168,7 @@ The report records file, line, severity, confidence, type, category, source, ori
 
 ### Severity and CI
 
-Issues are classified as **High**, **Medium**, or **Low**, with confidence recorded separately.
+Issues are classified as **high**, **medium** or **low** severity, with confidence recorded separately.
 
 Default CI thresholds are:
 

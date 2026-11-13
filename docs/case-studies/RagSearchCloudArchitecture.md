@@ -93,7 +93,7 @@ Conventional keyword search works well when readers know the terminology, but it
 
 I wanted to test whether document metadata could control which passages a RAG system retrieved. The application also needed to preserve links to the source documentation and support conventional search without relying on an LLM.
 
-The application also needed a cloud deployment with controlled running costs that kept provider credentials out of the frontend and put limits on paid AI requests.
+The cloud deployment needed to control running costs, keep provider credentials out of the frontend and limit paid AI requests.
 
 ## My approach
 
@@ -181,7 +181,7 @@ flowchart TB
     style SEARCH fill:#FAF8F2,stroke:#D7C9A8,stroke-width:1px
 ```
 
-### Cloud architecture: docker, terraform and azure
+### Cloud architecture: Docker, Terraform and Azure
 
 I separated the static frontend from the Python service. **Docusaurus is built by GitHub Actions and published to GitHub Pages**; visitors’ browsers send HTTPS requests directly to **FastAPI on Azure Container Apps**. The portfolio remains a static site; retrieval and AI generation run in the Azure-hosted API. CORS explicitly permits the GitHub Pages origin.
 

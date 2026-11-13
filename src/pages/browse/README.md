@@ -11,7 +11,7 @@ These are replacement files for the existing Docusaurus Browse page (not the Azu
 ## What changed {/* #what-changed */}
 
 - Live, client-side relevance ranking. Title matches score more heavily than descriptions, which score above taxonomy and path matches.
-- Case/punctuation/diacritic normalization: `docs-as-code` and `docs as code` behave alike.
+- Case/punctuation/diacritic normalisation: `docs-as-code` and `docs as code` behave alike.
 - Token-based multi-word search: words can occur in different metadata fields and in any order. Every search term must match.
 - Prefix matching and conservative one-edit typo tolerance for words with five or more characters.
 - Relevance order when searching, alphabetical order when the query is blank.

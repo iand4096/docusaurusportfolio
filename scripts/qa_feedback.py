@@ -171,6 +171,8 @@ def attach_feedback_status(issues: list[dict], feedback_path: Path = DEFAULT_FEE
         issue['feedback_revalidation_reason'] = ('suggestion_changed' if expected == actual and suggestion_changed
                                                   else 'source_changed') if stale else None
         # Keep the linked history visible even when its decisions are stale.
+        issue['feedback_link_confirmation'] = record.get('link_confirmation')
+        issue['feedback_linked_history'] = record.get('linked_history')
         issue['feedback_record_id'] = key
         issue['feedback_status'] = 'needs_revalidation' if stale else record.get('status', 'unreviewed')
         issue['human_resolution'] = None if stale else record.get('human_resolution')
@@ -188,6 +190,9 @@ def attach_feedback_status(issues: list[dict], feedback_path: Path = DEFAULT_FEE
             if effective.get('decision') == 'revised' else None) or issue['message']
         issue['effective_suggestion'] = (effective.get('revised_suggestion')
             if effective.get('decision') == 'revised' else None) or issue['suggestion']
+
+    from qa_recurrence import attach_candidates
+    attach_candidates(issues, feedback_path)
 
 
 def _source_excerpt(source: str, original: str, context: int = 15) -> tuple[int, str]:
