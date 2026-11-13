@@ -7,6 +7,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 import styles from './styles.module.css';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import type {Root, Nodes, PhrasingContent} from 'mdast';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
 import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
 import browseStyles from '@site/src/pages/browse/styles.module.css';
@@ -102,6 +103,36 @@ function sourceUrl(item: Evidence): string {
     .replace(/[^\p{L}\p{N}\p{M}_\-\s]/gu, '')
     .replace(/\s/g, '-');
   return slug ? `${item.url}#${encodeURIComponent(slug)}` : item.url;
+}
+
+function remarkEvidenceCitations({sources}: {sources: Evidence[]}) {
+  return (tree: Root) => {
+    function walk(node: Nodes) {
+      if (!('children' in node) || node.type === 'link' || node.type === 'linkReference') return;
+      for (let index = 0; index < node.children.length; index++) {
+        const child = node.children[index];
+        if (child.type !== 'text') {
+          walk(child);
+          continue;
+        }
+        const parts: PhrasingContent[] = [];
+        let offset = 0;
+        for (const match of child.value.matchAll(/\[(\d+)\]/g)) {
+          const number = Number(match[1]);
+          if (number < 1 || number > sources.length) continue;
+          if (match.index > offset) parts.push({type: 'text', value: child.value.slice(offset, match.index)});
+          parts.push({type: 'link', url: sourceUrl(sources[number - 1]), children: [{type: 'text', value: match[0]}]});
+          offset = match.index + match[0].length;
+        }
+        if (!parts.length) continue;
+        if (offset < child.value.length) parts.push({type: 'text', value: child.value.slice(offset)});
+        // Only text children are replaced, so their parent accepts phrasing content.
+        node.children.splice(index, 1, ...parts);
+        index += parts.length - 1;
+      }
+    }
+    walk(tree);
+  };
 }
 
 function isMissingDeepSeekKey(detail: unknown): boolean {
@@ -323,7 +354,15 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
               onChange={e => setQuery(e.target.value)}
               placeholder="e.g. How is documentation governance enforced?"
               className={styles.query}
+              aria-describedby="rag-startup-note"
             />
+            <aside id="rag-startup-note" className={styles.startupNote}>
+              <i className="fa-solid fa-moon" aria-hidden="true" />
+              <div>
+                <strong>First search may take longer</strong>
+                <p>To keep costs low, the search service sleeps when idle. Your first search wakes it up; subsequent searches are usually faster.</p>
+              </div>
+            </aside>
             <div className={styles.formOptions}>
               <fieldset className={styles.group}>
                 <legend>Search method</legend>
@@ -457,9 +496,12 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
               <div className={styles.sectionEyebrow}>EVIDENCE-GROUNDED RESPONSE</div>
               <Heading as="h2" className={styles.sectionTitle}>Synthesised answer</Heading>
               <div className={`${styles.markdown} markdown`}>
-                <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml>{answer}</ReactMarkdown>
+                <ReactMarkdown
+                  remarkPlugins={[remarkGfm, [remarkEvidenceCitations, {sources: items}]]}
+                  components={{a: ({node, ...props}) => <a {...props} target="_blank" rel="noopener noreferrer" />}}
+                  skipHtml>{answer}</ReactMarkdown>
               </div>
-              <p className={styles.small}>Citation markers [1], [2], etc. refer to the evidence sources below.</p>
+              <p className={styles.small}>Select a citation marker to open its source or matched section in a new tab.</p>
             </section>
           )}
 
@@ -491,6 +533,9 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
                       <article>
                         <div className={styles.cardTop}>
                           <span className={styles.rank}>SOURCE {String(index + 1).padStart(2, '0')}</span>
+                          <a className={styles.sourceLink} href={sourceUrl(item)} target="_blank" rel="noopener noreferrer">
+                            {item.heading?.trim() ? 'Open matched section' : 'Open source'} <span aria-hidden="true">↗</span>
+                          </a>
                         </div>
                         {item.heading?.trim() && <p className={styles.parentTitle}>{item.title}</p>}
                         <h3 className={styles.resultTitle}>
@@ -531,9 +576,6 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
                               Rank score {item.score.toFixed(4)}
                             </span>
                           )}
-                          <a className={styles.sourceLink} href={sourceUrl(item)} target="_blank" rel="noopener noreferrer">
-                            {item.heading?.trim() ? 'Open matched section' : 'Open source'} <span aria-hidden="true">↗</span>
-                          </a>
                         </div>
                       </article>
                     </li>
