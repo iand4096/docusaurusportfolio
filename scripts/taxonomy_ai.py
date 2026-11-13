@@ -83,6 +83,11 @@ CORE RULES:
   document.
 - Select only values materially supported by the supplied document.
 - Prefer precise metadata over indiscriminate tagging.
+- Use people-leadership for recruiting, managing, mentoring and developing teams;
+  documentation-strategy for documentation direction and priorities; and
+  project-delivery for planning and coordinating delivery. Select each only
+  where substantively covered. Documentation governance concerns quality,
+  metadata, lifecycle, processes and standards, rather than people management.
 - Respect global and content-type-specific cardinality constraints.
 - Landing pages use only the landing-page content type and lifecycle. Return
   empty arrays for their audience, topic, technology and organisation fields.
@@ -123,6 +128,10 @@ TECHNOLOGY POLICY:
   a long career. Historical technologies are valid professional evidence.
 - A technology must be materially used, documented, implemented, tested,
   explained or demonstrated by the page.
+- Leading or coordinating a project involving a technology does not by itself
+  demonstrate that technology on the page. Do not inherit tools from associated
+  projects or other pages. Empty technology arrays are appropriate for leadership,
+  strategy and delivery content without substantive technology evidence.
 - Foundational and specialised technologies are distinct capabilities. For
   example Python + Flask, JavaScript + React, OpenAPI + Postman, Git + GitHub
   Actions may all be selected together when supported.

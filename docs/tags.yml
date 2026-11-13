@@ -116,6 +116,10 @@ documentation-engineering:
 documentation-governance:
   description: Processes and standards for managing documentation quality, metadata, and lifecycle.
   label: Documentation governance
+documentation-strategy:
+  description: Setting documentation direction, priorities and investment in alignment with organisational
+    and user needs.
+  label: Documentation strategy
 docusaurus:
   description: A static site generator for building documentation websites.
   label: Docusaurus
@@ -308,6 +312,10 @@ paysafe-js:
 pci-dss:
   description: Payment Card Industry Data Security Standard.
   label: PCI DSS
+people-leadership:
+  description: Recruiting, managing, mentoring and developing teams, including collaboration and shared
+    ownership.
+  label: People leadership
 pki:
   description: Public Key Infrastructure.
   label: PKI
@@ -317,6 +325,10 @@ plantuml:
 postman:
   description: An API testing and development tool.
   label: Postman
+project-delivery:
+  description: Planning and coordinating work, dependencies, backlogs, releases and migrations to deliver
+    agreed outcomes.
+  label: Project delivery
 pycharm:
   description: An IDE for Python development.
   label: PyCharm

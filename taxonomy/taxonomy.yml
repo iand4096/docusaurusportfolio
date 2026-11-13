@@ -356,6 +356,33 @@ dimensions:
           introduced: '2026-09-01'
           source: human-proposed
           review: annual
+      people-leadership:
+        label: People leadership
+        description: Recruiting, managing, mentoring and developing teams, including collaboration
+          and shared ownership.
+        governance:
+          status: active
+          introduced: '2026-11-13'
+          source: human-proposed
+          review: annual
+      documentation-strategy:
+        label: Documentation strategy
+        description: Setting documentation direction, priorities and investment in alignment with
+          organisational and user needs.
+        governance:
+          status: active
+          introduced: '2026-11-13'
+          source: human-proposed
+          review: annual
+      project-delivery:
+        label: Project delivery
+        description: Planning and coordinating work, dependencies, backlogs, releases and migrations
+          to deliver agreed outcomes.
+        governance:
+          status: active
+          introduced: '2026-11-13'
+          source: human-proposed
+          review: annual
   technologies:
     description: Technologies, standards, tools, platforms, technical methods and techniques
       materially used, documented or demonstrated.

@@ -23,9 +23,9 @@ audiences:
   - documentation-managers
   - technical-writers
 topics:
+  - project-delivery
   - documentation-engineering
   - docs-as-code
-  - documentation-governance
 technologies:
   - jira
   - docker
@@ -36,8 +36,8 @@ tags:
   - docker
   - docs-as-code
   - documentation-engineering
-  - documentation-governance
   - jira
+  - project-delivery
   - rest
 ---
 

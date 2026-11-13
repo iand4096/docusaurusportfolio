@@ -188,6 +188,10 @@ test('distinctive topics outrank secondary overlap without filling weak slots', 
 test('portfolio recommendations preserve the reviewed relevance expectations', async () => {
   const {index} = await generate(path.resolve('.'), {url: 'https://example.com', baseUrl: '/'});
   const ids = id => index.pages[id].links.map(link => link.id);
+  assert.deepEqual(ids('tools/DocusaurusAndMkdocs'), [
+    'case-studies/DocusaurusPortfolio', 'skills/DocumentationEngineering',
+    'case-studies/ScalingADeveloperDocsPlatform',
+  ]);
   const taxonomy = ids('case-studies/TaxonomyGovernance');
   assert.equal(taxonomy[0], 'case-studies/RagSearchCloudArchitecture');
   assert.ok(!taxonomy.includes('skills/DocumentationLeadership'));
