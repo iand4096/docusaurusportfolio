@@ -502,7 +502,10 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
                           <details className={styles.snippetDetails}>
                             <summary className={styles.snippetSummary}>
                               <span className={styles.snippetPreview}>{item.text.replace(/[#*_`~>|\[\]]/g, '').replace(/\s+/g, ' ').slice(0, 280)}{item.text.length > 280 ? '…' : ''}</span>
-                              <span className={styles.expandText}>Read full passage</span>
+                              <span className={styles.expandText}>
+                                <span className={styles.collapsedLabel}>Read full passage</span>
+                                <span className={styles.expandedLabel}>Collapse passage</span>
+                              </span>
                             </summary>
                             <div className={`${styles.markdown} ${styles.fullPassage} markdown`}>
                               <ReactMarkdown remarkPlugins={[remarkGfm]} skipHtml>{item.text}</ReactMarkdown>

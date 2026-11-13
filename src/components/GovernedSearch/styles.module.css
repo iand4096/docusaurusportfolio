@@ -140,11 +140,20 @@
 .resultTitle a {color: var(--ifm-heading-color);}
 .resultTitle a:hover {color: var(--ifm-color-primary); text-decoration: underline;}
 .snippetDetails {margin-top: .7rem;}
-.snippetSummary {cursor: pointer;}
+.snippetSummary {cursor: pointer; list-style: none;}
+.snippetSummary::-webkit-details-marker {display: none;}
+.snippetSummary::marker {content: '';}
 .snippetPreview {display: block; color: var(--rag-muted); font-size: .9rem; line-height: 1.6; overflow-wrap: anywhere;}
-.expandText {display: inline-block; margin-top: .45rem; font-size: .8rem; font-weight: 600; color: var(--ifm-color-primary);}
-.snippetDetails[open] .expandText {font-size: 0;}
-.snippetDetails[open] .expandText::after {content: 'Collapse passage'; font-size: .8rem;}
+.expandText {display: inline-flex; align-items: center; gap: .4rem; margin-top: .45rem; font-size: .8rem; font-weight: 600; color: var(--ifm-color-primary);}
+.expandText::before {
+  content: ''; flex-shrink: 0; width: 0; height: 0;
+  border-top: .3rem solid transparent; border-bottom: .3rem solid transparent;
+  border-left: .4rem solid currentColor;
+}
+.expandedLabel {display: none;}
+.snippetDetails[open] .collapsedLabel {display: none;}
+.snippetDetails[open] .expandedLabel {display: inline;}
+.snippetDetails[open] .expandText::before {transform: rotate(90deg);}
 .fullPassage {margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--rag-border); font-size: .9rem;}
 .tags {display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .9rem;}
 .tag {padding: .2rem .45rem; border-radius: .35rem; background: var(--ifm-color-emphasis-200); font-size: .75rem; line-height: 1.35;}
