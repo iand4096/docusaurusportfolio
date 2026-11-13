@@ -7,15 +7,10 @@ slug: /docs-samples
 sidebar_position: 1
 type:
   - landing-page
-audiences:
-  - technical-writers
-topics:
-  - technical-writing
-technologies: []
 lifecycle:
   - current
 tags:
-  - technical-writing
+  - landing-page
 ---
 
 import SidebarCardGrid from '@site/src/components/SidebarCardGrid';

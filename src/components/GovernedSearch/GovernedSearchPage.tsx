@@ -11,18 +11,11 @@ import type {Root, Nodes, PhrasingContent} from 'mdast';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
 import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
 import browseStyles from '@site/src/pages/browse/styles.module.css';
+import {facetDefinitions, restoreFacets, type SelectedFacets} from '@site/src/utils/taxonomyFilters';
 
 type RetrievalMode = 'bm25' | 'semantic' | 'hybrid';
 type ResponseMode = 'search' | 'chat';
-type FacetKey = 'type' | 'audiences' | 'topics' | 'technologies' | 'lifecycle';
-type SelectedFacets = Partial<Record<FacetKey, string[]>>;
-const FACETS: {key: FacetKey; label: string}[] = [
-  {key: 'type', label: 'Content type'},
-  {key: 'topics', label: 'Topic'},
-  {key: 'technologies', label: 'Technology'},
-  {key: 'audiences', label: 'Audience'},
-  {key: 'lifecycle', label: 'Lifecycle'},
-];
+type FacetKey = string;
 
 type TaxonomyDimension = {label: string; terms: Record<string, string>};
 type TaxonomyResponse = {version: number; dimensions: Record<string, TaxonomyDimension>};
@@ -31,12 +24,14 @@ type TaxonomyResponse = {version: number; dimensions: Record<string, TaxonomyDim
 type NavigationTaxonomy = {
   taxonomyVersion?: number;
   dimensions: Record<string, {
+    id: string;
     label: string;
     metadataField: string;
     terms: {id: string; label: string}[];
   }>;
 };
 const navigationTaxonomy = navigationIndex as NavigationTaxonomy;
+const FACETS = facetDefinitions(navigationTaxonomy.dimensions);
 const LOCAL_TAXONOMY: TaxonomyResponse = {
   version: navigationTaxonomy.taxonomyVersion ?? 0,
   dimensions: Object.fromEntries(
@@ -186,16 +181,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
         if (saved.facets && typeof saved.facets === 'object' && !Array.isArray(saved.facets)) {
           // Migrate previous single-select sessions (string) to multi-select arrays.
           // JSON data is untrusted; ignore values that are not non-empty strings.
-          const savedSelections = saved.facets as Partial<Record<FacetKey, string | string[]>>;
-          const validFacets: SelectedFacets = {};
-          for (const {key} of FACETS) {
-            const value = savedSelections[key];
-            const terms = Array.isArray(value) ? value : typeof value === 'string' ? [value] : [];
-            const selected = [...new Set(terms.filter((term): term is string =>
-              typeof term === 'string' && Object.prototype.hasOwnProperty.call(LOCAL_TAXONOMY.dimensions[key]?.terms ?? {}, term)))];
-            if (selected.length > 0) validFacets[key] = selected;
-          }
-          setFacets(validFacets);
+          setFacets(restoreFacets(saved.facets, navigationTaxonomy.dimensions));
         }
         if (typeof saved.includeArchived === 'boolean') setIncludeArchived(saved.includeArchived);
         if (typeof saved.showFilters === 'boolean') setShowFilters(saved.showFilters);
@@ -560,7 +546,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
                         {item.facets && (
                           <div className={styles.tags}>
                             {Object.entries(item.facets)
-                              .filter(([key]) => key === 'type' || key === 'lifecycle' || key === 'topics' || key === 'technologies')
+                              .filter(([key]) => Object.hasOwn(taxonomy.dimensions, key))
                               .flatMap(([key, values]) => values.slice(0, 3).map(value => ({key, value})))
                               .slice(0, 6)
                               .map(({key, value}) => (

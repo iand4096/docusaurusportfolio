@@ -6,15 +6,10 @@ slug: /tools
 sidebar_position: 1
 type:
   - landing-page
-audiences:
-  - technical-writers
-topics:
-  - documentation-engineering
-technologies: []
 lifecycle:
   - current
 tags:
-  - documentation-engineering
+  - landing-page
 ---
 
 import SidebarCardGrid from '@site/src/components/SidebarCardGrid';

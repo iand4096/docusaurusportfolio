@@ -1,7 +1,8 @@
 
 """Deterministic taxonomy, front-matter, and derived-file tooling.
 
-Taxonomy v2 adds typed technology subclasses and optional content-type-specific
+Taxonomy v3 adds optional, human-controlled work organisations.
+Taxonomy v2 introduced typed technology subclasses and optional content-type-specific
 cardinality constraints while keeping the public front matter simple. All governed
 taxonomy dimensions are serialised as YAML lists, including dimensions whose
 maximum cardinality is one:
@@ -78,7 +79,7 @@ from ruamel.yaml import YAML
 from ruamel.yaml.comments import CommentedMap
 
 
-TAXONOMY_VERSION = 2
+TAXONOMY_VERSION = 3
 TAXONOMY_PATH = Path("taxonomy/taxonomy.yml")
 SCHEMA_PATH = Path("taxonomy/schema.json")
 MIGRATION_SCHEMA_PATH = Path("taxonomy/taxonomy-migration.schema.json")
@@ -91,12 +92,28 @@ DOC_SUFFIXES = {".md", ".mdx"}
 TERM_ID_RE = re.compile(r"^[a-z0-9]+(?:-[a-z0-9]+)*$")
 DATE_RE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
+
+def organisation_dimension() -> dict[str, Any]:
+    """A whole-page classification for work performed at one employer."""
+    return {
+        "description": "The single employer for which all work described on the page was performed; excludes career-wide overviews, vendor mentions and personal projects.",
+        "metadata_field": "organisations",
+        "required": False,
+        "multiple": False,
+        "min": 0,
+        "max": 1,
+        "docusaurus_tags": False,
+        "ai_managed": False,
+        "terms": {},
+    }
+
 REQUIRED_DIMENSIONS = {
     "content_types",
     "audiences",
     "topics",
     "technologies",
     "lifecycle",
+    "organisations",
 }
 
 NAVIGATION_DIMENSION_ORDER = (
@@ -105,6 +122,7 @@ NAVIGATION_DIMENSION_ORDER = (
     "technologies",
     "audiences",
     "lifecycle",
+    "organisations",
 )
 
 NAVIGATION_DIMENSION_LABELS = {
@@ -113,6 +131,7 @@ NAVIGATION_DIMENSION_LABELS = {
     "topics": "Topic",
     "technologies": "Technology",
     "lifecycle": "Lifecycle",
+    "organisations": "Work organisation",
 }
 
 ALLOWED_GOVERNANCE_SOURCES = {
@@ -414,6 +433,10 @@ def effective_limits(
     dimension: dict[str, Any],
     content_type: str | None,
 ) -> tuple[int, int]:
+    # Navigation overviews are not evidence for subject, technology, audience or
+    # employer classifications. Keep only their content type and lifecycle.
+    if content_type == "landing-page" and dimension["metadata_field"] not in {"type", "lifecycle"}:
+        return 0, 0
     minimum = dimension["min"]
     maximum = dimension["max"]
     constraints = dimension.get("constraints_by_type", {})
@@ -429,7 +452,7 @@ def validate_taxonomy_semantics(taxonomy: dict[str, Any]) -> None:
     if taxonomy.get("version") != TAXONOMY_VERSION:
         raise ValidationError(
             f"taxonomy version must be {TAXONOMY_VERSION}; "
-            "run `python scripts/upgrade_taxonomy.py` for a v1 taxonomy"
+            "run `python scripts/upgrade_taxonomy_v3.py --apply` for a v2 taxonomy"
         )
 
     dimensions = taxonomy.get("dimensions", {})
@@ -618,6 +641,12 @@ def validate_taxonomy_semantics(taxonomy: dict[str, Any]) -> None:
                     f"{dimension_id}.{term_id}: taxonomy hierarchy is deeper than two parents"
                 )
 
+    organisations = dimensions["organisations"]
+    if organisations["required"] or organisations["min"] != 0:
+        raise ValidationError("organisations must be optional with min: 0")
+    if organisations["ai_managed"]:
+        raise ValidationError("organisations must be human-controlled")
+
     lifecycle = dimensions["lifecycle"]
     if lifecycle.get("ai_managed"):
         raise ValidationError("lifecycle must set ai_managed: false")
@@ -640,6 +669,10 @@ def render_docusaurus_tags(taxonomy: dict[str, Any]) -> str:
                 "label": term["label"],
                 "description": term["description"],
             }
+
+    landing = active_terms(taxonomy["dimensions"]["content_types"]).get("landing-page")
+    if landing:
+        tags["landing-page"] = {"label": landing["label"], "description": landing["description"]}
 
     stream = io.StringIO()
     yaml = safe_yaml()
@@ -696,7 +729,9 @@ def fields_for_content_type(
 ) -> list[dict[str, Any]]:
     dimensions = taxonomy["dimensions"]
     fields = common_frontmatter_fields()
-    for dimension_id in ["content_types", "audiences", "topics", "technologies", "lifecycle"]:
+    for dimension_id in ("content_types", "audiences", "topics", "technologies", "lifecycle", "organisations"):
+        if effective_limits(dimensions[dimension_id], content_type)[1] == 0:
+            continue
         fields.append(
             taxonomy_field_definition(
                 dimension_id,
@@ -746,6 +781,8 @@ def build_frontmatter_projection(taxonomy: dict[str, Any]) -> dict[str, Any]:
         )
 
     docusaurus_tags = []
+    if "landing-page" in active_terms(dimensions["content_types"]):
+        docusaurus_tags.append("landing-page")
     for dimension in dimensions.values():
         if dimension.get("docusaurus_tags"):
             docusaurus_tags.extend(active_terms(dimension).keys())
@@ -879,7 +916,8 @@ def build_navigation_projection(
     }
 
     projected_dimensions: dict[str, dict[str, Any]] = {}
-    for dimension_id in NAVIGATION_DIMENSION_ORDER:
+    for dimension_id in (*[key for key in NAVIGATION_DIMENSION_ORDER if key in dimensions],
+                         *[key for key in dimensions if key not in NAVIGATION_DIMENSION_ORDER]):
         dimension = dimensions[dimension_id]
         projected_terms: list[dict[str, Any]] = []
 
@@ -901,7 +939,7 @@ def build_navigation_projection(
 
         projected_dimensions[dimension_id] = {
             "id": dimension_id,
-            "label": NAVIGATION_DIMENSION_LABELS[dimension_id],
+            "label": NAVIGATION_DIMENSION_LABELS.get(dimension_id, dimension_id.replace("_", " ").title()),
             "metadataField": dimension["metadata_field"],
             "terms": projected_terms,
         }
@@ -972,7 +1010,7 @@ def build_navigation_projection(
         if isinstance(description, str) and description.strip():
             document["description"] = description.strip()
 
-        for dimension_id in NAVIGATION_DIMENSION_ORDER:
+        for dimension_id in projected_dimensions:
             dimension = dimensions[dimension_id]
             document[dimension["metadata_field"]] = navigation_metadata_values(
                 front_matter,
@@ -1131,7 +1169,7 @@ def validate_front_matter_data(
         minimum, maximum = effective_limits(dimension, content_type)
 
         if value is None:
-            if dimension["required"] or minimum > 0:
+            if (dimension["required"] and maximum > 0) or minimum > 0:
                 errors.append(f"{relative}: required metadata field {field_name!r} is missing")
             selected[dimension_id] = []
             continue
@@ -1171,10 +1209,7 @@ def validate_front_matter_data(
 
         selected[dimension_id] = values
 
-    expected_tags: set[str] = set()
-    for dimension_id, dimension in dimensions.items():
-        if dimension.get("docusaurus_tags"):
-            expected_tags.update(selected.get(dimension_id, []))
+    expected_tags = set(derived_document_tags(front_matter, taxonomy))
 
     raw_tags = front_matter.get("tags", [])
     if isinstance(raw_tags, str):
@@ -1211,19 +1246,22 @@ def validate_document_front_matter(
     return validate_front_matter_data(front_matter, relative, taxonomy)
 
 
+def derived_document_tags(front_matter: dict[str, Any], taxonomy: dict[str, Any]) -> list[str]:
+    type_field = taxonomy["dimensions"]["content_types"]["metadata_field"]
+    if front_matter.get(type_field) == ["landing-page"]:
+        return ["landing-page"]
+    desired = []
+    for dimension in taxonomy["dimensions"].values():
+        if dimension.get("docusaurus_tags"):
+            desired.extend(value_as_list(front_matter.get(dimension["metadata_field"], [])) or [])
+    return sorted(set(desired))
+
+
 def sync_front_matter_tags(
     front_matter: CommentedMap,
     taxonomy: dict[str, Any],
 ) -> bool:
-    desired: list[str] = []
-    for dimension in taxonomy["dimensions"].values():
-        if not dimension.get("docusaurus_tags"):
-            continue
-        field_name = dimension["metadata_field"]
-        values = value_as_list(front_matter.get(field_name, [])) or []
-        desired.extend(values)
-
-    desired = sorted(set(desired))
+    desired = derived_document_tags(front_matter, taxonomy)
     current = value_as_list(front_matter.get("tags", [])) or []
     if current == desired:
         return False

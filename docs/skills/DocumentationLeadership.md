@@ -5,7 +5,8 @@ slug: /docsleadership
 sidebar_custom_props:
   sampleCard:
     tag: Documentation Strategy
-    description: Defining documentation strategy, leading technical-writing teams, and shaping developer-documentation platforms across enterprise and financial-services environments.
+    description: Defining documentation strategy, leading technical-writing teams, and shaping
+      developer-documentation platforms across enterprise and financial-services environments.
     highlights:
       - Led documentation strategy for the first Paysafe Developer Center
       - Recruited, managed, and mentored technical-writing teams
@@ -16,28 +17,18 @@ audiences:
   - documentation-managers
   - technical-writers
 topics:
-  - documentation-engineering
-  - docs-as-code
+  - people-leadership
+  - documentation-strategy
   - documentation-governance
-  - developer-experience
   - information-architecture
-technologies:
-  - git
-  - docker
-  - github-actions
-  - docusaurus
+technologies: []
 lifecycle:
   - current
 tags:
-  - developer-experience
-  - docker
-  - docs-as-code
-  - documentation-engineering
   - documentation-governance
-  - docusaurus
-  - git
-  - github-actions
+  - documentation-strategy
   - information-architecture
+  - people-leadership
 ---
 
 I have led documentation teams, platforms, and strategy across financial services, payments, and enterprise software environments. My experience includes documentation product ownership, team leadership, developer-portal strategy, content architecture, docs-as-code adoption, leading migration programmes, and improving engineering participation in documentation.

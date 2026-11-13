@@ -5,7 +5,8 @@ slug: /documentationeng
 sidebar_custom_props:
   sampleCard:
     tag: Documentation engineering
-    description: Designing and maintaining scalable docs-as-code platforms using software-engineering practices, automation, and continuous integration.
+    description: Designing and maintaining scalable docs-as-code platforms using
+      software-engineering practices, automation, and continuous integration.
     highlights:
       - Helped scale a documentation platform from 700 to 3,200 pages
       - Built tooling to migrate approximately 900 legacy pages

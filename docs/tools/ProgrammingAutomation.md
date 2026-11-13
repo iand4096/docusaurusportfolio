@@ -1,5 +1,6 @@
 ---
 title: Programming and Automation
+description: Developing scripts, applications and platform extensions for documentation engineering and API validation.
 sidebar_position: 5
 slug: /programming
 sidebar_custom_props:

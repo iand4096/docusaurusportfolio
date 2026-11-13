@@ -4,6 +4,7 @@ import {useDocsSidebar} from '@docusaurus/plugin-content-docs/client';
 import type {PropSidebarItem} from '@docusaurus/plugin-content-docs';
 
 type CardMetadata = {
+  title?: string;
   tag: string;
   description: string;
   highlights: string[];
@@ -49,7 +50,7 @@ function extractCards(
 
     return [
       {
-        title: item.label,
+        title: metadata.title ?? item.label,
         href: item.href,
         metadata,
       },

@@ -1,5 +1,6 @@
 ---
 title: Git and Continuous Integration
+description: Using version control and continuous integration to review, validate, build and publish documentation reliably.
 sidebar_position: 3
 slug: /gitandci
 sidebar_custom_props:

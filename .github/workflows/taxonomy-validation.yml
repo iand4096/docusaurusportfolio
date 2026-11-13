@@ -37,3 +37,26 @@ jobs:
       - name: Validate taxonomy and changed documents
         run: |
           python scripts/taxonomy.py check --changed-base "${{ github.event.pull_request.base.sha }}"
+
+      - name: Test taxonomy policies and migrations
+        run: python -m unittest discover -s scripts/tests -p 'test_*taxonomy.py'
+
+  validate-see-also:
+    name: Validate generated See also links
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+      - name: Install site dependencies
+        run: npm ci
+      - name: Test related links and taxonomy filters
+        run: |
+          npm run test:see-also
+          npm run test:taxonomy-filters
+      - name: Check committed related-link artifacts
+        run: npm run see-also:check

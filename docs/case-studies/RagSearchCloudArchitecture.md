@@ -3,14 +3,15 @@ title: Designing Cloud-Based RAG search for technical documentation
 description: Designing and deploying cloud-based, metadata-governed retrieval-augmented generation 
   with Docker, Terraform and Azure.
 sidebar_label: Cloud-Based RAG Search
+sidebar_position: 5
 sidebar_custom_props:
   caseStudyCard:
+    title: Cloud-Based RAG Search
     tag: Search and retrieval
-    description: >-
-      Building portfolio search with keyword, semantic and hybrid retrieval, taxonomy filters and optional AI answers linked to source passages.
+    description: Built documentation search with metadata filters and AI answers that link to sources.
     highlights:
-      - Built an ingestion pipeline that validates metadata and preserves headings, source locations and taxonomy facets in indexed passages.
-      - Implemented keyword, semantic and hybrid search with lifecycle filters and source-linked AI answers, deployed through FastAPI on Azure.
+      - Built keyword and semantic search with metadata filters and source-linked AI answers
+      - Deployed a Python API on Azure using Docker and Terraform
     ariaLabel: Read the cloud-based RAG search case study
 type:
   - case-study

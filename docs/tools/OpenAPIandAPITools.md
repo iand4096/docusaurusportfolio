@@ -1,5 +1,6 @@
 ---
 title: OpenAPI and API tools
+description: Maintaining API contracts and executable integration tests to improve the accuracy and usability of developer documentation.
 sidebar_position: 2
 slug: /openapitools
 sidebar_custom_props:

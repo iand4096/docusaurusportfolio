@@ -1,0 +1,4 @@
+.seeAlso {margin-top: 2rem; padding-top: 1.25rem; border-top: 1px solid var(--ifm-color-emphasis-300);}
+.seeAlso h2 {font-size: 1.35rem;}
+.seeAlso ul {margin-bottom: 0;}
+.seeAlso li + li {margin-top: .4rem;}

@@ -36,6 +36,42 @@ npm run start
 
 For the local search backend and frontend feature flags, follow the [Knowledge API setup guide](knowledge-api/README.md#local-setup).
 
+### Generated See also links
+
+The local Docusaurus plugin generates up to three related links after substantive documentation pages. It runs during `npm run start` and `npm run build`, and refreshes when documentation or the generated taxonomy navigation data changes. It does not call an AI service or the search API.
+
+To generate and review the results separately:
+
+```bash
+npm run see-also:generate
+npm run see-also:check
+npm run test:see-also
+```
+
+Generation writes [the related-document index](src/generated/see-also.json) and [the review report](reports/see-also.md). Commit both artifacts with content changes. The check command is read-only and fails if either artifact is missing or stale; CI runs it before any build can refresh the files. Run `npm run taxonomy:generate` first if the canonical vocabulary or navigation metadata needs regeneration.
+
+The broad topics `technical-writing` and `docs-as-code` are ignored throughout See also matching and scoring; they remain available for taxonomy navigation and filtering. Recommendations prioritise distinctive topics: topic overlap contributes up to `0.4`, weighted by squared inverse document frequency and normalised by the source page’s topic weights, so extra destination topics do not dilute the match. Technology overlap contributes up to `0.6` using squared inverse document frequency and coverage of the source page’s technologies, so extra technologies on a destination do not dilute the match. Candidates must share one of the source page’s least frequent topics (including ties), a specific technology, or its whole-page employer classification. A whole-page employer match adds `0.8`; audience overlap adds up to `0.04`. Neither establishes relevance alone: at least one shared topic or technology must occur on no more than 65% of eligible pages. The minimum score is `0.3`; fewer than three links are shown when insufficient candidates qualify. Scores explain ordering, not measured recommendation accuracy. Because technology coverage and distinctive topics are evaluated from the source page, recommendations need not be reciprocal.
+
+Home and landing pages, drafts, unlisted pages, archived content and the current page are excluded. Historical samples remain eligible. A document already linked anywhere in the article body is excluded, including links to its sections, unless it shares the source page’s whole-page employer classification. Manual exclusions still apply to same-employer pages. Markdown references, relative file links, canonical routes, published-site URLs, configured redirect aliases and literal MDX `href`/`to` attributes resolve to the same document. Code samples, images and comments do not count as body links. Dynamic MDX links and unresolved document links appear as warnings in the review report and require inspection.
+
+To exclude destinations, add their repository document IDs to the source page's frontmatter:
+
+```yaml
+see_also:
+  exclude:
+    - skills/DocumentationEngineering
+    - case-studies/TaxonomyGovernance
+```
+
+IDs are paths under `docs/`, without the `.md` or `.mdx` extension; they are not URLs. Invalid IDs and unsupported options fail generation. Another qualifying candidate can fill an excluded destination's place. To hide the section on one page, use:
+
+```yaml
+see_also:
+  enabled: false
+```
+
+This disables outgoing recommendations on that page; other pages can still recommend it. Do not edit the generated index or report to curate links.
+
 ### LLM-readable documentation
 
 `npm run build` uses `docusaurus-plugin-llms` to generate `build/llms.txt`,

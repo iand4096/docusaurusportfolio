@@ -2,15 +2,15 @@
 title: Docusaurus Portfolio
 description: A case study of building a Docusaurus portfolio site with docs-as-code workflows, 
   React/MDX customisation, automated QA, and CI/CD.
-sidebar_position: 5
+sidebar_position: 7
 sidebar_custom_props:
   caseStudyCard:
+    title: Documentation QA and Publishing
     tag: Documentation engineering
-    description: >-
-      Building this portfolio with Docusaurus, reusable React components and automated documentation checks.
+    description: Built this portfolio’s documentation checks and automated publishing.
     highlights:
-      - Built a Python QA pipeline combining AI editorial review with automated style, accessibility and link checks.
-      - Checked AI findings against source content and automated QA reports and publishing through GitHub Actions.
+      - Built a Python QA pipeline covering style, accessibility, links and AI editorial review
+      - Checked AI findings against source text and generated HTML and JSON review reports
     ariaLabel: Read the Docusaurus portfolio case study
 type:
   - case-study

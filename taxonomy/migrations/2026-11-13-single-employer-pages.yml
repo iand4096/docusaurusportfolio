@@ -1,0 +1,21 @@
+schema_version: 2
+id: 2026-11-13-single-employer-pages
+description: Restrict organisation metadata to pages whose work belongs entirely to one employer.
+change_type: policy-change
+trigger: policy-driven
+governance:
+  date: '2026-11-13'
+  source: human-proposed
+  reason: User requested whole-page employer classification only. Career-wide skills and tools overviews are excluded even when they name one employer.
+preconditions:
+  taxonomy_version: 3
+changes:
+  organisations:
+    configuration:
+      expect:
+        multiple: true
+        max: 20
+      set:
+        description: The single employer for which all work described on the page was performed; excludes career-wide overviews, vendor mentions and personal projects.
+        multiple: false
+        max: 1

@@ -46,6 +46,7 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
 
   plugins: [
+    './plugins/see-also.cjs',
     [
       'docusaurus-plugin-llms',
       {

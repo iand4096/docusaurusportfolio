@@ -4,7 +4,7 @@
     "docs/**/*.md",
     "docs/**/*.mdx"
   ],
-  "taxonomyVersion": 2,
+  "taxonomyVersion": 3,
   "technologyKinds": {
     "ai-ml-tool": {
       "id": "ai-ml-tool",
@@ -281,6 +281,11 @@
           "description": "Processes and standards for managing documentation quality, metadata, and lifecycle."
         },
         {
+          "id": "documentation-strategy",
+          "label": "Documentation strategy",
+          "description": "Setting documentation direction, priorities and investment in alignment with organisational and user needs."
+        },
+        {
           "id": "information-architecture",
           "label": "Information architecture",
           "description": "Organisation and structure of information to improve findability and usability."
@@ -289,6 +294,16 @@
           "id": "payments",
           "label": "Payments",
           "description": "Payment systems, digital wallets, tokenisation, and related financial technology."
+        },
+        {
+          "id": "people-leadership",
+          "label": "People leadership",
+          "description": "Recruiting, managing, mentoring and developing teams, including collaboration and shared ownership."
+        },
+        {
+          "id": "project-delivery",
+          "label": "Project delivery",
+          "description": "Planning and coordinating work, dependencies, backlogs, releases and migrations to deliver agreed outcomes."
         },
         {
           "id": "taxonomy",
@@ -1099,6 +1114,33 @@
           "description": "Content intentionally retained as a historical example or past project."
         }
       ]
+    },
+    "organisations": {
+      "id": "organisations",
+      "label": "Work organisation",
+      "metadataField": "organisations",
+      "terms": [
+        {
+          "id": "amx",
+          "label": "AMX",
+          "description": "Work performed for AMX, including digital-signage user documentation."
+        },
+        {
+          "id": "mastercard",
+          "label": "Mastercard",
+          "description": "Work performed for Mastercard, including payment API and integration documentation."
+        },
+        {
+          "id": "morgan-stanley",
+          "label": "Morgan Stanley",
+          "description": "Work performed for Morgan Stanley, including developer documentation and documentation platforms."
+        },
+        {
+          "id": "paysafe",
+          "label": "Paysafe",
+          "description": "Work performed for Paysafe, including its Developer Center and payment integration documentation."
+        }
+      ]
     }
   },
   "documents": [
@@ -1112,9 +1154,9 @@
         "skill"
       ],
       "topics": [
+        "project-delivery",
         "documentation-engineering",
-        "docs-as-code",
-        "documentation-governance"
+        "docs-as-code"
       ],
       "technologies": [
         "jira",
@@ -1127,7 +1169,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "skills/AIandDocumentation",
@@ -1163,7 +1206,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "implementation-details/taxonomy",
@@ -1197,7 +1241,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "docs-samples/AMXInspiredSignageComposer",
@@ -1226,6 +1271,9 @@
       ],
       "lifecycle": [
         "current"
+      ],
+      "organisations": [
+        "amx"
       ]
     },
     {
@@ -1274,7 +1322,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "case-studies/PaysafeDeveloperCenter",
@@ -1306,6 +1355,9 @@
       ],
       "lifecycle": [
         "historical"
+      ],
+      "organisations": [
+        "paysafe"
       ]
     },
     {
@@ -1317,21 +1369,13 @@
       "type": [
         "landing-page"
       ],
-      "topics": [
-        "technical-writing",
-        "documentation-engineering",
-        "documentation-governance",
-        "developer-experience"
-      ],
+      "topics": [],
       "technologies": [],
-      "audiences": [
-        "technical-writers",
-        "documentation-managers",
-        "developers"
-      ],
+      "audiences": [],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "tools/ContainersAndCloudNative",
@@ -1363,7 +1407,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "case-studies/RagSearchCloudArchitecture",
@@ -1416,7 +1461,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "tools/Diagramming",
@@ -1452,7 +1498,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "skills/DocumentationEngineering",
@@ -1497,7 +1544,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "skills/GovernanceDocs",
@@ -1527,7 +1575,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "docs-samples/index",
@@ -1538,16 +1587,13 @@
       "type": [
         "landing-page"
       ],
-      "topics": [
-        "technical-writing"
-      ],
+      "topics": [],
       "technologies": [],
-      "audiences": [
-        "technical-writers"
-      ],
+      "audiences": [],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "case-studies/DocumentingComplexDeveloperFrameworks",
@@ -1580,6 +1626,9 @@
       ],
       "lifecycle": [
         "current"
+      ],
+      "organisations": [
+        "morgan-stanley"
       ]
     },
     {
@@ -1622,7 +1671,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "tools/GitContinuousIntegration",
@@ -1652,7 +1702,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "case-studies/TaxonomyGovernance",
@@ -1680,7 +1731,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "skills/InformationArchitecture",
@@ -1711,7 +1763,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "skills/DocumentationLeadership",
@@ -1723,25 +1776,20 @@
         "skill"
       ],
       "topics": [
-        "documentation-engineering",
-        "docs-as-code",
+        "people-leadership",
+        "documentation-strategy",
         "documentation-governance",
-        "developer-experience",
         "information-architecture"
       ],
-      "technologies": [
-        "git",
-        "docker",
-        "github-actions",
-        "docusaurus"
-      ],
+      "technologies": [],
       "audiences": [
         "documentation-managers",
         "technical-writers"
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "tools/Flare",
@@ -1776,7 +1824,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "docs-samples/MasterpassMerchantIntegrationGuide",
@@ -1806,6 +1855,9 @@
       ],
       "lifecycle": [
         "historical"
+      ],
+      "organisations": [
+        "mastercard"
       ]
     },
     {
@@ -1839,6 +1891,9 @@
       ],
       "lifecycle": [
         "current"
+      ],
+      "organisations": [
+        "mastercard"
       ]
     },
     {
@@ -1875,7 +1930,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "misc/OptimusRICE",
@@ -1901,7 +1957,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "docs-samples/PaysafeDeveloperJS",
@@ -1932,6 +1989,9 @@
       ],
       "lifecycle": [
         "current"
+      ],
+      "organisations": [
+        "paysafe"
       ]
     },
     {
@@ -1977,7 +2037,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "case-studies/ScalingADeveloperDocsPlatform",
@@ -2014,6 +2075,9 @@
       ],
       "lifecycle": [
         "current"
+      ],
+      "organisations": [
+        "morgan-stanley"
       ]
     },
     {
@@ -2025,22 +2089,13 @@
       "type": [
         "landing-page"
       ],
-      "topics": [
-        "technical-writing",
-        "documentation-engineering",
-        "documentation-governance",
-        "information-architecture",
-        "developer-experience"
-      ],
+      "topics": [],
       "technologies": [],
-      "audiences": [
-        "technical-writers",
-        "documentation-managers",
-        "developers"
-      ],
+      "audiences": [],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "tools/DocusaurusAndMkdocs",
@@ -2076,7 +2131,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "tools/index",
@@ -2087,16 +2143,13 @@
       "type": [
         "landing-page"
       ],
-      "topics": [
-        "documentation-engineering"
-      ],
+      "topics": [],
       "technologies": [],
-      "audiences": [
-        "technical-writers"
-      ],
+      "audiences": [],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     },
     {
       "id": "skills/UX",
@@ -2123,7 +2176,8 @@
       ],
       "lifecycle": [
         "current"
-      ]
+      ],
+      "organisations": []
     }
   ]
 }

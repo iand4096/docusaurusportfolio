@@ -8,39 +8,15 @@ import styles from './styles.module.css';
 import navigationIndex from '../../generated/taxonomy-navigation.json';
 import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
 
-type DimensionId =
-  | 'content_types'
-  | 'audiences'
-  | 'topics'
-  | 'technologies'
-  | 'lifecycle';
-
-type DocumentMetadataField =
-  | 'type'
-  | 'audiences'
-  | 'topics'
-  | 'technologies'
-  | 'lifecycle';
-
-type TaxonomyTerm = {
-  id: string;
-  label: string;
-  description?: string;
-  parent?: string;
-  kind?: string;
-};
+import {emptyFilters as createEmptyFilters, filterDimensions, filtersFromParams,
+  documentMatchesFilters as matchesFilters, valuesForDimension,
+  type SelectedFilters, type TaxonomyDimension} from '@site/src/utils/taxonomyFilters';
+type DimensionId = string;
 
 type TechnologyKind = {
   id: string;
   label: string;
   description?: string;
-};
-
-type TaxonomyDimension = {
-  id: DimensionId;
-  label: string;
-  metadataField: DocumentMetadataField;
-  terms: TaxonomyTerm[];
 };
 
 type NavigationDocument = {
@@ -54,6 +30,7 @@ type NavigationDocument = {
   topics: string[];
   technologies: string[];
   lifecycle: string[];
+  [field: string]: unknown;
 };
 
 type TaxonomyNavigationIndex = {
@@ -64,63 +41,14 @@ type TaxonomyNavigationIndex = {
   documents: NavigationDocument[];
 };
 
-type SelectedFilters = Record<DimensionId, Set<string>>;
-
 const data = navigationIndex as TaxonomyNavigationIndex;
-
-const DIMENSION_ORDER: DimensionId[] = [
-  'content_types',
-  'topics',
-  'technologies',
-  'audiences',
-  'lifecycle',
-];
-
-const DEFAULT_DIMENSION_LABELS: Record<DimensionId, string> = {
-  content_types: 'Content type',
-  audiences: 'Audience',
-  topics: 'Topic',
-  technologies: 'Technology',
-  lifecycle: 'Lifecycle',
-};
-
-function emptyFilters(): SelectedFilters {
-  return {
-    content_types: new Set<string>(),
-    audiences: new Set<string>(),
-    topics: new Set<string>(),
-    technologies: new Set<string>(),
-    lifecycle: new Set<string>(),
-  };
-}
-
-function valuesForDimension(
-  document: NavigationDocument,
-  dimension: TaxonomyDimension,
-): string[] {
-  return document[dimension.metadataField] ?? [];
-}
-
+const DIMENSION_ORDER = filterDimensions(data.dimensions).map(dimension => dimension.id);
+const emptyFilters = () => createEmptyFilters(data.dimensions);
 
 function initialFilters(): SelectedFilters {
-  const filters = emptyFilters();
-
-  if (typeof window === 'undefined') {
-    return filters;
-  }
-
-  const params = new URLSearchParams(window.location.search);
-  const validTypes = new Set(
-    data.dimensions.content_types.terms.map((term) => term.id),
-  );
-
-  params.getAll('contentType').forEach((type) => {
-    if (validTypes.has(type)) {
-      filters.content_types.add(type);
-    }
-  });
-
-  return filters;
+  return filtersFromParams(new URLSearchParams(
+    typeof window === 'undefined' ? '' : window.location.search,
+  ), data.dimensions);
 }
 
 
@@ -226,31 +154,6 @@ function rankDocument(entry: SearchableDocument, query: string): RankedDocument 
   return {document: entry.document, score, matchedIn: bestField};
 }
 
-function documentMatchesFilters(
-  document: NavigationDocument,
-  selected: SelectedFilters,
-): boolean {
-  return DIMENSION_ORDER.every((dimensionId) => {
-    const selectedTerms = selected[dimensionId];
-
-    if (selectedTerms.size === 0) {
-      return true;
-    }
-
-    const dimension = data.dimensions[dimensionId];
-    if (!dimension) {
-      return true;
-    }
-
-    const documentValues = new Set(valuesForDimension(document, dimension));
-
-    // OR within a dimension:
-    // selecting Python + Docusaurus matches a document containing either.
-    // Different dimensions are combined with AND by the outer every().
-    return [...selectedTerms].some((termId) => documentValues.has(termId));
-  });
-}
-
 function DocumentTags({
   document,
   labels,
@@ -273,7 +176,7 @@ function DocumentTags({
         <span
           className={styles.metadataTag}
           key={`${dimensionId}:${termId}`}
-          title={data.dimensions[dimensionId].label || DEFAULT_DIMENSION_LABELS[dimensionId]}
+          title={data.dimensions[dimensionId].label}
         >
           {labels.get(`${dimensionId}:${termId}`) ?? termId}
         </span>
@@ -298,24 +201,15 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
   const [selected, setSelected] = useState<SelectedFilters>(initialFilters);
   const {search: locationSearch} = useLocation();
 
-  // Home-page links use /browse?contentType=... . When Explore stays mounted,
-  // a new contentType in the URL must also update the Browse selection. Depend
-  // only on the contentType values: switching tabs must not reset manual filters.
-  const requestedContentTypes = JSON.stringify(
-    new URLSearchParams(locationSearch).getAll('contentType'),
-  );
+  // Ignore unrelated URL parameters (such as the Explore tab) so tab switches
+  // preserve manual selections. All taxonomy fields accept repeated values.
+  const requestedFilters = JSON.stringify(Object.entries(
+    filtersFromParams(new URLSearchParams(locationSearch), data.dimensions),
+  ).map(([id, values]) => [id, [...values].sort()]));
   useEffect(() => {
-    const requested = JSON.parse(requestedContentTypes) as string[];
-    const validTypes = new Set(data.dimensions.content_types.terms.map(term => term.id));
-    const nextTypes = new Set(requested.filter(type => validTypes.has(type)));
-    setSelected(current => {
-      const previous = current.content_types;
-      if (previous.size === nextTypes.size && [...previous].every(type => nextTypes.has(type))) {
-        return current;
-      }
-      return {...current, content_types: nextTypes};
-    });
-  }, [requestedContentTypes]);
+    const requested = JSON.parse(requestedFilters) as [string, string[]][];
+    setSelected(Object.fromEntries(requested.map(([id, values]) => [id, new Set(values)])));
+  }, [requestedFilters]);
 
   const labels = useMemo(() => termLabelMap(data.dimensions), []);
 
@@ -340,7 +234,7 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
   const filteredDocuments = useMemo(() => {
     const searching = Boolean(normalizeSearch(query));
     const ranked = searchableDocuments
-      .filter(entry => documentMatchesFilters(entry.document, selected))
+      .filter(entry => matchesFilters(entry.document, selected, data.dimensions))
       .map(entry => rankDocument(entry, query))
       .filter((match): match is RankedDocument => match !== null);
     ranked.sort((left, right) => searching
@@ -390,7 +284,7 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
           <p className={styles.eyebrow}>Governed taxonomy</p>
           <h1>Browse knowledge</h1>
           <p className={styles.intro}>
-            Explore content by type, topic, technology, audience, and lifecycle.
+            Explore content using the taxonomy filters.
             The navigation is generated from the same controlled vocabulary used
             to validate document metadata. See the{' '}
             <Link to="/docs/case-studies/TaxonomyGovernance">

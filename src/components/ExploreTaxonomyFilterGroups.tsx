@@ -2,26 +2,12 @@ import React from 'react';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
 import browseStyles from '@site/src/pages/browse/styles.module.css';
 
-/** One filter UI and catalogue-count source for Browse and AI Search. */
-export type ExploreDimensionId =
-  | 'content_types'
-  | 'topics'
-  | 'technologies'
-  | 'audiences'
-  | 'lifecycle';
+import {filterDimensions, valuesForDimension, type TaxonomyTerm as NavigationTerm,
+  type TaxonomyDimension as NavigationDimension} from '@site/src/utils/taxonomyFilters';
 
-type NavigationTerm = {
-  id: string;
-  label: string;
-  description?: string;
-  kind?: string;
-};
-type NavigationDimension = {
-  id: ExploreDimensionId;
-  label: string;
-  metadataField: string;
-  terms: NavigationTerm[];
-};
+/** One filter UI and catalogue-count source for Browse and AI Search. */
+export type ExploreDimensionId = string;
+
 type TechnologyKind = {label: string; description?: string};
 type NavigationCatalogue = {
   dimensions: Record<ExploreDimensionId, NavigationDimension>;
@@ -30,20 +16,17 @@ type NavigationCatalogue = {
 };
 
 const catalogue = navigationIndex as NavigationCatalogue;
-const DIMENSION_ORDER: ExploreDimensionId[] = [
-  'content_types', 'topics', 'technologies', 'audiences', 'lifecycle',
-];
+const DIMENSIONS = filterDimensions(catalogue.dimensions);
 
 // These are catalogue document counts, not AI passage counts. Compute once from
 // the same generated index that powers Browse; both tabs display identical values.
 const DOCUMENT_COUNTS: Record<ExploreDimensionId, Record<string, number>> =
-  Object.fromEntries(DIMENSION_ORDER.map(dimensionId => {
-    const dimension = catalogue.dimensions[dimensionId];
+  Object.fromEntries(DIMENSIONS.map(dimension => {
+    const dimensionId = dimension.id;
     const counts = Object.fromEntries(dimension.terms.map(term => [
       term.id,
       catalogue.documents.reduce((count, document) => {
-        const values = document[dimension.metadataField];
-        return count + Number(Array.isArray(values) && values.includes(term.id));
+        return count + Number(valuesForDimension(document, dimension).includes(term.id));
       }, 0),
     ]));
     return [dimensionId, counts];
@@ -100,9 +83,8 @@ export function ExploreTaxonomyFilterGroups({
 
   return (
     <>
-      {DIMENSION_ORDER.map(dimensionId => {
-        const dimension = catalogue.dimensions[dimensionId];
-        if (!dimension || dimension.terms.length === 0) return null;
+      {DIMENSIONS.map(dimension => {
+        const dimensionId = dimension.id;
 
         let options: React.JSX.Element;
         if (dimensionId === 'technologies' && catalogue.technologyKinds) {

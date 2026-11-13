@@ -1,0 +1,84 @@
+{
+  "version": 1,
+  "taxonomy_version": 3,
+  "description": "Reviewed whole-page employer assignments for seven case studies and documentation samples. All work described on each assigned page belongs to one employer. Skills/tools overviews, personal projects and landing pages excluded.",
+  "documents": [
+    {
+      "file": "docs/case-studies/ScalingADeveloperDocsPlatform.md",
+      "expect": [],
+      "organisations": [
+        "morgan-stanley"
+      ],
+      "evidence": {
+        "morgan-stanley": "At Morgan Stanley, I led the design, launch and evolution"
+      },
+      "scope": "whole-page-single-employer"
+    },
+    {
+      "file": "docs/case-studies/DocumentingComplexDeveloperFrameworks.md",
+      "expect": [],
+      "organisations": [
+        "morgan-stanley"
+      ],
+      "evidence": {
+        "morgan-stanley": "Morgan Stanley"
+      },
+      "scope": "whole-page-single-employer"
+    },
+    {
+      "file": "docs/case-studies/PaysafeDeveloperCenter.md",
+      "expect": [],
+      "organisations": [
+        "paysafe"
+      ],
+      "evidence": {
+        "paysafe": "I led the documentation work for a ten-month project"
+      },
+      "scope": "whole-page-single-employer"
+    },
+    {
+      "file": "docs/docs-samples/PaysafeDeveloperJS.md",
+      "expect": [],
+      "organisations": [
+        "paysafe"
+      ],
+      "evidence": {
+        "paysafe": "Paysafe.js Developer Guide"
+      },
+      "scope": "whole-page-single-employer"
+    },
+    {
+      "file": "docs/docs-samples/MDES4Merchants.md",
+      "expect": [],
+      "organisations": [
+        "mastercard"
+      ],
+      "evidence": {
+        "mastercard": "during my first few months at Mastercard"
+      },
+      "scope": "whole-page-single-employer"
+    },
+    {
+      "file": "docs/docs-samples/MasterpassMerchantIntegrationGuide.md",
+      "expect": [],
+      "organisations": [
+        "mastercard"
+      ],
+      "evidence": {
+        "mastercard": "while working at Mastercard"
+      },
+      "scope": "whole-page-single-employer"
+    },
+    {
+      "file": "docs/docs-samples/AMXInspiredSignageComposer.md",
+      "expect": [],
+      "organisations": [
+        "amx"
+      ],
+      "evidence": {
+        "amx": "I wrote the user documentation for version 5 of AMX Composer"
+      },
+      "scope": "whole-page-single-employer"
+    }
+  ]
+}

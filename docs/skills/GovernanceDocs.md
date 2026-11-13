@@ -5,11 +5,11 @@ slug: /governancedocs
 sidebar_custom_props:
   sampleCard:
     tag: Content operations
-    description: Establishing standards, review processes, ownership models, quality controls and governance 
-      practices for large documentation estates.
+    description: Establishing standards, review processes, ownership models, quality controls and
+      governance practices for large documentation estates.
     highlights:
-    - Developed a docs-as-code plugin for version-controlled C4 architecture diagrams
-    - Automated governance templates and metadata using LDAP
+      - Developed a docs-as-code plugin for version-controlled C4 architecture diagrams
+      - Automated governance templates and metadata using LDAP
     ariaLabel: Explore my documentation-governance skills
 type:
   - skill

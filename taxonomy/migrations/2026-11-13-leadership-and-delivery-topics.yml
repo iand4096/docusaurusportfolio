@@ -1,0 +1,23 @@
+schema_version: 2
+id: 2026-11-13-leadership-and-delivery-topics
+change_type: vocabulary-expansion
+trigger: content-driven
+description: Represent people leadership, documentation strategy and project delivery as topics.
+governance:
+  date: '2026-11-13'
+  source: human-proposed
+  reason: Leadership and delivery pages need precise topics without inheriting engineering classifications from the projects they describe.
+preconditions:
+  taxonomy_version: 3
+changes:
+  topics:
+    add:
+      people-leadership:
+        label: People leadership
+        description: Recruiting, managing, mentoring and developing teams, including collaboration and shared ownership.
+      documentation-strategy:
+        label: Documentation strategy
+        description: Setting documentation direction, priorities and investment in alignment with organisational and user needs.
+      project-delivery:
+        label: Project delivery
+        description: Planning and coordinating work, dependencies, backlogs, releases and migrations to deliver agreed outcomes.
