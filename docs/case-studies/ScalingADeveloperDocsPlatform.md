@@ -5,7 +5,7 @@ title: Scaling an Enterprise Developer Docs Platform
 description: How I scaled a custom enterprise docs-as-code platform from 700 to over 3,200 pages for
   a large developer community
 slug: /case-studies/scalingdeveloperdocs
-sidebar_position: 3
+sidebar_position: 2
 type:
   - case-study
 audiences:
@@ -33,15 +33,12 @@ lifecycle:
   - current
 sidebar_custom_props:
   caseStudyCard:
+    title: Enterprise Documentation Platform
     tag: Documentation platform
-    description: >-
-      Developing and maintaining an enterprise docs-as-code platform that grew from about 700 to more
-      than 3,200 pages over three years.
+    description: Led the design, launch and growth of a custom docs-as-code platform at Morgan Stanley.
     highlights:
-      - Led platform direction, requirements and quality, working with engineers to establish
-        docs-as-code across a large developer community.
-      - Designed keyword and RAG search and tested retrieval quality; later extended the platform’s
-        diagram support and fixed link-checking bugs.
+      - Led platform direction as documentation grew from 700 to more than 3,200 pages
+      - Built migration tools that converted approximately 900 legacy pages
     ariaLabel: Read the enterprise documentation platform case study
 tags:
   - agentic-ai

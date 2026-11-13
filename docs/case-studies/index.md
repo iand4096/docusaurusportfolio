@@ -13,7 +13,7 @@ tags:
 
 import SidebarCardGrid from '@site/src/components/SidebarCardGrid';
 
-Explore projects covering documentation platforms, developer documentation, metadata governance and search. Each case study describes the problem, my work and the results.
+Selected projects in developer documentation, team leadership, documentation platforms and AI search.
 
 <SidebarCardGrid
   metadataKey="caseStudyCard"
