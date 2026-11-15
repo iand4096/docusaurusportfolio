@@ -2,6 +2,8 @@
 
 FastAPI backend for the portfolio's published AI search page. It retrieves evidence from governed documentation using BM25 keyword search and optional FAISS semantic search, then optionally sends retrieved passages to DeepSeek for a cited answer.
 
+For index updates, releases, health checks and recovery, use the [operations and deployment runbook](OPERATIONS.md), with [Linux/Bash command alternatives](OPERATIONS-linux.md).
+
 ## Architecture and deployment
 
 The repository configures two separately deployed parts:
