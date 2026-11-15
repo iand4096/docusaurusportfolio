@@ -1361,6 +1361,33 @@
       ]
     },
     {
+      "id": "implementation-details/capability-grid",
+      "title": "CapabilityGrid and CapabilityCard",
+      "path": "/docs/implementation-details/capability-grid",
+      "source": "docs/implementation-details/capability-grid.mdx",
+      "description": "Usage and live examples for plain capability grids, checklists and expandable cards.",
+      "type": [
+        "implementation-guide"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering"
+      ],
+      "technologies": [
+        "docusaurus",
+        "markdown",
+        "css"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
+    },
+    {
       "id": "case-studies/index",
       "title": "Case Studies",
       "path": "/docs/case-studies",

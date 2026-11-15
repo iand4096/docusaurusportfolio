@@ -1,0 +1,121 @@
+.root {
+  margin: 0 0 var(--ifm-paragraph-margin-bottom);
+  min-width: 0;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.decision {
+  --semantic-accent: var(--docs-link-color, var(--ifm-color-primary));
+}
+
+.neutral {
+  --semantic-accent: var(--ifm-color-emphasis-700);
+}
+
+.risk {
+  --semantic-accent: var(--ifm-color-warning-darkest);
+}
+
+.outcome {
+  --semantic-accent: var(--ifm-color-success-darkest);
+}
+
+:global([data-theme='dark']) .risk {
+  --semantic-accent: var(--ifm-color-warning);
+}
+
+:global([data-theme='dark']) .outcome {
+  --semantic-accent: var(--ifm-color-success-light);
+}
+
+.label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  min-width: 0;
+  color: var(--ifm-font-color-base);
+  font-size: 0.875rem;
+  font-weight: 700;
+}
+
+.icon {
+  flex: 0 0 1em;
+  width: 1em;
+  color: var(--semantic-accent);
+  text-align: center;
+}
+
+.content {
+  min-width: 0;
+  font-weight: 400;
+}
+
+.content > :first-child {
+  margin-top: 0;
+}
+
+.content > :last-child {
+  margin-bottom: 0;
+}
+
+.inline > .label {
+  display: inline;
+  font-size: inherit;
+}
+
+.inline > .content,
+.inline > .content > p {
+  display: inline;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 8.5rem minmax(0, 1fr);
+  gap: 1rem;
+  margin: 0;
+  padding: 0.75rem 0;
+}
+
+.group {
+  container: semantic-labels / inline-size;
+  margin: 0 0 var(--ifm-paragraph-margin-bottom);
+}
+
+.group > .row:first-child {
+  padding-top: 0;
+}
+
+.group > .row:last-child {
+  padding-bottom: 0;
+}
+
+.group > .row + .row {
+  border-top: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.accent {
+  margin-top: var(--ifm-paragraph-margin-bottom);
+  padding: 1rem;
+  border-left: 3px solid var(--semantic-accent);
+  border-radius: 0.5rem;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.accent > .label {
+  margin-bottom: 0.35rem;
+}
+
+@media (max-width: 640px) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}
+
+@container semantic-labels (max-width: 32rem) {
+  .row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 0.25rem;
+  }
+}
