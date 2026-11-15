@@ -544,6 +544,13 @@
   max-width: 48rem;
   margin-bottom: 0.8rem;
 }
+.portfolio-experience {
+  margin: 0;
+  color: var(--ifm-color-emphasis-700);
+  font-size: 0.9rem;
+  font-weight: 400;
+  line-height: 1.6;
+}
 .portfolio-intro {
   max-width: 46rem;
   line-height: 1.6;

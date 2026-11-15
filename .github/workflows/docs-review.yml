@@ -16,6 +16,7 @@ on:
       - "src/pages/**/*.md"
       - "src/pages/**/*.mdx"
       - "scripts/ai_docs_review.py"
+      - "scripts/tests/test_qa_parser_integration.py"
       - "requirements-doc-review.txt"
 
       # Vale configuration and custom styles must also trigger QA.
@@ -33,6 +34,7 @@ on:
       - "package.json"
       - "package-lock.json"
       - ".remarkrc*"
+      - "**/.remarkrc*"
       - ".remarkignore"
       - ".ltex.json"
       - ".vscode/ltex.*.txt"

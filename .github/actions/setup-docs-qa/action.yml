@@ -472,3 +472,7 @@ runs:
       run: |
         test -f .remarkrc.mjs
         node_modules/.bin/remark --version
+
+    - name: Validate documentation parser integration
+      shell: bash
+      run: python -m unittest discover -s scripts/tests -p 'test_qa_parser_integration.py' -v

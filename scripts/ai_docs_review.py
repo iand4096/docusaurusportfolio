@@ -52,6 +52,7 @@ EXCLUDED_DIRS = {
     ".qa",          # Local generated report output; never review QA reports
     ".frontmatter", # Generated taxonomy/metadata review work products
     "qa",           # Review findings and feedback, not portfolio documentation
+    "reports",      # Generated review artifacts, not authored articles
 }
 
 SEVERITIES = {"high", "medium", "low"}
@@ -1972,17 +1973,28 @@ def parse_remark_json(output, paths):
             if not isinstance(message, dict):
                 continue
 
-            reason = str(message.get("reason", "")).strip()
+            # unified-engine wraps parser errors in "Cannot process file".
+            # Keep the wrapper's fatal status but report the nested cause's
+            # useful location, parser name and diagnostic.
+            diagnostic = message
+            while isinstance(diagnostic.get("cause"), dict):
+                diagnostic = diagnostic["cause"]
+            reason = str(diagnostic.get("reason", "")).strip()
+            outer_reason = str(message.get("reason", "")).strip()
+            if outer_reason and outer_reason != reason:
+                reason = f"{outer_reason}: {reason}" if reason else outer_reason
             if not reason:
                 continue
 
-            rule_id = str(message.get("ruleId") or "remark").strip()
-            message_source = str(message.get("source") or "remark").strip()
+            rule_id = str(diagnostic.get("ruleId") or message.get("ruleId") or "remark").strip()
+            message_source = str(diagnostic.get("source") or message.get("source") or "remark").strip()
 
-            line = message.get("line")
+            line = diagnostic.get("line") or message.get("line")
             if not isinstance(line, int) or line <= 0:
                 line = 1
             fatal = message.get("fatal")
+            if fatal is None:
+                fatal = diagnostic.get("fatal")
             if fatal is True:
                 severity = "high"
             elif fatal is False:
@@ -1990,7 +2002,7 @@ def parse_remark_json(output, paths):
             else:
                 severity = "low"
 
-            actual = message.get("actual")
+            actual = diagnostic.get("actual")
             if isinstance(actual, str) and actual.strip():
                 original = actual.strip()
             else:
@@ -1998,13 +2010,17 @@ def parse_remark_json(output, paths):
             if not original:
                 original = "<file-level Remark finding>"
 
-            expected = message.get("expected")
-            note = message.get("note")
+            expected = diagnostic.get("expected")
+            note = diagnostic.get("note")
             if isinstance(note, str) and note.strip():
                 suggestion = note.strip()
             elif isinstance(expected, list) and expected:
                 expected_text = ", ".join(str(item) for item in expected)
                 suggestion = f"Update the Markdown/MDX to use one of: {expected_text}."
+            elif fatal is True and message_source != "remark":
+                suggestion = "Correct the syntax at the reported location so the Markdown/MDX parser can process this file."
+            elif fatal is True:
+                suggestion = "Check file availability, access and checker configuration; this is a processing failure rather than a lint-rule violation."
             else:
                 suggestion = (
                     f"Correct the Markdown/MDX structure to satisfy Remark rule "
@@ -2035,24 +2051,28 @@ class RemarkCheck(BaseCheck):
 
     # A tiny reporter module keeps this integration self-contained and avoids
     # requiring vfile-reporter-json as an extra project dependency.
-    REPORTER_SOURCE = r'''export default function reporter(files) {
+    REPORTER_SOURCE = r'''function diagnostic(message, depth = 0) {
+  return {
+    reason: message.reason || message.message || String(message),
+    line: message.line ?? null,
+    column: message.column ?? null,
+    fatal: message.fatal ?? null,
+    ruleId: message.ruleId ?? null,
+    source: message.source ?? null,
+    actual: message.actual ?? null,
+    expected: message.expected ?? null,
+    note: message.note ?? null,
+    url: message.url ?? null,
+    cause: message.cause && depth < 8 ? diagnostic(message.cause, depth + 1) : null
+  };
+}
+export default function reporter(files) {
   const list = Array.isArray(files) ? files : [files];
   return JSON.stringify(list.map((file) => ({
     path: file.path || '',
     cwd: file.cwd || '',
     history: file.history || [],
-    messages: (file.messages || []).map((message) => ({
-      reason: message.reason || String(message),
-      line: message.line ?? null,
-      column: message.column ?? null,
-      fatal: message.fatal ?? null,
-      ruleId: message.ruleId ?? null,
-      source: message.source ?? null,
-      actual: message.actual ?? null,
-      expected: message.expected ?? null,
-      note: message.note ?? null,
-      url: message.url ?? null
-    }))
+    messages: (file.messages || []).map((message) => diagnostic(message))
   })));
 }
 '''

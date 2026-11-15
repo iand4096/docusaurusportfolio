@@ -15,25 +15,27 @@ import remarkLintFinalNewline from 'remark-lint-final-newline';
 import remarkLintNoConsecutiveBlankLines from 'remark-lint-no-consecutive-blank-lines';
 import remarkLintNoMissingBlankLines from 'remark-lint-no-missing-blank-lines';
 
-export default {
-  plugins: [
-    // Docusaurus/Markdown syntax support.
-    remarkFrontmatter,
-    remarkGfm,
-    remarkDirective,
-    remarkMdx,
+const markdownPlugins = [
+  // Syntax shared by repository Markdown and published Docusaurus content.
+  remarkFrontmatter,
+  remarkGfm,
+  remarkDirective,
 
-    // High-value structural checks only.
-    remarkLintHeadingIncrement,
-    remarkLintFencedCodeFlag,
-    remarkLintNoEmptyUrl,
-    remarkLintNoUndefinedReferences,
-    remarkLintNoDuplicateDefinitions,
-    remarkLintNoHiddenTableCell,
-    remarkLintDirectiveUniqueAttributeName,
-    remarkLintMdxJsxUniqueAttributeName,
-    remarkLintFinalNewline,
-    remarkLintNoConsecutiveBlankLines,
-    remarkLintNoMissingBlankLines,
-  ],
+  // High-value structural checks only.
+  remarkLintHeadingIncrement,
+  remarkLintFencedCodeFlag,
+  remarkLintNoEmptyUrl,
+  remarkLintNoUndefinedReferences,
+  remarkLintNoDuplicateDefinitions,
+  remarkLintNoHiddenTableCell,
+  remarkLintDirectiveUniqueAttributeName,
+  remarkLintFinalNewline,
+  remarkLintNoConsecutiveBlankLines,
+  remarkLintNoMissingBlankLines,
+];
+
+export const mdxConfig = {
+  plugins: [...markdownPlugins, remarkMdx, remarkLintMdxJsxUniqueAttributeName],
 };
+
+export default {plugins: markdownPlugins};

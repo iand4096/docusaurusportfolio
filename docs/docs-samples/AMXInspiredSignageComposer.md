@@ -40,6 +40,8 @@ tags:
   - vale
 ---
 
+import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
+
 ## Project overview {/* #project-overview */}
 
 I wrote the user documentation for version 5 of AMX Composer, a content-management application for the AMX Digital Signage platform. Version 5 was a complete rewrite of the original Windows client-server application with many new features including a redesigned user interface and a new web-based technology stack.
@@ -50,23 +52,37 @@ This work required a practical understanding of TCP/IP networking, 2D graphics a
 
 ## The challenge {/* #the-challenge */}
 
-* Support administrators and end users without overwhelming either audience with irrelevant information.
-* Produce context-sensitive HTML help and a printable PDF from the same source content.
-* Minimise or eliminate duplicated content while allowing audience-specific variations.
-* Understand and explain a complex digital-signage application clearly.
+<SemanticLabel type="constraint">
+  Support administrators and end users through context-sensitive HTML help and printable documentation, without maintaining duplicated content.
+</SemanticLabel>
+
+The content needed to explain a complex digital-signage application clearly without overwhelming either audience with irrelevant information.
 
 ## My approach {/* #my-approach */}
 
 I carried out extensive testing with the application and discussed the concepts behind the product with the developers. These discussions helped me understand the problems digital-signage users face and how Composer's features could be used to create high-quality signage.
 
-I created a single-source [MadCap Flare](../tools/Flare.md) project using reusable content, conditional text, separate build targets, and separate source TOCs. Shared concepts and procedures were maintained once, while administrator-only content was conditionally included in the relevant HTML and PDF outputs.
+<SemanticLabelGroup>
 
-This approach produced audience-specific help without requiring separate documentation sets. I also used cross-references in place of HTML-only hyperlinks so that links remained usable in both the online and print outputs.
+<SemanticLabel type="decision" appearance="row">
+  Use one [MadCap Flare](../tools/Flare.md) project with reusable content, conditional text, separate build targets and audience-specific tables of contents.
+</SemanticLabel>
+
+<SemanticLabel type="rationale" appearance="row">
+  Maintain shared concepts and procedures once while controlling which material appears in each audience's output.
+</SemanticLabel>
+
+</SemanticLabelGroup>
+
+Administrator-only content was conditionally included in the relevant HTML and PDF outputs. I also used cross-references in place of HTML-only hyperlinks so that links remained usable in both the online and print outputs.
 
 ## Deliverables {/* #deliverables */}
 
-* The primary output: two different context-sensitive HTML help bundles accessible within the application with the specific version determined by the user's role - either end user or administrator.
-* A secondary output: a PDF administrator manual containing the same content as the help bundles in print form. This PDF is the only version available without purchasing the application.
+<SemanticLabel type="outcome" appearance="accent">
+  Delivered two role-specific HTML help bundles and a PDF administrator manual from the same source project.
+</SemanticLabel>
+
+The application selected the appropriate context-sensitive help bundle for the user's role. The PDF administrator manual is the only version available without purchasing the application.
 
 :::note[Published guide]
 
@@ -76,7 +92,7 @@ View the finished PDF manual on the [AMX website](https://www.amx.com/en/site_el
 
 ## Outcome {/* #outcome */}
 
-The HTML help and PDF manual were successfully released with the product and received positive internal feedback from the developers and product manager.
+The documentation was released with the product and received positive internal feedback from the developers and product manager.
 
 ## What I would change {/* #what-i-would-change */}
 

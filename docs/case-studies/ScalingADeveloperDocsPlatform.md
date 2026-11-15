@@ -59,6 +59,8 @@ tags:
   - vale
 ---
 
+import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
+
 ## Context {/* #context */}
 
 At Morgan Stanley, I led the design, launch and evolution of a custom internal docs-as-code platform and developer portal, alongside my work as lead technical writer for the Optimus and RICE frameworks. The platform replaced fragmented legacy documentation for these frameworks with a centralised system using Git-based workflows that made it easier for engineers and technical writers to create, maintain, review and discover content. Initially developed to support Optimus and RICE, the platform expanded to serve the documentation needs of the wider Codetree ecosystem - a large-scale monorepo containing more than 40 million lines of code.
@@ -95,9 +97,25 @@ Developers were already writing simple Markdown files alongside their code inste
 
 Instead of trying to corral developers back into a separate documentation system, I chose to support the way they were already working and keep ownership with the teams closest to the technical knowledge.
 
-I built an initial MkDocs pilot that validated the docs-as-code model, but it exposed limitations in relying on a large collection of independently developed plugins for Morgan Stanley's complex documentation set. I needed multiple plugins from different authors to support the required content features, and those plugins did not always work together correctly in combination. For example, MkDocs' incremental build capability, which could have helped compensate for the lack of an accurate IDE preview for plugin-generated content, failed to work correctly when used with our required plugin set. In addition, I had to extend some of the default MkDocs plugins with custom code.
+<SemanticLabelGroup>
 
-A custom platform required greater investment, but gave us control over the complete rendering and publishing pipeline. We could ensure that all features worked reliably together and add capabilities tailored to our requirements, such as source-code injection and custom Markdown extensions. Rather than building a Markdown renderer from scratch, we extended an existing Markdown rendering engine and reused it for both live IDE previews and website generation. This provided consistent rendering without maintaining separate implementations for authoring and publishing. The website generator added publishing-specific capabilities such as navigation and fast JavaScript-based search. Implementing the platform in Scala, the primary language of the monorepo, also allowed the wider engineering community to maintain and extend it.
+<SemanticLabel type="decision" appearance="row">
+  Build a custom documentation platform around an existing Markdown rendering engine, using the same engine for IntelliJ previews and website generation.
+</SemanticLabel>
+
+<SemanticLabel type="rationale" appearance="row">
+  The MkDocs pilot validated the docs-as-code approach, but interactions between the required plugins prevented reliable builds and accurate previews of complex content.
+</SemanticLabel>
+
+<SemanticLabel type="trade-off" appearance="row">
+  A custom platform required greater investment, but provided control over rendering, publishing and the integration of documentation features.
+</SemanticLabel>
+
+</SemanticLabelGroup>
+
+In the pilot, MkDocs' incremental build capability failed to work correctly with the required plugin set, limiting its usefulness as an alternative to an accurate IDE preview of plugin-generated content. I also had to extend some of the default MkDocs plugins with custom code.
+
+The custom platform supported source-code injection and custom Markdown extensions. Its website generator added publishing-specific capabilities such as navigation and fast JavaScript-based search. Implementing the platform in Scala, the primary language of the monorepo, also allowed the wider engineering community to maintain and extend it.
 
 ### Documentation platform workflow {/* #documentation-platform-workflow */}
 
@@ -195,7 +213,15 @@ I subsequently created IDE-based tooling that allowed content owners to migrate 
 
 ### Platform evolution {/* #platform-evolution */}
 
-I led the migration of the documentation platform to the firm’s new containerised hosting solution with a custom domain, implementing redirects for legacy URLs and resolving minor post-launch issues. A major contribution was my proposal to serve the generated documentation from an attached filesystem instead of copying the content into the container, reducing build time by approximately **15 minutes**.
+I led the migration of the documentation platform to the firm’s new containerised hosting solution with a custom domain, implementing redirects for legacy URLs and resolving minor post-launch issues.
+
+<SemanticLabel type="decision">
+  I proposed serving generated documentation from an attached filesystem instead of copying it into the container image.
+</SemanticLabel>
+
+<SemanticLabel type="outcome" appearance="accent">
+  This reduced build time by approximately **15 minutes**.
+</SemanticLabel>
 
 As the platform matured, I contributed directly to its codebase using agentic AI-assisted development. I added PlantUML support, enabling C4 architecture diagrams, followed later by Mermaid and Structurizr. I also diagnosed and fixed bugs in the link-checking implementation.
 

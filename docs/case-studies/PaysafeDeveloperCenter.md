@@ -49,13 +49,15 @@ tags:
   - typo3
 ---
 
+import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
+
 ## Context {/* #context */}
 
 After Optimal Payments acquired Skrill Group in August 2015 and rebranded as Paysafe, I led the documentation work on a ten-month project to build a new unified Developer Center. The site brought together API and SDK reference documentation, integration guides, and product information for merchants integrating Paysafe's payment methods, replacing documentation previously distributed across the two businesses.
 
 The Developer Center supported a core part of Paysafe’s business model: **enabling merchants and partners to integrate its payment products.**
 
-The project took place during rapid expansion: Paysafe reported 21% organic constant-currency revenue growth in 2016 and annual revenue of just over $1 billion, while integrating the Skrill and Optimal Payments businesses. These figures, recorded in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf), show the scale and pace of the business the Developer Center needed to support.
+The project took place during rapid expansion: Paysafe reported 21% revenue growth excluding acquisition and currency effects, with annual revenue exceeding $1 billion in 2016. These figures, recorded in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf), show the scale and pace of the business the Developer Center needed to support.
 
 I defined the documentation strategy and information architecture, specified the authoring and publishing platform, planned the legacy-content migration, and worked with Paysafe's web development team and an external consultancy on the implementation. I led a team of three technical writers while remaining hands-on, authoring new API and integration documentation.
 
@@ -81,9 +83,39 @@ I reviewed developer portals from PayPal, Braintree, and Stripe to identify effe
 
 From this research, I designed an information architecture based on product landing pages, hierarchical navigation, and consistent structures for getting-started content, integration guides, and API and SDK reference documentation.
 
-Documentation changes were developed in Git feature branches and built for review before being merged to the main branch. A merge triggered an automated build and publication to a TYPO3 staging environment through the custom integration, where the documentation underwent final inspection before promotion to production.
+### Authoring platform {/* #authoring-platform */}
 
-Flare served as the authoritative documentation source, while TYPO3 acted as the delivery CMS; a custom publishing tool incrementally synchronised the two.
+<SemanticLabelGroup>
+
+<SemanticLabel type="decision" appearance="row">
+  Implement MadCap Flare with Git version control as the documentation authoring platform.
+</SemanticLabel>
+
+<SemanticLabel type="rationale" appearance="row">
+  Combine reusable, conditional content and Git version control with an authoring environment the team could learn comfortably.
+</SemanticLabel>
+
+</SemanticLabelGroup>
+
+Flare's XHTML source and Git integration supported an eventual move towards docs-as-code. At the time, Markdown-based workflows did not support content reuse and conditional text as well. Working in a technical authoring tool also presented a smaller learning curve for the team than editing Markdown directly.
+
+### Publishing architecture {/* #publishing-architecture */}
+
+Having chosen Flare and Git for authoring, I needed to integrate their output with TYPO3, Paysafe's existing web front end and publishing system for marketing content.
+
+<SemanticLabelGroup>
+
+<SemanticLabel type="decision" appearance="row">
+  Publish Flare output into TYPO3 through a custom incremental synchronization tool.
+</SemanticLabel>
+
+<SemanticLabel type="trade-off" appearance="row">
+  The publishing workflow depended on custom integration code to keep the documentation source and CMS content aligned.
+</SemanticLabel>
+
+</SemanticLabelGroup>
+
+Documentation changes were developed in Git feature branches and built for review before being merged to the main branch. A merge triggered an automated build and publication to a TYPO3 staging environment through the custom integration, where the documentation underwent final inspection before promotion to production.
 
 The TYPO3 integration created records for new content, updated changed records, removed deleted content, and synchronised changes to the Flare table of contents with the site's navigation. Because synchronisation applied only the required deltas, unchanged CMS records were not recreated and users' cached browser pages were not unnecessarily invalidated.
 
@@ -91,7 +123,7 @@ For urgent production fixes, changes could be made directly in TYPO3 and subsequ
 
 ### Developer Center authoring and publishing workflow {/* #developer-center-authoring-and-publishing-workflow */}
 
-The diagram below shows how the Developer Center’s documentation workflow connected Git-based authoring and review with a custom publishing pipeline into Paysafe’s TYPO3-based web platform.
+The diagram below summarises the authoring, review and publishing sequence.
 
 <div class="diagram-wrap">
 
@@ -184,6 +216,6 @@ Paysafe identified the Developer Center as a key achievement supporting its 2016
 
 ## Lessons learned {/* #lessons-learned */}
 
-- Today, I would prefer a docs-as-code approach using extended Markdown and automated quality checks. This would lower the barrier to contributions for engineers and support staff while still supporting reuse, conditional content, linting, and link checking. In 2016, however, the hybrid Flare/Git approach was a pragmatic choice: it introduced source control and automated publishing without requiring the team to abandon a familiar structured authoring environment.
+- Today, I would favour extended Markdown with automated quality checks, provided the toolchain met the project's content-reuse and conditional-publishing requirements. This would make direct contributions easier for engineers and support staff.
 
 - For large-scale HTML migration, I would now use DOM-aware parsing and transformation, for example with Python and Beautiful Soup, rather than relying primarily on regular-expression transformations. The regexp-based approach worked, but required more manual clean-up.
