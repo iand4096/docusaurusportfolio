@@ -43,11 +43,15 @@ tags:
   - technical-writing
 ---
 
+import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
+
 ## Project overview {/* #project-overview */}
 
-I maintained and updated the existing **Masterpass Merchant Integration Guide** while working at Mastercard. The guide explained how merchant developers could integrate Masterpass's digital-wallet checkout into their websites and applications.
+The **Masterpass Merchant Integration Guide** explained how merchant developers could integrate Masterpass's digital-wallet checkout into their websites and applications.
 
-My main contribution was to build test integrations for each checkout flow and use the results to improve the accuracy and clarity of the documentation. I also added detailed sequence diagrams, corrected issues in the supporting API reference documentation, and updated the Masterpass mobile SDK guides.
+<SemanticLabel type="contribution">
+  Maintained the merchant integration guide while working at Mastercard, built test integrations for the supported checkout flows, added sequence diagrams, corrected the API reference, and updated the mobile SDK guidance.
+</SemanticLabel>
 
 The content has received minor updates from other contributors since I left Mastercard but is mostly unchanged as it is now a legacy product replaced by Click to Pay.
 
@@ -56,17 +60,28 @@ The content has received minor updates from other contributors since I left Mast
 * Understand and test several related checkout flows with different request, response, and callback sequences.
 * Explain interactions between merchant systems, Masterpass services, and users clearly.
 * Identify and correct inconsistencies between the integration guides and the API reference maintained in OpenAPI format.
-* Maintain developer documentation in Brightspot, a marketing-focused content-management system that was not designed for structured technical documentation.
 
 ## My approach {/* #my-approach */}
 
-I built working test integrations for the supported Masterpass flows to validate the documented procedures against actual API behaviour. This helped me identify missing steps, unclear explanations, and discrepancies in the supporting API reference, which I then worked with the product owner to correct.
+<SemanticLabel type="validation">
+  Tested each checkout flow against the documented procedure to identify missing steps, unclear explanations and discrepancies in the API reference.
+</SemanticLabel>
 
 I created detailed sequence diagrams using PlantUML to show the order of interactions between the merchant, the customer, and Masterpass. The diagrams made complex checkout flows easier to understand and provided developers with a visual overview before they followed the integration instructions.
 
-When I found errors or omissions in the API reference, I corrected the underlying OpenAPI definitions as well as the related guide content. I also reviewed and updated the Masterpass mobile SDK documentation to keep it aligned with the main merchant integration guidance.
+I worked with the product owner to correct errors and omissions in the underlying OpenAPI definitions as well as the related guide content. I also reviewed and updated the Masterpass mobile SDK documentation to keep it aligned with the main merchant integration guidance.
 
-Brightspot made structured authoring, content reuse, version control, and technical review difficult. I worked with another technical writer to advocate for a docs-as-code alternative. Together, we specified the requirements for the first version of the new platform and tested early prototypes.
+<SemanticLabelGroup>
+
+<SemanticLabel type="constraint" appearance="row">
+  Brightspot, the marketing-focused CMS used for the documentation, made structured authoring, content reuse, version control and technical review difficult.
+</SemanticLabel>
+
+<SemanticLabel type="contribution" appearance="row">
+  Worked with another technical writer to advocate for a docs-as-code alternative, define requirements and test early prototypes of Mastercard's first docs-as-code documentation platform.
+</SemanticLabel>
+
+</SemanticLabelGroup>
 
 ## Deliverables {/* #deliverables */}
 

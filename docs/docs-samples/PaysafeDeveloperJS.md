@@ -46,15 +46,17 @@ tags:
   - tokenisation
 ---
 
+import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
+
 ## Project overview {/* #project-overview */}
 
-I was tasked with creating the first version of the **Paysafe.js Developer Guide** for the newly released Paysafe.js product.
+<SemanticLabel type="contribution">
+  Created the first version of the **Paysafe.js Developer Guide** for the newly released product, the original CodePen examples and the inline Try Now demonstration.
+</SemanticLabel>
 
 Paysafe.js allows merchants to add attractive, customisable payment forms to their websites while reducing their PCI DSS scope. Sensitive card details are collected through secure fields hosted on Paysafe’s servers using iframes, preventing the merchant’s systems from handling the card data directly. The library then returns a token that the merchant’s systems can use to make a payment request.
 
 The original guide explained both this product model and the core integration workflow, from loading and configuring the JavaScript library to collecting payment details and receiving a token.
-
-I also created the original CodePen examples and an interactive inline **Try Now** demonstration for developers to explore a basic end-to-end integration without leaving the documentation.
 
 The guide has since been expanded by other contributors to cover features including 3D Secure, Google Pay, Apple Pay, and Instant Withdrawal.
 
@@ -69,11 +71,23 @@ The guide has since been expanded by other contributors to cover features includ
 
 ## My approach {/* #my-approach */}
 
-I structured the guide around the full integration workflow instead of documenting the JavaScript API operation by operation. This allowed developers to begin with a basic working implementation before adding configuration, validation, styling, and error handling.
+<SemanticLabelGroup>
+
+<SemanticLabel type="decision" appearance="row">
+  Structure the guide around a complete integration workflow, introducing a basic working implementation before configuration, validation, styling and error handling.
+</SemanticLabel>
+
+<SemanticLabel type="rationale" appearance="row">
+  Give developers a practical starting point while explaining how browser-side tokenisation connects to subsequent server-side payment requests.
+</SemanticLabel>
+
+</SemanticLabelGroup>
 
 The guide first explained the purpose of the hosted fields and tokenisation model. This helped developers understand why sensitive fields appeared within Paysafe-hosted iframes, why card data did not pass through the merchant’s systems, and how this reduced the PCI DSS obligations associated with the integration.
 
-I tested the documented workflow against the Paysafe.js implementation, with input from product and engineering teams to ensure that the instructions and examples reflected the expected behaviour.
+<SemanticLabel type="validation">
+  Tested the documented workflow against Paysafe.js, with input from product and engineering teams to ensure that the instructions and examples reflected the expected behaviour.
+</SemanticLabel>
 
 ## Deliverables {/* #deliverables */}
 

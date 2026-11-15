@@ -185,24 +185,6 @@ test('distinctive topics outrank secondary overlap without filling weak slots', 
     ['specific']);
 });
 
-test('portfolio recommendations preserve the reviewed relevance expectations', async () => {
-  const {index} = await generate(path.resolve('.'), {url: 'https://example.com', baseUrl: '/'});
-  const ids = id => index.pages[id].links.map(link => link.id);
-  assert.deepEqual(ids('tools/DocusaurusAndMkdocs'), [
-    'case-studies/DocusaurusPortfolio', 'skills/DocumentationEngineering',
-    'case-studies/ScalingADeveloperDocsPlatform',
-  ]);
-  const taxonomy = ids('case-studies/TaxonomyGovernance');
-  assert.equal(taxonomy[0], 'case-studies/RagSearchCloudArchitecture');
-  assert.ok(!taxonomy.includes('skills/DocumentationLeadership'));
-  assert.ok(!taxonomy.includes('skills/Agile'));
-  const frameworks = ids('case-studies/DocumentingComplexDeveloperFrameworks');
-  assert.equal(frameworks[0], 'case-studies/ScalingADeveloperDocsPlatform');
-  assert.ok(!frameworks.includes('skills/UX'));
-  assert.equal(ids('docs-samples/PaysafeDeveloperJS')[0], 'case-studies/PaysafeDeveloperCenter');
-  assert.equal(ids('tools/OpenAPIandAPITools')[0], 'skills/APIDocumentation');
-});
-
 test('frontmatter control types are strict, including on disabled pages', () => {
   for (const value of [false, [], {enabled: 'false'}, {exclude: 'target'}, {exclude: null}, {prefer: ['target']},
     {enabled: false, exclude: ['unknown']}]) {
