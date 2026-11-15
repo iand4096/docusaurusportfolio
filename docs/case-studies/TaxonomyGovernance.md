@@ -45,7 +45,7 @@ Structured metadata and taxonomy can improve navigation and search in a large do
 
 I built the taxonomy for this Docusaurus portfolio after encountering these problems in a much larger docs-as-code portal at a financial institution. GenAI now makes it increasingly practical to automate the application and validation of structured metadata. As a result, I wanted to build a smaller implementation of the metadata controls that would have been useful in that environment.
 
-The taxonomy uses a *Git-versioned controlled vocabulary* rather than free-form tags. That vocabulary drives document metadata, Docusaurus tags, editor controls, and faceted navigation — see [the browse page](pathname:///browse/) for an example of the latter.
+The taxonomy uses a *Git-versioned controlled vocabulary* rather than free-form tags. That vocabulary drives document metadata, Docusaurus tags, editor controls, and faceted navigation — see [the Explore page](/explore?view=browse) for an example of the latter.
 
 ## Challenge {/* #challenge */}
 

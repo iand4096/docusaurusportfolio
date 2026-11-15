@@ -1,5 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Layout from '@theme/Layout';
+import Link from '@docusaurus/Link';
 import {BrowseExperience} from '@site/src/components/BrowseExperience';
 // The install script substitutes the real project path to your existing component.
 import {GovernedSearchExperience} from '@site/src/components/GovernedSearch/GovernedSearchPage';
@@ -69,6 +70,17 @@ export default function ExplorePage(): React.JSX.Element {
             or search indexed source documents using keywords, concepts and questions.
           </p>
         </header>
+
+        <aside className={styles.implementationCallout} aria-labelledby="search-implementation-heading">
+          <div>
+            <h2 id="search-implementation-heading">See how Search is built</h2>
+            <p>Explore the architecture behind keyword, semantic and hybrid retrieval,
+              metadata filters and source-linked AI answers, deployed on Azure.</p>
+          </div>
+          <Link className="button button--primary" to="/docs/case-studies/RagSearchCloudArchitecture">
+            Read the implementation case study →
+          </Link>
+        </aside>
 
         <div className={styles.tabs} role="tablist" aria-label="Explore portfolio knowledge">
           <button ref={browseTab} id="explore-browse-tab" type="button" role="tab"

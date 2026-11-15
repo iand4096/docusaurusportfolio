@@ -532,7 +532,7 @@
   letter-spacing: 0.045em;
 }
 .portfolio-hero h1 {
-  margin: 0 0 0.9rem;
+  margin: 0 0 1.5rem;
   font-size: clamp(2.4rem, 5vw, 3.5rem);
   line-height: 1.12;
   letter-spacing: -0.02em;
@@ -552,7 +552,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin-top: 1.25rem;
+  margin-top: 2rem;
 }
 .portfolio-card h3 {
   font-size: 1.3rem;
@@ -695,4 +695,13 @@
 .portfolio-grid .portfolio-card:focus-within {
   outline: 2px solid var(--ifm-color-primary);
   outline-offset: 3px;
+}
+
+.portfolio-card .card-description ul {
+  margin: .75rem 0 0;
+  padding-left: 1.25rem;
+}
+
+.portfolio-card .card-description li + li {
+  margin-top: .5rem;
 }

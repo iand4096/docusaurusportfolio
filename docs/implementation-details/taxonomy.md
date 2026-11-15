@@ -47,7 +47,7 @@ My goal was not just to generate tags, but also to build a system in which write
 
 I implemented the taxonomy schema, validation and migration tooling, AI review workflow, and editor integration to make it easy for writers to select appropriate tags from controlled metadata when tagging their documents. The system validates the proposed taxonomy change before application. Add-only migrations can proceed independently of unrelated document errors; migrations that affect existing terms retain document-impact checks. All AI suggestions are reviewed by a human before they can affect document metadata or the canonical taxonomy.
 
-The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is used to generate Docusaurus tags, the metadata choices available to users in VS Code Front Matter, and the site's taxonomy navigation index — see the [browse page](pathname:///browse/).
+The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is used to generate Docusaurus tags, the metadata choices available to users in VS Code Front Matter, and the site's taxonomy navigation index — see the [Explore page](/explore?view=browse).
 
 ## Design principles {/* #design-principles */}
 
