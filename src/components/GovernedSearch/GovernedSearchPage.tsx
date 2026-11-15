@@ -10,7 +10,7 @@ import remarkGfm from 'remark-gfm';
 import type {Root, Nodes, PhrasingContent} from 'mdast';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
 import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
-import browseStyles from '@site/src/pages/browse/styles.module.css';
+import browseStyles from '@site/src/components/BrowseExperience/styles.module.css';
 import {facetDefinitions, restoreFacets, type SelectedFacets} from '@site/src/utils/taxonomyFilters';
 
 type RetrievalMode = 'bm25' | 'semantic' | 'hybrid';

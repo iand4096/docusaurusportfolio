@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import Layout from '@theme/Layout';
-import {BrowseExperience} from '@site/src/pages/browse/index';
+import {BrowseExperience} from '@site/src/components/BrowseExperience';
 // The install script substitutes the real project path to your existing component.
 import {GovernedSearchExperience} from '@site/src/components/GovernedSearch/GovernedSearchPage';
 import styles from './styles.module.css';

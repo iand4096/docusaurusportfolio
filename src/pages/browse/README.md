@@ -1,12 +1,12 @@
 # Browse knowledge: relevance-ranked local search
 
-These are replacement files for the existing Docusaurus Browse page (not the Azure AI Search page).
+The reusable browse interface, its `DocumentTags` helper, search-ranking helpers and styles live in [`src/components/BrowseExperience`](../../components/BrowseExperience/index.tsx).
 
-## Install {/* #install */}
+The [Explore page](../explore/index.tsx) imports `BrowseExperience` and embeds it in its Browse tab. This directory contains only the legacy `/browse` route redirect, which preserves query parameters and the hash while selecting the Browse tab on `/explore`.
 
-1. Back up the existing files in `src/pages/browse/`.
-2. Copy `index.tsx` and `styles.module.css` from this package into `src/pages/browse/`.
-3. Run `npm run build`, then `npm run start` and open `/docusaurusportfolio/browse`.
+## Local verification
+
+Run `npm run build`, then `npm run start -- --no-open`. Visit `/docusaurusportfolio/explore?view=browse` to use the interface, or `/docusaurusportfolio/browse` to check the redirect.
 
 ## What changed {/* #what-changed */}
 

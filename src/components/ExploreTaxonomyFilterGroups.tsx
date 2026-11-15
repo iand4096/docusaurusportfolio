@@ -1,6 +1,6 @@
 import React from 'react';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
-import browseStyles from '@site/src/pages/browse/styles.module.css';
+import browseStyles from '@site/src/components/BrowseExperience/styles.module.css';
 
 import {filterDimensions, valuesForDimension, type TaxonomyTerm as NavigationTerm,
   type TaxonomyDimension as NavigationDimension} from '@site/src/utils/taxonomyFilters';

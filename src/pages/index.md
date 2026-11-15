@@ -5,7 +5,7 @@ hide_table_of_contents: true
 ---
 
 import Link from '@docusaurus/Link';
-import CapabilityGrid from '@site/src/components/CapabilityGrid';
+import CapabilityCard from '@site/src/components/CapabilityCard';
 
 <div className="portfolio-hero">
   <p className="portfolio-eyebrow">Principal Technical Writer · Documentation Engineer · AI Information Architect</p>
@@ -54,7 +54,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 ## Leadership and delivery {/* #leadership-and-delivery */}
 
-<CapabilityGrid items={[
+<CapabilityCard items={[
   {
     title: 'Team leadership and capability development',
     icon: 'people-group',
@@ -77,7 +77,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 ## Core expertise {/* #core-expertise */}
 
-<CapabilityGrid items={[
+<CapabilityCard items={[
   {
     title: 'Developer documentation',
     icon: 'code',

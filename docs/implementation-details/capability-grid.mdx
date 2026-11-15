@@ -1,0 +1,177 @@
+---
+title: CapabilityGrid and CapabilityCard
+description: Usage and live examples for plain capability grids, checklists and expandable cards.
+type:
+  - implementation-guide
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - docs-as-code
+  - documentation-engineering
+technologies:
+  - docusaurus
+  - markdown
+  - css
+lifecycle:
+  - current
+tags:
+  - docs-as-code
+  - documentation-engineering
+  - docusaurus
+  - markdown
+  - css
+---
+
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
+import CapabilityCard from '@site/src/components/CapabilityCard';
+import CodeBlock from '@theme/CodeBlock';
+
+`CapabilityGrid` displays plain Markdown grids and checklists. `CapabilityCard` displays a collection of bordered cards with optional icons and expandable details. Both share the same responsive layout stylesheet.
+
+## Import
+
+Import the component needed by your Docusaurus Markdown or MDX page:
+
+```jsx
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
+import CapabilityCard from '@site/src/components/CapabilityCard';
+```
+
+The tables below show source alongside the live component. They use JSX lists so the examples work inside table cells. Scroll horizontally on narrow screens to compare both columns. The preview has a minimum width to keep its content readable; responsive breakpoints still follow the browser viewport.
+
+## Plain grid
+
+Use for headings and descriptions without borders or ticks.
+
+<table>
+<thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+<tbody><tr>
+<td><CodeBlock language="jsx">{"<CapabilityGrid>\n  <ul>\n    <li><p><strong>Developer documentation</strong><br />APIs, SDKs and tutorials.</p></li>\n    <li><p><strong>Documentation engineering</strong><br />Platforms and automation.</p></li>\n  </ul>\n</CapabilityGrid>"}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+<CapabilityGrid>
+  <ul>
+    <li><p><strong>Developer documentation</strong><br />APIs, SDKs and tutorials.</p></li>
+    <li><p><strong>Documentation engineering</strong><br />Platforms and automation.</p></li>
+  </ul>
+</CapabilityGrid>
+</td>
+</tr></tbody>
+</table>
+
+For normal page content, Markdown lists are also supported. Leave blank lines around the list and between items. An explicit `<br />` after a bold heading creates a line break:
+
+```mdx
+<CapabilityGrid>
+
+- **Developer documentation**<br />
+  APIs, SDKs and tutorials.
+
+- **Documentation engineering**<br />
+  Platforms and automation.
+
+</CapabilityGrid>
+```
+
+See [Advanced Flare skills](../tools/Flare.md#advanced-flare-skills).
+
+## Checklist
+
+Use `variant="checklist"` for short capability statements. Each item gets a green tick after its longest rendered line, vertically centred against the complete item.
+
+<table>
+<thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+<tbody><tr>
+<td><CodeBlock language="jsx">{"<CapabilityGrid variant=\"checklist\">\n  <ul>\n    <li>Topic-based authoring</li>\n    <li>Snippets and variables</li>\n    <li>HTML and PDF publishing</li>\n  </ul>\n</CapabilityGrid>"}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+<CapabilityGrid variant="checklist">
+  <ul>
+    <li>Topic-based authoring</li>
+    <li>Snippets and variables</li>
+    <li>HTML and PDF publishing</li>
+  </ul>
+</CapabilityGrid>
+</td>
+</tr></tbody>
+</table>
+
+Ticks appear after client-side JavaScript measures the text. Measurements run on initial rendering, relevant prop changes, resizing, and font readiness. Without JavaScript the text remains visible, but the ticks stay hidden. See [Core Flare skills](../tools/Flare.md#core-flare-skills).
+
+## Cards
+
+Pass an `items` array to `CapabilityCard` for bordered cards. Icons and expandable details are optional. Try opening **More detail** in the live example.
+
+<table>
+<thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+<tbody><tr>
+<td><CodeBlock language="jsx">{"<CapabilityCard items={[\n  {\n    title: 'Documentation engineering',\n    summary: 'Platforms and automation.',\n    icon: 'gears',\n    detail: 'Built publishing pipelines.',\n  },\n  {\n    title: 'Developer documentation',\n    summary: 'APIs, SDKs and tutorials.',\n  },\n]} />"}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+<CapabilityCard items={[
+  {
+    title: 'Documentation engineering',
+    summary: 'Platforms and automation.',
+    icon: 'gears',
+    detail: 'Built publishing pipelines.',
+  },
+  {
+    title: 'Developer documentation',
+    summary: 'APIs, SDKs and tutorials.',
+  },
+]} />
+</td>
+</tr></tbody>
+</table>
+
+Omit `detail` for a static card and `icon` for a card without an icon. The homepage uses cards under Leadership and delivery and Core expertise.
+
+## CapabilityGrid props
+
+| Prop | Default | Usage |
+| --- | --- | --- |
+| `children` | None | Markdown or JSX containing a direct unordered list. |
+| `variant` | `'default'` | Use `'default'` for a plain grid or `'checklist'` for ticks. |
+
+## CapabilityCard props
+
+`CapabilityCard` accepts an `items` array and renders the card collection. Use `CapabilityGrid` for list children and checklists.
+
+| Prop | Default | Usage |
+| --- | --- | --- |
+| `items` | `[]` | Array of card objects. An empty array renders an empty list. |
+
+
+### Card fields
+
+| Field | Usage |
+| --- | --- |
+| `title` | Heading, rendered as `h3`. Use a unique title within the array because it is also the React key. |
+| `summary` | Always-visible description. |
+| `icon` | Optional Font Awesome solid icon name without `fa-`, such as `'gears'`. Requires the site's Font Awesome stylesheet. Icons are decorative and hidden from assistive technology. |
+| `detail` | Optional content inside a native `details` disclosure labelled “More detail”. |
+
+Strings in card fields do not parse Markdown: `**bold**` appears literally. JSX content can be supplied where React accepts it, but keep summary and detail content suitable for their paragraph wrappers.
+
+## Responsive layout
+
+Breakpoints use viewport width, rather than the component's available width.
+
+| Format | Above 900px | 641–900px | 640px and below |
+| --- | --- | --- | --- |
+| Plain grid | 3 columns | 1 column | 1 column |
+| Checklist | 3 columns | 2 columns | 1 column |
+| CapabilityCard | 3 columns | 1 column | 1 column |
+
+## Authoring and maintenance notes
+
+- Use `CapabilityGrid` with Markdown or JSX list children, and `CapabilityCard` with an `items` array.
+- To migrate older card usage, change `<CapabilityGrid items={...} />` to `<CapabilityCard items={...} />` and update the import. `CapabilityGrid` no longer renders an `items` array.
+- Markdown grids require the structure `CapabilityGrid > ul > li`. Extra wrapping elements prevent the direct-child grid selectors from matching.
+- Plain-grid heading styles expect `li > p > strong:first-child`. Blank lines between Markdown list items ensure paragraph wrappers are generated.
+- Checklist styling is shared by all checklist instances. Page-specific styling needs an explicit scope rather than another global checklist override.
+
+
+## Shared styling
+
+`src/components/capability-layout.module.css` owns the wrapper margin, list resets, grid columns and responsive breakpoints used by both components. Card spacing uses CSS custom properties on the card wrapper, keeping layout rules in one place.
+
+Each component has its own `styles.module.css`: `CapabilityGrid` owns Markdown heading and checklist styles; `CapabilityCard` owns borders, icons, headings and disclosures. Card rendering does not run the checklist's text-measurement effect.
