@@ -17,7 +17,7 @@ Keep credentials, Terraform state and saved plans, private account information, 
 3. Stop the local API and rebuild the full search index. Inspect changed pages and source links.
 4. Test all retrieval modes and readiness, including the expected index hash.
 5. Build a uniquely tagged image in ACR, then pull and smoke-test that registry image before deployment. Record its digest.
-6. Update Terraform, review a saved plan, apply it, and verify the serving image and index.
+6. Deploy the tested digest through Terraform, or the image-only Azure CLI alternative below, and verify the serving revision, traffic and index.
 7. Publish the frontend through the repository's normal review/merge process and verify browser calls and source links.
 
 Keep the release record in section 10. Website publication does not update the backend index.
@@ -125,7 +125,7 @@ $appName = 'ca-portfolio-rag'
 $siteOrigin = 'https://iand4096.github.io'
 ```
 
-This assumes the maintainer already has the correct Terraform state and local variable configuration. Do not initialise an unrelated state or recreate existing resources when outputs are unavailable. Restore the established state/configuration first.
+This assumes the maintainer already has the correct Terraform state and local variable configuration. Do not initialise an unrelated state or recreate existing resources when outputs are unavailable. Restore the established state/configuration before using Terraform. For an authorised image-only update without that state, use the Azure CLI alternative in section 4; do not initialise replacement state.
 
 ## 3. Rebuild and test the index
 
@@ -305,11 +305,19 @@ $containerName = 'portfolio-rag-preflight-' + (Get-Date -Format 'yyyyMMddHHmmss'
 $containerStarted = $false
 try {
     docker run -d --rm --name $containerName -p 127.0.0.1:8001:8000 `
-        -e RAG_CHAT_ENABLED=false $imageDigest
+        -e RAG_CHAT_ENABLED=false -e "CORS_ORIGINS=$siteOrigin" $imageDigest
     if ($LASTEXITCODE -ne 0) { throw 'Preflight container failed to start' }
     $containerStarted = $true
     Wait-RagReady -BaseUrl 'http://localhost:8001' -ExpectedHash $expectedHash
     Test-RagSearch -BaseUrl 'http://localhost:8001' -ExpectedHash $expectedHash
+    $cors = Invoke-WebRequest -Uri 'http://localhost:8001/search' -Method Options -Headers @{
+        Origin = $siteOrigin
+        'Access-Control-Request-Method' = 'POST'
+        'Access-Control-Request-Headers' = 'content-type'
+    } -UseBasicParsing
+    if ($cors.StatusCode -ne 200 -or $cors.Headers['Access-Control-Allow-Origin'] -ne $siteOrigin) {
+        throw 'Release image CORS preflight failed'
+    }
 } finally {
     if ($containerStarted) { docker stop $containerName | Out-Null }
 }
@@ -339,7 +347,7 @@ The registry build only publishes an artifact; it does not deploy it. Do not pro
 
 ### Apply Terraform
 
-In `infra/azure/main.tf`, update only the intended image reference to the new tag. For stronger artifact identity, the existing string field can instead reference the tested `registry/repository@sha256:...` digest. Preserve secret references, identity, CORS and scaling unless intentionally changing them.
+In `infra/azure/main.tf`, prefer the tested `registry/repository@sha256:...` digest for the image reference. A unique tag is an alternative only if it still resolves to that digest. Preserve secret references, identity, CORS and scaling unless intentionally changing them.
 
 ```powershell
 terraform "-chdir=$terraformDir" fmt
@@ -370,6 +378,37 @@ Test-RagSearch -BaseUrl $apiUrl -ExpectedHash $expectedHash
 ```
 
 Confirm the image matches the tested release, the new revision is healthy/serving, and the full source hash matches. If deploying by tag, confirm it still resolves to the recorded digest. Do not repeatedly call `/chat` unless deliberately testing generation; successful requests consume provider credits.
+
+### Image-only Azure CLI alternative
+
+When an image-only release is authorised but the established Terraform state is unavailable, update the existing app through Azure CLI. Discover and confirm the subscription, app, resource group and registry using `az account show`, `az containerapp list` and `az acr list`; use the matching resource's returned identifiers. Do not create replacement infrastructure or access another checkout to obtain state. Run the same registry-image preflight checks first.
+
+Record the current image, revision and index hash for rollback. Inspect the app's single-revision mode, identity, ingress, scaling and secret references locally before updating. Avoid dumping the full resource or environment values into shared logs. The update below supplies only the tested image reference and preserves existing runtime configuration:
+
+```powershell
+az containerapp show -n $appName -g $resourceGroup `
+    --query '{image:properties.template.containers[0].image,readyRevision:properties.latestReadyRevisionName,mode:properties.configuration.activeRevisionsMode}' -o json
+az containerapp update -n $appName -g $resourceGroup --image $imageDigest `
+    --query '{image:properties.template.containers[0].image,latestRevision:properties.latestRevisionName,readyRevision:properties.latestReadyRevisionName}' -o json
+if ($LASTEXITCODE -ne 0) { throw 'Image update failed; inspect live state before retrying' }
+$apiHost = az containerapp show -n $appName -g $resourceGroup `
+    --query 'properties.configuration.ingress.fqdn' -o tsv
+if ($LASTEXITCODE -ne 0 -or -not $apiHost) { throw 'API hostname unavailable' }
+$apiUrl = "https://$apiHost"
+```
+
+Complete the same live readiness, retrieval, CORS and revision checks as the Terraform path. Align `infra/azure/main.tf` with the deployed digest and run `terraform fmt`; this edits source only and does not require state. Record the CLI deployment method. When the established state is available again, review a fresh Terraform plan before any apply so reconciliation does not unintentionally restore an older image. To roll back through this alternative, use the recorded known-good digest, align source and verify against its recorded index hash.
+
+### Deployment completion
+
+A successful apply or CLI update can return while the previous revision is still ready and the new revision is starting. For this single-revision app, require the intended new revision to be healthy, have a running replica, and receive 100% of traffic:
+
+```powershell
+az containerapp revision list -n $appName -g $resourceGroup `
+    --query '[].{name:name,active:properties.active,health:properties.healthState,running:properties.runningState,replicas:properties.replicas,traffic:properties.trafficWeight,image:properties.template.containers[0].image}' -o json
+```
+
+Require public `/health` to report the expected full hash, nonempty semantic index and expected chunk count, then verify taxonomy version, BM25/semantic/hybrid results, a meaningful facet filter, archived exclusion and a changed source link. Run the CORS check in section 6 against the public API. Record “live verified” only after these checks pass. If readiness times out, inspect system and console logs before repeating an update or rebuilding an image.
 
 Scale-to-zero can add image-pull and model-startup latency. One historical pull took about 62 seconds; this is an observation, not a performance guarantee.
 
@@ -484,6 +523,16 @@ Monthly, and weekly after significant public releases, review Azure costs, DeepS
 
 Identify whether the failure occurs before application startup or within the process before rebuilding images or increasing compute.
 
+### Slow local image pulls or unpacking
+
+Docker may finish downloading layers and spend substantial time extracting them. Check pull output, `docker info`, `docker system df`, host disk space and memory; in WSL also inspect the VM's resource limits. Do not start concurrent pulls or delete Docker storage as a routine workaround. Use `docker image inspect <release-image>` to check whether the image is already available and compare `RepoDigests` with the recorded ACR digest. A matching digest allows preflight to resume without rebuilding or republishing. For Azure startup delays, use system logs to distinguish registry pull, scheduling and application startup.
+
+### Resume after a terminal or WSL crash
+
+Restore the checkout path, virtual environment, Azure configuration directory and intended subscription in the new shell. Shell variables and helper functions must be defined again. Recover the release tag, digest, source hash, expected chunk/taxonomy counts, rollback image/hash and last completed checkpoint from the private release record in section 10. Do not substitute a newer local manifest for the recorded release hash.
+
+Inspect local images and containers (`docker image inspect`, `docker ps -a`) and Azure's configured image, ready revision and traffic before repeating any action. Cleanup traps may not have run; identify and stop only leftover preflight containers from this release. If the published digest is already local, resume preflight. If Azure already references it, check the revision and public API before issuing another update. A published artifact alone is not a deployed or verified release. If the record is incomplete, reconstruct it from ACR metadata and live state before proceeding.
+
 ## 9. Rollback and incidents
 
 ### Backend rollback
@@ -494,7 +543,7 @@ Identify whether the failure occurs before application startup or within the pro
 4. Check frontend compatibility: the image rollback also restores its embedded index.
 5. Record the incident and recovery privately; publish a sanitised summary only if useful.
 
-Use Terraform rather than ad hoc traffic routing for this single-revision configuration. Do not delete an image still required for rollback or referenced by a revision.
+Use the Terraform rollback path, or the authorised image-only CLI alternative in section 4, rather than ad hoc traffic routing for this single-revision configuration. Do not delete an image still required for rollback or referenced by a revision.
 
 ### Frontend rollback
 
@@ -519,13 +568,16 @@ Index source hash and taxonomy version:
 Embedding model identifier/revision and build configuration:
 Image tag and tested ACR digest:
 Dependency/build provenance or known reproducibility limits:
-Reviewed Terraform plan and serving Azure revision:
+Deployment method; reviewed Terraform plan when used; serving Azure revision:
 Taxonomy, readiness and BM25/semantic/hybrid checks:
 Generation test, only if intentional:
 Frontend SHA / Actions run:
 Browser CORS and source links checked:
-Known limitations and rollback image/hash:
+Known limitations and rollback image/revision/hash:
+Checkpoint status, UTC timestamp and supporting evidence:
 ```
+
+Update the record at each checkpoint: **published** (ACR build ID, tag and digest), **preflight passed** (offline and HTTP test evidence), **deployed** (update time and intended revision), and **live verified** (healthy revision, traffic, full hash and public API checks). Record expected chunk count and taxonomy version alongside the hash. Keep the record in private, durable storage available after a terminal crash; do not rely only on shell variables or temporary files. These fields can contain artifact identifiers and test summaries without credentials, token values, secret values or state contents.
 
 Model downloads and dependency version ranges are not fully pinned in the current build. Record that limitation rather than claiming byte-for-byte reproducibility from the source hash.
 

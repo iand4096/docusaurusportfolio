@@ -4,9 +4,20 @@ Bash alternatives to the Windows PowerShell examples in [the operations runbook]
 
 Use Bash, Python 3, Node/npm, Docker Engine with the Compose plugin, Azure CLI, Terraform and curl. No PowerShell installation is required. Commands assume a Linux host capable of running the production Linux container image. Ensure your account can use Docker; do not change socket permissions to bypass access controls.
 
-Run commands in the same Bash session. `set -euo pipefail` stops on failed commands and unset variables; review each deployment step before executing it. Paths below are examples. Keep existing Terraform state and local variable configuration available as described in the main runbook.
+Run commands in the same Bash session. `set -euo pipefail` stops on failed commands and unset variables; review each deployment step before executing it. Paths below are examples. Keep existing Terraform state and local variable configuration available for the Terraform path. Section 5 also documents an authorised image-only CLI alternative when that state is unavailable.
 
 ## 1. Set up the checkout
+
+If using a dedicated WSL Azure login directory, set it before the first `az` command in every new shell. Use your established directory consistently; do not switch to a different credential profile accidentally:
+
+```bash
+export AZURE_CONFIG_DIR="$HOME/.azure-wsl"
+az account show --query '{subscription:name,id:id}' -o json
+# If login has expired or this profile has not been authenticated:
+# az login --use-device-code
+```
+
+Confirm the intended subscription before continuing. A terminal restart loses exported variables even when the login remains cached. Azure CLI needs write access to its configuration directory; use your normal user account and approved execution permissions.
 
 ```bash
 set -euo pipefail
@@ -46,7 +57,7 @@ app_name=ca-portfolio-rag
 site_origin=https://iand4096.github.io
 ```
 
-Stop if the account, state or outputs are wrong; do not create replacement infrastructure to make these commands succeed.
+Stop if the account or resources are wrong; do not create replacement infrastructure to make these commands succeed. If established state is unavailable, use the discovery steps in section 5 instead of these Terraform outputs.
 
 ## 2. Validate and build the index
 
@@ -179,9 +190,23 @@ Run the HTTP smoke test in a subshell so its cleanup trap cannot replace traps i
   trap 'exit 130' INT
   trap 'exit 143' TERM
   docker run -d --rm --name "$container_name" -p 127.0.0.1:8001:8000 \
-    -e RAG_CHAT_ENABLED=false "$image_digest"
+    -e RAG_CHAT_ENABLED=false -e "CORS_ORIGINS=$site_origin" "$image_digest"
   container_started=true
   rag_check http://localhost:8001 "$expected_hash"
+  python - "$site_origin" <<'PY_CORS'
+import sys
+from urllib.request import Request, urlopen
+origin = sys.argv[1]
+req = Request('http://localhost:8001/search', method='OPTIONS', headers={
+    'Origin': origin,
+    'Access-Control-Request-Method': 'POST',
+    'Access-Control-Request-Headers': 'content-type',
+})
+with urlopen(req, timeout=30) as response:
+    assert response.status == 200
+    assert response.headers.get('Access-Control-Allow-Origin') == origin
+print('Release image browser CORS passed')
+PY_CORS
 )
 ```
 
@@ -210,7 +235,7 @@ Do not deploy if either preflight fails. Record the digest, source hash, Git SHA
 
 ## 5. Terraform deployment and frontend publication
 
-Update the image reference in `infra/azure/main.tf` to the new tag or tested digest. Keep existing identity, secret references and configuration intact unless intentionally changing them.
+Prefer the tested digest for the image reference in `infra/azure/main.tf`. A unique tag is an alternative only if it still resolves to that digest. Keep existing identity, secret references and configuration intact unless intentionally changing them.
 
 ```bash
 terraform -chdir="$terraform_dir" fmt
@@ -235,7 +260,49 @@ api_url=$(terraform -chdir="$terraform_dir" output -raw api_url)
 rag_check "$api_url" "$expected_hash"
 ```
 
-Confirm the serving image/revision matches the tested release. Preview the frontend with build-time environment variables scoped to that build:
+### Image-only CLI alternative without Terraform state
+
+Follow the [main runbook's alternative deployment guidance](OPERATIONS.md#image-only-azure-cli-alternative). Confirm the subscription and discover the existing resources, then set variables from their returned identifiers:
+
+```bash
+az account show --query '{subscription:name,id:id}' -o json
+az containerapp list --query '[].{name:name,resourceGroup:resourceGroup}' -o table
+az acr list --query '[].{name:name,resourceGroup:resourceGroup,server:loginServer}' -o table
+resource_group='<CONFIRMED_RESOURCE_GROUP>'
+app_name='<CONFIRMED_APP_NAME>'
+registry_name='<CONFIRMED_REGISTRY_NAME>'
+registry_server=$(az acr show -n "$registry_name" --query loginServer -o tsv)
+site_origin=https://iand4096.github.io
+```
+
+Replace placeholders before running subsequent commands. Restore `image_digest` (the full registry/repository@sha256 reference) and `expected_hash` from the release record, and complete section 4 preflight first. Inspect existing configuration locally and record rollback identifiers. Update only the image:
+
+```bash
+az containerapp show -n "$app_name" -g "$resource_group" \
+  --query '{image:properties.template.containers[0].image,readyRevision:properties.latestReadyRevisionName,mode:properties.configuration.activeRevisionsMode}' -o json
+az containerapp update -n "$app_name" -g "$resource_group" --image "$image_digest" \
+  --query '{image:properties.template.containers[0].image,latestRevision:properties.latestRevisionName,readyRevision:properties.latestReadyRevisionName}' -o json
+api_host=$(az containerapp show -n "$app_name" -g "$resource_group" \
+  --query 'properties.configuration.ingress.fqdn' -o tsv)
+test -n "$api_host"
+api_url="https://$api_host"
+```
+
+Align `infra/azure/main.tf` with the deployed digest and run `terraform -chdir="$terraform_dir" fmt`. Do not initialise new state or apply Terraform without the established state. Record the CLI deployment method; review a fresh plan when that state becomes available again. For rollback, use the recorded known-good digest through the same image-only path and verify its recorded hash.
+
+### Verify completion for either deployment path
+
+An update can succeed before the new revision is ready. Inspect revision status:
+
+```bash
+az containerapp revision list -n "$app_name" -g "$resource_group" \
+  --query '[].{name:name,active:properties.active,health:properties.healthState,running:properties.runningState,replicas:properties.replicas,traffic:properties.trafficWeight,image:properties.template.containers[0].image}' -o json
+rag_check "$api_url" "$expected_hash"
+```
+
+For this single-revision app, require the intended revision to be healthy with a running replica and 100% of traffic. Confirm the image digest, expected chunk count and taxonomy version, meaningful filtering, archived exclusion and changed source links, then run section 6's public CORS check and verify the returned allowed origin. Record “live verified” only after all checks pass. On timeout, inspect logs before repeating the update.
+
+Preview the frontend with build-time environment variables scoped to that build:
 
 ```bash
 cd "$repo_root"
@@ -272,3 +339,21 @@ rag_check "$api_url" "$expected_hash"
 ```
 
 Replace the revision placeholder before executing. Use the intended deployed release's hash if the local index has since changed. For rollback, update the Terraform image to the known-good release, review/apply the plan, and check against that release's recorded hash and frontend URLs. The main runbook's incident, cost, security and private-record guidance applies equally to Linux.
+
+## 7. Resume an interrupted release
+
+Follow the [main runbook's recovery procedure](OPERATIONS.md#resume-after-a-terminal-or-wsl-crash). Restore the checkout variables, Azure configuration directory, subscription and `rag_check` function in the new shell. Load the recorded release tag, full digest reference, source hash, expected counts and rollback identifiers from private durable storage. Do not replace the intended release hash with a newer local index's hash.
+
+```bash
+docker image inspect "$image_digest" --format '{{json .RepoDigests}}'
+docker ps -a --format '{{.Names}} {{.Status}} {{.Image}}'
+az containerapp show -n "$app_name" -g "$resource_group" \
+  --query '{image:properties.template.containers[0].image,latestRevision:properties.latestRevisionName,readyRevision:properties.latestReadyRevisionName}' -o json
+az containerapp revision list -n "$app_name" -g "$resource_group" -o table
+```
+
+Compare the local digest with the release record. Resume preflight if the image is available; if Azure already references it, inspect readiness and run live checks before repeating an update. Identify and stop only leftover preflight containers belonging to this release; crash recovery may bypass cleanup traps.
+
+For slow pulls, distinguish downloading from unpacking. Check `docker info`, `docker system df`, `df -h` and `free -h`, plus WSL VM limits where applicable. Avoid concurrent pulls or deleting Docker storage as a routine fix. A locally available matching digest can be tested without rebuilding or republishing.
+
+Maintain the [release record](OPERATIONS.md#10-release-record) with UTC timestamps and evidence at **published**, **preflight passed**, **deployed** and **live verified** checkpoints. Store it privately outside temporary shell state; record artifact identifiers and test summaries without credentials, token values, secret values or Terraform state contents.
