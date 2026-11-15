@@ -6,6 +6,17 @@
   letter-spacing: .08em; text-transform: uppercase; color: var(--ifm-color-primary);
 }
 .intro {max-width: 50rem; margin: 0; color: var(--ifm-color-emphasis-700); font-size: 1.05rem;}
+.implementationCallout {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem;
+  margin-bottom: 1.5rem; padding: 1.25rem 1.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-left: 4px solid var(--ifm-color-primary); border-radius: .75rem;
+  background: var(--ifm-background-surface-color);
+}
+.implementationCallout > div {flex: 1 1 28rem;}
+.implementationCallout h2 {margin: 0 0 .4rem; font-size: 1.2rem;}
+.implementationCallout p {margin: 0; color: var(--ifm-color-emphasis-700);}
+.implementationCallout > a {white-space: normal;}
 .tabs {
   display: inline-flex; flex-wrap: wrap; gap: .25rem; padding: .25rem;
   margin-bottom: 1.5rem; border: 1px solid var(--ifm-color-emphasis-300);

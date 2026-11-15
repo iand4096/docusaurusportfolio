@@ -1,5 +1,6 @@
 # Production image built from a minimal, explicitly staged context.
-# Use scripts/build-azure-image.ps1 from the repository root.
+# From the repository root, use scripts/build-azure-image.ps1 (PowerShell)
+# or bash scripts/build-azure-image.sh (Linux/Bash).
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 \

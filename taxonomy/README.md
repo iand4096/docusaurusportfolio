@@ -83,6 +83,8 @@ git diff
 
 Audits are read-only. Both audit commands accept `--strict` to return exit code 1 when their findings are present. An unused term is a review candidate, not an instruction to delete it. Corpus-wide selection covers `docs/**/*.md` and `docs/**/*.mdx`, not blog posts or repository READMEs.
 
+Explore hides facets with zero documents in the generated navigation catalogue, including empty technology-kind and dimension groups. Counts use the full catalogue rather than the current query or filter selection. The canonical vocabulary is preserved. During `npm run build`, the `taxonomy-coverage` plugin emits a non-blocking warning for each unused facet, including its dimension, ID and label. These warnings also appear in the GitHub Actions build log. Review document metadata or use `audit-unused` to investigate before deciding whether to retire a term.
+
 ## AI review and saved application
 
 Set `DEEPSEEK_API_KEY` in the environment, then request a review for a document or the full documentation corpus:

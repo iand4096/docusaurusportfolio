@@ -76,3 +76,40 @@ test('Search restores only canonical values and includes new fields in request d
   assert.deepEqual(restored, {organisations: ['amx'], project_ids: ['portal']});
   assert.ok(filters.facetDefinitions(extended.dimensions).some(({key, label}) => key === 'project_ids' && label === 'Project'));
 });
+
+test('Explore hides unused facets and empty groups while retaining used terms and counts', () => {
+  const data = structuredClone(extended);
+  data.dimensions.projects.terms.push({id: 'unused', label: 'Unused project'});
+  data.dimensions.unused = {
+    id: 'unused', label: 'Unused dimension', metadataField: 'unused',
+    terms: [{id: 'none', label: 'No documents'}],
+  };
+  data.technologyKinds['unused-kind'] = {label: 'Unused technology kind'};
+  data.dimensions.technologies.terms.push({id: 'unused-tech', label: 'Unused technology', kind: 'unused-kind'});
+  const {ExploreTaxonomyFilterGroups} = loadSource('src/components/ExploreTaxonomyFilterGroups.tsx', data);
+  const html = renderToStaticMarkup(React.createElement(ExploreTaxonomyFilterGroups, {
+    isSelected: () => false, onToggle: () => {},
+  }));
+  assert.doesNotMatch(html, /Unused project|Unused dimension|No documents|Unused technology/);
+  assert.doesNotMatch(html, /<span>Codetreedocs<\/span>|<span>AMX Composer<\/span>/);
+  assert.match(html, /<span>Portal project<\/span><span>1<\/span>/);
+});
+
+test('build coverage warnings identify unused facets without failing the build', async (t) => {
+  const warnings = [];
+  t.mock.method(console, 'warn', message => warnings.push(message));
+  const plugin = require('../../plugins/taxonomy-coverage.cjs')({siteDir: root});
+  assert.equal(await plugin.loadContent(), null);
+  assert.ok(plugin.getPathsToWatch().includes(path.join(root, 'src/generated/taxonomy-navigation.json')));
+  for (const dimension of Object.values(catalogue.dimensions)) {
+    for (const term of dimension.terms) {
+      const count = catalogue.documents.filter(document =>
+        (document[dimension.metadataField] ?? []).includes(term.id)).length;
+      const warning = warnings.find(message => message.includes(`${dimension.id}.${term.id} (`));
+      assert.equal(Boolean(warning), count === 0, `${dimension.id}.${term.id}`);
+      if (warning) assert.ok(warning.includes(term.label) && warning.includes('hidden from Explore'));
+    }
+  }
+  assert.ok(warnings.some(message => message.includes('Codetreedocs')));
+  assert.ok(warnings.some(message => message.includes('AMX Composer')));
+});

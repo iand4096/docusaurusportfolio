@@ -16,11 +16,12 @@ import CapabilityCard from '@site/src/components/CapabilityCard';
 
   <div className="portfolio-hero-actions">
     <Link className="button button--primary" to="#case-studies">Explore selected work</Link>
-    <Link className="button button--secondary" to="/browse?contentType=case-study&contentType=doc-sample">Browse all work</Link>
+    <Link className="button button--secondary" to="/explore?view=browse&contentType=case-study&contentType=doc-sample">Browse all work</Link>
+    <Link className="button button--outline button--primary" to="https://www.linkedin.com/in/ian-drewett/">Connect on LinkedIn</Link>
   </div>
 </div>
 
-## Case studies {/* #case-studies */}
+## Selected Work {/* #case-studies */}
 
 <div className="portfolio-grid">
 
@@ -28,7 +29,11 @@ import CapabilityCard from '@site/src/components/CapabilityCard';
     <span className="card-tag">Docs-as-Code · Developer Portal · Platform Strategy</span>
     <h3>Scaling an Enterprise Developer Documentation Platform</h3>
     <div className="card-description">
-      <p>Led the design and evolution of an internal enterprise documentation platform that grew from 700 pages to more than 3,200 for an audience of quantitative analysts and software developers. My responsibilities also included creating documentation for <a className="card-external-link" href="https://github.com/morganstanley/optimus-cirrus" target="_blank" rel="noopener noreferrer">Optimus Cirrus</a>, a distributed Scala graph-based compute engine, and RICE, Morgan Stanley’s fixed-income pricing and risk framework.</p>
+      <p>Led the design and evolution of an enterprise documentation platform.</p>
+      <ul>
+        <li>Grew from 700 to more than 3,200 pages for quantitative analysts and developers.</li>
+        <li>Created documentation for <a className="card-external-link" href="https://github.com/morganstanley/optimus-cirrus" target="_blank" rel="noopener noreferrer">Optimus Cirrus</a> and RICE, Morgan Stanley’s fixed-income pricing and risk framework.</li>
+      </ul>
     </div>
     <Link className="card-link card-stretched-link" to="/docs/case-studies/scalingdeveloperdocs" aria-label="Read the Scaling an Enterprise Developer Documentation Platform case study">Read case study →</Link>
   </div>
@@ -37,7 +42,11 @@ import CapabilityCard from '@site/src/components/CapabilityCard';
     <span className="card-tag">Developer Portal · API Documentation · Platform Delivery</span>
     <h3>Building the Paysafe Developer Center</h3>
     <div className="card-description">
-      <p>Delivered a unified developer site during Paysafe's rapid expansion to more than $1 billion in annual revenue. Brought together API and SDK references, integration guides and product information from the <a className="card-external-link" href="https://www.paysafe.com/gb-en/paysafegroup/news/detail/optimal-payments-becomes-paysafe-in-game-changing-global-rebrand/" target="_blank" rel="noopener noreferrer">Optimal Payments</a> and <a className="card-external-link" href="https://www.skrill.com/" target="_blank" rel="noopener noreferrer">Skrill</a> businesses. Built migration tools and connected the authoring, review and publishing systems.</p>
+      <p>Delivered a new unified developer site during Paysafe’s expansion to more than $1 billion in annual revenue.</p>
+      <ul>
+        <li>Brought together documentation from <a className="card-external-link" href="https://www.paysafe.com/gb-en/paysafegroup/news/detail/optimal-payments-becomes-paysafe-in-game-changing-global-rebrand/" target="_blank" rel="noopener noreferrer">Optimal Payments</a> and <a className="card-external-link" href="https://www.skrill.com/" target="_blank" rel="noopener noreferrer">Skrill</a>.</li>
+        <li>Unified API and SDK references, integration guides and product information.</li>
+      </ul>
     </div>
     <Link className="card-link card-stretched-link" to="/docs/case-studies/paysafedevcenter" aria-label="Read the Building the Paysafe Developer Center case study">Read case study →</Link>
   </div>
@@ -47,9 +56,26 @@ import CapabilityCard from '@site/src/components/CapabilityCard';
     <span className="card-tag">Secure REST API · Python · Integration validation</span>
     <h3>Mastercard MDES for Merchants</h3>
     <div className="card-description">
-      <p>Built and tested a Python payment API integration with Mastercard MDES, the tokenisation infrastructure behind <strong>Apple Pay</strong>. Developed custom OAuth authentication code, implemented encryption and asynchronous webhooks, validated merchant workflows, identified documentation defects and authored the MDES for Merchants Use-Case Guide.</p>
+      <p>Built and tested a Python integration with Mastercard MDES, the tokenisation infrastructure behind <strong>Apple Pay</strong>.</p>
+      <ul>
+        <li>Implemented encryption and asynchronous webhooks, and validated merchant workflows.</li>
+        <li>Identified documentation defects and authored the MDES for Merchants Use-Case Guide.</li>
+      </ul>
     </div>
     <Link className="card-link card-stretched-link" to="/docs/docs-samples/MDES4Merchants" aria-label="Read the Mastercard MDES for Merchants case study">Read case study →</Link>
+  </div>
+
+  <div className="portfolio-card">
+    <span className="card-tag">Azure · Hybrid Retrieval · Documentation Governance</span>
+    <h3>Cloud-Based RAG Search</h3>
+    <div className="card-description">
+      <p>Designed and deployed documentation search on Azure using Docker, Terraform and FastAPI.</p>
+      <ul>
+        <li>Combined BM25 keyword search, FAISS semantic search and hybrid retrieval.</li>
+        <li>Applied governed metadata filters and provided source-linked AI answers.</li>
+      </ul>
+    </div>
+    <Link className="card-link card-stretched-link" to="/docs/case-studies/RagSearchCloudArchitecture" aria-label="Read the Cloud-Based RAG Search case study">Read case study →</Link>
   </div>
 
 </div>

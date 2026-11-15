@@ -53,7 +53,9 @@ import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLa
 
 ## Context {/* #context */}
 
-Following Optimal Payments' acquisition of Skrill Group in August 2015 and the combined business's subsequent rebranding as Paysafe, I led the documentation work for a ten-month project to create a unified Developer Center for the newly integrated company. The site brought together API and SDK reference documentation, integration guides, and product information for merchants integrating Paysafe's payment methods, replacing documentation previously distributed across the two businesses.
+After Optimal Payments acquired Skrill Group in August 2015 and rebranded as Paysafe, I led the documentation work on a ten-month project to build a new unified Developer Center. The site brought together API and SDK reference documentation, integration guides, and product information for merchants integrating Paysafe's payment methods, replacing documentation previously distributed across the two businesses.
+
+The Developer Center supported a core part of Paysafe’s business model: **enabling merchants and partners to integrate its payment products.**
 
 The project took place during rapid expansion: Paysafe reported 21% revenue growth excluding acquisition and currency effects, with annual revenue exceeding $1 billion in 2016. These figures, recorded in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf), show the scale and pace of the business the Developer Center needed to support.
 
@@ -210,7 +212,7 @@ To make the new workflow sustainable beyond the initial implementation, I traine
 
 The first phase of the Developer Center soft-launched in December 2016.
 
-The Developer Center had visibility at company level: Paysafe included its launch in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf) as one of the achievements supporting its “State-of-the-art technology” strategy and also mentioned it in its January 2017 trading update.
+Paysafe identified the Developer Center as a key achievement supporting its 2016 technology strategy. In its [Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf), the Chief Operating Officer described the portal as enabling merchants and developers to integrate Paysafe products through open APIs and SDKs (p. 29). The Payment Processing review also identified the Developer Center as the foundation for engaging the developer community, supporting integration, and gathering feedback to inform Paysafe's product roadmap (p. 32).
 
 ## Lessons learned {/* #lessons-learned */}
 

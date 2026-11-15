@@ -85,13 +85,17 @@ export function ExploreTaxonomyFilterGroups({
     <>
       {DIMENSIONS.map(dimension => {
         const dimensionId = dimension.id;
+        // Count against the full catalogue, so typing or selecting another
+        // filter does not make available options disappear.
+        const visibleTerms = dimension.terms.filter(term => DOCUMENT_COUNTS[dimensionId][term.id] > 0);
+        if (!visibleTerms.length) return null;
 
         let options: React.JSX.Element;
         if (dimensionId === 'technologies' && catalogue.technologyKinds) {
           // Use the same kind groups in both tabs. The original Browse view
           // already groups technologies; AI Search now follows that convention.
           const groups = new Map<string, NavigationTerm[]>();
-          for (const term of dimension.terms) {
+          for (const term of visibleTerms) {
             const kindId = term.kind ?? 'other';
             groups.set(kindId, [...(groups.get(kindId) ?? []), term]);
           }
@@ -116,7 +120,7 @@ export function ExploreTaxonomyFilterGroups({
         } else {
           options = (
             <div className={browseStyles.filterOptions}>
-              {dimension.terms.map(term => renderChip(dimensionId, term))}
+              {visibleTerms.map(term => renderChip(dimensionId, term))}
             </div>
           );
         }

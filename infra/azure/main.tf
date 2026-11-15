@@ -98,7 +98,7 @@ resource "azurerm_container_app" "rag" {
     external_enabled = true
     target_port      = 8000
 
-/*
+    /*
     ip_security_restriction {
       name             = "my-development-pc"
       action           = "Allow"
@@ -117,7 +117,7 @@ resource "azurerm_container_app" "rag" {
 
     container {
       name   = "knowledge-api"
-      image  = "${azurerm_container_registry.rag.login_server}/portfolio-rag:v3"
+      image  = "${azurerm_container_registry.rag.login_server}/portfolio-rag@sha256:12d5c8251d7f9fccd5138ea09a73cd7536c055c54befcf7b8c0d90125dd36973"
       cpu    = 1.0
       memory = "2Gi"
 
