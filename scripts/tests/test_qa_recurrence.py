@@ -269,7 +269,8 @@ ids['finding-1'] = rows[0];
 const link = element(); link.getAttribute = () => '#finding-1';
 const document = {
     getElementById: id => ids[id],
-    querySelectorAll: selector => selector === 'tr[data-severity]' ? rows : [link]
+    querySelectorAll: selector => selector === 'tr[data-severity]' ? rows :
+        selector === '[data-source-filter]' ? [] : [link]
 };
 vm.runInNewContext(fs.readFileSync(process.argv[2],'utf8'), {document,severityFilter,sourceFilter,feedbackFilter});
 assert.equal(ids.findingFilterStatus.textContent, '3 of 3 findings shown.');

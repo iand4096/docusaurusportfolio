@@ -3672,6 +3672,47 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
     MARKDOWN_REPORT.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
 
 
+def source_filter_buttons(issues, errors, metadata):
+    """Include executed sources even when they returned no findings."""
+    labels = {'ai': 'AI', 'static': 'Static', 'vale': 'Vale', 'ltex': 'LTeX+',
+              'lychee': 'Lychee', 'remark': 'Remark'}
+    checks = {check.name: check.source for check in build_checks()}
+    selected = metadata.get('checks') or []
+    sources = {checks[name] for name in selected if name in checks}
+    sources.update(issue.get('source') for issue in issues)
+    sources.update(checks.get(error.get('check')) for error in errors)
+    counts = {source: sum(issue.get('source') == source for issue in issues) for source in labels}
+
+    def button(source, label):
+        count = len(issues) if not source else counts[source]
+        descriptions = {
+            '': 'Show findings from all AI and deterministic checks.',
+            'ai': 'DeepSeek reviews language, clarity, structure, repetition and portfolio presentation, and suggests useful diagrams.',
+            'static': 'Repository checks validate local links and assets, accessibility basics and landing-page coverage.',
+            'vale': 'Vale checks prose against the configured writing style, terminology and editorial rules.',
+            'ltex': 'LTeX+ checks spelling and grammar using the configured language and dictionary.',
+            'lychee': 'Lychee checks external links for unreachable URLs and HTTP errors.',
+            'remark': 'Remark checks Markdown and MDX structure against the configured lint rules.',
+        }
+        title = descriptions[source]
+        return (f'<button type="button" class="source-button source-{source or "all"}" '
+                f'data-source-filter="{source}" aria-pressed="{str(not source).lower()}" '
+                f'title="{html.escape(title, quote=True)}">{label} '
+                f'<span class="source-count">{count}</span></button>')
+
+    parts = [button('', 'All sources')]
+    if 'ai' in sources:
+        parts.append('<span class="source-group-label">AI</span>')
+        parts.append(button('ai', labels['ai']))
+    deterministic = [source for source in ('static', 'vale', 'ltex', 'lychee', 'remark') if source in sources]
+    if deterministic:
+        if 'ai' in sources:
+            parts.append('<span class="source-separator" aria-hidden="true"></span>')
+        parts.append('<span class="source-group-label">Deterministic</span>')
+        parts.extend(button(source, labels[source]) for source in deterministic)
+    return '<div class="source-filters" role="group" aria-label="Filter findings by source">' + ''.join(parts) + '</div>'
+
+
 def generate_html_report(issues, errors, metadata, ci_result):
     for issue in issues:
         apply_ai_severity_policy(issue)
@@ -4003,6 +4044,41 @@ def generate_html_report(issues, errors, metadata, ci_result):
         .confidence-high {{ background: #dcfce7; color: #166534; }}
         .confidence-medium {{ background: #fef3c7; color: #92400e; }}
         .confidence-low {{ background: #f3f4f6; color: #4b5563; }}
+        .source-filters {{
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 10px;
+            margin: 12px 0;
+        }}
+        .source-button {{
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            min-height: 40px;
+            padding: 7px 13px;
+            border: 2px solid transparent;
+            border-radius: 999px;
+            font: inherit;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }}
+        .source-button:hover {{ filter: brightness(0.96); }}
+        .source-button[aria-pressed="true"] {{
+            border-color: currentColor;
+            box-shadow: 0 2px 4px #00000014;
+        }}
+        .source-button:focus-visible {{ outline: 3px solid #334155; outline-offset: 3px; }}
+        .source-all {{ background: #f1f5f9; color: #334155; }}
+        .source-count {{
+            padding: 1px 6px;
+            border-radius: 999px;
+            background: #ffffff90;
+            font-size: 12px;
+        }}
+        .source-group-label {{ font-size: 12px; font-weight: 600; color: #4b5563; }}
+        .source-separator {{ height: 30px; border-left: 1px solid #9ca3af; margin: 0 4px; }}
         .source-static {{ background: #ede9fe; color: #5b21b6; }}
         .source-ai {{ background: #e0f2fe; color: #075985; }}
         .source-vale {{ background: #dcfce7; color: #166534; }}
@@ -4137,19 +4213,10 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 <option value="low">Low</option>
             </select>
         </label>
-        <label>
-            Source
-            <select id="sourceFilter">
-                <option value="">All</option>
-                <option value="static">Static</option>
-                <option value="ai">AI</option>
-                <option value="vale">Vale</option>
-                <option value="ltex">LTeX+</option>
-                <option value="lychee">Lychee</option>
-                <option value="remark">Remark</option>
-            </select>
-        </label>
+
     </div>
+    <input type="hidden" id="sourceFilter" value="">
+    {source_filter_buttons(issues, errors, metadata)}
     <p id="findingFilterStatus" role="status" aria-live="polite"></p>
     {issue_table(rows, 'issuesTable')}
     {history_markup}
@@ -4186,6 +4253,9 @@ def generate_html_report(issues, errors, metadata, ci_result):
         const severity = severityFilter.value;
         const source = sourceFilter.value;
         const recurrence = feedbackFilter.value;
+        document.querySelectorAll('[data-source-filter]').forEach(button => {{
+            button.setAttribute('aria-pressed', String(button.dataset.sourceFilter === source));
+        }});
         const rows = document.querySelectorAll('tr[data-severity]');
         let shown = 0;
         for (const row of rows) {{
@@ -4201,6 +4271,16 @@ def generate_html_report(issues, errors, metadata, ci_result):
     }}
     severityFilter.addEventListener('change', applyFilters);
     sourceFilter.addEventListener('change', applyFilters);
+    document.querySelectorAll('[data-source-filter]').forEach(button => {{
+        button.addEventListener('click', () => {{
+            sourceFilter.value = button.dataset.sourceFilter;
+            // The AI-only view must not mask deterministic source findings.
+            if (feedbackFilter.value === 'ai-clear' && sourceFilter.value !== 'ai') {{
+                feedbackFilter.value = '';
+            }}
+            applyFilters();
+        }});
+    }});
     feedbackFilter.addEventListener('change', () => {{
         if (feedbackFilter.value === 'ai-clear') sourceFilter.value = 'ai';
         applyFilters();
