@@ -1,4 +1,5 @@
 import argparse
+import hashlib
 import shlex
 import html
 import json
@@ -24,11 +25,12 @@ API_URL = "https://api.deepseek.com/chat/completions"
 # alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
 # DeepSeek exposes a pinned model identifier in future.
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
-AI_REVIEW_POLICY_VERSION = "2026-11-16-genre-aware-v5"
+AI_REVIEW_POLICY_VERSION = "2026-11-16-evidence-backed-v6"
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
 # Set it back to True when AI review should be re-enabled.
 DEEPSEEK_AI_CHECKS_ENABLED = True
+REVIEW_CACHE_ENABLED = True
 
 # Resolve the repository from the script location, never the invoking shell's CWD.
 # In the portfolio this module lives at <project>/scripts/ai_docs_review.py.
@@ -133,7 +135,14 @@ FILTER_LABELS = {
 }
 
 COMMON_AI_RULES = r"""
-Use British English.
+Use British English. British English does not mandate omitting serial commas.
+Report punctuation consistency only against an explicit supplied style rule or
+verified comparison passages; do not infer a rule from nationality.
+Preserve official product names even when their spelling differs from house style.
+Clear contractions and capability-list fragments are acceptable. Coordinated verbs
+sharing a subject (including an understood subject in a list) are not comma splices.
+A generic but accurate heading is not evidence of a placeholder.
+
 
 This is a defect review, not a copy-editing exercise.
 
@@ -201,6 +210,15 @@ Do not:
   demonstrates the inconsistency
 - include the artificial line-number prefix in the quoted source text
 
+Every issue must also provide:
+- reader_impact: a concrete consequence, not a preference or restatement
+- evidence: a list of {"file": "supplied file path", "quote": "verbatim passage"}
+- rule_basis: the applicable grammar rule, explicit style rule or structural reason
+For repetition and consistency, include at least two distinct supporting passages.
+Explain why their purposes overlap: topic similarity alone is insufficient.
+Never report a finding whose explanation concedes no problem, whose correction
+repeats the original, or whose suggestion introduces unsupported facts.
+
 Every issue must include exact source text copied verbatim from the supplied
 file in "original". The quoted text must be sufficient to identify the issue.
 Do not paraphrase "original".
@@ -238,6 +256,9 @@ Return exactly this structure:
       "category": "CATEGORY_FROM_THIS_CHECK",
       "line": 12,
       "original": "exact source text",
+      "reader_impact": "Concrete reader consequence",
+      "evidence": [{"file": "docs/example.mdx", "quote": "exact supporting source text"}],
+      "rule_basis": "Applicable rule or structural reason",
       "message": "Concise explanation of the problem",
       "suggestion": "Specific suggested correction or improvement",
       "source": "ai"
@@ -259,6 +280,9 @@ Return exactly this structure:
       "category": "CATEGORY_FROM_THIS_CHECK",
       "line": 12,
       "original": "exact source text copied from the named file",
+      "reader_impact": "Concrete reader consequence",
+      "evidence": [{"file": "docs/example.mdx", "quote": "exact supporting source text"}],
+      "rule_basis": "Applicable rule or structural reason",
       "message": "Concise explanation of the site-wide problem",
       "suggestion": "Specific suggested correction or improvement",
       "source": "ai"
@@ -601,7 +625,30 @@ def genre_context(path, content):
     return f'DOCUMENT GENRE: {document_genre(path, content)} (review context, not source)'
 
 
-def normalise_ai_issue(issue, content, file_path, allowed_categories, *, genre=None):
+def valid_review_evidence(issue, sources):
+    """Check supporting passages, not just the text selected for correction."""
+    if any(not isinstance(issue.get(k), str) or not issue[k].strip()
+           for k in ('reader_impact', 'rule_basis')):
+        return False
+    evidence = issue.get('evidence')
+    if not isinstance(evidence, list) or not evidence:
+        return False
+    passages = set()
+    for item in evidence:
+        if not isinstance(item, dict):
+            return False
+        path, quote = item.get('file'), item.get('quote')
+        if not isinstance(path, str) or not isinstance(quote, str) or not quote.strip():
+            return False
+        if path not in sources or quote not in sources[path]:
+            return False
+        passages.add((path, quote))
+    if issue.get('category') in {'repetition', 'consistency'} and len(passages) < 2:
+        return False
+    return True
+
+
+def normalise_ai_issue(issue, content, file_path, allowed_categories, *, genre=None, evidence_sources=None):
     """Validate an AI finding and recalculate its source line."""
     required_fields = {
         "severity",
@@ -619,6 +666,8 @@ def normalise_ai_issue(issue, content, file_path, allowed_categories, *, genre=N
         return None
 
     if not required_fields.issubset(issue):
+        return None
+    if evidence_sources is not None and not valid_review_evidence(issue, evidence_sources):
         return None
     severity = issue.get("severity")
     confidence = issue.get("confidence")
@@ -692,6 +741,9 @@ def normalise_ai_issue(issue, content, file_path, allowed_categories, *, genre=N
         suggestion=suggestion.strip(),
         source="ai",
     )
+    for field in ('reader_impact', 'evidence', 'rule_basis'):
+        if field in issue:
+            normalised[field] = issue[field]
     normalised['model_reported_severity'] = issue['severity']
     return apply_ai_severity_policy(normalised)
 
@@ -757,6 +809,45 @@ class BaseCheck(ABC):
     def run_site(self, paths, contents, api_key):
         return []
 
+def verify_page_findings(issues, path, content, api_key):
+    if not issues:
+        return []
+    response = request_review(
+        COMMON_AI_RULES + """\nAudit proposed findings independently against the source.
+Reject unsupported grammar diagnoses, self-contradictory explanations, unchanged
+corrections, invented facts, stylistic preferences and useful repetition.
+Check reader impact and all cited evidence. Return JSON {"assessments": [
+{"index": 0, "supported": true, "reason": "specific evidence-based explanation", "medium_justified": false}]}.
+Set medium_justified true only for demonstrated correctness or comprehension harm.
+Assess every index exactly once. Do not rewrite findings or trust their confidence.
+""",
+        json.dumps({'file': path.as_posix(), 'content': content, 'findings': issues}, ensure_ascii=False),
+        api_key)
+    assessments = response.get('assessments')
+    if not isinstance(assessments, list):
+        raise ValueError('Invalid finding verification response')
+    by_index = {}
+    for entry in assessments:
+        if (not isinstance(entry, dict) or type(entry.get('index')) is not int
+                or entry['index'] not in range(len(issues)) or entry['index'] in by_index
+                or type(entry.get('supported')) is not bool
+                or not isinstance(entry.get('reason'), str) or not entry['reason'].strip()):
+            raise ValueError('Invalid finding verification assessment')
+        by_index[entry['index']] = entry
+    if len(by_index) != len(issues):
+        raise ValueError('Incomplete finding verification')
+    retained = []
+    for i, issue in enumerate(issues):
+        assessment = by_index[i]
+        if not assessment['supported']:
+            continue
+        issue = dict(issue, verification=assessment)
+        if issue['severity'] == 'medium' and assessment.get('medium_justified') is not True:
+            issue['severity'] = 'low'
+        retained.append(issue)
+    return retained
+
+
 class AIPageCheck(BaseCheck):
     supports_page = True
     allowed_categories = set()
@@ -795,12 +886,13 @@ class AIPageCheck(BaseCheck):
                 path.as_posix(),
                 self.allowed_categories,
                 genre=genre,
+                evidence_sources={path.as_posix(): content},
             )
 
             if normalised is not None:
                 validated.append(normalised)
 
-        return validated
+        return verify_page_findings(validated, path, content, api_key)
 
 class GrammarReview(AIPageCheck):
     name = "GrammarReview"
@@ -988,6 +1080,12 @@ class RepetitionReview(BaseCheck):
     PAGE_PROMPT = r"""
 Review only for unnecessary repetition within this page.
 
+Preserve overview/detail, approach/outcome, prose/diagram, label/explanation,
+standalone capability examples and warnings or checks repeated at the point of use.
+Report only when the passages serve the same reader purpose and removal loses no
+necessary context. Quote BOTH passages in evidence and explain that shared purpose.
+Do not assume a reader consumes the whole page sequentially.
+
 Flag repetition when:
 - two passages communicate substantially the same information
 - a later sentence repeats something the reader has already understood
@@ -1057,11 +1155,12 @@ Use type "improvement".
                 path.as_posix(),
                 self.allowed_categories,
                 genre=genre,
+                evidence_sources={path.as_posix(): content},
             )
             if normalised is not None:
                 validated.append(normalised)
 
-        return validated
+        return verify_page_findings(validated, path, content, api_key)
 
     def run_site(self, paths, contents, api_key):
         contexts = {path: genre_context(path, content) for path, content in contents.items()}
@@ -1103,13 +1202,15 @@ Use type "improvement".
             api_key,
         )
 
-        return validate_site_ai_issues(
+        validated = validate_site_ai_issues(
             parsed.get("issues", []),
             paths,
             contents,
             self.allowed_categories,
             genres=genres,
         )
+        return verify_page_findings(validated, Path("<site-review>"),
+                                    json.dumps(contents, ensure_ascii=False), api_key)
 
 class SiteWideConsistencyReview(BaseCheck):
     name = "SiteWideConsistencyReview"
@@ -1211,13 +1312,15 @@ Use type "improvement" unless the inconsistency is objectively defective.
             api_key,
         )
 
-        return validate_site_ai_issues(
+        validated = validate_site_ai_issues(
             parsed.get("issues", []),
             paths,
             contents,
             self.allowed_categories,
             genres=genres,
         )
+        return verify_page_findings(validated, Path("<site-review>"),
+                                    json.dumps(contents, ensure_ascii=False), api_key)
 
 def validate_site_ai_issues(issues, paths, contents, allowed_categories, *, genres=None):
     """Validate site-wide AI findings against the named source file."""
@@ -1249,6 +1352,7 @@ def validate_site_ai_issues(issues, paths, contents, allowed_categories, *, genr
             canonical_path,
             allowed_categories,
             genre=(genres or {}).get(canonical_path),
+            evidence_sources=contents,
         )
 
         if normalised is not None:
@@ -2907,6 +3011,20 @@ def resolve_mode_for_filter(mode, filter_name):
     return mode
 
 
+def cached_ai_check(check, sources, scope, compute):
+    if check.source != 'ai':
+        return compute()
+    from qa_review_cache import ReviewCache
+    # Bind all prompts, routing, normalization and verification code. A code edit
+    # invalidates existing results even if the policy version was not bumped.
+    implementation = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    cache_implementation = hashlib.sha256((SCRIPT_DIR / 'qa_review_cache.py').read_bytes()).hexdigest()
+    inputs = {'scope': scope, 'check': check.name, 'sources': sources,
+              'model': MODEL, 'api_url': API_URL, 'policy': AI_REVIEW_POLICY_VERSION,
+              'implementation': implementation, 'cache_implementation': cache_implementation}
+    return ReviewCache(PROJECT_ROOT / '.qa/review-cache', enabled=REVIEW_CACHE_ENABLED).run(inputs, compute)
+
+
 def run_per_page_checks(paths, checks, api_key):
     issues = []
     errors = []
@@ -2926,11 +3044,8 @@ def run_per_page_checks(paths, checks, api_key):
             print(f"    {check.name}")
             try:
                 issues.extend(
-                    check.run_page(
-                        path,
-                        content,
-                        api_key,
-                    )
+                    cached_ai_check(check, {path.as_posix(): content}, 'per-page',
+                                    lambda: check.run_page(path, content, api_key))
                 )
             except Exception as error:
                 errors.append(
@@ -2957,11 +3072,8 @@ def run_site_checks(paths, checks, api_key):
         print(f"[site] {check.name}")
         try:
             issues.extend(
-                check.run_site(
-                    paths,
-                    contents,
-                    api_key,
-                )
+                cached_ai_check(check, contents, 'site-wide',
+                                lambda: check.run_site(paths, contents, api_key))
             )
         except Exception as error:
             errors.append(
@@ -3153,6 +3265,18 @@ def html_line_link(file_path, line):
 
     escaped_url = html.escape(url, quote=True)
     return f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer">{label}</a>'
+
+def attach_related_findings(issues):
+    """Expose overlap without merging allegations or their feedback identities."""
+    groups = {}
+    for issue in issues:
+        if issue.get('source') == 'ai':
+            groups.setdefault((issue['file'], issue['line'], issue['original']), []).append(issue)
+    for group in groups.values():
+        for issue in group:
+            issue['related_findings'] = [other['issue_id'] for other in group
+                                        if other is not issue and other.get('issue_id')]
+
 
 def sort_issues(issues):
     severity_order = {"high": 0, "medium": 1, "low": 2}
@@ -3455,6 +3579,7 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
             f"- File: `{value(issue['file'])}`",
             f"- Line: {issue['line']}",
             f"- Severity: {issue['severity']}",
+            f"- Related findings: {', '.join(issue.get('related_findings', [])) or 'None'}",
             f"- Confidence: {issue['confidence']}",
             f"- Type: {issue['type']}",
             f"- Category: {value(issue['category'])}",
@@ -3464,6 +3589,12 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
             "**Issue:**", "", value(issue.get('effective_message', issue['message'])), "",
             "**Suggestion:**", "", value(issue.get('effective_suggestion', issue['suggestion'])), "",
         ]
+        if issue.get('reader_impact'):
+            lines += ['**Reader impact:**', '', value(issue['reader_impact']), '',
+                      '**Rule basis:**', '', value(issue.get('rule_basis', '')), '']
+            for evidence in issue.get('evidence', []):
+                lines += ['**Supporting evidence (' + value(evidence['file']) + '):**', '',
+                          quote_block(evidence['quote']), '']
         if issue.get('effective_ai_decision') == 'revised':
             lines += ['**Original criticism:**', '', value(issue['message']), '',
                       '**Original suggestion:**', '', value(issue['suggestion']), '']
@@ -3610,6 +3741,13 @@ def generate_html_report(issues, errors, metadata, ci_result):
                 '<a class="review-recurrence" href="#finding-' + str(number) +
                 '">Review comparison</a></td></tr>')
         message = html.escape(issue.get('effective_message', issue['message']))
+        if issue.get('reader_impact'):
+            message += '<details><summary>Reader impact and supporting evidence</summary><p>' + html.escape(issue['reader_impact']) + '</p><p>' + html.escape(issue.get('rule_basis', '')) + '</p>'
+            for evidence in issue.get('evidence', []):
+                message += '<p>' + html.escape(evidence['file']) + '</p><blockquote>' + html.escape(evidence['quote']) + '</blockquote>'
+            message += '</details>'
+        if issue.get('related_findings'):
+            message += '<p><strong>Related findings:</strong> ' + html.escape(', '.join(issue['related_findings'])) + '</p>'
         suggestion = html.escape(issue.get('effective_suggestion', issue['suggestion']))
         if issue.get('effective_ai_decision') == 'revised':
             message += '<details><summary>Original criticism and suggestion</summary><p>' + html.escape(issue['message']) + '</p><p>' + html.escape(issue['suggestion']) + '</p></details>'
@@ -4239,6 +4377,8 @@ def parse_args():
     )
     parser.add_argument("command", nargs="?", choices=["challenge", "resolve", "render", "compare", "link", "reuse"],
                         help="Challenge/resolve findings, compare recurrences, confirm/reject links, or render saved reports")
+    parser.add_argument("--no-review-cache", action="store_true",
+                        help="Bypass review cache reads and writes for a fresh AI review")
     parser.add_argument("--proposal", help="Source-bound proposal token copied from the report")
     parser.add_argument("--previous", help="Previous feedback record ID for link confirmation/rejection")
     parser.add_argument("--issue", help="Stable QA issue ID for challenge mode")
@@ -4322,6 +4462,8 @@ def main():
     # any local directory, including the scripts directory itself.
     os.chdir(PROJECT_ROOT)
     args = parse_args()
+    global REVIEW_CACHE_ENABLED
+    REVIEW_CACHE_ENABLED = not args.no_review_cache
     # Local reports belong under .qa; retain root outputs for the existing
     # GitHub Actions deployment workflow, which uploads these root filenames.
     # An explicit --report-dir overrides either default.
@@ -4549,6 +4691,7 @@ def main():
                 }
             )
     decorate_issues(issues)
+    attach_related_findings(issues)
     attach_feedback_status(issues, args.feedback_file)
     if DEEPSEEK_AI_CHECKS_ENABLED and api_key:
         from qa_recurrence import compare_recurrences

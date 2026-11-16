@@ -66,6 +66,15 @@ jobs:
       # continue-on-error is intentional. If the QA thresholds fail,
       # the report is still copied into the Pages build and deployed.
       # The qa-gate job below then restores the failure status.
+      - name: Restore AI review cache
+        id: review-cache
+        uses: actions/cache/restore@v4
+        with:
+          path: .qa/review-cache
+          key: docs-ai-review-v1-${{ runner.os }}-${{ github.run_id }}-${{ github.run_attempt }}
+          restore-keys: |
+            docs-ai-review-v1-${{ runner.os }}-
+
       - name: Run documentation QA
         id: docs-qa
         continue-on-error: true
@@ -104,6 +113,13 @@ jobs:
             --fail-high 0 \
             --fail-medium 25 \
             --fail-api-errors 0
+
+      - name: Save AI review cache
+        if: ${{ always() && !cancelled() && steps.review-cache.outcome == 'success' }}
+        uses: actions/cache/save@v4
+        with:
+          path: .qa/review-cache
+          key: ${{ steps.review-cache.outputs.cache-primary-key }}
 
       # Verify that any generated report belongs to this workflow run. The stale
       # outputs were deleted immediately before QA, and this timestamp check adds

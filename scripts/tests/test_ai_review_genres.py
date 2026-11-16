@@ -12,7 +12,8 @@ BODY = 'I built a tool. These instructions explain how to run it.'
 def finding(category='portfolio'):
     return dict(severity='medium', confidence='high', type='defect', category=category,
                 line=1, original='I built a tool.', message='The contribution needs an outcome.',
-                suggestion='Explain the outcome.', source='ai')
+                suggestion='Explain the outcome.', source='ai', reader_impact='Readers cannot identify the contribution.',
+                rule_basis='Contribution clarity', evidence=[{'file': 'custom.md', 'quote': 'I built a tool.'}])
 
 
 class GenreReviewTests(unittest.TestCase):
@@ -52,7 +53,8 @@ class GenreReviewTests(unittest.TestCase):
 
     def test_metadata_genre_survives_editorial_masking(self):
         content = '---\ntype: [case-study]\n---\n' + BODY
-        with patch.object(review, 'request_review', return_value={'issues': [finding()]}) as request:
+        with patch.object(review, 'verify_page_findings', side_effect=lambda issues, *_: issues), \
+             patch.object(review, 'request_review', return_value={'issues': [finding()]}) as request:
             result = review.PortfolioReview().run_page(Path('custom.md'), content, 'unused')
         self.assertEqual(len(result), 1)
         self.assertIn('DOCUMENT GENRE: case-study', request.call_args.args[1])
@@ -61,7 +63,7 @@ class GenreReviewTests(unittest.TestCase):
 
     def test_site_outputs_cannot_apply_portfolio_requirements_to_readmes(self):
         paths = [Path('knowledge-api/README.md'), Path('docs/case-studies/example.md')]
-        issues = [{**finding(), 'file': str(path)} for path in paths]
+        issues = [{**finding(), 'file': str(path), 'evidence': [{'file': str(path), 'quote': 'I built a tool.'}]} for path in paths]
         contents = {str(path): BODY for path in paths}
         result = review.validate_site_ai_issues(issues, paths, contents, {'portfolio'})
         self.assertEqual([issue['file'] for issue in result], ['docs/case-studies/example.md'])
@@ -88,8 +90,9 @@ class GenreReviewTests(unittest.TestCase):
         paths = [Path('custom.md'), Path('knowledge-api/README.md')]
         contents = {'custom.md': '---\ntype: [case-study]\n---\n' + BODY,
                     'knowledge-api/README.md': BODY}
-        issues = [{**finding(), 'file': str(path)} for path in paths]
-        with patch.object(review, 'request_review', return_value={'issues': issues}) as request:
+        issues = [{**finding(), 'file': str(path), 'evidence': [{'file': str(path), 'quote': 'I built a tool.'}]} for path in paths]
+        with patch.object(review, 'verify_page_findings', side_effect=lambda issues, *_: issues), \
+             patch.object(review, 'request_review', return_value={'issues': issues}) as request:
             result = review.SiteWideConsistencyReview().run_site(paths, contents, 'unused')
         self.assertEqual([issue['file'] for issue in result], ['custom.md'])
         self.assertIn('DOCUMENT GENRE: technical-readme', request.call_args.args[1])

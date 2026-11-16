@@ -264,3 +264,60 @@ rendering without an API key.
 ```bash
 python3 -m unittest discover -s scripts/tests -v
 ```
+
+## Evidence-backed review policy
+
+New AI reviews require a concrete reader impact, a rule or structural reason,
+and exact supporting quotations bound to supplied files. Repetition and
+consistency findings require two distinct passages. Source validation checks the
+quotations; it does not prove the model's interpretation.
+
+Checks with valid proposals make an additional verification request before
+reporting findings. This increases API usage and latency. The verifier rejects
+unsupported diagnoses, useful repetition and corrections that add facts; medium
+severity requires separate justification. Invalid verification responses are check
+errors, rather than successful clean reviews. Verification remains model judgment,
+not an independent proof of correctness.
+
+Reports expose supporting evidence and relate findings quoting the same passage
+at the same location. Related findings keep separate identities and decisions;
+this conservative grouping does not semantically merge different allegations.
+Existing saved reports and feedback remain readable. Rendering does not rerun
+verification; a fresh review is needed to evaluate the new policy.
+
+Regression tests cover evidence validation, verification response handling and
+preservation of finding identities. They use controlled model responses; live
+precision and recall improvements still require a labelled model evaluation.
+
+## Caching unchanged AI reviews
+
+Successful AI checks, including zero findings and completed verification, are
+cached locally in `.qa/review-cache/`. A cache hit skips both DeepSeek requests.
+Keys include the complete source text and paths, check, scope, model, API endpoint,
+policy and review/cache implementation hashes. Any review-code or prompt change
+invalidates results. Site-wide checks depend on their complete supplied document
+set. Failed checks are not cached. Corrupt entries are recomputed, and unavailable
+cache writes do not fail a review. Logs show hits and misses.
+
+Use `--no-review-cache` to bypass reads and writes for a deliberately fresh run.
+The model's rolling alias may change without changing its name; use this flag or
+remove the local cache when intentionally reassessing unchanged content with the
+provider's latest model. There is no automatic expiry.
+
+Only completed findings are cached, before revision decoration and feedback.
+Current source revisions, human feedback, recurrence handling, deterministic
+checks, report timestamps and CI thresholds are applied on every fresh run.
+
+Both QA and deployment workflows restore `.qa/review-cache/` with
+`actions/cache/restore@v4` and save it with `actions/cache/save@v4`, including after
+QA threshold failures. Each run uses a new immutable snapshot key; a common prefix
+restores the most recent accessible snapshot. GitHub stores these snapshots in
+repository Actions cache storage, subject to its normal branch scope and eviction.
+PR caches are scoped to the PR merge ref and do not seed main's deployment cache;
+PR runs can restore accessible default-branch caches. Concurrent runs can save
+snapshots missing each other's new entries, causing extra calls on later misses.
+
+The cache directory is ignored by Git and excluded from the explicit report and
+Pages artifact paths. It contains review text, not API keys. GitHub Actions caches
+are not private secret storage; use this workflow only for documentation suitable
+for the repository's cache access permissions.

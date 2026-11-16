@@ -9,6 +9,11 @@
       "dictionary": "workspaceFolderExternalFile",
       "disabledRules": "workspaceFolderExternalFile",
       "hiddenFalsePositives": "workspaceFolderExternalFile"
+    },
+    "dictionary": {
+      "en-GB": [
+        "READMEs"
+      ]
     }
   }
 }
