@@ -176,6 +176,17 @@ The **AI review** uses DeepSeek for conservative analysis of:
 
 AI findings must quote exact source text. The script validates each quotation against the source and recalculates its line number, discarding findings that cannot be verified.
 
+AI reviews receive each document’s genre before technical frontmatter is masked.
+Case studies and documentation samples receive portfolio-completeness review;
+skills and tools overviews, landing pages, the homepage, technical READMEs,
+component guides and operational documentation do not. Grammar, structure,
+repetition and consistency checks still review those pages for their intended
+readers. Site-wide reviews receive the genre of each file, and the finding
+validator rejects portfolio-category findings outside case studies and samples.
+The prompts also prohibit treating capability lists as incomplete case studies,
+inventing documentation outcomes for software tests, or diagnosing markup syntax
+from partial quotations. Deterministic parser and build checks handle syntax.
+
 The pipeline also runs:
 
 * **AccessibilityCheck** — checks alt text, vague link text, and heading-level jumps.

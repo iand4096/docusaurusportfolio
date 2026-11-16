@@ -24,7 +24,7 @@ API_URL = "https://api.deepseek.com/chat/completions"
 # alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
 # DeepSeek exposes a pinned model identifier in future.
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
-AI_REVIEW_POLICY_VERSION = "2026-11-12-prose-metadata-context-v4"
+AI_REVIEW_POLICY_VERSION = "2026-11-16-genre-aware-v5"
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
 # Set it back to True when AI review should be re-enabled.
@@ -136,6 +136,34 @@ COMMON_AI_RULES = r"""
 Use British English.
 
 This is a defect review, not a copy-editing exercise.
+
+Respect the DOCUMENT GENRE supplied for each file. Genre context is review
+metadata, not source text and must never be quoted as an issue.
+- Case studies and documentation samples may explain the author's contribution,
+  decisions and available evidence. Do not require metrics, public artefacts or
+  confidential details, or turn every paragraph into a problem/outcome statement.
+- Skills and tools overviews are concise capability inventories, not case studies.
+  Named techniques, technologies, responsibilities and short examples are valid.
+  Do not require a problem, stakeholder, outcome, ownership statement or evidence
+  link for every capability. Related software engineering, QA and personal learning
+  experience is legitimate when accurately labelled; do not force a documentation
+  outcome onto it. Evidence may live in a linked case study.
+- Technical READMEs, component guides, implementation guides and operations
+  runbooks serve users and maintainers. Review procedural accuracy, prerequisites,
+  clarity and navigation, not portfolio storytelling, personal ownership or impact.
+  Necessary warnings may be repeated at the point where an operation is performed.
+- Landing pages and the homepage introduce and route readers to other pages.
+  Short summaries and product context are appropriate; do not demand a complete
+  case study inside a navigation card.
+- For other documents, assess their stated purpose without imposing a case-study
+  template. Site-wide comparisons must respect differences between genres.
+All genres remain eligible for genuine language, clarity and consistency defects.
+Useful product context is not a defect merely because it describes the product.
+First-person attribution is appropriate in a personal portfolio, including READMEs.
+Do not rewrite software testing as documentation validation unless the source
+establishes that purpose. Do not invent implementation scope to fill perceived gaps.
+Do not diagnose malformed JSX/HTML from an excerpt or a partial quotation.
+Markup syntax belongs to deterministic parser/build checks, not this prose review.
 
 The supplied documents are editorial review views, not complete raw source.
 Within YAML front matter, only reader-facing prose is retained. Technical fields
@@ -524,7 +552,56 @@ def make_issue(
     }
 
 
-def normalise_ai_issue(issue, content, file_path, allowed_categories):
+def document_genre(path, content):
+    """Classify review purpose from raw metadata and stable repository paths."""
+    name = str(path).replace('\\', '/')
+    try:
+        name = Path(path).resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
+    except ValueError:
+        pass
+    # Operational/support documentation must not inherit the portfolio framing.
+    if name.startswith('knowledge-api/'):
+        return 'operations-guide' if Path(name).stem.upper().startswith('OPERATIONS') else 'technical-readme'
+    if name.startswith('src/components/'):
+        return 'component-guide'
+    if name.startswith('docs/implementation-details/'):
+        return 'implementation-guide'
+    if Path(name).name.lower() in {'readme.md', 'readme.mdx'}:
+        return 'technical-readme'
+    if name == 'src/pages/index.md':
+        return 'homepage'
+    if re.match(r'^docs/(case-studies|docs-samples|skills|tools)/index\.mdx?$', name):
+        return 'landing-page'
+    for directory, genre in [('case-studies', 'case-study'), ('docs-samples', 'documentation-sample'),
+                             ('skills', 'skill-overview'), ('tools', 'tool-overview')]:
+        if name.startswith(f'docs/{directory}/'):
+            return genre
+    # Other locations may declare a genre explicitly. Never rely on model inference.
+    if content.startswith('---\n') or content.startswith('---\r\n'):
+        from ruamel.yaml import YAML
+        lines = content.splitlines()
+        end = next((i for i in range(1, len(lines)) if lines[i].strip() in {'---', '...'}), None)
+        if end is not None:
+            front = YAML(typ='safe').load('\n'.join(lines[1:end])) or {}
+            kinds = front.get('type', []) if isinstance(front, dict) else []
+            if isinstance(kinds, str):
+                kinds = [kinds]
+            for kind, genre in [('landing-page', 'landing-page'), ('implementation-guide', 'implementation-guide'),
+                                ('case-study', 'case-study'), ('skill', 'skill-overview'),
+                                ('tool', 'tool-overview'), ('doc-sample', 'documentation-sample')]:
+                if kind in kinds:
+                    return genre
+    return 'general-document'
+
+
+PORTFOLIO_REVIEW_GENRES = {'case-study', 'documentation-sample'}
+
+
+def genre_context(path, content):
+    return f'DOCUMENT GENRE: {document_genre(path, content)} (review context, not source)'
+
+
+def normalise_ai_issue(issue, content, file_path, allowed_categories, *, genre=None):
     """Validate an AI finding and recalculate its source line."""
     required_fields = {
         "severity",
@@ -561,6 +638,9 @@ def normalise_ai_issue(issue, content, file_path, allowed_categories):
     if issue_type not in ISSUE_TYPES:
         return None
     if category not in allowed_categories:
+        return None
+    # Do not allow model-selected categories to bypass the genre routing.
+    if category == 'portfolio' and (genre or document_genre(file_path, content)) not in PORTFOLIO_REVIEW_GENRES:
         return None
 
     if not isinstance(original, str) or not original.strip():
@@ -683,6 +763,8 @@ class AIPageCheck(BaseCheck):
     prompt = ""
 
     def run_page(self, path, content, api_key):
+        context = genre_context(path, content)
+        genre = document_genre(path, content)
         content = ai_review_content(content)
         system_prompt = (
             COMMON_AI_RULES
@@ -694,7 +776,7 @@ class AIPageCheck(BaseCheck):
         parsed = request_review(
             system_prompt,
             (
-                f"FILE: {path.as_posix()}\n\n"
+                f"FILE: {path.as_posix()}\n{context}\n\n"
                 f"{add_line_numbers(content)}"
             ),
             api_key,
@@ -712,6 +794,7 @@ class AIPageCheck(BaseCheck):
                 content,
                 path.as_posix(),
                 self.allowed_categories,
+                genre=genre,
             )
 
             if normalised is not None:
@@ -767,10 +850,12 @@ Look for:
 - dense paragraphs that materially benefit from division
 - closely related information being unnecessarily separated
 - headings that do not accurately describe their content
-- excessive background explanation for a portfolio case study
+- background explanation that materially obstructs the document's stated purpose
 - important information that is unnecessarily difficult to scan
 Do not add headings merely to create more sections.
 Do not convert short coherent paragraphs to bullets without a clear benefit.
+Do not recast a capability inventory, README or runbook as a case study.
+Keep necessary operational warnings near their procedures even if summarised elsewhere.
 Do not report ordinary grammar or spelling issues.
 
 Allowed categories:
@@ -783,8 +868,8 @@ class PortfolioReview(AIPageCheck):
     name = "PortfolioReview"
     allowed_categories = {"portfolio"}
     prompt = r"""
-Review this specifically as a Principal Technical Writer / Documentation Engineer
-portfolio case study.
+Review this case study or documentation sample for a Principal Technical Writer /
+Documentation Engineer portfolio, respecting its supplied DOCUMENT GENRE.
 This portfolio covers both technical-writing work and documentation-engineering
 work. A valid deliverable does NOT have to be a document, article, guide or other
 piece of authored prose. Senior/principal-level documentation work can legitimately
@@ -855,6 +940,11 @@ portfolio
 
 Use type "improvement".
 """
+
+    def run_page(self, path, content, api_key):
+        if document_genre(path, content) not in PORTFOLIO_REVIEW_GENRES:
+            return []
+        return super().run_page(path, content, api_key)
 
 class DiagramReview(AIPageCheck):
     name = "DiagramReview"
@@ -938,6 +1028,8 @@ Use type "improvement".
 """
 
     def run_page(self, path, content, api_key):
+        context = genre_context(path, content)
+        genre = document_genre(path, content)
         content = ai_review_content(content)
         system_prompt = (
             COMMON_AI_RULES
@@ -948,7 +1040,7 @@ Use type "improvement".
         )
         parsed = request_review(
             system_prompt,
-            f"FILE: {path.as_posix()}\n\n{add_line_numbers(content)}",
+            f"FILE: {path.as_posix()}\n{context}\n\n{add_line_numbers(content)}",
             api_key,
         )
 
@@ -964,6 +1056,7 @@ Use type "improvement".
                 content,
                 path.as_posix(),
                 self.allowed_categories,
+                genre=genre,
             )
             if normalised is not None:
                 validated.append(normalised)
@@ -971,6 +1064,8 @@ Use type "improvement".
         return validated
 
     def run_site(self, paths, contents, api_key):
+        contexts = {path: genre_context(path, content) for path, content in contents.items()}
+        genres = {path: document_genre(path, content) for path, content in contents.items()}
         contents = {path: ai_review_content(content) for path, content in contents.items()}
         sections = []
 
@@ -985,6 +1080,7 @@ Use type "improvement".
                     [
                         "=" * 72,
                         f"FILE: {path_string}",
+                        contexts.get(path_string, genre_context(path, content)),
                         "=" * 72,
                         add_line_numbers(content),
                     ]
@@ -1012,6 +1108,7 @@ Use type "improvement".
             paths,
             contents,
             self.allowed_categories,
+            genres=genres,
         )
 
 class SiteWideConsistencyReview(BaseCheck):
@@ -1075,6 +1172,8 @@ Use type "improvement" unless the inconsistency is objectively defective.
 """
 
     def run_site(self, paths, contents, api_key):
+        contexts = {path: genre_context(path, content) for path, content in contents.items()}
+        genres = {path: document_genre(path, content) for path, content in contents.items()}
         contents = {path: ai_review_content(content) for path, content in contents.items()}
         sections = []
 
@@ -1089,6 +1188,7 @@ Use type "improvement" unless the inconsistency is objectively defective.
                     [
                         "=" * 72,
                         f"FILE: {path_string}",
+                        contexts.get(path_string, genre_context(path, content)),
                         "=" * 72,
                         add_line_numbers(content),
                     ]
@@ -1107,7 +1207,7 @@ Use type "improvement" unless the inconsistency is objectively defective.
 
         parsed = request_review(
             system_prompt,
-            "Review these files as one portfolio:\n\n" + "\n\n".join(sections),
+            "Review these files for consistency, respecting each document's genre:\n\n" + "\n\n".join(sections),
             api_key,
         )
 
@@ -1116,9 +1216,10 @@ Use type "improvement" unless the inconsistency is objectively defective.
             paths,
             contents,
             self.allowed_categories,
+            genres=genres,
         )
 
-def validate_site_ai_issues(issues, paths, contents, allowed_categories):
+def validate_site_ai_issues(issues, paths, contents, allowed_categories, *, genres=None):
     """Validate site-wide AI findings against the named source file."""
 
     if not isinstance(issues, list):
@@ -1147,6 +1248,7 @@ def validate_site_ai_issues(issues, paths, contents, allowed_categories):
             content,
             canonical_path,
             allowed_categories,
+            genre=(genres or {}).get(canonical_path),
         )
 
         if normalised is not None:
