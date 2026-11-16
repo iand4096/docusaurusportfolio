@@ -4426,8 +4426,8 @@ def generate_html_report(issues, errors, metadata, ci_result, *, output_path=Non
             if (!/^qa-[A-Za-z0-9_-]+$/.test(issueId || '')) return;
             const reportRef = {pinned_report_json} || ((window.location.protocol === 'https:' &&
                 window.location.hostname === 'iand4096.github.io' &&
-                /^\/docusaurusportfolio\/qa\/report-[a-f0-9]{{12,40}}\.html$/i.test(window.location.pathname))
-                ? window.location.origin + window.location.pathname.replace(/\.html$/i, '.json')
+                /^\\/docusaurusportfolio\\/qa\\/report-[a-f0-9]{{12,40}}\\.html$/i.test(window.location.pathname))
+                ? window.location.origin + window.location.pathname.replace(/\\.html$/i, '.json')
                 : {local_report_json});
             const command = 'python3 scripts/ai_docs_review.py challenge --report ' +
                 JSON.stringify(reportRef) + ' --issue ' + issueId +
