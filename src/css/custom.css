@@ -533,7 +533,7 @@
 }
 .portfolio-hero h1 {
   margin: 0 0 1.5rem;
-  font-size: clamp(2.4rem, 5vw, 3.5rem);
+  font-size: clamp(1.8rem, 3vw, 2.25rem);
   line-height: 1.12;
   letter-spacing: -0.02em;
 }
@@ -579,7 +579,7 @@
 .portfolio-problems h3 {
   margin: 0 0 .65rem;
   padding-right: 2rem;
-  font-size: 1.15rem;
+  font-size: 1.3rem;
   line-height: 1.4;
 }
 
@@ -719,7 +719,7 @@
     text-align: center;
   }
   .portfolio-hero h1 {
-    font-size: 2.25rem;
+    font-size: 1.8rem;
   }
 }
 
