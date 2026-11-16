@@ -33,6 +33,13 @@
   line-height: 1.4;
 }
 
+.grid[data-variant='checklist'][data-checklist-bold='false'] > ul > li {
+  font-family: inherit;
+  font-size: inherit;
+  font-weight: 400;
+  line-height: inherit;
+}
+
 /* Green tick */
 .grid[data-variant='checklist'] > ul > li::after {
   content: '\2713';

@@ -43,12 +43,40 @@ tags:
   - twiki
 ---
 
-My background in Information Architecture includes:
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
-* Redesigning the information architecture for approximately 500 pages for the new developer documentation site at Morgan Stanley, replacing a flat collection of loosely connected pages with a structured content hierarchy and clearer navigation paths that improved discoverability and content organisation.
-* Designing and implementing a Graphviz-based navigation tool that allowed users to generate tree-structured, hyperlinked learning paths across related documentation, helping developers move through complex technical subject areas more intuitively.
-* Analysing competitor developer portals and contributing to the content and information-architecture strategy for a new group Developer Centre for Paysafe following the merger of Skrill and Optimal Payments.
-* Defining content-lifecycle and metadata requirements for documentation search, proposing metadata-based filtering to prevent deprecated API documentation from being surfaced in generated responses.
-* Designing the information architecture supporting a RAG-based documentation search system, including generation of a comprehensive site map and analysis of retrieval issues affecting search relevance and answer quality.
-* Consolidating legacy documentation into a structured Git monorepo and extending the Markdown content model, improving content organisation, governance, ownership, version control and maintainability across a large documentation estate.
-* Conducting a content inventory of approximately 900 pages across multiple migration phases from Sphinx and TWiki, recursively spidering internal links to map content relationships and dependencies, using site analytics to prioritise high-value content, and identifying obsolete or redundant material for retirement.
+I organise developer documentation through content hierarchies, navigation tools, metadata and migration planning.
+
+## Content structure and navigation {/* #content-structure-and-navigation */}
+
+<CapabilityGrid>
+
+* **Content hierarchy**<br />
+  Redesigned the information architecture for approximately **500 pages** at Morgan Stanley, replacing a flat collection of loosely connected pages with a structured hierarchy and clearer navigation paths.
+
+* **Learning paths**<br />
+  Designed and implemented a Graphviz-based navigation tool that generated tree-structured, hyperlinked learning paths across related documentation.
+
+* **Portal strategy**<br />
+  Analysed competitor developer portals and contributed to the content and information-architecture strategy for the new Paysafe group Developer Centre following the merger of Skrill and Optimal Payments.
+
+</CapabilityGrid>
+
+## Search and content governance {/* #search-and-content-governance */}
+
+<CapabilityGrid>
+
+* **Lifecycle metadata**<br />
+  Defined content-lifecycle and metadata requirements for documentation search. Proposed metadata-based filtering to prevent deprecated API documentation from appearing in generated responses.
+
+* **RAG information architecture**<br />
+  Designed the information architecture supporting a RAG-based documentation search system, including a comprehensive sitemap and analysis of retrieval issues affecting relevance and answer quality.
+
+* **Repository organisation**<br />
+  Consolidated legacy documentation into a structured Git monorepo and extended the Markdown content model to support content organisation, governance, ownership, version control and maintenance.
+
+</CapabilityGrid>
+
+## Content inventory and migration planning {/* #content-inventory-and-migration-planning */}
+
+I inventoried approximately **900 pages** across multiple migration phases from Sphinx and TWiki. I recursively followed internal links to map content relationships and dependencies, used site analytics to prioritise high-value content, and identified obsolete or redundant material for retirement.

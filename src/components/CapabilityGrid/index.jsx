@@ -5,6 +5,7 @@ import styles from './styles.module.css';
 export default function CapabilityGrid({
   children,
   variant = 'default',
+  checklistBold = true,
 }) {
   const gridRef = useRef(null);
 
@@ -87,13 +88,14 @@ export default function CapabilityGrid({
       resizeObserver.disconnect();
       window.removeEventListener('resize', measureItems);
     };
-  }, [variant, children]);
+  }, [variant, children, checklistBold]);
 
   return (
     <div
       ref={gridRef}
       className={`${layout.grid} ${styles.grid}`}
       data-variant={variant}
+      data-checklist-bold={checklistBold}
     >
       {children}
     </div>

@@ -72,6 +72,7 @@ FILTER_PRESETS = {
         "DiagramReview",
         "AccessibilityCheck",
         "LinkCheck",
+        "LandingPageCoverageCheck",
         "LycheeCheck",
         "RemarkCheck",
         "ValeCheck",
@@ -2489,6 +2490,55 @@ class AccessibilityCheck(BaseCheck):
         return issues
 
 
+class LandingPageCoverageCheck(BaseCheck):
+    name = "LandingPageCoverageCheck"
+    supports_page = True
+    source = "static"
+    sections = {"tools": "sampleCard", "skills": "sampleCard",
+                "docs-samples": "sampleCard", "case-studies": "caseStudyCard"}
+
+    def run_page(self, path, content, api_key=None):
+        from ruamel.yaml import YAML
+
+        path = Path(path)
+        try:
+            relative = path.resolve().relative_to((PROJECT_ROOT / "docs").resolve())
+        except ValueError:
+            return []
+        if len(relative.parts) < 2 or relative.parts[0] not in self.sections:
+            return []
+        if len(relative.parts) == 2 and path.stem == "index":
+            return []
+        parts = content.split("---", 2)
+        front = YAML(typ="safe").load(parts[1]) if content.startswith("---\n") and len(parts) == 3 else {}
+        front = front or {}
+        if front.get("draft") is True:
+            return []
+        key = self.sections[relative.parts[0]]
+        props = front.get("sidebar_custom_props")
+        card = props.get(key) if isinstance(props, dict) else None
+        missing = []
+        if not isinstance(card, dict):
+            missing.append(f"sidebar_custom_props.{key}")
+        else:
+            for field in ("tag", "description"):
+                if not isinstance(card.get(field), str) or not card[field].strip():
+                    missing.append(f"{key}.{field}")
+            highlights = card.get("highlights")
+            if not isinstance(highlights, list) or not highlights or any(
+                    not isinstance(value, str) or not value.strip() for value in highlights):
+                missing.append(f"{key}.highlights")
+        if not missing:
+            return []
+        return [make_issue(
+            file=path.as_posix(), line=1, severity="high", confidence="high",
+            issue_type="defect", category="navigation", original=content.splitlines()[0] if content else "",
+            message="Landing-page card metadata is missing or incomplete: " + ", ".join(missing),
+            suggestion=f"Add valid sidebar_custom_props.{key} metadata so this page appears correctly on the {relative.parts[0]} landing page.",
+            source="static",
+        )]
+
+
 class LinkCheck(BaseCheck):
     name = "LinkCheck"
     supports_page = True
@@ -2647,6 +2697,7 @@ def build_checks():
         DiagramReview(),
         AccessibilityCheck(),
         LinkCheck(),
+        LandingPageCoverageCheck(),
         LycheeCheck(),
         RemarkCheck(),
         ValeCheck(),

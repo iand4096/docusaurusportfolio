@@ -70,145 +70,167 @@ tags:
   - vale
 ---
 
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
+import CapabilityCard from '@site/src/components/CapabilityCard';
+
 I build documentation systems using software-engineering practices such as source control, CI/CD, parser and platform extensions, migration tooling, search and publishing automation.
 
 ## Docs-as-code {/* #docs-as-code */}
 
-My docs-as-code experience includes:
+<CapabilityGrid>
 
-* Markdown authoring including using extended versions of Markdown
-* Using Git branching and pull-request workflows to update and version control documentation
-* Command-line Git, including rebasing and resolving merge conflicts
-* Documentation stored alongside source code, including the benefits and trade-offs of this approach
-* Hosting documentation in large repositories and monorepos, and knowing when to host alongside code versus in a separate repo
-* Automating builds and publishing
-* Promoting and enabling engineers to contribute to documentation
-* Review, versioning and traceability through Git
+* **Authoring and contribution**<br />
+  Markdown and extended Markdown, with contributor workflows, standards and tooling that help engineers contribute through their normal development process.
 
-I have also designed contributor workflows, standards and tooling that enable engineers to contribute documentation through normal development workflows.
+* **Git workflows**<br />
+  Branching, pull requests, command-line Git, rebasing and merge-conflict resolution. Git provides review history, versioning and traceability.
+
+* **Repository structure**<br />
+  Documentation in large repositories and monorepos, including the trade-offs between storing it alongside source code and maintaining a separate repository.
+
+</CapabilityGrid>
 
 ## CI/CD and publishing {/* #cicd-and-publishing */}
 
-I use CI/CD to automate documentation build, validation and publishing workflows. My experience includes:
+I use CI/CD to automate documentation builds, validation and publishing.
 
-* Jenkins-based documentation pipelines
-* GitHub Actions
-* Automated site builds and deployment
-* Link and build validation
-* Documentation quality checks
-* Diagnosing failed builds and publishing issues
-* Improving pipeline performance and maintainability
+<CapabilityGrid>
 
-My current portfolio, for example, uses GitHub Actions to build and publish the site and to run automated documentation quality checks.
+* **Pipeline implementation**<br />
+  Jenkins and GitHub Actions pipelines for automated site builds and deployment.
+
+* **Build and quality checks**<br />
+  Link validation, build validation and documentation quality checks within publishing workflows.
+
+* **Pipeline maintenance**<br />
+  Diagnose failed builds and publishing issues, and improve pipeline performance and maintainability.
+
+</CapabilityGrid>
 
 ## Static-site generators and platform engineering {/* #static-site-generators-and-platform-engineering */}
 
-I have worked with Docusaurus, MkDocs and custom Markdown-based static-site generators.
+I have worked with Docusaurus, MkDocs and custom Markdown-based static-site generators, including modifying existing MkDocs plugins.
 
-I have evaluated, extended and developed documentation platforms to meet requirements around:
+<CapabilityGrid>
 
-* Build performance
-* Large documentation sets
-* Navigation
-* Search
-* Markdown extensions
-* Plugin compatibility
-* Incremental builds and caching
-* CI integration
-* Contributor experience
-* User feedback collection
+* **Performance and scale**<br />
+  Build performance, large documentation sets, incremental builds and caching.
 
-I have modified existing MkDocs plugins where required. I also led and specified the requirements for a custom static-site generator, contributed to its technical design, carried out all the user testing, and later worked directly on its development.
+* **Navigation and discovery**<br />
+  Navigation, search and user feedback collection.
+
+* **Extensions and contribution**<br />
+  Markdown extensions, plugin compatibility, CI integration and contributor experience.
+
+</CapabilityGrid>
+
+## Examples from practice {/* #examples-from-practice */}
+
+<CapabilityCard items={[
+  {
+    title: 'Scaling a developer platform',
+    summary: 'At Morgan Stanley, I helped build and scale an internal developer-documentation platform. Over three years, the documentation estate grew from approximately 700 to more than 3,200 pages, with contributions from the wider engineering community.',
+  },
+  {
+    title: 'Developing a static-site generator',
+    summary: 'I led and specified the requirements for a custom static-site generator, contributed to its technical design, carried out all the user testing and later worked directly on its development.',
+  },
+  {
+    title: 'Automating portfolio publishing',
+    summary: 'This portfolio uses GitHub Actions to build and publish the Docusaurus site and run documentation quality checks. React components turn structured Markdown content into responsive layouts.',
+  },
+]} />
+
+[Read the developer docs platform case study →](../case-studies/ScalingADeveloperDocsPlatform.md)
 
 ## Markdown and parser engineering {/* #markdown-and-parser-engineering */}
 
-Standard Markdown is not always sufficient for complex developer documentation.
+I have extended Markdown parsers and static-site tooling where standard Markdown could not represent the required content.
 
-I have extended Markdown parsers and static-site tooling to support features including:
+<CapabilityGrid>
 
-* Diagrams-as-code formats such as PlantUML, Mermaid and Graphviz
-* C4 software architecture diagrams
-* LaTeX mathematical notation
-* Content reuse and conditional text
-* Code-sample injection
+* **Diagrams and mathematics**<br />
+  PlantUML, Mermaid, Graphviz, C4 software architecture diagrams and LaTeX mathematical notation.
 
-I have also built tools to convert complex HTML into clean embedded HTML or mixed Markdown and HTML for structures that standard Markdown cannot represent, such as complex tables using `rowspan`, `colspan` or multi-line cell content.
+* **Reuse and code samples**<br />
+  Content reuse, conditional text and code-sample injection.
+
+* **Complex HTML structures**<br />
+  Tools that convert complex HTML into embedded HTML or mixed Markdown and HTML, including tables with `rowspan`, `colspan` and multi-line cells.
+
+</CapabilityGrid>
 
 ## Content migration and transformation {/* #content-migration-and-transformation */}
 
-I use automation wherever possible when moving large documentation sets between platforms.
+I build migration tools in Python and Scala to automate large documentation moves.
 
-My migration work has included:
+<CapabilityGrid>
 
-* Python and Scala migration tooling
-* HTML parsing and transformation
-* Wiki-to-Markdown conversion
-* Sphinx-to-Markdown conversion
-* Confluence XHTML to MadCap Flare XHTML conversion
-* Link preservation and rewriting, including conversion of absolute links to relative links
-* Front-matter and metadata generation
-* Structural content transformation
-* Reusable-content conversion
-* Validating generated Markdown and HTML for errors
+* **Source conversion**<br />
+  Wiki-to-Markdown, Sphinx-to-Markdown and Confluence XHTML to MadCap Flare XHTML conversion.
 
-For large migrations, I use analytics such as page views to identify high-value content and flag potentially obsolete material for review or archival.
+* **Structure and reuse**<br />
+  HTML parsing, structural transformation and reusable-content conversion.
+
+* **Links and metadata**<br />
+  Link preservation and rewriting, absolute-to-relative link conversion, and frontmatter and metadata generation.
+
+</CapabilityGrid>
+
+I developed tooling that converted approximately **900 legacy pages** into the Morgan Stanley platform’s extended Markdown format. Migration work also includes validating generated Markdown and HTML. For large migrations, I use page-view analytics to identify high-value content and flag potentially obsolete material for review or archival.
 
 ## Documentation tooling and automation {/* #documentation-tooling-and-automation */}
 
-I build tools to remove repetitive documentation work and make documentation systems easier to maintain.
+<CapabilityGrid>
 
-Examples include:
+* **Content processing**<br />
+  Migration scripts, frontmatter processing and automated landing-page generation.
 
-* Content migration scripts
-* Front-matter processing
-* Automated landing-page generation
-* Diagram generation
-* Git workflow automation
-* Automated grammar and spelling checks
-* Link checking
-* LLM-assisted editorial checks
+* **Authoring workflows**<br />
+  Diagram generation and Git workflow automation.
 
-I also use web-development techniques where appropriate. This portfolio, for example, combines Docusaurus and React components to turn structured Markdown content into responsive visual layouts.
+* **Editorial checks**<br />
+  Automated grammar and spelling checks, link checking and LLM-assisted editorial review.
+
+</CapabilityGrid>
 
 ## Validation and quality engineering {/* #validation-and-quality-engineering */}
 
-I treat documentation as something that can be tested rather than relying entirely on manual review.
+I automate checks on pull requests to catch documentation defects before merge.
 
-Examples include:
+<CapabilityGrid variant="checklist">
 
-* Link checking
-* Markdown syntax checks
-* Grammar and spelling checks
-* Style-guide checks using Vale or similar
+* Link and Markdown syntax checks
+
+* Grammar, spelling and Vale style-guide checks
+
 * Accessibility checks
+
 * Migration-output validation
-* OCR-based detection of obsolete terminology in screenshots and legacy diagrams
+
+* OCR checks for obsolete terminology in screenshots and legacy diagrams
+
 * Automated quality checks on pull requests
 
-On large repositories, these checks catch broken links, invalid Markdown and style problems before merge, reducing the dependence on manual reviews.
+</CapabilityGrid>
 
 ## Search and retrieval {/* #search-and-retrieval */}
 
-Documentation engineering also includes making content discoverable once it has been published.
+I have integrated and tested traditional enterprise search, browser-based search using tools such as FlexSearch.js, and RAG-based retrieval.
 
-I have integrated and tested different types of search from traditional enterprise search and fast browser-based search (using tools like FlexSearch.js) to RAG-based retrieval.
-
-My RAG work has included generating sitemaps for indexing, testing retrieval quality and identifying issues such as the search returning deprecated content. For the latter, I proposed metadata filtering to improve the results.
+My RAG work has included generating sitemaps for indexing, testing retrieval quality and identifying issues such as search returning deprecated content. I proposed metadata filtering to address that problem.
 
 ## Engineering for scale {/* #engineering-for-scale */}
 
-My experience engineering documentation systems for scale includes:
+<CapabilityGrid>
 
-* Managing documentation estates containing thousands of pages
-* Scaling Git-based contribution workflows
-* Improving build and publishing processes
-* Automating large content migrations
-* Reducing duplication through reuse
-* Supporting distributed engineering contributions
-* Developing documentation standards and tooling
+* **Large documentation estates**<br />
+  Manage thousands of pages and improve build and publishing processes.
 
-A key example is an internal developer-documentation platform at Morgan Stanley that I helped build and scale. The platform combined Markdown, Git, CI/CD, IDE-based authoring, custom static-site generation, search and migration tooling.
+* **Distributed contribution**<br />
+  Scale Git-based workflows and support engineering contributors with documentation standards and tooling.
 
-Over three years, the documentation estate grew from approximately **700 pages to more than 3,200 pages**, supported by contributions from the wider engineering community. I also developed migration tooling that converted approximately **900 legacy pages** into the platform's extended Markdown format.
+* **Migration and reuse**<br />
+  Automate large content migrations and reduce duplication through reusable content.
 
-[Read the developer docs platform case study →](../case-studies/ScalingADeveloperDocsPlatform.md)
+</CapabilityGrid>

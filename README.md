@@ -36,6 +36,16 @@ npm run start
 
 For the local search backend and frontend feature flags, follow the [Knowledge API setup guide](knowledge-api/README.md#local-setup).
 
+### Landing-page coverage
+
+The full documentation QA review checks card metadata for pages under `tools/`,
+`skills/`, `docs-samples/` and `case-studies/`. Missing or incomplete metadata
+produces a high-severity static QA defect; it does not fail the Docusaurus build.
+The section’s own `index` page and drafts are excluded. Tools, skills and samples
+require `sidebar_custom_props.sampleCard`; case studies require
+`sidebar_custom_props.caseStudyCard`. Each card needs a tag, description and a
+non-empty list of highlights. Findings count towards the normal QA thresholds.
+
 ### Generated see also links
 
 The local Docusaurus plugin generates up to three related links after substantive documentation pages. It runs during `npm run start` and `npm run build`, and refreshes when documentation or the generated taxonomy navigation data changes. It does not call an AI service or the search API.

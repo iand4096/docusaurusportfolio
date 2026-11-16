@@ -55,13 +55,30 @@ tags:
   - yaml
 ---
 
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
+
+I maintain API specifications and test them against live API behaviour using Postman, Insomnia, cURL and custom tooling.
+
 ## OpenAPI, Postman, Insomnia, cURL {/* #openapi-postman-insomnia-curl */}
 
-* Maintained **Swagger 2.0 / OpenAPI 2.0 specifications** at Mastercard covering HTTP methods, status codes, headers, query string & path parameters, request and response bodies, and authentication mechanisms, supporting automated generation of API reference documentation. Used similar technology, API Blueprint, at Paysafe.
-* Designed reusable OpenAPI definitions using **`$ref`, shared schemas, parameters, responses and security definitions** to reduce duplication and maintain consistency across large API specifications.
-* Created and maintained **Postman and Insomnia collections** containing executable API requests, authentication configuration and representative examples for use by external developers.
-* Used **Postman, Insomnia and cURL** to execute authenticated API requests, validate documented examples, troubleshoot API request and response issues, and verify documented behaviour against live API responses.
-* Modified **JavaScript/Node.js plugins for Insomnia** to support custom authentication and encryption/decryption workflows to test APIs with non-standard security requirements.
-* Used **JSON and YAML** extensively for OpenAPI specifications, application and tooling configuration, documentation metadata and Markdown front matter.
-* Developed **Python and Scala** utilities to call authenticated REST APIs, process API responses, and programmatically generate, parse and transform JSON and YAML.
-* Reviewed API contracts against implemented REST behaviour, identifying discrepancies in parameters, schemas, status codes, authentication and API responses, and working with engineers to resolve issues and update the specification and documentation.
+<CapabilityGrid>
+
+* **Specifications**<br />
+  Maintained Swagger 2.0 / OpenAPI 2.0 specifications at Mastercard for generated API reference documentation. Covered HTTP methods, status codes, headers, query-string and path parameters, request and response bodies, and authentication mechanisms. Used API Blueprint at Paysafe.
+
+* **Reusable schemas**<br />
+  Designed reusable OpenAPI definitions using `$ref`, shared schemas, parameters, responses and security definitions to reduce duplication and maintain consistency across large specifications.
+
+* **Request collections**<br />
+  Created and maintained Postman and Insomnia collections with executable API requests, authentication configuration and representative examples for external developers.
+
+* **API validation**<br />
+  Used Postman, Insomnia and cURL to execute authenticated requests, validate examples and troubleshoot live responses. Compared API contracts with implemented REST behaviour, identified discrepancies in parameters, schemas, status codes, authentication and responses, and worked with engineers to resolve issues and update specifications and documentation.
+
+* **Custom authentication**<br />
+  Modified JavaScript/Node.js plugins for Insomnia to support custom authentication and encryption/decryption workflows when testing APIs with non-standard security requirements.
+
+* **Data tooling**<br />
+  Used JSON and YAML for OpenAPI specifications, application and tooling configuration, documentation metadata and Markdown frontmatter. Developed Python and Scala utilities to call authenticated REST APIs, process responses, and generate, parse and transform JSON and YAML.
+
+</CapabilityGrid>

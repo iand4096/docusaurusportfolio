@@ -31,31 +31,65 @@ tags:
   - people-leadership
 ---
 
-I have led documentation teams, platforms, and strategy across financial services, payments, and enterprise software environments. My experience includes documentation product ownership, team leadership, developer-portal strategy, content architecture, docs-as-code adoption, leading migration programmes, and improving engineering participation in documentation.
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
+
+I have led documentation teams, platforms and strategy across financial services, payments and enterprise software. My work includes product ownership, developer-portal strategy, docs-as-code adoption and migration programmes.
 
 ## Strategy {/* #strategy */}
 
-At Paysafe, I defined the documentation strategy and publishing approach for the first [Paysafe Developer Center](../case-studies/PaysafeDeveloperCenter.md) following the merger of Skrill and Optimal Payments. During my time at Morgan Stanley, I owned requirements and priorities for the development of a [custom docs-as-code system](../case-studies/ScalingADeveloperDocsPlatform.md) to replace legacy documentation platforms. I used analytics alongside developer feedback to prioritise content for migration to the new platform and used the same approach to prioritise documentation and platform improvements. I developed the information architecture for the sites I managed at both Paysafe and Morgan Stanley and created contributor and review workflows, documentation standards, and content migration strategies.
+At Paysafe, I defined the documentation strategy and publishing approach for the first [Paysafe Developer Center](../case-studies/PaysafeDeveloperCenter.md) following the merger of Skrill and Optimal Payments. At Morgan Stanley, I owned requirements and priorities for a [custom docs-as-code system](../case-studies/ScalingADeveloperDocsPlatform.md) to replace legacy platforms.
+
+<CapabilityGrid>
+
+* **Prioritisation**<br />
+  Used analytics and developer feedback to prioritise content migration, documentation improvements and platform development.
+
+* **Information architecture**<br />
+  Developed the information architecture for the sites I managed at Paysafe and Morgan Stanley.
+
+* **Standards and workflows**<br />
+  Created contributor and review workflows, documentation standards and content migration strategies.
+
+</CapabilityGrid>
 
 ## Leadership and team development {/* #leadership-and-team-development */}
 
-I have recruited, managed, and mentored technical writers delivering API, SDK, and integration documentation, including a team of three writers at Paysafe. At Paysafe and Morgan Stanley, I led cross-functional teams of technical writers and software engineers to build public and internal developer portals. My work at both companies included establishing review processes, documentation standards, and shared working practices. Throughout my career, I have encouraged writers to test APIs and SDKs directly and build working integrations to improve technical accuracy. My own [Mastercard MDES integration work](../docs-samples/MDES4Merchants.md) demonstrates this hands-on approach. I have also worked to increase engineering ownership of documentation; this helps improve accuracy with fast-changing software and is often essential for keeping documentation updated when there are few technical writers.
+I have recruited, managed and mentored technical writers delivering API, SDK and integration documentation, including a **team of three writers at Paysafe**. At Paysafe and Morgan Stanley, I led cross-functional teams of writers and software engineers building public and internal developer portals.
+
+<CapabilityGrid>
+
+* **Shared working practices**<br />
+  Established review processes, documentation standards and shared practices for writers and engineers.
+
+* **Technical validation**<br />
+  Encouraged writers to test APIs and SDKs directly and build working integrations. My [Mastercard MDES integration work](../docs-samples/MDES4Merchants.md) demonstrates this approach.
+
+* **Engineering ownership**<br />
+  Worked to increase engineering ownership of documentation, particularly for fast-changing software and teams with few technical writers.
+
+</CapabilityGrid>
 
 ## Platform and product ownership {/* #platform-and-product-ownership */}
 
-At Morgan Stanley, I led the design and evolution of a large-scale internal docs-as-code platform and developer portal supporting an API platform with a large internal developer audience.
+At Morgan Stanley, I led the design and evolution of an internal docs-as-code platform and developer portal supporting an API platform with a large internal developer audience.
 
-I owned product direction, requirements, solution design, testing, quality, and feature prioritisation. I initially worked with a dedicated engineering team on implementation and later contributed directly to the codebase as the platform evolved.
+I owned product direction, requirements, solution design, testing, quality and feature prioritisation. I initially worked with a dedicated engineering team on implementation and later contributed directly to the codebase.
 
 The site grew from approximately **700 pages to more than 3,200 pages over three years**, supported by increasing contributions from the wider engineering community.
 
 ## Cross-functional delivery {/* #cross-functional-delivery */}
 
-I have worked closely with software engineering, web development, DevOps, IDE tooling, product management, and infrastructure teams to deliver documentation platforms and developer experiences. Examples include:
+I have worked with software engineering, web development, DevOps, IDE tooling, product management and infrastructure teams.
 
-* Launching and evolving developer portals.
-* Designing [Git- and CI-based documentation workflows](../tools/GitContinuousIntegration.md).
-* Delivering IDE plugins to help engineers create documentation.
-* Moving documentation infrastructure onto containerised hosting.
-* Using analytics to prioritise migration and content improvements.
-* Introducing [automation and AI-assisted workflows](AIandDocumentation.md) to improve documentation production and maintenance.
+<CapabilityGrid>
+
+* **Developer portals**<br />
+  Launched and evolved developer portals and delivered IDE plugins to help engineers create documentation.
+
+* **Publishing infrastructure**<br />
+  Designed [Git- and CI-based workflows](../tools/GitContinuousIntegration.md) and moved documentation infrastructure onto containerised hosting.
+
+* **Process improvements**<br />
+  Used analytics to prioritise migration and content improvements, and introduced [automation and AI-assisted workflows](AIandDocumentation.md) for documentation production and maintenance.
+
+</CapabilityGrid>

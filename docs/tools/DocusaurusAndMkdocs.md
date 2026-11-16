@@ -54,28 +54,59 @@ tags:
   - vs-code
 ---
 
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
+
+I build and extend static-site documentation platforms, including this Docusaurus portfolio and a MkDocs pilot for an internal Wiki migration.
+
 ## Static site generators and documentation platforms {/* #static-site-generators-and-documentation-platforms */}
 
 ### Docusaurus {/* #docusaurus */}
 
-* Built my portfolio using **Docusaurus, MDX, React, JSX and JavaScript**.
-* Created reusable React components such as responsive skill grids driven by simple Markdown content.
-* Generated landing-page cards automatically from Markdown front matter.
-* Used **GitHub Actions** for automated builds and deployment to GitHub Pages.
-* Used plugins such as **LTeX+** and **Vale** in VS Code for spelling, grammar and style guide checks.
+<CapabilityGrid>
+
+* **Site implementation**<br />
+  Built this portfolio with Docusaurus, MDX, React, JSX and JavaScript. Created reusable React components, including responsive skill grids driven by Markdown content and landing-page cards populated from frontmatter.
+
+* **Builds and publishing**<br />
+  Used GitHub Actions for automated builds and deployment to GitHub Pages.
+
+* **Authoring checks**<br />
+  Used LTeX+ and Vale in VS Code for spelling, grammar and style-guide checks.
+
+</CapabilityGrid>
 
 ### MkDocs {/* #mkdocs */}
 
-* Used **MkDocs and a number of plugins** to recreate functionality from a large internal Wiki documentation site as a pilot project.
-* Integrated multiple plugins to support the advanced features from the Wiki site and modified plugin code to add the remaining unsupported features.
-* Recompiled the modified plugins as standalone executables for deployment.
+<CapabilityGrid>
+
+* **Migration pilot**<br />
+  Used MkDocs and multiple plugins to recreate functionality from a large internal Wiki documentation site as a pilot project.
+
+* **Plugin extensions**<br />
+  Integrated plugins for advanced Wiki features and modified plugin code to add functionality that remained unsupported.
+
+* **Deployment packaging**<br />
+  Recompiled modified plugins as standalone executables for deployment.
+
+</CapabilityGrid>
 
 ### Documentation platform engineering {/* #documentation-platform-engineering */}
 
-* Selected static site generators based on documentation, scale and extensibility requirements.
-* Scaled documentation sites to **thousands of pages**.
-* Extended Markdown parsers and plugin behaviour.
-* Defined and tested fast client-side documentation search using FlexSearch, alongside integrating the slower central search service for broader queries.
-* Tested RAG-based retrieval, including indexing, sitemap generation and proposed metadata changes to improve retrieval relevance.
-* Designed automated build and publishing pipelines.
-* Understood when an existing generator should be extended and when a **custom static site generator** was justified.
+<CapabilityGrid>
+
+* **Platform selection**<br />
+  Selected generators based on documentation, scale and extensibility requirements, including deciding when to extend an existing generator and when a custom generator was justified.
+
+* **Scale and extensibility**<br />
+  Scaled documentation sites to **thousands of pages** and extended Markdown parsers and plugin behaviour.
+
+* **Client-side search**<br />
+  Defined and tested fast client-side search using FlexSearch, alongside integrating the slower central search service for broader queries.
+
+* **RAG retrieval**<br />
+  Tested indexing and sitemap generation, and proposed metadata changes to improve retrieval relevance.
+
+* **Publishing pipelines**<br />
+  Designed automated build and publishing pipelines for documentation platforms.
+
+</CapabilityGrid>

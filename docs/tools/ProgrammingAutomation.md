@@ -73,49 +73,99 @@ tags:
   - yaml
 ---
 
-## Programming and automation {/* #programming-and-automation */}
+import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
-### Python {/* #python */}
+I develop scripts, applications and platform extensions for documentation migration, API validation and publishing workflows. My background also includes nearly five years of C/C++ software engineering.
 
-* Practical **Python** experience covering documentation tooling, content migration, API integrations, data processing and workflow automation.
-* Developed scripts to migrate and transform large documentation sets into extended **Markdown**, initially using regexp replacement lambdas and then more sophisticated class-based handlers as the transformation logic became more complex.
-* Used **`pathlib`** to reconstruct documentation links following content migration and restructuring; this includes converting absolute links to relative links and re-linking moved content.
-* Extended an existing **MkDocs** plugin to support additional **Graphviz** diagram-generation modes, including hyperlink-enabled diagrams, using Python `subprocess` to invoke Graphviz.
-* Used Requests and authentication libraries to integrate with REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authentication, JSON payloads and JSON/XML responses.
-* Built Flask applications with GET and POST endpoints, query parameters, form handling and Jinja-rendered pages for API and payment-integration testing.
-* Built sandbox integrations for testing payment and API workflows, including authentication, encryption, webhooks and asynchronous processing.
-* Used the **Pandas** data processing library, along with JSON and YAML processing and Excel generation, for structured data transformation and reporting, for example building workbooks with hyperlinks to candidate pages for migration.
-* Added validation, exception handling and structured logging to tooling for migration and integration to diagnose failures.
-* Debugged Python applications, scripts and integrations using PyCharm IDE debugging, logging and runtime inspection.
+## Python {/* #python */}
 
-### Scala {/* #scala */}
+<CapabilityGrid>
+  * **Content migration**<br />
+    Built scripts to migrate and transform large documentation sets into extended Markdown, progressing from regular-expression replacement lambdas to class-based handlers as the transformation rules became more complex.
 
-* Used **Scala** for scripting, data processing and transformation of structured formats such as JSON and YAML.
-* Modified and extended **AST-based parsing code** to introduce new documentation features, including support for **PlantUML blocks**.
-* Developed IntelliJ plugins including one that allowed developers to quickly create "learning paths", consisting of tree-like hyperlinked topic navigation diagrams, from selected content files.
+  * **Link reconstruction**<br />
+    Used `pathlib` to repair links after migration and restructuring, including converting absolute links to relative links and re-linking moved content.
 
-### Java {/* #java */}
+  * **Platform extensions**<br />
+    Extended a MkDocs plugin with additional Graphviz generation modes, including hyperlink-enabled diagrams, using `subprocess` to invoke Graphviz.
 
-* Built **Java** API and sandbox integrations used to test and validate developer documentation. Used Java to complete assignments during my M.Sc. in Computer Science.
+  * **HTTP API clients**<br />
+    Used Requests and authentication libraries for REST and HTTP APIs, working with GET/POST methods, query parameters, headers, status codes, authentication, JSON payloads and JSON/XML responses.
 
-### JavaScript, Node.js, front-end {/* #javascript-nodejs-front-end */}
+  * **Flask and sandbox applications**<br />
+    Built Flask applications with GET/POST endpoints, query parameters, form handling and Jinja-rendered pages. Built sandbox integrations to test payment and API workflows, including authentication, encryption, webhooks and asynchronous processing.
 
-* Used JavaScript, jQuery, AJAX, HTML, CSS / SCSS to build and extend interactive documentation-portal features, including user-feedback submission, page ratings, syntax-highlighted code examples and expandable hierarchical navigation.
-* Developed browser-based test integrations using asynchronous requests to submit data and process responses.
-* Worked with React/JSX components and modified Insomnia authentication plugins for API tooling and integration testing.
-* Used SCSS/Sass, CSS and client-side scripting to customise documentation-site layout, styling, behaviour and interaction beyond standard theme capabilities.
+  * **Data and reporting**<br />
+    Used Pandas, JSON and YAML processing, and Excel generation for data transformation and reporting, including migration-review workbooks with hyperlinks to candidate pages.
 
-### C, C++ and C# {/* #c-c-and-c */}
+  * **Validation and debugging**<br />
+    Added validation, exception handling and structured logging to migration and integration tools. Used PyCharm debugging and runtime inspection to investigate failures.
+</CapabilityGrid>
 
-I have nearly five years of C/C++ software engineering experience; this includes work in 2D/3D graphics, GIS, CAD/VR systems and graphics device drivers at ST Microelectronics. Additionally, I developed cross-platform C code for Windows and Unix, to modify and extend a 3D CAD application. In later roles, I worked with STL containers and data structures for application logic and data processing. My C# experience includes developing tooling to automate the generation of release-notes from tagged JIRA tickets using the JIRA REST API, inserting the retrieved data into MadCap Flare XHTML templates to produce the final document.
+## Scala {/* #scala */}
 
-### Automation and scripting {/* #automation-and-scripting */}
+<CapabilityGrid>
+  * **Functional programming**<br />
+    Analysed and documented Scala 2 code using functional programming techniques, including referentially transparent functions, case classes for data modelling, and pattern matching.
 
-* Automated documentation migration, validation, build and publishing tasks using **Python, Bash and PowerShell**.
-* Used **Unix/Linux command-line tools** such as `grep`, `sed`, `find`, pipes and redirection for repository maintenance, bulk file processing and content transformation.
-* Integrated documentation workflows with **GitHub Actions** and **Jenkins** CI pipelines for build, validation and publishing.
+  * **Data transformation**<br />
+    Scripting, data processing and transformation of structured formats such as JSON and YAML.
 
-### Systems programming and debugging {/* #systems-programming-and-debugging */}
+  * **Parser extensions**<br />
+    Modified AST-based parsing code to introduce documentation features, including PlantUML blocks.
 
-* Background in **C and assembly-language programming**, including kernel and user-mode device-driver development.
-* Experience with low-level systems debugging, including kernel and driver diagnostics, memory inspection and runtime analysis.
+  * **IntelliJ plugins**<br />
+    Developed IntelliJ plugins for documentation authoring, including a plugin that generated tree-like, hyperlinked learning-path navigation diagrams from selected content files.
+</CapabilityGrid>
+
+## Examples of tooling {/* #examples-of-tooling */}
+
+<CapabilityGrid>
+
+* **Reconstructing migrated links**<br />
+  Built Python tooling with `pathlib` to reconstruct documentation links after migration and restructuring. It converted absolute links to relative links and re-linked content that had moved.
+
+* **Generating learning paths**<br />
+  Developed an IntelliJ plugin that let developers select content files and generate tree-like, hyperlinked topic navigation diagrams for learning paths.
+
+* **Generating release notes**<br />
+  Built C# tooling that retrieved tagged Jira tickets through the Jira REST API and inserted the data into MadCap Flare XHTML templates to generate release notes.
+
+</CapabilityGrid>
+
+## Java {/* #java */}
+
+I built Java API and sandbox integrations to test and validate developer documentation. I also used Java for assignments during my M.Sc. in Computer Science.
+
+## JavaScript, Node.js and frontend {/* #javascript-nodejs-front-end */}
+
+<CapabilityGrid>
+  * **Portal interactions**<br />
+    Used JavaScript, jQuery, AJAX, HTML and CSS/SCSS to build feedback submission, page ratings, syntax-highlighted examples and expandable navigation, and to customise site layouts and behaviour.
+
+  * **Browser-based integrations**<br />
+    Developed test integrations using asynchronous requests to submit data and process responses.
+
+  * **React and API tooling**<br />
+    Worked with React/JSX components and modified Insomnia authentication plugins for API tooling and integration testing.
+</CapabilityGrid>
+
+## C, C++ and C# {/* #c-c-and-c */}
+
+**C/C++ engineering.** I have nearly five years of software engineering experience covering 2D/3D graphics, GIS, CAD/VR systems and graphics device drivers at ST Microelectronics. I developed cross-platform C code for Windows and Unix to extend a 3D CAD application. In later roles, I used STL containers and data structures for application logic and data processing.
+
+**C# documentation tooling.** I built tooling that retrieved tagged Jira tickets through the Jira REST API and inserted the data into MadCap Flare XHTML templates to generate release notes.
+
+## Automation and scripting {/* #automation-and-scripting */}
+
+<CapabilityGrid variant="checklist" checklistBold={false}>
+  * Automate migration, validation, builds and publishing with Python, Bash and PowerShell
+
+  * Use Unix/Linux tools such as `grep`, `sed` and `find`, with pipes and redirection, for repository maintenance and bulk content processing
+
+  * Integrate documentation workflows with GitHub Actions and Jenkins CI pipelines
+</CapabilityGrid>
+
+## Systems programming and debugging {/* #systems-programming-and-debugging */}
+
+My C and assembly-language background includes kernel and user-mode device-driver development. I have used low-level debugging techniques for kernel and driver diagnostics, memory inspection and runtime analysis.

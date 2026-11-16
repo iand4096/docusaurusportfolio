@@ -101,6 +101,24 @@ Use `variant="checklist"` for short capability statements. Each item gets a gree
 
 Ticks appear after client-side JavaScript measures the text. Measurements run on initial rendering, relevant prop changes, resizing, and font readiness. Without JavaScript the text remains visible, but the ticks stay hidden. See [Core Flare skills](../tools/Flare.md#core-flare-skills).
 
+Checklist text is bold by default. Set `checklistBold={false}` to match the standard grid’s body font, size, weight and line height:
+
+```mdx
+<CapabilityGrid variant="checklist" checklistBold={false}>
+
+- Automate migration, validation, builds and publishing
+
+- Integrate documentation workflows with CI pipelines
+
+</CapabilityGrid>
+```
+
+<CapabilityGrid variant="checklist" checklistBold={false}>
+  * Automate migration, validation, builds and publishing
+
+  * Integrate documentation workflows with CI pipelines
+</CapabilityGrid>
+
 ## Cards
 
 Pass an `items` array to `CapabilityCard` for bordered cards. Icons and expandable details are optional. Try opening **More detail** in the live example.
@@ -136,6 +154,7 @@ Omit `detail` for a static card and `icon` for a card without an icon. The homep
 | --- | --- | --- |
 | `children` | None | Markdown or JSX containing a direct unordered list. |
 | `variant` | `'default'` | Use `'default'` for a plain grid or `'checklist'` for ticks. |
+| `checklistBold` | `true` | Set to `false` to match standard grid body typography. Has no effect on plain grids. |
 
 ## CapabilityCard props
 
