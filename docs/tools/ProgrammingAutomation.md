@@ -109,28 +109,13 @@ I develop scripts, applications and platform extensions for documentation migrat
     Analysed and documented Scala 2 code using functional programming techniques, including referentially transparent functions, case classes for data modelling, and pattern matching.
 
   * **Data transformation**<br />
-    Scripting, data processing and transformation of structured formats such as JSON and YAML.
+    Used scripting to process and transform structured formats such as JSON and YAML.
 
   * **Parser extensions**<br />
     Modified AST-based parsing code to introduce documentation features, including PlantUML blocks.
 
   * **IntelliJ plugins**<br />
     Developed IntelliJ plugins for documentation authoring, including a plugin that generated tree-like, hyperlinked learning-path navigation diagrams from selected content files.
-</CapabilityGrid>
-
-## Examples of tooling {/* #examples-of-tooling */}
-
-<CapabilityGrid>
-
-* **Reconstructing migrated links**<br />
-  Built Python tooling with `pathlib` to reconstruct documentation links after migration and restructuring. It converted absolute links to relative links and re-linked content that had moved.
-
-* **Generating learning paths**<br />
-  Developed an IntelliJ plugin that let developers select content files and generate tree-like, hyperlinked topic navigation diagrams for learning paths.
-
-* **Generating release notes**<br />
-  Built C# tooling that retrieved tagged Jira tickets through the Jira REST API and inserted the data into MadCap Flare XHTML templates to generate release notes.
-
 </CapabilityGrid>
 
 ## Java {/* #java */}

@@ -290,7 +290,7 @@ Reviewed document metadata is applied separately:
 python scripts/taxonomy_ai.py --apply-from taxonomy/taxonomy-ai-suggestions.json
 ```
 
-`--apply-from` is the recommended way to apply a saved classification. Targeted `--apply` remains available for backwards compatibility; fresh review-only runs do not modify documents. A document without front matter can be reviewed as empty metadata and receives a YAML block only when an approved review is applied.
+`--apply-from` is the recommended way to apply a saved classification. Targeted `--apply` remains available for backwards compatibility; fresh review-only runs do not modify documents.
 
 This application step cannot adopt a new canonical term. If the reviewed metadata references a proposed term that has not been added to the taxonomy through a migration, the apply step fails.
 

@@ -210,7 +210,6 @@ I automate checks on pull requests to catch documentation defects before merge.
 
 * OCR checks for obsolete terminology in screenshots and legacy diagrams
 
-* Automated quality checks on pull requests
 
 </CapabilityGrid>
 
