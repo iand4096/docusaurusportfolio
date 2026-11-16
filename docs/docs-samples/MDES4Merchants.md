@@ -134,7 +134,7 @@ After completing the guide, I also helped recommend and test an early version of
 
 ## Outcome {/* #outcome */}
 
-The tested workflows informed the integration guidance. Sharing the test code gave other technical writers and the product owner a way to investigate the API directly, helping to encourage a culture of hands-on API testing that had previously been hindered by the API's technical complexity.
+The tested workflows informed the integration guidance. The shared test code helped encourage a culture of hands-on API testing that the API's technical complexity had previously hindered.
 
 The project required me to learn an unfamiliar technical subject, test the API myself and apply what I learned to the developer documentation.
 

@@ -135,6 +135,7 @@ jobs:
           path: |
             ai-doc-review.html
             ai-doc-review.json
+            qa-example.html
           if-no-files-found: warn
 
       - name: Add QA report to workflow summary

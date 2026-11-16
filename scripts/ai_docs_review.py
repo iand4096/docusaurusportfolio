@@ -3713,7 +3713,61 @@ def source_filter_buttons(issues, errors, metadata):
     return '<div class="source-filters" role="group" aria-label="Filter findings by source">' + ''.join(parts) + '</div>'
 
 
-def generate_html_report(issues, errors, metadata, ci_result):
+EXAMPLE_REPORT_THRESHOLD = 5
+
+
+def example_report_notice(issues, metadata):
+    if metadata.get('example_report'):
+        return ('<aside class="example-report-notice" aria-label="Example report notice">'
+                '<strong>Demonstration only — synthetic findings</strong>'
+                '<p>These deliberately flawed examples illustrate the checks and report filters. '
+                'They are not defects found in this portfolio. The CI failure and check error '
+                'below are simulated. Feedback actions are disabled.</p></aside>')
+    if report_counts(issues)['active'] <= EXAMPLE_REPORT_THRESHOLD:
+        return ('<aside class="example-report-notice" aria-label="Example report">'
+                '<p>This report has few active findings. Explore a separate example to see '
+                'how the checks report documentation problems.</p>'
+                '<a class="example-report-link" href="qa-example.html">'
+                'See example QA report with errors</a></aside>')
+    return ''
+
+
+def generate_example_report(directory, metadata):
+    """Render a deterministic demonstration, never run checks or touch feedback."""
+    cases = [
+        ('static', 'high', 'links', '[Setup guide](missing-guide.md)',
+         'The local link points to a file that does not exist.', 'Correct the path or restore the missing guide.'),
+        ('static', 'medium', 'accessibility', '![](architecture.png)',
+         'The diagram has no alternative text.', 'Describe the architecture diagram in its alternative text.'),
+        ('ai', 'medium', 'clarity', 'Delete the old index before verifying the replacement.',
+         'The instruction removes the working index before the replacement is verified.',
+         'Verify the replacement first, then retire the old index.'),
+        ('ai', 'low', 'repetition', 'The API returns JSON. Responses from the API use JSON.',
+         'Two adjacent sentences repeat the response format.', 'Keep one statement of the response format.'),
+        ('vale', 'low', 'style', 'Simply leverage the endpoint to get your data.',
+         'The wording uses unnecessary filler and vague terminology.', 'Use the endpoint to retrieve data.'),
+        ('ltex', 'low', 'spelling', 'The documantation describes the endpoint.',
+         'The word “documantation” is misspelled.', 'Use “documentation”.'),
+        ('lychee', 'medium', 'links', '[API reference](https://example.invalid/reference)',
+         'The external API reference cannot be reached.', 'Replace the URL with a working reference.'),
+        ('remark', 'low', 'heading-increment', '# Setup\n\n### Configure the client',
+         'The heading skips a level.', 'Use a level-two heading after the level-one heading.'),
+    ]
+    examples = [make_issue(file='Synthetic example document', line=index,
+        severity=severity, confidence='high', issue_type='defect' if severity != 'low' else 'improvement',
+        category=category, original=original, message=message, suggestion=suggestion, source=source)
+        for index, (source, severity, category, original, message, suggestion) in enumerate(cases, 1)]
+    example_metadata = {**metadata, 'example_report': True, 'files_reviewed': 1,
+        'filter_label': 'Demonstration of all sources', 'model': 'Synthetic examples — no API calls',
+        'checks': [check.name for check in build_checks()]}
+    example_errors = [{'check': 'LycheeCheck', 'file': 'Synthetic example document',
+                      'error': 'Simulated check failure: the external-link service timed out.'}]
+    example_ci = evaluate_ci(examples, example_errors, 0, 0, 0)
+    generate_html_report(examples, example_errors, example_metadata, example_ci,
+                         output_path=Path(directory) / 'qa-example.html')
+
+
+def generate_html_report(issues, errors, metadata, ci_result, *, output_path=None):
     for issue in issues:
         apply_ai_severity_policy(issue)
     issues = sort_issues(issues)
@@ -3734,8 +3788,10 @@ def generate_html_report(issues, errors, metadata, ci_result):
     ai_clear_count = sum(ai_without_recurrence_concerns(issue) for issue in issues)
 
     for number, issue in enumerate(issues, 1):
-        file_link = html_file_link(issue["file"], line=issue["line"])
-        line_link = html_line_link(issue["file"], issue["line"])
+        file_link = (html.escape(issue['file']) if metadata.get('example_report') else
+                     html_file_link(issue["file"], line=issue["line"]))
+        line_link = (str(issue['line']) if metadata.get('example_report') else
+                     html_line_link(issue["file"], issue["line"]))
         issue_id = str(issue.get("issue_id", ""))
         # Only DeepSeek-originated findings can be challenged by the AI
         # adjudication command. Keep the command in a data attribute so it is
@@ -3745,7 +3801,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
             'data-issue-id="' + html.escape(issue_id, quote=True) + '" '
             'aria-label="Copy challenge command for finding '
             + html.escape(issue_id, quote=True) + '">Challenge AI</button>'
-            if issue.get("source") == "ai" and issue_id else ""
+            if issue.get("source") == "ai" and issue_id and not metadata.get("example_report") else ""
         )
         file_detail = file_link
         if issue.get("source") == "ai" and issue_id:
@@ -3844,7 +3900,8 @@ def generate_html_report(issues, errors, metadata, ci_result):
     error_rows = []
 
     for error in errors:
-        error_file_link = html_file_link(error["file"])
+        error_file_link = (html.escape(error['file']) if metadata.get('example_report') else
+                           html_file_link(error["file"]))
         error_rows.append(
             f"""
             <tr>
@@ -4044,6 +4101,26 @@ def generate_html_report(issues, errors, metadata, ci_result):
         .confidence-high {{ background: #dcfce7; color: #166534; }}
         .confidence-medium {{ background: #fef3c7; color: #92400e; }}
         .confidence-low {{ background: #f3f4f6; color: #4b5563; }}
+        .example-report-notice {{
+            margin: 18px 0;
+            padding: 16px 20px;
+            border: 1px solid #93c5fd;
+            border-radius: 10px;
+            background: #eff6ff;
+            color: #1e3a8a;
+        }}
+        .example-report-notice p {{ margin: 0 0 10px; }}
+        .example-report-link {{
+            display: inline-block;
+            padding: 9px 15px;
+            border-radius: 7px;
+            background: #1d4ed8;
+            color: #fff;
+            font-weight: 600;
+            text-decoration: none;
+        }}
+        .example-report-link:hover {{ background: #1e40af; }}
+        .example-report-link:focus-visible {{ outline: 3px solid #1e3a8a; outline-offset: 3px; }}
         .source-filters {{
             display: flex;
             flex-wrap: wrap;
@@ -4140,6 +4217,7 @@ def generate_html_report(issues, errors, metadata, ci_result):
 <body>
 <main>
     <h1>Documentation QA report</h1>
+    {example_report_notice(issues, metadata)}
     <p class="portfolio-link">
         <a href="{html.escape(PORTFOLIO_URL, quote=True)}">← Back to Portfolio</a>
     </p>
@@ -4394,7 +4472,24 @@ def generate_html_report(issues, errors, metadata, ci_result):
         + embedded_json + '\n</script>\n</body>',
         1,
     )
-    REPORT.write_text(document, encoding="utf-8")
+    if metadata.get('example_report'):
+        document = document.replace('<title>Documentation QA report</title>',
+                                    '<title>Example QA report — synthetic findings</title>')
+        document = document.replace('<h1>Documentation QA report</h1>',
+                                    '<h1>Example QA report</h1>')
+        # The example is standalone: never link its synthetic data to the real
+        # report exports or expose actions that could write actual feedback.
+        document = re.sub(r'    <div class="report-actions">.*?</div>', '', document, count=1, flags=re.S)
+        document = re.sub(r'    <link rel="alternate"[^>]*>\n', '', document)
+        document = document.replace('AI readers can also use the linked Markdown or JSON files when published alongside this page.',
+                                    'The embedded JSON contains the same synthetic examples.')
+        document = re.sub(r'    <p>For AI findings, select <strong>Challenge AI</strong>.*?</p>',
+                          '', document, count=1, flags=re.S)
+    destination = Path(output_path) if output_path is not None else REPORT
+    destination.write_text(document, encoding="utf-8")
+    if not metadata.get('example_report') and report_counts(issues)['active'] <= EXAMPLE_REPORT_THRESHOLD:
+        generate_example_report(destination.parent, metadata)
+
 # ---------------------------------------------------------------------------
 # Command-line interface
 # ---------------------------------------------------------------------------

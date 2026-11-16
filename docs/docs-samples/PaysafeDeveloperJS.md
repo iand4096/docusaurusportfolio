@@ -113,5 +113,5 @@ The guide gave developers a practical route from understanding Paysafe.js and it
 
 * Maintain the examples alongside the documentation source in place of a separate platform such as CodePen. This would make them easier to version, review, test, and migrate with the guide.
 * Introduce automated checks to confirm that the examples continue to work with each supported version of Paysafe.js.
-* Add a sequence diagram showing how sensitive payment details passed directly from the Paysafe-hosted fields to Paysafe, while only the resulting token was returned to the merchant.
+* Add a sequence diagram showing how sensitive payment details pass directly from the Paysafe-hosted fields to Paysafe, while only the resulting token is returned to the merchant.
 * Include a companion diagram showing how the merchant’s systems could use that token to submit a payment through the server-side API.

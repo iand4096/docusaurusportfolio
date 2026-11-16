@@ -58,7 +58,7 @@ npm run see-also:check
 npm run test:see-also
 ```
 
-Generation writes [the related-document index](src/generated/see-also.json) and [the review report](reports/see-also.md). Commit both artifacts with content changes. The check command is read-only and fails if either artifact is missing or stale; CI runs it before any build can refresh the files. Run `npm run taxonomy:generate` first if the canonical vocabulary or navigation metadata needs regeneration.
+Generation writes [the related-document index](src/generated/see-also.json) and [the review report](reports/see-also.md). Commit both artefacts with content changes. The check command is read-only and fails if either artifact is missing or stale; CI runs it before any build can refresh the files. Run `npm run taxonomy:generate` first if the canonical vocabulary or navigation metadata needs regeneration.
 
 **Excluded topics.** The broad topics `technical-writing` and `docs-as-code` are ignored throughout See also matching and scoring; they remain available for taxonomy navigation and filtering.
 

@@ -321,3 +321,14 @@ The cache directory is ignored by Git and excluded from the explicit report and
 Pages artifact paths. It contains review text, not API keys. GitHub Actions caches
 are not private secret storage; use this workflow only for documentation suitable
 for the repository's cache access permissions.
+
+## Example report for quiet QA runs
+
+When there are five or fewer active findings, the HTML report offers “See example
+QA report with errors”. Rendering also writes `qa-example.html` beside the real
+report. The separate example illustrates every source, severity filtering and a
+simulated check failure. Its banner explicitly identifies synthetic findings;
+source links and feedback actions are disabled. Example data never enters real
+JSON/Markdown exports, feedback records, caches or CI decisions. Generating the
+example makes no API calls. Deployment publishes it alongside the real report,
+and Actions artifacts include it when present.

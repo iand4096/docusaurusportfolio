@@ -53,7 +53,7 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          rm -f ai-doc-review.html ai-doc-review.json .qa-run-start
+          rm -f ai-doc-review.html ai-doc-review.json qa-example.html .qa-run-start
           rm -rf build/qa
 
           # Record the start of this QA run. Any report copied into the Pages
@@ -164,6 +164,7 @@ jobs:
             ai-doc-review.html
             ai-doc-review.json
             ai-doc-review.md
+            qa-example.html
           if-no-files-found: warn
 
       # Publish the QA report under a commit-specific filename. /qa/index.html is
@@ -277,6 +278,11 @@ jobs:
 
             echo "Published QA HTML, JSON and Markdown for ${QA_VERSION}."
 
+          fi
+
+          # The optional demo is separate from the real report and its exports.
+          if [ -f qa-example.html ]; then
+            cp qa-example.html build/qa/qa-example.html
           fi
 
           # A small machine-readable pointer to the report from this deployment.

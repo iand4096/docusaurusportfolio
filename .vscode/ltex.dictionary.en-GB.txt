@@ -89,3 +89,4 @@ Webfonts
 Lockfile-based
 cdnjs
 READMEs
+CaseStudySummary
