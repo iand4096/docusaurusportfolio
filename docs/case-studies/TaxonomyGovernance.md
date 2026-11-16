@@ -39,6 +39,37 @@ tags:
   - yaml
 ---
 
+import CaseStudySummary from '@site/src/components/CaseStudySummary';
+
+<CaseStudySummary {...{
+  "employer": "Independent project",
+  "industry": "Documentation engineering",
+  "projectType": "Metadata governance",
+  "summary": "Built one controlled vocabulary connecting documentation metadata, navigation, authoring tools and search.",
+  "role": "System design and development",
+  "scope": "Metadata validation, authoring support and taxonomy change management",
+  "decision": "Git-versioned vocabulary with deterministic checks and human-approved AI proposals",
+  "deliverables": "YAML taxonomy, validation tools, generated views and migration workflows",
+  "evidenceTitle": "Implementation Evidence",
+  "evidence": [
+    {
+      "value": "1",
+      "label": "Canonical vocabulary",
+      "emphasis": "metric"
+    },
+    {
+      "value": "5",
+      "label": "Technology terms updated in one migration",
+      "emphasis": "metric"
+    },
+    {
+      "value": "26",
+      "label": "Documents checked during that migration",
+      "emphasis": "metric"
+    }
+  ]
+}} />
+
 ## Context {/* #context */}
 
 Structured metadata and taxonomy can improve navigation and search in a large documentation repository. They also support content ownership, documentation lifecycle management, publishing automation and a consistent vocabulary for better alignment across an organisation.

@@ -58,7 +58,7 @@ I organise developer documentation through content hierarchies, navigation tools
   Designed and implemented a Graphviz-based navigation tool that generated tree-structured, hyperlinked learning paths across related documentation.
 
 * **Portal strategy**<br />
-  Analysed competitor developer portals and contributed to the content and information-architecture strategy for the new Paysafe group Developer Centre following the merger of Skrill and Optimal Payments.
+  Analysed competitor developer portals and contributed to the content and information-architecture strategy for the new Paysafe group Developer Center following the merger of Skrill and Optimal Payments.
 
 </CapabilityGrid>
 
