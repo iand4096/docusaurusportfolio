@@ -63,7 +63,7 @@ class ParserIntegrationTests(unittest.TestCase):
         self.assertTrue(any(i["category"] == "mdx-jsx-unique-attribute-name" for i in issues))
 
     def test_generated_reports_are_not_reviewed_as_articles(self):
-        for relative in ["README.md", "docs/article.md", "reports/see-also.md"]:
+        for relative in ["README.md", "docs/article.md", "reports/see-also.md", "knowledge-api/.pytest_cache/README.md"]:
             path = self.root / relative
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text("# Example\n", encoding="utf-8")
@@ -71,6 +71,7 @@ class ParserIntegrationTests(unittest.TestCase):
         self.assertIn("README.md", selected)
         self.assertIn("docs/article.md", selected)
         self.assertNotIn("reports/see-also.md", selected)
+        self.assertNotIn("knowledge-api/.pytest_cache/README.md", selected)
 
     def test_local_preview_link_exclusions_do_not_hide_public_hosts(self):
         patterns = [re.compile(line) for line in (PROJECT / ".lycheeignore").read_text().splitlines()

@@ -87,3 +87,4 @@ Fonticons
 webfonts
 Webfonts
 Lockfile-based
+cdnjs

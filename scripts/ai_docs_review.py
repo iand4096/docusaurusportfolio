@@ -46,6 +46,7 @@ EXCLUDED_DIRS = {
     "node_modules",
     "build",
     ".docusaurus",
+    ".pytest_cache",  # Generated test-run metadata, not authored documentation.
     ".git",
     "static",
     "taxonomy",
@@ -1712,7 +1713,10 @@ def is_ltex_context_false_positive(content, line, column, rule, message):
         # sound. 'an items array' is correct; do not rewrite it to 'a items'.
         return at(r"\ban\s+`items`\s+array\b")
     if rule == "UPPERCASE_SENTENCE_START":
-        return at(r"\[(?:`)?(?:npm|pip)\s+[^\]\n]+\]\(")
+        for match in re.finditer(r"\[`?(?P<command>npm|pip)\s+[^\]\n]+\]\(", text):
+            if match.start("command") <= offset < match.end("command"):
+                return True
+        return False
     if rule in {"PHRASE_REPETITION", "OK_OK_COMMA"} and text.lstrip().startswith("|"):
         # A repeated Yes/No across cells is independent table data. Preserve
         # genuine repetition within a cell and all other grammar diagnostics.

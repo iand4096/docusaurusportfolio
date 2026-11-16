@@ -97,7 +97,7 @@ I implemented the pipeline in [`scripts/ai_docs_review.py`](scripts/ai_docs_revi
 
 ### Deterministic checks and technical vocabulary
 
-The local link checker resolves root-relative Docusaurus pages under `src/pages`, including React entrypoints, query strings and fragments. Relative links to repository directories remain valid; a missing site route still fails validation.
+The local link checker resolves root-relative Docusaurus pages under `src/pages`, including React entry points, query strings and fragments. Relative links to repository directories remain valid; a missing site route still fails validation.
 
 LTeX uses the reviewed vocabulary in [the British English dictionary](.vscode/ltex.dictionary.en-GB.txt). Its diagnostic normaliser has narrow rule-and-location exceptions for the official name Developer Center, official licence titles, the correct phrase “an `items` array”, lowercase command-link labels, and repeated Yes/No values across table cells. Other spelling and grammar findings in the same sentence or cell remain eligible. Vale heading exceptions preserve product names and component identifiers without disabling sentence-case checks.
 

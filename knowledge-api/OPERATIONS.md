@@ -414,7 +414,7 @@ Scale-to-zero can add image-pull and model-startup latency. One historical pull 
 
 ## 5. Publish the frontend
 
-The [Pages workflow](../.github/workflows/deploy.yml) runs on pushes to `main` and manual dispatch. It builds Docusaurus with `RAG_SEARCH_ENABLED=true` and the public HTTPS `RAG_API_URL`, then runs documentation QA and deploys Pages. QA uses a separate GitHub Actions DeepSeek secret and may consume credits. A later QA gate can fail after the Pages deployment has completed.
+The [site deployment workflow](../.github/workflows/deploy.yml) runs on pushes to `main` and manual dispatch. It builds Docusaurus with `RAG_SEARCH_ENABLED=true` and the public HTTPS `RAG_API_URL`, then runs documentation QA and deploys Pages. QA uses a separate GitHub Actions DeepSeek secret and may consume credits. A later QA gate can fail after the Pages deployment has completed.
 
 Frontend API configuration is public. Never put the DeepSeek key in a frontend variable. Preserve existing workflow QA steps.
 
@@ -588,4 +588,4 @@ Model downloads and dependency version ranges are not fully pinned in the curren
 - [Azure deployment troubleshooting](https://learn.microsoft.com/en-us/azure/container-apps/troubleshoot-deployment-errors)
 - [GitHub Pages workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
-Update this runbook when API contracts, indexing, model packaging, infrastructure or workflows change. Refresh the verified-source baseline after review. This document is repository documentation, not a Docusaurus page, and is outside the current `docs/` ingestion scope. A future version for publication on the site requires governed frontmatter, reviewed public content and normal index/release coordination.
+Update this runbook when API contracts, indexing, model packaging, infrastructure or workflows change. Refresh the verified-source baseline after review. This document is repository documentation, not a Docusaurus page, and is outside the current `docs/` ingestion scope. Before publishing a version on the site, add governed frontmatter, review the public content and follow the normal index and release process.

@@ -49,8 +49,16 @@ class LtexContextTests(unittest.TestCase):
     def test_command_labels_keep_case_but_surrounding_prose_is_checked(self):
         for command in ['npm ci', '`npm install`', '`pip install: additional indexes`']:
             text = f'| [{command}](https://example.com) | invalid prose. |'
-            self.assertIsNone(self.diagnostic(text, command, 'UPPERCASE_SENTENCE_START'))
+            self.assertIsNone(self.diagnostic(text, command.strip('`').split()[0], 'UPPERCASE_SENTENCE_START'))
             self.assertIsNotNone(self.diagnostic(text, 'invalid', 'UPPERCASE_SENTENCE_START'))
+
+    def test_command_prefix_does_not_exempt_prose_inside_the_link_label(self):
+        for command in ['npm', 'pip']:
+            for quote in ['', '`']:
+                text = f'[{quote}{command} install{quote}. this sentence starts lowercase](https://example.com)'
+                self.assertIsNone(self.diagnostic(text, command, 'UPPERCASE_SENTENCE_START'))
+                self.assertIsNotNone(self.diagnostic(text, 'this', 'UPPERCASE_SENTENCE_START'))
+                self.assertIsNotNone(self.diagnostic(text, 'install', 'UPPERCASE_SENTENCE_START'))
 
     def test_repeated_table_values_are_independent_but_cell_errors_remain(self):
         for rule in ['PHRASE_REPETITION', 'OK_OK_COMMA']:
