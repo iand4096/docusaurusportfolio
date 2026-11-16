@@ -1,0 +1,5 @@
+# Semantic complaint retrieval for documentation QA, not the deployed search API.
+# CI installs the matching CPU-only torch wheel from the official PyTorch index first.
+sentence-transformers==6.3.0
+numpy==2.2.6
+torch==2.15.0

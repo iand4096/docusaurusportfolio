@@ -7,6 +7,7 @@ rejected before adjudication. Human resolution is never set by the AI.
 from __future__ import annotations
 
 import hashlib
+import copy
 import json
 import os
 import re
@@ -83,7 +84,11 @@ def git_document_revision(path: str) -> dict:
     source = Path(path)
     result = {'git_commit': None, 'content_sha256': None}
     if source.is_file():
-        result['content_sha256'] = hashlib.sha256(source.read_bytes()).hexdigest()
+        raw = source.read_bytes()
+        result['content_sha256'] = hashlib.sha256(raw).hexdigest()
+        # Portable exact bytes, including uncommitted edits and CRLF newlines.
+        # The hash is verified on every read; Git HEAD alone cannot reproduce edits.
+        result['source_snapshot'] = raw.decode('utf-8')
     try:
         completed = subprocess.run(['git', 'rev-parse', 'HEAD'], check=False,
                                    capture_output=True, text=True, timeout=8)
@@ -151,6 +156,50 @@ def save_findings(issues: list[dict], path: Path = DEFAULT_FINDINGS) -> None:
 
 def feedback_records(path: Path = DEFAULT_FEEDBACK) -> dict:
     return _json_read(path, {'schema_version': SCHEMA_VERSION, 'records': {}})
+
+
+def feedback_is_stale(issue, record):
+    old = record.get('latest_finding', {})
+    expected = (old.get('document_revision') or {}).get('content_sha256')
+    actual = (issue.get('document_revision') or {}).get('content_sha256')
+    return bool(record) and (not expected or expected != actual or
+                            normalise(issue.get('suggestion')) != normalise(old.get('suggestion')))
+
+
+def preserve_precedent(record, finding, *, rebuttal=None, adjudication=None, resolution=None,
+                       legacy=False):
+    """Append a content-addressed, immutable decision/claim binding; never update one."""
+    snapshot = {
+        'finding': {k: copy.deepcopy(finding.get(k)) for k in (
+            'file', 'source', 'category', 'original', 'message', 'suggestion', 'document_revision')},
+        'rebuttal': rebuttal,
+        'adjudication': copy.deepcopy(adjudication),
+        'resolution': copy.deepcopy(resolution),
+        'legacy': legacy,
+    }
+    identity = 'qap-' + hashlib.sha256(json.dumps(snapshot, sort_keys=True).encode()).hexdigest()
+    snapshot['precedent_id'] = identity
+    precedents = record.setdefault('precedents', [])
+    if not any(item.get('precedent_id') == identity for item in precedents):
+        precedents.append(snapshot)
+    return snapshot
+
+
+def preserve_legacy_precedents(record):
+    """Retain legacy history before latest_finding changes; do not invent old bindings."""
+    if record.get('precedents') or not record.get('latest_finding'):
+        return
+    old = record['latest_finding']
+    humans = [item['text'] for item in record.get('discussion', []) if item.get('role') == 'human']
+    # Legacy logs do not reliably bind rebuttals and claims to each adjudication.
+    # Keep the complete history; mark derived snapshots ineligible for decision reuse.
+    for decision in record.get('adjudications', []):
+        preserve_precedent(record, old, rebuttal=humans[-1] if humans else None,
+                           adjudication=decision, legacy=True)
+    if record.get('human_resolution'):
+        resolution = (record.get('resolution_history') or [{
+            'decision': record['human_resolution'], 'reason': 'Legacy resolution'}])[-1]
+        preserve_precedent(record, old, resolution=resolution, legacy=True)
 
 
 def attach_feedback_status(issues: list[dict], feedback_path: Path = DEFAULT_FEEDBACK) -> None:
@@ -406,6 +455,12 @@ def _source_for_report_finding(issue: dict, *, historical: bool) -> str:
     sha = (issue.get('document_revision') or {}).get('content_sha256')
     if not isinstance(sha, str) or not re.fullmatch(r'[a-fA-F0-9]{64}', sha):
         raise ValueError('Finding has no verifiable source SHA-256')
+    snapshot = (issue.get('document_revision') or {}).get('source_snapshot')
+    if snapshot is not None:
+        if not isinstance(snapshot, str) or hashlib.sha256(snapshot.encode('utf-8')).hexdigest() != sha:
+            raise ValueError('Source snapshot does not match the finding source SHA-256')
+        if historical:
+            return snapshot
     local = Path(file_name)
     if local.is_file():
         raw = local.read_bytes()
@@ -465,6 +520,8 @@ def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False
     line, context = _source_excerpt(source, issue['original'])
     issue['_source_full'] = source
     issue['_source_context'] = context
+    if hashlib.sha256(source.encode('utf-8')).hexdigest() == issue['document_revision']['content_sha256']:
+        issue['document_revision'] = {**issue['document_revision'], 'source_snapshot': source}
     store = feedback_records(feedback_path)
     records = store['records']
     record_key, matched_record, match = match_feedback(issue, records)
@@ -477,6 +534,7 @@ def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False
         'issue_id': issue_id, 'status': 'unreviewed',
         'human_resolution': None, 'discussion': [], 'adjudications': []})
     record['persistent_issue_id'] = persistent_id(record_key, record)
+    preserve_legacy_precedents(record)
     occurrence = {'occurrence_id': occurrence_id(issue), 'issue_id': issue_id,
                   'document_revision': issue['document_revision'], 'report_source': provenance}
     occurrences = record.setdefault('occurrences', [])
@@ -486,7 +544,7 @@ def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False
     if retry and (previous_revision != issue['document_revision']['content_sha256'] or
                   normalise(record.get('latest_finding', {}).get('suggestion')) != normalise(issue.get('suggestion'))):
         raise ValueError('Retry must use the same document revision and proposed fix as the pending challenge')
-    if previous_revision and previous_revision != issue['document_revision']['content_sha256']:
+    if feedback_is_stale(issue, record):
         # Preserve the audit history, but never carry a human dismissal to a
         # different version of the document when a new challenge is opened.
         record['human_resolution'] = None
@@ -518,6 +576,8 @@ def challenge(issue_id: str, rebuttal: str | None = None, *, retry: bool = False
     record['discussion'].append({'role': 'ai', 'text': decision['reason'],
                                  'decision': decision['decision'], 'at': utc_now()})
     record['status'] = 'adjudicated'
+    preserve_precedent(record, record['latest_finding'], rebuttal=rebuttal.strip(),
+                       adjudication=record['adjudications'][-1])
     write_atomic(feedback_path, store)
     return decision
 
@@ -545,7 +605,10 @@ def resolve(issue_id: str, decision: str, reason: str, *,
         source = _source_for_report_finding(issue, historical=True)
         if issue.get('original') not in source:
             raise ValueError('Finding quotation is absent from the verified source')
+        if hashlib.sha256(source.encode('utf-8')).hexdigest() == issue['document_revision']['content_sha256']:
+            issue['document_revision'] = {**issue['document_revision'], 'source_snapshot': source}
         old_sha = (record.get('latest_finding', {}).get('document_revision') or {}).get('content_sha256')
+        preserve_legacy_precedents(record)
         new_sha = issue['document_revision']['content_sha256']
         if old_sha != new_sha or normalise(record.get('latest_finding', {}).get('suggestion')) != normalise(issue.get('suggestion')):
             record['status'] = 'unreviewed'
@@ -562,9 +625,16 @@ def resolve(issue_id: str, decision: str, reason: str, *,
         record = store['records'].get(issue_id)
         if record is None:
             raise ValueError(f'No feedback record found for {issue_id}; challenge it first or provide --report')
+        preserve_legacy_precedents(record)
     event = {'decision': decision, 'reason': reason.strip(), 'at': utc_now(),
              'document_revision': record.get('latest_finding', {}).get('document_revision')}
     record['human_resolution'] = decision
     record.setdefault('resolution_history', []).append(event)
+    adjudication = (record.get('adjudications') or [None])[-1]
+    if adjudication and adjudication.get('document_revision') != record['latest_finding'].get('document_revision'):
+        adjudication = None
+    humans = [entry['text'] for entry in record.get('discussion', []) if entry.get('role') == 'human']
+    preserve_precedent(record, record['latest_finding'], resolution=event, adjudication=adjudication,
+                       rebuttal=humans[-1] if humans else None)
     write_atomic(feedback_path, store)
     return event

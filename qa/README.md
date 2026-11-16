@@ -101,71 +101,142 @@ The render output retains an original-report snapshot and separate review and
 feedback timestamps. It refuses to overwrite the input report. Commit
 `qa/feedback.json` to share decisions with future checkouts and CI runs.
 
-## Reworded complaints and category changes
+## Semantic recurrence retrieval and applicability
 
-For AI findings without an exact feedback match, report generation proposes up to
-five previous challenges in the same file. Candidate retrieval uses normalised
-quotation similarity (at least 0.7), including substantial containment. Categories
-and criticism wording do not have to match. Similarity only shortlists candidates;
-it does not establish that two allegations are equivalent.
+Recurrence detection has two stages. It proposes up to **15** previous challenges
+from the same file, then uses DeepSeek to assess the complaints and prior decisions.
+An exact claim with changed source or a changed suggestion enters this comparison
+path too. It remains **Needs revalidation** until a human takes action.
 
-A full AI QA run compares candidates using DeepSeek. For an existing saved report,
-request comparisons without rerunning its documentation checks:
+### Candidate retrieval
+
+The shortlist combines normalised quotation overlap with local embeddings of the
+criticism and suggested correction. It uses the pinned
+`sentence-transformers/all-MiniLM-L6-v2` model at revision
+`1110a243fdf4706b3f48f1d95db1a4f5529b4d41`, on CPU with safetensors and remote model
+code disabled. Normalised embeddings are cached by model revision and complaint
+text under `.qa/feedback-index/embeddings.json`.
+
+Candidates qualify through quotation similarity of at least `0.7` (including
+containment), or complaint cosine similarity of at least `0.4`. The latter cutoff
+retains a rewritten MkDocs pilot quotation in the labelled smoke set; it is a
+retrieval heuristic, not a probability of equivalence. Ranking weights complaint
+similarity at `0.75` and quotation similarity at `0.25`. Exact-but-stale matches
+have priority. Shared quotations may still retrieve different complaints; the
+second stage must distinguish them.
+
+The comparison path populates embeddings. Render-only refreshes read cached
+vectors or retain valid source-bound proposals embedded in saved reports; they
+never load or download a model. If embedding generation fails, quotation fallback
+remains available and the failure is reported. Neither path changes CI eligibility.
+
+### Comparison and immutable precedents
+
+A full AI QA run compares candidates. To compare an existing report without
+rerunning its documentation checks:
 
 ```bash
 python3 scripts/ai_docs_review.py compare \
-  --report .qa/local-review-2026-11-13/ai-doc-review.json \
+  --report .qa/ai-doc-review.json \
   --report-dir .qa/recurrence-review
 ```
 
-`compare` requires `DEEPSEEK_API_KEY`. The comparison receives the old and new
-allegations, complete hash-verified source documents, and the previous rebuttal
-and adjudication. It returns `same_complaint`, `different_complaint`, or `uncertain`,
-with exact evidence checked against the supplied allegations and sources. Partial
-overlap is uncertain; a shared quotation is insufficient. Responses are cached in
-`.qa/feedback-index/comparisons.json`, keyed by comparison policy, model, findings,
-source revisions and prior discussion. This disposable cache is not a vector
-database and is not authoritative feedback. Failed requests and unverifiable
-responses appear separately in the report and never dismiss a finding.
+`compare` requires `DEEPSEEK_API_KEY`. The model receives complete hash-verified
+old and new sources, allegations, prior rebuttals, adjudications and immutable
+precedents. It returns three independent classifications:
 
-The HTML report shows previous/current quotations and allegations, prior rebuttals
-and decisions, whether source hashes changed, and any AI comparison. It provides
-copy buttons for confirm/reject commands; edit the placeholder reason before
-running them. Markdown and JSON retain the comparison information too.
+| Field | Values |
+| --- | --- |
+| `complaint_relationship` | `equivalent`, `narrower`, `broader`, `different`, `uncertain` |
+| `prior_decision_applicability` | `applicable`, `not_applicable`, `uncertain` |
+| `document_change_impact` | `unchanged`, `not_material`, `material`, `uncertain` |
+
+The code validates controlled values and exact supporting quotations. Applicability
+requires source evidence from both versions. Different complaints, new requirements,
+material changes, uncertain evidence, legacy bindings or conflicting decisions
+cannot qualify for reuse. The legacy `verdict` display field is retained for report
+compatibility; it describes complaint relationship, not decision applicability.
+
+Comparisons are disposable cached recommendations, bound to policy, model,
+source revisions, immutable precedents and discussion history. They never change
+feedback or resolve a finding. HTML, Markdown and JSON expose all classifications.
+
+New findings include a hash-verified source snapshot in `document_revision` so
+uncommitted source remains reconstructable after the working file changes.
+New challenge and resolution decisions append content-addressed `qap-…` precedents
+containing the exact finding, rebuttal, decision, rationale, evidence and revision.
+They are never updated when `latest_finding` changes. Legacy history is preserved
+but cannot be retroactively represented as a verified original claim binding.
+
+### Human confirmation and decision reuse
+
+The existing `link` command confirms or rejects a recurrence relationship without
+inheriting decisions. It continues to preserve the previous record. For exact-but-
+stale findings use revalidation instead of creating a second record for the claim.
+
+When an immutable precedent is applicable and no conflicts are found, reports offer
+an explicit human revalidation command:
 
 ```bash
-python3 scripts/ai_docs_review.py link \
+python3 scripts/ai_docs_review.py reuse \
   --report .qa/recurrence-review/ai-doc-review.json \
   --issue qa-NEW_FINDING \
   --previous qa-PREVIOUS_RECORD \
-  --decision confirmed \
-  --reason "Both allegations concern the same missing subject."
+  --proposal TOKEN_COPIED_FROM_REPORT \
+  --reason "I checked both versions; the earlier evidence and decision still apply."
 ```
 
-Use `--decision rejected` to reject a proposed relationship. Leave unresolved by
-taking no action. These human commands require no AI key. They verify the source,
-proposal and previous record, then append an audit event in `qa/feedback.json`.
-A rejection suppresses that particular proposal while its finding snapshots remain
-unchanged; changed source or proposed fixes can warrant fresh review.
+This command requires no AI key. It verifies the current comparison, proposal,
+source hashes, precedent and decision history before writing an audit event.
+Any history change invalidates the approval token. For an exact stale claim it
+revalidates the existing record; for a reworded claim it creates a separate record
+sharing the persistent identity. Original precedents remain unchanged. Source or
+suggestion changes after approval require revalidation again.
 
-Confirmation creates a separate record sharing the previous persistent issue ID,
-with a snapshot of earlier discussion and decisions. It does **not** inherit the
-previous human dismissal, AI withdrawal or revised wording, and it does not alter
-the old feedback record. The new finding remains active, labelled **Linked —
-awaiting human resolution**. Use the existing `resolve --report ...` command to
-record a separate human decision, or `challenge` for fresh AI adjudication. Later
-source or suggestion changes retain the existing revalidation safeguards.
+A prior human resolution can be reused only through this explicit action. Reusing
+an AI withdrawal alone does **not** dismiss the finding or remove CI eligibility.
+Material changes, conflicting decisions and unresolved applicability require a
+fresh `resolve --report ...` or `challenge`, not a reuse command.
 
-Run `render` on the saved report after recording a link or resolution, and commit
-`qa/feedback.json` to share the decisions. Render performs no AI calls. Report
-creation and AI comparison do not write to the feedback registry. Challenge records
-absent from the current findings are still not displayed as an independent archive.
+Run `render` after recording a link, resolution or reuse, and commit
+`qa/feedback.json` to share it. Rendering and comparison do not write feedback.
+Published reports may contain complete source snapshots of reviewed documents;
+only review content appropriate for publication when publishing QA reports.
+
+### Dependencies and evaluation
+
+CI installs a wheel-only, SHA-256-locked CPU runtime from
+`requirements-doc-review-linux-py312.lock` (Linux x86_64, Python 3.12). Portable
+direct dependency declarations are in `requirements-qa-recurrence.txt` and included
+by `requirements-doc-review.txt`. The lock includes transitive dependencies and
+uses the official PyTorch CPU wheel URL. Update manifests and lock together.
+The ML stack adds installation and model-download cost; the deployed search API
+has its own separate dependency manifest.
+
+Run deterministic recurrence and feedback tests without API calls:
+
+```bash
+python3 -m unittest discover -s scripts/tests -p 'test_qa*.py'
+```
+
+Run the real embedding retrieval smoke evaluation on labelled variants of the
+repository's historical feedback records:
+
+```bash
+python3 scripts/evaluate_qa_recurrence.py
+```
+
+The first run downloads the pinned model; cached runs can use `HF_HUB_OFFLINE=1`.
+The fixture identifies synthetic paraphrases explicitly. It reports candidate
+ranks and cosine scores, not measured DeepSeek adjudication accuracy. Distinct
+complaints may still enter the shortlist through quotation overlap. Regression
+tests separately exercise the comparison contract and decision-reuse safeguards
+with controlled model responses.
 
 ## Not implemented
 
 - Automatic semantic merging or dismissal. AI comparisons are recommendations only.
 - Git rename detection or candidate matching across different files.
-- Automatic assessment of whether changed context invalidates a dismissal.
 - Browser-side writes or merging existing feedback records. Reports copy local CLI
   commands; ambiguous exact matches still require manual investigation.
 - Reliable distinction between two identical quotations in different parts of

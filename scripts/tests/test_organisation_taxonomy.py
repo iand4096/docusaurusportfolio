@@ -76,7 +76,7 @@ class OrganisationTaxonomyTests(unittest.TestCase):
             path.write_text(original)
             entry = {"file": "docs/example.md", "expect": [], "organisations": ["amx"],
                      "scope": "whole-page-single-employer",
-                     "evidence": {"amx": "I designed and built this portfolio"}}
+                     "evidence": {"amx": "I built this portfolio with Docusaurus"}}
             manifest = {"version": 1, "taxonomy_version": 3, "documents": [entry]}
             changes = plan(root, manifest, self.taxonomy)
             self.assertEqual(path.read_text(), original)

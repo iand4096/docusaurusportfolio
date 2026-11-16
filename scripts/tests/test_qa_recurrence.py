@@ -18,6 +18,10 @@ from test_qa_report_feedback import finding, feedback_record
 
 class RecurrenceTests(unittest.TestCase):
     def setUp(self):
+        (review.PROJECT_ROOT / '.qa').mkdir(exist_ok=True)
+        embedding = patch('qa_embeddings.ComplaintIndex.populate')
+        embedding.start()
+        self.addCleanup(embedding.stop)
         self.temp = tempfile.TemporaryDirectory(prefix='qa-recurrence-')
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
@@ -33,7 +37,8 @@ class RecurrenceTests(unittest.TestCase):
         self.new.update(issue_id='qa-new', category='grammar', message='A subject is missing from this sentence.')
         self.store = {'schema_version': 1, 'records': {'qa-old': self.record}}
         self.registry.write_text(json.dumps(self.store))
-        self.answer = {'verdict': 'same_complaint', 'reason': 'Both allege an absent subject.',
+        self.answer = {'complaint_relationship': 'equivalent',
+                       'prior_decision_applicability': 'uncertain', 'document_change_impact': 'unchanged', 'reason': 'Both allege an absent subject.',
                        'old_evidence': ['The sentence has no subject.'],
                        'new_evidence': ['A subject is missing from this sentence.']}
 
@@ -108,7 +113,7 @@ class RecurrenceTests(unittest.TestCase):
     def test_different_or_uncertain_verdict_does_not_link(self):
         for verdict in ('different_complaint', 'uncertain'):
             with self.subTest(verdict=verdict), patch.object(feedback, '_source_for_report_finding', return_value=self.source):
-                answer = {**self.answer, 'verdict': verdict}
+                answer = {**self.answer, 'complaint_relationship': 'different' if verdict == 'different_complaint' else 'uncertain'}
                 recurrence.compare_recurrences([self.new], feedback_path=self.registry,
                     cache_path=self.root / (verdict + '.json'), api_key='unused', request_review=lambda *_: answer)
                 self.assertEqual(self.new['recurrence_candidates'][0]['comparison']['verdict'], verdict)
