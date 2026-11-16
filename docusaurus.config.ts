@@ -49,7 +49,7 @@ const config: Config = {
     './plugins/taxonomy-coverage.cjs',
     './plugins/see-also.cjs',
     [
-      'docusaurus-plugin-llms',
+      './plugins/case-study-llms.cjs',
       {
         generateMarkdownFiles: true,
         excludeImports: true,

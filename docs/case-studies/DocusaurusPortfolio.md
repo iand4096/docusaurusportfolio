@@ -65,6 +65,34 @@ tags:
   - vale
 ---
 
+import CaseStudySummary from '@site/src/components/CaseStudySummary';
+
+<CaseStudySummary {...{
+  "employer": "Independent project",
+  "industry": "Documentation engineering",
+  "projectType": "Publishing and QA platform",
+  "summary": "Built this portfolio as a working example of automated QA, metadata-driven discovery and machine-readable publishing.",
+  "role": "Sole designer, developer and documentation author",
+  "scope": "Portfolio publishing, discovery, quality assurance and CI/CD",
+  "decision": "Combine deterministic checks with AI review and source-validated findings",
+  "deliverables": "Docusaurus site, Python QA pipeline, faceted browsing, related links and LLM exports",
+  "evidenceTitle": "Delivered Capabilities",
+  "evidence": [
+    {
+      "value": "Automated QA",
+      "label": "Style, accessibility, links and AI editorial review"
+    },
+    {
+      "value": "Content discovery",
+      "label": "Faceted browsing and related-page recommendations"
+    },
+    {
+      "value": "LLM exports",
+      "label": "Markdown corpus and versioned QA reports"
+    }
+  ]
+}} />
+
 ## Context {/* #context */}
 
 I built this portfolio with Docusaurus to publish my documentation samples and demonstrate the tooling behind them. It includes search, automated content recommendations and a Python documentation QA pipeline.

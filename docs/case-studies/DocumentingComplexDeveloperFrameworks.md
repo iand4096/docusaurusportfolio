@@ -51,6 +51,39 @@ tags:
   - technical-writing
 ---
 
+import CaseStudySummary from '@site/src/components/CaseStudySummary';
+
+<CaseStudySummary {...{
+  "employer": "Morgan Stanley",
+  "industry": "Investment banking",
+  "projectType": "Framework and API documentation",
+  "summary": "Explained complex Scala frameworks by investigating undocumented behaviour and validating technical examples.",
+  "role": "Lead and sole technical writer for Optimus and RICE",
+  "scope": "Computation, bitemporal data, reactive UIs, interoperability and testing",
+  "decision": "Trace source code and execution paths; compile and test examples where possible",
+  "deliverables": "Conceptual documentation, developer guides and API references",
+  "evidenceTitle": "Technical Coverage",
+  "evidence": [
+    {
+      "value": "Optimus UI",
+      "label": "Reactive Scala MVVM framework"
+    },
+    {
+      "value": "Regression testing",
+      "label": "Framework supporting 400,000 tests"
+    },
+    {
+      "value": "Scala / C++",
+      "label": "JNI-based interoperability"
+    },
+    {
+      "value": "Backfiller",
+      "label": "Kafka and bitemporal data ingestion"
+    }
+  ],
+  "decisionLabel": "Key approach"
+}} />
+
 ## Context {/* #context */}
 
 Alongside leading the development of Morgan Stanley's new [custom docs-as-code platform](ScalingADeveloperDocsPlatform.md), I served as the lead and sole technical writer for the Optimus and RICE frameworks.

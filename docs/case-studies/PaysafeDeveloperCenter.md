@@ -51,6 +51,42 @@ tags:
 
 import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
 
+import CaseStudySummary from '@site/src/components/CaseStudySummary';
+
+<CaseStudySummary {...{
+  "employer": "Paysafe",
+  "industry": "Payments / Fintech",
+  "projectType": "Public developer portal",
+  "summary": "Led a unified Developer Center bringing together Paysafe and Skrill API, SDK and integration documentation.",
+  "role": "Documentation strategy, information architecture and team leadership",
+  "scope": "Optimal Payments and Skrill developer documentation",
+  "decision": "Flare and Git authoring with incremental publishing into TYPO3",
+  "deliverables": "Unified portal, content migration, API Blueprint references and automated publishing",
+  "evidenceTitle": "Delivery evidence and business context",
+  "evidence": [
+    {
+      "value": "Public Developer Center",
+      "label": "Delivered a unified portal for API, SDK and integration documentation"
+    },
+    {
+      "value": "3",
+      "label": "Technical writers led and trained",
+      "emphasis": "metric"
+    },
+    {
+      "value": "$1bn+",
+      "label": "Company revenue",
+      "emphasis": "metric"
+    },
+    {
+      "value": "21%",
+      "label": "Revenue growth, excluding acquisition and currency effects.",
+      "emphasis": "metric",
+      "labelStyle": "note"
+    }
+  ]
+}} />
+
 ## Context {/* #context */}
 
 After Optimal Payments acquired Skrill Group in August 2015 and rebranded as Paysafe, I led the documentation work on a ten-month project to build a new unified Developer Center. The site brought together API and SDK reference documentation, integration guides, and product information for merchants integrating Paysafe's payment methods, replacing documentation previously distributed across the two businesses.

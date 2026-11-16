@@ -89,6 +89,35 @@ tags:
   - terraform
 ---
 
+import CaseStudySummary from '@site/src/components/CaseStudySummary';
+
+<CaseStudySummary {...{
+  "employer": "Independent project",
+  "industry": "AI / Developer tooling",
+  "projectType": "Cloud search application",
+  "summary": "Built and deployed portfolio search with governed retrieval and source-linked AI answers.",
+  "role": "Sole architect, developer and deployment engineer",
+  "scope": "Search and AI-assisted retrieval across portfolio documentation",
+  "decision": "Hybrid BM25/FAISS retrieval with metadata filters, separate from AI generation",
+  "deliverables": "FastAPI service, ingestion pipeline, React interface and Terraform-managed Azure deployment",
+  "evidenceTitle": "Delivered Capabilities",
+  "evidence": [
+    {
+      "value": "3",
+      "label": "Retrieval modes",
+      "emphasis": "metric"
+    },
+    {
+      "value": "Governed filters",
+      "label": "Taxonomy and lifecycle constraints"
+    },
+    {
+      "value": "Azure API",
+      "label": "Containerised, source-linked search"
+    }
+  ]
+}} />
+
 ## Project overview
 
 I designed and deployed a **cloud-based retrieval-augmented generation (RAG)** application to test how documentation governance can improve the way people find technical information. Visitors can search my portfolio using keywords, semantic similarity or hybrid retrieval, then inspect the original passages or request an AI-generated answer grounded in those passages.

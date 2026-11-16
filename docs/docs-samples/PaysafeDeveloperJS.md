@@ -67,7 +67,7 @@ The guide has since been expanded by other contributors to cover features includ
 * Explain the relationship between browser-side data collection, tokenisation, and subsequent server-side payment requests.
 * Provide working examples that developers could inspect, modify, and test.
 * Make a security-sensitive integration approachable without omitting the configuration, validation, and error handling required for production use.
-* Deliver the guide while managing the wider Paysafe Developer Centre and leading a team of three technical writers.
+* Deliver the guide while managing the wider Paysafe Developer Center and leading a team of three technical writers.
 
 ## My approach {/* #my-approach */}
 

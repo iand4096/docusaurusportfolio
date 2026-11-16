@@ -61,6 +61,37 @@ tags:
 
 import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
 
+import CaseStudySummary from '@site/src/components/CaseStudySummary';
+
+<CaseStudySummary {...{
+  "employer": "Morgan Stanley",
+  "industry": "Investment banking",
+  "projectType": "Internal developer platform",
+  "summary": "Led an enterprise docs-as-code platform from launch through wider adoption across Morgan Stanley’s developer community.",
+  "role": "Platform leadership and hands-on engineering",
+  "scope": "Optimus, RICE and the wider Codetree monorepo",
+  "decision": "Git-based authoring with consistent rendering in IntelliJ and on the website",
+  "deliverables": "Developer portal, migration tools and publishing workflows",
+  "evidenceTitle": "Measurable Results",
+  "evidence": [
+    {
+      "value": "3,200+",
+      "label": "Pages at maturity, up from ~700",
+      "emphasis": "metric"
+    },
+    {
+      "value": "~900",
+      "label": "Legacy pages converted",
+      "emphasis": "metric"
+    },
+    {
+      "value": "15 min",
+      "label": "Container build-time reduction",
+      "emphasis": "metric"
+    }
+  ]
+}} />
+
 ## Context {/* #context */}
 
 At Morgan Stanley, I led the design, launch and evolution of a custom internal docs-as-code platform and developer portal, alongside my work as lead technical writer for the Optimus and RICE frameworks. The platform replaced fragmented legacy documentation for these frameworks with a centralised system using Git-based workflows that made it easier for engineers and technical writers to create, maintain, review and discover content. Initially developed to support Optimus and RICE, the platform expanded to serve the documentation needs of the wider Codetree ecosystem - a large-scale monorepo containing more than 40 million lines of code.

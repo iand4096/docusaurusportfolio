@@ -16,6 +16,7 @@
     "test:taxonomy-filters": "node scripts/tests/taxonomy-filters.test.cjs",
     "see-also:generate": "node scripts/see-also.mjs generate",
     "see-also:check": "node scripts/see-also.mjs check",
+    "test:case-study-summary": "node --test scripts/tests/case-study-summary.test.cjs",
     "test:see-also": "node scripts/tests/see-also.test.mjs",
     "lint:markdown": "remark README.md \"docs/**/*.{md,mdx}\" \"src/pages/**/*.{md,mdx}\" --quiet --frail --silently-ignore",
     "taxonomy:generate": "python scripts/taxonomy.py generate",
