@@ -592,9 +592,11 @@ Fresh v2 upgrades already use the single-employer configuration and do not need 
 
 Existing migration manifests keep their original taxonomy-version preconditions. The migration-manifest format remains version 2; this is separate from canonical taxonomy version 3.
 
-### Problem {/* #problem */}
+### Landing-page classification {/* #landing-page-classification */}
 
 Landing pages have the public tag `landing-page`, generated from the existing content-type term. They retain `type: [landing-page]` and lifecycle metadata but do not carry audience, topic, technology or employer classifications. The validator rejects those classifications on landing pages, the editor omits their fields, and AI classification leaves them empty. This keeps navigation overviews out of subject-specific tag and filter results.
+
+### Metadata benefits {/* #metadata-benefits */}
 
 Documentation metadata helps with:
 
@@ -608,6 +610,8 @@ Documentation metadata helps with:
 * **Content governance** - track ownership, review dates, product applicability, and maintenance responsibility.
 * **Analytics and gap analysis** - measure coverage and identify missing or under-documented areas.
 * **AI and semantic retrieval** - provide structured context for RAG, semantic search, and knowledge-graph generation.
+
+### Original motivation {/* #problem */}
 
 Free-form content tags are easy to add but difficult to govern consistently over time. As the portfolio expanded, I wanted metadata that:
 

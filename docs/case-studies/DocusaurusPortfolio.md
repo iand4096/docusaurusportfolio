@@ -157,7 +157,7 @@ AI findings can be challenged, revised or dismissed while preserving the origina
 
 Deployment publishes matching HTML, JSON and Markdown QA reports under commit-specific filenames. Before publishing, the workflow checks that the reports came from the current run. The `/qa/` page redirects readers to the latest commit-specific report. When QA thresholds are exceeded, the workflow publishes the reports before a final gate marks the run as failed. Readers can still inspect the findings.
 
-The implementation includes the portfolio published on GitHub Pages, a [Documentation QA report](pathname:///qa/) for the current site, and the GitHub repository containing the source, QA tooling, and deployment workflow.
+The implementation includes the portfolio published on GitHub Pages, a [Documentation QA report](pathname:///qa/) for the current site, and the [GitHub repository](https://github.com/iand4096/docusaurusportfolio) containing the source, QA tooling, and deployment workflow.
 
 ## Impact {/* #impact */}
 
