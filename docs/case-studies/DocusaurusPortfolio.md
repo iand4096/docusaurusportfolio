@@ -105,19 +105,19 @@ Production builds generate `llms.txt`, `llms-full.txt` and individual Markdown e
 
 ### Reusable presentation {/* #reusable-presentation */}
 
-React components populate landing-page cards from sidebar and frontmatter metadata. Card titles, summaries and highlights are stored in each document’s frontmatter. Reusable capability cards and grids support MDX presentation. Mermaid diagrams include an enlargement control so readers can inspect larger architecture diagrams in a modal view.
+React components populate landing-page cards from sidebar and frontmatter metadata. Card titles, summaries and highlights are stored in each document’s frontmatter. Reusable capability cards and grids support MDX presentation. Readers can enlarge Mermaid diagrams to inspect larger architecture diagrams in a modal view.
 
 ### Documentation QA {/* #documentation-qa */}
 
 The QA pipeline combines:
 
 * **DeepSeek AI** for higher-level editorial and portfolio review.
-* **AccessibilityCheck** for issues such as alt text, vague links, and heading structure.
+* **AccessibilityCheck** for issues such as alt text, vague links and heading structure.
 * **LinkCheck** for checking local Markdown links, image paths, and links to files hosted with the documentation.
 * **Remark** for Markdown/MDX syntax and structure checks.
 * **Vale** for mechanical style-guide and terminology rules.
 * **Lychee** for external link checking.
-* **LTeX+** as a front end for **LanguageTool** for spelling, punctuation, and grammar checking.
+* **LTeX+** as a front end for **LanguageTool** for spelling, punctuation and grammar checking.
 
 The checks produce HTML, JSON and Markdown reports through GitHub Actions on pull requests and pushes to the main branch.
 
@@ -127,7 +127,7 @@ AI findings can be challenged, revised or dismissed while preserving the origina
 
 ### Reliable report publishing {/* #reliable-report-publishing */}
 
-Deployment publishes matching HTML, JSON and Markdown QA reports under commit-specific filenames. Before publishing, the workflow checks that the reports came from the current run. The `/qa/` page redirects readers to the latest commit-specific report. Reports are published even when QA thresholds are exceeded, then a final gate fails the workflow so findings remain available for inspection.
+Deployment publishes matching HTML, JSON and Markdown QA reports under commit-specific filenames. Before publishing, the workflow checks that the reports came from the current run. The `/qa/` page redirects readers to the latest commit-specific report. When QA thresholds are exceeded, the workflow publishes the reports before a final gate marks the run as failed. Readers can still inspect the findings.
 
 The implementation includes the portfolio published on GitHub Pages, a [Documentation QA report](pathname:///qa/) for the current site, and the GitHub repository containing the source, QA tooling, and deployment workflow.
 

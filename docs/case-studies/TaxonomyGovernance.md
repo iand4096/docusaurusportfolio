@@ -56,7 +56,7 @@ I wanted the repository to enforce the metadata model rather than rely on contri
 * Authoring tools that use that list.
 * Automatic detection of invalid metadata.
 * Reproducible generation of dependent downstream files such as Docusaurus tags.
-* Explicit handling of renames, corrections, replacements, and deprecations.
+* Explicit handling of renames, corrections, replacements and deprecations.
 * A way to see the effect of a taxonomy change before applying it.
 
 This meant treating the taxonomy as a repository artefact rather than editorial guidance.

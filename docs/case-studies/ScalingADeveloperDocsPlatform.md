@@ -119,7 +119,7 @@ The custom platform supported source-code injection and custom Markdown extensio
 
 ### Documentation platform workflow {/* #documentation-platform-workflow */}
 
-The platform supported the full documentation lifecycle, from Markdown authoring and Git-based review through automated build, publishing, and discovery.
+The platform supported the full documentation lifecycle, from Markdown authoring and Git-based review through automated build, publishing and discovery.
 
 <div class="diagram-wrap">
 
@@ -227,12 +227,12 @@ As the platform matured, I contributed directly to its codebase using agentic AI
 
 ## Impact {/* #impact */}
 
-The platform grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work, content migrations, and contributions from the wider engineering community.
+The platform grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work, content migrations and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
 
 ## Lessons learned {/* #lessons-learned */}
 
-* Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence, and content type, early in the development of a documentation platform. My current portfolio integrates [a canonical taxonomy and associated governance system](./TaxonomyGovernance.md).
+* Define and implement a structured documentation metadata taxonomy, covering ownership, lifecycle status, audience, review cadence and content type, early in the development of a documentation platform. My current portfolio integrates [a canonical taxonomy and associated governance system](./TaxonomyGovernance.md).
 
-* Add a full set of automated quality checks to documentation pull requests beyond simple link checking, using tools such as Vale and LanguageTool together with AI-assisted checks for style-guide conformance, consistency, and other content-quality issues. This would help to ensure that quality scales with the growth of the site once manual review of every PR is no longer practical and is especially important when engineers use GenAI assisted authoring. My [portfolio integrates these checks](./DocusaurusPortfolio.md).
+* Add a full set of automated quality checks to documentation pull requests beyond simple link checking, using tools such as Vale and LanguageTool together with AI-assisted checks for style-guide conformance, consistency and other content-quality issues. This would help to ensure that quality scales with the growth of the site once manual review of every PR is no longer practical and is especially important when engineers use GenAI assisted authoring. My [portfolio integrates these checks](./DocusaurusPortfolio.md).

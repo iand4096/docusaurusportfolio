@@ -16,7 +16,7 @@ Run `npm run build`, then `npm run start -- --no-open`. Visit `/docusaurusportfo
 - Prefix matching and conservative one-edit typo tolerance for words with five or more characters.
 - Relevance order when searching, alphabetical order when the query is blank.
 - Compact “matched in” and relevance-sort indicators, plus help text and clearer zero-result messaging.
-- Existing taxonomy dimensions, chip selections, facet counts, URL `contentType` query handling, document links, and mobile layout preserved.
+- Existing taxonomy dimensions, chip selections, facet counts, URL `contentType` query handling, document links and mobile layout are preserved.
 
 ## Important boundaries {/* #important-boundaries */}
 
