@@ -377,6 +377,75 @@ jobs:
           echo "Stable QA URL: qa/"
           echo "Versioned QA report: qa/${REPORT_NAME}"
 
+      - name: Publish LLM-friendly QA entrypoints
+        if: always()
+        shell: bash
+        run: |
+          python - <<'PY'
+          import json
+          import shutil
+          from pathlib import Path
+
+          qa = Path("build/qa")
+          pointer = qa / "version.json"
+          if not pointer.is_file():
+              print("QA version metadata unavailable")
+              raise SystemExit(0)
+
+          version = json.loads(pointer.read_text(encoding="utf-8"))
+          report = version["report"]
+          stem = Path(report).stem
+          md = qa / f"{stem}.md"
+          js = qa / f"{stem}.json"
+
+          if not md.is_file() or not js.is_file():
+              print("Machine-readable QA report unavailable")
+              raise SystemExit(0)
+
+          shutil.copyfile(md, qa / "latest.md")
+          shutil.copyfile(js, qa / "latest.json")
+
+          index = qa / "index.html"
+          html = index.read_text(encoding="utf-8")
+          html = html.replace(
+              "<title>Documentation QA</title>",
+              f'''<title>Documentation QA</title>
+          <link rel="alternate" type="text/markdown" href="./{stem}.md">
+          <link rel="alternate" type="application/json" href="./{stem}.json">''',
+              1,
+          )
+          html = html.replace(
+              '<p id="qa-status">Loading the latest QA report…</p>',
+              f'''<p id="qa-status">Opening the latest QA report…</p>
+          <p>Machine-readable reports:</p>
+          <ul>
+            <li><a href="./{stem}.md">Markdown QA report</a></li>
+            <li><a href="./{stem}.json">JSON QA report</a></li>
+            <li><a href="./{report}">HTML QA report</a></li>
+          </ul>''',
+              1,
+          )
+          html = html.replace(
+              "JavaScript is required to resolve the latest versioned QA report.",
+              "Use the report links above when JavaScript is unavailable.",
+          )
+          index.write_text(html, encoding="utf-8")
+
+          llms = Path("build/llms.txt")
+          if llms.is_file():
+              content = llms.read_text(encoding="utf-8")
+              link = "https://iand4096.github.io/docusaurusportfolio/qa/latest.md"
+              if link not in content:
+                  content = content.rstrip() + (
+                      "\n\n## Documentation QA\n\n"
+                      f"- [Latest documentation QA report]({link}): "
+                      "Current findings in Markdown; assembled during deployment.\n"
+                  )
+                  llms.write_text(content, encoding="utf-8")
+          else:
+              print("LLM index unavailable; QA entrypoints published without index link")
+          PY
+
       # Ask search engines not to index any generated QA HTML.
       # This is not access control: /qa/ remains a public URL.
       - name: Add noindex to QA report

@@ -1,5 +1,5 @@
 ---
-title: Technical Writing Portfolio
+title: Ian Drewett | Technical Writer & Documentation Engineer
 description: Ian Drewett's technical-writing and documentation-engineering portfolio, featuring developer documentation, APIs, docs-as-code, developer experience, and AI-ready knowledge systems.
 hide_table_of_contents: true
 ---

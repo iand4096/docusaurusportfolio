@@ -6,7 +6,7 @@ import type * as Preset from '@docusaurus/preset-classic';
 // Do not use browser APIs or JSX here.
 
 const config: Config = {
-  title: 'Ian Drewett | Technical Writing Portfolio',
+  title: 'Ian Drewett | Technical Writer & Documentation Engineer',
 
   tagline:
     'Technical writer specialising in API documentation, payment integrations, and developer experience',
