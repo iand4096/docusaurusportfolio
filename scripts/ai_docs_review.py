@@ -25,7 +25,7 @@ API_URL = "https://api.deepseek.com/chat/completions"
 # alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
 # DeepSeek exposes a pinned model identifier in future.
 MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
-AI_REVIEW_POLICY_VERSION = "2026-11-16-evidence-backed-v6"
+AI_REVIEW_POLICY_VERSION = "2026-11-16-substantive-defects-v7"
 # Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
 # checks without changing filter definitions or command-line invocations.
 # Set it back to True when AI review should be re-enabled.
@@ -69,9 +69,6 @@ FILTER_PRESETS = {
     "full": {
         "GrammarReview",
         "StructureReview",
-        "PortfolioReview",
-        "RepetitionReview",
-        "DiagramReview",
         "AccessibilityCheck",
         "LinkCheck",
         "LandingPageCoverageCheck",
@@ -84,6 +81,9 @@ FILTER_PRESETS = {
     "editorial": {
         "GrammarReview",
         "StructureReview",
+        "PortfolioReview",
+        "RepetitionReview",
+        "DiagramReview",
         "ValeCheck",
         "LtexCheck",
     },
@@ -120,8 +120,8 @@ FILTER_PRESETS = {
     },
 }
 FILTER_LABELS = {
-    "full": "Full review",
-    "editorial": "Editorial only",
+    "full": "Full review — substantive AI defects",
+    "editorial": "Optional editorial suggestions",
     "portfolio": "Portfolio only",
     "repetition": "Repetition only",
     "mermaid": "Mermaid opportunities only",
@@ -243,6 +243,46 @@ Use issue type:
 - improvement: optional editorial or information-design improvement
 - diagram: optional Mermaid visualisation opportunity
 Return JSON only. Do not include Markdown fences or commentary.
+"""
+
+SUBSTANTIVE_DEFECT_RULES = r"""
+REVIEW INTENT: substantive defects only. This instruction takes priority over
+check-specific invitations to suggest improvements. Return only type "defect".
+Do not report repetition, scannability, portfolio presentation or diagram
+opportunities unless there is a demonstrated substantive failure.
+A finding must establish a wrong instruction, contradiction, missing prerequisite,
+broken reference, genuinely ambiguous meaning or objectively incorrect language.
+Preserve a reasonable conventional reading. Mere potential hesitation, minor
+stylistic inconsistency or a different possible phrasing is insufficient.
+For ambiguity, identify two plausible interpretations and the materially different
+consequences. For consistency, identify the explicit violated rule or conflicting
+instructions; do not infer a rule from nationality or a preferred style.
+Do not require a minimum number of findings. Zero is a successful review.
+
+Negative examples from withdrawn findings:
+- "Wrote the guide, during my first few months at Mastercard, developed the test
+  integration and created diagrams" uses shared-subject coordinated verbs and a
+  comma-delimited parenthetical. Parentheses are optional; do not call it a run-on.
+- A component accepts type="decision" but displays "Decision". A prose colour note
+  naming the display label does not contradict the lowercase API value.
+These are reasoning examples, not blanket exemptions for future changed sources.
+"""
+
+DEFECT_VERIFICATION_CONTRACT = r"""
+First explain the strongest reasonable, conventional reading of the original.
+Try to refute the allegation using the complete source before accepting it.
+For every supported assessment also return:
+- substantive_defect: boolean (false for preferences or speculative harm)
+For substantive_defect=true, additionally return nonempty strings:
+- reasonable_reading: the strongest defensible reading of the original
+- why_reading_fails: source-grounded explanation of why that reading still fails
+- consequence: the concrete failure affecting the reader
+- failure_kind: wrong_instruction, contradiction, missing_prerequisite,
+  broken_reference, ambiguous_meaning or incorrect_language
+For failure_kind=ambiguous_meaning also return interpretations: exactly two
+nonempty strings identifying plausible meanings with materially different outcomes.
+A claim of possible confusion without those meanings is insufficient.
+Do not approve a finding merely because its proposed alternative is also valid.
 """
 
 PAGE_JSON_CONTRACT = r"""
@@ -802,6 +842,7 @@ class BaseCheck(ABC):
     supports_page = False
     supports_site = False
     source = "ai"
+    defects_only = False
 
     def run_page(self, path, content, api_key):
         return []
@@ -809,7 +850,9 @@ class BaseCheck(ABC):
     def run_site(self, paths, contents, api_key):
         return []
 
-def verify_page_findings(issues, path, content, api_key):
+def verify_page_findings(issues, path, content, api_key, defects_only=False):
+    if defects_only:
+        issues = [issue for issue in issues if issue.get('type') == 'defect']
     if not issues:
         return []
     response = request_review(
@@ -820,7 +863,9 @@ Check reader impact and all cited evidence. Return JSON {"assessments": [
 {"index": 0, "supported": true, "reason": "specific evidence-based explanation", "medium_justified": false}]}.
 Set medium_justified true only for demonstrated correctness or comprehension harm.
 Assess every index exactly once. Do not rewrite findings or trust their confidence.
-""",
+Preserve reasonable conventional readings. Reject speculative reader hesitation
+and differences between display labels and API literals that cause no conflict.
+""" + (SUBSTANTIVE_DEFECT_RULES + DEFECT_VERIFICATION_CONTRACT if defects_only else ''),
         json.dumps({'file': path.as_posix(), 'content': content, 'findings': issues}, ensure_ascii=False),
         api_key)
     assessments = response.get('assessments')
@@ -841,6 +886,24 @@ Assess every index exactly once. Do not rewrite findings or trust their confiden
         assessment = by_index[i]
         if not assessment['supported']:
             continue
+        if defects_only:
+            if type(assessment.get('substantive_defect')) is not bool:
+                raise ValueError('Defect verification requires a substantive_defect boolean')
+            if not assessment['substantive_defect']:
+                continue
+            fields = ('reasonable_reading', 'why_reading_fails', 'consequence')
+            if any(not isinstance(assessment.get(field), str) or not assessment[field].strip() for field in fields):
+                raise ValueError('Defect verification requires source-grounded reasoning')
+            if assessment.get('failure_kind') not in {
+                'wrong_instruction', 'contradiction', 'missing_prerequisite',
+                'broken_reference', 'ambiguous_meaning', 'incorrect_language'}:
+                raise ValueError('Invalid substantive failure kind')
+            if assessment['failure_kind'] == 'ambiguous_meaning':
+                interpretations = assessment.get('interpretations')
+                if (not isinstance(interpretations, list) or len(interpretations) != 2
+                        or any(not isinstance(text, str) or not text.strip() for text in interpretations)
+                        or interpretations[0].strip() == interpretations[1].strip()):
+                    raise ValueError('Ambiguity requires two distinct interpretations')
         issue = dict(issue, verification=assessment)
         if issue['severity'] == 'medium' and assessment.get('medium_justified') is not True:
             issue['severity'] = 'low'
@@ -862,6 +925,7 @@ class AIPageCheck(BaseCheck):
             + "\n\n"
             + self.prompt
             + "\n\n"
+            + (SUBSTANTIVE_DEFECT_RULES if self.defects_only else '')
             + PAGE_JSON_CONTRACT
         )
         parsed = request_review(
@@ -892,7 +956,7 @@ class AIPageCheck(BaseCheck):
             if normalised is not None:
                 validated.append(normalised)
 
-        return verify_page_findings(validated, path, content, api_key)
+        return verify_page_findings(validated, path, content, api_key, self.defects_only)
 
 class GrammarReview(AIPageCheck):
     name = "GrammarReview"
@@ -1134,6 +1198,7 @@ Use type "improvement".
             + "\n\n"
             + self.PAGE_PROMPT
             + "\n\n"
+            + (SUBSTANTIVE_DEFECT_RULES if self.defects_only else '')
             + PAGE_JSON_CONTRACT
         )
         parsed = request_review(
@@ -1160,7 +1225,7 @@ Use type "improvement".
             if normalised is not None:
                 validated.append(normalised)
 
-        return verify_page_findings(validated, path, content, api_key)
+        return verify_page_findings(validated, path, content, api_key, self.defects_only)
 
     def run_site(self, paths, contents, api_key):
         contexts = {path: genre_context(path, content) for path, content in contents.items()}
@@ -1193,6 +1258,7 @@ Use type "improvement".
             + "\n\n"
             + self.SITE_PROMPT
             + "\n\n"
+            + (SUBSTANTIVE_DEFECT_RULES if self.defects_only else '')
             + SITE_JSON_CONTRACT
         )
 
@@ -1210,7 +1276,7 @@ Use type "improvement".
             genres=genres,
         )
         return verify_page_findings(validated, Path("<site-review>"),
-                                    json.dumps(contents, ensure_ascii=False), api_key)
+                                    json.dumps(contents, ensure_ascii=False), api_key, self.defects_only)
 
 class SiteWideConsistencyReview(BaseCheck):
     name = "SiteWideConsistencyReview"
@@ -1303,6 +1369,7 @@ Use type "improvement" unless the inconsistency is objectively defective.
             + "\n\n"
             + self.PROMPT
             + "\n\n"
+            + (SUBSTANTIVE_DEFECT_RULES if self.defects_only else '')
             + SITE_JSON_CONTRACT
         )
 
@@ -1320,7 +1387,7 @@ Use type "improvement" unless the inconsistency is objectively defective.
             genres=genres,
         )
         return verify_page_findings(validated, Path("<site-review>"),
-                                    json.dumps(contents, ensure_ascii=False), api_key)
+                                    json.dumps(contents, ensure_ascii=False), api_key, self.defects_only)
 
 def validate_site_ai_issues(issues, paths, contents, allowed_categories, *, genres=None):
     """Validate site-wide AI findings against the named source file."""
@@ -2939,8 +3006,8 @@ def choose_review_mode():
 def choose_filter():
     print()
     print("Review checks:")
-    print("  1. Full review")
-    print("  2. Editorial only")
+    print("  1. Full review (substantive AI defects)")
+    print("  2. Optional editorial suggestions")
     print("  3. Portfolio only")
     print("  4. Repetition only")
     print("  5. Mermaid opportunities only")
@@ -2988,6 +3055,8 @@ def selected_checks(filter_name):
     if not DEEPSEEK_AI_CHECKS_ENABLED:
         checks = [check for check in checks if check.source != "ai"]
 
+    for check in checks:
+        check.defects_only = filter_name == 'full' and check.source == 'ai'
     return checks
 
 
@@ -3021,7 +3090,8 @@ def cached_ai_check(check, sources, scope, compute):
     cache_implementation = hashlib.sha256((SCRIPT_DIR / 'qa_review_cache.py').read_bytes()).hexdigest()
     inputs = {'scope': scope, 'check': check.name, 'sources': sources,
               'model': MODEL, 'api_url': API_URL, 'policy': AI_REVIEW_POLICY_VERSION,
-              'implementation': implementation, 'cache_implementation': cache_implementation}
+              'implementation': implementation, 'cache_implementation': cache_implementation,
+              'defects_only': bool(getattr(check, 'defects_only', False))}
     return ReviewCache(PROJECT_ROOT / '.qa/review-cache', enabled=REVIEW_CACHE_ENABLED).run(inputs, compute)
 
 
@@ -3694,6 +3764,10 @@ def source_filter_buttons(issues, errors, metadata):
             'lychee': 'Lychee checks external links for unreachable URLs and HTTP errors.',
             'remark': 'Remark checks Markdown and MDX structure against the configured lint rules.',
         }
+        if source == 'ai' and selected and not set(selected) & {
+                'PortfolioReview', 'RepetitionReview', 'DiagramReview'}:
+            descriptions['ai'] = ('DeepSeek reviews language, structure and consistency for substantive '
+                                  'defects, then verifies each allegation against the source.')
         title = descriptions[source]
         return (f'<button type="button" class="source-button source-{source or "all"}" '
                 f'data-source-filter="{source}" aria-pressed="{str(not source).lower()}" '
@@ -4891,6 +4965,7 @@ def main():
         "model": MODEL if DEEPSEEK_AI_CHECKS_ENABLED else f"{MODEL} (disabled)",
         "ai_review_policy_version": AI_REVIEW_POLICY_VERSION,
         "ai_checks_enabled": DEEPSEEK_AI_CHECKS_ENABLED,
+        "ai_review_intent": "substantive-defects" if filter_name == "full" else "optional-editorial",
         "files_reviewed": len(files),
         "checks": [check.name for check in checks],
         "portfolio_url": PORTFOLIO_URL,

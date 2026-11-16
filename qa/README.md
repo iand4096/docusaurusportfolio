@@ -332,3 +332,29 @@ source links and feedback actions are disabled. Example data never enters real
 JSON/Markdown exports, feedback records, caches or CI decisions. Generating the
 example makes no API calls. Deployment publishes it alongside the real report,
 and Actions artifacts include it when present.
+
+## Substantive AI defects versus optional editorial review
+
+The default `--filter full` preserves every deterministic checker and runs AI
+language, structure and site-consistency checks for substantive defects only.
+Portfolio presentation, repetition and Mermaid opportunities require an optional
+preset. `--filter editorial` requests all page-level AI editorial checks plus
+Vale and LTeX; individual `portfolio`, `repetition` and `mermaid` presets remain.
+
+The defect verifier first considers the strongest reasonable reading, then must
+identify an actual failure, its consequence and why that reading cannot resolve
+it. Ambiguity requires two distinct interpretations with materially different
+outcomes. Missing verification fields are check errors, not silent approval.
+Optional improvements cannot enter a default report even if a generator returns
+them. The existing CI eligibility rules remain in force.
+
+The two withdrawn findings about coordinated verbs and display labels are prompt
+examples, not automatic exclusions or inherited human decisions. Earlier feedback
+remains source-bound. Policy v7 and cache keys distinguish defect-only from
+editorial runs; old cached findings are not reused under the new review policy.
+Rendering a saved report preserves its original findings and policy instead of
+retroactively filtering it. No finding minimum or maximum is imposed.
+
+Regression tests check routing, response validation and retention of concrete
+failures with controlled model responses. These tests do not establish live
+precision or recall; model behaviour still needs labelled evaluation.

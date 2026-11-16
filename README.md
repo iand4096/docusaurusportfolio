@@ -185,7 +185,7 @@ The **AI review** uses DeepSeek for conservative analysis of:
 AI findings must quote exact source text. The script validates each quotation against the source and recalculates its line number, discarding findings that cannot be verified.
 
 AI reviews receive each document’s genre before technical frontmatter is masked.
-Case studies and documentation samples receive portfolio-completeness review;
+When optional portfolio review is selected, case studies and documentation samples receive portfolio-completeness review;
 skills and tools overviews, landing pages, the homepage, technical READMEs,
 component guides and operational documentation do not. Grammar, structure,
 repetition and consistency checks still review those pages for their intended
@@ -205,6 +205,19 @@ The pipeline also runs:
 
 This keeps deterministic checks separate from the higher-level editorial judgement handled by the AI review.
 
+The default full review runs all deterministic checks and AI language, structure
+and consistency checks for substantive defects. Optional repetition, portfolio
+presentation and diagram suggestions are excluded. To request the broader
+editorial review, run:
+
+```bash
+python3 scripts/ai_docs_review.py --mode per-page --filter editorial
+```
+
+The verifier must identify a concrete failure and explain why the strongest
+reasonable reading of the original still fails. Stylistic alternatives and
+speculative hesitation are insufficient. Neither mode has a finding quota.
+
 ### Review scopes and presets
 
 The tool supports two review scopes:
@@ -214,8 +227,8 @@ The tool supports two review scopes:
 
 Available presets include:
 
-* Full review
-* Editorial only
+* Full review — deterministic checks and substantive AI defects
+* Optional editorial suggestions (`--filter editorial`)
 * Portfolio only
 * Repetition only
 * Mermaid opportunities only
