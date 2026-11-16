@@ -2,7 +2,7 @@
 
 Bash alternatives to the Windows PowerShell examples in [the operations runbook](OPERATIONS.md). Read that runbook's release boundaries, security guidance and recovery procedures first. These commands use the same existing infrastructure and do not provision a separate environment.
 
-Use Bash, Python 3, Node/npm, Docker Engine with the Compose plugin, Azure CLI, Terraform and curl. No PowerShell installation is required. Commands assume a Linux host capable of running the production Linux container image. Ensure your account can use Docker; do not change socket permissions to bypass access controls.
+Use Bash, Python 3, Node/npm, Docker Engine with the Compose plugin, Azure CLI, Terraform and `curl`. No PowerShell installation is required. Commands assume a Linux host capable of running the production Linux container image. Ensure your account can use Docker; do not change socket permissions to bypass access controls.
 
 Run commands in the same Bash session. `set -euo pipefail` stops on failed commands and unset variables; review each deployment step before executing it. Paths below are examples. Keep existing Terraform state and local variable configuration available for the Terraform path. Section 5 also documents an authorised image-only CLI alternative when that state is unavailable.
 
@@ -152,7 +152,7 @@ docker compose -f compose.rag.yaml up -d knowledge-api
 rag_check http://localhost:8000 "$expected_hash"
 ```
 
-As in Windows, inspect relevance, a meaningful taxonomy filter, archived-content behaviour and actual destination links separately. HTTP 200 alone is not sufficient readiness evidence.
+As on Windows, inspect relevance, a meaningful taxonomy filter, archived-content behaviour and actual destination links separately. HTTP 200 alone is not sufficient readiness evidence.
 
 ## 4. Build the release artifact and test it
 
@@ -176,7 +176,7 @@ test -n "$image_digest"
 printf 'Release artifact: %s\n' "$image_digest"
 ```
 
-Run the HTTP smoke test in a subshell so its cleanup trap cannot replace traps in your interactive shell:
+Use a subshell for the HTTP smoke test to keep its cleanup trap separate from the traps in your interactive shell:
 
 ```bash
 (

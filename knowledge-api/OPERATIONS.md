@@ -397,7 +397,7 @@ if ($LASTEXITCODE -ne 0 -or -not $apiHost) { throw 'API hostname unavailable' }
 $apiUrl = "https://$apiHost"
 ```
 
-Complete the same live readiness, retrieval, CORS and revision checks as the Terraform path. Align `infra/azure/main.tf` with the deployed digest and run `terraform fmt`; this edits source only and does not require state. Record the CLI deployment method. When the established state is available again, review a fresh Terraform plan before any apply so reconciliation does not unintentionally restore an older image. To roll back through this alternative, use the recorded known-good digest, align source and verify against its recorded index hash.
+Complete the same live readiness, retrieval, CORS and revision checks as the Terraform path. Align `infra/azure/main.tf` with the deployed digest and run `terraform fmt`; this edits source only and does not require state. Record the CLI deployment method. When the established state is available again, review a fresh Terraform plan before applying it, so reconciliation does not unintentionally restore an older image. To roll back through this alternative, use the recorded known-good digest, align source and verify against its recorded index hash.
 
 ### Deployment completion
 
@@ -414,7 +414,7 @@ Scale-to-zero can add image-pull and model-startup latency. One historical pull 
 
 ## 5. Publish the frontend
 
-The [Pages workflow](../.github/workflows/deploy.yml) runs on pushes to `main` and manual dispatch. It builds Docusaurus with `RAG_SEARCH_ENABLED=true` and the public HTTPS `RAG_API_URL`, then runs documentation QA and deploys Pages. QA uses a separate GitHub Actions DeepSeek secret and may consume credits. A later QA gate can fail after Pages has deployed.
+The [Pages workflow](../.github/workflows/deploy.yml) runs on pushes to `main` and manual dispatch. It builds Docusaurus with `RAG_SEARCH_ENABLED=true` and the public HTTPS `RAG_API_URL`, then runs documentation QA and deploys Pages. QA uses a separate GitHub Actions DeepSeek secret and may consume credits. A later QA gate can fail after the Pages deployment has completed.
 
 Frontend API configuration is public. Never put the DeepSeek key in a frontend variable. Preserve existing workflow QA steps.
 
@@ -499,14 +499,14 @@ Console logs help diagnose application errors. System logs show image pulls, sch
 
 Application-level OpenTelemetry tracing and Application Insights/Grafana dashboards are planned, not implemented requirements. If added, instrument loading, embedding, retrieval, ranking and provider calls without collecting query/evidence text by default.
 
-Monthly, and weekly after significant public releases, review Azure costs, DeepSeek usage/recharge settings, failed requests, dependency updates and retained rollback images. Zero replicas does not mean zero total cost: registry storage, builds and logs can still incur charges. Keep a known-good image and recoverable Terraform state in appropriate private storage; rebuild indexes from the matching Git revision and recorded model/configuration.
+Monthly, and weekly after public releases that change API behaviour, review Azure costs, DeepSeek usage/recharge settings, failed requests, dependency updates and retained rollback images. Zero replicas does not mean zero total cost: registry storage, builds and logs can still incur charges. Keep a known-good image and recoverable Terraform state in appropriate private storage; rebuild indexes from the matching Git revision and recorded model/configuration.
 
 ## 8. Troubleshooting
 
 | Symptom | First check/action |
 | --- | --- |
 | Slow first health request | System logs for image pull/scaling; console logs for model/index startup |
-| Health returns 200 but search fails | Check `index_loaded`, manifest, expected hash and a real search |
+| Health returns 200, but search fails | Check `index_loaded`, manifest, expected hash and a real search |
 | Unhealthy revision or persistent startup warnings | Image pull permissions, console errors, port 8000, memory and startup state |
 | Public visitor gets 403 | Ingress IP restrictions |
 | Browser fails; preflight returns 400 | Comma-separated CORS origins and deployed revision |
@@ -525,7 +525,7 @@ Identify whether the failure occurs before application startup or within the pro
 
 ### Slow local image pulls or unpacking
 
-Docker may finish downloading layers and spend substantial time extracting them. Check pull output, `docker info`, `docker system df`, host disk space and memory; in WSL also inspect the VM's resource limits. Do not start concurrent pulls or delete Docker storage as a routine workaround. Use `docker image inspect <release-image>` to check whether the image is already available and compare `RepoDigests` with the recorded ACR digest. A matching digest allows preflight to resume without rebuilding or republishing. For Azure startup delays, use system logs to distinguish registry pull, scheduling and application startup.
+Docker can continue extracting layers after the download completes. Check pull output, `docker info`, `docker system df`, host disk space and memory; in WSL also inspect the VM's resource limits. Do not start concurrent pulls or delete Docker storage as a routine workaround. Use `docker image inspect <release-image>` to check whether the image is already available and compare `RepoDigests` with the recorded ACR digest. A matching digest allows preflight to resume without rebuilding or republishing. For Azure startup delays, use system logs to distinguish registry pull, scheduling and application startup.
 
 ### Resume after a terminal or WSL crash
 
@@ -588,4 +588,4 @@ Model downloads and dependency version ranges are not fully pinned in the curren
 - [Azure deployment troubleshooting](https://learn.microsoft.com/en-us/azure/container-apps/troubleshoot-deployment-errors)
 - [GitHub Pages workflows](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
 
-Update this runbook when API contracts, indexing, model packaging, infrastructure or workflows change. Refresh the verified-source baseline after review. This document is repository documentation, not a Docusaurus page, and is outside the current `docs/` ingestion scope. A future site version needs governed frontmatter, reviewed public content and normal index/release coordination.
+Update this runbook when API contracts, indexing, model packaging, infrastructure or workflows change. Refresh the verified-source baseline after review. This document is repository documentation, not a Docusaurus page, and is outside the current `docs/` ingestion scope. A future version for publication on the site requires governed frontmatter, reviewed public content and normal index/release coordination.

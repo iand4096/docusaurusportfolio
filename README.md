@@ -36,7 +36,7 @@ npm run start
 
 For the local search backend and frontend feature flags, follow the [Knowledge API setup guide](knowledge-api/README.md#local-setup).
 
-### Generated See also links
+### Generated see also links
 
 The local Docusaurus plugin generates up to three related links after substantive documentation pages. It runs during `npm run start` and `npm run build`, and refreshes when documentation or the generated taxonomy navigation data changes. It does not call an AI service or the search API.
 
@@ -94,6 +94,18 @@ A QA report is generated for every change to the site and published at:
 https://iand4096.github.io/docusaurusportfolio/qa/
 
 I implemented the pipeline in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.
+
+### Deterministic checks and technical vocabulary
+
+The local link checker resolves root-relative Docusaurus pages under `src/pages`, including React entrypoints, query strings and fragments. Relative links to repository directories remain valid; a missing site route still fails validation.
+
+LTeX uses the reviewed vocabulary in [the British English dictionary](.vscode/ltex.dictionary.en-GB.txt). Its diagnostic normaliser has narrow rule-and-location exceptions for the official name Developer Center, official licence titles, the correct phrase “an `items` array”, lowercase command-link labels, and repeated Yes/No values across table cells. Other spelling and grammar findings in the same sentence or cell remain eligible. Vale heading exceptions preserve product names and component identifiers without disabling sentence-case checks.
+
+Run the context regression tests without calling an AI service:
+
+```bash
+python3 -m unittest discover -s scripts/tests -p 'test_qa_context_rules.py'
+```
 
 ### Challenge feedback and saved reports
 

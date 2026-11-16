@@ -93,7 +93,7 @@ The portfolio includes:
 * React and JSX components for reusable presentation of skills, tools, and marketing-style content.
 * Mermaid diagrams-as-code.
 * Automated documentation QA and deployment using GitHub Actions.
-* AI-assisted taxonomy generation and governance, described in [the taxonomy case study](TaxonomyGovernance.md). The taxonomy machinery generates a [Explore page](/explore?view=browse) from the canonical metadata using Docusaurus tags.
+* AI-assisted taxonomy generation and governance, described in [the taxonomy case study](TaxonomyGovernance.md). The taxonomy machinery generates the [Explore page](/explore?view=browse) from the canonical metadata using Docusaurus tags.
 
 The QA pipeline combines:
 

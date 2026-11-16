@@ -46,8 +46,10 @@ Use for headings and descriptions without borders or ticks.
 
 <table>
 <thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+
 <tbody><tr>
 <td><CodeBlock language="jsx">{"<CapabilityGrid>\n  <ul>\n    <li><p><strong>Developer documentation</strong><br />APIs, SDKs and tutorials.</p></li>\n    <li><p><strong>Documentation engineering</strong><br />Platforms and automation.</p></li>\n  </ul>\n</CapabilityGrid>"}</CodeBlock></td>
+
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 <CapabilityGrid>
   <ul>
@@ -81,8 +83,10 @@ Use `variant="checklist"` for short capability statements. Each item gets a gree
 
 <table>
 <thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+
 <tbody><tr>
 <td><CodeBlock language="jsx">{"<CapabilityGrid variant=\"checklist\">\n  <ul>\n    <li>Topic-based authoring</li>\n    <li>Snippets and variables</li>\n    <li>HTML and PDF publishing</li>\n  </ul>\n</CapabilityGrid>"}</CodeBlock></td>
+
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 <CapabilityGrid variant="checklist">
   <ul>
@@ -103,8 +107,10 @@ Pass an `items` array to `CapabilityCard` for bordered cards. Icons and expandab
 
 <table>
 <thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+
 <tbody><tr>
 <td><CodeBlock language="jsx">{"<CapabilityCard items={[\n  {\n    title: 'Documentation engineering',\n    summary: 'Platforms and automation.',\n    icon: 'gears',\n    detail: 'Built publishing pipelines.',\n  },\n  {\n    title: 'Developer documentation',\n    summary: 'APIs, SDKs and tutorials.',\n  },\n]} />"}</CodeBlock></td>
+
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 <CapabilityCard items={[
   {
@@ -139,7 +145,6 @@ Omit `detail` for a static card and `icon` for a card without an icon. The homep
 | --- | --- | --- |
 | `items` | `[]` | Array of card objects. An empty array renders an empty list. |
 
-
 ### Card fields
 
 | Field | Usage |
@@ -168,7 +173,6 @@ Breakpoints use viewport width, rather than the component's available width.
 - Markdown grids require the structure `CapabilityGrid > ul > li`. Extra wrapping elements prevent the direct-child grid selectors from matching.
 - Plain-grid heading styles expect `li > p > strong:first-child`. Blank lines between Markdown list items ensure paragraph wrappers are generated.
 - Checklist styling is shared by all checklist instances. Page-specific styling needs an explicit scope rather than another global checklist override.
-
 
 ## Shared styling
 

@@ -1672,6 +1672,8 @@ def normalise_ltex_diagnostic(header, block_lines, path, content):
     severity = LTEX_SEVERITY_MAP.get(raw_severity, "low")
 
     rule, message = ltex_rule_and_message(str(header.get("message") or ""))
+    if is_ltex_context_false_positive(content, line, column, rule, message):
+        return None
     if not message:
         message = f"LTeX+ rule {rule} reported a grammar or spelling issue."
     return make_issue(
@@ -1686,6 +1688,43 @@ def normalise_ltex_diagnostic(header, block_lines, path, content):
         suggestion=ltex_suggestion(block_lines, rule),
         source="ltex",
     )
+
+
+def is_ltex_context_false_positive(content, line, column, rule, message):
+    """Ignore known syntax/proper-name artefacts, not other prose on the line.
+
+    Keep these exceptions tied to both the rule and the diagnostic location.
+    In particular, a table or inline code must not exempt surrounding prose.
+    """
+    text = source_line_text(content, line)
+    offset = column - 1
+
+    def at(pattern):
+        return any(match.start() <= offset < match.end()
+                   for match in re.finditer(pattern, text))
+
+    if rule == "MORFOLOGIK_RULE_EN_GB" and "'Center'" in message:
+        return at(r"\bDeveloper Center\b")
+    if rule == "LICENCE_LICENSE_NOUN_SINGULAR":
+        return at(r"\b(?:SIL Open Font License(?: 1\.1)?|MIT License)\b")
+    if rule == "EN_A_VS_AN":
+        # LTeX replaces code with a dummy token, changing the apparent initial
+        # sound. 'an items array' is correct; do not rewrite it to 'a items'.
+        return at(r"\ban\s+`items`\s+array\b")
+    if rule == "UPPERCASE_SENTENCE_START":
+        return at(r"\[(?:`)?(?:npm|pip)\s+[^\]\n]+\]\(")
+    if rule in {"PHRASE_REPETITION", "OK_OK_COMMA"} and text.lstrip().startswith("|"):
+        # A repeated Yes/No across cells is independent table data. Preserve
+        # genuine repetition within a cell and all other grammar diagnostics.
+        cells = text.strip().strip("|").split("|")
+        if any(re.search(r"\b(Yes|No)\s+\1\b", cell, re.I) for cell in cells):
+            return False
+        boundaries = list(re.finditer(r"\|", text))
+        cell_index = sum(boundary.start() < offset for boundary in boundaries) - 1
+        if 0 <= cell_index < len(cells) - 1:
+            left, right = (cells[cell_index].strip(), cells[cell_index + 1].strip())
+            return left in {"Yes", "No"} and re.match(rf"{left}\b", right) is not None
+    return False
 
 
 def parse_ltex_output(output, paths):
@@ -1746,7 +1785,7 @@ def ltex_output_contains_only_ignored_syntax(output, paths):
 
     Return True only if at least one LTeX+ diagnostic header was recognised,
     every header refers to a reviewed file, and every finding is on a line
-    already intentionally excluded from prose checking. Anything else stays
+    intentionally excluded as syntax or a known contextual false positive. Anything else stays
     an error instead of being mistakenly considered a clean LTeX+ run.
     """
 
@@ -1780,7 +1819,7 @@ def ltex_output_contains_only_ignored_syntax(output, paths):
 
         if not isinstance(line_number, int) or not 1 <= line_number <= len(content.splitlines()):
             return False
-        if not is_ltex_non_prose_line(content, line_number):
+        if normalise_ltex_diagnostic(header, [], path, content) is not None:
             return False
 
     return found_diagnostic
@@ -2573,10 +2612,22 @@ class LinkCheck(BaseCheck):
         if path_part.startswith("/"):
             static_base = ROOT / "static" / path_part.lstrip("/")
             candidates.append(static_base)
+            # React and Markdown pages are real routes, not root-level files.
+            # Test explicit page entrypoints rather than accepting directories:
+            # /explore?view=browse resolves to src/pages/explore/index.tsx.
+            page_base = ROOT / "src" / "pages" / path_part.strip("/")
+            if not page_base.suffix:
+                for extension in (".md", ".mdx", ".js", ".jsx", ".ts", ".tsx"):
+                    candidates.extend([page_base.with_suffix(extension), page_base / ("index" + extension)])
         return candidates
 
     def _local_target_exists(self, source_path, target):
-        return any(candidate.exists() for candidate in self._candidate_paths(source_path, target))
+        # Repository READMEs can legitimately link to source directories. Keep
+        # those distinct from site-root routes, which require a page entrypoint.
+        path_part = unquote(urlsplit(target).path)
+        if not path_part.startswith("/") and (source_path.parent / path_part).is_dir():
+            return True
+        return any(candidate.is_file() for candidate in self._candidate_paths(source_path, target))
 # ---------------------------------------------------------------------------
 # Check selection and execution
 # ---------------------------------------------------------------------------

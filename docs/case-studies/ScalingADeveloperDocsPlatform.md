@@ -71,7 +71,7 @@ I owned platform direction, requirements, testing and quality, working with a de
 
 Optimus and RICE are closely related internal platforms used by developers and quantitative analysts at Morgan Stanley.
 
-Built on Scala and functional programming principles, **Optimus** provides a graph-based distributed computation engine that supports automatic parallelisation, caching and large-scale *what-if* scenario analysis. Its `@node` and `@tweak` mechanisms enable calculations to be evaluated under alternative financial scenarios without modifying underlying objects.
+**Optimus** provides a graph-based distributed computation engine that supports automatic parallelisation, caching and large-scale *what-if* scenario analysis. Its `@node` and `@tweak` mechanisms enable calculations to be evaluated under alternative financial scenarios without modifying underlying objects. The framework is built on Scala and functional programming principles.
 
 The platform also includes a common UI framework and a Data Access Layer (DAL) for bitemporal data storage, supporting historical data queries and integrating with Apache Kafka.
 

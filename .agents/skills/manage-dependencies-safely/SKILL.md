@@ -127,7 +127,7 @@ environment with:
 python -m pip install --require-hashes --only-binary=:all: -r requirements.lock
 ```
 
-Do not fabricate hashes or silently remove these protections when an install
+Do not fabricate hashes or silently remove these protections when an installation
 fails. If hashes or compatible wheels are unavailable, assess and document
 the necessary exception before executing source builds.
 
@@ -189,9 +189,9 @@ result. Do not weaken or remove tests to conceal dependency failures.
 
 Report separately:
 
-- What was downloaded or changed, including resolved versions and origins.
-- What identity, integrity or provenance checks actually ran.
-- What tests and builds ran, and their results.
+- Downloads and changes, including resolved versions and origins.
+- Identity, integrity or provenance checks that actually ran.
+- Tests and builds that ran, and their results.
 - Remaining findings or verification gaps.
 
 “Installed successfully”, “tests passed” and “integrity verified” are different

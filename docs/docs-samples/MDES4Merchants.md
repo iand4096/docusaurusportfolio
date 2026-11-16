@@ -142,4 +142,4 @@ The project required me to learn an unfamiliar technical subject, test the API m
 
 If security restrictions allowed, I would provide public runnable examples demonstrating authentication, encryption, decryption and webhook handling.
 
-I did not include these originally because maintaining security-sensitive code in multiple programming languages, using approved cryptography libraries, would have required substantial ongoing work.
+I did not include these originally because maintaining security-sensitive code in multiple programming languages, using approved cryptography libraries, would have required ongoing security review and maintenance.

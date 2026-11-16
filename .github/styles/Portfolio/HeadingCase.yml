@@ -5,6 +5,11 @@ scope: heading
 match: $sentence
 
 exceptions:
+  - Terraform
+  - Azure
+  - CLI
+  - SemanticLabel
+  - Font Awesome Free
   - I
   - API
   - APIs
