@@ -91,6 +91,46 @@ import CapabilityCard from '@site/src/components/CapabilityCard';
 
 </div>
 
+## How I can help {/* #problems-i-help-solve */}
+
+<div className="portfolio-problems">
+  <article>
+    <h3><i className="fa-solid fa-code" aria-hidden="true" />Complex APIs, SDKs or frameworks</h3>
+    <p>I explain security-sensitive APIs and distributed frameworks through clear, technically accurate developer documentation.</p>
+    <p><Link to="/docs/docs-samples/MDES4Merchants">Secure payment API example →</Link></p>
+  </article>
+
+  <article>
+    <h3><i className="fa-solid fa-plug" aria-hidden="true" />Integration friction</h3>
+    <p>I help developers get integrations working with tested guides, examples and troubleshooting content.</p>
+    <p><Link to="/docs/case-studies/paysafedevcenter">Paysafe Developer Center case study →</Link></p>
+  </article>
+
+  <article>
+    <h3><i className="fa-solid fa-layer-group" aria-hidden="true" />Fragmented documentation</h3>
+    <p>I unify scattered content with clearer structure, developer portals and maintainable publishing workflows.</p>
+    <p><Link to="/docs/case-studies/scalingdeveloperdocs">Enterprise documentation case study →</Link></p>
+  </article>
+
+  <article>
+    <h3><i className="fa-solid fa-wand-magic-sparkles" aria-hidden="true" />Manual documentation work</h3>
+    <p>I introduce AI-assisted authoring and review with approved sources, automated checks and human oversight.</p>
+    <p><Link to="/docs/aianddocs">AI-assisted workflow examples →</Link></p>
+  </article>
+
+  <article>
+    <h3><i className="fa-solid fa-magnifying-glass" aria-hidden="true" />Unreliable search and AI answers</h3>
+    <p>I improve retrieval with governed metadata, lifecycle controls and answers linked to maintained sources.</p>
+    <p><Link to="/docs/case-studies/RagSearchCloudArchitecture">Governed RAG search case study →</Link></p>
+  </article>
+
+  <article>
+    <h3><i className="fa-solid fa-people-group" aria-hidden="true" />Scaling teams and workflows</h3>
+    <p>I help writers and engineers maintain documentation together through practical tooling, standards and training.</p>
+    <p><Link to="/docs/docsleadership">Documentation leadership experience →</Link></p>
+  </article>
+</div>
+
 ## Leadership and delivery {/* #leadership-and-delivery */}
 
 <CapabilityCard items={[
@@ -114,50 +154,12 @@ import CapabilityCard from '@site/src/components/CapabilityCard';
   },
 ]} />
 
-## Core expertise {/* #core-expertise */}
-
-<CapabilityCard items={[
-  {
-    title: 'Developer documentation',
-    icon: 'code',
-    summary: 'APIs, SDKs, integration guides, tutorials, code examples, OpenAPI references and developer portals',
-  },
-  {
-    title: 'User documentation',
-    icon: 'book-open',
-    summary: 'User, administration and installation guides for complex SaaS products using single-sourcing to reuse content across guides and outputs',
-  },
-  {
-    title: 'Documentation engineering',
-    icon: 'gears',
-    summary: 'Docs-as-code platforms, CI/CD publishing, content migrations, automation and quality tooling',
-  },
-  {
-    title: 'AI knowledge management & governance',
-    icon: 'diagram-project',
-    summary: 'Knowledge architecture, content and taxonomy governance, AI-ready documentation and AI-assisted quality assurance',
-  },
-  {
-    title: 'Technical validation',
-    icon: 'circle-check',
-    summary: 'API implementation and testing, security validation, software debugging and verification of documented behaviour',
-  },
-]} />
-
 ## Software engineering background {/* #engineering-background */}
 
-I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR, C, and C++/STL.
+I have an M.Sc. in Computer Science and a degree in Physics, with professional software-engineering experience in device drivers, graphics/CAD/VR and C/C++. Recent work includes Scala tooling and API integrations using Python and JavaScript.
 
-Recent development work includes Scala tooling and API test integrations using Python/Flask and JavaScript, including full-stack and cloud-based implementations.
+## Get in touch {/* #employment-history */}
 
-## Employment history {/* #employment-history */}
+For technical-writing and documentation-engineering roles, contract work or consultancy enquiries, [contact me on LinkedIn](https://www.linkedin.com/in/ian-drewett/).
 
-For employment history and professional experience, visit my [LinkedIn profile](https://www.linkedin.com/in/ian-drewett/).
-
-:::tip[Automated documentation QA]
-
-My portfolio has a QA pipeline implemented using GitHub Actions which runs automatically on any committed changes as part of Continuous Integration. It combines AI-assisted editorial review with additional tests for grammar and punctuation, accessibility, Markdown formatting, style guide compliance, links and spelling.
-
-**[View the live report →](pathname:///qa/)**
-
-:::
+This portfolio includes automated documentation quality checks. [View the live QA report →](pathname:///qa/)

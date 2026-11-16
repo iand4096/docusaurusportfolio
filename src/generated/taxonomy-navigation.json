@@ -1177,6 +1177,7 @@
       "title": "AI & Documentation",
       "path": "/docs/aianddocs",
       "source": "docs/skills/AIandDocumentation.md",
+      "description": "Applying AI to documentation engineering, authoring, retrieval and automation, with technical validation and human review.",
       "type": [
         "skill"
       ],
