@@ -561,6 +561,56 @@
   gap: 0.75rem;
   margin-top: 2rem;
 }
+
+.portfolio-problems {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.5rem 2rem;
+  margin: 1.5rem 0 2.5rem;
+}
+
+.portfolio-problems article {
+  position: relative;
+  min-width: 0;
+  padding-left: 1.25rem;
+  border-left: 3px solid var(--ifm-color-primary);
+}
+
+.portfolio-problems h3 {
+  margin: 0 0 .65rem;
+  padding-right: 2rem;
+  font-size: 1.15rem;
+  line-height: 1.4;
+}
+
+.portfolio-problems h3 > i {
+  position: absolute;
+  top: .1rem;
+  right: 0;
+  display: inline-block;
+  width: 1.25em;
+  color: var(--ifm-color-primary);
+  text-align: center;
+}
+
+.portfolio-problems p {
+  margin: 0 0 .75rem;
+}
+
+.portfolio-problems p:last-child {
+  margin-bottom: 0;
+}
+
+.portfolio-problems a {
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .portfolio-problems {
+    grid-template-columns: 1fr;
+  }
+}
+
 .portfolio-card h3 {
   font-size: 1.3rem;
   line-height: 1.3;
