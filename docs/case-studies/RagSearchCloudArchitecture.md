@@ -135,6 +135,8 @@ This ensures visitors can search and inspect source passages without using DeepS
 
 The diagram shows the implemented indexing and query paths. **Taxonomy selection is manual at query time**, not an automatic query-classification stage.
 
+<p className="rag-diagram-title">Figure 1. Documentation indexing and search</p>
+
 <div className="rag-architecture-columns">
 
 <div className="rag-architecture-panel">
@@ -151,21 +153,17 @@ Docs["fa:fa-file-lines Markdown / MDX documents<br/>Governed frontmatter"]
 Validate{"fa:fa-list-check Validate<br/>canonical taxonomy"}
 Chunk["fa:fa-scissors Heading-aware passages<br/>Metadata and source links"]
 Records[("fa:fa-database BM25<br/>chunk records")]
-Embed["fa:fa-gears MiniLM<br/>document embeddings"]
+Embed["fa:fa-microchip MiniLM<br/>document embeddings"]
 Vector[("fa:fa-database FAISS<br/>vector index")]
 Docs --> Validate --> Chunk
 Chunk --> Records
 Chunk --> Embed --> Vector
 
-    classDef source fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
+    classDef input fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
     classDef process fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
-    classDef storage fill:#DFEAE7,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
-    classDef query fill:#F4EEDF,stroke:#9A7B45,color:#1F2937,stroke-width:1.4px;
-    classDef decision fill:#FFF5D8,stroke:#9A7B45,color:#1F2937,stroke-width:1.7px;
-    classDef output fill:#ECE8F2,stroke:#76658B,color:#1F2937,stroke-width:1.4px;
-    classDef answer fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.7px;
+    classDef storage fill:#B8D5CD,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
 
-    class Docs source;
+    class Docs input;
     class Validate,Chunk,Embed process;
     class Records,Vector storage;
 ```
@@ -183,7 +181,7 @@ Chunk --> Embed --> Vector
 }}%%
 flowchart TB
 UI["fa:fa-globe Docusaurus UI<br/>GitHub Pages"]
-API["fa:fa-shield-halved FastAPI<br/>Request validation and rate limiting"]
+API["fa:fa-server FastAPI<br/>Request validation and rate limiting"]
 Facets["fa:fa-filter Validate manually selected<br/>taxonomy and lifecycle filters"]
 Retrieve["fa:fa-magnifying-glass BM25, semantic<br/>or hybrid retrieval"]
 Rank["fa:fa-list-ol Ranked passages<br/>with source links"]
@@ -195,24 +193,29 @@ UI --> API --> Facets --> Retrieve --> Rank --> Choice
 Choice -->|Sources| Sources
 Choice -->|AI answer| LLM --> Answer
 
-    classDef source fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
+    classDef interaction fill:#F6DEC7,stroke:#A96326,color:#1F2937,stroke-width:1.4px;
     classDef process fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
-    classDef storage fill:#DFEAE7,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
-    classDef query fill:#F4EEDF,stroke:#9A7B45,color:#1F2937,stroke-width:1.4px;
-    classDef decision fill:#FFF5D8,stroke:#9A7B45,color:#1F2937,stroke-width:1.7px;
-    classDef output fill:#ECE8F2,stroke:#76658B,color:#1F2937,stroke-width:1.4px;
-    classDef answer fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.7px;
+    classDef decision fill:#FFE29A,stroke:#9A7B45,color:#1F2937,stroke-width:1.7px;
+    classDef generation fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.7px;
 
-    class UI source;
-    class API,Facets,Retrieve,Rank query;
+    class UI,Sources,Answer interaction;
+    class API,Facets,Retrieve,Rank process;
     class Choice decision;
-    class Sources,LLM output;
-    class Answer answer;
+    class LLM generation;
 ```
 
 </div>
 
 </div>
+
+<ul className="rag-diagram-legend" aria-label="Figure 1 colour key">
+  <li><span className="rag-key-swatch rag-key-input" aria-hidden="true" />Inputs and build preparation</li>
+  <li><span className="rag-key-swatch rag-key-process" aria-hidden="true" />Processing and delivery</li>
+  <li><span className="rag-key-swatch rag-key-storage" aria-hidden="true" />Stored data and telemetry</li>
+  <li><span className="rag-key-swatch rag-key-decision" aria-hidden="true" />Decisions</li>
+  <li><span className="rag-key-swatch rag-key-interaction" aria-hidden="true" />User interaction and results</li>
+  <li><span className="rag-key-swatch rag-key-generation" aria-hidden="true" />AI generation</li>
+</ul>
 
 The retrieval step uses the prebuilt BM25 chunk records and FAISS vector index produced by the indexing flow.
 
@@ -222,7 +225,11 @@ I separated the static frontend from the Python service. **Docusaurus is built b
 
 **Docker** packages the FastAPI application, its Python dependencies, the embedding model and the prebuilt search-index artifacts. A PowerShell build script then publishes version-tagged images to a private **Azure Container Registry (ACR)**. Index generation happens before deployment, not when each container starts. Docker Compose provides a separate local development path.
 
+<div className="rag-cloud-architecture">
+
 I use **Terraform with the AzureRM provider** to provision the Azure resource group, ACR, Container Apps environment and application, **Log Analytics** workspace, and a **user-assigned managed identity**. The identity receives scoped `AcrPull` permission; this allows the Container App to retrieve the private image without an ACR administrator password. After publishing an image, I update its tag in Terraform, review `terraform plan` and run `terraform apply` to deploy a new Container Apps revision.
+
+<p className="rag-diagram-title">Figure 2. Azure deployment architecture</p>
 
 ```mermaid
 %%{init: {
@@ -245,7 +252,7 @@ flowchart TB
         Actions --> Pages
     end
 
-        Browser["fa:fa-user Visitor browser"]
+        Browser["fa:fa-window-maximize Visitor browser"]
         ACA["fa:fa-server Azure Container Apps<br/>FastAPI service"]
         DeepSeek["fa:fa-brain DeepSeek API<br/>Optional AI generation"]
         Logs[("fa:fa-chart-line Azure Log Analytics<br/>Platform and console logs")]
@@ -259,23 +266,34 @@ flowchart TB
     Terraform -.->|Provisions| ACA
     Terraform -.->|Provisions| Logs
 
-    classDef build fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
+    classDef input fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
+    classDef process fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
+    classDef storage fill:#B8D5CD,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
     classDef infra fill:#F4EEDF,stroke:#9A7B45,color:#1F2937,stroke-width:1.4px;
-    classDef frontend fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
-    classDef runtime fill:#ECE8F2,stroke:#76658B,color:#1F2937,stroke-width:1.4px;
-    classDef service fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.7px;
-    classDef observability fill:#DFEAE7,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
+    classDef interaction fill:#F6DEC7,stroke:#A96326,color:#1F2937,stroke-width:1.4px;
+    classDef generation fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.7px;
 
-    class Source,Docker,ACR build;
+    class Source,Docker,Actions input;
+    class Pages,ACA process;
+    class ACR,Logs storage;
     class Terraform infra;
-    class Actions,Pages frontend;
-    class Browser,DeepSeek runtime;
-    class ACA service;
-    class Logs observability;
+    class Browser interaction;
+    class DeepSeek generation;
 
     style PACKAGE fill:#F6F8FB,stroke:#BAC7D4,stroke-width:1px
     style FRONTEND fill:#F5F9F8,stroke:#B7CECA,stroke-width:1px
 ```
+
+<ul className="rag-diagram-legend" aria-label="Figure 2 colour key">
+  <li><span className="rag-key-swatch rag-key-input" aria-hidden="true" />Inputs and build preparation</li>
+  <li><span className="rag-key-swatch rag-key-process" aria-hidden="true" />Processing and delivery</li>
+  <li><span className="rag-key-swatch rag-key-storage" aria-hidden="true" />Stored data and telemetry</li>
+  <li><span className="rag-key-swatch rag-key-infra" aria-hidden="true" />Infrastructure configuration</li>
+  <li><span className="rag-key-swatch rag-key-interaction" aria-hidden="true" />User interaction and results</li>
+  <li><span className="rag-key-swatch rag-key-generation" aria-hidden="true" />AI generation</li>
+</ul>
+
+</div>
 
 The Container App uses the **Consumption** workload profile with **one vCPU, 2 GB memory and zero-to-one replicas**. Scale-to-zero limits idle compute costs, at the expense of first-request latency. Azure Container Apps holds the DeepSeek API key as a secret and injects it into FastAPI through an environment-variable reference; the key is not embedded in the browser application or managed as a Terraform secret value.
 
