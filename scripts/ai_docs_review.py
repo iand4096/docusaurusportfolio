@@ -3217,6 +3217,7 @@ def report_counts(issues):
 def ai_without_recurrence_concerns(issue):
     """Display-only classification; never changes feedback or CI eligibility."""
     return (issue.get('source') == 'ai' and not issue.get('feedback_link_confirmation')
+            and not issue.get('recurrence_comparison_errors')
             and all((candidate.get('comparison') or {}).get('verdict') == 'different_complaint'
                     for candidate in issue.get('recurrence_candidates', [])))
 
@@ -3253,8 +3254,12 @@ def recurrence_html(issue, report_reference, feedback_path=DEFAULT_FEEDBACK):
     for candidate in candidates:
         old = candidate['previous_finding']
         comparison = candidate.get('comparison')
+        precedent = candidate.get('precedent') or {}
         previous_decisions = candidate.get('previous_adjudications') or []
         previous_decision = previous_decisions[-1].get('decision', 'Not adjudicated') if previous_decisions else 'Not adjudicated'
+        if precedent:
+            previous_decision = ((precedent.get('resolution') or {}).get('decision') or
+                                 (precedent.get('adjudication') or {}).get('decision') or 'Not adjudicated')
         old_sha = (old.get('document_revision') or {}).get('content_sha256')
         new_sha = (issue.get('document_revision') or {}).get('content_sha256')
         source_status = 'Unchanged' if old_sha and old_sha == new_sha else 'Changed — review context'
@@ -3267,7 +3272,15 @@ def recurrence_html(issue, report_reference, feedback_path=DEFAULT_FEEDBACK):
                      '</dd><dt>Source</dt><dd>' + escape(source_status) + '</dd></dl>')
         if not linked:
             parts.append('<div class="recurrence-actions">')
-            for decision, label in [('confirmed', 'Copy confirm link command'), ('rejected', 'Copy reject link command')]:
+            from qa_recurrence import reusable
+            if reusable(candidate):
+                command = recurrence_command('reuse', report_reference, issue=issue['issue_id'],
+                    previous=candidate['record_id'], proposal=candidate['proposal_id'],
+                    reason='I verified that the prior decision still applies', feedback_file=feedback_path)
+                parts.append(command_control(command, 'Copy revalidate and reuse command'))
+            actions = [] if candidate.get('requires_revalidation') else [
+                ('confirmed', 'Copy confirm link command'), ('rejected', 'Copy reject link command')]
+            for decision, label in actions:
                 command = recurrence_command('link', report_reference, issue=issue['issue_id'],
                     previous=candidate['record_id'], proposal=candidate['proposal_id'],
                     decision=decision, reason='Explain your link decision', feedback_file=feedback_path)
@@ -3287,11 +3300,29 @@ def recurrence_html(issue, report_reference, feedback_path=DEFAULT_FEEDBACK):
             parts.append('<p><strong>' + label + ' allegation</strong></p><p>' + escape(finding.get('message', '')) + '</p>')
         parts.append('</details>')
         if comparison:
+            for label, field in [('Complaint relationship', 'complaint_relationship'),
+                                 ('Prior decision applicability', 'prior_decision_applicability'),
+                                 ('Document change impact', 'document_change_impact')]:
+                if field in comparison:
+                    parts.append('<p><strong>' + label + ':</strong> ' + escape(comparison[field]) + '</p>')
             parts.append('<details class="recurrence-reasoning"><summary>AI reasoning and evidence</summary><p>' + escape(comparison['reason']) + '</p>')
             for label, field in [('Previous finding evidence', 'old_evidence'), ('Current finding evidence', 'new_evidence')]:
                 parts.append('<p><strong>' + label + '</strong></p>')
                 for quote in comparison[field]:
                     parts.append('<blockquote>' + escape(quote) + '</blockquote>')
+            parts.append('</details>')
+        if precedent:
+            parts.append('<details class="recurrence-precedent"><summary>Exact decision precedent</summary>'
+                         '<p><code>' + escape(precedent.get('precedent_id', '')) + '</code></p>')
+            if precedent.get('legacy'):
+                parts.append('<p>Legacy binding: not eligible for decision reuse.</p>')
+            for label, value in [('Rebuttal', precedent.get('rebuttal')),
+                                 ('AI rationale', (precedent.get('adjudication') or {}).get('reason')),
+                                 ('Human resolution reason', (precedent.get('resolution') or {}).get('reason'))]:
+                if value:
+                    parts.append('<p><strong>' + label + ':</strong> ' + escape(value) + '</p>')
+            for quote in (precedent.get('adjudication') or {}).get('evidence', []):
+                parts.append('<blockquote>' + escape(quote) + '</blockquote>')
             parts.append('</details>')
         parts.append('<details class="recurrence-history"><summary>Previous rebuttal and decision history</summary>')
         parts.append('<p>Previous finding: <code>' + escape(candidate['record_id']) + '</code></p>')
@@ -3453,6 +3484,12 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
                       '**Previous quotation:**', '', quote_block(old['original']), '',
                       '**Previous allegation:**', '', value(old['message']), '',
                       '**Current allegation:**', '', value(issue['message']), '']
+            precedent = candidate.get('precedent') or {}
+            if precedent:
+                lines += ['**Decision precedent:** ' + value(precedent['precedent_id']), '',
+                          '**Precedent rebuttal:** ' + value(precedent.get('rebuttal') or ''), '',
+                          '**Precedent AI rationale:** ' + value((precedent.get('adjudication') or {}).get('reason', '')), '',
+                          '**Precedent human decision:** ' + value((precedent.get('resolution') or {}).get('decision', '')), '']
             for entry in candidate.get('previous_discussion', []):
                 if entry.get('role') == 'human':
                     lines += ['**Previous rebuttal:**', '', value(entry['text']), '']
@@ -3461,12 +3498,22 @@ def generate_markdown_report(issues, errors, metadata, ci_result):
             comparison = candidate.get('comparison')
             if comparison:
                 lines += ['**AI comparison:** ' + comparison['verdict'], '', value(comparison['reason']), '']
+                for field in ('complaint_relationship', 'prior_decision_applicability', 'document_change_impact'):
+                    if field in comparison:
+                        lines += [f'**{field.replace("_", " ").title()}:** ' + value(comparison[field]), '']
                 for field in ('old_evidence', 'new_evidence'):
                     for quote in comparison[field]:
                         lines += [quote_block(quote), '']
             else:
                 lines += ['Not compared by AI.', '']
-            for decision in ('confirmed', 'rejected'):
+            from qa_recurrence import reusable
+            if reusable(candidate):
+                command = recurrence_command('reuse', metadata.get('review_report_reference') or str(JSON_REPORT),
+                    issue=issue['issue_id'], previous=candidate['record_id'], proposal=candidate['proposal_id'],
+                    reason='I verified that the prior decision still applies',
+                    feedback_file=metadata.get('feedback_file', DEFAULT_FEEDBACK))
+                lines += ['**Human revalidation and decision reuse:**', '', '```bash', command, '```', '']
+            for decision in (() if candidate.get('requires_revalidation') else ('confirmed', 'rejected')):
                 command = recurrence_command('link', metadata.get('review_report_reference') or str(JSON_REPORT),
                     issue=issue['issue_id'], previous=candidate['record_id'], proposal=candidate['proposal_id'], decision=decision,
                     reason='Explain your link decision', feedback_file=metadata.get('feedback_file', DEFAULT_FEEDBACK))
@@ -4190,7 +4237,7 @@ def parse_args():
     parser = argparse.ArgumentParser(
         description="Run documentation QA, compare recurring findings, or record human feedback."
     )
-    parser.add_argument("command", nargs="?", choices=["challenge", "resolve", "render", "compare", "link"],
+    parser.add_argument("command", nargs="?", choices=["challenge", "resolve", "render", "compare", "link", "reuse"],
                         help="Challenge/resolve findings, compare recurrences, confirm/reject links, or render saved reports")
     parser.add_argument("--proposal", help="Source-bound proposal token copied from the report")
     parser.add_argument("--previous", help="Previous feedback record ID for link confirmation/rejection")
@@ -4289,9 +4336,23 @@ def main():
     REPORT = report_dir / "ai-doc-review.html"
     JSON_REPORT = report_dir / "ai-doc-review.json"
     MARKDOWN_REPORT = report_dir / "ai-doc-review.md"
-    if args.command not in {"challenge", "resolve", "render", "compare", "link"}:
+    if args.command not in {"challenge", "resolve", "render", "compare", "link", "reuse"}:
         report_dir.mkdir(parents=True, exist_ok=True)
     _assert_ci_policy_invariants()
+    if args.command == 'reuse':
+        if not all([args.report, args.issue, args.previous, args.proposal, args.reason]) or args.decision or args.retry or args.reason_file:
+            print('Reuse requires --report, --issue, --previous, --proposal and --reason', file=sys.stderr)
+            return 2
+        from qa_recurrence import reuse_decision
+        try:
+            result = reuse_decision(args.issue, args.previous, args.reason, report=args.report,
+                                    proposal=args.proposal, feedback_path=args.feedback_file)
+        except (ValueError, OSError, requests.RequestException, KeyError) as error:
+            print(f'Revalidation failed: {error}', file=sys.stderr)
+            return 1
+        print(json.dumps(result, ensure_ascii=False, indent=2))
+        print('Human-approved decision reuse recorded. Render the report again.')
+        return 0
     if args.command == 'link':
         if not args.report or not args.issue or not args.previous or not args.reason or args.decision not in {'confirmed', 'rejected'} or args.retry or args.reason_file:
             print('Link requires --report, --issue, --previous, --decision confirmed/rejected and --reason', file=sys.stderr)

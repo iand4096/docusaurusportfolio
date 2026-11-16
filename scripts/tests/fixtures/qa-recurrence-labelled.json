@@ -1,0 +1,77 @@
+{
+  "description": "Human-labelled retrieval examples based on committed feedback records; variants are synthetic paraphrases, not new historical adjudications. Relationship labels evaluate retrieval only; DeepSeek applicability requires separate verified-source tests.",
+  "cases": [
+    {
+      "name": "same quotation, paraphrased tone complaint",
+      "previous": "qa-47c8371aa3ae3504a9639c42",
+      "finding": {
+        "file": "README.md",
+        "category": "structure",
+        "source": "ai",
+        "original": "I implemented the pipeline in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.",
+        "message": "The first-person ownership statement clashes with the otherwise impersonal register of this README.",
+        "suggestion": "Use an impersonal description of the pipeline.",
+        "document_revision": {
+          "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+          "content_sha256": "180b8c1b268d3ea24c9761b13e95280cb8e5145c5d4acd0f91dabda7532f3d2e"
+        }
+      },
+      "relationship": "equivalent",
+      "retrieve": true
+    },
+    {
+      "name": "rewritten quotation, same missing pilot outcome complaint",
+      "previous": "qa-eec47f2dcf0f3d8bee2ffdaf",
+      "finding": {
+        "file": "docs/tools/DocusaurusAndMkdocs.md",
+        "category": "portfolio",
+        "source": "ai",
+        "original": "I prototyped a documentation portal with MkDocs and plugins.",
+        "message": "The prototype description does not explain what the pilot demonstrated or why it was rejected.",
+        "suggestion": "Describe the outcome and limitations of the prototype.",
+        "document_revision": {
+          "git_commit": "8453b7a9eb3fcaaacbefb3c3790383dfd1e2f59f",
+          "content_sha256": "81988a81c69a19893ee4b42ab3edde6e7624e46702550a4904ffb9f281252f4e"
+        }
+      },
+      "relationship": "equivalent",
+      "retrieve": true
+    },
+    {
+      "name": "same quotation, changed allegation from tone to rationale",
+      "previous": "qa-47c8371aa3ae3504a9639c42",
+      "finding": {
+        "file": "README.md",
+        "category": "structure",
+        "source": "ai",
+        "original": "I implemented the pipeline in [`scripts/ai_docs_review.py`](scripts/ai_docs_review.py). It combines AI-assisted editorial review with deterministic checks and established documentation tools, producing both HTML and JSON reports.",
+        "message": "The QA section does not explain the risk addressed by source quotation validation or the engineering rationale behind deterministic checks.",
+        "suggestion": "Keep the first-person attribution and add the design rationale.",
+        "document_revision": {
+          "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+          "content_sha256": "180b8c1b268d3ea24c9761b13e95280cb8e5145c5d4acd0f91dabda7532f3d2e"
+        }
+      },
+      "relationship": "different",
+      "retrieve": false
+    },
+    {
+      "name": "grammar allegation paraphrased",
+      "previous": "qa-30e942d2bc9de287dd8ff02f",
+      "finding": {
+        "file": "docs/tools/OpenAPIandAPITools.md",
+        "category": "clarity",
+        "source": "ai",
+        "original": "Used similar technology, API Blueprint, at Paysafe.",
+        "message": "There is no explicit subject for the sentence after the preceding sentence.",
+        "suggestion": "Add I as the subject.",
+        "document_revision": {
+          "git_commit": "68583357327448d34e84b3fef810cb342c16a902",
+          "content_sha256": "acc535f7f4944682a5f5f1471272b51fc5655a7124d24a9a237f5c878ce2b3e0"
+        }
+      },
+      "relationship": "equivalent",
+      "retrieve": true
+    }
+  ]
+}

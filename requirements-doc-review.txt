@@ -1,3 +1,4 @@
 requests
 jsonschema>=4.23,<5
 ruamel.yaml>=0.18,<0.19
+-r requirements-qa-recurrence.txt

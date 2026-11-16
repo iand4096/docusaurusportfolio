@@ -156,6 +156,8 @@ python3 scripts/ai_docs_review.py resolve \
   --reason "The supplied source already answers this criticism."
 ```
 
+Applicable immutable precedents can also be reused through an explicit human `reuse` command after semantic comparison. No decision is inherited automatically.
+
 Run `render` again after recording a resolution. Commit `qa/feedback.json` to
 preserve decisions for other checkouts. Feedback is only applied when the saved
 finding's source hash and proposed fix match the challenged version. Exact
