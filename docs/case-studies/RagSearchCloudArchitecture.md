@@ -135,41 +135,27 @@ This ensures visitors can search and inspect source passages without using DeepS
 
 The diagram shows the implemented indexing and query paths. **Taxonomy selection is manual at query time**, not an automatic query-classification stage.
 
+<div className="rag-architecture-columns">
+
+<div className="rag-architecture-panel">
+
+#### Indexing before deployment
+
 ```mermaid
 %%{init: {
-  "flowchart": {"useMaxWidth": false, "nodeSpacing": 45, "rankSpacing": 55},
+  "flowchart": {"useMaxWidth": true, "nodeSpacing": 45, "rankSpacing": 55},
   "themeVariables": {"fontSize": "17px"}
 }}%%
 flowchart TB
-    subgraph INDEX["Indexing before deployment"]
-        Docs["fa:fa-file-lines Markdown / MDX documents<br/>Governed frontmatter"]
-        Validate{"fa:fa-list-check Validate<br/>canonical taxonomy"}
-        Chunk["fa:fa-scissors Heading-aware passages<br/>Metadata and source links"]
-        Records[("fa:fa-database BM25<br/>chunk records")]
-        Embed["fa:fa-gears MiniLM<br/>document embeddings"]
-        Vector[("fa:fa-database FAISS<br/>vector index")]
-        Docs --> Validate --> Chunk
-        Chunk --> Records
-        Chunk --> Embed --> Vector
-    end
-
-    subgraph SEARCH["Search and answer generation"]
-        UI["fa:fa-globe Docusaurus UI<br/>GitHub Pages"]
-        API["fa:fa-shield-halved FastAPI<br/>Request validation and rate limiting"]
-        Facets["fa:fa-filter Validate manually selected<br/>taxonomy and lifecycle filters"]
-        Retrieve["fa:fa-magnifying-glass BM25, semantic<br/>or hybrid retrieval"]
-        Rank["fa:fa-list-ol Ranked passages<br/>with source links"]
-        Choice{"Output selected?"}
-        Sources["fa:fa-file-lines Display<br/>original evidence"]
-        LLM["fa:fa-brain DeepSeek generation<br/>using retrieved passages"]
-        Answer["fa:fa-quote-right Answer with numbered citations<br/>and supporting sources"]
-        UI --> API --> Facets --> Retrieve --> Rank --> Choice
-        Choice -->|Sources| Sources
-        Choice -->|AI answer| LLM --> Answer
-    end
-
-    Records -.->|Prebuilt index| Retrieve
-    Vector -.->|Prebuilt index| Retrieve
+Docs["fa:fa-file-lines Markdown / MDX documents<br/>Governed frontmatter"]
+Validate{"fa:fa-list-check Validate<br/>canonical taxonomy"}
+Chunk["fa:fa-scissors Heading-aware passages<br/>Metadata and source links"]
+Records[("fa:fa-database BM25<br/>chunk records")]
+Embed["fa:fa-gears MiniLM<br/>document embeddings"]
+Vector[("fa:fa-database FAISS<br/>vector index")]
+Docs --> Validate --> Chunk
+Chunk --> Records
+Chunk --> Embed --> Vector
 
     classDef source fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
     classDef process fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
@@ -179,17 +165,56 @@ flowchart TB
     classDef output fill:#ECE8F2,stroke:#76658B,color:#1F2937,stroke-width:1.4px;
     classDef answer fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.7px;
 
-    class Docs,UI source;
+    class Docs source;
     class Validate,Chunk,Embed process;
     class Records,Vector storage;
+```
+
+</div>
+
+<div className="rag-architecture-panel">
+
+#### Search and answer generation
+
+```mermaid
+%%{init: {
+  "flowchart": {"useMaxWidth": true, "nodeSpacing": 45, "rankSpacing": 55},
+  "themeVariables": {"fontSize": "17px"}
+}}%%
+flowchart TB
+UI["fa:fa-globe Docusaurus UI<br/>GitHub Pages"]
+API["fa:fa-shield-halved FastAPI<br/>Request validation and rate limiting"]
+Facets["fa:fa-filter Validate manually selected<br/>taxonomy and lifecycle filters"]
+Retrieve["fa:fa-magnifying-glass BM25, semantic<br/>or hybrid retrieval"]
+Rank["fa:fa-list-ol Ranked passages<br/>with source links"]
+Choice{"Output selected?"}
+Sources["fa:fa-file-lines Display<br/>original evidence"]
+LLM["fa:fa-brain DeepSeek generation<br/>using retrieved passages"]
+Answer["fa:fa-quote-right Answer with numbered citations<br/>and supporting sources"]
+UI --> API --> Facets --> Retrieve --> Rank --> Choice
+Choice -->|Sources| Sources
+Choice -->|AI answer| LLM --> Answer
+
+    classDef source fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
+    classDef process fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
+    classDef storage fill:#DFEAE7,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
+    classDef query fill:#F4EEDF,stroke:#9A7B45,color:#1F2937,stroke-width:1.4px;
+    classDef decision fill:#FFF5D8,stroke:#9A7B45,color:#1F2937,stroke-width:1.7px;
+    classDef output fill:#ECE8F2,stroke:#76658B,color:#1F2937,stroke-width:1.4px;
+    classDef answer fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.7px;
+
+    class UI source;
     class API,Facets,Retrieve,Rank query;
     class Choice decision;
     class Sources,LLM output;
     class Answer answer;
-
-    style INDEX fill:#F5F9F8,stroke:#B7CECA,stroke-width:1px
-    style SEARCH fill:#FAF8F2,stroke:#D7C9A8,stroke-width:1px
 ```
+
+</div>
+
+</div>
+
+The retrieval step uses the prebuilt BM25 chunk records and FAISS vector index produced by the indexing flow.
 
 ### Cloud architecture: Docker, Terraform and Azure
 
