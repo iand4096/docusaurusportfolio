@@ -83,14 +83,17 @@ test('numerical evidence is prominent while capability labels use quieter typogr
   assert.throws(() => validateSummary({...base, evidence: [{value: '1', label: 'Scope', emphasis: 'loud'}]}));
 });
 
-test('technical scope and historical figures remain distinct from results', () => {
+test('technical scope and practical benefits retain their intended meaning', () => {
   const frameworks = examples.find(({name}) => name.startsWith('Documenting'));
   const rag = examples.find(({name}) => name.startsWith('Rag'));
   const taxonomy = examples.find(({name}) => name.startsWith('Taxonomy'));
   assert.equal(frameworks.data.evidenceTitle, 'Technical Coverage');
   assert.match(serializeSummaries(frameworks.source), /Framework supporting 400,000 tests/);
   assert.equal(rag.data.evidenceNote, undefined);
-  assert.match(serializeSummaries(taxonomy.source), /during that migration/);
+  assert.equal(taxonomy.data.evidenceTitle, 'What it enables');
+  assert.match(serializeSummaries(taxonomy.source), /Consistent classification/);
+  assert.match(serializeSummaries(taxonomy.source), /Reliable discovery/);
+  assert.match(serializeSummaries(taxonomy.source), /Controlled evolution/);
 });
 
 test('export parser handles punctuation and rejects executable expressions', () => {

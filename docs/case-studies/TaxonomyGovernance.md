@@ -50,22 +50,19 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "scope": "Metadata validation, authoring support and taxonomy change management",
   "decision": "Git-versioned vocabulary with deterministic checks and human-approved AI proposals",
   "deliverables": "YAML taxonomy, validation tools, generated views and migration workflows",
-  "evidenceTitle": "Implementation Evidence",
+  "evidenceTitle": "What it enables",
   "evidence": [
     {
-      "value": "1",
-      "label": "Canonical vocabulary",
-      "emphasis": "metric"
+      "value": "Consistent classification",
+      "label": "Shared terms across documents and authoring tools"
     },
     {
-      "value": "5",
-      "label": "Technology terms updated in one migration",
-      "emphasis": "metric"
+      "value": "Reliable discovery",
+      "label": "The same metadata drives navigation, filters, links and search"
     },
     {
-      "value": "26",
-      "label": "Documents checked during that migration",
-      "emphasis": "metric"
+      "value": "Controlled evolution",
+      "label": "Preview and validate taxonomy changes before applying them"
     }
   ]
 }} />
