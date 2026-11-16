@@ -283,39 +283,39 @@
   text-decoration: underline;
 }
 
-.mobileFiltersToggle {
-  display: none;
-}
-.filterGroups {
-  display: block;
+.metadataFiltersToggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  min-height: 44px;
+  padding: 0.65rem 0.8rem;
+  margin: 0.25rem 0 0;
+  border: 1px solid var(--browse-border);
+  border-radius: 0.5rem;
+  color: var(--ifm-font-color-base);
+  background: var(--ifm-background-color);
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
 }
 
-/* Keep search exposed, but collapse the advanced taxonomy on mobile/tablet. */
-@media (max-width: 996px) {
-  .mobileFiltersToggle {
-    display: block;
-    width: 100%;
-    padding: 0.8rem 1rem;
-    margin: 0.25rem 0 0;
-    border: 1px solid var(--browse-border);
-    border-radius: 0.5rem;
-    color: var(--ifm-font-color-base);
-    background: var(--ifm-background-color);
-    font: inherit;
-    font-weight: 600;
-    text-align: left;
-    cursor: pointer;
-  }
-  .mobileFiltersToggle:focus-visible {
-    outline: 2px solid var(--ifm-color-primary);
-    outline-offset: 2px;
-  }
-  .filterGroups {
-    display: none;
-  }
-  .filterGroupsOpen {
-    display: block;
-  }
+.metadataFiltersToggle svg {
+  flex-shrink: 0;
+}
+
+.metadataFiltersToggle:hover {
+  border-color: var(--ifm-color-primary);
+}
+
+.metadataFiltersToggle:focus-visible {
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 2px;
+}
+
+.filterGroups[hidden] {
+  display: none;
 }
 
 /* Relevance-ranked local metadata search */

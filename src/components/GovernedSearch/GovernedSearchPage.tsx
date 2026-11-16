@@ -9,6 +9,7 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import type {Root, Nodes, PhrasingContent} from 'mdast';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
+import MetadataFilterToggle, {useMetadataFilterVisibility} from '@site/src/components/MetadataFilterToggle';
 import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
 import browseStyles from '@site/src/components/BrowseExperience/styles.module.css';
 import {facetDefinitions, restoreFacets, type SelectedFacets} from '@site/src/utils/taxonomyFilters';
@@ -69,7 +70,6 @@ type SavedSearch = {
   responseMode: ResponseMode;
   facets: SelectedFacets;
   includeArchived: boolean;
-  showFilters: boolean;
   items: Evidence[];
   answer: string;
   actualMode: string;
@@ -154,7 +154,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
   const [responseMode, setResponseMode] = useState<ResponseMode>('chat');
   const [facets, setFacets] = useState<SelectedFacets>({});
   const [includeArchived, setIncludeArchived] = useState(false);
-  const [showFilters, setShowFilters] = useState(false);
+  const [showFilters, toggleFilters] = useMetadataFilterVisibility();
   const [items, setItems] = useState<Evidence[]>([]);
   const [answer, setAnswer] = useState('');
   const [actualMode, setActualMode] = useState<string>('');
@@ -184,7 +184,6 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
           setFacets(restoreFacets(saved.facets, navigationTaxonomy.dimensions));
         }
         if (typeof saved.includeArchived === 'boolean') setIncludeArchived(saved.includeArchived);
-        if (typeof saved.showFilters === 'boolean') setShowFilters(saved.showFilters);
         // Do not display results from a different configured backend.
         if (saved.apiUrl === apiUrl) {
           if (Array.isArray(saved.items)) {
@@ -213,7 +212,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
     if (!sessionRestored) return;
     try {
       const saved: SavedSearch = {
-        apiUrl, query, retrieval, responseMode, facets, includeArchived, showFilters,
+        apiUrl, query, retrieval, responseMode, facets, includeArchived,
         items, answer, actualMode, version, hasSearched,
         ...(lastSubmittedFilterSignature !== null ? {lastSubmittedFilterSignature} : {}),
       };
@@ -222,7 +221,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
       // Quota restrictions/private browsing: search continues without persistence.
     }
   }, [sessionRestored, apiUrl, query, retrieval, responseMode, facets,
-    includeArchived, showFilters, items, answer, actualMode, version, hasSearched,
+    includeArchived, items, answer, actualMode, version, hasSearched,
     lastSubmittedFilterSignature]);
 
   function toggleFacet(key: FacetKey, term: string) {
@@ -253,7 +252,6 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
     setResponseMode('search');
     setFacets({});
     setIncludeArchived(false);
-    setShowFilters(false);
     setItems([]);
     setAnswer('');
     setActualMode('');
@@ -407,13 +405,10 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
               </button>
             </div>
             <div className={styles.toolbar}>
-              <button type="button" className={browseStyles.mobileFiltersToggle} aria-expanded={showFilters}
-                aria-controls="rag-taxonomy-filters" onClick={() => setShowFilters(v => !v)}>
-                {showFilters ? 'Hide filters' : 'Show filters'}
-                {activeFilters.length > 0 ? ` (${activeFilters.length} selected)` : ''}
-              </button>
+              <MetadataFilterToggle visible={showFilters} onToggle={toggleFilters}
+                controls="rag-taxonomy-filters" count={activeFilters.length} />
             </div>
-            <div id="rag-taxonomy-filters" className={`${browseStyles.filterGroups} ${showFilters ? browseStyles.filterGroupsOpen : ''}`}>
+            <div id="rag-taxonomy-filters" className={browseStyles.filterGroups} hidden={!showFilters}>
                 <ExploreTaxonomyFilterGroups
                   disabled={busy}
                   isSelected={(dimensionId, termId) => {

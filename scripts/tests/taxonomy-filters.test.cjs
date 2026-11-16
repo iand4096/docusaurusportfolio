@@ -113,3 +113,26 @@ test('build coverage warnings identify unused facets without failing the build',
   assert.ok(warnings.some(message => message.includes('Codetreedocs')));
   assert.ok(warnings.some(message => message.includes('AMX Composer')));
 });
+
+test('metadata toggle exposes its state, target and selected count with a decorative icon', () => {
+  const {default: Toggle} = loadSource('src/components/MetadataFilterToggle.tsx');
+  for (const visible of [false, true]) {
+    const html = renderToStaticMarkup(React.createElement(Toggle, {
+      visible, onToggle: () => {}, controls: 'taxonomy-options', count: 2,
+    }));
+    assert.ok(html.includes(`aria-expanded="${visible}"`));
+    assert.match(html, /aria-controls="taxonomy-options"/);
+    assert.ok(html.includes(`${visible ? 'Hide' : 'Show'} filters (2 selected)`));
+    assert.match(html, /<svg[^>]*aria-hidden="true"/);
+    assert.match(html, /<button type="button"/);
+  }
+});
+
+test('filter visibility starts hidden during server rendering', () => {
+  const {useMetadataFilterVisibility} = loadSource('src/components/MetadataFilterToggle.tsx');
+  function Probe() {
+    const [visible] = useMetadataFilterVisibility();
+    return React.createElement('div', {'data-visible': String(visible)});
+  }
+  assert.match(renderToStaticMarkup(React.createElement(Probe)), /data-visible="false"/);
+});

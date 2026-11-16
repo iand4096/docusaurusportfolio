@@ -4,6 +4,7 @@ import Layout from '@theme/Layout';
 import {useLocation} from '@docusaurus/router';
 
 import styles from './styles.module.css';
+import MetadataFilterToggle, {useMetadataFilterVisibility} from '@site/src/components/MetadataFilterToggle';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
 import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
 
@@ -196,7 +197,7 @@ function DocumentTags({
 
 export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}): React.JSX.Element {
   const [query, setQuery] = useState('');
-  const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
+  const [filtersOpen, toggleFilters] = useMetadataFilterVisibility();
   const [selected, setSelected] = useState<SelectedFilters>(initialFilters);
   const {search: locationSearch} = useLocation();
 
@@ -327,19 +328,12 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
               )}
             </div>
 
-            <button
-              type="button"
-              className={styles.mobileFiltersToggle}
-              aria-controls="browse-taxonomy-filters"
-              aria-expanded={mobileFiltersOpen}
-              onClick={() => setMobileFiltersOpen((open) => !open)}
-            >
-              {mobileFiltersOpen ? 'Hide filters' : 'Show filters'}
-              {activeFilterCount > 0 ? ` (${activeFilterCount} selected)` : ''}
-            </button>
+            <MetadataFilterToggle visible={filtersOpen} onToggle={toggleFilters}
+              controls="browse-taxonomy-filters" count={activeFilterCount} />
             <div
               id="browse-taxonomy-filters"
-              className={`${styles.filterGroups} ${mobileFiltersOpen ? styles.filterGroupsOpen : ''}`}
+              className={styles.filterGroups}
+              hidden={!filtersOpen}
             >
             <ExploreTaxonomyFilterGroups
               isSelected={(dimensionId, termId) => selected[dimensionId].has(termId)}

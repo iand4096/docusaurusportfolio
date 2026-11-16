@@ -32,3 +32,16 @@ This is dependency-free: no npm package, Azure changes, Docker rebuild, or exter
 - Select taxonomy chips: results must still obey `OR` within each category and `AND` across categories.
 - Clear all: restores the alphabetical list.
 - Check desktop and mobile, light and dark themes.
+
+## Metadata filter visibility
+
+Browse and Search share a show/hide control for metadata filters at every viewport
+width. The options start hidden; search stays visible. The eye icon and text label
+indicate the action, and `aria-expanded` exposes the current state. Hidden options
+are excluded from keyboard navigation.
+
+Visibility is stored as `metadata-filters-visible` in browser local storage and
+synchronizes between the Explore tabs and browser tabs. This preference is separate
+from Search’s tab-local saved results. Clearing a search does not change it. If
+storage is blocked, the toggle continues to work for the current session. Hiding
+options does not clear selected filters; the toggle retains their selected count.
