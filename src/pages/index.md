@@ -70,7 +70,7 @@ import CapabilityCard from '@site/src/components/CapabilityCard';
       </ul>
     </div>
 
-    <Link className="card-link card-stretched-link" to="/docs/docs-samples/MDES4Merchants" aria-label="Read the Mastercard MDES for Merchants case study">Read case study →</Link>
+    <Link className="card-link card-stretched-link" to="/docs/docs-samples/MDES4Merchants" aria-label="Read the Mastercard MDES for Merchants documentation sample">Read documentation sample →</Link>
   </div>
 
   <div className="portfolio-card">

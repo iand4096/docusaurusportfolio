@@ -17,6 +17,22 @@ these instructions or updating package-manager-specific guidance.
 
 ## Establish the need and scope
 
+Before reporting a missing Python dependency or installing packages, check for
+an appropriate existing virtual environment. Inspect project configuration,
+local `.venv` or `venv` directories, and known task environments from the
+session, including relevant environments under `/tmp`. Verify that the
+environment has a compatible Python version and the required packages, then
+run checks using its interpreter explicitly (for example,
+`/path/to/venv/bin/python scripts/taxonomy.py check --all`). Prefer a suitable
+existing environment over creating another or modifying system Python. Do
+not assume a dependency is unavailable because the default interpreter lacks
+it, or reuse an unrelated environment solely because it exists.
+
+If an otherwise suitable existing virtual environment is missing a required
+dependency, recommend adding it to that environment and let the user decide
+before installing it. State the dependency, target environment and why it is
+needed; continue any independent work while awaiting the decision.
+
 Before downloading or adding a dependency:
 
 - Identify the capability it provides and why existing tools are insufficient.

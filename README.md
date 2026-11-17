@@ -225,19 +225,19 @@ The tool supports two review scopes:
 * **Per-page** — reviews individual Markdown and MDX documents.
 * **Site-wide** — compares documents for repetition and consistency.
 
-Available presets include:
+Available review presets:
 
 * Full review — deterministic checks and substantive AI defects
 * Optional editorial suggestions (`--filter editorial`)
-* Portfolio only
-* Repetition only
-* Mermaid opportunities only
-* Accessibility only
-* Site-wide consistency only
-* Remark only
-* Vale only
-* Lychee only
-* Link checks only
+* Portfolio
+* Repetition
+* Mermaid opportunities
+* Accessibility
+* Site-wide consistency
+* Remark
+* Vale
+* Lychee
+* Link checks
 
 Checks that do not apply to the selected scope are automatically excluded.
 

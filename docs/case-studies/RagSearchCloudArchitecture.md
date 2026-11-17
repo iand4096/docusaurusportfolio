@@ -97,7 +97,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "projectType": "Cloud search application",
   "summary": "Built and deployed portfolio search with governed retrieval and source-linked AI answers.",
   "role": "Sole architect, developer and deployment engineer",
-  "scope": "Search and AI-assisted retrieval across portfolio documentation",
+  "scope": "Search and AI-assisted retrieval for my portfolio documentation",
   "decision": "Hybrid BM25/FAISS retrieval with metadata filters, separate from AI generation",
   "deliverables": "FastAPI service, ingestion pipeline, React interface and Terraform-managed Azure deployment",
   "evidenceTitle": "Delivered Capabilities",

@@ -4,14 +4,14 @@ sidebar_position: 9
 slug: /containersandcloud
 sidebar_custom_props:
   sampleCard:
-    tag: Containers and networking
+    tag: Containers and cloud
     description: >-
-      Supporting documentation platforms and API integration testing through
-      containerised hosting, Linux administration and network troubleshooting.
+      Deploying documentation platforms and Python APIs with Docker, Azure and
+      Terraform, supported by Linux administration and network troubleshooting.
     highlights:
-      - Led migration of a documentation platform to Docker and Nginx hosting
-      - Reduced container build time by approximately 15 minutes
-    ariaLabel: Explore my containers and networking skills
+      - Led a Docker/Nginx documentation-platform migration; cut build time by approximately 15 minutes
+      - Built and deployed a Python search API on Azure Container Apps using Terraform
+    ariaLabel: Explore my containers and cloud skills
 type:
   - tool
 audiences:
@@ -22,6 +22,10 @@ topics:
   - docs-as-code
   - technical-validation
 technologies:
+  - azure-container-apps
+  - azure-container-registry
+  - azure-log-analytics
+  - azure-managed-identity
   - docker
   - nginx
   - linux
@@ -30,9 +34,14 @@ technologies:
   - openwrt
   - wireshark
   - kubernetes
+  - terraform
 lifecycle:
   - current
 tags:
+  - azure-container-apps
+  - azure-container-registry
+  - azure-log-analytics
+  - azure-managed-identity
   - docker
   - docs-as-code
   - documentation-engineering
@@ -43,12 +52,13 @@ tags:
   - pythonanywhere
   - tcp-ip
   - technical-validation
+  - terraform
   - wireshark
 ---
 
 ## Containers, cloud and networking {/* #containers-cloud-and-networking */}
 
-Practical experience using **Docker, Linux, networking and cloud-hosted environments** for documentation platforms and API integration testing, with basic exposure to Kubernetes.
+Practical experience using **Docker, Azure, Terraform, Linux and networking** to deploy documentation platforms and cloud applications and support API integration testing, with basic exposure to Kubernetes.
 
 ### Docker and containers {/* #docker-and-containers */}
 
@@ -57,13 +67,15 @@ Practical experience using **Docker, Linux, networking and cloud-hosted environm
 * Identified a build-performance issue caused by copying approximately **3,200 generated documentation pages into the container**.
 * Proposed serving the generated documentation from an attached file system instead, reducing build time by approximately **15 minutes**.
 * Gained experience troubleshooting containerised documentation builds.
+* Built and deployed a containerised Python search API, packaging its embedding model and search indexes, with **Docker Compose** for local development.
 * Built a personal Kubernetes cluster on Proxmox.
 
-### Cloud-hosted integration testing {/* #cloud-hosted-integration-testing */}
+### Cloud deployment and integration testing {/* #cloud-hosted-integration-testing */}
 
 * Used **PythonAnywhere** to host generated public documentation for SME review.
 * Built externally accessible Python integrations to receive and test **webhooks** that could not reach internal development environments due to the corporate firewall.
 * Used hosted environments to validate API and asynchronous integration behaviour.
+* Designed and provisioned the Azure deployment for my [RAG search application](../case-studies/RagSearchCloudArchitecture.md) using **Terraform**, including Container Apps, a private image registry, managed identity, secret configuration and operational logging.
 
 ### Linux and networking {/* #linux-and-networking */}
 

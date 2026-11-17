@@ -1410,7 +1410,7 @@
       "title": "Containers and Cloud",
       "path": "/docs/containersandcloud",
       "source": "docs/tools/ContainersAndCloudNative.md",
-      "description": "Supporting documentation platforms and API integration testing through containerised hosting, Linux administration and network troubleshooting.",
+      "description": "Deploying documentation platforms and Python APIs with Docker, Azure and Terraform, supported by Linux administration and network troubleshooting.",
       "type": [
         "tool"
       ],
@@ -1420,6 +1420,10 @@
         "technical-validation"
       ],
       "technologies": [
+        "azure-container-apps",
+        "azure-container-registry",
+        "azure-log-analytics",
+        "azure-managed-identity",
         "docker",
         "nginx",
         "linux",
@@ -1427,7 +1431,8 @@
         "tcp-ip",
         "openwrt",
         "wireshark",
-        "kubernetes"
+        "kubernetes",
+        "terraform"
       ],
       "audiences": [
         "technical-writers",
@@ -1664,7 +1669,7 @@
       "title": "Docusaurus Portfolio",
       "path": "/docs/case-studies/DocusaurusPortfolio",
       "source": "docs/case-studies/DocusaurusPortfolio.md",
-      "description": "A case study of building a Docusaurus portfolio site with docs-as-code workflows, React/MDX customisation, automated QA, and CI/CD.",
+      "description": "A case study of building a Docusaurus documentation platform with governed content, search, related-content recommendations, Markdown exports, automated QA, and CI/CD.",
       "type": [
         "case-study"
       ],

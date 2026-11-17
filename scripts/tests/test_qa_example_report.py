@@ -37,6 +37,9 @@ class ExampleReportTests(unittest.TestCase):
         real = self.render(0)
         self.assertIn('See example QA report with errors', real)
         example = (self.root / 'qa-example.html').read_text()
+        self.assertIn('href="./real.html">← Back to actual QA report</a>', example)
+        self.assertNotIn('Back to Portfolio', example)
+        self.assertIn('Back to Portfolio', real)
         self.assertIn('Demonstration only — synthetic findings', example)
         self.assertIn('Simulated check failure', example)
         self.assertNotIn('class="challenge-button"', example)
@@ -57,6 +60,18 @@ class ExampleReportTests(unittest.TestCase):
     def test_threshold_is_inclusive_and_busy_report_omits_offer(self):
         self.assertIn('See example QA report with errors', self.render(5))
         self.assertNotIn('See example QA report with errors', self.render(6))
+
+    def test_example_returns_to_custom_output_filename(self):
+        review.generate_html_report([], [], self.metadata,
+            review.evaluate_ci([], [], 0, 5, 0),
+            output_path=self.root / 'custom report.html')
+        example = (self.root / 'qa-example.html').read_text()
+        self.assertIn('href="./custom%20report.html">← Back to actual QA report</a>', example)
+
+    def test_standalone_example_returns_to_default_report(self):
+        review.generate_example_report(self.root, self.metadata)
+        example = (self.root / 'qa-example.html').read_text()
+        self.assertIn(f'href="./{review.REPORT.name}">← Back to actual QA report</a>', example)
 
     def test_history_does_not_hide_example_offer(self):
         issues = [finding(str(i)) for i in range(8)]

@@ -3806,7 +3806,7 @@ def example_report_notice(issues, metadata):
     return ''
 
 
-def generate_example_report(directory, metadata):
+def generate_example_report(directory, metadata, *, actual_report_name=None):
     """Render a deterministic demonstration, never run checks or touch feedback."""
     cases = [
         ('static', 'high', 'links', '[Setup guide](missing-guide.md)',
@@ -3838,10 +3838,18 @@ def generate_example_report(directory, metadata):
                       'error': 'Simulated check failure: the external-link service timed out.'}]
     example_ci = evaluate_ci(examples, example_errors, 0, 0, 0)
     generate_html_report(examples, example_errors, example_metadata, example_ci,
-                         output_path=Path(directory) / 'qa-example.html')
+                         output_path=Path(directory) / 'qa-example.html',
+                         actual_report_name=actual_report_name)
 
 
-def generate_html_report(issues, errors, metadata, ci_result, *, output_path=None):
+def generate_html_report(issues, errors, metadata, ci_result, *, output_path=None,
+                         actual_report_name=None):
+    if metadata.get('example_report'):
+        return_url = './' + quote(actual_report_name or REPORT.name)
+        return_label = '← Back to actual QA report'
+    else:
+        return_url = PORTFOLIO_URL
+        return_label = '← Back to Portfolio'
     for issue in issues:
         apply_ai_severity_policy(issue)
     issues = sort_issues(issues)
@@ -4293,7 +4301,7 @@ def generate_html_report(issues, errors, metadata, ci_result, *, output_path=Non
     <h1>Documentation QA report</h1>
     {example_report_notice(issues, metadata)}
     <p class="portfolio-link">
-        <a href="{html.escape(PORTFOLIO_URL, quote=True)}">← Back to Portfolio</a>
+        <a href="{html.escape(return_url, quote=True)}">{return_label}</a>
     </p>
     <div class="report-actions">
         <a href="#possibleLinks">Challenge links ({possible_count} possible · {linked_count} confirmed)</a>
@@ -4562,7 +4570,7 @@ def generate_html_report(issues, errors, metadata, ci_result, *, output_path=Non
     destination = Path(output_path) if output_path is not None else REPORT
     destination.write_text(document, encoding="utf-8")
     if not metadata.get('example_report') and report_counts(issues)['active'] <= EXAMPLE_REPORT_THRESHOLD:
-        generate_example_report(destination.parent, metadata)
+        generate_example_report(destination.parent, metadata, actual_report_name=destination.name)
 
 # ---------------------------------------------------------------------------
 # Command-line interface

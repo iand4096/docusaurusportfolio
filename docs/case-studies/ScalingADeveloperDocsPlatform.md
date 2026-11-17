@@ -67,11 +67,11 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "employer": "Morgan Stanley",
   "industry": "Investment banking",
   "projectType": "Internal developer platform",
-  "summary": "Led an enterprise docs-as-code platform from launch through wider adoption across Morgan Stanley’s developer community.",
+  "summary": "Led an enterprise docs-as-code platform from launch to wider adoption across Morgan Stanley’s developer community.",
   "role": "Platform leadership and hands-on engineering",
   "scope": "Optimus, RICE and the wider Codetree monorepo",
-  "decision": "Git-based authoring with consistent rendering in IntelliJ and on the website",
-  "deliverables": "Developer portal, migration tools and publishing workflows",
+  "decision": "Custom Git-based authoring with consistent rendering in IntelliJ and on the website",
+  "deliverables": "Developer portal, migration tools, engineer contribution and publishing workflows",
   "evidenceTitle": "Measurable Results",
   "evidence": [
     {

@@ -57,11 +57,11 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "employer": "Paysafe",
   "industry": "Payments / Fintech",
   "projectType": "Public developer portal",
-  "summary": "Led a unified Developer Center bringing together Paysafe and Skrill API, SDK and integration documentation.",
+  "summary": "Led a unified Developer Center bringing together Paysafe and Skrill API, SDK and integration documentation in a fast growth environment",
   "role": "Documentation strategy, information architecture and team leadership",
   "scope": "Optimal Payments and Skrill developer documentation",
-  "decision": "Flare and Git authoring with incremental publishing into TYPO3",
-  "deliverables": "Unified portal, content migration, API Blueprint references and automated publishing",
+  "decision": "Flare and Git authoring with incremental publishing into a CMS (TYPO3)",
+  "deliverables": "Unified public developer portal, content migration, API Blueprint references, automated publishing and SME review workflow",
   "evidenceTitle": "Delivery evidence and business context",
   "evidence": [
     {
@@ -80,7 +80,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
     },
     {
       "value": "21%",
-      "label": "Revenue growth, excluding acquisition and currency effects.",
+      "label": "Revenue growth, excluding acquisition and currency effects",
       "emphasis": "metric",
       "labelStyle": "note"
     }
