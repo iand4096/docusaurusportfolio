@@ -80,7 +80,7 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
       </div>
       <div className={styles.actions}>
         <button type="button" className={styles.expand} aria-haspopup="dialog"
-          aria-controls={`${id}-dialog`} aria-label={`Enlarge ${caption}`}
+          aria-controls={`${id}-dialog`} aria-label={`View full-screen: ${caption}`}
           onClick={() => {
             setReservedHeight(canvas.current?.getBoundingClientRect().height);
             setView({zoom: 1, x: 0, y: 0});
@@ -88,7 +88,7 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
             drag.current = null;
             setExpanded(true);
           }}>
-          <i className="fa-solid fa-expand" aria-hidden="true" /> Enlarge figure
+          <i className="fa-solid fa-expand" aria-hidden="true" /> View full-screen
         </button>
       </div>
       <Legend items={legend} />

@@ -1,11 +1,11 @@
 // Shared by the renderer, legend, Markdown exporter and tests.
 const roles = Object.freeze({
   input: {label: 'Inputs', fill: '#DCE3EA', stroke: '#657789', icon: 'file-lines'},
-  process: {label: 'Processing and delivery', fill: '#D0E2ED', stroke: '#52758A', icon: null},
+  process: {label: 'Processing and delivery', fill: '#B8D5EA', stroke: '#406E91', icon: null},
   storage: {label: 'Stored data', fill: '#CDDCD4', stroke: '#5D796A', icon: 'database'},
-  infra: {label: 'Infrastructure', fill: '#DFE1E4', stroke: '#6D747D', icon: 'server'},
+  infra: {label: 'Infrastructure', fill: '#E0D9CE', stroke: '#817565', icon: 'server'},
   decision: {label: 'Decisions', fill: '#E5D9B8', stroke: '#8B7545', icon: null},
-  interaction: {label: 'Human interaction', fill: '#E4E8EC', stroke: '#697786', icon: 'user'},
+  interaction: {label: 'Human interaction', fill: '#CDD3DC', stroke: '#626F82', icon: 'user'},
   generation: {label: 'AI generation', fill: '#DCD5E4', stroke: '#78678A', icon: 'wand-magic-sparkles'},
 });
 

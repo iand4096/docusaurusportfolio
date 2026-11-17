@@ -65,7 +65,7 @@ test('server-rendered figures contain accessible titles, a shared icon key and a
   assert.match(html, /fa-solid fa-file-lines/);
   assert.doesNotMatch(html, /fa-null/);
   assert.match(html, /background-color:#DCE3EA;border-color:#657789/);
-  assert.match(html, /Enlarge Figure 2\. Publishing/);
+  assert.match(html, /View full-screen: Figure 2\. Publishing/);
   assert.match(html, /<dialog[^>]+aria-labelledby=/);
   assert.match(html, />Inputs<\/span>/);
   assert.match(html, />Build<\/span>/);

@@ -99,7 +99,7 @@ const matrix = [[1440, 'light'], [1024, 'light'], [768, 'light'], [390, 'light']
           for (let i = 0; i < await figures.count(); i++) {
             const figure = figures.nth(i);
             const expected = await figure.locator('svg').count();
-            const button = figure.getByRole('button', {name: /^Enlarge Figure/});
+            const button = figure.getByRole('button', {name: /^View full-screen: Figure/});
             if (output) await figure.screenshot({path: path.join(output, `${route.split('/').pop()}-${i}-${width}-${theme}.png`),
               style: '.navbar {visibility: hidden}'});
             await button.click();
