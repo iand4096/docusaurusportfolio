@@ -39,7 +39,7 @@
 .sectionHeading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 32px; }
 .sectionHeading h2 { margin: 0; }
 .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; }
-.project { display: grid; grid-template-rows: subgrid; grid-row: span 5; row-gap: 0; justify-items: start; padding-top: 20px; border-top: 2px solid var(--ifm-color-primary); }
+.project { position: relative; cursor: pointer; display: grid; grid-template-rows: subgrid; grid-row: span 5; row-gap: 0; justify-items: start; padding-top: 20px; border-top: 2px solid var(--ifm-color-primary); }
 .employer { font-size: var(--portfolio-text-secondary); color: var(--portfolio-muted); margin-bottom: 14px; }
 .project h3 { margin-bottom: 18px; }
 .description { font-size: var(--portfolio-text-body); color: var(--portfolio-muted); }
@@ -84,3 +84,11 @@
   .about { padding: 38px 0; gap: 24px; }
   .contact { padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--portfolio-line); }
 }
+
+.underlined {text-decoration: underline; text-underline-offset: 0.15em; text-decoration-thickness: 1px;}
+
+/* Stretch the native case-study link across the card; keep other links on top. */
+.projectLink::after {content: ''; position: absolute; inset: 0; z-index: 1;}
+.project a:not(.projectLink) {position: relative; z-index: 2;}
+.home .projectLink:focus-visible {outline: none;}
+.projectLink:focus-visible::after {outline: 3px solid var(--portfolio-accent); outline-offset: 5px;}

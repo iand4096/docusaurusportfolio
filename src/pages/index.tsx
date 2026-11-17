@@ -4,6 +4,11 @@ import Layout from '@theme/Layout';
 import styles from './index.module.css';
 
 const linkedin = 'https://www.linkedin.com/in/ian-drewett/';
+const companySites: Record<string, string> = {
+  'Morgan Stanley': 'https://www.morganstanley.com/',
+  Mastercard: 'https://www.mastercard.com/',
+  Paysafe: 'https://www.paysafe.com/',
+};
 const projects = [
   {
     employer: 'Morgan Stanley',
@@ -16,7 +21,7 @@ const projects = [
   {
     employer: 'Paysafe',
     title: 'Building a unified Developer Center',
-    description: 'Led delivery of a public Developer Center for a rapidly growing, API-first payments business, bringing together Optimal Payments and Skrill API, SDK and integration documentation.',
+    description: <>Led delivery of a <a href="https://developer.paysafe.com/en/">public Developer Center</a> for a <span className={styles.underlined}>rapidly growing</span>, API-driven payments business, bringing together <a href="https://www.paysafe.com/us-en/paysafegroup/news/detail/optimal-payments-becomes-paysafe-in-game-changing-global-rebrand/">Optimal Payments</a> and <a href="https://www.skrill.com/">Skrill</a> API, SDK and integration documentation.</>,
     evidence: '$1bn+ annual revenue · 21% growth*',
     evidenceNote: 'Company figures; 21% excludes acquisition and currency effects.',
     href: '/docs/case-studies/paysafedevcenter',
@@ -25,7 +30,7 @@ const projects = [
   {
     employer: 'Mastercard',
     title: 'Testing and documenting MDES integrations',
-    description: 'Built a Python integration to validate merchant tokenisation workflows, including encryption and asynchronous webhooks, then authored the MDES for Merchants Use-Case Guide.',
+    description: <>Built a Python integration to validate merchant tokenisation workflows, including encryption and asynchronous webhooks, then authored the MDES for Merchants Use-Case Guide. Mastercard’s Digital Enablement Service (MDES) is one of the technologies behind <a href="https://www.apple.com/apple-pay/">Apple Pay</a>.</>,
     evidence: 'Python integration · Secure payment workflows',
     href: '/docs/docs-samples/MDES4Merchants',
     action: 'Read documentation sample',
@@ -57,7 +62,8 @@ export default function Home(): React.ReactElement {
             My work combines technical writing, content strategy, docs-as-code, tested API
             integrations and governed content.
           </p>
-          <p className={styles.experience}>Experience at Morgan Stanley, Mastercard and Paysafe.</p>
+          <p className={styles.experience}>Experience at <a href={companySites['Morgan Stanley']}>Morgan Stanley</a>,{' '}
+            <a href={companySites.Mastercard}>Mastercard</a> and <a href={companySites.Paysafe}>Paysafe</a>.</p>
           <div className={styles.actions}>
             <a href="#case-studies" className={styles.primary}>Explore selected work ↓</a>
             <Link to={linkedin} className={styles.textLink}>Connect on LinkedIn ↗</Link>
@@ -72,14 +78,17 @@ export default function Home(): React.ReactElement {
           <div className={styles.projects}>
             {projects.map(project => (
               <article className={styles.project} key={project.employer}>
-                <p className={styles.employer}>{project.employer}</p>
+                <p className={styles.employer}>{companySites[project.employer]
+                  ? <a href={companySites[project.employer]}>{project.employer}</a>
+                  : project.employer}</p>
                 <h3>{project.title}</h3>
                 <p className={styles.description}>{project.description}</p>
                 <div className={styles.evidenceRow}>
                   <p className={styles.evidence}>{project.evidence}</p>
                   {project.evidenceNote && <p className={styles.evidenceNote}>{project.evidenceNote}</p>}
                 </div>
-                <Link to={project.href} className={styles.textLink}>{project.action} →</Link>
+                <Link to={project.href} className={`${styles.textLink} ${styles.projectLink}`}
+                  aria-label={`${project.action}: ${project.title}`}>{project.action} →</Link>
               </article>
             ))}
           </div>
