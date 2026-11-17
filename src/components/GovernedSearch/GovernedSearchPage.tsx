@@ -399,10 +399,12 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
           <aside className={`${styles.filterPanel} ${browseStyles.filters}`} aria-label="Taxonomy filters">
             <div className={browseStyles.filterHeader}>
               <h2>Filter</h2>
-              <button type="button" className={browseStyles.clearButton}
-                onClick={resetFilters} disabled={busy || (activeFilters.length === 0 && !includeArchived)}>
-                Clear filters
-              </button>
+              {(activeFilters.length > 0 || includeArchived) && (
+                <button type="button" className={browseStyles.clearButton}
+                  onClick={resetFilters} disabled={busy}>
+                  Clear filters
+                </button>
+              )}
             </div>
             <div className={styles.toolbar}>
               <MetadataFilterToggle visible={showFilters} onToggle={toggleFilters}

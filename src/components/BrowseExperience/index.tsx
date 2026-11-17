@@ -304,14 +304,11 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
           <aside className={styles.filters} aria-label="Taxonomy filters">
             <div className={styles.filterHeader}>
               <h2>Filter</h2>
-              <button
-                type="button"
-                className={styles.clearButton}
-                onClick={clearFilters}
-                disabled={activeFilterCount === 0}
-              >
-                Clear filters
-              </button>
+              {activeFilterCount > 0 && (
+                <button type="button" className={styles.clearButton} onClick={clearFilters}>
+                  Clear filters
+                </button>
+              )}
             </div>
 
             <div className={styles.searchGroup}>
