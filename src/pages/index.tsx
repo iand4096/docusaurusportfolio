@@ -48,11 +48,12 @@ export default function Home(): React.ReactElement {
     >
       <main className={styles.home} id="main-content">
         <section className={styles.hero}>
-          <p className={styles.eyebrow}>Ian Drewett · Technical Writer & Documentation Engineer</p>
+          <p className={styles.identity}>Ian Drewett · Lead Technical Writer & Documentation Engineer</p>
+          <p className={styles.specialisms}>Content strategy · Knowledge architecture · AI-ready documentation</p>
           <h1><span className={styles.headlineAccent}>Developer documentation.</span> Documentation engineering. AI-ready knowledge.</h1>
           <p className={styles.lead}>
             I help companies explain complex products, engineer documentation
-            platforms and prepare technical knowledge for AI-assisted discovery.
+            platforms and prepare technical knowledge for AI discovery.
             My work combines technical writing, docs-as-code, tested API
             integrations and governed content.
           </p>
