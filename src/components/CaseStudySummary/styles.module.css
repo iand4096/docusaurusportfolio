@@ -2,7 +2,7 @@
   margin: 0 0 2.5rem;
   padding: clamp(1rem, 2.5vw, 1.75rem);
   border: 1px solid var(--ifm-color-emphasis-300);
-  border-top: 3px solid var(--ifm-color-primary);
+  border-inline-start: 3px solid var(--ifm-color-primary);
   border-radius: var(--ifm-global-radius);
   background: var(--ifm-background-surface-color);
   color: var(--ifm-font-color-base);

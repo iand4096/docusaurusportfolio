@@ -3941,7 +3941,7 @@ def generate_html_report(issues, errors, metadata, ci_result, *, output_path=Non
                 data-category="{html.escape(issue['category'])}"
             >
                 <td>{file_detail}</td>
-                <td>{line_link}<br><small>{html.escape(issue.get("document_revision", {}).get("content_sha256") or "revision unavailable")[:12]}</small></td>
+                <td>{line_link}<br><small>{html.escape((issue.get("document_revision", {}).get("content_sha256") or "")[:12] or "revision unavailable")}</small></td>
                 <td><span class="badge severity-{html.escape(issue['severity'])}">{html.escape(issue['severity'])}</span></td>
                 <td><span class="badge confidence-{html.escape(issue['confidence'])}">{html.escape(issue['confidence'])}</span></td>
                 <td>{html.escape(issue['type'])}</td>

@@ -41,6 +41,8 @@ class ExampleReportTests(unittest.TestCase):
         self.assertNotIn('Back to Portfolio', example)
         self.assertIn('Back to Portfolio', real)
         self.assertIn('Demonstration only — synthetic findings', example)
+        self.assertIn('<small>revision unavailable</small>', example)
+        self.assertNotIn('<small>revision una</small>', example)
         self.assertIn('Simulated check failure', example)
         self.assertNotIn('class="challenge-button"', example)
         self.assertNotIn('class="report-actions"', example)

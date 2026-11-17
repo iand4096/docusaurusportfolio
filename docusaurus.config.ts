@@ -152,7 +152,7 @@ const config: Config = {
     },
 
     navbar: {
-      title: 'Home',
+      title: 'Ian Drewett',
 
       items: [
         {

@@ -1,0 +1,131 @@
+import React from 'react';
+import Link from '@docusaurus/Link';
+import Layout from '@theme/Layout';
+import styles from './index.module.css';
+
+const linkedin = 'https://www.linkedin.com/in/ian-drewett/';
+const projects = [
+  {
+    employer: 'Morgan Stanley',
+    title: 'Engineering and scaling an enterprise documentation platform',
+    description: 'Led the design and evolution of a docs-as-code platform and Developer portal for quantitative analysts and developers, including publishing, migration and contributor workflows. Grew from 700 to more than 3,200 pages.',
+    evidence: '3,200+ pages · ~900 legacy pages converted',
+    href: '/docs/case-studies/scalingdeveloperdocs',
+    action: 'Read case study',
+  },
+  {
+    employer: 'Paysafe',
+    title: 'Building a unified Developer Center',
+    description: 'Led delivery of a public Developer Center for a rapidly growing, API-first payments business, bringing together Optimal Payments and Skrill API, SDK and integration documentation.',
+    evidence: '$1bn+ annual revenue · 21% growth*',
+    evidenceNote: 'Company figures; excludes acquisition and currency effects.',
+    href: '/docs/case-studies/paysafedevcenter',
+    action: 'Read case study',
+  },
+  {
+    employer: 'Mastercard',
+    title: 'Testing and documenting MDES integrations',
+    description: 'Built a Python integration to validate merchant tokenisation workflows, including encryption and asynchronous webhooks, then authored the MDES for Merchants Use-Case Guide.',
+    evidence: 'Python integration · Secure payment workflows',
+    href: '/docs/docs-samples/MDES4Merchants',
+    action: 'Read documentation sample',
+  },
+  {
+    employer: 'Independent project',
+    title: 'Governing knowledge with a canonical taxonomy',
+    description: 'Built a shared vocabulary for structured documentation, connecting metadata validation, authoring tools, navigation and retrieval. Content lifecycle values and reviewed taxonomy changes keep classification controlled.',
+    evidence: 'Canonical taxonomy · Metadata validation · Lifecycle controls',
+    href: '/docs/case-studies/TaxonomyGovernance',
+    action: 'Read case study',
+  },
+];
+
+export default function Home(): React.ReactElement {
+  return (
+    <Layout
+      title="Ian Drewett | Technical Writer & Documentation Engineer"
+      description="Developer documentation. Documentation engineering. AI-ready knowledge. Technical writing, docs-as-code, tested API integrations and governed content by Ian Drewett."
+    >
+      <main className={styles.home} id="main-content">
+        <section className={styles.hero}>
+          <p className={styles.eyebrow}>Ian Drewett · Technical Writer & Documentation Engineer</p>
+          <h1><span className={styles.headlineAccent}>Developer documentation.</span> Documentation engineering. AI-ready knowledge.</h1>
+          <p className={styles.lead}>
+            I help companies explain complex products, engineer documentation
+            platforms and prepare technical knowledge for AI-assisted discovery.
+            My work combines technical writing, docs-as-code, tested API
+            integrations and governed content.
+          </p>
+          <p className={styles.experience}>Experience at Morgan Stanley, Mastercard and Paysafe.</p>
+          <div className={styles.actions}>
+            <a href="#case-studies" className={styles.primary}>Explore selected work ↓</a>
+            <Link to={linkedin} className={styles.textLink}>Connect on LinkedIn ↗</Link>
+          </div>
+        </section>
+
+        <section className={styles.work} id="case-studies">
+          <div className={styles.sectionHeading}>
+            <h2>Selected work</h2>
+            <Link to="/explore?view=browse&contentType=case-study&contentType=doc-sample" className={styles.textLink}>Browse all work →</Link>
+          </div>
+          <div className={styles.projects}>
+            {projects.map(project => (
+              <article className={styles.project} key={project.employer}>
+                <p className={styles.employer}>{project.employer}</p>
+                <h3>{project.title}</h3>
+                <p className={styles.description}>{project.description}</p>
+                <div className={styles.evidenceRow}>
+                  <p className={styles.evidence}>{project.evidence}</p>
+                  {project.evidenceNote && <p className={styles.evidenceNote}>{project.evidenceNote}</p>}
+                </div>
+                <Link to={project.href} className={styles.textLink}>{project.action} →</Link>
+              </article>
+            ))}
+          </div>
+        </section>
+
+        <section className={styles.lab} aria-labelledby="search-heading">
+          <div>
+            <p className={styles.eyebrow}>Independent project</p>
+            <h2 id="search-heading">Putting AI-ready knowledge into practice</h2>
+            <p>This portfolio brings documentation engineering and knowledge
+              governance together: structured content, automated metadata
+              validation, hybrid retrieval and source-linked AI answers. A
+              canonical taxonomy and lifecycle filters govern which passages
+              are retrieved, and readers can inspect the original sources.</p>
+            <p className={styles.evaluation}>The search API is deployed on Azure using Docker and Terraform.
+              Evaluation of retrieval relevance and answer accuracy against a
+              representative question set is planned.</p>
+          </div>
+          <div className={styles.labActions}>
+            <Link to="/explore?view=ai-search" className={styles.primary}>Try the search →</Link>
+            <Link to="/docs/case-studies/RagSearchCloudArchitecture" className={styles.textLink}>Read the architecture case study →</Link>
+          </div>
+        </section>
+
+        <section className={styles.about} id="about">
+          <div>
+            <h2>Technical writing, documentation engineering and AI-ready knowledge systems</h2>
+            <p>I have an M.Sc. in Computer Science, a degree in Physics and a
+              background in software engineering. My documentation work ranges
+              from Scala frameworks and payment APIs to developer portals and
+              team leadership. I also design governed content structures and
+              validation tools that make technical knowledge easier to maintain,
+              retrieve and trace to its sources.</p>
+            <p>Explore my <Link to="/docs/apidocumentation">API documentation</Link>,{' '}
+              <Link to="/docs/documentationeng">documentation engineering</Link>,{' '}
+              <Link to="/docs/case-studies/TaxonomyGovernance">knowledge governance</Link> and{' '}
+              <Link to="/docs/docsleadership">leadership experience</Link>.</p>
+          </div>
+          <div className={styles.contact}>
+            <h3>Get in touch</h3>
+            <p>I’m interested in roles involving technical writing, documentation
+              engineering, knowledge architecture, content governance and AI
+              knowledge systems, as well as contract work and consultancy.</p>
+            <Link to={linkedin} className={styles.textLink}>Contact me on LinkedIn ↗</Link>
+          </div>
+        </section>
+      </main>
+    </Layout>
+  );
+}
