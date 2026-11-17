@@ -238,7 +238,9 @@ I designed the search approach for a growing documentation set, combining fast, 
 
 ### Content migration {/* #content-migration */}
 
-I developed automated content migration tooling for several legacy documentation systems, followed by an end-user-focused IDE-based migration tool. Together, these tools reduced the manual effort and risk associated with moving existing documentation, enabling approximately **900 pages** to be converted to the platform’s extended Markdown format while preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams.
+I migrated approximately **700 Optimus and RICE pages** and redesigned their combined information architecture. A later migration of around **200 pages** brought the total converted to approximately **900 pages**.
+
+I developed automated content migration tooling for several legacy documentation systems, reducing manual effort and preserving information hierarchy, images, internal links, complex tables, code samples, mathematical equations, and Dot-format diagrams in the platform’s extended Markdown format.
 
 I subsequently created IDE-based tooling that allowed content owners to migrate and validate their own documentation, making the migration process more scalable.
 

@@ -8,7 +8,7 @@ sidebar_custom_props:
     description: Organising complex technical content into discoverable, navigable, and maintainable
       documentation structures for developers and enterprise users.
     highlights:
-      - Redesigned the information architecture of a 500-page documentation site
+      - Redesigned the information architecture for approximately 700 documentation pages
       - Built Graphviz-based, interactive learning paths
     ariaLabel: Explore my information architecture skills
 type:
@@ -52,7 +52,7 @@ I organise developer documentation through content hierarchies, navigation tools
 <CapabilityGrid>
 
 * **Content hierarchy**<br />
-  Redesigned the information architecture for approximately **500 pages** at Morgan Stanley, replacing a flat collection of loosely connected pages with a structured hierarchy and clearer navigation paths.
+  Redesigned the information architecture for approximately **700 combined Optimus and RICE pages** at Morgan Stanley following migration, replacing a flat collection of loosely connected pages with a structured hierarchy and clearer navigation paths.
 
 * **Learning paths**<br />
   Designed and implemented a Graphviz-based navigation tool that generated tree-structured, hyperlinked learning paths across related documentation.
