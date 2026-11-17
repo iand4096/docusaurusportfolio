@@ -34,12 +34,14 @@
 .sectionHeading { display: flex; align-items: baseline; justify-content: space-between; gap: 20px; margin-bottom: 32px; }
 .sectionHeading h2 { margin: 0; }
 .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; }
-.project { display: flex; flex-direction: column; align-items: flex-start; padding-top: 20px; border-top: 2px solid var(--ifm-color-primary); }
+.project { display: grid; grid-template-rows: subgrid; grid-row: span 5; row-gap: 0; justify-items: start; padding-top: 20px; border-top: 2px solid var(--ifm-color-primary); }
 .employer { font-size: 0.8rem; color: var(--portfolio-muted); margin-bottom: 14px; }
 .project h3 { margin-bottom: 18px; }
 .description { font-size: 0.95rem; color: var(--portfolio-muted); }
-.evidence { font-size: 0.8rem; font-weight: 600; margin-top: auto; padding-top: 12px; }
-.evidenceNote { font-size: 0.6875rem; line-height: 1.5; color: var(--portfolio-muted); margin-top: -8px; }
+.evidenceRow { display: flex; align-items: baseline; gap: 16px; width: 100%; padding-top: 12px; margin-bottom: 16px; }
+.evidenceRow p { margin: 0; }
+.evidence { font-size: 0.8rem; font-weight: 600; }
+.evidenceNote { flex: 1; min-width: 0; font-size: 0.6875rem; line-height: 1.5; color: var(--portfolio-muted); }
 
 .lab { background: var(--ifm-background-surface-color); border-left: 3px solid var(--portfolio-accent); padding: 30px; display: grid; grid-template-columns: 1.7fr 1fr; gap: 45px; align-items: center; }
 .lab h2 { font-size: 1.65rem; }
@@ -70,8 +72,9 @@
   .sectionHeading { align-items: flex-start; flex-direction: column; gap: 12px; }
   .projects,.lab,.about { grid-template-columns: 1fr; }
   .projects { gap: 30px; }
+  .project { display: flex; flex-direction: column; align-items: flex-start; grid-row: auto; }
   .project h3 { font-size: 1.4rem; }
-  .evidence { margin-top: 0; padding-top: 0; }
+  .evidenceRow { flex-direction: column; gap: 6px; margin-top: 0; padding-top: 0; }
   .lab { padding: 24px; gap: 22px; }
   .about { padding: 38px 0; gap: 24px; }
   .contact { padding: 24px 0 0; border-left: 0; border-top: 1px solid var(--portfolio-line); }

@@ -8,7 +8,7 @@ const projects = [
   {
     employer: 'Morgan Stanley',
     title: 'Engineering and scaling an enterprise documentation platform',
-    description: 'Led the design and evolution of a docs-as-code platform for quantitative analysts and developers, including publishing, migration and contributor workflows. Grew from 700 to more than 3,200 pages.',
+    description: 'Led the design and evolution of a docs-as-code platform and Developer portal for quantitative analysts and developers, including publishing, migration and contributor workflows. Grew from 700 to more than 3,200 pages.',
     evidence: '3,200+ pages · ~900 legacy pages converted',
     href: '/docs/case-studies/scalingdeveloperdocs',
     action: 'Read case study',
@@ -16,9 +16,9 @@ const projects = [
   {
     employer: 'Paysafe',
     title: 'Building a unified Developer Center',
-    description: 'Led delivery of a unified Developer Center for a rapidly growing, API-first payments business, bringing together Optimal Payments and Skrill API, SDK and integration documentation.',
-    evidence: '$1bn+ annual revenue · 21% growth',
-    evidenceNote: 'Company figures; growth excludes acquisition and currency effects.',
+    description: 'Led delivery of a public Developer Center for a rapidly growing, API-first payments business, bringing together Optimal Payments and Skrill API, SDK and integration documentation.',
+    evidence: '$1bn+ annual revenue · 21% growth*',
+    evidenceNote: 'Company figures; excludes acquisition and currency effects.',
     href: '/docs/case-studies/paysafedevcenter',
     action: 'Read case study',
   },
@@ -74,8 +74,10 @@ export default function Home(): React.ReactElement {
                 <p className={styles.employer}>{project.employer}</p>
                 <h3>{project.title}</h3>
                 <p className={styles.description}>{project.description}</p>
-                <p className={styles.evidence}>{project.evidence}</p>
-                {project.evidenceNote && <p className={styles.evidenceNote}>{project.evidenceNote}</p>}
+                <div className={styles.evidenceRow}>
+                  <p className={styles.evidence}>{project.evidence}</p>
+                  {project.evidenceNote && <p className={styles.evidenceNote}>{project.evidenceNote}</p>}
+                </div>
                 <Link to={project.href} className={styles.textLink}>{project.action} →</Link>
               </article>
             ))}
