@@ -41,6 +41,8 @@ tags:
   - yaml
 ---
 
+import DiagramFigure from '@site/src/components/DiagramFigure';
+
 I designed and implemented a governed taxonomy for a Docusaurus documentation site. The project combined information architecture, docs-as-code automation, editor integration, and AI-assisted classification.
 
 My goal was not just to generate tags, but also to build a system in which writers could classify content efficiently while the canonical set of metadata remained consistent, reviewable, and auditable.
@@ -71,6 +73,33 @@ A semantic proposal is not automatically a taxonomy change. New or modified voca
 
 ## Architecture {/* #architecture */}
 
+<DiagramFigure {...{
+  "number": 1,
+  "title": "Taxonomy governance architecture",
+  "legend": [
+    {
+      "role": "generation",
+      "label": "AI classification and proposals"
+    },
+    {
+      "role": "interaction",
+      "label": "Human review"
+    },
+    {
+      "role": "input",
+      "label": "Reviewed change records"
+    },
+    {
+      "role": "process",
+      "label": "Controlled application of changes"
+    },
+    {
+      "role": "storage",
+      "label": "Governed data and projections"
+    }
+  ]
+}}>
+
 ```mermaid
 flowchart TD
     AI["`taxonomy_ai.py Semantic classification + vocabulary proposals`"]
@@ -91,7 +120,14 @@ flowchart TD
     TAXONOMY --> DERIVED
     DOCS --> DERIVED
     AI -.->|"read only"| TAXONOMY
+    class AI generation;
+    class REVIEW interaction;
+    class MIGRATION input;
+    class APPLY,ENGINE process;
+    class DOCS,TAXONOMY,DERIVED storage;
 ```
+
+</DiagramFigure>
 
 The important boundary is that there is no direct write path from `taxonomy_ai.py` to `taxonomy.yml`.
 
@@ -203,6 +239,37 @@ This lets the extension provide CMS convenience without becoming a second taxono
 
 ### Single-document front matter workflow {/* #single-document-front-matter-workflow */}
 
+<DiagramFigure {...{
+  "number": 2,
+  "title": "Single-document metadata review and application",
+  "legend": [
+    {
+      "role": "input",
+      "label": "Source document and change records"
+    },
+    {
+      "role": "interaction",
+      "label": "Editor actions and human review"
+    },
+    {
+      "role": "generation",
+      "label": "AI classification"
+    },
+    {
+      "role": "decision",
+      "label": "Vocabulary decision"
+    },
+    {
+      "role": "process",
+      "label": "Automation and controlled application"
+    },
+    {
+      "role": "storage",
+      "label": "Review artefacts, governed data and projections"
+    }
+  ]
+}}>
+
 ```mermaid
 flowchart TD
     DOC["`Open Markdown/MDX document in VS Code`"]
@@ -236,7 +303,15 @@ flowchart TD
     APPLY_WRAPPER --> APPLY_FROM
     APPLY_FROM --> UPDATED_DOC
     UPDATED_DOC --> GENERATED
+    class DOC,MIGRATION input;
+    class REVIEW_ACTION,HUMAN,APPLY_ACTION interaction;
+    class AI generation;
+    class PROPOSAL decision;
+    class WRAPPER,ENGINE,APPLY_WRAPPER,APPLY_FROM process;
+    class ARTEFACTS,TAXONOMY,UPDATED_DOC,GENERATED storage;
 ```
+
+</DiagramFigure>
 
 If a review proposes a new taxonomy term, the new term cannot be applied as metadata to the current document until it has been reviewed and adopted using `migrate preview` followed by `migrate apply`. A document with no YAML front matter can still be reviewed; applying its saved review creates the block. This keeps the single-document editor experience consistent with the wider governance model.
 

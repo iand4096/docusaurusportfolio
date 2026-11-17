@@ -59,6 +59,8 @@ tags:
   - vale
 ---
 
+import DiagramFigure from '@site/src/components/DiagramFigure';
+
 import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
 
 import CaseStudySummary from '@site/src/components/CaseStudySummary';
@@ -152,7 +154,24 @@ The custom platform supported source-code injection and custom Markdown extensio
 
 The platform supported the full documentation lifecycle, from Markdown authoring and Git-based review through automated build, publishing and discovery.
 
-<div class="diagram-wrap">
+<DiagramFigure {...{
+  "number": 1,
+  "title": "Documentation platform workflow",
+  "legend": [
+    {
+      "role": "interaction",
+      "label": "Authoring, review and developer portal"
+    },
+    {
+      "role": "process",
+      "label": "Migration, build, publishing and discovery"
+    },
+    {
+      "role": "infra",
+      "label": "Platform capabilities"
+    }
+  ]
+}}>
 
 ```mermaid
 %%{init: {
@@ -168,21 +187,21 @@ The platform supported the full documentation lifecycle, from Markdown authoring
 
 flowchart TD
 
-    A["fa:fa-user Authoring<br/>Markdown · IntelliJ live preview"]
+    A["Authoring<br/>Markdown · IntelliJ live preview"]
 
-    B["fa:fa-code-branch Review<br/>Git · pull requests"]
+    B["Review<br/>Git · pull requests"]
 
-    C["fa:fa-gears Build & quality<br/>Rendering · automated checks"]
+    C["Build & quality<br/>Rendering · automated checks"]
 
-    D["fa:fa-rocket Publish<br/>CI/CD · containerised hosting"]
+    D["Publish<br/>CI/CD · containerised hosting"]
 
-    E["fa:fa-globe Developer portal<br/>Published documentation"]
+    E["Developer portal<br/>Published documentation"]
 
-    F["fa:fa-magnifying-glass Discovery<br/>Keyword + RAG search"]
+    F["Discovery<br/>Keyword + RAG search"]
 
-    M["fa:fa-file-import Legacy migration<br/>Automated conversion tooling"]
+    M["Legacy migration<br/>Automated conversion tooling"]
 
-    P["fa:fa-diagram-project Platform capabilities<br/>Reusable content · code samples<br/>Diagrams-as-code"]
+    P["Platform capabilities<br/>Reusable content · code samples<br/>Diagrams-as-code"]
 
     A --> B
     B --> C
@@ -192,20 +211,12 @@ flowchart TD
 
     M --> B
     P --> C
-
-    classDef author fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
-    classDef review fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
-    classDef build fill:#F4EEDF,stroke:#9A7B45,color:#1F2937,stroke-width:1.4px;
-    classDef publish fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.4px;
-    classDef support fill:#ECE8F2,stroke:#76658B,color:#1F2937,stroke-width:1.4px;
-
-    class A author;
-    class B review;
-    class C build;
-    class D,E,F publish;
-    class M,P support;
+    class A,B,E interaction;
+    class C,D,F,M process;
+    class P infra;
 ```
-</div>
+
+</DiagramFigure>
 
 ### Design priorities {/* #design-priorities */}
 

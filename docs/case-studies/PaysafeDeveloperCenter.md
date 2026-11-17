@@ -49,6 +49,8 @@ tags:
   - typo3
 ---
 
+import DiagramFigure from '@site/src/components/DiagramFigure';
+
 import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
 
 import CaseStudySummary from '@site/src/components/CaseStudySummary';
@@ -161,7 +163,28 @@ For urgent production fixes, changes could be made directly in TYPO3 and subsequ
 
 The diagram below summarises the authoring, review and publishing sequence.
 
-<div class="diagram-wrap">
+<DiagramFigure {...{
+  "number": 1,
+  "title": "Developer Center authoring and publishing",
+  "legend": [
+    {
+      "role": "interaction",
+      "label": "Authoring, review and published interfaces"
+    },
+    {
+      "role": "input",
+      "label": "Version-controlled source"
+    },
+    {
+      "role": "process",
+      "label": "Build, merge and synchronisation"
+    },
+    {
+      "role": "infra",
+      "label": "Staging environment"
+    }
+  ]
+}}>
 
 ```mermaid
 %%{init: {
@@ -178,31 +201,31 @@ The diagram below summarises the authoring, review and publishing sequence.
 flowchart TD
 
     subgraph AUTHORING["Authoring & source control"]
-        A["fa:fa-user Authors<br/>MadCap Flare"]
-        B["fa:fa-code-branch Git feature branch"]
+        A["Authors<br/>MadCap Flare"]
+        B["Git feature branch"]
         A --> B
     end
 
     subgraph REVIEW["Build & review"]
-        C["fa:fa-gears Documentation build"]
-        D["fa:fa-globe Temporary review site<br/>PythonAnywhere"]
-        E["fa:fa-comment Hypothesis<br/>Rendered-page annotations"]
+        C["Documentation build"]
+        D["Temporary review site<br/>PythonAnywhere"]
+        E["Hypothesis<br/>Rendered-page annotations"]
 
         C --> D
         D --> E
     end
 
     subgraph CI["Merge & automated build"]
-        F["fa:fa-code-merge Merge to main"]
-        G["fa:fa-gears CI build"]
+        F["Merge to main"]
+        G["CI build"]
 
         F --> G
     end
 
     subgraph PUBLISH["Publishing"]
-        H["fa:fa-arrows-rotate Flare → TYPO3 incremental synchronisation<br/>create · update · delete · navigation"]
-        I["fa:fa-server TYPO3 staging<br/>environment"]
-        J["fa:fa-globe Production<br/>Developer Center"]
+        H["Flare → TYPO3 incremental synchronisation<br/>create · update · delete · navigation"]
+        I["TYPO3 staging<br/>environment"]
+        J["Production<br/>Developer Center"]
 
         H --> I
         I -->|Approved / promoted| J
@@ -212,25 +235,15 @@ flowchart TD
     E -->|Review approved| F
     G --> H
 
-    classDef authoring fill:#E8EEF5,stroke:#55708F,color:#1F2937,stroke-width:1.4px;
-    classDef review fill:#E5F1EF,stroke:#4F7D78,color:#1F2937,stroke-width:1.4px;
-    classDef ci fill:#F4EEDF,stroke:#9A7B45,color:#1F2937,stroke-width:1.4px;
+    class AUTHORING group-interaction;
+    class REVIEW,CI,PUBLISH group-process;
+    class A,D,E,J interaction;
+    class B input;
+    class C,F,G,H process;
+    class I infra;
+```
 
-    classDef publish fill:#ECE8F2,stroke:#76658B,color:#1F2937,stroke-width:1.4px;
-    classDef production fill:#D8D0E3,stroke:#5E4B75,color:#1F2937,stroke-width:1.7px;
-
-    class A,B authoring;
-    class C,D,E review;
-    class F,G ci;
-    class H,I publish;
-    class J production;
-
-    style AUTHORING fill:#F6F8FB,stroke:#BAC7D4,stroke-width:1px
-    style REVIEW fill:#F5F9F8,stroke:#B7CECA,stroke-width:1px
-    style CI fill:#FAF8F2,stroke:#D7C9A8,stroke-width:1px
-    style PUBLISH fill:#F7F5F9,stroke:#C9C0D4,stroke-width:1px
-```    
-</div>
+</DiagramFigure>
 
 ## Implementation {/* #implementation */}
 

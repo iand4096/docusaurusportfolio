@@ -24,6 +24,8 @@ tags:
   - technical-writing
 ---
 
+import DiagramFigure from '@site/src/components/DiagramFigure';
+
 # Optimus and RICE - distributed computing and financial analytics
 
 ## Overview {/* #overview */}
@@ -72,6 +74,21 @@ trade.marketValue  // 1000 (original value)
 
 This generates the following dependency graph:
 
+<DiagramFigure {...{
+  "number": 1,
+  "title": "Calculation dependencies and price tweaks",
+  "legend": [
+    {
+      "role": "input",
+      "label": "Original and scenario inputs"
+    },
+    {
+      "role": "process",
+      "label": "Calculated results"
+    }
+  ]
+}}>
+
 ```mermaid
 flowchart TD
     P["price<br/>@node(tweak = true)<br/>100"]
@@ -89,16 +106,11 @@ flowchart TD
 
     TP --> TMV
     Q --> TMV
-
-    classDef input fill:#E7EFFA,stroke:#5680BB,color:#243B53
-    classDef result fill:#E5F4E9,stroke:#479465,color:#244D35
-    classDef tweak fill:#FFF1D8,stroke:#C28C30,color:#654710
-
-    class P,Q input
-    class MV,TMV result
-    class TP tweak
-
+    class P,Q,TP input;
+    class MV,TMV process;
 ```
+
+</DiagramFigure>
 
 ### 3. Data access layer - DAL {/* #3-data-access-layer---dal */}
 

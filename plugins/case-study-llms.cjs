@@ -1,6 +1,7 @@
 const fs = require('node:fs/promises');
 const path = require('node:path');
 const llms = require('docusaurus-plugin-llms').default;
+const {serializeDiagramFigures} = require('./diagram-figures.cjs');
 
 function validateSummary(data) {
   for (const field of ['employer', 'industry', 'projectType', 'summary', 'role',
@@ -73,7 +74,7 @@ function serializeSummaries(content) {
 module.exports = function caseStudyLLMs(context, options) {
   const plugin = llms(context, {
     ...options,
-    preserveComponents: [...new Set([...(options.preserveComponents || []), 'CaseStudySummary'])],
+    preserveComponents: [...new Set([...(options.preserveComponents || []), 'CaseStudySummary', 'DiagramFigure'])],
   });
   return {
     ...plugin,
@@ -87,8 +88,8 @@ module.exports = function caseStudyLLMs(context, options) {
           if (entry.isDirectory()) await visit(filename);
           else if (entry.name.endsWith('.md') || /^llms.*\.txt$/.test(entry.name)) {
             const content = await fs.readFile(filename, 'utf8');
-            if (content.includes('<CaseStudySummary')) {
-              await fs.writeFile(filename, serializeSummaries(content));
+            if (content.includes('<CaseStudySummary') || content.includes('<DiagramFigure')) {
+              await fs.writeFile(filename, serializeDiagramFigures(serializeSummaries(content)));
             }
           }
         }
