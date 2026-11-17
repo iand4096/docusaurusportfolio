@@ -7,8 +7,8 @@ const linkedin = 'https://www.linkedin.com/in/ian-drewett/';
 const projects = [
   {
     employer: 'Morgan Stanley',
-    title: 'Scaling an enterprise documentation platform',
-    description: 'Led the design and evolution of a docs-as-code platform for quantitative analysts and developers, growing from 700 to more than 3,200 pages.',
+    title: 'Engineering and scaling an enterprise documentation platform',
+    description: 'Led the design and evolution of a docs-as-code platform for quantitative analysts and developers, including publishing, migration and contributor workflows. Grew from 700 to more than 3,200 pages.',
     evidence: '3,200+ pages · ~900 legacy pages converted',
     href: '/docs/case-studies/scalingdeveloperdocs',
     action: 'Read case study',
@@ -44,17 +44,17 @@ export default function Home(): React.ReactElement {
   return (
     <Layout
       title="Ian Drewett | Technical Writer & Documentation Engineer"
-      description="Developer documentation and knowledge systems for people and AI. Technical writing, documentation platforms, governed metadata and tested API integrations by Ian Drewett."
+      description="Developer documentation. Documentation engineering. AI-ready knowledge. Technical writing, docs-as-code, tested API integrations and governed content by Ian Drewett."
     >
       <main className={styles.home} id="main-content">
         <section className={styles.hero}>
           <p className={styles.eyebrow}>Ian Drewett · Technical Writer & Documentation Engineer</p>
-          <h1><span className={styles.headlineAccent}>Developer documentation</span> and knowledge systems for people and AI.</h1>
+          <h1><span className={styles.headlineAccent}>Developer documentation.</span> Documentation engineering. AI-ready knowledge.</h1>
           <p className={styles.lead}>
-            I help companies explain complex products and prepare technical
-            knowledge for AI-assisted discovery. My work combines technical
-            writing, documentation platforms, governed metadata and tested API
-            integrations.
+            I help companies explain complex products, engineer documentation
+            platforms and prepare technical knowledge for AI-assisted discovery.
+            My work combines technical writing, docs-as-code, tested API
+            integrations and governed content.
           </p>
           <p className={styles.experience}>Experience at Morgan Stanley, Mastercard and Paysafe.</p>
           <div className={styles.actions}>
@@ -86,10 +86,11 @@ export default function Home(): React.ReactElement {
           <div>
             <p className={styles.eyebrow}>Independent project</p>
             <h2 id="search-heading">Putting AI-ready knowledge into practice</h2>
-            <p>This portfolio connects structured content and a canonical taxonomy
-              with metadata validation, hybrid keyword and semantic retrieval,
-              and lifecycle filtering. Optional AI answers link to the retrieved
-              source passages so readers can inspect the evidence.</p>
+            <p>This portfolio brings documentation engineering and knowledge
+              governance together: structured content, automated metadata
+              validation, hybrid retrieval and source-linked AI answers. A
+              canonical taxonomy and lifecycle filters govern which passages
+              are retrieved, and readers can inspect the original sources.</p>
             <p className={styles.evaluation}>The search API is deployed on Azure using Docker and Terraform.
               Evaluation of retrieval relevance and answer accuracy against a
               representative question set is planned.</p>
