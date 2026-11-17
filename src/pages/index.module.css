@@ -38,6 +38,7 @@
 .project h3 { margin-bottom: 18px; }
 .description { font-size: 0.95rem; color: var(--portfolio-muted); }
 .evidence { font-size: 0.8rem; font-weight: 600; margin-top: auto; padding-top: 12px; }
+.evidenceNote { font-size: 0.75rem; color: var(--portfolio-muted); margin-top: -8px; }
 
 .lab { background: var(--ifm-background-surface-color); border-left: 3px solid var(--portfolio-accent); padding: 30px; display: grid; grid-template-columns: 1.7fr 1fr; gap: 45px; align-items: center; }
 .lab h2 { font-size: 1.65rem; }

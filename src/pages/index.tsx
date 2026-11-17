@@ -16,8 +16,9 @@ const projects = [
   {
     employer: 'Paysafe',
     title: 'Building a unified Developer Center',
-    description: 'Brought Optimal Payments and Skrill documentation together, coordinating the team, content migration and publishing workflows for a public developer portal.',
-    evidence: 'API references · SDKs · Integration guides',
+    description: 'Led delivery of a unified Developer Center for a rapidly growing, API-first payments business, bringing together Optimal Payments and Skrill API, SDK and integration documentation.',
+    evidence: '$1bn+ annual revenue · 21% growth',
+    evidenceNote: '2016 company figures; growth excludes acquisition and currency effects.',
     href: '/docs/case-studies/paysafedevcenter',
     action: 'Read case study',
   },
@@ -64,6 +65,7 @@ export default function Home(): React.ReactElement {
                 <h3>{project.title}</h3>
                 <p className={styles.description}>{project.description}</p>
                 <p className={styles.evidence}>{project.evidence}</p>
+                {project.evidenceNote && <p className={styles.evidenceNote}>{project.evidenceNote}</p>}
                 <Link to={project.href} className={styles.textLink}>{project.action} →</Link>
               </article>
             ))}
