@@ -20,7 +20,6 @@
 .hero { padding: 70px 0 60px; max-width: 960px; }
 .identity { font-size: 1rem; font-weight: 550; letter-spacing: normal; margin-bottom: 4px; }
 .identity::before { content: ''; display: inline-block; width: 22px; height: 3px; background: var(--portfolio-accent); vertical-align: middle; margin-right: 10px; }
-.specialisms { font-size: 0.875rem; color: var(--portfolio-muted); margin-bottom: 20px; }
 .hero h1 { font-size: clamp(2rem, 3.6vw, 3.25rem); margin: 20px 0 24px; }
 .headlineAccent { color: var(--ifm-color-primary); }
 .eyebrow { font-size: 0.75rem; font-weight: 600; margin-bottom: 16px; color: var(--portfolio-muted); }
