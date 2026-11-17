@@ -180,10 +180,10 @@ const config: Config = {
           activeBasePath: '/docs',
         },
         {
-          label: 'Explore',
-      to: '/explore',
-      position: 'left',
-      activeBasePath: '/explore',
+          html: '<i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> Explore',
+          to: '/explore',
+          position: 'left',
+          activeBasePath: '/explore',
         },
         {
           label: 'QA report',

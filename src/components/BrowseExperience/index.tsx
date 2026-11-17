@@ -43,6 +43,11 @@ type TaxonomyNavigationIndex = {
 
 const data = navigationIndex as TaxonomyNavigationIndex;
 const DIMENSION_ORDER = filterDimensions(data.dimensions).map(dimension => dimension.id);
+// Card tags prioritize content type independently of the filter-panel order.
+const TAG_DIMENSION_ORDER = [
+  ...DIMENSION_ORDER.filter(id => data.dimensions[id].metadataField === 'type'),
+  ...DIMENSION_ORDER.filter(id => data.dimensions[id].metadataField !== 'type'),
+];
 const emptyFilters = () => createEmptyFilters(data.dimensions);
 
 function initialFilters(): SelectedFilters {
@@ -162,33 +167,35 @@ function DocumentTags({
   labels: Map<string, string>;
 }): React.JSX.Element {
   const [expanded, setExpanded] = useState(false);
-  const tags = DIMENSION_ORDER.flatMap((dimensionId) => {
+  const tags = TAG_DIMENSION_ORDER.flatMap((dimensionId) => {
     const dimension = data.dimensions[dimensionId];
     return dimension
       ? valuesForDimension(document, dimension).map((termId) => ({dimensionId, termId}))
       : [];
   });
-  const visibleTags = expanded ? tags : tags.slice(0, 5);
+  const collapsedCount = Math.max(5, tags.filter(({dimensionId}) =>
+    data.dimensions[dimensionId].metadataField === 'type').length);
+  const visibleTags = expanded ? tags : tags.slice(0, collapsedCount);
 
   return (
     <div className={styles.metadata} aria-label={`Taxonomy for ${document.title}`}>
       {visibleTags.map(({dimensionId, termId}) => (
         <span
-          className={styles.metadataTag}
+          className={`${styles.metadataTag} ${data.dimensions[dimensionId].metadataField === 'type' ? styles.contentTypeTag : ''}`}
           key={`${dimensionId}:${termId}`}
           title={data.dimensions[dimensionId].label}
         >
           {labels.get(`${dimensionId}:${termId}`) ?? termId}
         </span>
       ))}
-      {tags.length > 5 ? (
+      {tags.length > collapsedCount ? (
         <button
           type="button"
           className={styles.moreTags}
           aria-expanded={expanded}
           onClick={() => setExpanded((value) => !value)}
         >
-          {expanded ? 'Show fewer' : `+${tags.length - 5} more`}
+          {expanded ? 'Show fewer' : `+${tags.length - collapsedCount} more`}
         </button>
       ) : null}
     </div>

@@ -224,6 +224,13 @@
   line-height: 1.35;
 }
 
+.contentTypeTag {
+  background: color-mix(in srgb, var(--ifm-color-primary) 8%, var(--ifm-background-color));
+  color: var(--ifm-font-color-base);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ifm-color-primary) 25%, transparent);
+  font-weight: 600;
+}
+
 .readLink {
   align-self: flex-start;
   margin-top: auto;

@@ -6,17 +6,18 @@
   letter-spacing: .08em; text-transform: uppercase; color: var(--ifm-color-primary);
 }
 .intro {max-width: 50rem; margin: 0; color: var(--ifm-color-emphasis-700); font-size: 1.05rem;}
-.implementationCallout {
-  display: flex; flex-wrap: wrap; align-items: center; gap: 1rem 2rem;
-  margin-bottom: 1.5rem; padding: 1.25rem 1.5rem;
-  border: 1px solid var(--ifm-color-emphasis-300);
-  border-left: 4px solid var(--ifm-color-primary); border-radius: .75rem;
-  background: var(--ifm-background-surface-color);
+.implementationCallout {margin-bottom: 1.5rem;}
+.implementationCallout h2 {
+  margin: 0 0 .75rem;
+  color: var(--portfolio-ink);
+  font-weight: 550;
+  letter-spacing: -0.035em;
+  line-height: 1.18;
 }
-.implementationCallout > div {flex: 1 1 28rem;}
-.implementationCallout h2 {margin: 0 0 .4rem; font-size: 1.2rem;}
-.implementationCallout p {margin: 0; color: var(--ifm-color-emphasis-700);}
-.implementationCallout > a {white-space: normal;}
+.implementationCallout a:focus-visible {
+  outline: 3px solid var(--portfolio-accent);
+  outline-offset: 5px;
+}
 .tabs {
   display: inline-flex; flex-wrap: wrap; gap: .25rem; padding: .25rem;
   margin-bottom: 1.5rem; border: 1px solid var(--ifm-color-emphasis-300);
