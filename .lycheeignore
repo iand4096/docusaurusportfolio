@@ -1,5 +1,5 @@
-# Sites that reject automated link-checking requests.
-# These links are manually verified but return anti-bot/rate-limit statuses to Lychee.
+# Exceptions for automated link checking.
+# Public destinations below are manually verified but reject or intermittently fail automated requests.
 
 # Local preview addresses refer to the reader's machine, not a public service.
 ^https?://(?:localhost|127\.0\.0\.1|\[::1\])(?::[0-9]+)?(?:[/?#]|$)
@@ -12,3 +12,7 @@
 
 # Finextra blocks or rejects automated link-checking requests.
 ^https?://www\.finextra\.com/pressarticle/67611/paysafe-expected-to-surpass-1-billion-revenue-milestone-in-fy-2016$
+
+# Google Patents intermittently returns HTTP 503 to Lychee.
+# This exact patent page was manually verified (HTTP 200) on 2026-11-17.
+^https://patents\.google\.com/patent/US20220121462A1/en$
