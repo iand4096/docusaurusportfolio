@@ -6,39 +6,91 @@
 
 /* You can override the default Infima variables here. */
 :root {
-  --ifm-color-primary: #2e8555;
-  --ifm-color-primary-dark: #29784c;
-  --ifm-color-primary-darker: #277148;
-  --ifm-color-primary-darkest: #205d3b;
-  --ifm-color-primary-light: #33925d;
-  --ifm-color-primary-lighter: #359962;
-  --ifm-color-primary-lightest: #3cad6e;
+  --portfolio-paper: #ffffff;
+  --portfolio-ink: #172033;
+  --portfolio-muted: #4c5668;
+  --portfolio-line: #d9dfeb;
+  --portfolio-accent: #e5492d;
+  --portfolio-button: #1649d8;
+  --portfolio-button-hover: #123db8;
+  --ifm-font-family-base: ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --ifm-background-color: var(--portfolio-paper);
+  --ifm-background-surface-color: #f0f4ff;
+  --ifm-font-color-base: var(--portfolio-ink);
+  --ifm-heading-color: var(--portfolio-ink);
+  --ifm-heading-font-weight: 550;
+  --ifm-color-primary: #1649d8;
+  --ifm-color-primary-dark: #123db8;
+  --ifm-color-primary-darker: #1139ac;
+  --ifm-color-primary-darkest: #0e2f8f;
+  --ifm-color-primary-light: #2d5ee9;
+  --ifm-color-primary-lighter: #3b69eb;
+  --ifm-color-primary-lightest: #6086ef;
+  --ifm-navbar-background-color: var(--portfolio-paper);
+  --ifm-navbar-link-color: var(--portfolio-ink);
+  --ifm-navbar-shadow: none;
+  --ifm-toc-border-color: var(--portfolio-line);
+  --ifm-menu-color: var(--portfolio-muted);
+  --ifm-menu-color-background-active: #e8eeff;
   --ifm-code-font-size: 95%;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
 
   /* Documentation links */
-  --docs-link-color: #0066cc;
-  --docs-link-hover-color: #004c99;
-  --docs-link-hover-background: #eaf4ff;
+  --docs-link-color: #1649d8;
+  --docs-link-hover-color: #172033;
+  --docs-link-hover-background: #f0f4ff;
   --docs-link-focus-color: #ffbf47;
 }
 
 /* For readability concerns, use a lighter palette in dark mode. */
 [data-theme='dark'] {
-  --ifm-color-primary: #25c2a0;
-  --ifm-color-primary-dark: #21af90;
-  --ifm-color-primary-darker: #1fa588;
-  --ifm-color-primary-darkest: #1a8870;
-  --ifm-color-primary-light: #29d5b0;
-  --ifm-color-primary-lighter: #32d8b4;
-  --ifm-color-primary-lightest: #4fddbf;
+  --portfolio-paper: #101827;
+  --portfolio-ink: #f4f7ff;
+  --portfolio-muted: #bbc8df;
+  --portfolio-line: #344560;
+  --portfolio-accent: #ff785d;
+  --portfolio-button: #1649d8;
+  --portfolio-button-hover: #123db8;
+  --ifm-background-color: var(--portfolio-paper);
+  --ifm-background-surface-color: #19263d;
+  --ifm-font-color-base: var(--portfolio-ink);
+  --ifm-heading-color: var(--portfolio-ink);
+  --ifm-navbar-link-color: var(--portfolio-ink);
+  --ifm-menu-color-background-active: #23365a;
+  --ifm-color-primary: #87adff;
+  --ifm-color-primary-dark: #6c9aff;
+  --ifm-color-primary-darker: #5f91ff;
+  --ifm-color-primary-darkest: #3675ff;
+  --ifm-color-primary-light: #a2bfff;
+  --ifm-color-primary-lighter: #afc8ff;
+  --ifm-color-primary-lightest: #d0dfff;
   --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
 
   /* Documentation links */
-  --docs-link-color: #79bfff;
-  --docs-link-hover-color: #acd7ff;
-  --docs-link-hover-background: #17324d;
+  --docs-link-color: #87adff;
+  --docs-link-hover-color: #ff785d;
+  --docs-link-hover-background: #23365a;
   --docs-link-focus-color: #ffd166;
+}
+
+/* One visual identity across the landing page and documentation routes. */
+.navbar {
+  color: var(--portfolio-ink);
+  border-top: 3px solid var(--portfolio-accent);
+  border-bottom: 1px solid var(--portfolio-line);
+  min-height: 76px;
+}
+
+.navbar__title { color: var(--ifm-color-primary); letter-spacing: -0.04em; font-size: 1.3rem; }
+.navbar__link { font-size: 0.82rem; font-weight: 550; }
+.theme-doc-sidebar-container { border-color: var(--portfolio-line) !important; }
+.theme-doc-markdown h1 { letter-spacing: -0.04em; line-height: 1.15; }
+.theme-doc-markdown h2,.theme-doc-markdown h3 { letter-spacing: -0.025em; }
+.footer--dark {
+  --ifm-footer-background-color: #10234c;
+  --ifm-footer-color: #f4f7ff;
+  --ifm-footer-link-color: #f4f7ff;
+  --ifm-footer-title-color: #ffffff;
 }
 
 .markdown table.borderlessTable {
