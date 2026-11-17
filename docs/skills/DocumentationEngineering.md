@@ -124,7 +124,7 @@ I have worked with Docusaurus, MkDocs and custom Markdown-based static-site gene
 
 </CapabilityGrid>
 
-## Examples from practice {/* #examples-from-practice */}
+## Practical examples {/* #examples-from-practice */}
 
 <CapabilityCard items={[
   {

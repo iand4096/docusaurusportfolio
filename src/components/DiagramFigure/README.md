@@ -1,9 +1,9 @@
-# DiagramFigure
+# Diagram figure component
 
-Wrap Mermaid fences in a figure to share restrained captions, role colors and selective icons,
-responsive keys, and an accessible enlargement dialog. Docusaurus still renders
-the Mermaid source through its rendering hook; no separate Mermaid instance or
-icon dependency is needed.
+Use `DiagramFigure` to wrap Mermaid fences with restrained captions, role
+colours, selective icons, responsive keys and an accessible full-screen viewer.
+Docusaurus still renders the Mermaid source through its rendering hook; no
+separate Mermaid instance or icon dependency is needed.
 
 ````mdx
 import DiagramFigure from '@site/src/components/DiagramFigure';
@@ -33,7 +33,7 @@ within each page. Legend labels may be omitted to use the role's default label.
 
 ## Roles and icons
 
-The single palette in `theme.cjs` supplies Mermaid `classDef` colors, legend
+The single palette in `theme.cjs` supplies Mermaid `classDef` colours, legend
 swatches, icons, default labels, and the Markdown exporter. Assign roles with
 standard `class NodeA,NodeB role;` statements, one statement per line.
 
@@ -48,7 +48,7 @@ standard `class NodeA,NodeB role;` statements, one statement per line.
 | `generation` | Magic wand with sparkles | AI generation |
 
 The renderer and key use the same muted palette and optional icons. Processing and
-decisions rely on labels, colors and shapes; icons identify inputs, storage,
+decisions rely on labels, colours and shapes; icons identify inputs, storage,
 infrastructure, people and AI.
 
 Classify the role depicted by the node: migration and merge operations are
@@ -67,7 +67,7 @@ passed through unchanged.
 
 ## Container purposes
 
-Give a Mermaid subgraph an explicit purpose with a `group-` class:
+Give a Mermaid `subgraph` an explicit purpose with a `group-` class:
 
 ```mermaid
 flowchart TD
@@ -80,9 +80,9 @@ flowchart TD
 ```
 
 All `group-` classes use a neutral grey fill and a visible grey border. Child
-nodes retain their individual role colors. Every node role has a matching
+nodes retain their individual role colours. Every node role has a matching
 `group-` purpose for authoring, but containers do not introduce an additional
-color classification or need legend entries.
+colour classification or need legend entries.
 
 ## Multiple panels
 
@@ -99,11 +99,12 @@ node text to fit a phone.
 
 Enlargement moves the figure content into a fresh Mermaid render, reserving its
 original space. Only one copy of the diagrams and heading IDs exists at a time.
-The dialog fills the viewport, including its full dynamic height on mobile.
-The native dialog supports Escape, focus containment and
-returning focus to its opener. Its title and key remain available while enlarged. The expanded viewport supports
-mouse-wheel zoom around its midpoint, plus/minus buttons with wheel hints, and
-a percentage indicator (25–400%). Drag in any direction to pan; keyboard users
+The viewer fills the viewport, including its full dynamic height on mobile.
+The native HTML `<dialog>` element supports Escape, focus containment and
+returning focus to its opener. Its title and key remain available while enlarged.
+The expanded viewport supports mouse-wheel zoom around its midpoint, plus/minus
+buttons with wheel hints, and a percentage indicator (25–400%). Drag in any
+direction to pan; keyboard users
 can focus the viewport and pan with arrow keys. The legend and controls stay
 fixed while the diagram moves. Each opening resets to 100%.
 
@@ -123,8 +124,8 @@ node scripts/tests/diagram-figure.browser.cjs
 Optional `DIAGRAM_BASE_URL` selects another server; `DIAGRAM_BROWSER_LIBRARY_PATH`
 provides existing browser runtime libraries when required. Checks cover every
 site diagram at desktop, tablet and phone widths, light/dark themes, actual SVG
-colors/icons and readable text, RAG panel headings, fullscreen dimensions, and
-closing the dialog with Escape or its Close button.
+colour and icon rendering, readable text, RAG panel headings, full-screen
+dimensions, and closing the viewer with Escape or its Close button.
 
 Adding a theme wrapper requires restarting an already running dev server;
 reloading the configuration alone does not rebuild its theme aliases.

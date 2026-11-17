@@ -2516,6 +2516,19 @@ def lychee_status_text(status):
     return str(status).strip() or "unknown failure"
 
 
+def lychee_http_status(status):
+    """Read an HTTP status without confusing transport errors with HTTP responses."""
+    if isinstance(status, dict):
+        code = status.get("code")
+        if not isinstance(code, bool) and re.fullmatch(r"[1-5]\d{2}", str(code)):
+            return int(code)
+        text = str(status.get("text", ""))
+    else:
+        text = str(status or "")
+    match = re.search(r"\b(?:HTTP\s+|status(?:\s+code)?\s*[:=]?\s*)([1-5]\d{2})\b", text, re.IGNORECASE)
+    return int(match.group(1)) if match else None
+
+
 def parse_lychee_json(output, paths):
     """Convert Lychee JSON failures into the unified issue schema."""
 
@@ -2561,22 +2574,45 @@ def parse_lychee_json(output, paths):
                 continue
 
             line = find_source_line(content, url) or 1
-            status = lychee_status_text(failure.get("status"))
+            raw_status = failure.get("status")
+            status = lychee_status_text(raw_status)
+            code = lychee_http_status(raw_status)
+            severity, issue_type, category = "high", "defect", "external-link"
+            message = f"External link failed Lychee validation: {status}"
+            suggestion = (
+                "Verify the destination, replace or remove the broken URL, "
+                "or add a deliberate exception to .lycheeignore when the "
+                "destination is known to reject automated checks."
+            )
+            # Lychee has already exhausted its configured retries. These statuses
+            # establish a failed check, not that the destination has disappeared.
+            if code == 429 or (code is not None and 500 <= code <= 599):
+                severity, issue_type, category = "low", "improvement", "external-link-temporary"
+                message = f"External link temporarily unavailable after Lychee retries: {status}"
+                suggestion = (
+                    "Recheck the URL later. The server returned a rate-limit or server-error "
+                    "response; this does not establish that the link is broken. "
+                    "If failures persist, review the destination and per-host request limits."
+                )
+            elif code in {401, 403}:
+                severity, issue_type, category = "low", "improvement", "external-link-access"
+                message = f"External link requires review: access restrictions prevented Lychee validation: {status}"
+                suggestion = (
+                    "Open the URL manually and check whether sign-in, permissions or automated-request "
+                    "restrictions prevented validation. Correct the link if unsuitable for readers; "
+                    "otherwise document a narrowly scoped exception after verification."
+                )
             issues.append(
                 make_issue(
                     file=path.as_posix(),
                     line=line,
-                    severity="high",
+                    severity=severity,
                     confidence="high",
-                    issue_type="defect",
-                    category="external-link",
+                    issue_type=issue_type,
+                    category=category,
                     original=url,
-                    message=f"External link failed Lychee validation: {status}",
-                    suggestion=(
-                        "Verify the destination, replace or remove the broken URL, "
-                        "or add a deliberate exception to .lycheeignore when the "
-                        "destination is known to reject automated checks."
-                    ),
+                    message=message,
+                    suggestion=suggestion,
                     source="lychee",
                 )
             )

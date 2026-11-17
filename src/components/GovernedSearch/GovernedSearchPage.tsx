@@ -584,13 +584,6 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
               </div>
             </div>
           )}
-          <details className={styles.howWorks}>
-            <summary>How search works</summary>
-            <p>
-              Search uses the governed taxonomy and BM25, FAISS or hybrid retrieval.
-              Optional AI answers are grounded in linked source passages.
-            </p>
-          </details>
           </div>
         </div>
     </Container>

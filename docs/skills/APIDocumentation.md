@@ -127,7 +127,7 @@ I build working integrations where possible to compare documented behaviour with
 
 </CapabilityGrid>
 
-## Examples from practice {/* #examples-from-practice */}
+## Practical examples {/* #examples-from-practice */}
 
 <CapabilityCard items={[
   {

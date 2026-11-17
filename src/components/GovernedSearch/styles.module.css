@@ -175,13 +175,9 @@
 .emptyState p, .welcome p {margin: .4rem 0 0; font-size: var(--portfolio-text-body); line-height: 1.55;}
 .welcome {display: flex; align-items: center; gap: 1rem;}
 .welcomeIcon {font-size: 2rem; line-height: 1; color: var(--ifm-color-primary);}
-.howWorks {margin-top: 1rem; padding: .9rem 1rem; border: 1px solid var(--rag-border); border-radius: .75rem; background: var(--rag-surface); font-size: var(--portfolio-text-body); color: var(--rag-muted);}
-.howWorks summary {font-weight: 700; cursor: pointer; color: var(--ifm-font-color-base);}
-.howWorks p {margin: .5rem 0 0;}
 .query:focus-visible, .filterChip:focus-visible, .filterButton:focus-visible,
 .resetFiltersButton:focus-visible, .clearButton:focus-visible, .submitButton:focus-visible,
-.activeFilter:focus-visible, .sourceLink:focus-visible, .snippetSummary:focus-visible,
-.howWorks summary:focus-visible {outline: 2px solid var(--ifm-color-primary); outline-offset: 2px;}
+.activeFilter:focus-visible, .sourceLink:focus-visible, .snippetSummary:focus-visible {outline: 2px solid var(--ifm-color-primary); outline-offset: 2px;}
 
 @media (max-width: 996px) {
   .workspace {grid-template-columns: minmax(0, 1fr); gap: 1rem;}

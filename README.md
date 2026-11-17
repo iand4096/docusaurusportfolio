@@ -203,6 +203,14 @@ The pipeline also runs:
 * **Vale** — checks mechanically enforceable prose and style-guide rules, such as terminology, wording, punctuation, and other configured conventions.
 * **Lychee** — checks external HTTP/HTTPS links.
 
+Lychee retries transient failures up to five times, with backoff starting at two
+seconds, as configured in `lychee.toml`. Exhausted HTTP 429 and 5xx responses are
+reported as low-severity, non-blocking “temporarily unavailable” findings. HTTP
+401/403 responses require manual review and are also non-blocking. These findings
+retain the actual HTTP status; they are not treated as successful checks. HTTP
+404/410 and other unclassified failures remain high-severity defects. Invalid
+checker output or execution failures remain check errors.
+
 This keeps deterministic checks separate from the higher-level editorial judgement handled by the AI review.
 
 The default full review runs all deterministic checks and AI language, structure

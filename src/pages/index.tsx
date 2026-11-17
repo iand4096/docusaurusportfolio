@@ -106,7 +106,7 @@ export default function Home(): React.ReactElement {
 
         <section className={styles.about} id="about">
           <div>
-            <h2>Technical writing, documentation engineering and AI-ready knowledge systems</h2>
+            <h2>Experience and approach</h2>
             <p>I have an M.Sc. in Computer Science, a degree in Physics and a
               background in software engineering. My documentation work ranges
               from Scala frameworks and payment APIs to developer portals and
