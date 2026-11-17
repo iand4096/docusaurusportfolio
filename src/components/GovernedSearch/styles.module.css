@@ -9,11 +9,11 @@
 .embeddedPage {width: 100%; margin: 0;}
 .hero {max-width: 60rem; margin-bottom: 2rem;}
 .eyebrow, .sectionEyebrow {
-  display: block; margin: 0 0 .35rem; font-size: .8rem; font-weight: 700;
+  display: block; margin: 0 0 .35rem; font-size: var(--portfolio-text-secondary); font-weight: 700;
   letter-spacing: .08em; text-transform: uppercase; color: var(--ifm-color-primary);
 }
 .heroTitle {margin: 0 0 .65rem; line-height: 1.2;}
-.intro {max-width: 50rem; margin: 0; color: var(--rag-muted); font-size: 1.05rem;}
+.intro {max-width: 50rem; margin: 0; color: var(--rag-muted); font-size: var(--portfolio-text-body);}
 
 .workspace {
   display: grid; grid-template-columns: minmax(15rem, 19rem) minmax(0, 1fr);
@@ -25,8 +25,8 @@
   border-radius: .75rem; background: var(--rag-surface);
 }
 .searchTopline {display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: .65rem;}
-.fieldLabel {font-size: .95rem; font-weight: 700;}
-.characterCount {font-size: .76rem; color: var(--rag-muted); font-variant-numeric: tabular-nums;}
+.fieldLabel {font-size: var(--portfolio-text-secondary); font-weight: 700;}
+.characterCount {font-size: var(--portfolio-text-secondary); color: var(--rag-muted); font-variant-numeric: tabular-nums;}
 .query {
   display: block; width: 100%; min-height: 94px; padding: .75rem .9rem; resize: vertical;
   border: 1px solid var(--rag-border); border-radius: .5rem;
@@ -39,14 +39,14 @@
   margin-top: .85rem; padding: .8rem .9rem;
   border: 1px solid var(--rag-border); border-left: 3px solid var(--ifm-color-primary);
   border-radius: .5rem; background: var(--ifm-color-emphasis-100);
-  font-size: .82rem; line-height: 1.55;
+  font-size: var(--portfolio-text-secondary); line-height: 1.55;
 }
 .startupNote > i {flex-shrink: 0; margin-top: .2rem; color: var(--ifm-color-primary); font-size: 1rem;}
 .startupNote strong {display: block; margin-bottom: .15rem;}
 .startupNote p {margin: 0; color: var(--rag-muted);}
 .formOptions {display: flex; flex-wrap: wrap; align-items: end; gap: 1rem 1.5rem; margin-top: 1rem;}
 .group {margin: 0; padding: 0; border: 0; min-width: 0;}
-.group legend {padding: 0; margin-bottom: .4rem; font-size: .88rem; font-weight: 700;}
+.group legend {padding: 0; margin-bottom: .4rem; font-size: var(--portfolio-text-secondary); font-weight: 700;}
 .segmented {
   display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px;
   border: 1px solid var(--rag-border); border-radius: .55rem; background: var(--ifm-background-color);
@@ -54,20 +54,20 @@
 .segment {
   position: relative; display: inline-flex; align-items: center; justify-content: center;
   min-height: 38px; padding: .45rem .78rem; border-radius: .4rem;
-  color: var(--ifm-font-color-base); font-size: .82rem; font-weight: 600;
+  color: var(--ifm-font-color-base); font-size: var(--portfolio-text-secondary); font-weight: 600;
   cursor: pointer;
 }
 .segment input {position: absolute; opacity: 0; width: 1px; height: 1px;}
-.segmentActive {background: var(--ifm-color-primary); color: var(--ifm-color-white);}
+.segmentActive {background: var(--ifm-color-primary); color: var(--portfolio-on-primary);}
 .segment:focus-within {outline: 2px solid var(--ifm-color-primary); outline-offset: 2px;}
 .actions {display: flex; flex-wrap: wrap; gap: .65rem 1rem; align-items: center; margin-top: 1.15rem;}
 .submitButton {min-height: 42px; padding: .65rem 1.15rem; border-radius: .5rem; font-weight: 700;}
 .clearButton {
-  font: inherit; font-size: .85rem; font-weight: 600; color: var(--ifm-color-primary);
+  font: inherit; font-size: var(--portfolio-text-secondary); font-weight: 600; color: var(--ifm-color-primary);
   background: transparent; padding: .65rem .35rem; border: 0; cursor: pointer;
 }
 .clearButton:disabled {opacity: .5; cursor: not-allowed;}
-.privacyNote {margin: .85rem 0 0; font-size: .78rem; line-height: 1.55; color: var(--rag-muted);}
+.privacyNote {margin: .85rem 0 0; font-size: var(--portfolio-text-secondary); line-height: 1.55; color: var(--rag-muted);}
 
 .filterPanel {
   grid-column: 1; grid-row: 1 / span 2; position: sticky;
@@ -80,7 +80,7 @@
 .filterHeader {display: flex; gap: .65rem; align-items: center; justify-content: space-between; margin-bottom: .6rem;}
 .filterHeader h2 {margin: 0; font-size: 1.2rem;}
 .resetFiltersButton {
-  font: inherit; font-size: .85rem; font-weight: 600; cursor: pointer;
+  font: inherit; font-size: var(--portfolio-text-secondary); font-weight: 600; cursor: pointer;
   background: transparent; border: 0; padding: .25rem 0; color: var(--ifm-color-primary);
 }
 .resetFiltersButton:disabled {opacity: .45; cursor: not-allowed;}
@@ -89,32 +89,32 @@
 .filters {display: grid; gap: .9rem; padding-top: .6rem;}
 .filterGroup {min-width: 0; padding-top: .9rem; border-top: 1px solid var(--rag-border);}
 .filterGroup:first-child {border-top: 0; padding-top: 0;}
-.filterGroupTitle {margin: 0; font-size: .88rem; font-weight: 700;}
+.filterGroupTitle {margin: 0; font-size: var(--portfolio-text-secondary); font-weight: 700;}
 .filterOptions {display: flex; flex-wrap: wrap; gap: .45rem; margin-top: .6rem;}
 .filterChip {
   display: inline-flex; align-items: center; min-height: 38px; padding: .38rem .6rem;
   border: 1px solid var(--rag-border); border-radius: 999px;
   color: var(--ifm-font-color-base); background: var(--ifm-background-color);
-  font: inherit; font-size: .82rem; line-height: 1.25; text-align: left;
+  font: inherit; font-size: var(--portfolio-text-secondary); line-height: 1.25; text-align: left;
   cursor: pointer;
 }
 .filterChip:hover:not(:disabled) {border-color: var(--ifm-color-primary);}
-.filterChipSelected {border-color: var(--ifm-color-primary); background: var(--ifm-color-primary); color: var(--ifm-color-white);}
+.filterChipSelected {border-color: var(--ifm-color-primary); background: var(--ifm-color-primary); color: var(--portfolio-on-primary);}
 .filterChip:disabled {opacity: .65; cursor: not-allowed;}
-.archivedOption {display: flex; gap: .55rem; align-items: flex-start; font-size: .81rem; font-weight: 400; cursor: pointer;}
+.archivedOption {display: flex; gap: .55rem; align-items: flex-start; font-size: var(--portfolio-text-secondary); font-weight: 400; cursor: pointer;}
 .archivedOption input {margin-top: .2rem; accent-color: var(--ifm-color-primary);}
-.toolbarHint {margin: .7rem 0 0; font-size: .76rem; line-height: 1.5; color: var(--rag-muted);}
+.toolbarHint {margin: .7rem 0 0; font-size: var(--portfolio-text-secondary); line-height: 1.5; color: var(--rag-muted);}
 .activeFilters {display: flex; flex-wrap: wrap; gap: .4rem; margin-top: .9rem;}
 .activeFilter {
   padding: .35rem .55rem; border: 1px solid var(--ifm-color-primary); border-radius: 999px;
   color: var(--ifm-color-primary); background: var(--ifm-background-color);
-  font: inherit; font-size: .76rem; cursor: pointer;
+  font: inherit; font-size: var(--portfolio-text-secondary); cursor: pointer;
 }
 .activeFilter span {margin-left: .25rem;}
-.filterCount {margin-left: .4rem; font-size: .75rem; font-weight: 700;}
+.filterCount {margin-left: .4rem; font-size: var(--portfolio-text-secondary); font-weight: 700;}
 .taxonomyNotice, .taxonomyError {
   display: flex; align-items: center; flex-wrap: wrap; gap: .65rem;
-  margin: 0; padding: .7rem .8rem; border-radius: .5rem; font-size: .82rem;
+  margin: 0; padding: .7rem .8rem; border-radius: .5rem; font-size: var(--portfolio-text-secondary);
 }
 .taxonomyNotice {color: var(--rag-muted); background: var(--ifm-color-emphasis-100);}
 .taxonomyError {color: var(--ifm-color-danger-darkest); background: var(--ifm-color-danger-contrast-background); border: 1px solid var(--ifm-color-danger-contrast-border);}
@@ -134,18 +134,18 @@
 .markdown p {margin-bottom: .8rem;}
 .markdown pre {max-width: 100%; overflow-x: auto;}
 .markdown :last-child {margin-bottom: 0;}
-.small {margin: 1rem 0 0; color: var(--rag-muted); font-size: .78rem;}
+.small {margin: 1rem 0 0; color: var(--rag-muted); font-size: var(--portfolio-text-secondary);}
 .resultsHeader {display: flex; align-items: end; justify-content: space-between; flex-wrap: wrap; gap: .7rem;}
-.resultCount {font-size: .85rem; color: var(--rag-muted);}
+.resultCount {font-size: var(--portfolio-text-secondary); color: var(--rag-muted);}
 .resultMeta {display: flex; flex-wrap: wrap; gap: .35rem; margin: .8rem 0 1rem;}
-.resultMeta span {padding: .25rem .5rem; background: var(--ifm-color-emphasis-200); border-radius: .35rem; color: var(--ifm-color-emphasis-800); font-size: .73rem;}
+.resultMeta span {padding: .25rem .5rem; background: var(--ifm-color-emphasis-200); border-radius: .35rem; color: var(--ifm-color-emphasis-800); font-size: var(--portfolio-text-secondary);}
 .resultList {display: grid; gap: 1rem; list-style: none; margin: 0; padding: 0;}
 .result {min-width: 0; margin: 0; padding: 0;}
 .result article {min-width: 0; padding: 1.15rem; border: 1px solid var(--rag-border); border-radius: .75rem; background: var(--rag-surface); overflow-wrap: anywhere;}
 .result article:hover, .result article:focus-within {border-color: var(--ifm-color-primary-light);}
 .cardTop {display: flex; gap: 1rem; align-items: center; justify-content: space-between; margin-bottom: .5rem;}
-.rank {font-size: .73rem; font-weight: 700; letter-spacing: .06em; color: var(--rag-muted);}
-.parentTitle {font-size: .8rem; line-height: 1.45; color: var(--rag-muted); margin: 0 0 .25rem;}
+.rank {font-size: var(--portfolio-text-secondary); font-weight: 700; letter-spacing: .06em; color: var(--rag-muted);}
+.parentTitle {font-size: var(--portfolio-text-secondary); line-height: 1.45; color: var(--rag-muted); margin: 0 0 .25rem;}
 .resultTitle {font-size: 1.15rem; line-height: 1.35; margin: 0;}
 .resultTitle a {color: var(--ifm-heading-color);}
 .resultTitle a:hover {color: var(--ifm-color-primary); text-decoration: underline;}
@@ -153,8 +153,8 @@
 .snippetSummary {cursor: pointer; list-style: none;}
 .snippetSummary::-webkit-details-marker {display: none;}
 .snippetSummary::marker {content: '';}
-.snippetPreview {display: block; color: var(--rag-muted); font-size: .9rem; line-height: 1.6; overflow-wrap: anywhere;}
-.expandText {display: inline-flex; align-items: center; gap: .4rem; margin-top: .45rem; font-size: .8rem; font-weight: 600; color: var(--ifm-color-primary);}
+.snippetPreview {display: block; color: var(--rag-muted); font-size: var(--portfolio-text-body); line-height: 1.6; overflow-wrap: anywhere;}
+.expandText {display: inline-flex; align-items: center; gap: .4rem; margin-top: .45rem; font-size: var(--portfolio-text-secondary); font-weight: 600; color: var(--ifm-color-primary);}
 .expandText::before {
   content: ''; flex-shrink: 0; width: 0; height: 0;
   border-top: .3rem solid transparent; border-bottom: .3rem solid transparent;
@@ -164,18 +164,18 @@
 .snippetDetails[open] .collapsedLabel {display: none;}
 .snippetDetails[open] .expandedLabel {display: inline;}
 .snippetDetails[open] .expandText::before {transform: rotate(90deg);}
-.fullPassage {margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--rag-border); font-size: .9rem;}
+.fullPassage {margin-top: .75rem; padding-top: .75rem; border-top: 1px solid var(--rag-border); font-size: var(--portfolio-text-body);}
 .tags {display: flex; flex-wrap: wrap; gap: .35rem; margin-top: .9rem;}
-.tag {padding: .2rem .45rem; border-radius: .35rem; background: var(--ifm-color-emphasis-200); font-size: .75rem; line-height: 1.35;}
+.tag {padding: .2rem .45rem; border-radius: .35rem; background: var(--ifm-color-emphasis-200); font-size: var(--portfolio-text-secondary); line-height: 1.35;}
 .cardFooter {display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .5rem; margin-top: 1rem;}
-.score {color: var(--rag-muted); font-size: .73rem; font-variant-numeric: tabular-nums;}
-.sourceLink {margin-left: auto; font-size: .85rem; font-weight: 600;}
+.score {color: var(--rag-muted); font-size: var(--portfolio-text-secondary); font-variant-numeric: tabular-nums;}
+.sourceLink {margin-left: auto; font-size: var(--portfolio-text-secondary); font-weight: 600;}
 .emptyState, .welcome {margin-top: 1rem; padding: 1.5rem; border: 1px dashed var(--rag-border); border-radius: .75rem; background: var(--rag-surface); color: var(--rag-muted);}
 .emptyState strong, .welcome strong {color: var(--ifm-font-color-base);}
-.emptyState p, .welcome p {margin: .4rem 0 0; font-size: .87rem; line-height: 1.55;}
+.emptyState p, .welcome p {margin: .4rem 0 0; font-size: var(--portfolio-text-body); line-height: 1.55;}
 .welcome {display: flex; align-items: center; gap: 1rem;}
 .welcomeIcon {font-size: 2rem; line-height: 1; color: var(--ifm-color-primary);}
-.howWorks {margin-top: 1rem; padding: .9rem 1rem; border: 1px solid var(--rag-border); border-radius: .75rem; background: var(--rag-surface); font-size: .82rem; color: var(--rag-muted);}
+.howWorks {margin-top: 1rem; padding: .9rem 1rem; border: 1px solid var(--rag-border); border-radius: .75rem; background: var(--rag-surface); font-size: var(--portfolio-text-body); color: var(--rag-muted);}
 .howWorks summary {font-weight: 700; cursor: pointer; color: var(--ifm-font-color-base);}
 .howWorks p {margin: .5rem 0 0;}
 .query:focus-visible, .filterChip:focus-visible, .filterButton:focus-visible,
@@ -193,7 +193,7 @@
     display: block; width: 100%; margin-top: .7rem; padding: .7rem .8rem;
     border: 1px solid var(--rag-border); border-radius: .5rem;
     color: var(--ifm-font-color-base); background: var(--ifm-background-color);
-    font: inherit; font-size: .85rem; font-weight: 600; text-align: left; cursor: pointer;
+    font: inherit; font-size: var(--portfolio-text-secondary); font-weight: 600; text-align: left; cursor: pointer;
   }
   .filters {display: none; padding-top: .85rem;}
   .filtersOpen {display: grid;}
@@ -205,7 +205,7 @@
   .form {padding: 1rem;}
   .group {flex: 1 1 auto;}
   .segmented {max-width: 100%;}
-  .segment {font-size: .81rem; padding: .45rem .65rem;}
+  .segment {font-size: var(--portfolio-text-secondary); padding: .45rem .65rem;}
   .actions {align-items: stretch;}
   .submitButton {width: 100%;}
   .clearButton {width: 100%;}
@@ -224,7 +224,7 @@
   border-radius: 999px;
   background: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-emphasis-800);
-  font-size: 0.72rem;
+  font-size: var(--portfolio-text-secondary);
   text-align: center;
 }
 .filterChipSelected .chipCount {
@@ -247,6 +247,19 @@
   border-radius: .5rem;
   background: var(--ifm-background-surface-color);
   color: var(--ifm-font-color-base);
-  font-size: .85rem;
+  font-size: var(--portfolio-text-secondary);
   line-height: 1.5;
+}
+
+/* Keep result announcements available without repeating the full result cards. */
+.searchStatus {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
 }

@@ -114,7 +114,7 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
         </div>
         {expanded && <div className={styles.expanded}>
           <div ref={viewport} className={styles.viewport} data-dragging={dragging || undefined}
-            tabIndex={0} aria-label="Diagram viewport: use the mouse wheel to zoom, drag to pan, or use arrow keys to pan"
+            role="region" tabIndex={0} aria-label="Diagram viewport: use the mouse wheel to zoom, drag to pan, or use arrow keys to pan"
             onPointerDown={event => {
               if (event.button !== 0 || drag.current || (event.target as Element).closest('a, button')) return;
               event.preventDefault();

@@ -346,10 +346,10 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
             </div>
           </aside>
 
-          <section className={styles.results} aria-live="polite">
+          <section className={styles.results}>
             <div className={styles.resultsHeader}>
               <div>
-                <p className={styles.resultCount}>
+                <p className={styles.resultCount} role="status" aria-live="polite" aria-atomic="true">
                   {filteredDocuments.length}{' '}
                   {filteredDocuments.length === 1 ? 'result' : 'results'}
                 </p>
@@ -379,7 +379,7 @@ export function BrowseExperience({embedded = false}: {embedded?: boolean} = {}):
                     ) : null}
 
                     <DocumentTags document={document} labels={labels} />
-                    <Link className={styles.readLink} to={document.path}>
+                    <Link className={styles.readLink} to={document.path} aria-label={`Open content: ${document.title}`}>
                       Open content →
                     </Link>
                   </article>

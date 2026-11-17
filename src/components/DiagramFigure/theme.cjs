@@ -33,7 +33,8 @@ function prepareMermaid(source) {
     const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     // Quoted rectangle, diamond, cylinder and rounded labels, including
     // Mermaid Markdown strings. Explicit Font Awesome icons are overrides.
-    const label = new RegExp(`\\b${escaped}(\\s*[\\[({]{1,2}\\s*"\x60?)`, 'g');
+    // A quoted string keeps the optional Markdown backtick safe in minified builds.
+    const label = new RegExp('\\b' + escaped + '(\\s*[\\[({]{1,2}\\s*"`?)', 'g');
     result = result.replace(label, (match, _opening, offset) => {
       const text = result.slice(offset + match.length);
       return /^(?:fa[a-z]?:fa-|<i\b)/.test(text)

@@ -447,6 +447,11 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
           </aside>
 
           <div className={styles.output}>
+          <p className={styles.searchStatus} role="status" aria-live="polite" aria-atomic="true">
+            {busy ? 'Searching indexed knowledge…' : hasSearched
+              ? `${items.length} ${items.length === 1 ? 'result' : 'results'} found${answer ? '. AI answer available.' : '.'}`
+              : ''}
+          </p>
           {(filtersNeedRefresh || savedResultsUnverified) && (
             <p className={styles.filterUpdateNotice} role="status" aria-live="polite">
               {filtersNeedRefresh
@@ -468,7 +473,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
           )}
 
           {busy && (
-            <div className={styles.loading} role="status" aria-live="polite">
+            <div className={styles.loading}>
               <span className={styles.loadingDot} aria-hidden="true" />
               Searching indexed knowledge…
             </div>
@@ -489,7 +494,7 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
           )}
 
           {hasSearched && !busy && (
-            <section className={styles.results} aria-live="polite" aria-label="Search results">
+            <section className={styles.results} aria-label="Search results">
               <div className={styles.resultsHeader}>
                 <div>
                   <div className={styles.sectionEyebrow}>RETRIEVAL OUTPUT</div>
@@ -516,7 +521,10 @@ export function GovernedSearchExperience({embedded = false}: {embedded?: boolean
                       <article>
                         <div className={styles.cardTop}>
                           <span className={styles.rank}>SOURCE {String(index + 1).padStart(2, '0')}</span>
-                          <a className={styles.sourceLink} href={sourceUrl(item)} target="_blank" rel="noopener noreferrer">
+                          <a className={styles.sourceLink} href={sourceUrl(item)} target="_blank" rel="noopener noreferrer"
+                            aria-label={item.heading?.trim()
+                              ? `Open matched section: ${item.heading} — ${item.title}`
+                              : `Open source: ${item.title}`}>
                             {item.heading?.trim() ? 'Open matched section' : 'Open source'} <span aria-hidden="true">↗</span>
                           </a>
                         </div>

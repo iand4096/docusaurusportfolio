@@ -35,7 +35,7 @@
   gap: 0.5rem;
   min-width: 0;
   color: var(--ifm-font-color-base);
-  font-size: 0.875rem;
+  font-size: var(--portfolio-text-secondary);
   font-weight: 700;
 }
 

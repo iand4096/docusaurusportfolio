@@ -52,7 +52,7 @@ tags:
 
 import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
 
-### Project overview {/* #project-overview */}
+## Project overview {/* #project-overview */}
 
 The MDES for Merchants Use Case Guide explained how merchant developers can use the MDES Digital Enablement API to replace payment card numbers (PANs) with secure payment tokens, reducing the need to store card details.
 

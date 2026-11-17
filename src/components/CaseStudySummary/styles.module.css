@@ -12,7 +12,7 @@
 .details dt {
   margin: 0 0 0.65rem;
   color: var(--ifm-color-emphasis-700);
-  font-size: 0.75rem;
+  font-size: var(--portfolio-text-secondary);
   font-weight: 700;
   letter-spacing: 0.09em;
   text-transform: uppercase;
@@ -25,7 +25,7 @@
   padding: 0;
   margin: 0 0 1rem;
   list-style: none;
-  font-size: 0.95rem;
+  font-size: var(--portfolio-text-secondary);
 }
 
 .context li {
@@ -44,7 +44,7 @@
 .summary {
   max-width: 70ch;
   margin-bottom: 1.25rem;
-  font-size: 1.05rem;
+  font-size: var(--portfolio-text-body);
   line-height: 1.55;
 }
 
@@ -90,7 +90,7 @@
 
 .evidenceItems dd,
 .note {
-  font-size: 0.9rem;
+  font-size: var(--portfolio-text-secondary);
 }
 
 .note {
@@ -161,7 +161,7 @@
   background: transparent;
   color: var(--ifm-font-color-base);
   font: inherit;
-  font-size: 0.8rem;
+  font-size: var(--portfolio-text-secondary);
   text-decoration: underline;
   text-underline-offset: 0.2em;
   cursor: pointer;
@@ -212,7 +212,7 @@
 }
 
 .evidenceItems .evidenceNote {
-  font-size: 0.75rem;
+  font-size: var(--portfolio-text-secondary);
   line-height: 1.45;
   color: var(--ifm-color-emphasis-700);
 }

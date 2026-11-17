@@ -14,6 +14,8 @@
     "write-heading-ids": "docusaurus write-heading-ids",
     "typecheck": "tsc",
     "test:taxonomy-filters": "node scripts/tests/taxonomy-filters.test.cjs",
+    "test:explore-accessibility:browser": "node scripts/tests/explore-accessibility.browser.cjs",
+    "test:text-layout:browser": "node scripts/tests/text-layout.browser.cjs",
     "see-also:generate": "node scripts/see-also.mjs generate",
     "see-also:check": "node scripts/see-also.mjs check",
     "test:case-study-summary": "node --test scripts/tests/case-study-summary.test.cjs",

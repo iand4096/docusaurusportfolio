@@ -2,10 +2,10 @@
 .page {min-width: 0;}
 .header {max-width: 60rem; margin-bottom: 1.5rem;}
 .eyebrow {
-  margin-bottom: .35rem; font-size: .8rem; font-weight: 700;
+  margin-bottom: .35rem; font-size: var(--portfolio-text-secondary); font-weight: 700;
   letter-spacing: .08em; text-transform: uppercase; color: var(--ifm-color-primary);
 }
-.intro {max-width: 50rem; margin: 0; color: var(--ifm-color-emphasis-700); font-size: 1.05rem;}
+.intro {max-width: 50rem; margin: 0; color: var(--ifm-color-emphasis-700); font-size: var(--portfolio-text-body);}
 .implementationCallout {margin-bottom: 1.5rem;}
 .implementationCallout h2 {
   margin: 0 0 .75rem;
@@ -28,7 +28,7 @@
   border: 0; border-radius: .5rem; background: transparent;
   color: var(--ifm-font-color-base); font: inherit; font-weight: 700; cursor: pointer;
 }
-.tabSelected {background: var(--ifm-color-primary); color: var(--ifm-color-white);}
+.tabSelected {background: var(--ifm-color-primary); color: var(--portfolio-on-primary);}
 .tab:focus-visible {outline: 2px solid var(--ifm-color-primary); outline-offset: 3px;}
 .panel {min-width: 0;}
 .panel[hidden] {display: none;}

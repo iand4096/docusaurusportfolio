@@ -11,7 +11,7 @@
 
 .eyebrow {
   margin-bottom: 0.35rem;
-  font-size: 0.8rem;
+  font-size: var(--portfolio-text-secondary);
   font-weight: 700;
   letter-spacing: 0.08em;
   text-transform: uppercase;
@@ -21,7 +21,7 @@
 .intro {
   max-width: 50rem;
   margin-bottom: 0;
-  font-size: 1.05rem;
+  font-size: var(--portfolio-text-body);
   color: var(--browse-muted);
 }
 
@@ -102,7 +102,7 @@
 .filterLabel {
   display: block;
   margin: 0;
-  font-size: 0.88rem;
+  font-size: var(--portfolio-text-secondary);
   font-weight: 700;
 }
 
@@ -124,7 +124,7 @@
   color: var(--ifm-font-color-base);
   cursor: pointer;
   font: inherit;
-  font-size: 0.82rem;
+  font-size: var(--portfolio-text-secondary);
   line-height: 1.2;
   text-align: left;
 }
@@ -136,7 +136,7 @@
 .filterChipSelected {
   border-color: var(--ifm-color-primary);
   background: var(--ifm-color-primary);
-  color: var(--ifm-color-white);
+  color: var(--portfolio-on-primary);
 }
 
 .count {
@@ -145,7 +145,7 @@
   border-radius: 999px;
   background: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-emphasis-800);
-  font-size: 0.72rem;
+  font-size: var(--portfolio-text-secondary);
   text-align: center;
 }
 
@@ -156,6 +156,7 @@
 
 .results {
   min-width: 0;
+  container-type: inline-size;
 }
 
 .resultsHeader {
@@ -168,19 +169,19 @@
 
 .resultCount {
   margin: 0;
-  font-size: 1.05rem;
+  font-size: var(--portfolio-text-body);
   font-weight: 700;
 }
 
 .filterSummary {
   margin: 0.15rem 0 0;
   color: var(--browse-muted);
-  font-size: 0.85rem;
+  font-size: var(--portfolio-text-secondary);
 }
 
 .resultGrid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 }
 
@@ -217,10 +218,12 @@
 }
 
 .metadataTag {
+  max-width: 100%;
+  overflow-wrap: anywhere;
   padding: 0.2rem 0.45rem;
   border-radius: 0.35rem;
   background: var(--ifm-color-emphasis-200);
-  font-size: 0.75rem;
+  font-size: var(--portfolio-text-secondary);
   line-height: 1.35;
 }
 
@@ -276,7 +279,7 @@
   appearance: none;
   cursor: pointer;
   font: inherit;
-  font-size: 0.78rem;
+  font-size: var(--portfolio-text-secondary);
   font-weight: 600;
   color: var(--ifm-color-primary);
   background: transparent;
@@ -328,13 +331,13 @@
 /* Relevance-ranked local metadata search */
 .searchHelp {
   margin: 0.45rem 0 0;
-  font-size: 0.76rem;
+  font-size: var(--portfolio-text-secondary);
   line-height: 1.45;
   color: var(--browse-muted);
 }
 .rankingNote {
   margin: 0.3rem 0 0;
-  font-size: 0.82rem;
+  font-size: var(--portfolio-text-secondary);
   color: var(--browse-muted);
 }
 .matchBadge {
@@ -345,9 +348,14 @@
   border-radius: 999px;
   background: var(--ifm-color-emphasis-200);
   color: var(--ifm-color-emphasis-800);
-  font-size: 0.73rem;
+  font-size: var(--portfolio-text-secondary);
   font-weight: 600;
 }
 .card:focus-within, .card:hover {
   border-color: var(--ifm-color-primary-light);
+}
+
+/* Keep reading columns comfortable when users enlarge text. */
+@container (min-width: 40rem) {
+  .resultGrid {grid-template-columns: repeat(2, minmax(0, 1fr));}
 }
