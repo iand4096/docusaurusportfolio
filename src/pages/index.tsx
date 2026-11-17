@@ -18,7 +18,7 @@ const projects = [
     title: 'Building a unified Developer Center',
     description: 'Led delivery of a public Developer Center for a rapidly growing, API-first payments business, bringing together Optimal Payments and Skrill API, SDK and integration documentation.',
     evidence: '$1bn+ annual revenue · 21% growth*',
-    evidenceNote: 'Company figures; excludes acquisition and currency effects.',
+    evidenceNote: 'Company figures; 21% excludes acquisition and currency effects.',
     href: '/docs/case-studies/paysafedevcenter',
     action: 'Read case study',
   },

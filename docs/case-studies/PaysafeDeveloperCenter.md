@@ -60,6 +60,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "industry": "Payments / Fintech",
   "projectType": "Public developer portal",
   "summary": "Led a unified Developer Center bringing together Paysafe and Skrill API, SDK and integration documentation in a fast growth environment",
+  "summaryUnderline": "fast growth",
   "role": "Documentation strategy, information architecture and team leadership",
   "scope": "Optimal Payments and Skrill developer documentation",
   "decision": "Flare and Git authoring with incremental publishing into a CMS (TYPO3)",
@@ -200,6 +201,13 @@ The diagram below summarises the authoring, review and publishing sequence.
 
 flowchart TD
 
+    accTitle: Developer Center authoring and publishing
+    accDescr {
+      Authors create documentation in MadCap Flare and commit it to Git feature branches.
+      A documentation build produces a temporary PythonAnywhere review site, where reviewers annotate pages using Hypothesis.
+      Approved changes merge to main.
+      A CI build synchronises content and navigation into TYPO3 staging before promotion to the production Developer Center.
+    }
     subgraph AUTHORING["Authoring & source control"]
         A["Authors<br/>MadCap Flare"]
         B["Git feature branch"]

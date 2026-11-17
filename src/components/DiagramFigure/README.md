@@ -19,6 +19,11 @@ import DiagramFigure from '@site/src/components/DiagramFigure';
 
 ```mermaid
 flowchart LR
+    accTitle: Documentation publishing
+    accDescr {
+      Markdown documents pass into the documentation build.
+      The input role identifies source documents and the processing role identifies the build stage.
+    }
     Docs["Markdown documents"] --> Build["Documentation build"]
     class Docs input;
     class Build process;
@@ -30,6 +35,13 @@ flowchart LR
 Use a literal JSON spread, as shown, so the Markdown exporter can retain the
 figure title and key without evaluating JavaScript. Number figures explicitly
 within each page. Legend labels may be omitted to use the role's default label.
+
+Keep the visible figure caption and give every Mermaid diagram its own
+`accTitle` and `accDescr`, as shown above. Reuse the figure title for a single
+diagram or the panel heading for each diagram in a multi-panel figure. Describe
+the flow, dependencies and decisions rather than listing colours or node labels.
+Mermaid uses these fields to generate a linked SVG title and description in
+both the page and the full-screen viewer.
 
 ## Roles and icons
 
@@ -71,6 +83,11 @@ Give a Mermaid `subgraph` an explicit purpose with a `group-` class:
 
 ```mermaid
 flowchart TD
+    accTitle: Build and review
+    accDescr {
+      A documentation build produces content for a human reviewer.
+      A neutral container groups the stage while the build and reviewer retain their own processing and human-interaction roles.
+    }
     subgraph REVIEW["Build & review"]
         Build["Documentation build"] --> Reviewer["Human review"]
     end

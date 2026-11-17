@@ -91,6 +91,13 @@ This generates the following dependency graph:
 
 ```mermaid
 flowchart TD
+    accTitle: Calculation dependencies and price tweaks
+    accDescr {
+      Market value depends on price and quantity.
+      A price of 100 and quantity of 10 produce a market value of 1,000.
+      Within an alternative scenario, changing price to 120 produces a market value of 1,200 while quantity remains unchanged.
+      The original calculation remains unchanged outside that scenario.
+    }
     P["price<br/>@node(tweak = true)<br/>100"]
     Q["quantity<br/>@node(tweak = true)<br/>10"]
 

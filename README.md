@@ -203,8 +203,8 @@ The pipeline also runs:
 * **Vale** — checks mechanically enforceable prose and style-guide rules, such as terminology, wording, punctuation, and other configured conventions.
 * **Lychee** — checks external HTTP/HTTPS links.
 
-Lychee retries transient failures up to five times, with backoff starting at two
-seconds, as configured in `lychee.toml`. Exhausted HTTP 429 and 5xx responses are
+Lychee retries transient failures up to five times, with an initial retry delay
+of two seconds that increases between attempts, as configured in `lychee.toml`. Exhausted HTTP 429 and 5xx responses are
 reported as low-severity, non-blocking “temporarily unavailable” findings. HTTP
 401/403 responses require manual review and are also non-blocking. These findings
 retain the actual HTTP status; they are not treated as successful checks. HTTP

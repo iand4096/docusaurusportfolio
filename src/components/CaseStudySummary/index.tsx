@@ -12,6 +12,7 @@ export type CaseStudySummaryProps = Readonly<{
   industry: string;
   projectType: string;
   summary: string;
+  summaryUnderline?: string;
   role: string;
   scope: string;
   decision: string;
@@ -36,9 +37,10 @@ function readPreference(): boolean {
 
 /** Editorial overview. All content is present in server-rendered HTML. */
 export default function CaseStudySummary({
-  employer, industry, projectType, summary, role, scope, decision,
+  employer, industry, projectType, summary, summaryUnderline, role, scope, decision,
   decisionLabel = 'Key decision', deliverables, evidenceTitle, evidence, evidenceNote,
 }: CaseStudySummaryProps): ReactNode {
+  const underlineStart = summaryUnderline ? summary.indexOf(summaryUnderline) : -1;
   const root = useRef<HTMLElement>(null);
   const contentId = useId();
   const [hidden, setHidden] = useState(false);
@@ -113,7 +115,11 @@ export default function CaseStudySummary({
           <li>{industry}</li>
           <li>{projectType}</li>
         </ul>
-        <p className={styles.summary}>{summary}</p>
+        <p className={styles.summary}>{underlineStart >= 0 && summaryUnderline ? <>
+          {summary.slice(0, underlineStart)}
+          <span className={styles.underlined}>{summaryUnderline}</span>
+          {summary.slice(underlineStart + summaryUnderline.length)}
+        </> : summary}</p>
         <dl className={styles.details}>
           {[
             ['My role', role], ['Project scope', scope],

@@ -102,6 +102,13 @@ A semantic proposal is not automatically a taxonomy change. New or modified voca
 
 ```mermaid
 flowchart TD
+    accTitle: Taxonomy governance architecture
+    accDescr {
+      AI classification produces proposals for human review and reads the canonical vocabulary without changing it.
+      Approved classifications update document metadata.
+      Vocabulary changes require a reviewed migration, preview, and application through the migration engine, the sole supported path for changing the canonical taxonomy.
+      The taxonomy and document metadata generate repository projections.
+    }
     AI["`taxonomy_ai.py Semantic classification + vocabulary proposals`"]
     REVIEW["`Human review Markdown / JSON artefacts`"]
     APPLY["`taxonomy_ai.py --apply-from Apply reviewed document metadata`"]
@@ -272,6 +279,13 @@ This lets the extension provide CMS convenience without becoming a second taxono
 
 ```mermaid
 flowchart TD
+    accTitle: Single-document metadata review and application
+    accDescr {
+      A VS Code action runs AI-assisted metadata review and saves Markdown and JSON review artefacts.
+      A person reviews the results.
+      Proposed vocabulary changes must pass migration review, preview, and application before use.
+      The Apply action then applies reviewed document metadata and regenerates repository projections.
+    }
     DOC["`Open Markdown/MDX document in VS Code`"]
     REVIEW_ACTION["`Front Matter action Review metadata with DeepSeek`"]
     WRAPPER["`frontmatter_taxonomy.py`"]

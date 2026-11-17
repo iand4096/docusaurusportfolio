@@ -28,7 +28,7 @@
 .eyebrow { font-size: var(--portfolio-text-secondary); font-weight: 600; margin-bottom: 16px; color: var(--portfolio-muted); }
 .eyebrow::before { content: ''; display: inline-block; width: 18px; height: 3px; background: var(--portfolio-accent); vertical-align: middle; margin-right: 10px; }
 .lead { font-size: var(--portfolio-text-body); max-width: 770px; color: var(--portfolio-muted); }
-.experience { font-size: var(--portfolio-text-secondary); color: var(--portfolio-muted); }
+.experience { font-size: var(--portfolio-text-body); font-weight: 500; color: var(--portfolio-muted); }
 .actions { display: flex; gap: 28px; align-items: center; flex-wrap: wrap; margin-top: 28px; }
 .primary { display: inline-block; padding: 12px 20px; background: var(--portfolio-button); color: #fff; border-radius: 3px; font-size: var(--portfolio-text-secondary); font-weight: 600; }
 .primary:hover { background: var(--portfolio-button-hover); color: #fff; text-decoration: none; }

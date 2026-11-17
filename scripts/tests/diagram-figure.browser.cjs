@@ -19,6 +19,18 @@ const pages = [
 const matrix = [[1440, 'light'], [1024, 'light'], [768, 'light'], [390, 'light'],
   [320, 'light'], [1440, 'dark'], [390, 'dark']];
 
+async function checkDescriptions(container, expected) {
+  const actual = await container.locator('svg').evaluateAll(svgs => svgs.map(svg => {
+    const referenced = attribute => (svg.getAttribute(attribute) || '').split(/\s+/).filter(Boolean).map(id => {
+      const element = document.getElementById(id);
+      return element && svg.contains(element) && document.querySelectorAll('#' + CSS.escape(id)).length === 1
+        ? element.textContent.replace(/\s+/g, ' ').trim() : '';
+    }).join(' ');
+    return {title: referenced('aria-labelledby'), description: referenced('aria-describedby')};
+  }));
+  assert.deepEqual(actual, expected, 'Each SVG has its own linked accessible title and description');
+}
+
 (async () => {
   if (output) fs.mkdirSync(output, {recursive: true});
   const browser = await chromium.launch({headless: true,
@@ -36,12 +48,16 @@ const matrix = [[1440, 'light'], [1024, 'light'], [768, 'light'], [390, 'light']
       page.on('pageerror', error => errors.push(error.message));
       for (const [route, count, sourcePath] of pages) {
         const source = fs.readFileSync(path.resolve(__dirname, '../../docs', sourcePath), 'utf8');
+        const descriptions = [...source.matchAll(/accTitle:\s*([^\n]+)\s*\n\s*accDescr\s*\{([\s\S]*?)\}/g)]
+          .map(([, title, description]) => ({title: title.trim(), description: description.replace(/\s+/g, ' ').trim()}));
+        assert.equal(descriptions.length, count);
         const groupPurposes = Object.fromEntries([...source.matchAll(/^\s*class\s+([\w,-]+)\s+group-(\w+)\s*;?\s*$/gm)]
           .flatMap(([, ids, purpose]) => ids.split(',').map(id => [id, purpose])));
         const response = await page.goto(`${base}/docs/${route}`);
         assert.equal(response.status(), 200, route);
         await page.waitForFunction(expected => document.querySelectorAll('figure svg').length === expected, count);
         await page.evaluate(() => document.fonts.ready);
+        await checkDescriptions(page.locator('figure'), descriptions);
         const metrics = await page.locator('figure').evaluateAll((figures, theme) => {
           const palette = theme.roles;
           const rgb = hex => `rgb(${[1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16)).join(', ')})`;
@@ -93,12 +109,14 @@ const matrix = [[1440, 'light'], [1024, 'light'], [768, 'light'], [390, 'light']
             }
           }
         }
-        // Exercise both single- and multi-diagram fullscreen figures.
-        if (/scalingdeveloperdocs|RagSearchCloudArchitecture/.test(route)) {
+        // Exercise every figure, including the multi-diagram RAG figure, in full-screen view.
+        {
           const figures = page.locator('figure');
           for (let i = 0; i < await figures.count(); i++) {
             const figure = figures.nth(i);
             const expected = await figure.locator('svg').count();
+            const figureTitles = await figure.locator('svg').evaluateAll(svgs => svgs.map(svg => svg.querySelector('title').textContent.trim()));
+            const figureDescriptions = descriptions.filter(item => figureTitles.includes(item.title));
             const button = figure.getByRole('button', {name: /^View full-screen: Figure/});
             if (output) await figure.screenshot({path: path.join(output, `${route.split('/').pop()}-${i}-${width}-${theme}.png`),
               style: '.navbar {visibility: hidden}'});
@@ -106,6 +124,7 @@ const matrix = [[1440, 'light'], [1024, 'light'], [768, 'light'], [390, 'light']
             const dialog = figure.locator('dialog');
             await dialog.waitFor({state: 'visible'});
             await page.waitForFunction(count => document.querySelectorAll('dialog[open] svg').length === count, expected);
+            await checkDescriptions(dialog, figureDescriptions);
             const modal = await dialog.evaluate(element => {
               const box = element.getBoundingClientRect();
               return {x: box.x, y: box.y, width: box.width, height: box.height,
@@ -173,6 +192,7 @@ const matrix = [[1440, 'light'], [1024, 'light'], [768, 'light'], [390, 'light']
             await dialog.waitFor({state: 'hidden'});
             assert.equal(await button.evaluate(element => element === document.activeElement), true, 'Focus returns to opener');
             await page.waitForFunction(count => document.querySelectorAll('figure svg').length === count, count);
+            await checkDescriptions(page.locator('figure'), descriptions);
           }
         }
         assert.deepEqual(errors, [], `${route}: browser errors`);

@@ -45,7 +45,10 @@ test('six case studies render accessible, fully visible summaries before their c
     assert.match(html, /Applies to all case studies/);
     assert.match(html, /title="Hide summaries across all case studies/);
     assert.doesNotMatch(html, /<h1|<details|tabindex|<script/);
-    assert.ok(html.includes(data.summary), name);
+    assert.ok(html.replace(/<[^>]*>/g, "").includes(data.summary), name);
+    if (data.summaryUnderline) {
+      assert.ok(html.includes(`<span class="underlined">${data.summaryUnderline}</span>`), name);
+    }
     for (const {value, label} of data.evidence) {
       for (const line of value.split("\n")) assert.ok(html.includes(line), name);
       assert.ok(html.includes(label), name);

@@ -209,6 +209,13 @@ The diagram shows the implemented indexing and query paths. **Taxonomy selection
   "themeVariables": {"fontSize": "17px"}
 }}%%
 flowchart TB
+    accTitle: Indexing before deployment
+    accDescr {
+      Markdown and MDX documents with governed metadata undergo taxonomy validation and are divided into heading-aware passages with source links.
+      These passages produce BM25 records.
+      MiniLM generates document embeddings for a FAISS vector index.
+      Both indexes are prepared before deployment.
+    }
 Docs["Markdown / MDX documents<br/>Governed frontmatter"]
 Validate{"Validate<br/>canonical taxonomy"}
 Chunk["Heading-aware passages<br/>Metadata and source links"]
@@ -236,6 +243,12 @@ Chunk --> Embed --> Vector
   "themeVariables": {"fontSize": "17px"}
 }}%%
 flowchart TB
+    accTitle: Search and answer generation
+    accDescr {
+      The Docusaurus interface sends requests to FastAPI for validation and rate limiting.
+      Manually selected taxonomy and lifecycle filters are validated before keyword, semantic, or hybrid retrieval ranks source passages.
+      Readers can view the original evidence or request a DeepSeek-generated answer with numbered citations and supporting sources.
+    }
 UI["Docusaurus UI<br/>GitHub Pages"]
 API["FastAPI<br/>Request validation and rate limiting"]
 Facets["Validate manually selected<br/>taxonomy and lifecycle filters"]
@@ -308,6 +321,15 @@ I use **Terraform with the AzureRM provider** to provision the Azure resource gr
   "themeVariables": {"fontSize": "17px"}
 }}%%
 flowchart TB
+    accTitle: Azure deployment architecture
+    accDescr {
+      GitHub Actions builds the static Docusaurus frontend for GitHub Pages.
+      Docker packages FastAPI and the prebuilt search index into a versioned image stored in Azure Container Registry.
+      Azure Container Apps retrieves that image using managed identity.
+      Browsers call the backend directly for search and chat.
+      The backend optionally calls DeepSeek and sends logs to Azure Log Analytics.
+      Terraform provisions the registry, application, and logging resources.
+    }
     subgraph PACKAGE["Backend packaging & image publishing"]
         Source["FastAPI source<br/>and prebuilt search index"]
         Docker["Docker build<br/>Version-tagged image"]
@@ -352,7 +374,7 @@ flowchart TB
 
 The Container App uses the **Consumption** workload profile with **one vCPU, 2 GB memory and zero-to-one replicas**. Scale-to-zero limits idle compute costs, at the expense of first-request latency. Azure Container Apps holds the DeepSeek API key as a secret and injects it into FastAPI through an environment-variable reference; the key is not embedded in the browser application or managed as a Terraform secret value.
 
-For a publicly accessible service, I added per-client rate limits, input bounds, concurrency controls and a feature flag for paid generation. These controls reduce abuse but are **not equivalent to authentication, document-level authorisation or a durable spending quota**. The existing Log Analytics integration provides platform and console logs; distributed tracing and application performance dashboards are future work.
+As this is a publicly accessible server, I added per-client rate limits, input bounds, concurrency controls and a feature flag for paid generation. These controls reduce abuse but are **not equivalent to authentication, document-level authorisation or a durable spending quota**. The existing Log Analytics integration provides platform and console logs; distributed tracing and application performance dashboards are future work.
 
 ## Deliverables
 

@@ -187,6 +187,13 @@ The platform supported the full documentation lifecycle, from Markdown authoring
 
 flowchart TD
 
+    accTitle: Documentation platform workflow
+    accDescr {
+      Authors write Markdown with live previews in IntelliJ.
+      Authored and migrated content enters Git-based review, then automated build and quality checks, containerised publishing, and the developer portal.
+      Readers discover published content through keyword or RAG search.
+      Shared platform capabilities support the build stage.
+    }
     A["Authoring<br/>Markdown · IntelliJ live preview"]
 
     B["Review<br/>Git · pull requests"]

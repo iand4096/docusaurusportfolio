@@ -83,8 +83,15 @@ test('all site Mermaid diagrams use figures with exactly the roles their keys de
     for (const [, json, body] of source.matchAll(/<DiagramFigure\s+\{\.\.\.(\{[\s\S]*?\})\}\s*>([\s\S]*?)<\/DiagramFigure>/g)) {
       const props = JSON.parse(json);
       const used = new Set();
+      const panelTitles = [...body.matchAll(/^#### (.+)$/gm)].map(match => match[1]);
+      const expectedTitles = panelTitles.length ? panelTitles : [props.title];
+      let diagramIndex = 0;
       for (const [, code] of body.matchAll(/```mermaid\n([\s\S]*?)\n```/g)) {
         covered++;
+        const title = code.match(/^\s*accTitle:\s*(.+)$/m)?.[1];
+        const description = code.match(/accDescr\s*\{([\s\S]*?)\}/)?.[1].trim();
+        assert.equal(title, expectedTitles[diagramIndex++], `${name}: accessible name matches its existing caption or panel heading`);
+        assert.ok(description, `${name}: a diagram description is required`);
         assert.doesNotMatch(code, /classDef|fa:fa-/, `${name}: use the shared theme`);
         for (const [, role] of code.matchAll(/^\s*class\s+[\w,-]+\s+([\w-]+)\s*;?\s*$/gm)) {
           if (role.startsWith('group-')) {
@@ -97,6 +104,7 @@ test('all site Mermaid diagrams use figures with exactly the roles their keys de
         const prepared = prepareMermaid(code);
 
         assert.match(prepared, /classDef/);
+        assert.ok(prepared.includes(description), `${name}: shared theme preserves descriptions`);
       }
       assert.deepEqual([...used].sort(), props.legend.map(item => item.role).sort(), name);
       const markup = renderToStaticMarkup(React.createElement(Figure, props));
@@ -109,6 +117,8 @@ test('all site Mermaid diagrams use figures with exactly the roles their keys de
     assert.match(markdown, /\*\*Figure 1\./);
     assert.match(markdown, /\*\*Colour and icon key\*\*/);
     assert.match(markdown, /classDef/);
+    assert.equal([...markdown.matchAll(/accTitle:/g)].length, fences.length);
+    assert.equal([...markdown.matchAll(/accDescr\s*\{/g)].length, fences.length);
 
   }
   assert.ok(diagrams > 0);

@@ -225,3 +225,9 @@
 .evidenceLines li + li {
   margin-top: 0.4rem;
 }
+
+.underlined {
+  text-decoration: underline;
+  text-underline-offset: 0.15em;
+  text-decoration-thickness: 1px;
+}
