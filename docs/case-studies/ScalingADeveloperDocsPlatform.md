@@ -96,7 +96,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
 
 ## Context {/* #context */}
 
-At Morgan Stanley, I led the design, launch and evolution of a custom internal docs-as-code platform and developer portal, alongside my work as lead technical writer for the Optimus and RICE frameworks. The platform replaced fragmented legacy documentation for these frameworks with a centralised system using Git-based workflows that made it easier for engineers and technical writers to create, maintain, review and discover content. Initially developed to support Optimus and RICE, the platform expanded to serve the documentation needs of the wider Codetree ecosystem - a large-scale monorepo containing more than 40 million lines of code.
+At Morgan Stanley, I led the design, launch and evolution of a custom internal docs-as-code platform and developer portal, alongside my work as lead technical writer for the Optimus and RICE frameworks. The platform replaced fragmented legacy documentation, primarily held in wiki-based systems, with a centralised system using Git-based workflows that made it easier for engineers and technical writers to create, maintain, review and discover content. Initially developed to support Optimus and RICE, the platform expanded to serve the documentation needs of the wider Codetree ecosystem - a large-scale monorepo containing more than 40 million lines of code.
 
 I owned platform direction, requirements, testing and quality, working with a dedicated engineering team on the initial implementation. I later contributed directly to the codebase, extending functionality and resolving issues as adoption grew.
 
@@ -116,7 +116,7 @@ Some of the underlying technology is publicly available in the [Optimus Cirrus G
 
 * Replace fragmented documentation spread across legacy documentation systems with a single platform.
 * Make documentation contributions practical and as easy as possible for a large engineering community.
-* Store the documentation in Git alongside the code in the main Codetree monorepo.
+* Store the documentation in Git alongside the code in the main Codetree monorepo where it could be searched and changed together.
 * Provide scalable publishing, search, and navigation.
 * Migrate valuable legacy content to the new platform without manually rewriting hundreds of pages.
 * Maintain and evolve the platform as usage and content volume increased.
@@ -240,7 +240,8 @@ I worked with engineers from the internal tooling team to build the authoring ex
 
 ### Authoring and publishing {/* #authoring-and-publishing */}
 
-* **Markdown-based documentation stored and reviewed in Git alongside the code**. Storing documentation in Git provided stronger change control than the previous wiki-based systems. Related updates across multiple pages could be reviewed and merged as a single atomic change, reducing the risk of publishing partially updated or internally inconsistent documentation. It also made the documentation easier to integrate with GenAI workflows.
+* **Markdown-based documentation stored and reviewed in Git alongside the code.** Storing documentation in the Codetree monorepo provided stronger change control than the previous wiki-based systems. Related changes to code, tests, examples, and documentation pages could be committed, validated, and reviewed together as a single atomic change. This reduced the risk of inconsistencies between code and documentation, or publishing partially updated documentation. The same architecture also provides a foundation for AI coding agents to make coordinated, reviewable changes across code and documentation.
+
 
 * **A CI/CD-based documentation build and publishing pipeline with automated quality checks**. Documentation changes in the monorepo were incorporated into automated website builds, while checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
 
@@ -281,6 +282,17 @@ As the platform matured, I contributed directly to its codebase using agentic AI
 The platform grew from approximately **700 pages to more than 3,200 pages over three years**, through a combination of my own documentation work, content migrations and contributions from the wider engineering community.
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
+
+
+## Industry context and architectural trade-offs {/* #industry-context-and-architectural-trade-offs */}
+
+The decision to move from wikis to a custom docs-as-code platform reflected a broader shift towards maintaining technical documentation alongside source code. Organizations such as [Google (g3doc)](https://abseil.io/resources/swe-book/html/ch10.html), [Pinterest (PDocs)](https://medium.com/pinterest-engineering/adopting-docs-as-code-at-pinterest-4f18ad169c25) and [Spotify (TechDocs)](https://backstage.io/blog/2020/09/08/announcing-tech-docs/) have adopted similar approaches to improve documentation ownership, discoverability and integration with engineering workflows.
+
+
+However, docs-as-code introduced trade-offs, particularly around Markdown authoring and pull-request friction. Our IntelliJ integration reduced authoring friction through accurate live previews, while links on every documentation page allowed contributors to make simpler corrections, such as quick typo edits, directly in Bitbucket's browser editor. We also streamlined the review process for documentation-only pull requests. Nevertheless, the full authoring experience required IntelliJ, which discouraged some potential contributors.
+
+In retrospect, further improvements to contribution workflows might have reduced friction, but building a fully featured browser editor would have introduced substantial additional complexity. The key architectural decision was to build on developers' existing tools rather than introduce another authoring environment.
+
 
 ## Lessons learned {/* #lessons-learned */}
 
