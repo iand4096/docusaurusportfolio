@@ -18,7 +18,7 @@ const projects = [
     title: 'Building a unified Developer Center',
     description: 'Led delivery of a unified Developer Center for a rapidly growing, API-first payments business, bringing together Optimal Payments and Skrill API, SDK and integration documentation.',
     evidence: '$1bn+ annual revenue · 21% growth',
-    evidenceNote: '2016 company figures; growth excludes acquisition and currency effects.',
+    evidenceNote: 'Company figures; growth excludes acquisition and currency effects.',
     href: '/docs/case-studies/paysafedevcenter',
     action: 'Read case study',
   },
@@ -30,23 +30,33 @@ const projects = [
     href: '/docs/docs-samples/MDES4Merchants',
     action: 'Read documentation sample',
   },
+  {
+    employer: 'Independent project',
+    title: 'Governing knowledge with a canonical taxonomy',
+    description: 'Built a shared vocabulary for structured documentation, connecting metadata validation, authoring tools, navigation and retrieval. Content lifecycle values and reviewed taxonomy changes keep classification controlled.',
+    evidence: 'Canonical taxonomy · Metadata validation · Lifecycle controls',
+    href: '/docs/case-studies/TaxonomyGovernance',
+    action: 'Read case study',
+  },
 ];
 
 export default function Home(): React.ReactElement {
   return (
     <Layout
       title="Ian Drewett | Technical Writer & Documentation Engineer"
-      description="Developer documentation, from enterprise platforms to tested API integrations. Technical writing and documentation engineering by Ian Drewett."
+      description="Developer documentation and knowledge systems for people and AI. Technical writing, documentation platforms, governed metadata and tested API integrations by Ian Drewett."
     >
       <main className={styles.home} id="main-content">
         <section className={styles.hero}>
           <p className={styles.eyebrow}>Ian Drewett · Technical Writer & Documentation Engineer</p>
-          <h1><span className={styles.headlineAccent}>Developer documentation,</span> from enterprise platforms to tested API integrations.</h1>
+          <h1><span className={styles.headlineAccent}>Developer documentation</span> and knowledge systems for people and AI.</h1>
           <p className={styles.lead}>
-            I write technical documentation, build the platforms that publish it,
-            and test the integrations it describes. My experience spans Morgan
-            Stanley, Mastercard and Paysafe.
+            I help companies explain complex products and prepare technical
+            knowledge for AI-assisted discovery. My work combines technical
+            writing, documentation platforms, governed metadata and tested API
+            integrations.
           </p>
+          <p className={styles.experience}>Experience at Morgan Stanley, Mastercard and Paysafe.</p>
           <div className={styles.actions}>
             <a href="#case-studies" className={styles.primary}>Explore selected work ↓</a>
             <Link to={linkedin} className={styles.textLink}>Connect on LinkedIn ↗</Link>
@@ -75,10 +85,14 @@ export default function Home(): React.ReactElement {
         <section className={styles.lab} aria-labelledby="search-heading">
           <div>
             <p className={styles.eyebrow}>Independent project</p>
-            <h2 id="search-heading">Building search for this portfolio</h2>
-            <p>I deployed a Python search API on Azure using Docker and Terraform.
-              It combines keyword and semantic retrieval with taxonomy filters
-              and optional AI answers linked to source passages.</p>
+            <h2 id="search-heading">Putting AI-ready knowledge into practice</h2>
+            <p>This portfolio connects structured content and a canonical taxonomy
+              with metadata validation, hybrid keyword and semantic retrieval,
+              and lifecycle filtering. Optional AI answers link to the retrieved
+              source passages so readers can inspect the evidence.</p>
+            <p className={styles.evaluation}>The search API is deployed on Azure using Docker and Terraform.
+              Evaluation of retrieval relevance and answer accuracy against a
+              representative question set is planned.</p>
           </div>
           <div className={styles.labActions}>
             <Link to="/explore?view=ai-search" className={styles.primary}>Try the search →</Link>
@@ -88,19 +102,23 @@ export default function Home(): React.ReactElement {
 
         <section className={styles.about} id="about">
           <div>
-            <h2>Writing, engineering and leadership</h2>
+            <h2>Technical writing, documentation engineering and AI-ready knowledge systems</h2>
             <p>I have an M.Sc. in Computer Science, a degree in Physics and a
               background in software engineering. My documentation work ranges
               from Scala frameworks and payment APIs to developer portals and
-              team leadership.</p>
+              team leadership. I also design governed content structures and
+              validation tools that make technical knowledge easier to maintain,
+              retrieve and trace to its sources.</p>
             <p>Explore my <Link to="/docs/apidocumentation">API documentation</Link>,{' '}
-              <Link to="/docs/documentationeng">documentation engineering</Link> and{' '}
+              <Link to="/docs/documentationeng">documentation engineering</Link>,{' '}
+              <Link to="/docs/case-studies/TaxonomyGovernance">knowledge governance</Link> and{' '}
               <Link to="/docs/docsleadership">leadership experience</Link>.</p>
           </div>
           <div className={styles.contact}>
             <h3>Get in touch</h3>
-            <p>For technical-writing and documentation-engineering roles,
-              contract work or consultancy enquiries.</p>
+            <p>I’m interested in roles involving technical writing, documentation
+              engineering, knowledge architecture, content governance and AI
+              knowledge systems, as well as contract work and consultancy.</p>
             <Link to={linkedin} className={styles.textLink}>Contact me on LinkedIn ↗</Link>
           </div>
         </section>
