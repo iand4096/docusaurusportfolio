@@ -25,6 +25,7 @@ jobs:
       qa-outcome: ${{ steps.docs-qa.outcome }}
       qa-report-path: ${{ steps.add-qa-report.outputs.report-path }}
       qa-report-version: ${{ steps.add-qa-report.outputs.report-version }}
+      qa-artifact-url: ${{ steps.upload-qa-artifact.outputs.artifact-url }}
 
     steps:
       - name: Check out repository
@@ -568,6 +569,9 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
 
+    outputs:
+      qa-report-url: ${{ steps.published-urls.outputs.qa-report-url }}
+
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -578,8 +582,14 @@ jobs:
         uses: actions/deploy-pages@v5
 
       - name: Add published URLs to workflow summary
+        id: published-urls
         shell: bash
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          REPORT_PATH: ${{ needs.build.outputs.qa-report-path }}
         run: |
+          QA_REPORT_URL="${PAGE_URL%/}/${REPORT_PATH}"
+          printf 'qa-report-url=%s\n' "$QA_REPORT_URL" >> "$GITHUB_OUTPUT"
           {
             echo "## GitHub Pages deployment"
             echo ""
@@ -591,7 +601,7 @@ jobs:
             echo ""
             echo "Stable URL: ${{ steps.deployment.outputs.page_url }}qa/"
             echo ""
-            echo "Versioned report: ${{ steps.deployment.outputs.page_url }}${{ needs.build.outputs.qa-report-path }}"
+            echo "Versioned report: $QA_REPORT_URL"
           } >> "$GITHUB_STEP_SUMMARY"
 
   # The QA command was allowed to continue so that a failing report
@@ -605,6 +615,10 @@ jobs:
 
     if: always()
     runs-on: ubuntu-latest
+
+    environment:
+      name: documentation-qa
+      url: ${{ needs.deploy.outputs.qa-report-url }}
 
     steps:
       - name: Check build and QA result
@@ -635,3 +649,23 @@ jobs:
           fi
 
           echo "Documentation QA passed."
+
+      - name: Link to documentation QA report
+        if: always()
+        shell: bash
+        env:
+          DEPLOY_RESULT: ${{ needs.deploy.result }}
+          QA_REPORT_URL: ${{ needs.deploy.outputs.qa-report-url }}
+          ARTIFACT_URL: ${{ needs.build.outputs.qa-artifact-url }}
+        run: |
+          {
+            printf '## Enforce documentation QA\n\n'
+            if [[ "$DEPLOY_RESULT" == success && -n "$QA_REPORT_URL" ]]; then
+              printf '[Open the published QA report for this run](%s)\n\n' "$QA_REPORT_URL"
+            else
+              printf 'No QA report was published to GitHub Pages by this run.\n\n'
+            fi
+            if [[ -n "$ARTIFACT_URL" ]]; then
+              printf '[Download the original QA report files](%s)\n' "$ARTIFACT_URL"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
