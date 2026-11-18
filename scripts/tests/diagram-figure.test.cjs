@@ -50,6 +50,10 @@ test('subgraph notes use an adjacent space only when the diagram leaves it clear
     left: 76, top: 120, connector: {left: 276, top: 180, length: 24, vertical: false},
   });
   assert.equal(placeSubgraphNote(frame, target, note, [rect(0, 0, 800, 500)]), undefined);
+  const clipped = rect(-180, 120, 175, 260);
+  assert.equal(placeSubgraphNote(frame, clipped, note, [clipped]), undefined);
+  const partlyVisible = rect(-100, 120, 280, 260);
+  assert.equal(placeSubgraphNote(frame, partlyVisible, note, [partlyVisible]).connector.left, 180);
 });
 
 test('subgraph fit uses leading blank space only when it reveals downstream content', () => {

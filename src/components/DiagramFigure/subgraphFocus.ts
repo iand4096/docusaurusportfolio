@@ -1,7 +1,7 @@
 export type SubgraphOption = {id: string; panel?: string; label: string};
 export type SubgraphFit = {
   scale: number; x: number; y: number; width: number; height: number; limited: boolean;
-  offsetX: number; offsetY: number;
+  offsetX: number; offsetY: number; frameWidth: number; frameHeight: number;
 };
 export type NoteConnector = {left: number; top: number; length: number; vertical: boolean};
 
@@ -36,8 +36,11 @@ export function placeSubgraphNote(frame: DOMRect, target: DOMRect, note: DOMRect
       length: gap,
       vertical,
     };
-    // Ignore the two ends of the leader where it deliberately touches the boxes.
     const {left: x, top: y} = connector;
+    // A partially visible subgraph must still have an on-canvas attachment point.
+    if (x < frame.left || y < frame.top || x + (vertical ? 0 : gap) > frame.right
+      || y + (vertical ? gap : 0) > frame.bottom) continue;
+    // Ignore the two ends of the leader where it deliberately touches the boxes.
     const leaderBlocked = vertical
       ? blocked(x, y + 5, x, y + gap - 5)
       : blocked(x + 5, y, x + gap - 5, y);
@@ -113,6 +116,8 @@ export function fitSubgraph(frame: HTMLElement, content: HTMLElement, element: S
     if (availableShift >= 12) shift = -availableShift;
   }
   return {
+    frameWidth: width,
+    frameHeight: height,
     scale: scale * ratio,
     x: (target.left + target.width / 2 - area.left - area.width / 2) / scale,
     y: (target.top + target.height / 2 - area.top - area.height / 2) / scale,

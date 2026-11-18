@@ -237,21 +237,14 @@ async function checkSubgraphZoom(browser) {
     assert.match(await desktopNote.textContent(), /GitHub Pages/);
     const noteBox = await desktopNote.boundingBox();
     const canvasBox = await viewer.getByRole('region', {name: /^Diagram viewport:/}).boundingBox();
-    const placement = await desktopNote.evaluate(note => note.parentElement.dataset.notePlacement);
-    assert.ok(['floating', 'sidebar'].includes(placement));
-    if (placement === 'sidebar') {
-      assert.ok(noteBox.x >= canvasBox.x + canvasBox.width);
-      assert.equal(await viewer.locator('[data-note-connector]').count(), 0);
-    } else {
-      assert.equal(await desktopNote.getByText('About Static frontend', {exact: true}).isVisible(), false);
-      assert.equal(await viewer.locator('[data-note-connector]').evaluate(line => getComputedStyle(line).borderTopStyle), 'dashed');
-      const groupBox = await viewer.locator('g.cluster[id="FRONTEND"], g.cluster[id$="-FRONTEND"]').boundingBox();
-      assert.ok(noteBox.x >= canvasBox.x && noteBox.y >= canvasBox.y
-        && noteBox.x + noteBox.width <= canvasBox.x + canvasBox.width
-        && noteBox.y + noteBox.height <= canvasBox.y + canvasBox.height);
-      assert.ok(noteBox.x >= groupBox.x + groupBox.width || noteBox.x + noteBox.width <= groupBox.x
-        || noteBox.y >= groupBox.y + groupBox.height || noteBox.y + noteBox.height <= groupBox.y);
-    }
+    assert.equal(await desktopNote.getByText('About Static frontend', {exact: true}).isVisible(), false);
+    assert.equal(await viewer.locator('[data-note-connector]').evaluate(line => getComputedStyle(line).borderTopStyle), 'dashed');
+    const groupBox = await viewer.locator('g.cluster[id="FRONTEND"], g.cluster[id$="-FRONTEND"]').boundingBox();
+    assert.ok(noteBox.x >= canvasBox.x && noteBox.y >= canvasBox.y
+      && noteBox.x + noteBox.width <= canvasBox.x + canvasBox.width
+      && noteBox.y + noteBox.height <= canvasBox.y + canvasBox.height);
+    assert.ok(noteBox.x >= groupBox.x + groupBox.width || noteBox.x + noteBox.width <= groupBox.x
+      || noteBox.y >= groupBox.y + groupBox.height || noteBox.y + noteBox.height <= groupBox.y);
     assert.equal(await desktopNote.evaluate(note => getComputedStyle(note).fontSize), '16px');
     await viewer.locator('[data-subgraph-highlight]').waitFor();
     const largestLabel = await viewer.locator('g.cluster[id="FRONTEND"], g.cluster[id$="-FRONTEND"]').evaluate(group => {
@@ -265,6 +258,16 @@ async function checkSubgraphZoom(browser) {
       }));
     });
     assert.ok(Math.abs(largestLabel - 24) < 0.5, `Capped label size: ${largestLabel}px`);
+    const zoomIn = viewer.getByRole('button', {name: 'Zoom in', exact: true});
+    const zoomOut = viewer.getByRole('button', {name: 'Zoom out', exact: true});
+    const connector = viewer.locator('[data-note-connector]');
+    for (let i = 0; i < 8; i++) await zoomIn.click();
+    await desktopNote.waitFor({state: 'hidden'});
+    assert.equal((await viewer.getByRole('region', {name: /^Diagram viewport:/}).boundingBox()).width, canvasBox.width);
+    assert.equal(await connector.count(), 0);
+    for (let i = 0; i < 16; i++) await zoomOut.click();
+    await connector.waitFor({state: 'visible'});
+    assert.equal(await zoomTo.locator('option:checked').textContent(), 'Static frontend');
     await zoomTo.selectOption({label: 'Backend packaging & image publishing'});
     await waitForSubgraphFit();
     await viewer.getByRole('button', {name: 'Left to right', exact: true}).click();
@@ -304,6 +307,57 @@ async function checkSubgraphZoom(browser) {
   }
 }
 
+async function checkNotePlacementAfterSelection(browser) {
+  const page = await browser.newPage({viewport: {width: 1920, height: 1080}});
+  try {
+    await page.goto(`${base}/docs/case-studies/paysafedevcenter`);
+    const figure = page.locator('figure').filter({has: page.locator('#diagram-developer-center-authoring-and-publishing')});
+    await figure.getByRole('button', {name: /^View full-screen/}).click();
+    const viewer = figure.getByRole('dialog');
+    const zoomTo = viewer.getByRole('combobox', {name: 'Zoom to'});
+    const connector = viewer.locator('[data-note-connector]');
+    const mergeNote = viewer.getByRole('complementary', {name: 'About Merge & automated build'});
+
+    await zoomTo.selectOption({label: 'Merge & automated build'});
+    await mergeNote.waitFor();
+    await connector.waitFor();
+    await zoomTo.selectOption({label: 'Build & review'});
+    await viewer.getByRole('complementary', {name: 'About Build & review'}).waitFor();
+    await zoomTo.selectOption({label: 'Merge & automated build'});
+    await mergeNote.waitFor();
+    await connector.waitFor({timeout: 5000});
+    const viewport = viewer.getByRole('region', {name: /^Diagram viewport:/});
+    const pan = key => viewport.evaluate((region, key) => {
+      for (let i = 0; i < 60; i++) {
+        region.dispatchEvent(new KeyboardEvent('keydown', {key, bubbles: true, cancelable: true}));
+      }
+    }, key);
+    await pan('ArrowRight');
+    await mergeNote.waitFor({state: 'hidden'});
+    await connector.waitFor({state: 'hidden'});
+    assert.equal(await zoomTo.locator('option:checked').textContent(), 'Merge & automated build');
+    await pan('ArrowLeft');
+    await mergeNote.waitFor();
+    await connector.waitFor();
+    const frame = await viewport.boundingBox();
+    const x = frame.x + frame.width - 30;
+    const y = frame.y + frame.height - 30;
+    await page.mouse.move(x, y);
+    await page.mouse.down();
+    for (const fraction of [0.35, 0.46, 0.55, 0.61, 0.65, 0.7]) {
+      await page.mouse.move(x - frame.width * fraction, y);
+      assert.equal((await viewport.boundingBox()).width, frame.width, 'Dragging must preserve the canvas width');
+    }
+    await mergeNote.waitFor({state: 'hidden'});
+    await page.mouse.move(x, y, {steps: 10});
+    await connector.waitFor();
+    await page.mouse.up();
+    console.log('The merge note stays linked across selections and the canvas keeps its width during dragging.');
+  } finally {
+    await page.close();
+  }
+}
+
 (async () => {
   if (output) fs.mkdirSync(output, {recursive: true});
   const browser = await chromium.launch({headless: true,
@@ -315,6 +369,7 @@ async function checkSubgraphZoom(browser) {
     await checkSharedLinks(browser);
     await checkLayoutDefaults(browser);
     await checkSubgraphZoom(browser);
+    await checkNotePlacementAfterSelection(browser);
     for (const [width, theme] of matrix) {
       const context = await browser.newContext({viewport: {width, height: 900},
         colorScheme: theme, isMobile: width <= 390});

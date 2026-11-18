@@ -318,11 +318,6 @@
     grid-template: 'viewport' minmax(0, 1fr) 'legend' auto / minmax(0, 1fr);
   }
 
-  .expanded[data-note-placement='sidebar'] {
-    grid-template: 'viewport note' minmax(0, 1fr) 'legend legend' auto / minmax(0, 1fr) clamp(16rem, 25vw, 22rem);
-    column-gap: 0.75rem;
-  }
-
   .expanded[data-subgraph-note] > .viewport { grid-area: viewport; }
   .expanded[data-subgraph-note] > .legend { grid-area: legend; }
   .mobileNote { display: none; }
@@ -341,20 +336,6 @@
   .expanded[data-note-placement='floating'] > .desktopNote {
     visibility: visible;
   }
-
-  .expanded[data-note-placement='sidebar'] > .desktopNote {
-    position: static;
-    grid-area: note;
-    align-self: start;
-    width: auto;
-    max-height: calc(100% - var(--note-top, 0px));
-    margin-top: var(--note-top, 0);
-    overflow: auto;
-    visibility: visible;
-  }
-
-  .expanded[data-note-placement='sidebar'] .desktopNote .noteTitle { display: block; }
-  .expanded[data-note-placement='sidebar'] .desktopNote .noteTitle + p { margin-top: 0.4rem; }
 
   .noteConnector {
     display: block;

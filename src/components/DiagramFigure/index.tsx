@@ -18,8 +18,8 @@ export type DiagramFigureProps = Readonly<{
 }>;
 
 type DiagramPanel = {key: string; title: string; shareId?: string};
-type NotePlacement = {key: string; left: number; top: number}
-  & ({mode: 'sidebar'; connector?: undefined} | {mode: 'floating'; connector: NoteConnector});
+type DiagramView = {zoom: number; x: number; y: number};
+type NotePlacement = {key: string; left: number; top: number; connector: NoteConnector};
 
 const fullScreenHint = 'Double-click the diagram to open or close full-screen.';
 
@@ -55,7 +55,7 @@ export default function DiagramFigure({number, title, shareId, subgraphNotes, le
   const desktopNote = useRef<HTMLElement>(null);
   const layoutSwitch = useRef<HTMLButtonElement>(null);
   const drag = useRef<{id: number; x: number; y: number} | null>(null);
-  const [view, setView] = useState({zoom: 1, x: 0, y: 0});
+  const [view, setView] = useState<DiagramView>({zoom: 1, x: 0, y: 0});
   const [fitScale, setFitScale] = useState(1);
   const [dragging, setDragging] = useState(false);
   const canvas = useRef<HTMLDivElement>(null);
@@ -64,18 +64,20 @@ export default function DiagramFigure({number, title, shareId, subgraphNotes, le
   const [selectedPanel, setSelectedPanel] = useState<string>();
   const [subgraphs, setSubgraphs] = useState<SubgraphOption[]>([]);
   const [selectedSubgraph, setSelectedSubgraph] = useState<string>();
-  const [subgraphFit, setSubgraphFit] = useState<SubgraphFit>();
+  const [subgraphFit, setSubgraphFit] = useState<SubgraphFit & {key: string; element: SVGGElement}>();
   const activePanel = panels.find(panel => panel.key === selectedPanel);
   const activeSubgraph = subgraphs.find(subgraph => subgraph.id === selectedSubgraph && subgraph.panel === activePanel?.key);
   const notes = activePanel ? subgraphNotes?.[activePanel.key] : subgraphNotes;
+  const activeSubgraphKey = activeSubgraph && subgraphKey(activeSubgraph);
   const noteText = activeSubgraph && typeof notes === 'object' ? notes[activeSubgraph.id] : undefined;
-  const activeNote = activeSubgraph && typeof noteText === 'string' && noteText.trim()
-    ? {key: subgraphKey(activeSubgraph), title: `About ${activeSubgraph.label}`, text: noteText} : undefined;
+  const activeNote = activeSubgraph && activeSubgraphKey && typeof noteText === 'string' && noteText.trim()
+    ? {key: activeSubgraphKey, title: `About ${activeSubgraph.label}`, text: noteText} : undefined;
   const showingAllPanels = panels.length > 1 && !activePanel;
   const ungroupedSubgraphs = showingAllPanels ? subgraphs.filter(item => !item.panel) : subgraphs;
   const renderSubgraphOption = (item: SubgraphOption) =>
     <option key={subgraphKey(item)} value={subgraphKey(item)}>{item.label}</option>;
-  const focus = activeSubgraph ? subgraphFit : undefined;
+  // The selection can render before its measurements are ready.
+  const focus = subgraphFit?.key === activeSubgraphKey ? subgraphFit : undefined;
   const viewScale = (focus?.scale ?? fitScale) * view.zoom;
   const focusX = view.x + (focus?.offsetX ?? 0) * view.zoom;
   const focusY = view.y + (focus?.offsetY ?? 0) * view.zoom;
@@ -147,49 +149,52 @@ export default function DiagramFigure({number, title, shareId, subgraphNotes, le
 
     const positionNote = () => {
       const noteBounds = note.getBoundingClientRect();
-      if (!noteBounds.width) return;
-      const target = findSubgraphs(content)
-        .find(item => item.id === selectedSubgraph && item.panel === selectedPanel)?.element;
-      if (!target) return;
+      if (!noteBounds.width || focus.frameWidth !== frame.clientWidth || focus.frameHeight !== frame.clientHeight) return;
+      const target = focus.element;
+      const renderedDirection = target.closest<HTMLElement>('[data-diagram-subgraph-direction]')
+        ?.dataset.diagramSubgraphDirection;
+      if (!content.contains(target) || (currentDirection && renderedDirection !== currentDirection)) return;
 
       const bounds = frame.getBoundingClientRect();
       const targetBounds = target.getBoundingClientRect();
-      let placement: NotePlacement;
-      if (notePosition?.mode === 'sidebar') {
-        const maxOffset = Math.max(0, bounds.height - note.scrollHeight - (note.offsetHeight - note.clientHeight));
-        placement = {key: noteKey, mode: 'sidebar', left: 0,
-          top: Math.max(0, Math.min(targetBounds.top - bounds.top, maxOffset))};
-      } else {
-        const obstacles = Array.from(content.querySelectorAll('g.node, g.cluster, g.edgePaths path, g.edgeLabels .edgeLabel'))
-          .map(element => element.getBoundingClientRect())
-          .filter(box => box.width || box.height);
-        const spot = placeSubgraphNote(bounds, targetBounds, noteBounds, obstacles);
-        const parent = note.parentElement?.getBoundingClientRect();
-        placement = spot && parent
-          ? {key: noteKey, mode: 'floating', left: spot.left - parent.left, top: spot.top - parent.top,
-            connector: {...spot.connector, left: spot.connector.left - parent.left, top: spot.connector.top - parent.top}}
-          : {key: noteKey, mode: 'sidebar', left: 0, top: 0};
+      if (targetBounds.right <= bounds.left || targetBounds.left >= bounds.right
+        || targetBounds.bottom <= bounds.top || targetBounds.top >= bounds.bottom) {
+        setNotePlacement(undefined);
+        return;
       }
-      setNotePlacement(previous => previous?.key === placement.key && previous.mode === placement.mode
+      const obstacles = Array.from(content.querySelectorAll('g.node, g.cluster, g.edgePaths path, g.edgeLabels .edgeLabel'))
+        .map(element => element.getBoundingClientRect())
+        .filter(box => box.width || box.height);
+      const spot = placeSubgraphNote(bounds, targetBounds, noteBounds, obstacles);
+      const parent = note.parentElement?.getBoundingClientRect();
+      if (!spot || !parent) {
+        setNotePlacement(undefined);
+        return;
+      }
+      const placement = {
+        key: noteKey,
+        left: spot.left - parent.left,
+        top: spot.top - parent.top,
+        connector: {...spot.connector, left: spot.connector.left - parent.left, top: spot.connector.top - parent.top},
+      };
+      setNotePlacement(previous => previous?.key === placement.key
         && Math.abs(previous.left - placement.left) < 0.5 && Math.abs(previous.top - placement.top) < 0.5
-        && previous.connector?.vertical === placement.connector?.vertical
-        && Math.abs((previous.connector?.left ?? 0) - (placement.connector?.left ?? 0)) < 0.5
-        && Math.abs((previous.connector?.top ?? 0) - (placement.connector?.top ?? 0)) < 0.5
+        && previous.connector.vertical === placement.connector.vertical
+        && Math.abs(previous.connector.left - placement.connector.left) < 0.5
+        && Math.abs(previous.connector.top - placement.connector.top) < 0.5
         ? previous : placement);
     };
 
-    // Keep a reserved sidebar until the selection, orientation or window changes.
-    const reconsider = () => setNotePlacement(undefined);
     const observer = new ResizeObserver(positionNote);
     observer.observe(frame);
     observer.observe(note);
-    window.addEventListener('resize', reconsider);
+    window.addEventListener('resize', positionNote);
     positionNote();
     return () => {
       observer.disconnect();
-      window.removeEventListener('resize', reconsider);
+      window.removeEventListener('resize', positionNote);
     };
-  }, [expanded, noteKey, focus, focusX, focusY, viewScale, selectedSubgraph, selectedPanel, notePosition?.mode]);
+  }, [expanded, noteKey, focus, focusX, focusY, viewScale, currentDirection]);
 
   useEffect(() => {
     const frame = viewport.current;
@@ -202,8 +207,11 @@ export default function DiagramFigure({number, title, shareId, subgraphNotes, le
         setFitScale(Math.min(frame.clientWidth / width, frame.clientHeight / height));
       }
       const target = targets.find(item => item.id === selectedSubgraph && item.panel === selectedPanel);
-      const fitted = target && fitSubgraph(frame, content, target.element);
+      const geometry = target && fitSubgraph(frame, content, target.element);
+      const fitted = geometry && target && {...geometry, key: subgraphKey(target), element: target.element};
       setSubgraphFit(previous => previous && fitted
+        && previous.key === fitted.key && previous.element === fitted.element
+        && previous.frameWidth === fitted.frameWidth && previous.frameHeight === fitted.frameHeight
         && previous.limited === fitted.limited
         && Math.abs(previous.width - fitted.width) < 0.1
         && Math.abs(previous.height - fitted.height) < 0.1
@@ -472,7 +480,7 @@ export default function DiagramFigure({number, title, shareId, subgraphNotes, le
           </div>
         </div>
         {expanded && <div className={styles.expanded} data-subgraph-note={!!activeNote || undefined}
-          data-note-placement={notePosition?.mode}>
+          data-note-placement={notePosition ? 'floating' : undefined}>
           {activeNote && <details className={`${styles.subgraphNote} ${styles.mobileNote}`}
             key={activeNote.key}>
             <summary className={styles.noteTitle}>{activeNote.title}</summary>
