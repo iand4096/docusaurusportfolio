@@ -126,7 +126,7 @@ Production builds publish individual pages and the full documentation set as Mar
 
 Reusable React components give authors a consistent way to summarise case studies, present capabilities and diagrams, highlight decisions and outcomes, and display API examples. Authors can use them directly in MDX.
 
-The [API component guide](../implementation-details/api-example.mdx) shows how a single OpenAPI specification drives both operation links and request and response examples.
+To make the site easier to maintain, I apply the software engineering principle “Don’t Repeat Yourself” (DRY). Shared layouts live in reusable React components, so a layout change takes effect wherever the component is used. API operation links and request and response examples draw from a single OpenAPI specification. The [API component guide](../implementation-details/api-example.mdx) shows how this works.
 
 ## Impact {/* #impact */}
 
