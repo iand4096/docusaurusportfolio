@@ -279,8 +279,9 @@ export default function DiagramFigure({number, title, shareId, legend, children}
           </div>}
           <div className={styles.viewControls}>
             {currentDirection && <div className={styles.controlGroup} role="group" aria-label="Diagram layout">
-              <span aria-hidden="true">Layout</span>
+                <span aria-hidden="true">Switch layout</span>
               <button type="button" className={styles.layoutButton}
+                  title={nextDirection === 'LR' ? 'Switch to left-to-right layout' : 'Switch to top-to-bottom layout'}
                 onClick={() => {
                   setDirection(nextDirection);
                   setView({zoom: 1, x: 0, y: 0});
