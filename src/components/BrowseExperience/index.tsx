@@ -4,6 +4,7 @@ import Layout from '@theme/Layout';
 import {useLocation} from '@docusaurus/router';
 
 import styles from './styles.module.css';
+import ContentTypeIcon from '../ContentTypeIcon';
 import MetadataFilterToggle, {useMetadataFilterVisibility} from '@site/src/components/MetadataFilterToggle';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
 import {ExploreTaxonomyFilterGroups} from '@site/src/components/ExploreTaxonomyFilterGroups';
@@ -179,15 +180,20 @@ function DocumentTags({
 
   return (
     <div className={styles.metadata} aria-label={`Taxonomy for ${document.title}`}>
-      {visibleTags.map(({dimensionId, termId}) => (
-        <span
-          className={`${styles.metadataTag} ${data.dimensions[dimensionId].metadataField === 'type' ? styles.contentTypeTag : ''}`}
-          key={`${dimensionId}:${termId}`}
-          title={data.dimensions[dimensionId].label}
-        >
-          {labels.get(`${dimensionId}:${termId}`) ?? termId}
-        </span>
-      ))}
+      {visibleTags.map(({dimensionId, termId}) => {
+        const dimension = data.dimensions[dimensionId];
+        const isContentType = dimension.metadataField === 'type';
+        return (
+          <span
+            className={`${styles.metadataTag} ${isContentType ? styles.contentTypeTag : ''}`}
+            key={`${dimensionId}:${termId}`}
+            title={dimension.label}
+          >
+            {isContentType && <ContentTypeIcon type={termId} />}
+            <span>{labels.get(`${dimensionId}:${termId}`) ?? termId}</span>
+          </span>
+        );
+      })}
       {tags.length > collapsedCount ? (
         <button
           type="button"

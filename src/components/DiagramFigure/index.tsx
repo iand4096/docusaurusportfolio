@@ -15,7 +15,7 @@ function Legend({items}: {items: readonly LegendItem[]}): ReactNode {
   return <ul className={styles.legend} aria-label="Colour and icon key">
     {items.map(({role, label}) => {
       const {fill, stroke, icon, label: defaultLabel} = roles[role];
-      return <li key={role}>
+      return <li key={role} title={`Category: ${defaultLabel}`}>
         <span className={styles.swatch} style={{backgroundColor: fill, borderColor: stroke}} aria-hidden="true">
           {icon && <i className={`fa-solid fa-${icon}`} />}
         </span>

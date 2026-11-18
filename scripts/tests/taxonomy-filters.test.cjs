@@ -11,7 +11,7 @@ const root = path.resolve(__dirname, '../..');
 const catalogue = require('../../src/generated/taxonomy-navigation.json');
 
 // Compile the actual TS/TSX modules with the repository's TypeScript dependency.
-// Only Docusaurus aliases and CSS imports need substitutes for server rendering.
+// Resolve source imports and substitute generated data and styles for server rendering.
 function loadSource(relative, data = catalogue) {
   const filename = path.join(root, relative);
   const loaded = new Module(filename, module);
@@ -21,6 +21,7 @@ function loadSource(relative, data = catalogue) {
     if (name.endsWith('taxonomy-navigation.json')) return data;
     if (name.endsWith('.css')) return {};
     if (name === '@site/src/utils/taxonomyFilters') return filters;
+    if (name === './ContentTypeIcon') return loadSource('src/components/ContentTypeIcon.tsx');
     return originalRequire(name);
   };
   loaded._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {

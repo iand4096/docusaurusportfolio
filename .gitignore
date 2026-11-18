@@ -3,6 +3,7 @@
 
 # Production
 /build
+/joined-pages.md
 
 # Generated Docusaurus files
 .docusaurus

@@ -1,4 +1,5 @@
 import React from 'react';
+import ContentTypeIcon from './ContentTypeIcon';
 import navigationIndex from '@site/src/generated/taxonomy-navigation.json';
 import browseStyles from '@site/src/components/BrowseExperience/styles.module.css';
 
@@ -67,16 +68,21 @@ export function ExploreTaxonomyFilterGroups({
   onToggle: (dimensionId: ExploreDimensionId, termId: string) => void;
   disabled?: boolean;
 }): React.JSX.Element {
-  function renderChip(dimensionId: ExploreDimensionId, term: NavigationTerm): React.JSX.Element {
+  function renderChip(dimension: NavigationDimension, term: NavigationTerm): React.JSX.Element {
+    const dimensionId = dimension.id;
     const selected = isSelected(dimensionId, term.id);
+    const isContentType = dimension.metadataField === 'type';
     return (
       <button key={term.id} type="button"
         className={`${browseStyles.filterChip} ${selected ? browseStyles.filterChipSelected : ''}`}
         aria-pressed={selected} disabled={disabled}
         title={term.description}
         onClick={() => onToggle(dimensionId, term.id)}>
+        {isContentType && <ContentTypeIcon type={term.id} />}
         <span>{term.label}</span>
-        <span className={browseStyles.count}>{DOCUMENT_COUNTS[dimensionId][term.id] ?? 0}</span>
+        <span className={isContentType ? `${browseStyles.count} ${browseStyles.contentTypeCount}` : browseStyles.count}>
+          {DOCUMENT_COUNTS[dimensionId][term.id] ?? 0}
+        </span>
       </button>
     );
   }
@@ -111,7 +117,7 @@ export function ExploreTaxonomyFilterGroups({
                     label={kind?.label ?? (kindId === 'other' ? 'Other' : kindId)}
                     description={kind?.description} terms={terms}
                     hasSelected={terms.some(term => isSelected(dimensionId, term.id))}
-                    renderChip={term => renderChip(dimensionId, term)}
+                    renderChip={term => renderChip(dimension, term)}
                   />
                 );
               })}
@@ -120,7 +126,7 @@ export function ExploreTaxonomyFilterGroups({
         } else {
           options = (
             <div className={browseStyles.filterOptions}>
-              {visibleTerms.map(term => renderChip(dimensionId, term))}
+              {visibleTerms.map(term => renderChip(dimension, term))}
             </div>
           );
         }
