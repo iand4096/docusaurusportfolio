@@ -40,6 +40,9 @@ Set a unique `shareId` on each shareable figure and keep it stable when editing
 the title or figure number. **Copy diagram link** opens the viewer at the
 selected layout with zoom and pan reset. The figure anchor works on its own.
 Double-click a diagram to open it full-screen or return to the page.
+**Set as default** saves the current full-screen layout for the figure and all
+its panels in this browser. It appears when the layout differs from the default.
+Links that specify a layout use that layout.
 
 Keep the visible figure caption and give every Mermaid diagram its own
 `accTitle` and `accDescr`, as shown above. Reuse the figure title for a single

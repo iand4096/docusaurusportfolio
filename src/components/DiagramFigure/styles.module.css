@@ -170,6 +170,11 @@
   font-size: var(--portfolio-text-secondary);
 }
 
+.layoutControls {
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
 .headerActions {
   grid-column: 3;
   justify-self: end;
@@ -178,13 +183,13 @@
   gap: 0.35rem;
 }
 
-.shareStatus {
+.viewerStatus {
   margin: 0;
   text-align: center;
   font-size: var(--portfolio-text-secondary);
 }
 
-.shareStatus:not(:empty) {
+.viewerStatus:not(:empty) {
   margin-bottom: 0.35rem;
 }
 

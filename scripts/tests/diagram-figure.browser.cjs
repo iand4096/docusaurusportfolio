@@ -108,6 +108,70 @@ async function checkSharedLinks(browser) {
   }
 }
 
+async function checkLayoutDefaults(browser) {
+  const page = await browser.newPage({viewport: {width: 390, height: 800}});
+  try {
+    const url = new URL(`${base}/docs/case-studies/RagSearchCloudArchitecture`);
+    const figureId = 'documentation-indexing-and-search';
+    const figure = page.locator('figure').filter({has: page.locator(`#diagram-${figureId}`)});
+    const viewer = figure.getByRole('dialog');
+    const open = figure.getByRole('button', {name: /^View full-screen/});
+    const save = viewer.getByRole('button', {name: 'Set as default'});
+    const horizontal = viewer.getByRole('button', {name: 'Left to right', exact: true});
+    const vertical = viewer.getByRole('button', {name: 'Top to bottom', exact: true});
+    await page.goto(url.href);
+    await open.click();
+    await viewer.getByRole('button', {name: 'Search and answer generation', exact: true}).click();
+    await horizontal.waitFor();
+    assert.equal(await save.count(), 0, 'The authored layout is already the default');
+    await horizontal.click();
+    assert.equal(await save.getAttribute('title'), 'Use this layout when opening this figure full-screen.');
+    await save.click();
+    await viewer.getByRole('status').getByText('Left to right saved as default.').waitFor();
+    assert.equal(await save.count(), 0, 'The just-saved layout is now the default');
+    await vertical.click();
+    await page.keyboard.press('Escape');
+    await viewer.waitFor({state: 'hidden'});
+
+    await page.reload();
+    await open.click();
+    await viewer.getByRole('button', {name: 'All diagrams', pressed: true}).waitFor();
+    await vertical.waitFor();
+    assert.equal(await save.count(), 0, 'The stored default persists after reload');
+    await viewer.getByRole('button', {name: 'Indexing before deployment', exact: true}).click();
+    await vertical.waitFor();
+
+    const shared = new URL(url);
+    shared.search = new URLSearchParams({diagram: figureId, panel: 'search-and-answer-generation', layout: 'tb'});
+    await page.goto(shared.href);
+    await viewer.getByRole('button', {name: 'Search and answer generation', pressed: true}).waitFor();
+    await horizontal.waitFor();
+    await page.evaluate(() => {
+      const setItem = Storage.prototype.setItem;
+      Storage.prototype.setItem = function (key, value) {
+        if (key.startsWith('diagram-fullscreen-layout:')) throw new Error('Storage denied');
+        return setItem.call(this, key, value);
+      };
+    });
+    await save.click();
+    await viewer.getByRole('status').getByText('Could not save the layout preference in this browser.').waitFor();
+    await horizontal.waitFor();
+    await page.keyboard.press('Escape');
+    await viewer.waitFor({state: 'hidden'});
+    await open.click();
+    await vertical.waitFor();
+    await page.keyboard.press('Escape');
+    await viewer.waitFor({state: 'hidden'});
+
+    const other = page.locator('figure').filter({has: page.locator('#diagram-azure-deployment-architecture')});
+    await other.getByRole('button', {name: /^View full-screen/}).click();
+    await other.getByRole('dialog').getByRole('button', {name: 'Left to right', exact: true}).waitFor();
+    console.log('Per-figure layout defaults, share-link priority and blocked storage passed.');
+  } finally {
+    await page.close();
+  }
+}
+
 (async () => {
   if (output) fs.mkdirSync(output, {recursive: true});
   const browser = await chromium.launch({headless: true,
@@ -117,6 +181,7 @@ async function checkSharedLinks(browser) {
   const report = [];
   try {
     await checkSharedLinks(browser);
+    await checkLayoutDefaults(browser);
     for (const [width, theme] of matrix) {
       const context = await browser.newContext({viewport: {width, height: 900},
         colorScheme: theme, isMobile: width <= 390});
@@ -333,7 +398,7 @@ async function checkSharedLinks(browser) {
               return [style.backgroundColor, style.borderColor, style.borderRadius, style.height];
             });
             assert.deepEqual(await buttonChrome(close), await buttonChrome(
-              dialog.getByRole('group', {name: 'Diagram layout'}).getByRole('button')));
+              dialog.getByRole('button', {name: /^(Left to right|Top to bottom)$/})));
             if (i === 0) await page.keyboard.press('Escape');
             else await close.click();
             await dialog.waitFor({state: 'hidden'});

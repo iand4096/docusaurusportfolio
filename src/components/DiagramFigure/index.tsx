@@ -41,11 +41,13 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   const id = useId();
   const anchor = shareId ? `diagram-${shareId}` : undefined;
   const {pathname, search} = useLocation();
+  const layoutKey = shareId ? `diagram-fullscreen-layout:${pathname.replace(/\/$/, '')}:${shareId}` : undefined;
   const history = useHistory();
   const opener = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
   const panContent = useRef<HTMLDivElement>(null);
+  const layoutSwitch = useRef<HTMLButtonElement>(null);
   const drag = useRef<{id: number; x: number; y: number} | null>(null);
   const [view, setView] = useState({zoom: 1, x: 0, y: 0});
   const [fitScale, setFitScale] = useState(1);
@@ -60,10 +62,13 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   const zoomPercent = Math.round(view.zoom * 100);
   const [direction, setDirection] = useState<DiagramDirection>();
   const [authoredDirection, setAuthoredDirection] = useState<DiagramDirection>();
+  const [savedDirection, setSavedDirection] = useState<DiagramDirection>();
   const currentDirection = direction ?? authoredDirection;
   const nextDirection = currentDirection === 'LR' ? 'TB' : 'LR';
+  const defaultDirection = savedDirection ?? authoredDirection;
+  const canSaveLayout = layoutKey && defaultDirection && currentDirection && currentDirection !== defaultDirection;
   const [reservedHeight, setReservedHeight] = useState<number>();
-  const [shareStatus, setShareStatus] = useState('');
+  const [viewerStatus, setViewerStatus] = useState('');
   const [manualLink, setManualLink] = useState('');
   const manualLinkInput = useRef<HTMLInputElement>(null);
   const copyAttempt = useRef(0);
@@ -75,13 +80,23 @@ export default function DiagramFigure({number, title, shareId, legend, children}
     setView({zoom: 1, x: 0, y: 0});
     setDragging(false);
     drag.current = null;
-    setDirection(layout);
+    let preferredLayout: DiagramDirection | undefined;
+    if (layoutKey) {
+      try {
+        const savedLayout = window.localStorage.getItem(layoutKey);
+        if (savedLayout === 'TB' || savedLayout === 'LR') preferredLayout = savedLayout;
+      } catch {
+        // Use the authored layout if browser storage is unavailable.
+      }
+    }
+    setSavedDirection(preferredLayout);
+    setDirection(layout ?? preferredLayout);
     setAuthoredDirection(undefined);
     setSelectedPanel(panel);
-    setShareStatus('');
+    setViewerStatus('');
     setManualLink('');
     setExpanded(true);
-  }, []);
+  }, [layoutKey]);
 
   useEffect(() => {
     const params = new URLSearchParams(search);
@@ -177,6 +192,21 @@ export default function DiagramFigure({number, title, shareId, legend, children}
     opener.current?.closest('figure')?.scrollIntoView();
   }
 
+  function saveDefaultLayout() {
+    if (!layoutKey || !currentDirection) return;
+    copyAttempt.current++;
+    setManualLink('');
+    try {
+      window.localStorage.setItem(layoutKey, currentDirection);
+      layoutSwitch.current?.focus();
+      setSavedDirection(currentDirection);
+      const label = currentDirection === 'LR' ? 'Left to right' : 'Top to bottom';
+      setViewerStatus(`${label} saved as default.`);
+    } catch {
+      setViewerStatus('Could not save the layout preference in this browser.');
+    }
+  }
+
   async function copyShareLink() {
     if (!shareId || !anchor) return;
     const attempt = ++copyAttempt.current;
@@ -187,15 +217,15 @@ export default function DiagramFigure({number, title, shareId, legend, children}
     url.searchParams.delete('layout');
     if (activePanel?.shareId) url.searchParams.set('panel', activePanel.shareId);
     if (currentDirection) url.searchParams.set('layout', currentDirection.toLowerCase());
-    setShareStatus('');
+    setViewerStatus('');
     setManualLink('');
     try {
       await navigator.clipboard.writeText(url.href);
-      if (attempt === copyAttempt.current) setShareStatus('Link copied');
+      if (attempt === copyAttempt.current) setViewerStatus('Link copied');
     } catch {
       if (attempt !== copyAttempt.current) return;
       setManualLink(url.href);
-      setShareStatus('Select and copy the diagram link.');
+      setViewerStatus('Select and copy the diagram link.');
     }
   }
 
@@ -261,7 +291,7 @@ export default function DiagramFigure({number, title, shareId, legend, children}
             </button>
           </div>
         </header>
-        {shareId && <p className={styles.shareStatus} role="status">{shareStatus}</p>}
+        {shareId && <p className={styles.viewerStatus} role="status">{viewerStatus}</p>}
         {manualLink && <input ref={manualLinkInput} className={styles.shareLink} type="text"
           aria-label="Diagram link" value={manualLink} readOnly onFocus={event => event.target.select()} />}
         <div className={styles.controlBar}>
@@ -278,10 +308,11 @@ export default function DiagramFigure({number, title, shareId, legend, children}
             ))}
           </div>}
           <div className={styles.viewControls}>
-            {currentDirection && <div className={styles.controlGroup} role="group" aria-label="Diagram layout">
-                <span aria-hidden="true">Switch layout</span>
-              <button type="button" className={styles.layoutButton}
-                  title={nextDirection === 'LR' ? 'Switch to left-to-right layout' : 'Switch to top-to-bottom layout'}
+            {currentDirection && <div className={`${styles.controlGroup} ${styles.layoutControls}`}
+              role="group" aria-label="Diagram layout">
+              <span aria-hidden="true">Switch layout</span>
+              <button ref={layoutSwitch} type="button" className={styles.layoutButton}
+                title={nextDirection === 'LR' ? 'Switch to left-to-right layout' : 'Switch to top-to-bottom layout'}
                 onClick={() => {
                   setDirection(nextDirection);
                   setView({zoom: 1, x: 0, y: 0});
@@ -290,6 +321,9 @@ export default function DiagramFigure({number, title, shareId, legend, children}
                   aria-hidden="true" />
                 {nextDirection === 'LR' ? 'Left to right' : 'Top to bottom'}
               </button>
+              {canSaveLayout && <button type="button" className={styles.layoutButton}
+                title="Use this layout when opening this figure full-screen."
+                onClick={saveDefaultLayout}>Set as default</button>}
             </div>}
             <div className={styles.controlGroup} role="group" aria-label="Diagram zoom controls">
               <span aria-hidden="true">Zoom</span>
