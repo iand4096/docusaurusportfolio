@@ -6,7 +6,7 @@ const Module = require('node:module');
 const ts = require('typescript');
 const React = require('react');
 const {renderToStaticMarkup} = require('react-dom/server');
-const {roles, groupStyles, prepareMermaid} = require('../../src/components/DiagramFigure/theme.cjs');
+const {roles, groupStyles, prepareMermaid, flowchartWithDirection, flowchartDirection} = require('../../src/components/DiagramFigure/theme.cjs');
 const {serializeDiagramFigures} = require('../../plugins/diagram-figures.cjs');
 
 const filename = path.resolve(__dirname, '../../src/components/DiagramFigure/index.tsx');
@@ -16,11 +16,31 @@ loaded.paths = Module._nodeModulePaths(path.dirname(filename));
 const originalRequire = loaded.require.bind(loaded);
 loaded.require = name => name.endsWith('.css')
   ? {__esModule: true, default: new Proxy({}, {get: (_, key) => key})}
-  : name === './context' ? {DiagramFigureContext: React.createContext(false)} : originalRequire(name);
+  : name === './context' ? {
+    DiagramFigureContext: React.createContext(false),
+    DiagramDirectionContext: React.createContext(undefined),
+  } : originalRequire(name);
 loaded._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
   compilerOptions: {module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true},
 }).outputText, filename);
 const Figure = loaded.exports.default;
+
+test('full-screen orientation changes the flowchart header only', () => {
+  const source = '---\ntitle: Delivery\n---\n%% note\nflowchart TD\nsubgraph Delivery\ndirection TB\nA --> B\nend';
+  assert.equal(flowchartWithDirection(source, 'LR'), source.replace('flowchart TD', 'flowchart LR'));
+  assert.equal(flowchartWithDirection('graph LR; A --> B', 'TB'), 'graph TB; A --> B');
+  assert.equal(flowchartWithDirection('sequenceDiagram\nA->>B: Hello', 'LR'), null);
+  assert.equal(flowchartDirection(source), 'TB');
+  assert.equal(flowchartDirection('graph RL\nA --> B'), 'LR');
+  assert.equal(flowchartDirection('flowchart\nA --> B'), 'TB');
+  assert.equal(flowchartWithDirection('flowchart\nA --> B', 'LR'), 'flowchart LR\nA --> B');
+  assert.equal(flowchartDirection('sequenceDiagram\nA->>B: Hello'), undefined);
+});
+
+test('flowcharts with multiline init directives still support the full-screen toggle', () => {
+  const source = '%%{init: {\n  "flowchart": {"nodeSpacing": 45}\n}}%%\n\nflowchart TD\nA --> B';
+  assert.equal(flowchartWithDirection(source, 'LR'), source.replace('flowchart TD', 'flowchart LR'));
+});
 
 test('roles supply node icons and colors across quoted Mermaid node shapes', () => {
   const source = 'flowchart LR\nA["`fas:fa-file-lines Document`"] --> B[("Records")]\nC{"Approve?"}\nD("Service")\n'

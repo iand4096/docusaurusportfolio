@@ -6,4 +6,6 @@ export const roles: Readonly<Record<DiagramRole, Readonly<{
   icon: string | null;
 }>>>;
 export function prepareMermaid(source: string): string;
+export function flowchartWithDirection(source: string, direction: 'TB' | 'LR'): string | null;
+export function flowchartDirection(source: string): 'TB' | 'LR' | undefined;
 export const groupStyles: Readonly<Record<DiagramRole, Readonly<{fill: string; stroke: string}>>>;

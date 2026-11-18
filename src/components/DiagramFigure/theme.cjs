@@ -13,6 +13,24 @@ const roles = Object.freeze({
 const groupStyles = Object.freeze(Object.fromEntries(Object.keys(roles).map(role =>
   [role, {fill: '#F0F2F4', stroke: '#858F9A'}])));
 
+// Mermaid permits YAML front matter, comments and multiline directives before the header.
+const flowchartHeader = /^(?:[ \t]*---[ \t]*\r?\n[\s\S]*?\r?\n---[ \t]*\r?\n)?(?:[ \t]*(?:%%\{[\s\S]*?\}%%[ \t]*|%%(?!\{)[^\r\n]*)?\r?\n)*[ \t]*(?:flowchart|graph)(?:[ \t]+(TB|TD|BT|LR|RL)\b|(?=[ \t]*(?:[;\r\n]|$)))/;
+
+function flowchartWithDirection(source, direction) {
+  const match = source.match(flowchartHeader);
+  if (!match) return null;
+  const [header, authored] = match;
+  const prefix = authored ? header.slice(0, -authored.length) : header + ' ';
+  return prefix + direction + source.slice(header.length);
+}
+
+function flowchartDirection(source) {
+  const match = source.match(flowchartHeader);
+  if (!match) return undefined;
+  const authored = match[1];
+  return authored === 'LR' || authored === 'RL' ? 'LR' : 'TB';
+}
+
 /** Standard Mermaid class statements select the shared color and icon. */
 function prepareMermaid(source) {
   if (!/^\s*(?:flowchart|graph)\s+(?:TB|TD|BT|LR|RL)\b/m.test(source)) return source;
@@ -52,4 +70,4 @@ function prepareMermaid(source) {
   return `${result.trimEnd()}\n\n${definitions.join('\n')}\n`;
 }
 
-module.exports = {roles, groupStyles, prepareMermaid};
+module.exports = {roles, groupStyles, prepareMermaid, flowchartWithDirection, flowchartDirection};

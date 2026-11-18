@@ -135,39 +135,67 @@ async function checkDescriptions(container, expected) {
             assert.ok(Math.abs(modal.width - modal.viewportWidth) < 1, 'Fullscreen width');
             assert.ok(Math.abs(modal.height - modal.viewportHeight) < 1, 'Fullscreen height');
             assert.equal(modal.headings, route.includes('RagSearch') && i === 0 ? 2 : 0);
+            if (modal.headings > 1) {
+              await dialog.getByRole('group', {name: 'Diagrams in this figure'}).waitFor();
+              assert.equal(await dialog.locator('.diagram-panel h4:visible').count(), 2);
+            }
             assert.equal(await dialog.getByRole('list', {name: 'Colour and icon key'}).count(), 1);
             if (output) await page.screenshot({path: path.join(output, `${route.split('/').pop()}-${i}-${width}-${theme}-fullscreen.png`)});
             const viewport = dialog.getByLabel(/^Diagram viewport:/);
-            const zoomLevel = dialog.getByLabel('Zoom level', {exact: true});
+            const zoomLevel = dialog.getByRole('button', {name: 'Reset zoom and fit diagram'});
             const zoomIn = dialog.getByRole('button', {name: 'Zoom in', exact: true});
             const zoomOut = dialog.getByRole('button', {name: 'Zoom out', exact: true});
             assert.match(await zoomIn.getAttribute('title'), /mouse wheel/);
             assert.match(await zoomOut.getAttribute('title'), /mouse wheel/);
             assert.equal(await zoomLevel.textContent(), '100%');
+            const waitForFit = count => page.waitForFunction(count => {
+              const frame = document.querySelector('dialog[open] [aria-label^="Diagram viewport:"]');
+              const content = frame.firstElementChild;
+              if (content.querySelectorAll('svg:not([hidden] *)').length !== count) return false;
+              const outer = frame.getBoundingClientRect();
+              const inner = content.getBoundingClientRect();
+              const centeredPanels = [...content.querySelectorAll('.diagram-panel')].every(panel => {
+                if (count === 1) return true;
+                const area = panel.getBoundingClientRect();
+                const graph = panel.querySelector('svg').getBoundingClientRect();
+                return Math.abs(graph.left + graph.width / 2 - area.left - area.width / 2) < 1
+                  && Math.abs(graph.top + graph.height / 2 - area.top - area.height / 2) < 1;
+              });
+              return inner.width <= outer.width && inner.height <= outer.height
+                && Math.min(outer.width - inner.width, outer.height - inner.height) < 3
+                && Math.abs(inner.left + inner.width / 2 - outer.left - outer.width / 2) < 1
+                && Math.abs(inner.top + inner.height / 2 - outer.top - outer.height / 2) < 1
+                && centeredPanels;
+            }, count);
+            await waitForFit(expected);
             const transform = () => viewport.evaluate(element => {
-              const matrix = new DOMMatrix(getComputedStyle(element.firstElementChild).transform);
-              return {zoom: matrix.a, x: matrix.e, y: matrix.f,
-                cx: element.clientWidth / 2, cy: element.clientHeight / 2};
+              const content = element.firstElementChild;
+              const matrix = new DOMMatrix(getComputedStyle(content).transform);
+              const frame = element.getBoundingClientRect();
+              const diagram = content.getBoundingClientRect();
+              return {zoom: matrix.a, x: diagram.left - frame.left, y: diagram.top - frame.top,
+                cx: frame.width / 2, cy: frame.height / 2};
             });
             const before = await transform();
             await zoomIn.click();
             assert.equal(await zoomLevel.textContent(), '120%');
             const after = await transform();
-            assert.ok(Math.abs((before.cx - before.x) / before.zoom - (after.cx - after.x) / after.zoom) < 0.01,
+            assert.ok(Math.abs((before.cx - before.x) * after.zoom / before.zoom - (after.cx - after.x)) < 0.2,
               'Zoom keeps the horizontal midpoint fixed');
-            assert.ok(Math.abs((before.cy - before.y) / before.zoom - (after.cy - after.y) / after.zoom) < 0.01,
+            assert.ok(Math.abs((before.cy - before.y) * after.zoom / before.zoom - (after.cy - after.y)) < 0.2,
               'Zoom keeps the vertical midpoint fixed');
             await zoomOut.click();
             assert.equal(await zoomLevel.textContent(), '100%');
             const box = await viewport.boundingBox();
             await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
             await page.mouse.wheel(0, -100);
-            await page.waitForFunction(() => document.querySelector('dialog[open] output').textContent !== '100%');
+            await page.waitForFunction(() => document.querySelector('dialog[open] [aria-label="Reset zoom and fit diagram"]').textContent !== '100%');
             const wheeled = await transform();
-            assert.ok(wheeled.zoom > 1, 'Wheel up zooms in');
-            assert.ok(Math.abs((wheeled.cx - wheeled.x) / wheeled.zoom - before.cx) < 0.01, 'Wheel zooms around midpoint');
+            assert.ok(wheeled.zoom > before.zoom, 'Wheel up zooms in');
+            assert.ok(Math.abs((before.cx - before.x) * wheeled.zoom / before.zoom - (wheeled.cx - wheeled.x)) < 0.2,
+              'Wheel zooms around midpoint');
             await page.mouse.wheel(0, 100);
-            await page.waitForFunction(() => document.querySelector('dialog[open] output').textContent === '100%');
+            await page.waitForFunction(() => document.querySelector('dialog[open] [aria-label="Reset zoom and fit diagram"]').textContent === '100%');
             const start = await transform();
             await page.mouse.move(box.x + 40, box.y + 40);
             await page.mouse.down();
@@ -179,6 +207,38 @@ async function checkDescriptions(container, expected) {
             await viewport.focus();
             await page.keyboard.press('ArrowDown');
             assert.ok(Math.abs((await transform()).y - panned.y + 40) < 1, 'Keyboard pans vertically');
+            await zoomIn.click();
+            await zoomLevel.click();
+            assert.equal(await zoomLevel.textContent(), '100%');
+            const reset = await transform();
+            assert.ok(Math.abs(reset.x - before.x) < 1 && Math.abs(reset.y - before.y) < 1,
+              'Reset recenters the viewport');
+            for (const [action, nextAction] of [
+              ['Left to right', 'Top to bottom'],
+              ['Top to bottom', 'Left to right'],
+            ]) {
+              await zoomIn.click();
+              await dialog.getByRole('button', {name: action}).click();
+              assert.equal(await dialog.getByRole('button', {name: nextAction}).count(), 1);
+              assert.equal(await zoomLevel.textContent(), '100%');
+              await waitForFit(expected);
+            }
+            if (route.includes('RagSearch') && i === 0) {
+              const panelLinks = dialog.getByRole('group', {name: 'Diagrams in this figure'});
+              for (const title of ['Indexing before deployment', 'Search and answer generation']) {
+                await zoomIn.click();
+                const panel = panelLinks.getByRole('button', {name: title, exact: true});
+                await panel.click();
+                assert.equal(await panel.getAttribute('aria-pressed'), 'true');
+                assert.equal(await zoomLevel.textContent(), '100%');
+                await waitForFit(1);
+                assert.equal(await dialog.locator('.diagram-panel h4:visible').count(), 0);
+                assert.equal((await dialog.locator('svg:visible title').textContent()).trim(), title);
+              }
+              await panelLinks.getByRole('button', {name: 'All diagrams'}).click();
+              await waitForFit(expected);
+              assert.equal(await dialog.locator('.diagram-panel h4:visible').count(), 2);
+            }
             if (width === 1440 && theme === 'light' && route.includes('scaling')) {
               for (let step = 0; step < 20; step++) await zoomIn.evaluate(button => button.click());
               assert.equal(await zoomLevel.textContent(), '400%');
@@ -187,8 +247,17 @@ async function checkDescriptions(container, expected) {
               assert.equal(await zoomLevel.textContent(), '25%');
               assert.equal(await zoomOut.isDisabled(), true);
             }
+            const close = dialog.getByRole('button', {name: 'Close', exact: true});
+            assert.equal(await close.getAttribute('title'), 'Close (Esc)');
+            await viewport.hover({position: {x: 4, y: 4}});
+            const buttonChrome = button => button.evaluate(element => {
+              const style = getComputedStyle(element);
+              return [style.backgroundColor, style.borderColor, style.borderRadius, style.height];
+            });
+            assert.deepEqual(await buttonChrome(close), await buttonChrome(
+              dialog.getByRole('group', {name: 'Diagram layout'}).getByRole('button')));
             if (i === 0) await page.keyboard.press('Escape');
-            else await dialog.getByRole('button', {name: 'Close', exact: true}).click();
+            else await close.click();
             await dialog.waitFor({state: 'hidden'});
             assert.equal(await button.evaluate(element => element === document.activeElement), true, 'Focus returns to opener');
             await page.waitForFunction(count => document.querySelectorAll('figure svg').length === count, count);

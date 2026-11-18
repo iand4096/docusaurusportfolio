@@ -133,18 +133,82 @@
 }
 
 .toolbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 0.75rem;
-  margin-bottom: 1rem;
+  display: grid;
+  grid-template-columns: minmax(4.75rem, 1fr) minmax(0, max-content) minmax(4.75rem, 1fr);
+  align-items: start;
+  gap: 0.35rem;
+  margin-bottom: 0.5rem;
   flex: 0 0 auto;
 }
 
 .toolbar .title {
+  grid-column: 2;
+  align-self: center;
   margin: 0;
-  text-align: left;
+  font-size: var(--portfolio-text-body);
+  text-align: center;
+}
+
+.controlBar,
+.viewControls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+}
+
+.controlBar {
+  flex: 0 0 auto;
+  margin-bottom: 0.5rem;
+}
+
+.controlGroup {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--portfolio-text-secondary);
+}
+
+.closeButton {
+  grid-column: 3;
+  justify-self: end;
+  align-self: start;
+}
+
+.panelLinks {
+  display: flex;
+  flex-wrap: wrap;
+  max-width: 100%;
+  gap: 0.15rem;
+  padding: 0.2rem;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 0.45rem;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.panelLinks button {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: 0.25rem 0.55rem;
+  border: 1px solid transparent;
+  border-radius: 0.3rem;
+  background: transparent;
+  color: var(--ifm-font-color-base);
+  font: inherit;
+  font-size: var(--portfolio-text-secondary);
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.panelLinks button:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.panelLinks button[aria-pressed='true'] {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-background-color);
+  font-weight: 700;
 }
 
 .expanded {
@@ -157,13 +221,10 @@
 }
 
 .expanded .canvas svg {
-  width: var(--diagram-expanded-width, 100%) !important;
-  max-width: 100% !important;
-  height: auto !important;
-}
-
-.expanded :global(.diagram-panel) svg {
   width: 100% !important;
+  max-width: 100% !important;
+  min-width: 0;
+  height: auto !important;
 }
 
 @container (min-width: 48rem) {
@@ -188,23 +249,65 @@
   }
 }
 
+@media (max-width: 480px) {
+  .toolbar {
+    grid-template-columns: minmax(2.25rem, 1fr) minmax(0, max-content) minmax(2.25rem, 1fr);
+  }
+
+  .closeButton > span,
+  .controlGroup > span {
+    display: none;
+  }
+}
+
 .controls {
   display: flex;
   align-items: center;
-  gap: 0.4rem;
 }
 
-.zoomButton {
+.zoomButton,
+.layoutButton,
+.closeButton {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 2.5rem;
-  height: 2.5rem;
+  height: 2.25rem;
   border: 1px solid var(--ifm-color-emphasis-400);
   border-radius: 2px;
   color: var(--ifm-font-color-base);
   background: var(--ifm-background-color);
+  font: inherit;
+  font-size: var(--portfolio-text-secondary);
   cursor: pointer;
+}
+
+.layoutButton,
+.closeButton {
+  width: auto;
+  gap: 0.4rem;
+  padding: 0 0.65rem;
+}
+
+@media (max-width: 480px) {
+  .closeButton {
+    width: 2.25rem;
+    padding-inline: 0;
+  }
+}
+
+.controls > :not(:first-child) {
+  margin-inline-start: -1px;
+}
+
+.controls > :not(:first-child):not(:last-child) {
+  border-radius: 0;
+}
+
+.zoomButton:hover:not(:disabled),
+.layoutButton:hover,
+.closeButton:hover {
+  background: var(--ifm-color-emphasis-100);
 }
 
 .zoomButton:disabled {
@@ -213,19 +316,23 @@
 }
 
 .zoomButton:focus-visible,
+.layoutButton:focus-visible,
+.closeButton:focus-visible,
+.panelLinks button:focus-visible,
 .viewport:focus-visible {
   outline: 2px solid var(--ifm-color-primary);
   outline-offset: -2px;
 }
 
 .zoomLevel {
-  min-width: 4rem;
+  width: 3.5rem;
   text-align: center;
   font-size: var(--portfolio-text-secondary);
   font-variant-numeric: tabular-nums;
 }
 
 .viewport {
+  position: relative;
   flex: 1 1 auto;
   min-height: 0;
   overflow: hidden;
@@ -240,14 +347,67 @@
 }
 
 .panContent {
-  width: max(100%, 48rem);
-  max-width: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
   overflow: visible;
   transform-origin: 0 0;
 }
 
 .panContent :global(.diagram-panel) {
   overflow: visible;
+}
+
+.panContent[data-single-panel] :global(.diagram-columns) {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.panContent[data-single-panel] :global(.diagram-columns) > :global(.diagram-panel) > h4 {
+  display: none;
+}
+
+.panContent[data-all-panels],
+.panContent[data-all-panels] :global(.diagram-columns) {
+  height: 100%;
+}
+
+.panContent[data-all-panels] :global(.diagram-columns) {
+  grid-auto-rows: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 0.75rem;
+}
+
+.panContent[data-all-panels] :global(.diagram-columns) > :global(.diagram-panel) {
+  --diagram-heading-gap: 0.65rem;
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto minmax(0, 1fr);
+  min-height: 0;
+  container-type: size;
+}
+
+.panContent[data-all-panels] :global(.diagram-panel):has([data-diagram-rendered-direction='LR']) {
+  --diagram-heading-gap: 0.3rem;
+}
+
+.panContent[data-all-panels] :global(.diagram-panel) > h4 {
+  grid-row: 1;
+  align-self: end;
+  min-height: 0;
+  margin: 0 0 var(--diagram-heading-gap);
+  transform-origin: center bottom;
+  scale: calc(1 / var(--diagram-view-scale, 1));
+}
+
+.panContent[data-all-panels] :global(.diagram-panel) > :global(.docusaurus-mermaid-container) {
+  grid-row: 2;
+}
+
+.panContent[data-all-panels] :global(.diagram-panel) svg {
+  /* Reserve equal space above and below so the graph stays on the panel's centre line. */
+  --diagram-fit-height: max(1px, 100cqh - 2 * (var(--diagram-heading-height, 1.5rem) + var(--diagram-heading-gap)));
+  width: min(100%, calc(var(--diagram-fit-height) * var(--diagram-aspect-ratio, 1))) !important;
+  height: auto !important;
 }
 
 .expanded > .legend {

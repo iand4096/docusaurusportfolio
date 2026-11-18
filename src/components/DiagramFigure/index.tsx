@@ -1,5 +1,5 @@
-import React, {useEffect, useId, useRef, useState, type ReactNode} from 'react';
-import {DiagramFigureContext} from './context';
+import React, {useEffect, useId, useRef, useState, type CSSProperties, type ReactNode} from 'react';
+import {DiagramDirectionContext, DiagramFigureContext, type DiagramDirection} from './context';
 import {roles, type DiagramRole} from './theme.cjs';
 import styles from './styles.module.css';
 
@@ -30,11 +30,22 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
   const id = useId();
   const dialog = useRef<HTMLDialogElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
+  const panContent = useRef<HTMLDivElement>(null);
   const drag = useRef<{id: number; x: number; y: number} | null>(null);
   const [view, setView] = useState({zoom: 1, x: 0, y: 0});
+  const [fitScale, setFitScale] = useState(1);
   const [dragging, setDragging] = useState(false);
   const canvas = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
+  const [panelTitles, setPanelTitles] = useState<string[]>([]);
+  const [selectedPanel, setSelectedPanel] = useState<number>();
+  const showingAllPanels = panelTitles.length > 1 && selectedPanel === undefined;
+  const viewScale = fitScale * view.zoom;
+  const zoomPercent = Math.round(view.zoom * 100);
+  const [direction, setDirection] = useState<DiagramDirection>();
+  const [authoredDirection, setAuthoredDirection] = useState<DiagramDirection>();
+  const currentDirection = direction ?? authoredDirection;
+  const nextDirection = currentDirection === 'LR' ? 'TB' : 'LR';
   const [reservedHeight, setReservedHeight] = useState<number>();
   const caption = `Figure ${number}. ${title}`;
 
@@ -42,16 +53,64 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
     if (expanded && !dialog.current?.open) dialog.current?.showModal();
   }, [expanded]);
 
+  useEffect(() => {
+    const frame = viewport.current;
+    const content = panContent.current;
+    if (!expanded || !frame || !content) return;
+    const fit = () => {
+      const {offsetWidth: width, offsetHeight: height} = content;
+      if (width && height && frame.clientWidth && frame.clientHeight) {
+        setFitScale(Math.min(frame.clientWidth / width, frame.clientHeight / height));
+      }
+    };
+    // Mermaid renders asynchronously. Measure the new diagram once its layout is ready.
+    const observer = new ResizeObserver(entries => {
+      for (const {target} of entries) {
+        if (target instanceof HTMLElement && target.matches('.diagram-panel > h4')) {
+          target.parentElement?.style.setProperty('--diagram-heading-height', `${target.offsetHeight}px`);
+        }
+      }
+      fit();
+    });
+    observer.observe(frame);
+    observer.observe(content);
+    fit();
+    const readPanels = () => {
+      const panels = Array.from(content.querySelectorAll<HTMLElement>('.diagram-columns > .diagram-panel'));
+      const titles = panels.map((panel, index) =>
+        panel.querySelector('h4')?.textContent?.replaceAll('\u200b', '').trim() || `Diagram ${index + 1}`);
+      setPanelTitles(previous => previous.length === titles.length
+        && previous.every((title, index) => title === titles[index]) ? previous : titles);
+      panels.forEach((panel, index) => {
+        panel.hidden = selectedPanel !== undefined && selectedPanel !== index;
+        const heading = panel.querySelector(':scope > h4');
+        if (heading) observer.observe(heading);
+      });
+      const activeContent = selectedPanel === undefined ? content : panels[selectedPanel];
+      const marker = activeContent?.querySelector<HTMLElement>('[data-diagram-authored-direction]');
+      const authored = marker?.dataset.diagramAuthoredDirection;
+      setAuthoredDirection(authored === 'LR' || authored === 'TB' ? authored : undefined);
+      fit();
+    };
+    const diagrams = new MutationObserver(readPanels);
+    diagrams.observe(content, {childList: true, subtree: true});
+    readPanels();
+    return () => {
+      observer.disconnect();
+      diagrams.disconnect();
+    };
+  }, [expanded, selectedPanel]);
+
   function zoomBy(factor: number) {
-    const element = viewport.current;
-    if (!element) return;
-    const cx = element.clientWidth / 2;
-    const cy = element.clientHeight / 2;
     setView(previous => {
       const zoom = Math.min(4, Math.max(0.25, previous.zoom * factor));
       const ratio = zoom / previous.zoom;
-      return {zoom, x: cx - (cx - previous.x) * ratio, y: cy - (cy - previous.y) * ratio};
+      return {zoom, x: previous.x * ratio, y: previous.y * ratio};
     });
+  }
+
+  function closeViewer() {
+    dialog.current?.close();
   }
 
   useEffect(() => {
@@ -86,6 +145,9 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
             setView({zoom: 1, x: 0, y: 0});
             setDragging(false);
             drag.current = null;
+            setDirection(undefined);
+            setAuthoredDirection(undefined);
+            setSelectedPanel(undefined);
             setExpanded(true);
           }}>
           <i className="fa-solid fa-expand" aria-hidden="true" /> View full-screen
@@ -93,24 +155,67 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
       </div>
       <Legend items={legend} />
       <dialog ref={dialog} id={`${id}-dialog`} className={styles.dialog}
-        aria-labelledby={`${id}-expanded-caption`} onClose={() => setExpanded(false)}>
-        <div className={styles.toolbar}>
+        aria-labelledby={`${id}-expanded-caption`}
+        onCancel={event => {
+          event.preventDefault();
+          closeViewer();
+        }}
+        onClose={() => setExpanded(false)}>
+        <header className={styles.toolbar}>
           <h2 id={`${id}-expanded-caption`} className={styles.title}>{caption}</h2>
-          <div className={styles.controls} role="group" aria-label="Diagram zoom controls">
-            <button type="button" className={styles.zoomButton} aria-label="Zoom out"
-              title="Zoom out (or scroll the mouse wheel down over the diagram)"
-              disabled={view.zoom <= 0.25} onClick={() => zoomBy(1 / 1.2)}>
-              <i className="fa-solid fa-minus" aria-hidden="true" />
-            </button>
-            <output className={styles.zoomLevel} aria-label="Zoom level">{Math.round(view.zoom * 100)}%</output>
-            <button type="button" className={styles.zoomButton} aria-label="Zoom in"
-              title="Zoom in (or scroll the mouse wheel up over the diagram)"
-              disabled={view.zoom >= 4} onClick={() => zoomBy(1.2)}>
-              <i className="fa-solid fa-plus" aria-hidden="true" />
-            </button>
+          <button type="button" className={styles.closeButton} autoFocus
+            aria-label="Close" title="Close (Esc)" aria-keyshortcuts="Escape" onClick={closeViewer}>
+            <i className="fa-solid fa-xmark" aria-hidden="true" /> <span>Close</span>
+          </button>
+        </header>
+        <div className={styles.controlBar}>
+          {expanded && panelTitles.length > 1 && <div className={styles.panelLinks} role="group" aria-label="Diagrams in this figure">
+            {[undefined, ...panelTitles.map((_, index) => index)].map(index => (
+              <button key={index ?? 'all'} type="button"
+                aria-pressed={selectedPanel === index}
+                onClick={() => {
+                  setSelectedPanel(index);
+                  setView({zoom: 1, x: 0, y: 0});
+                }}>
+                {index === undefined ? 'All diagrams' : panelTitles[index]}
+              </button>
+            ))}
+          </div>}
+          <div className={styles.viewControls}>
+            {currentDirection && <div className={styles.controlGroup} role="group" aria-label="Diagram layout">
+              <span aria-hidden="true">Layout</span>
+              <button type="button" className={styles.layoutButton}
+                onClick={() => {
+                  setDirection(nextDirection);
+                  setView({zoom: 1, x: 0, y: 0});
+                }}>
+                <i className={`fa-solid ${nextDirection === 'LR' ? 'fa-arrows-left-right' : 'fa-arrows-up-down'}`}
+                  aria-hidden="true" />
+                {nextDirection === 'LR' ? 'Left to right' : 'Top to bottom'}
+              </button>
+            </div>}
+            <div className={styles.controlGroup} role="group" aria-label="Diagram zoom controls">
+              <span aria-hidden="true">Zoom</span>
+              <div className={styles.controls}>
+                <button type="button" className={styles.zoomButton} aria-label="Zoom out"
+                  title="Zoom out (or scroll the mouse wheel down over the diagram)"
+                  disabled={view.zoom <= 0.25} onClick={() => zoomBy(1 / 1.2)}>
+                  <i className="fa-solid fa-minus" aria-hidden="true" />
+                </button>
+                <button type="button" className={`${styles.zoomButton} ${styles.zoomLevel}`}
+                  aria-label="Reset zoom and fit diagram" title="Reset zoom and fit diagram"
+                  aria-description={`Current zoom: ${zoomPercent}%`}
+                  onClick={() => setView({zoom: 1, x: 0, y: 0})}>
+                  {zoomPercent}%
+                </button>
+                <button type="button" className={styles.zoomButton} aria-label="Zoom in"
+                  title="Zoom in (or scroll the mouse wheel up over the diagram)"
+                  disabled={view.zoom >= 4} onClick={() => zoomBy(1.2)}>
+                  <i className="fa-solid fa-plus" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
           </div>
-          <button type="button" className="button button--secondary button--sm" autoFocus
-            onClick={() => dialog.current?.close()}>Close</button>
         </div>
         {expanded && <div className={styles.expanded}>
           <div ref={viewport} className={styles.viewport} data-dragging={dragging || undefined}
@@ -149,8 +254,15 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
               event.preventDefault();
               setView(previous => ({...previous, x: previous.x + offset[0], y: previous.y + offset[1]}));
             }}>
-            <div className={`${styles.canvas} ${styles.panContent}`}
-              style={{transform: `translate(${view.x}px, ${view.y}px) scale(${view.zoom})`}}>{children}</div>
+            <div ref={panContent} className={`${styles.canvas} ${styles.panContent}`}
+              data-all-panels={showingAllPanels || undefined}
+              data-single-panel={selectedPanel !== undefined || undefined}
+              style={{
+                '--diagram-view-scale': viewScale,
+                transform: `translate(${view.x}px, ${view.y}px) scale(${viewScale}) translate(-50%, -50%)`,
+              } as CSSProperties}>
+              <DiagramDirectionContext.Provider value={direction}>{children}</DiagramDirectionContext.Provider>
+            </div>
           </div>
           <Legend items={legend} />
         </div>}
