@@ -1433,6 +1433,33 @@
       "organisations": []
     },
     {
+      "id": "implementation-details/case-study-summary-and-sidebar-card-grid",
+      "title": "CaseStudySummary and SidebarCardGrid",
+      "path": "/docs/implementation-details/case-study-summary-and-sidebar-card-grid",
+      "source": "docs/implementation-details/case-study-summary-and-sidebar-card-grid.mdx",
+      "description": "Usage and examples for case study overviews and landing-page cards generated from sidebar metadata.",
+      "type": [
+        "implementation-guide"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering"
+      ],
+      "technologies": [
+        "docusaurus",
+        "markdown",
+        "css"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
+    },
+    {
       "id": "tools/ContainersAndCloudNative",
       "title": "Containers and Cloud",
       "path": "/docs/containersandcloud",
@@ -2166,6 +2193,33 @@
       "organisations": [
         "morgan-stanley"
       ]
+    },
+    {
+      "id": "implementation-details/semantic-label",
+      "title": "SemanticLabel and SemanticLabelGroup",
+      "path": "/docs/implementation-details/semantic-label",
+      "source": "docs/implementation-details/semantic-label.mdx",
+      "description": "Usage and live examples for labelling decisions, rationale, contributions and outcomes.",
+      "type": [
+        "implementation-guide"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering"
+      ],
+      "technologies": [
+        "docusaurus",
+        "markdown",
+        "css"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
     },
     {
       "id": "skills/index",

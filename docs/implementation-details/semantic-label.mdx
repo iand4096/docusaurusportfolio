@@ -1,0 +1,106 @@
+---
+title: SemanticLabel and SemanticLabelGroup
+description: Usage and live examples for labelling decisions, rationale, contributions and outcomes.
+type:
+  - implementation-guide
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - docs-as-code
+  - documentation-engineering
+technologies:
+  - docusaurus
+  - markdown
+  - css
+lifecycle:
+  - current
+tags:
+  - docs-as-code
+  - documentation-engineering
+  - docusaurus
+  - markdown
+  - css
+---
+
+import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
+import CodeBlock from '@theme/CodeBlock';
+
+`SemanticLabel` identifies the role of a statement in a case study or writing sample. `SemanticLabelGroup` aligns related statements, such as a decision and its rationale.
+
+## Import
+
+```jsx
+import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLabel';
+```
+
+## Inline, grouped rows and accent
+
+Use the default inline appearance for a short statement in the narrative. Give related statements the `row` appearance and wrap them in a group. Use the accent appearance for a finding or outcome that warrants emphasis. On narrow screens, scroll the table horizontally to compare source and preview.
+
+<table>
+<thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+<tbody>
+<tr>
+<td><CodeBlock language="jsx">{"\u003cSemanticLabel type=\"contribution\">\n  Maintained the integration guide and created sequence diagrams.\n\u003c/SemanticLabel>"}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+
+<SemanticLabel type="contribution">
+  Maintained the integration guide and created sequence diagrams.
+</SemanticLabel>
+
+</td>
+</tr>
+<tr>
+<td><CodeBlock language="jsx">{"\u003cSemanticLabelGroup>\n  \u003cSemanticLabel type=\"decision\" appearance=\"row\">\n    Use one OpenAPI document for the reference and guide examples.\n  \u003c/SemanticLabel>\n  \u003cSemanticLabel type=\"rationale\" appearance=\"row\">\n    Authors can update the endpoint details in one place.\n  \u003c/SemanticLabel>\n\u003c/SemanticLabelGroup>"}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+
+<SemanticLabelGroup>
+  <SemanticLabel type="decision" appearance="row">
+    Use one OpenAPI document for the reference and guide examples.
+  </SemanticLabel>
+  <SemanticLabel type="rationale" appearance="row">
+    Authors can update the endpoint details in one place.
+  </SemanticLabel>
+</SemanticLabelGroup>
+
+</td>
+</tr>
+<tr>
+<td><CodeBlock language="jsx">{"\u003cSemanticLabel type=\"outcome\" appearance=\"accent\">\n  Readers can open the API reference independently of the search service.\n\u003c/SemanticLabel>"}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+
+<SemanticLabel type="outcome" appearance="accent">
+  Readers can open the API reference independently of the search service.
+</SemanticLabel>
+
+</td>
+</tr>
+</tbody>
+</table>
+
+## Props
+
+| Component | Prop | Default | Usage | Example |
+| --- | --- | --- | --- | --- |
+| `SemanticLabel` | `type` | `"decision"` | Selects the label text, colour and icon. | `"contribution"` |
+| `SemanticLabel` | `appearance` | `"inline"` | Use `"inline"`, `"row"` or `"accent"`. | `"row"` |
+| `SemanticLabel` | `children` | Required | The statement to label. Supports text, emphasis and links. | `Use one OpenAPI document.` |
+| `SemanticLabelGroup` | `children` | Required | Related `SemanticLabel` components with `appearance="row"`. | A decision followed by its rationale. |
+
+## Choosing a label
+
+| Type | Use for |
+| --- | --- |
+| `decision` | The choice you made. |
+| `rationale` | The reason for that choice. |
+| `constraint` | A limit you had to work within. |
+| `trade-off` | What you gained and gave up. |
+| `risk` | A possible adverse outcome. |
+| `outcome` | The observed result. |
+| `contribution` | The work you personally delivered. |
+| `validation` | How you checked the work. |
+
+The inline style is a standalone block with a label that reads within the prose. Place it between paragraphs. Grouped rows stack when the group is 32 rem wide or narrower. Icons are decorative, and the label text carries the meaning in every layout.
+
+See the [Paysafe Developer Center case study](../case-studies/PaysafeDeveloperCenter.md#publishing-architecture) and the [Masterpass integration guide sample](../docs-samples/MasterpassMerchantIntegrationGuide.md) for examples in context.
