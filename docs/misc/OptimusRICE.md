@@ -75,7 +75,6 @@ trade.marketValue  // 1000 (original value)
 This generates the following dependency graph:
 
 <DiagramFigure {...{
-  "number": 1,
   "title": "Calculation dependencies and price tweaks",
   "shareId": "calculation-dependencies-and-price-tweaks",
   "legend": [

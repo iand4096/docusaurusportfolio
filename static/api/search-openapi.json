@@ -1,0 +1,743 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Portfolio Governed Knowledge API",
+    "version": "0.2.0"
+  },
+  "paths": {
+    "/health": {
+      "get": {
+        "tags": [
+          "Operations"
+        ],
+        "summary": "Check API and index health",
+        "operationId": "health",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HealthResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/taxonomy": {
+      "get": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "List available filters",
+        "operationId": "taxonomy",
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TaxonomyResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The canonical taxonomy is unavailable.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/search": {
+      "post": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Search portfolio documentation",
+        "operationId": "search",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/SearchRequest"
+              },
+              "examples": {
+                "taxonomy-filter": {
+                  "summary": "Search with a taxonomy filter",
+                  "value": {
+                    "query": "How is documentation taxonomy governed?",
+                    "filters": {
+                      "topics": [
+                        "taxonomy"
+                      ]
+                    },
+                    "top_k": 1,
+                    "mode": "bm25"
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/SearchResponse"
+                },
+                "examples": {
+                  "taxonomy-filter": {
+                    "summary": "One ranked passage with a source link",
+                    "value": {
+                      "results": [
+                        {
+                          "id": "3b036ef113b501655f03aada",
+                          "source": "docs/case-studies/RagSearchCloudArchitecture.md",
+                          "title": "Designing Cloud-Based RAG search for technical documentation",
+                          "heading": "Project context",
+                          "heading_id": "project-overview",
+                          "url": "https://iand4096.github.io/docusaurusportfolio/docs/case-studies/RagSearchCloudArchitecture#project-overview",
+                          "text": "I saw an opportunity to use document metadata, such as whether an API was current or deprecated, to control which content was retrieved.",
+                          "facets": {
+                            "topics": [
+                              "taxonomy"
+                            ]
+                          },
+                          "score": 0.016393
+                        }
+                      ],
+                      "mode": "bm25",
+                      "index_version": "a1b2c3d4e5f6"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Semantic retrieval is unavailable in the current index.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request body or taxonomy filters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidSearchResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying when the request is throttled.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "The index or taxonomy is unavailable, or search is at capacity.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying when the request is throttled.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chat": {
+      "post": {
+        "tags": [
+          "Search"
+        ],
+        "summary": "Get a cited answer",
+        "operationId": "chat",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChatRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Successful Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChatResponse"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Semantic retrieval is unavailable in the current index.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Invalid request body or taxonomy filters.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InvalidSearchResponse"
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit exceeded.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying when the request is throttled.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "502": {
+            "description": "The answer provider could not complete the request.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          },
+          "503": {
+            "description": "Answers are disabled, retrieval is unavailable, or the service is at capacity.",
+            "headers": {
+              "Retry-After": {
+                "description": "Seconds to wait before retrying when the request is throttled.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ErrorResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "ChatRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 2,
+            "title": "Query",
+            "examples": [
+              "How is documentation taxonomy governed?"
+            ]
+          },
+          "filters": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Filters",
+            "description": "Use field names and term IDs from /taxonomy. Terms within a field match with OR and fields combine with AND.",
+            "examples": [
+              {
+                "topics": [
+                  "taxonomy"
+                ]
+              }
+            ]
+          },
+          "include_archived": {
+            "type": "boolean",
+            "title": "Include Archived",
+            "description": "Include archived documents. An explicit lifecycle filter still takes precedence.",
+            "default": false
+          },
+          "top_k": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "description": "Maximum number of passages to retrieve.",
+            "default": 5
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "bm25",
+              "semantic",
+              "hybrid"
+            ],
+            "title": "Mode",
+            "description": "Choose keyword, semantic, or combined retrieval. Hybrid falls back to BM25 on a keyword-only index.",
+            "default": "hybrid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "ChatRequest"
+      },
+      "ChatResponse": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "bm25",
+              "semantic",
+              "hybrid"
+            ],
+            "title": "Mode",
+            "description": "Retrieval mode actually used."
+          },
+          "index_version": {
+            "type": "string",
+            "title": "Index Version",
+            "description": "First 12 characters of the indexed source hash."
+          },
+          "answer": {
+            "type": "string",
+            "title": "Answer",
+            "description": "Answer grounded in the retrieved passages, with numbered source citations."
+          },
+          "sources": {
+            "items": {
+              "$ref": "#/components/schemas/Citation"
+            },
+            "type": "array",
+            "title": "Sources"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "index_version",
+          "answer",
+          "sources"
+        ],
+        "title": "ChatResponse"
+      },
+      "Citation": {
+        "properties": {
+          "id": {
+            "type": "integer",
+            "title": "Id",
+            "description": "Number used to reference this source in the answer."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url"
+          },
+          "heading": {
+            "type": "string",
+            "title": "Heading"
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "url",
+          "heading"
+        ],
+        "title": "Citation"
+      },
+      "ErrorResponse": {
+        "properties": {
+          "detail": {
+            "type": "string",
+            "title": "Detail"
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "ErrorResponse"
+      },
+      "HealthResponse": {
+        "properties": {
+          "status": {
+            "type": "string",
+            "const": "ok",
+            "title": "Status"
+          },
+          "index_loaded": {
+            "type": "boolean",
+            "title": "Index Loaded"
+          },
+          "index": {
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/IndexManifest"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "type": "object",
+        "required": [
+          "status",
+          "index_loaded",
+          "index"
+        ],
+        "title": "HealthResponse"
+      },
+      "IndexManifest": {
+        "properties": {
+          "source_hash": {
+            "type": "string",
+            "title": "Source Hash"
+          },
+          "taxonomy_version": {
+            "type": "integer",
+            "title": "Taxonomy Version"
+          },
+          "chunks": {
+            "type": "integer",
+            "title": "Chunks"
+          },
+          "embedding_model": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Embedding Model"
+          },
+          "semantic_enabled": {
+            "type": "boolean",
+            "title": "Semantic Enabled"
+          }
+        },
+        "additionalProperties": true,
+        "type": "object",
+        "required": [
+          "source_hash",
+          "taxonomy_version",
+          "chunks",
+          "embedding_model",
+          "semantic_enabled"
+        ],
+        "title": "IndexManifest"
+      },
+      "InvalidSearchResponse": {
+        "properties": {
+          "detail": {
+            "anyOf": [
+              {
+                "items": {
+                  "additionalProperties": true,
+                  "type": "object"
+                },
+                "type": "array"
+              },
+              {
+                "additionalProperties": true,
+                "type": "object"
+              }
+            ],
+            "title": "Detail",
+            "description": "Request validation issues or a canonical taxonomy filter error."
+          }
+        },
+        "type": "object",
+        "required": [
+          "detail"
+        ],
+        "title": "InvalidSearchResponse"
+      },
+      "SearchRequest": {
+        "properties": {
+          "query": {
+            "type": "string",
+            "maxLength": 500,
+            "minLength": 2,
+            "title": "Query",
+            "examples": [
+              "How is documentation taxonomy governed?"
+            ]
+          },
+          "filters": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Filters",
+            "description": "Use field names and term IDs from /taxonomy. Terms within a field match with OR and fields combine with AND.",
+            "examples": [
+              {
+                "topics": [
+                  "taxonomy"
+                ]
+              }
+            ]
+          },
+          "include_archived": {
+            "type": "boolean",
+            "title": "Include Archived",
+            "description": "Include archived documents. An explicit lifecycle filter still takes precedence.",
+            "default": false
+          },
+          "top_k": {
+            "type": "integer",
+            "maximum": 10.0,
+            "minimum": 1.0,
+            "title": "Top K",
+            "description": "Maximum number of passages to retrieve.",
+            "default": 5
+          },
+          "mode": {
+            "type": "string",
+            "enum": [
+              "bm25",
+              "semantic",
+              "hybrid"
+            ],
+            "title": "Mode",
+            "description": "Choose keyword, semantic, or combined retrieval. Hybrid falls back to BM25 on a keyword-only index.",
+            "default": "hybrid"
+          }
+        },
+        "type": "object",
+        "required": [
+          "query"
+        ],
+        "title": "SearchRequest"
+      },
+      "SearchResponse": {
+        "properties": {
+          "mode": {
+            "type": "string",
+            "enum": [
+              "bm25",
+              "semantic",
+              "hybrid"
+            ],
+            "title": "Mode",
+            "description": "Retrieval mode actually used."
+          },
+          "index_version": {
+            "type": "string",
+            "title": "Index Version",
+            "description": "First 12 characters of the indexed source hash."
+          },
+          "results": {
+            "items": {
+              "$ref": "#/components/schemas/SearchResult"
+            },
+            "type": "array",
+            "title": "Results"
+          }
+        },
+        "type": "object",
+        "required": [
+          "mode",
+          "index_version",
+          "results"
+        ],
+        "title": "SearchResponse"
+      },
+      "SearchResult": {
+        "properties": {
+          "id": {
+            "type": "string",
+            "title": "Id",
+            "description": "Stable ID of the indexed passage."
+          },
+          "source": {
+            "type": "string",
+            "title": "Source",
+            "description": "Repository-relative path of the source document."
+          },
+          "title": {
+            "type": "string",
+            "title": "Title"
+          },
+          "heading": {
+            "type": "string",
+            "title": "Heading"
+          },
+          "heading_id": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "title": "Heading Id"
+          },
+          "url": {
+            "type": "string",
+            "title": "Url",
+            "description": "Link to the source passage, including its section anchor when available."
+          },
+          "text": {
+            "type": "string",
+            "title": "Text"
+          },
+          "facets": {
+            "additionalProperties": {
+              "items": {
+                "type": "string"
+              },
+              "type": "array"
+            },
+            "type": "object",
+            "title": "Facets"
+          },
+          "score": {
+            "type": "number",
+            "title": "Score",
+            "description": "Reciprocal rank fusion score used to order results."
+          }
+        },
+        "type": "object",
+        "required": [
+          "id",
+          "source",
+          "title",
+          "heading",
+          "url",
+          "text",
+          "facets",
+          "score"
+        ],
+        "title": "SearchResult"
+      },
+      "TaxonomyDimension": {
+        "properties": {
+          "label": {
+            "type": "string",
+            "title": "Label"
+          },
+          "terms": {
+            "additionalProperties": {
+              "type": "string"
+            },
+            "type": "object",
+            "title": "Terms",
+            "description": "Active canonical term IDs mapped to their display labels."
+          }
+        },
+        "type": "object",
+        "required": [
+          "label",
+          "terms"
+        ],
+        "title": "TaxonomyDimension"
+      },
+      "TaxonomyResponse": {
+        "properties": {
+          "version": {
+            "type": "integer",
+            "title": "Version"
+          },
+          "dimensions": {
+            "additionalProperties": {
+              "$ref": "#/components/schemas/TaxonomyDimension"
+            },
+            "type": "object",
+            "title": "Dimensions"
+          }
+        },
+        "type": "object",
+        "required": [
+          "version",
+          "dimensions"
+        ],
+        "title": "TaxonomyResponse"
+      }
+    }
+  },
+  "tags": [
+    {
+      "name": "Search"
+    },
+    {
+      "name": "Operations"
+    }
+  ]
+}

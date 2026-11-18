@@ -89,6 +89,8 @@ tags:
   - terraform
 ---
 
+import ApiEndpoint from '@site/src/components/ApiEndpoint';
+import ApiExample from '@site/src/components/ApiExample';
 import DiagramFigure from '@site/src/components/DiagramFigure';
 
 import CaseStudySummary from '@site/src/components/CaseStudySummary';
@@ -157,18 +159,21 @@ The index is generated ahead of deployment and packaged with the backend. A cach
 
 ### Separate evidence retrieval from AI answer generation
 
-I exposed a Python **FastAPI** service with `/taxonomy`, `/search` and `/chat` endpoints. Requests are validated with Pydantic before search filters are checked against the governed taxonomy.
+I exposed three endpoints through a Python **FastAPI** service. Requests are validated with Pydantic before search filters are checked against the governed taxonomy.
 
-`/search` returns relevant source passages without calling an LLM. `/chat` uses retrieved passages as context for **DeepSeek**, asking it to answer from the supplied evidence, cite numbered sources and acknowledge gaps. The interface displays the supporting sources and warns visitors to verify AI-generated answers against the original material. Prompt instructions reduce risk but do not guarantee factual correctness.
+- <ApiEndpoint operationId="taxonomy" /> lists the available filter dimensions and their active terms.
+- <ApiEndpoint operationId="search" /> returns relevant passages with source links, so visitors can search and inspect the original material without calling an LLM.
+- <ApiEndpoint operationId="chat" /> uses retrieved passages as context for **DeepSeek** when a visitor requests an AI-generated answer. It asks DeepSeek to answer from the supplied evidence, cite numbered sources and acknowledge gaps. The interface displays the supporting sources and warns visitors to verify AI-generated answers against the original material. Prompt instructions reduce risk but do not guarantee factual correctness.
 
-This ensures visitors can search and inspect source passages without using DeepSeek.
+The request below uses `taxonomy`, one of the topic terms listed by `/taxonomy`, to filter a keyword search. The response shows the top-ranked passage and a link to its source section.
 
-### Architecture
+<ApiExample operationId="search" example="taxonomy-filter" />
+
+### Indexing and query flow {/* #architecture */}
 
 The diagram shows the implemented indexing and query paths. **Taxonomy selection is manual at query time**, not an automatic query-classification stage.
 
 <DiagramFigure {...{
-  "number": 1,
   "title": "Documentation indexing and search",
   "shareId": "documentation-indexing-and-search",
   "legend": [
@@ -278,7 +283,7 @@ Choice -->|AI answer| LLM --> Answer
 
 The retrieval step uses the prebuilt BM25 chunk records and FAISS vector index produced by the indexing flow.
 
-### Cloud architecture: Docker, Terraform and Azure
+### Deployment on Azure {/* #cloud-architecture-docker-terraform-and-azure */}
 
 I separated the static frontend from the Python service. **Docusaurus is built by GitHub Actions and published to GitHub Pages**; visitors’ browsers send HTTPS requests directly to **FastAPI on Azure Container Apps**. The portfolio remains a static site; retrieval and AI generation run in the Azure-hosted API. CORS explicitly permits the GitHub Pages origin.
 
@@ -287,7 +292,6 @@ I separated the static frontend from the Python service. **Docusaurus is built b
 I use **Terraform with the AzureRM provider** to provision the Azure resource group, ACR, Container Apps environment and application, **Log Analytics** workspace, and a **user-assigned managed identity**. The identity receives scoped `AcrPull` permission; this allows the Container App to retrieve the private image without an ACR administrator password. After publishing an image, I update its tag in Terraform, review `terraform plan` and run `terraform apply` to deploy a new Container Apps revision.
 
 <DiagramFigure {...{
-  "number": 2,
   "title": "Azure deployment architecture",
   "shareId": "azure-deployment-architecture",
   "subgraphNotes": {
@@ -386,6 +390,7 @@ As this is a publicly accessible server, I added per-client rate limits, input b
 ## Deliverables
 
 - A [public governed RAG search interface](https://iand4096.github.io/docusaurusportfolio/ai-search) with keyword, semantic and hybrid retrieval, manually selected taxonomy filters, source links and an AI-answer option.
+- [Search API reference](pathname:///search-api).
 - A documentation ingestion and indexing pipeline that produces passage metadata, FAISS vectors and a source manifest after taxonomy validation.
 - A FastAPI retrieval and generation API, with validation and controls for public requests.
 - Versioned Docker image builds and Terraform-managed Azure infrastructure, including private registry access through managed identity and operational logs.

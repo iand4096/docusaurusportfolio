@@ -156,7 +156,6 @@ The custom platform supported source-code injection and custom Markdown extensio
 The platform supported the full documentation lifecycle, from Markdown authoring and Git-based review through automated build, publishing and discovery.
 
 <DiagramFigure {...{
-  "number": 1,
   "title": "Documentation platform workflow",
   "shareId": "documentation-platform-workflow",
   "legend": [

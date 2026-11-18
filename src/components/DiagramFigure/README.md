@@ -9,7 +9,6 @@ separate Mermaid instance or icon dependency is needed.
 import DiagramFigure from '@site/src/components/DiagramFigure';
 
 <DiagramFigure {...{
-  "number": 1,
   "title": "Documentation publishing",
   "shareId": "documentation-publishing",
   "legend": [
@@ -34,8 +33,7 @@ flowchart LR
 ````
 
 Use a literal JSON spread, as shown, so the Markdown exporter can retain the
-figure title and key without evaluating JavaScript. Number figures explicitly
-within each page. Legend labels may be omitted to use the role's default label.
+figure title and key without evaluating JavaScript. Figure numbers follow document order and restart on each page. Legend labels may be omitted to use the role's default label.
 Set a unique `shareId` on each shareable figure and keep it stable when editing
 the title or figure number. **Copy diagram link** opens the viewer at the
 selected layout with zoom and pan reset. The figure anchor works on its own.

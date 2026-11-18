@@ -7,7 +7,7 @@ const ts = require('typescript');
 const React = require('react');
 const {renderToStaticMarkup} = require('react-dom/server');
 const {roles, groupStyles, prepareMermaid, flowchartWithDirection, flowchartDirection} = require('../../src/components/DiagramFigure/theme.cjs');
-const {serializeDiagramFigures} = require('../../plugins/diagram-figures.cjs');
+const {numberDiagramFigures, serializeDiagramFigures} = require('../../plugins/diagram-figures.cjs');
 
 const focusFilename = path.resolve(__dirname, '../../src/components/DiagramFigure/subgraphFocus.ts');
 const focusModule = new Module(focusFilename, module);
@@ -129,7 +129,7 @@ test('containers use neutral grouping colors without changing child node semanti
 });
 
 test('server-rendered figures contain accessible titles, a shared icon key and an enlargement action', () => {
-  const props = {number: 2, title: 'Publishing', legend: [{role: 'input'}, {role: 'process', label: 'Build'}]};
+  const props = {figurePosition: '2', title: 'Publishing', legend: [{role: 'input'}, {role: 'process', label: 'Build'}]};
   const html = renderToStaticMarkup(React.createElement(Figure, props, React.createElement('p', null, 'Diagram')));
   assert.match(html, /<figure[^>]+aria-labelledby=/);
   assert.match(html, /<figcaption[^>]*>Figure 2\. Publishing<\/figcaption>/);
@@ -189,15 +189,16 @@ test('all site Mermaid diagrams use figures with exactly the roles their keys de
     assert.match(markdown, /\*\*Figure 1\./);
     assert.match(markdown, /\*\*Colour and icon key\*\*/);
     assert.match(markdown, /classDef/);
-    assert.equal([...markdown.matchAll(/accTitle:/g)].length, fences.length);
-    assert.equal([...markdown.matchAll(/accDescr\s*\{/g)].length, fences.length);
+    const exported = [...markdown.matchAll(/```mermaid\n([\s\S]*?)\n```/g)].map(([, code]) => code);
+    assert.equal(exported.length, fences.length);
+    assert.ok(exported.every(code => code.includes('accTitle:') && /accDescr\s*\{/.test(code)));
 
   }
   assert.ok(diagrams > 0);
 });
 
 test('Markdown exports preserve body, default legend labels and safe literal metadata', () => {
-  const props = {number: 1, title: 'Inputs <and> output', legend: [{role: 'input'}]};
+  const props = {title: 'Inputs <and> output', legend: [{role: 'input'}]};
   const source = `<DiagramFigure {...${JSON.stringify(props)}}>\nOriginal diagram\n</DiagramFigure>`;
   const output = serializeDiagramFigures(source);
   assert.ok(output.includes('Original diagram'));
@@ -205,4 +206,26 @@ test('Markdown exports preserve body, default legend labels and safe literal met
   assert.ok(output.includes('- Inputs'));
   const invalid = {...props, legend: [{role: 'unknown'}]};
   assert.throws(() => serializeDiagramFigures(`<DiagramFigure {...${JSON.stringify(invalid)}}>x</DiagramFigure>`), /valid legend/);
+});
+
+
+test('figure numbering restarts per document and skips source examples', () => {
+  const makeFigure = () => ({type: 'mdxJsxFlowElement', name: 'DiagramFigure', attributes: []});
+  const first = makeFigure();
+  const second = makeFigure();
+  const nextPage = makeFigure();
+  const numberFigures = numberDiagramFigures();
+  numberFigures({type: 'root', children: [
+    first, {type: 'code', value: '<DiagramFigure />'}, {type: 'mdxJsxFlowElement', name: 'td', children: [second]},
+  ]});
+  numberFigures({type: 'root', children: [nextPage]});
+  assert.deepEqual([first, second, nextPage].map(figure => figure.attributes[0].value), ['1', '2', '1']);
+
+  const figure = title => `<DiagramFigure {...${JSON.stringify({title, legend: [{role: 'input'}]})}}>body</DiagramFigure>`;
+  const example = ['```mdx', figure('Example'), '```'].join('\n');
+  const exported = serializeDiagramFigures([example, figure('First'), figure('Second')].join('\n\n'));
+  assert.ok(exported.startsWith(example));
+  assert.match(exported, /\*\*Figure 1\. First\*\*/);
+  assert.match(exported, /\*\*Figure 2\. Second\*\*/);
+  assert.match(serializeDiagramFigures(figure('Another page')), /\*\*Figure 1\. Another page\*\*/);
 });

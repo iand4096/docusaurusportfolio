@@ -9,7 +9,6 @@ import styles from './styles.module.css';
 
 export type LegendItem = Readonly<{role: DiagramRole; label?: string}>;
 export type DiagramFigureProps = Readonly<{
-  number: number;
   title: string;
   shareId?: string;
   subgraphNotes?: Readonly<Record<string, string | Readonly<Record<string, string>>>>;
@@ -42,7 +41,9 @@ function Legend({items}: {items: readonly LegendItem[]}): ReactNode {
 }
 
 /** One titled figure may contain a single Mermaid diagram or several panels. */
-export default function DiagramFigure({number, title, shareId, subgraphNotes, legend, children}: DiagramFigureProps): ReactNode {
+export default function DiagramFigure({
+  title, shareId, subgraphNotes, legend, children, figurePosition,
+}: DiagramFigureProps & {figurePosition?: string}): ReactNode {
   const id = useId();
   const anchor = shareId ? `diagram-${shareId}` : undefined;
   const {pathname, search} = useLocation();
@@ -97,7 +98,7 @@ export default function DiagramFigure({number, title, shareId, subgraphNotes, le
   const [manualLink, setManualLink] = useState('');
   const manualLinkInput = useRef<HTMLInputElement>(null);
   const copyAttempt = useRef(0);
-  const caption = `Figure ${number}. ${title}`;
+  const caption = figurePosition ? `Figure ${figurePosition}. ${title}` : title;
 
   const openViewer = useCallback((panel?: string, layout?: DiagramDirection, subgraph?: string) => {
     copyAttempt.current++;

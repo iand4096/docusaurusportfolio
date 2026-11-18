@@ -1,0 +1,120 @@
+---
+title: CaseStudySummary and SidebarCardGrid
+description: Usage and examples for case study overviews and landing-page cards generated from sidebar metadata.
+type:
+  - implementation-guide
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - docs-as-code
+  - documentation-engineering
+technologies:
+  - docusaurus
+  - markdown
+  - css
+lifecycle:
+  - current
+tags:
+  - docs-as-code
+  - documentation-engineering
+  - docusaurus
+  - markdown
+  - css
+---
+
+import CaseStudySummary from '@site/src/components/CaseStudySummary';
+import CodeBlock from '@theme/CodeBlock';
+
+`CaseStudySummary` gives readers a project overview at the top of a case study. `SidebarCardGrid` turns sidebar links and document frontmatter into cards on a section landing page.
+
+## CaseStudySummary
+
+Import the component and place it below the case study title. Supply a literal JSON spread so the site can use the same data for the HTML overview and Markdown export. On narrow screens, scroll the example table horizontally to compare the two columns.
+
+```jsx
+import CaseStudySummary from '@site/src/components/CaseStudySummary';
+```
+
+<table>
+<thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+<tbody>
+<tr>
+<td><CodeBlock language="jsx">{"\u003cCaseStudySummary {...{\n  \"employer\": \"Independent project\",\n  \"industry\": \"Developer documentation\",\n  \"projectType\": \"Documentation platform\",\n  \"summary\": \"Built a Docusaurus site with governed metadata and automated review.\",\n  \"role\": \"Documentation engineer\",\n  \"scope\": \"Content taxonomy, navigation and publishing\",\n  \"decision\": \"Use governed metadata to drive navigation and related links.\",\n  \"deliverables\": \"Search, faceted browsing and published QA reports\",\n  \"evidenceTitle\": \"Implementation evidence\",\n  \"evidence\": [\n    {\"value\": \"Faceted browsing\", \"label\": \"Filters use canonical taxonomy terms\"}\n  ]\n}} />"}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+
+<CaseStudySummary {...{
+  "employer": "Independent project",
+  "industry": "Developer documentation",
+  "projectType": "Documentation platform",
+  "summary": "Built a Docusaurus site with governed metadata and automated review.",
+  "role": "Documentation engineer",
+  "scope": "Content taxonomy, navigation and publishing",
+  "decision": "Use governed metadata to drive navigation and related links.",
+  "deliverables": "Search, faceted browsing and published QA reports",
+  "evidenceTitle": "Implementation evidence",
+  "evidence": [
+    {"value": "Faceted browsing", "label": "Filters use canonical taxonomy terms"}
+  ]
+}} />
+
+</td>
+</tr>
+</tbody>
+</table>
+
+The overview is available before JavaScript loads. **Hide summaries** stores a site-wide preference in the browser, and **Skip to case study** moves focus to the first heading after the overview.
+
+### CaseStudySummary props
+
+| Prop | Default | Usage | Example |
+| --- | --- | --- | --- |
+| `employer`, `industry`, `projectType` | Required | Project context displayed above the summary. | `"Independent project"`, `"Developer documentation"`, `"Documentation platform"` |
+| `summary` | Required | Short overview of the project. | `"Built a Docusaurus site with governed metadata and automated review."` |
+| `role`, `scope`, `decision`, `deliverables` | Required | Your role, the work covered, the key choice and what you delivered. | `"Documentation engineer"` for `role` |
+| `evidenceTitle`, `evidence` | Required | Heading and one to four evidence entries. Each entry needs a `value` and `label`. Use `emphasis: "metric"` for a measured result. | `"Implementation evidence"` and `[{"value": "Faceted browsing", "label": "Filters use canonical taxonomy terms"}]` |
+| `icon` | Omitted | Adds a supported icon beside the overview label. | `"layer-group"` |
+| `summaryUnderline` | Omitted | Underlines matching text in the summary. | `"governed metadata"` |
+| `decisionLabel` | `"Key decision"` | Use `"Key approach"` for an investigative or exploratory project. | `"Key approach"` |
+| `evidenceNote` | Omitted | Qualifies the evidence beneath the entries. | `"Results reflect one deployment."` |
+
+An evidence entry can also use `labelStyle: "note"` to give its label the note styling. Use the evidence fields for concrete outcomes or implementation facts.
+
+## SidebarCardGrid
+
+Place the grid on a Docusaurus docs page with an active sidebar. It follows the sidebar’s order, including links inside categories. The selected metadata key controls which linked documents become cards.
+
+```jsx
+import SidebarCardGrid from '@site/src/components/SidebarCardGrid';
+
+<SidebarCardGrid
+  metadataKey="caseStudyCard"
+  linkLabel="Read case study →"
+/>
+```
+
+In each linked document, add the matching entry under `sidebar_custom_props`.
+
+```yaml
+sidebar_custom_props:
+  caseStudyCard:
+    title: Docusaurus Portfolio
+    tag: Documentation platform
+    description: A governed documentation site with search and automated review.
+    highlights:
+      - Browse content using canonical taxonomy filters
+      - Publish QA reports with each deployment
+    ariaLabel: Read the Docusaurus Portfolio case study
+```
+
+Use `tag`, `description` and `highlights` for the visible card details. The optional `title` overrides the sidebar label. The optional `ariaLabel` overrides the generated accessible link name.
+
+### SidebarCardGrid props
+
+| Prop | Default | Usage | Example |
+| --- | --- | --- | --- |
+| `metadataKey` | `"skillCard"` | Frontmatter key to read from sidebar links. | `"caseStudyCard"` |
+| `linkLabel` | `"Explore →"` | Visible action text on every card in the grid. | `"Read case study →"` |
+| `ariaLabelSuffix` | Empty string | Adds context to a generated accessible link name when a card has no explicit `ariaLabel`. | `"skills"` |
+
+See the live grid on [Case Studies](../case-studies/index.md). The [Documentation Samples](../docs-samples/index.md), [Skills](../skills/index.md) and [Tools](../tools/index.md) pages use `sampleCard` instead.

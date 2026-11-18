@@ -132,9 +132,15 @@ A custom Docusaurus plugin generates up to three **See also** links from governe
 
 Production builds generate `llms.txt`, `llms-full.txt` and individual Markdown exports that retain governed taxonomy fields. Documentation pages expose **Copy page as Markdown** and **View Markdown** controls. Copying includes a manual fallback when clipboard access is unavailable.
 
-### Reusable presentation {/* #reusable-presentation */}
+### Reusable documentation components {/* #reusable-presentation */}
 
-React components populate landing-page cards from sidebar and frontmatter metadata. Card titles, summaries and highlights are stored in each document’s frontmatter. Reusable capability cards and grids support MDX presentation. Readers can enlarge Mermaid diagrams to inspect larger architecture diagrams in a modal view.
+These guides combine authoring examples with live previews of the components used across this portfolio.
+
+- [CapabilityGrid and CapabilityCard](../implementation-details/capability-grid.mdx) display responsive grids, checklists and expandable cards.
+- [SemanticLabel and SemanticLabelGroup](../implementation-details/semantic-label.mdx) identify decisions, rationale, contributions and outcomes in the prose.
+- [CaseStudySummary and SidebarCardGrid](../implementation-details/case-study-summary-and-sidebar-card-grid.mdx) present project overviews and build landing-page cards from sidebar and frontmatter metadata.
+- [DiagramFigure](../implementation-details/diagram-figure.mdx) adds automatic numbering, full-screen viewing and shareable links to Mermaid subgraphs.
+- [ApiEndpoint and ApiExample](../implementation-details/api-example.mdx) use the same OpenAPI spec to link to Scalar operations and display request, response and cURL examples.
 
 ### Documentation QA {/* #documentation-qa */}
 

@@ -6,7 +6,7 @@ const roles = Object.freeze({
   infra: {label: 'Infrastructure', fill: '#E0D9CE', stroke: '#817565', icon: 'server'},
   decision: {label: 'Decisions', fill: '#E5D9B8', stroke: '#8B7545', icon: null},
   interaction: {label: 'Human interaction', fill: '#CDD3DC', stroke: '#626F82', icon: 'user'},
-  generation: {label: 'AI generation', fill: '#DCD5E4', stroke: '#78678A', icon: 'wand-magic-sparkles'},
+  generation: {label: 'AI generation', fill: '#DCD5E4', stroke: '#78678A', icon: 'robot'},
 });
 
 // Neutral containers establish grouping; node colors carry the role semantics.
