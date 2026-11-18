@@ -97,6 +97,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "employer": "Independent project",
   "industry": "AI / Developer tooling",
   "projectType": "Cloud search application",
+  "icon": "magnifying-glass",
   "summary": "Built and deployed portfolio search with governed retrieval and source-linked AI answers.",
   "role": "Sole architect, developer and deployment engineer",
   "scope": "Search and AI-assisted retrieval for my portfolio documentation",

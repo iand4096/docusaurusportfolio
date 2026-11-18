@@ -59,6 +59,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "employer": "Paysafe",
   "industry": "Payments / Fintech",
   "projectType": "Public developer portal",
+  "icon": "code",
   "summary": "Led a unified Developer Center bringing together Paysafe and Skrill API, SDK and integration documentation in a fast growth environment",
   "summaryUnderline": "fast growth",
   "role": "Documentation strategy, information architecture and team leadership",

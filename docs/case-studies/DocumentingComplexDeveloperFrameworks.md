@@ -57,6 +57,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "employer": "Morgan Stanley",
   "industry": "Investment banking",
   "projectType": "Framework and SDK documentation",
+  "icon": "cubes",
   "summary": "Explained complex Scala frameworks by investigating undocumented behaviour and validating technical examples.",
   "role": "Lead and sole technical writer for Optimus and RICE",
   "scope": "Distributed computation, bitemporal data, reactive UIs, interoperability and testing",

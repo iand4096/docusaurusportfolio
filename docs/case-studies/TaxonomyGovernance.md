@@ -45,6 +45,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "employer": "Independent project",
   "industry": "Documentation engineering",
   "projectType": "Metadata governance",
+  "icon": "tags",
   "summary": "Built one controlled vocabulary connecting documentation metadata, navigation, authoring tools and search.",
   "role": "System design and development",
   "scope": "Metadata validation, authoring support and taxonomy change management",

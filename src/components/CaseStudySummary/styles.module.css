@@ -140,6 +140,12 @@
   margin-bottom: 0;
 }
 
+.projectIcon {
+  margin-inline-end: 0.45rem;
+  font-size: var(--portfolio-text-body);
+  letter-spacing: normal;
+}
+
 .actions {
   display: flex;
   flex-wrap: wrap;

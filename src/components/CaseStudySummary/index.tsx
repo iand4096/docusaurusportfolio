@@ -11,6 +11,7 @@ export type CaseStudySummaryProps = Readonly<{
   employer: string;
   industry: string;
   projectType: string;
+  icon?: 'tags' | 'magnifying-glass' | 'layer-group' | 'code' | 'cubes' | 'window-maximize';
   summary: string;
   summaryUnderline?: string;
   role: string;
@@ -37,7 +38,7 @@ function readPreference(): boolean {
 
 /** Editorial overview. All content is present in server-rendered HTML. */
 export default function CaseStudySummary({
-  employer, industry, projectType, summary, summaryUnderline, role, scope, decision,
+  employer, industry, projectType, icon, summary, summaryUnderline, role, scope, decision,
   decisionLabel = 'Key decision', deliverables, evidenceTitle, evidence, evidenceNote,
 }: CaseStudySummaryProps): ReactNode {
   const underlineStart = summaryUnderline ? summary.indexOf(summaryUnderline) : -1;
@@ -93,7 +94,10 @@ export default function CaseStudySummary({
   return (
     <section ref={root} className={`${styles.root} ${hidden ? styles.collapsed : ''}`} aria-label="Project overview">
       <div className={styles.toolbar}>
-        <p className={styles.eyebrow} hidden={hidden}>Project overview</p>
+        <p className={styles.eyebrow} hidden={hidden}>
+          {icon && <i className={`fa-solid fa-${icon} ${styles.projectIcon}`} aria-hidden="true" />}
+          Project overview
+        </p>
         <div className={styles.actions} hidden={!ready}>
           <button type="button" className={styles.control} onClick={skipToContent} hidden={hidden}>
             Skip to case study <span aria-hidden="true">↓</span>

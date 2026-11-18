@@ -71,6 +71,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "employer": "Independent project",
   "industry": "Documentation engineering",
   "projectType": "Publishing and QA platform",
+  "icon": "window-maximize",
   "summary": "Built this portfolio as a working example of automated QA, metadata-driven discovery and machine-readable publishing.",
   "role": "Sole designer, developer and documentation author",
   "scope": "Portfolio publishing, discovery, quality assurance and CI/CD",
