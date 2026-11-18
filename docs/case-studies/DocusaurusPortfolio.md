@@ -89,83 +89,45 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
     },
     {
       "value": "LLM exports",
-      "label": "Markdown corpus and versioned QA reports"
+      "label": "Markdown documentation set and versioned QA reports"
     }
   ]
 }} />
 
 ## Context {/* #context */}
 
-I built this portfolio with Docusaurus to publish my documentation samples and demonstrate the tooling behind them. It includes search, automated content recommendations and a Python documentation QA pipeline.
+I built this portfolio to publish my documentation samples and demonstrate how I engineer and maintain a documentation site.
 
 ## Challenge {/* #challenge */}
 
-* Build a portfolio site using Docusaurus, React/JSX, TypeScript and GitHub Actions.
-* Integrate an LLM API into an automated QA workflow.
-* Combine AI review with deterministic checks such as Markdown linting, accessibility, style and link checks.
+The publishing workflow needed to catch routine defects and surface editorial issues, with enough evidence for me to assess individual findings and revisit earlier decisions.
 
 ## Approach {/* #approach */}
 
-Docusaurus provides the documentation framework. I used Markdown and MDX for content, and wrote React components for landing-page cards, capability grids and document controls.
-
-GitHub Actions automate deployment and documentation QA.
-
-For quality assurance, I wrote a Python script that combines AI review with deterministic checks such as link checking. The script validates the AI findings against the source to guard against hallucination, and generates a report containing the identified issues and suggested improvements.
+I used Docusaurus and MDX to publish the site. I built a Python QA pipeline that combines automated checks with AI editorial review and runs in GitHub Actions.
 
 ## Implementation {/* #implementation */}
 
-### Local search and faceted browsing {/* #local-search-and-faceted-browsing */}
+### Documentation QA {/* #documentation-qa */}
 
-The [Explore page](/explore?view=browse) combines relevance-ranked local search with filters for content type, audience, topic, technology and lifecycle. Search supports prefix matching and conservative typo tolerance, while facet counts help readers refine their selection. It searches titles, descriptions and metadata in the generated catalogue; article-body search is provided separately by the cloud API.
+The pipeline combines automated link, accessibility and Markdown checks with Vale style rules and DeepSeek editorial review. It validates AI findings against the source before reporting them. I can challenge, revise or dismiss a finding while preserving the original evidence and review history. When a finding recurs, the report links back to the earlier discussion. If the source has changed, the previous decision needs to be revalidated.
 
-A generated taxonomy catalogue supplies the custom React interface. The [taxonomy case study](TaxonomyGovernance.md) explains the AI-assisted taxonomy generation and governance.
+The workflow publishes the report before marking a run as failed when QA thresholds are exceeded. Each report is tied to the commit it checked, so someone investigating a failure can see the findings for that revision.
 
-### Cloud-backed search {/* #cloud-backed-search */}
+### Content discovery {/* #local-search-and-faceted-browsing */}
 
-The Search tab connects the static site to a FastAPI service on Azure Container Apps. Readers can use keyword, semantic or hybrid retrieval, inspect source passages, and optionally request AI answers with source links. Governed metadata filters constrain retrieval. The [cloud search case study](RagSearchCloudArchitecture.md) explains the indexing, infrastructure and request controls.
-
-### Related-content recommendations {/* #related-content-recommendations */}
-
-A custom Docusaurus plugin generates up to three **See also** links from governed metadata during development and builds, without calling an AI service. Relevance rules favour distinctive shared topics and technologies, and authors can exclude destinations or disable recommendations per page. A generated review report explains the selections; CI checks that committed recommendations remain current.
+Readers can [browse by content type, topic and audience](/explore?view=browse) or [search source passages](/explore?view=ai-search) using keyword, semantic or hybrid retrieval. A Docusaurus plugin uses shared taxonomy terms to generate related-page links at build time. The [taxonomy governance case study](TaxonomyGovernance.md) explains how the metadata is managed, and the [cloud search case study](RagSearchCloudArchitecture.md) describes how the search service retrieves evidence.
 
 ### Machine-readable publishing {/* #machine-readable-publishing */}
 
-Production builds generate `llms.txt`, `llms-full.txt` and individual Markdown exports that retain governed taxonomy fields. Documentation pages expose **Copy page as Markdown** and **View Markdown** controls. Copying includes a manual fallback when clipboard access is unavailable.
+Production builds publish individual pages and the full documentation set as Markdown, preserving governed taxonomy metadata. Readers can view or copy the Markdown for an individual page, and the site publishes `llms.txt` and `llms-full.txt` for tools that consume the documentation set.
 
 ### Reusable documentation components {/* #reusable-presentation */}
 
-These guides combine authoring examples with live previews of the components used across this portfolio.
+Reusable React components give authors a consistent way to summarise case studies, present capabilities and diagrams, highlight decisions and outcomes, and display API examples. Authors can use them directly in MDX.
 
-- [CapabilityGrid and CapabilityCard](../implementation-details/capability-grid.mdx) display responsive grids, checklists and expandable cards.
-- [SemanticLabel and SemanticLabelGroup](../implementation-details/semantic-label.mdx) identify decisions, rationale, contributions and outcomes in the prose.
-- [CaseStudySummary and SidebarCardGrid](../implementation-details/case-study-summary-and-sidebar-card-grid.mdx) present project overviews and build landing-page cards from sidebar and frontmatter metadata.
-- [DiagramFigure](../implementation-details/diagram-figure.mdx) adds automatic numbering, full-screen viewing and shareable links to Mermaid subgraphs.
-- [ApiEndpoint and ApiExample](../implementation-details/api-example.mdx) use the same OpenAPI spec to link to Scalar operations and display request, response and cURL examples.
-
-### Documentation QA {/* #documentation-qa */}
-
-The QA pipeline combines:
-
-* **DeepSeek AI** for higher-level editorial and portfolio review.
-* **AccessibilityCheck** for issues such as alt text, vague links and heading structure.
-* **LinkCheck** for checking local Markdown links, image paths, and links to files hosted with the documentation.
-* **Remark** for Markdown/MDX syntax and structure checks.
-* **Vale** for mechanical style-guide and terminology rules.
-* **Lychee** for external link checking.
-* **LTeX+** as a front end for **LanguageTool** for spelling, punctuation and grammar checking.
-
-The checks produce HTML, JSON and Markdown reports through GitHub Actions on pull requests and pushes to the main branch.
-
-### QA feedback and adjudication {/* #qa-feedback-and-adjudication */}
-
-AI findings can be challenged, revised or dismissed while preserving the original criticism, evidence and review history. When the same AI criticism appears in a later review, the report links it to the earlier discussion. If the document has changed, the previous decision requires revalidation. Saved reports can be refreshed without rerunning checks or making AI calls, and AI withdrawal alone does not remove a finding from CI counts.
-
-### Reliable report publishing {/* #reliable-report-publishing */}
-
-Deployment publishes matching HTML, JSON and Markdown QA reports under commit-specific filenames. Before publishing, the workflow checks that the reports came from the current run. The `/qa/` page redirects readers to the latest commit-specific report. When QA thresholds are exceeded, the workflow publishes the reports before a final gate marks the run as failed. Readers can still inspect the findings.
-
-The implementation includes the portfolio published on GitHub Pages, a [Documentation QA report](pathname:///qa/) for the current site, and the [GitHub repository](https://github.com/iand4096/docusaurusportfolio) containing the source, QA tooling, and deployment workflow.
+The [API component guide](../implementation-details/api-example.mdx) shows how a single OpenAPI specification drives both operation links and request and response examples.
 
 ## Impact {/* #impact */}
 
-Readers can browse by metadata, search source passages and follow related-page links. Each deployment also publishes a QA report with findings and recorded review decisions.
+The [published QA report](pathname:///qa/) lets readers inspect findings and recorded review decisions. The [GitHub repository](https://github.com/iand4096/docusaurusportfolio) shows how GitHub Actions checks pull requests and publishes QA reports with each deployment.
