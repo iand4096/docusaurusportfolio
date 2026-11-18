@@ -290,6 +290,10 @@ I use **Terraform with the AzureRM provider** to provision the Azure resource gr
   "number": 2,
   "title": "Azure deployment architecture",
   "shareId": "azure-deployment-architecture",
+  "subgraphNotes": {
+    "PACKAGE": "The versioned Docker image bundles FastAPI with a prebuilt search index. Azure Container Apps pulls it from the private registry using managed identity.",
+    "FRONTEND": "GitHub Actions builds the static Docusaurus site for GitHub Pages. The visitor’s browser calls the Azure API directly for search and optional AI answers."
+  },
   "legend": [
     {
       "role": "input",

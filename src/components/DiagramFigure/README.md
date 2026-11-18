@@ -52,6 +52,14 @@ reading order and groups entries by panel in **All diagrams**.
 When there is unused space at the start of the flow, the view can shift the
 selected subgraph toward that edge to reveal more of the workflow.
 
+Add optional `subgraphNotes` to the figure's JSON, keyed by authored subgraph
+ID, for example `"subgraphNotes": {"BUILD": "The CI build runs after approval."}`.
+For figures with multiple panels, nest the notes under the panel ID, for
+example `"subgraphNotes": {"publish": {"BUILD": "The CI build runs after approval."}}`.
+On wide screens, the viewer places the note in clear space beside the selected
+subgraph and connects it with a dashed line. When there is insufficient room, it reserves a sidebar. On narrow
+screens, notes appear in an expandable panel.
+
 Keep the visible figure caption and give every Mermaid diagram its own
 `accTitle` and `accDescr`, as shown above. Reuse the figure title for a single
 diagram or the panel heading for each diagram in a multi-panel figure. Describe

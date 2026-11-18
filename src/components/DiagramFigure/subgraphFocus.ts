@@ -3,6 +3,48 @@ export type SubgraphFit = {
   scale: number; x: number; y: number; width: number; height: number; limited: boolean;
   offsetX: number; offsetY: number;
 };
+export type NoteConnector = {left: number; top: number; length: number; vertical: boolean};
+
+export function placeSubgraphNote(frame: DOMRect, target: DOMRect, note: DOMRect, obstacles: DOMRect[]) {
+  const gap = 24;
+  const inset = 12;
+  const clampedTop = Math.max(frame.top + inset, Math.min(target.top, frame.bottom - note.height - inset));
+  const clampedLeft = Math.max(frame.left + inset, Math.min(target.left, frame.right - note.width - inset));
+  const candidates = [
+    {left: target.right + gap, top: clampedTop, side: 'right'},
+    {left: target.left - note.width - gap, top: clampedTop, side: 'left'},
+    {left: clampedLeft, top: target.bottom + gap, side: 'below'},
+    {left: clampedLeft, top: target.top - note.height - gap, side: 'above'},
+  ] as const;
+  const blocked = (left: number, top: number, right: number, bottom: number) =>
+    obstacles.some(box => left < box.right + 4 && right > box.left - 4
+      && top < box.bottom + 4 && bottom > box.top - 4);
+  for (const {left, top, side} of candidates) {
+    const right = left + note.width;
+    const bottom = top + note.height;
+    if (left < frame.left + inset || right > frame.right - inset
+      || top < frame.top + inset || bottom > frame.bottom - inset || blocked(left, top, right, bottom)) continue;
+
+    const vertical = side === 'above' || side === 'below';
+    const start = vertical ? Math.max(left, target.left) : Math.max(top, target.top);
+    const end = vertical ? Math.min(right, target.right) : Math.min(bottom, target.bottom);
+    if (start >= end) continue;
+    const mid = (start + end) / 2;
+    const connector: NoteConnector = {
+      left: vertical ? mid : side === 'left' ? right : target.right,
+      top: vertical ? side === 'above' ? bottom : target.bottom : mid,
+      length: gap,
+      vertical,
+    };
+    // Ignore the two ends of the leader where it deliberately touches the boxes.
+    const {left: x, top: y} = connector;
+    const leaderBlocked = vertical
+      ? blocked(x, y + 5, x, y + gap - 5)
+      : blocked(x + 5, y, x + gap - 5, y);
+    if (!leaderBlocked) return {left, top, connector};
+  }
+  return undefined;
+}
 
 const maxLabelSize = 24;
 

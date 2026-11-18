@@ -232,6 +232,27 @@ async function checkSubgraphZoom(browser) {
     assert.equal(await zoomTo.getByRole('option', {name: 'Whole diagram', exact: true}).count(), 0);
     await zoomTo.selectOption({label: 'Static frontend'});
     await waitForSubgraphFit('FRONTEND');
+    const desktopNote = viewer.getByRole('complementary', {name: 'About Static frontend'});
+    await desktopNote.waitFor();
+    assert.match(await desktopNote.textContent(), /GitHub Pages/);
+    const noteBox = await desktopNote.boundingBox();
+    const canvasBox = await viewer.getByRole('region', {name: /^Diagram viewport:/}).boundingBox();
+    const placement = await desktopNote.evaluate(note => note.parentElement.dataset.notePlacement);
+    assert.ok(['floating', 'sidebar'].includes(placement));
+    if (placement === 'sidebar') {
+      assert.ok(noteBox.x >= canvasBox.x + canvasBox.width);
+      assert.equal(await viewer.locator('[data-note-connector]').count(), 0);
+    } else {
+      assert.equal(await desktopNote.getByText('About Static frontend', {exact: true}).isVisible(), false);
+      assert.equal(await viewer.locator('[data-note-connector]').evaluate(line => getComputedStyle(line).borderTopStyle), 'dashed');
+      const groupBox = await viewer.locator('g.cluster[id="FRONTEND"], g.cluster[id$="-FRONTEND"]').boundingBox();
+      assert.ok(noteBox.x >= canvasBox.x && noteBox.y >= canvasBox.y
+        && noteBox.x + noteBox.width <= canvasBox.x + canvasBox.width
+        && noteBox.y + noteBox.height <= canvasBox.y + canvasBox.height);
+      assert.ok(noteBox.x >= groupBox.x + groupBox.width || noteBox.x + noteBox.width <= groupBox.x
+        || noteBox.y >= groupBox.y + groupBox.height || noteBox.y + noteBox.height <= groupBox.y);
+    }
+    assert.equal(await desktopNote.evaluate(note => getComputedStyle(note).fontSize), '16px');
     await viewer.locator('[data-subgraph-highlight]').waitFor();
     const largestLabel = await viewer.locator('g.cluster[id="FRONTEND"], g.cluster[id$="-FRONTEND"]').evaluate(group => {
       const bounds = group.getBoundingClientRect();
@@ -259,7 +280,16 @@ async function checkSubgraphZoom(browser) {
     await page.goto(link.href);
     await waitForSubgraphFit();
     assert.equal(await zoomTo.locator('option:checked').textContent(), 'Backend packaging & image publishing');
+    const mobileNote = viewer.locator('details').filter({hasText: 'About Backend packaging & image publishing'});
+    assert.equal(await mobileNote.getAttribute('open'), null);
+    const noteSummary = mobileNote.locator('summary');
+    await noteSummary.focus();
+    await page.keyboard.press('Enter');
+    await mobileNote.locator('p').waitFor();
+    assert.match(await mobileNote.locator('p').textContent(), /prebuilt search index/);
+    await waitForSubgraphFit();
     await zoomTo.selectOption({label: 'Whole diagram'});
+    assert.equal(await mobileNote.count(), 0);
     assert.equal(await zoomTo.inputValue(), '');
     assert.equal(await zoomTo.getByRole('option', {name: 'Whole diagram', exact: true}).count(), 0);
     await page.keyboard.press('Escape');

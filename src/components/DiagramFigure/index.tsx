@@ -2,7 +2,8 @@ import React, {useCallback, useEffect, useId, useRef, useState, type CSSProperti
 import {useHistory, useLocation} from '@docusaurus/router';
 import Heading from '@theme/Heading';
 import {DiagramDirectionContext, DiagramFigureContext, type DiagramDirection} from './context';
-import {findSubgraphs, fitSubgraph, subgraphKey, type SubgraphFit, type SubgraphOption} from './subgraphFocus';
+import {findSubgraphs, fitSubgraph, placeSubgraphNote, subgraphKey,
+  type NoteConnector, type SubgraphFit, type SubgraphOption} from './subgraphFocus';
 import {roles, type DiagramRole} from './theme.cjs';
 import styles from './styles.module.css';
 
@@ -11,11 +12,14 @@ export type DiagramFigureProps = Readonly<{
   number: number;
   title: string;
   shareId?: string;
+  subgraphNotes?: Readonly<Record<string, string | Readonly<Record<string, string>>>>;
   legend: readonly LegendItem[];
   children: ReactNode;
 }>;
 
 type DiagramPanel = {key: string; title: string; shareId?: string};
+type NotePlacement = {key: string; left: number; top: number}
+  & ({mode: 'sidebar'; connector?: undefined} | {mode: 'floating'; connector: NoteConnector});
 
 const fullScreenHint = 'Double-click the diagram to open or close full-screen.';
 
@@ -38,7 +42,7 @@ function Legend({items}: {items: readonly LegendItem[]}): ReactNode {
 }
 
 /** One titled figure may contain a single Mermaid diagram or several panels. */
-export default function DiagramFigure({number, title, shareId, legend, children}: DiagramFigureProps): ReactNode {
+export default function DiagramFigure({number, title, shareId, subgraphNotes, legend, children}: DiagramFigureProps): ReactNode {
   const id = useId();
   const anchor = shareId ? `diagram-${shareId}` : undefined;
   const {pathname, search} = useLocation();
@@ -48,6 +52,7 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   const dialog = useRef<HTMLDialogElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
   const panContent = useRef<HTMLDivElement>(null);
+  const desktopNote = useRef<HTMLElement>(null);
   const layoutSwitch = useRef<HTMLButtonElement>(null);
   const drag = useRef<{id: number; x: number; y: number} | null>(null);
   const [view, setView] = useState({zoom: 1, x: 0, y: 0});
@@ -62,6 +67,10 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   const [subgraphFit, setSubgraphFit] = useState<SubgraphFit>();
   const activePanel = panels.find(panel => panel.key === selectedPanel);
   const activeSubgraph = subgraphs.find(subgraph => subgraph.id === selectedSubgraph && subgraph.panel === activePanel?.key);
+  const notes = activePanel ? subgraphNotes?.[activePanel.key] : subgraphNotes;
+  const noteText = activeSubgraph && typeof notes === 'object' ? notes[activeSubgraph.id] : undefined;
+  const activeNote = activeSubgraph && typeof noteText === 'string' && noteText.trim()
+    ? {key: subgraphKey(activeSubgraph), title: `About ${activeSubgraph.label}`, text: noteText} : undefined;
   const showingAllPanels = panels.length > 1 && !activePanel;
   const ungroupedSubgraphs = showingAllPanels ? subgraphs.filter(item => !item.panel) : subgraphs;
   const renderSubgraphOption = (item: SubgraphOption) =>
@@ -75,6 +84,9 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   const [authoredDirection, setAuthoredDirection] = useState<DiagramDirection>();
   const [savedDirection, setSavedDirection] = useState<DiagramDirection>();
   const currentDirection = direction ?? authoredDirection;
+  const noteKey = activeNote ? `${activeNote.key}:${currentDirection ?? ''}` : undefined;
+  const [notePlacement, setNotePlacement] = useState<NotePlacement>();
+  const notePosition = noteKey && notePlacement?.key === noteKey ? notePlacement : undefined;
   const nextDirection = currentDirection === 'LR' ? 'TB' : 'LR';
   const defaultDirection = savedDirection ?? authoredDirection;
   const canSaveLayout = layoutKey && defaultDirection && currentDirection && currentDirection !== defaultDirection;
@@ -126,6 +138,58 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   useEffect(() => {
     if (expanded && !dialog.current?.open) dialog.current?.showModal();
   }, [expanded]);
+
+  useEffect(() => {
+    const frame = viewport.current;
+    const content = panContent.current;
+    const note = desktopNote.current;
+    if (!expanded || !noteKey || !focus || !frame || !content || !note) return;
+
+    const positionNote = () => {
+      const noteBounds = note.getBoundingClientRect();
+      if (!noteBounds.width) return;
+      const target = findSubgraphs(content)
+        .find(item => item.id === selectedSubgraph && item.panel === selectedPanel)?.element;
+      if (!target) return;
+
+      const bounds = frame.getBoundingClientRect();
+      const targetBounds = target.getBoundingClientRect();
+      let placement: NotePlacement;
+      if (notePosition?.mode === 'sidebar') {
+        const maxOffset = Math.max(0, bounds.height - note.scrollHeight - (note.offsetHeight - note.clientHeight));
+        placement = {key: noteKey, mode: 'sidebar', left: 0,
+          top: Math.max(0, Math.min(targetBounds.top - bounds.top, maxOffset))};
+      } else {
+        const obstacles = Array.from(content.querySelectorAll('g.node, g.cluster, g.edgePaths path, g.edgeLabels .edgeLabel'))
+          .map(element => element.getBoundingClientRect())
+          .filter(box => box.width || box.height);
+        const spot = placeSubgraphNote(bounds, targetBounds, noteBounds, obstacles);
+        const parent = note.parentElement?.getBoundingClientRect();
+        placement = spot && parent
+          ? {key: noteKey, mode: 'floating', left: spot.left - parent.left, top: spot.top - parent.top,
+            connector: {...spot.connector, left: spot.connector.left - parent.left, top: spot.connector.top - parent.top}}
+          : {key: noteKey, mode: 'sidebar', left: 0, top: 0};
+      }
+      setNotePlacement(previous => previous?.key === placement.key && previous.mode === placement.mode
+        && Math.abs(previous.left - placement.left) < 0.5 && Math.abs(previous.top - placement.top) < 0.5
+        && previous.connector?.vertical === placement.connector?.vertical
+        && Math.abs((previous.connector?.left ?? 0) - (placement.connector?.left ?? 0)) < 0.5
+        && Math.abs((previous.connector?.top ?? 0) - (placement.connector?.top ?? 0)) < 0.5
+        ? previous : placement);
+    };
+
+    // Keep a reserved sidebar until the selection, orientation or window changes.
+    const reconsider = () => setNotePlacement(undefined);
+    const observer = new ResizeObserver(positionNote);
+    observer.observe(frame);
+    observer.observe(note);
+    window.addEventListener('resize', reconsider);
+    positionNote();
+    return () => {
+      observer.disconnect();
+      window.removeEventListener('resize', reconsider);
+    };
+  }, [expanded, noteKey, focus, focusX, focusY, viewScale, selectedSubgraph, selectedPanel, notePosition?.mode]);
 
   useEffect(() => {
     const frame = viewport.current;
@@ -407,7 +471,13 @@ export default function DiagramFigure({number, title, shareId, legend, children}
             </div>
           </div>
         </div>
-        {expanded && <div className={styles.expanded}>
+        {expanded && <div className={styles.expanded} data-subgraph-note={!!activeNote || undefined}
+          data-note-placement={notePosition?.mode}>
+          {activeNote && <details className={`${styles.subgraphNote} ${styles.mobileNote}`}
+            key={activeNote.key}>
+            <summary className={styles.noteTitle}>{activeNote.title}</summary>
+            <p>{activeNote.text}</p>
+          </details>}
           <div ref={viewport} className={styles.viewport} data-dragging={dragging || undefined}
             role="region" tabIndex={0} aria-label="Diagram viewport: use the mouse wheel to zoom, drag to pan, or use arrow keys to pan"
             onDoubleClick={event => {
@@ -467,6 +537,22 @@ export default function DiagramFigure({number, title, shareId, legend, children}
                 height: focus.height * viewScale,
               }} />}
           </div>
+          {notePosition?.connector && <span className={styles.noteConnector} data-note-connector aria-hidden="true"
+            style={{
+              left: notePosition.connector.left,
+              top: notePosition.connector.top,
+              width: notePosition.connector.length,
+              transform: notePosition.connector.vertical ? 'rotate(90deg)' : undefined,
+            }} />}
+          {activeNote && <aside ref={desktopNote} className={`${styles.subgraphNote} ${styles.desktopNote}`}
+            aria-label={activeNote.title}
+            style={notePosition ? {
+              '--note-left': `${notePosition.left}px`,
+              '--note-top': `${notePosition.top}px`,
+            } as CSSProperties : undefined}>
+            <p className={styles.noteTitle}>{activeNote.title}</p>
+            <p>{activeNote.text}</p>
+          </aside>}
           <Legend items={legend} />
         </div>}
       </dialog>

@@ -14,7 +14,7 @@ const focusModule = new Module(focusFilename, module);
 focusModule._compile(ts.transpileModule(fs.readFileSync(focusFilename, 'utf8'), {
   compilerOptions: {module: ts.ModuleKind.CommonJS},
 }).outputText, focusFilename);
-const {fitSubgraph} = focusModule.exports;
+const {fitSubgraph, placeSubgraphNote} = focusModule.exports;
 
 const filename = path.resolve(__dirname, '../../src/components/DiagramFigure/index.tsx');
 const loaded = new Module(filename, module);
@@ -37,6 +37,20 @@ loaded._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
   compilerOptions: {module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true},
 }).outputText, filename);
 const Figure = loaded.exports.default;
+
+test('subgraph notes use an adjacent space only when the diagram leaves it clear', () => {
+  const rect = (left, top, width, height) => ({left, top, width, height, right: left + width, bottom: top + height});
+  const frame = rect(0, 0, 800, 500);
+  const target = rect(300, 120, 180, 260);
+  const note = rect(0, 0, 200, 120);
+  assert.deepEqual(placeSubgraphNote(frame, target, note, [target]), {
+    left: 504, top: 120, connector: {left: 480, top: 180, length: 24, vertical: false},
+  });
+  assert.deepEqual(placeSubgraphNote(frame, target, note, [target, rect(490, 180, 1, 0)]), {
+    left: 76, top: 120, connector: {left: 276, top: 180, length: 24, vertical: false},
+  });
+  assert.equal(placeSubgraphNote(frame, target, note, [rect(0, 0, 800, 500)]), undefined);
+});
 
 test('subgraph fit uses leading blank space only when it reveals downstream content', () => {
   const rect = (left, top, width, height) => ({left, top, width, height, right: left + width, bottom: top + height});

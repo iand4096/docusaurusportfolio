@@ -169,6 +169,12 @@ The diagram below summarises the authoring, review and publishing sequence.
   "number": 1,
   "title": "Developer Center authoring and publishing",
   "shareId": "developer-center-authoring-and-publishing",
+  "subgraphNotes": {
+    "AUTHORING": "The team used MadCap Flare for reusable and conditional content. Git feature branches kept each change separate until it was ready to merge.",
+    "REVIEW": "A temporary site let reviewers see the published layout before launch. With Hypothesis, they could attach feedback directly to the relevant passage.",
+    "CI": "Merging an approved change to main triggered the CI build, which prepared the documentation for synchronisation into TYPO3 staging.",
+    "PUBLISH": "The integration added, updated or removed only the TYPO3 records that had changed and kept navigation in sync. Staging gave the team a final check before promotion to production."
+  },
   "legend": [
     {
       "role": "interaction",

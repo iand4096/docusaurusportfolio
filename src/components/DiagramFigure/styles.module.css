@@ -259,12 +259,111 @@
 }
 
 .expanded {
+  position: relative;
   display: flex;
   flex-direction: column;
   overflow: hidden;
   flex: 1 1 auto;
   min-height: 0;
   container-type: inline-size;
+}
+
+.expanded[data-subgraph-note] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  gap: 0.5rem;
+}
+
+.subgraphNote {
+  min-width: 0;
+  padding: 0.85rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-inline-start: 3px solid var(--ifm-color-primary);
+  border-radius: 0.35rem;
+  background: var(--ifm-background-surface-color);
+  font-size: var(--portfolio-text-body);
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+
+.subgraphNote p {
+  margin: 0;
+}
+
+.noteTitle {
+  color: var(--ifm-heading-color);
+  font-weight: 650;
+}
+
+.subgraphNote .noteTitle + p {
+  margin-top: 0.4rem;
+}
+
+.mobileNote {
+  max-height: 30dvh;
+  overflow: auto;
+}
+
+.mobileNote summary {
+  cursor: pointer;
+}
+
+.desktopNote,
+.noteConnector {
+  display: none;
+}
+
+@media (min-width: 900px) {
+  .expanded[data-subgraph-note] {
+    grid-template: 'viewport' minmax(0, 1fr) 'legend' auto / minmax(0, 1fr);
+  }
+
+  .expanded[data-note-placement='sidebar'] {
+    grid-template: 'viewport note' minmax(0, 1fr) 'legend legend' auto / minmax(0, 1fr) clamp(16rem, 25vw, 22rem);
+    column-gap: 0.75rem;
+  }
+
+  .expanded[data-subgraph-note] > .viewport { grid-area: viewport; }
+  .expanded[data-subgraph-note] > .legend { grid-area: legend; }
+  .mobileNote { display: none; }
+  .desktopNote {
+    display: block;
+    position: absolute;
+    z-index: 2;
+    inset: var(--note-top, 0) auto auto var(--note-left, 0);
+    width: clamp(16rem, 25vw, 22rem);
+    visibility: hidden;
+  }
+
+  .desktopNote .noteTitle { display: none; }
+  .desktopNote .noteTitle + p { margin-top: 0; }
+
+  .expanded[data-note-placement='floating'] > .desktopNote {
+    visibility: visible;
+  }
+
+  .expanded[data-note-placement='sidebar'] > .desktopNote {
+    position: static;
+    grid-area: note;
+    align-self: start;
+    width: auto;
+    max-height: calc(100% - var(--note-top, 0px));
+    margin-top: var(--note-top, 0);
+    overflow: auto;
+    visibility: visible;
+  }
+
+  .expanded[data-note-placement='sidebar'] .desktopNote .noteTitle { display: block; }
+  .expanded[data-note-placement='sidebar'] .desktopNote .noteTitle + p { margin-top: 0.4rem; }
+
+  .noteConnector {
+    display: block;
+    position: absolute;
+    border-top: 2px dashed var(--ifm-color-primary);
+    transform-origin: left top;
+    pointer-events: none;
+    z-index: 1;
+  }
 }
 
 .expanded .canvas svg {
