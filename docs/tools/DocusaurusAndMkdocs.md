@@ -58,9 +58,7 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 I build and extend static-site documentation platforms, including this Docusaurus portfolio and a MkDocs pilot for an internal Wiki migration.
 
-## Static site generators and documentation platforms {/* #static-site-generators-and-documentation-platforms */}
-
-### Docusaurus {/* #docusaurus */}
+## Docusaurus {/* #docusaurus */}
 
 <CapabilityGrid>
 
@@ -75,7 +73,7 @@ I build and extend static-site documentation platforms, including this Docusauru
 
 </CapabilityGrid>
 
-### MkDocs {/* #mkdocs */}
+## MkDocs {/* #mkdocs */}
 
 <CapabilityGrid>
 
@@ -90,7 +88,7 @@ I build and extend static-site documentation platforms, including this Docusauru
 
 </CapabilityGrid>
 
-### Documentation platform engineering {/* #documentation-platform-engineering */}
+## Documentation platform engineering {/* #documentation-platform-engineering */}
 
 <CapabilityGrid>
 

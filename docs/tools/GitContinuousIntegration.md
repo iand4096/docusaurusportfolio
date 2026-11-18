@@ -43,11 +43,14 @@ tags:
   - technical-validation
 ---
 
-## Git, GitHub, GitHub Actions and Jenkins {/* #git-github-github-actions-and-jenkins */}
+## Version control and review {/* #version-control-and-review */}
 
 * Diagnosed and resolved Git issues for my technical writing team, including **merge conflicts**.
 * Experienced using command-line Git, including **rebase** and **commit squashing**, to resolve integration issues and maintain cleaner repository history.
 * 9 years using **GitHub and Bitbucket pull-request workflows** to review and integrate changes to documentation and code.
+
+## CI/CD pipelines {/* #cicd-pipelines */}
+
 * Used **GitHub Actions** for Continuous Integration and Deployment (CI/CD) to automatically build and publish my Docusaurus portfolio site when content changes are pushed.
 * Worked with Jenkins CI/CD pipelines for documentation builds, QA, and deployment at Morgan Stanley. Able to read and understand pipeline configurations, identify issues and potential improvements, and work with development teams to resolve any problems.
 * Implemented automated internal-link validation in the documentation CI/CD pipelines at Morgan Stanley, preventing pull requests containing broken links from being merged.

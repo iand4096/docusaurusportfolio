@@ -121,7 +121,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   ]
 }} />
 
-## Project overview
+## Project context {/* #project-overview */}
 
 I designed and deployed a **cloud-based retrieval-augmented generation (RAG)** application to test how documentation governance can improve the way people find technical information. Visitors can search my portfolio using keywords, semantic similarity or hybrid retrieval, then inspect the original passages or request an AI-generated answer grounded in those passages.
 

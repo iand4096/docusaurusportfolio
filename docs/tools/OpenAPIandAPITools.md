@@ -59,8 +59,6 @@ import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
 I maintain API specifications and test them against live API behaviour using Postman, Insomnia, cURL and custom tooling.
 
-## OpenAPI, Postman, Insomnia, cURL {/* #openapi-postman-insomnia-curl */}
-
 <CapabilityGrid>
 
 * **Specifications**<br />
