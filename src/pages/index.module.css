@@ -41,6 +41,7 @@
 .projects { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 30px; }
 .project { position: relative; cursor: pointer; display: grid; grid-template-rows: subgrid; grid-row: span 5; row-gap: 0; justify-items: start; padding-top: 20px; border-top: 2px solid var(--ifm-color-primary); }
 .employer { font-size: var(--portfolio-text-secondary); color: var(--portfolio-muted); margin-bottom: 14px; }
+.employer a, .employer a:hover { color: inherit; }
 .project h3 { margin-bottom: 18px; }
 .description { font-size: var(--portfolio-text-body); color: var(--portfolio-muted); }
 .evidenceRow { display: flex; align-items: baseline; gap: 16px; width: 100%; padding-top: 12px; margin-bottom: 16px; }
