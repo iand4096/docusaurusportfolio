@@ -169,6 +169,7 @@ The diagram shows the implemented indexing and query paths. **Taxonomy selection
 <DiagramFigure {...{
   "number": 1,
   "title": "Documentation indexing and search",
+  "shareId": "documentation-indexing-and-search",
   "legend": [
     {
       "role": "input",
@@ -199,7 +200,7 @@ The diagram shows the implemented indexing and query paths. **Taxonomy selection
 
 <div className="diagram-columns">
 
-<div className="diagram-panel">
+<div className="diagram-panel" data-diagram-panel-id="indexing-before-deployment">
 
 #### Indexing before deployment
 
@@ -233,7 +234,7 @@ Chunk --> Embed --> Vector
 
 </div>
 
-<div className="diagram-panel">
+<div className="diagram-panel" data-diagram-panel-id="search-and-answer-generation">
 
 #### Search and answer generation
 
@@ -287,6 +288,7 @@ I use **Terraform with the AzureRM provider** to provision the Azure resource gr
 <DiagramFigure {...{
   "number": 2,
   "title": "Azure deployment architecture",
+  "shareId": "azure-deployment-architecture",
   "legend": [
     {
       "role": "input",

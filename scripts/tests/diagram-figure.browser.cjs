@@ -31,6 +31,83 @@ async function checkDescriptions(container, expected) {
   assert.deepEqual(actual, expected, 'Each SVG has its own linked accessible title and description');
 }
 
+async function checkSharedLinks(browser) {
+  const context = await browser.newContext({permissions: ['clipboard-read', 'clipboard-write']});
+  try {
+    const source = await context.newPage();
+    await source.goto(`${base}/docs/case-studies/RagSearchCloudArchitecture`);
+    const anchor = '#diagram-documentation-indexing-and-search';
+    const figure = source.locator('figure').filter({has: source.locator(anchor)});
+    const permalink = figure.getByRole('link', {name: 'Direct link to Figure 1. Documentation indexing and search'});
+    await figure.locator(anchor).hover();
+    await permalink.click();
+    await source.waitForURL(url => url.hash === anchor && !url.search);
+    assert.equal(await figure.getByRole('dialog').count(), 0);
+    await figure.getByRole('button', {name: /^View full-screen/}).click();
+    const viewer = figure.getByRole('dialog');
+    const copy = viewer.getByRole('button', {name: 'Copy diagram link'});
+    await viewer.getByRole('button', {name: 'Search and answer generation', exact: true}).click();
+    await viewer.getByRole('button', {name: 'Left to right', exact: true}).click();
+    await viewer.getByRole('button', {name: 'Zoom in', exact: true}).click();
+    await copy.click();
+    await viewer.getByText('Link copied', {exact: true}).waitFor();
+    const link = new URL(await source.evaluate(() => navigator.clipboard.readText()));
+    assert.equal(link.hash, '#diagram-documentation-indexing-and-search');
+    assert.deepEqual(Object.fromEntries(link.searchParams), {
+      diagram: 'documentation-indexing-and-search', panel: 'search-and-answer-generation', layout: 'lr',
+    });
+
+    const recipient = await context.newPage();
+    await recipient.setViewportSize({width: 390, height: 800});
+    await recipient.goto(link.href);
+    const opened = recipient.getByRole('dialog', {name: 'Figure 1. Documentation indexing and search'});
+    await opened.locator('svg:visible').waitFor();
+    assert.match(await opened.locator('svg:visible title').textContent(), /Search and answer generation/);
+    assert.equal(await opened.getByRole('button', {name: 'Top to bottom'}).count(), 1);
+    assert.equal(await opened.getByRole('button', {name: 'Reset zoom and fit diagram'}).textContent(), '100%');
+    await recipient.keyboard.press('Escape');
+    await opened.waitFor({state: 'hidden'});
+    await recipient.waitForURL(url => !url.search && url.hash === link.hash);
+    const inline = recipient.locator('figure').filter({has: recipient.locator(link.hash)});
+    assert.equal(await inline.getByRole('button', {name: /^View full-screen/})
+      .evaluate(button => document.activeElement === button), true);
+
+    await viewer.getByRole('button', {name: 'All diagrams', exact: true}).click();
+    await source.evaluate(() => {
+      Object.defineProperty(navigator, 'clipboard', {
+        configurable: true,
+        value: {writeText: async () => { throw new Error('Clipboard denied'); }},
+      });
+    });
+    await copy.click();
+    const fallback = viewer.getByRole('textbox', {name: 'Diagram link'});
+    await fallback.waitFor();
+    await source.waitForFunction(() => {
+      const field = document.activeElement;
+      return field instanceof HTMLInputElement && field.selectionStart === 0 && field.selectionEnd === field.value.length;
+    });
+    const allLink = new URL(await fallback.inputValue());
+    assert.equal(allLink.searchParams.has('panel'), false);
+    await recipient.goto(allLink.href);
+    await opened.getByRole('button', {name: 'All diagrams', pressed: true}).waitFor();
+    await recipient.waitForFunction(() => document.querySelectorAll('dialog[open] svg').length === 2);
+    console.log('Diagram share links, clipboard fallback and anchor on close passed.');
+
+    await opened.locator('svg:visible').first().dblclick({position: {x: 2, y: 2}});
+    await opened.waitFor({state: 'hidden'});
+    const open = inline.getByRole('button', {name: /^View full-screen/});
+    assert.match(await open.getAttribute('title'), /double-click the diagram to open or close/i);
+    await inline.locator('svg:visible').first().dblclick({position: {x: 2, y: 2}});
+    await opened.getByRole('button', {name: 'Indexing before deployment', pressed: true}).waitFor();
+    await opened.locator('svg:visible').first().dblclick({position: {x: 2, y: 2}});
+    await opened.waitFor({state: 'hidden'});
+    assert.equal(await open.evaluate(button => document.activeElement === button), true);
+    console.log('Double-clicking a diagram opens and closes the full-screen viewer.');
+  } finally {
+    await context.close();
+  }
+}
+
 (async () => {
   if (output) fs.mkdirSync(output, {recursive: true});
   const browser = await chromium.launch({headless: true,
@@ -39,6 +116,7 @@ async function checkDescriptions(container, expected) {
       LD_LIBRARY_PATH: process.env.DIAGRAM_BROWSER_LIBRARY_PATH || ''}});
   const report = [];
   try {
+    await checkSharedLinks(browser);
     for (const [width, theme] of matrix) {
       const context = await browser.newContext({viewport: {width, height: 900},
         colorScheme: theme, isMobile: width <= 390});

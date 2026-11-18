@@ -1,4 +1,6 @@
-import React, {useEffect, useId, useRef, useState, type CSSProperties, type ReactNode} from 'react';
+import React, {useCallback, useEffect, useId, useRef, useState, type CSSProperties, type ReactNode} from 'react';
+import {useHistory, useLocation} from '@docusaurus/router';
+import Heading from '@theme/Heading';
 import {DiagramDirectionContext, DiagramFigureContext, type DiagramDirection} from './context';
 import {roles, type DiagramRole} from './theme.cjs';
 import styles from './styles.module.css';
@@ -7,9 +9,18 @@ export type LegendItem = Readonly<{role: DiagramRole; label?: string}>;
 export type DiagramFigureProps = Readonly<{
   number: number;
   title: string;
+  shareId?: string;
   legend: readonly LegendItem[];
   children: ReactNode;
 }>;
+
+type DiagramPanel = {key: string; title: string; shareId?: string};
+
+const fullScreenHint = 'Double-click the diagram to open or close full-screen.';
+
+function isDiagramTarget(target: EventTarget | null): target is Element {
+  return target instanceof Element && !!target.closest('svg') && !target.closest('a, button');
+}
 
 function Legend({items}: {items: readonly LegendItem[]}): ReactNode {
   return <ul className={styles.legend} aria-label="Colour and icon key">
@@ -26,8 +37,12 @@ function Legend({items}: {items: readonly LegendItem[]}): ReactNode {
 }
 
 /** One titled figure may contain a single Mermaid diagram or several panels. */
-export default function DiagramFigure({number, title, legend, children}: DiagramFigureProps): ReactNode {
+export default function DiagramFigure({number, title, shareId, legend, children}: DiagramFigureProps): ReactNode {
   const id = useId();
+  const anchor = shareId ? `diagram-${shareId}` : undefined;
+  const {pathname, search} = useLocation();
+  const history = useHistory();
+  const opener = useRef<HTMLButtonElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const viewport = useRef<HTMLDivElement>(null);
   const panContent = useRef<HTMLDivElement>(null);
@@ -37,9 +52,10 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
   const [dragging, setDragging] = useState(false);
   const canvas = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
-  const [panelTitles, setPanelTitles] = useState<string[]>([]);
-  const [selectedPanel, setSelectedPanel] = useState<number>();
-  const showingAllPanels = panelTitles.length > 1 && selectedPanel === undefined;
+  const [panels, setPanels] = useState<DiagramPanel[]>([]);
+  const [selectedPanel, setSelectedPanel] = useState<string>();
+  const activePanel = panels.find(panel => panel.key === selectedPanel);
+  const showingAllPanels = panels.length > 1 && !activePanel;
   const viewScale = fitScale * view.zoom;
   const zoomPercent = Math.round(view.zoom * 100);
   const [direction, setDirection] = useState<DiagramDirection>();
@@ -47,7 +63,37 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
   const currentDirection = direction ?? authoredDirection;
   const nextDirection = currentDirection === 'LR' ? 'TB' : 'LR';
   const [reservedHeight, setReservedHeight] = useState<number>();
+  const [shareStatus, setShareStatus] = useState('');
+  const [manualLink, setManualLink] = useState('');
+  const manualLinkInput = useRef<HTMLInputElement>(null);
+  const copyAttempt = useRef(0);
   const caption = `Figure ${number}. ${title}`;
+
+  const openViewer = useCallback((panel?: string, layout?: DiagramDirection) => {
+    copyAttempt.current++;
+    setReservedHeight(canvas.current?.getBoundingClientRect().height);
+    setView({zoom: 1, x: 0, y: 0});
+    setDragging(false);
+    drag.current = null;
+    setDirection(layout);
+    setAuthoredDirection(undefined);
+    setSelectedPanel(panel);
+    setShareStatus('');
+    setManualLink('');
+    setExpanded(true);
+  }, []);
+
+  useEffect(() => {
+    const params = new URLSearchParams(search);
+    if (!shareId || params.get('diagram') !== shareId) return;
+    const layout = params.get('layout');
+    if (!dialog.current?.open) opener.current?.focus({preventScroll: true});
+    openViewer(params.get('panel') || undefined, layout === 'lr' ? 'LR' : layout === 'tb' ? 'TB' : undefined);
+  }, [pathname, search, shareId, openViewer]);
+
+  useEffect(() => {
+    if (manualLink) manualLinkInput.current?.focus();
+  }, [manualLink]);
 
   useEffect(() => {
     if (expanded && !dialog.current?.open) dialog.current?.showModal();
@@ -77,16 +123,23 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
     fit();
     const readPanels = () => {
       const panels = Array.from(content.querySelectorAll<HTMLElement>('.diagram-columns > .diagram-panel'));
-      const titles = panels.map((panel, index) =>
-        panel.querySelector('h4')?.textContent?.replaceAll('\u200b', '').trim() || `Diagram ${index + 1}`);
-      setPanelTitles(previous => previous.length === titles.length
-        && previous.every((title, index) => title === titles[index]) ? previous : titles);
+      const options = panels.map((panel, index): DiagramPanel => {
+        const shareId = panel.dataset.diagramPanelId;
+        return {
+          key: shareId || `panel:${index}`,
+          title: panel.querySelector('h4')?.textContent?.replaceAll('\u200b', '').trim() || `Diagram ${index + 1}`,
+          shareId,
+        };
+      });
+      setPanels(previous => previous.length === options.length && previous.every((panel, index) =>
+        panel.key === options[index].key && panel.title === options[index].title) ? previous : options);
+      const selectedIndex = options.findIndex(panel => panel.key === selectedPanel);
       panels.forEach((panel, index) => {
-        panel.hidden = selectedPanel !== undefined && selectedPanel !== index;
+        panel.hidden = selectedIndex >= 0 && selectedIndex !== index;
         const heading = panel.querySelector(':scope > h4');
         if (heading) observer.observe(heading);
       });
-      const activeContent = selectedPanel === undefined ? content : panels[selectedPanel];
+      const activeContent = selectedIndex < 0 ? content : panels[selectedIndex];
       const marker = activeContent?.querySelector<HTMLElement>('[data-diagram-authored-direction]');
       const authored = marker?.dataset.diagramAuthoredDirection;
       setAuthoredDirection(authored === 'LR' || authored === 'TB' ? authored : undefined);
@@ -113,6 +166,39 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
     dialog.current?.close();
   }
 
+  function handleClose() {
+    copyAttempt.current++;
+    setExpanded(false);
+    const params = new URLSearchParams(search);
+    if (!shareId || params.get('diagram') !== shareId) return;
+    for (const key of ['diagram', 'panel', 'layout']) params.delete(key);
+    const remaining = params.toString();
+    history.replace({pathname, search: remaining ? `?${remaining}` : '', hash: `#${anchor}`});
+    opener.current?.closest('figure')?.scrollIntoView();
+  }
+
+  async function copyShareLink() {
+    if (!shareId || !anchor) return;
+    const attempt = ++copyAttempt.current;
+    const url = new URL(window.location.href);
+    url.hash = anchor;
+    url.searchParams.set('diagram', shareId);
+    url.searchParams.delete('panel');
+    url.searchParams.delete('layout');
+    if (activePanel?.shareId) url.searchParams.set('panel', activePanel.shareId);
+    if (currentDirection) url.searchParams.set('layout', currentDirection.toLowerCase());
+    setShareStatus('');
+    setManualLink('');
+    try {
+      await navigator.clipboard.writeText(url.href);
+      if (attempt === copyAttempt.current) setShareStatus('Link copied');
+    } catch {
+      if (attempt !== copyAttempt.current) return;
+      setManualLink(url.href);
+      setShareStatus('Select and copy the diagram link.');
+    }
+  }
+
   useEffect(() => {
     if (!expanded) return;
     const element = viewport.current;
@@ -133,23 +219,24 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
 
   return <DiagramFigureContext.Provider value={true}>
     <figure className={styles.figure} aria-labelledby={`${id}-caption`}>
-      <figcaption id={`${id}-caption`} className={styles.title}>{caption}</figcaption>
-      <div ref={canvas} className={styles.canvas} style={expanded ? {height: reservedHeight} : undefined}>
+      <figcaption id={`${id}-caption`} className={anchor ? undefined : styles.title} title={fullScreenHint}>
+        {anchor ? <Heading as="h4" id={anchor} className={styles.title}>{caption}</Heading> : caption}
+      </figcaption>
+      <div ref={canvas} className={styles.canvas} style={expanded ? {height: reservedHeight} : undefined}
+        onDoubleClick={event => {
+          if (!isDiagramTarget(event.target)) return;
+          event.preventDefault();
+          opener.current?.focus({preventScroll: true});
+          const panel = event.target.closest<HTMLElement>('.diagram-panel');
+          openViewer(panel?.dataset.diagramPanelId);
+        }}>
         {!expanded && children}
       </div>
       <div className={styles.actions}>
-        <button type="button" className={styles.expand} aria-haspopup="dialog"
+        <button ref={opener} type="button" className={styles.expand} aria-haspopup="dialog"
           aria-controls={`${id}-dialog`} aria-label={`View full-screen: ${caption}`}
-          onClick={() => {
-            setReservedHeight(canvas.current?.getBoundingClientRect().height);
-            setView({zoom: 1, x: 0, y: 0});
-            setDragging(false);
-            drag.current = null;
-            setDirection(undefined);
-            setAuthoredDirection(undefined);
-            setSelectedPanel(undefined);
-            setExpanded(true);
-          }}>
+          title={fullScreenHint}
+          onClick={() => openViewer()}>
           <i className="fa-solid fa-expand" aria-hidden="true" /> View full-screen
         </button>
       </div>
@@ -160,24 +247,33 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
           event.preventDefault();
           closeViewer();
         }}
-        onClose={() => setExpanded(false)}>
+        onClose={handleClose}>
         <header className={styles.toolbar}>
-          <h2 id={`${id}-expanded-caption`} className={styles.title}>{caption}</h2>
-          <button type="button" className={styles.closeButton} autoFocus
-            aria-label="Close" title="Close (Esc)" aria-keyshortcuts="Escape" onClick={closeViewer}>
-            <i className="fa-solid fa-xmark" aria-hidden="true" /> <span>Close</span>
-          </button>
+          <h2 id={`${id}-expanded-caption`} className={styles.title} title={fullScreenHint}>{caption}</h2>
+          <div className={styles.headerActions}>
+            {shareId && <button type="button" className={styles.shareButton}
+              aria-label="Copy diagram link" title="Copy diagram link" onClick={copyShareLink}>
+              <i className="fa-solid fa-link" aria-hidden="true" />
+            </button>}
+            <button type="button" className={styles.closeButton} autoFocus
+              aria-label="Close" title="Close (Esc)" aria-keyshortcuts="Escape" onClick={closeViewer}>
+              <i className="fa-solid fa-xmark" aria-hidden="true" /> <span>Close</span>
+            </button>
+          </div>
         </header>
+        {shareId && <p className={styles.shareStatus} role="status">{shareStatus}</p>}
+        {manualLink && <input ref={manualLinkInput} className={styles.shareLink} type="text"
+          aria-label="Diagram link" value={manualLink} readOnly onFocus={event => event.target.select()} />}
         <div className={styles.controlBar}>
-          {expanded && panelTitles.length > 1 && <div className={styles.panelLinks} role="group" aria-label="Diagrams in this figure">
-            {[undefined, ...panelTitles.map((_, index) => index)].map(index => (
-              <button key={index ?? 'all'} type="button"
-                aria-pressed={selectedPanel === index}
+          {expanded && panels.length > 1 && <div className={styles.panelLinks} role="group" aria-label="Diagrams in this figure">
+            {[undefined, ...panels].map(panel => (
+              <button key={panel?.key ?? 'all'} type="button"
+                aria-pressed={activePanel === panel}
                 onClick={() => {
-                  setSelectedPanel(index);
+                  setSelectedPanel(panel?.key);
                   setView({zoom: 1, x: 0, y: 0});
                 }}>
-                {index === undefined ? 'All diagrams' : panelTitles[index]}
+                {panel?.title ?? 'All diagrams'}
               </button>
             ))}
           </div>}
@@ -220,6 +316,12 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
         {expanded && <div className={styles.expanded}>
           <div ref={viewport} className={styles.viewport} data-dragging={dragging || undefined}
             role="region" tabIndex={0} aria-label="Diagram viewport: use the mouse wheel to zoom, drag to pan, or use arrow keys to pan"
+            onDoubleClick={event => {
+              // Pointer capture for panning can retarget the click to the viewport.
+              const target = event.target === event.currentTarget
+                ? document.elementFromPoint(event.clientX, event.clientY) : event.target;
+              if (isDiagramTarget(target)) closeViewer();
+            }}
             onPointerDown={event => {
               if (event.button !== 0 || drag.current || (event.target as Element).closest('a, button')) return;
               event.preventDefault();
@@ -256,7 +358,7 @@ export default function DiagramFigure({number, title, legend, children}: Diagram
             }}>
             <div ref={panContent} className={`${styles.canvas} ${styles.panContent}`}
               data-all-panels={showingAllPanels || undefined}
-              data-single-panel={selectedPanel !== undefined || undefined}
+              data-single-panel={!!activePanel || undefined}
               style={{
                 '--diagram-view-scale': viewScale,
                 transform: `translate(${view.x}px, ${view.y}px) scale(${viewScale}) translate(-50%, -50%)`,

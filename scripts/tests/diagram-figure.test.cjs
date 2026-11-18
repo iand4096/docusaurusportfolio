@@ -16,7 +16,12 @@ loaded.paths = Module._nodeModulePaths(path.dirname(filename));
 const originalRequire = loaded.require.bind(loaded);
 loaded.require = name => name.endsWith('.css')
   ? {__esModule: true, default: new Proxy({}, {get: (_, key) => key})}
-  : name === './context' ? {
+  : name === '@docusaurus/router' ? {
+    useLocation: () => ({pathname: '/', search: ''}),
+    useHistory: () => ({}),
+  } : name === '@theme/Heading' ? ({as, children, ...props}) => {
+    return React.createElement(as, props, children);
+  } : name === './context' ? {
     DiagramFigureContext: React.createContext(false),
     DiagramDirectionContext: React.createContext(undefined),
   } : originalRequire(name);

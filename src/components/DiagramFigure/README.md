@@ -11,6 +11,7 @@ import DiagramFigure from '@site/src/components/DiagramFigure';
 <DiagramFigure {...{
   "number": 1,
   "title": "Documentation publishing",
+  "shareId": "documentation-publishing",
   "legend": [
     {"role": "input", "label": "Source documents"},
     {"role": "process", "label": "Build and publication"}
@@ -35,6 +36,10 @@ flowchart LR
 Use a literal JSON spread, as shown, so the Markdown exporter can retain the
 figure title and key without evaluating JavaScript. Number figures explicitly
 within each page. Legend labels may be omitted to use the role's default label.
+Set a unique `shareId` on each shareable figure and keep it stable when editing
+the title or figure number. **Copy diagram link** opens the viewer at the
+selected layout with zoom and pan reset. The figure anchor works on its own.
+Double-click a diagram to open it full-screen or return to the page.
 
 Keep the visible figure caption and give every Mermaid diagram its own
 `accTitle` and `accDescr`, as shown above. Reuse the figure title for a single
@@ -104,8 +109,10 @@ colour classification or need legend entries.
 ## Multiple panels
 
 A single figure can wrap several fences in a `<div className="diagram-columns">`.
-Wrap each panel in `<div className="diagram-panel">` and give it a Markdown
-level-four heading. Panels align at the top when the figure has at least 48rem
+Wrap each panel in `<div className="diagram-panel" data-diagram-panel-id="stable-panel-id">`
+and give it a Markdown level-four heading. Use a unique panel ID within the
+figure so shared links can restore individual panels. Panels align at the top
+when the figure has at least 48rem
 of space and stack below that width, including narrow desktop content areas.
 One shared title, key and enlargement button covers the whole figure.
 

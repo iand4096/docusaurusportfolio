@@ -157,6 +157,7 @@ The platform supported the full documentation lifecycle, from Markdown authoring
 <DiagramFigure {...{
   "number": 1,
   "title": "Documentation platform workflow",
+  "shareId": "documentation-platform-workflow",
   "legend": [
     {
       "role": "interaction",

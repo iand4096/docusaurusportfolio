@@ -2,6 +2,7 @@
   margin: 1.5rem 0;
   min-width: 0;
   container-type: inline-size;
+  scroll-margin-top: calc(var(--ifm-navbar-height) + 0.75rem);
 }
 
 .title {
@@ -135,7 +136,7 @@
 
 .toolbar {
   display: grid;
-  grid-template-columns: minmax(4.75rem, 1fr) minmax(0, max-content) minmax(4.75rem, 1fr);
+  grid-template-columns: minmax(7.25rem, 1fr) minmax(0, max-content) minmax(7.25rem, 1fr);
   align-items: start;
   gap: 0.35rem;
   margin-bottom: 0.5rem;
@@ -169,10 +170,34 @@
   font-size: var(--portfolio-text-secondary);
 }
 
-.closeButton {
+.headerActions {
   grid-column: 3;
   justify-self: end;
   align-self: start;
+  display: flex;
+  gap: 0.35rem;
+}
+
+.shareStatus {
+  margin: 0;
+  text-align: center;
+  font-size: var(--portfolio-text-secondary);
+}
+
+.shareStatus:not(:empty) {
+  margin-bottom: 0.35rem;
+}
+
+.shareLink {
+  align-self: center;
+  width: min(100%, 40rem);
+  margin-bottom: 0.5rem;
+  padding: 0.35rem 0.5rem;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 2px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
 }
 
 .panelLinks {
@@ -250,7 +275,7 @@
 
 @media (max-width: 480px) {
   .toolbar {
-    grid-template-columns: minmax(2.25rem, 1fr) minmax(0, max-content) minmax(2.25rem, 1fr);
+    grid-template-columns: minmax(4.85rem, 1fr) minmax(0, max-content) minmax(4.85rem, 1fr);
   }
 
   .closeButton > span,
@@ -266,6 +291,7 @@
 
 .zoomButton,
 .layoutButton,
+.shareButton,
 .closeButton {
   display: inline-flex;
   align-items: center;
@@ -279,6 +305,10 @@
   font: inherit;
   font-size: var(--portfolio-text-secondary);
   cursor: pointer;
+}
+
+.shareButton {
+  width: 2.25rem;
 }
 
 .layoutButton,
@@ -305,6 +335,7 @@
 
 .zoomButton:hover:not(:disabled),
 .layoutButton:hover,
+.shareButton:hover,
 .closeButton:hover {
   background: var(--ifm-color-emphasis-100);
 }
@@ -316,7 +347,9 @@
 
 .zoomButton:focus-visible,
 .layoutButton:focus-visible,
+.shareButton:focus-visible,
 .closeButton:focus-visible,
+.shareLink:focus-visible,
 .panelLinks button:focus-visible,
 .viewport:focus-visible {
   outline: 2px solid var(--ifm-color-primary);

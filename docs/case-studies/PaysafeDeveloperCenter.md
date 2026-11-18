@@ -167,6 +167,7 @@ The diagram below summarises the authoring, review and publishing sequence.
 <DiagramFigure {...{
   "number": 1,
   "title": "Developer Center authoring and publishing",
+  "shareId": "developer-center-authoring-and-publishing",
   "legend": [
     {
       "role": "interaction",

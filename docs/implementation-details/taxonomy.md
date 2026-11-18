@@ -76,6 +76,7 @@ A semantic proposal is not automatically a taxonomy change. New or modified voca
 <DiagramFigure {...{
   "number": 1,
   "title": "Taxonomy governance architecture",
+  "shareId": "taxonomy-governance-architecture",
   "legend": [
     {
       "role": "generation",
@@ -249,6 +250,7 @@ This lets the extension provide CMS convenience without becoming a second taxono
 <DiagramFigure {...{
   "number": 2,
   "title": "Single-document metadata review and application",
+  "shareId": "single-document-metadata-review",
   "legend": [
     {
       "role": "input",
