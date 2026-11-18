@@ -174,7 +174,6 @@ The request below uses `taxonomy`, one of the topic terms listed by `/taxonomy`,
 The diagram shows the implemented indexing and query paths. **Taxonomy selection is manual at query time**, not an automatic query-classification stage.
 
 <DiagramFigure {...{
-  "number": 1,
   "title": "Documentation indexing and search",
   "shareId": "documentation-indexing-and-search",
   "legend": [
@@ -293,7 +292,6 @@ I separated the static frontend from the Python service. **Docusaurus is built b
 I use **Terraform with the AzureRM provider** to provision the Azure resource group, ACR, Container Apps environment and application, **Log Analytics** workspace, and a **user-assigned managed identity**. The identity receives scoped `AcrPull` permission; this allows the Container App to retrieve the private image without an ACR administrator password. After publishing an image, I update its tag in Terraform, review `terraform plan` and run `terraform apply` to deploy a new Container Apps revision.
 
 <DiagramFigure {...{
-  "number": 2,
   "title": "Azure deployment architecture",
   "shareId": "azure-deployment-architecture",
   "subgraphNotes": {

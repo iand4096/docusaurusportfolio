@@ -166,7 +166,6 @@ For urgent production fixes, changes could be made directly in TYPO3 and subsequ
 The diagram below summarises the authoring, review and publishing sequence.
 
 <DiagramFigure {...{
-  "number": 1,
   "title": "Developer Center authoring and publishing",
   "shareId": "developer-center-authoring-and-publishing",
   "subgraphNotes": {

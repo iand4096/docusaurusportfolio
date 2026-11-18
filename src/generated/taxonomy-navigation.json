@@ -1525,6 +1525,33 @@
       "organisations": []
     },
     {
+      "id": "implementation-details/diagram-figure",
+      "title": "DiagramFigure",
+      "path": "/docs/implementation-details/diagram-figure",
+      "source": "docs/implementation-details/diagram-figure.mdx",
+      "description": "Usage and a live example for shareable Mermaid figures with subgraph focus and contextual notes.",
+      "type": [
+        "implementation-guide"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering"
+      ],
+      "technologies": [
+        "docusaurus",
+        "markdown",
+        "css"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
+    },
+    {
       "id": "tools/Diagramming",
       "title": "Diagramming and Technical Visualisation",
       "path": "/docs/diagramsandvisuals",
