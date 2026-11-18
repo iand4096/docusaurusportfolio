@@ -172,6 +172,108 @@ async function checkLayoutDefaults(browser) {
   }
 }
 
+async function checkSubgraphZoom(browser) {
+  const context = await browser.newContext({permissions: ['clipboard-read', 'clipboard-write']});
+  try {
+    const page = await context.newPage();
+    const url = new URL(`${base}/docs/case-studies/RagSearchCloudArchitecture`);
+    const figureId = 'azure-deployment-architecture';
+    const figure = page.locator('figure').filter({has: page.locator(`#diagram-${figureId}`)});
+    const viewer = figure.getByRole('dialog');
+    const zoomTo = viewer.getByRole('combobox', {name: 'Zoom to'});
+    const waitForVisualOrder = direction => page.waitForFunction(direction => {
+      const viewer = document.querySelector('dialog[open]');
+      const diagram = viewer?.querySelector(`[data-diagram-subgraph-direction="${direction}"]`);
+      const menu = viewer?.querySelector('select');
+      if (!diagram || !menu) return false;
+      const visualOrder = [...diagram.querySelectorAll('g.cluster')].map(cluster => {
+        const {left, top} = cluster.getBoundingClientRect();
+        return {left, top, label: cluster.querySelector('.cluster-label').textContent.replace(/\s+/g, ' ').trim()};
+      }).sort((a, b) => direction === 'LR' ? a.left - b.left || a.top - b.top : a.top - b.top || a.left - b.left)
+        .map(cluster => cluster.label);
+      const menuOrder = [...menu.options].filter(option => option.value).map(option => option.textContent.trim());
+      return visualOrder.length === 2 && JSON.stringify(visualOrder) === JSON.stringify(menuOrder);
+    }, direction);
+    const waitForSubgraphFit = (id = 'PACKAGE') => page.waitForFunction(id => {
+      const stage = document.querySelector('dialog[open] [aria-label^="Diagram viewport:"]');
+      const group = [...(stage?.querySelectorAll('g.cluster[id]') ?? [])]
+        .find(cluster => cluster.id === id || cluster.id.endsWith('-' + id));
+      if (!group) return false;
+      const frame = stage.getBoundingClientRect();
+      const target = group.getBoundingClientRect();
+      const outline = stage.querySelector('[data-subgraph-highlight]')?.getBoundingClientRect();
+      const horizontal = group.closest('[data-diagram-subgraph-direction]').dataset.diagramSubgraphDirection === 'LR';
+      const root = group.ownerSVGElement.querySelector('g.root')?.getBoundingClientRect();
+      const centredMargin = ((horizontal ? stage.clientWidth : stage.clientHeight)
+        - (horizontal ? target.width : target.height)) / 2;
+      const padding = Math.min(16, stage.clientWidth / 10, stage.clientHeight / 10);
+      const startContext = root ? (horizontal ? target.left - root.left : target.top - root.top) : 0;
+      const endContext = root ? (horizontal ? root.right - target.right : root.bottom - target.bottom) : 0;
+      const possibleShift = Math.min(centredMargin - Math.max(0, startContext) - padding, endContext - centredMargin);
+      const expectedShift = possibleShift >= 12 ? possibleShift : 0;
+      const offsetX = target.left + target.width / 2 - frame.left - frame.width / 2;
+      const offsetY = target.top + target.height / 2 - frame.top - frame.height / 2;
+      return target.width > 0 && target.height > 0
+        && Math.abs(offsetX + (horizontal ? expectedShift : 0)) < 2
+        && Math.abs(offsetY + (horizontal ? 0 : expectedShift)) < 2
+        && target.width <= frame.width - 4 && target.height <= frame.height - 4
+        && target.left >= frame.left + 4 && target.top >= frame.top + 4
+        && target.right <= frame.right - 4 && target.bottom <= frame.bottom - 4
+        && (outline ? Math.abs(outline.left - target.left) < 1 && Math.abs(outline.top - target.top) < 1
+          && Math.abs(outline.width - target.width) < 1 && Math.abs(outline.height - target.height) < 1
+          : Math.min(frame.width - target.width, frame.height - target.height) < 36);
+    }, id);
+
+    await page.setViewportSize({width: 1440, height: 900});
+    await page.goto(url.href);
+    await figure.getByRole('button', {name: /^View full-screen/}).click();
+    await waitForVisualOrder('TB');
+    await zoomTo.getByRole('option', {name: 'Choose a subgraph', exact: true}).waitFor({state: 'attached'});
+    assert.equal(await zoomTo.getByRole('option', {name: 'Whole diagram', exact: true}).count(), 0);
+    await zoomTo.selectOption({label: 'Static frontend'});
+    await waitForSubgraphFit('FRONTEND');
+    await viewer.locator('[data-subgraph-highlight]').waitFor();
+    const largestLabel = await viewer.locator('g.cluster[id="FRONTEND"], g.cluster[id$="-FRONTEND"]').evaluate(group => {
+      const bounds = group.getBoundingClientRect();
+      return Math.max(0, ...[...group.ownerSVGElement.querySelectorAll('g.node .nodeLabel')].map(label => {
+        const rect = label.getBoundingClientRect();
+        const x = rect.left + rect.width / 2, y = rect.top + rect.height / 2;
+        if (x < bounds.left || x > bounds.right || y < bounds.top || y > bounds.bottom) return 0;
+        const matrix = (label.closest('foreignObject') || label).getScreenCTM();
+        return parseFloat(getComputedStyle(label).fontSize) * Math.hypot(matrix.a, matrix.b);
+      }));
+    });
+    assert.ok(Math.abs(largestLabel - 24) < 0.5, `Capped label size: ${largestLabel}px`);
+    await zoomTo.selectOption({label: 'Backend packaging & image publishing'});
+    await waitForSubgraphFit();
+    await viewer.getByRole('button', {name: 'Left to right', exact: true}).click();
+    await waitForSubgraphFit();
+    await waitForVisualOrder('LR');
+    await viewer.getByRole('button', {name: 'Copy diagram link'}).click();
+    await viewer.getByText('Link copied', {exact: true}).waitFor();
+    const link = new URL(await page.evaluate(() => navigator.clipboard.readText()));
+    assert.equal(link.searchParams.get('subgraph'), 'PACKAGE');
+    assert.equal(link.searchParams.get('layout'), 'lr');
+
+    await page.setViewportSize({width: 390, height: 800});
+    await page.goto(link.href);
+    await waitForSubgraphFit();
+    assert.equal(await zoomTo.locator('option:checked').textContent(), 'Backend packaging & image publishing');
+    await zoomTo.selectOption({label: 'Whole diagram'});
+    assert.equal(await zoomTo.inputValue(), '');
+    assert.equal(await zoomTo.getByRole('option', {name: 'Whole diagram', exact: true}).count(), 0);
+    await page.keyboard.press('Escape');
+    await page.waitForURL(current => !current.search);
+    link.searchParams.set('subgraph', 'REMOVED');
+    await page.goto(link.href);
+    await zoomTo.waitFor();
+    assert.equal(await zoomTo.inputValue(), '');
+    console.log('Subgraph fit, layout changes, share links and missing-target fallback passed.');
+  } finally {
+    await context.close();
+  }
+}
+
 (async () => {
   if (output) fs.mkdirSync(output, {recursive: true});
   const browser = await chromium.launch({headless: true,
@@ -182,6 +284,7 @@ async function checkLayoutDefaults(browser) {
   try {
     await checkSharedLinks(browser);
     await checkLayoutDefaults(browser);
+    await checkSubgraphZoom(browser);
     for (const [width, theme] of matrix) {
       const context = await browser.newContext({viewport: {width, height: 900},
         colorScheme: theme, isMobile: width <= 390});

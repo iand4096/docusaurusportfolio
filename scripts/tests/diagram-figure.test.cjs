@@ -9,6 +9,13 @@ const {renderToStaticMarkup} = require('react-dom/server');
 const {roles, groupStyles, prepareMermaid, flowchartWithDirection, flowchartDirection} = require('../../src/components/DiagramFigure/theme.cjs');
 const {serializeDiagramFigures} = require('../../plugins/diagram-figures.cjs');
 
+const focusFilename = path.resolve(__dirname, '../../src/components/DiagramFigure/subgraphFocus.ts');
+const focusModule = new Module(focusFilename, module);
+focusModule._compile(ts.transpileModule(fs.readFileSync(focusFilename, 'utf8'), {
+  compilerOptions: {module: ts.ModuleKind.CommonJS},
+}).outputText, focusFilename);
+const {fitSubgraph} = focusModule.exports;
+
 const filename = path.resolve(__dirname, '../../src/components/DiagramFigure/index.tsx');
 const loaded = new Module(filename, module);
 loaded.filename = filename;
@@ -19,7 +26,8 @@ loaded.require = name => name.endsWith('.css')
   : name === '@docusaurus/router' ? {
     useLocation: () => ({pathname: '/', search: ''}),
     useHistory: () => ({}),
-  } : name === '@theme/Heading' ? ({as, children, ...props}) => {
+  } : name === './subgraphFocus' ? focusModule.exports
+    : name === '@theme/Heading' ? ({as, children, ...props}) => {
     return React.createElement(as, props, children);
   } : name === './context' ? {
     DiagramFigureContext: React.createContext(false),
@@ -29,6 +37,27 @@ loaded._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
   compilerOptions: {module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true},
 }).outputText, filename);
 const Figure = loaded.exports.default;
+
+test('subgraph fit uses leading blank space only when it reveals downstream content', () => {
+  const rect = (left, top, width, height) => ({left, top, width, height, right: left + width, bottom: top + height});
+  const fit = (direction, target, graph) => {
+    const frame = direction === 'LR' ? {clientWidth: 800, clientHeight: 600} : {clientWidth: 600, clientHeight: 800};
+    const content = {style: {getPropertyValue: () => '1'},
+      getBoundingClientRect: () => rect(0, 0, frame.clientWidth, frame.clientHeight)};
+    const element = {
+      getBoundingClientRect: () => target,
+      closest: () => ({dataset: {diagramSubgraphDirection: direction}}),
+      ownerSVGElement: {querySelectorAll: () => [], querySelector: () => ({getBoundingClientRect: () => graph})},
+    };
+    return fitSubgraph(frame, content, element);
+  };
+  const horizontal = rect(100, 100, 80, 300);
+  const vertical = rect(100, 100, 300, 80);
+  assert.ok(fit('LR', horizontal, rect(100, 100, 500, 300)).offsetX < -12);
+  assert.ok(fit('TB', vertical, rect(100, 100, 300, 500)).offsetY < -12);
+  assert.equal(fit('LR', horizontal, rect(-150, 100, 750, 300)).offsetX, 0);
+  assert.equal(fit('TB', vertical, rect(100, 100, 300, 150)).offsetY, 0);
+});
 
 test('full-screen orientation changes the flowchart header only', () => {
   const source = '---\ntitle: Delivery\n---\n%% note\nflowchart TD\nsubgraph Delivery\ndirection TB\nA --> B\nend';

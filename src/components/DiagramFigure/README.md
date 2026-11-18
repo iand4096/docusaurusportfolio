@@ -44,6 +44,14 @@ Double-click a diagram to open it full-screen or return to the page.
 its panels in this browser. It appears when the layout differs from the default.
 Links that specify a layout use that layout.
 
+For flowcharts with named subgraphs, **Zoom to** centres the selected subgraph
+and fits it within the viewport. When a full fit would make labels larger than
+24 px, the viewer limits magnification and outlines the subgraph. Shared links
+include the selected subgraph ID. The menu follows each diagram's visual
+reading order and groups entries by panel in **All diagrams**.
+When there is unused space at the start of the flow, the view can shift the
+selected subgraph toward that edge to reveal more of the workflow.
+
 Keep the visible figure caption and give every Mermaid diagram its own
 `accTitle` and `accDescr`, as shown above. Reuse the figure title for a single
 diagram or the panel heading for each diagram in a multi-panel figure. Describe

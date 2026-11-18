@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useId, useRef, useState, type CSSProperti
 import {useHistory, useLocation} from '@docusaurus/router';
 import Heading from '@theme/Heading';
 import {DiagramDirectionContext, DiagramFigureContext, type DiagramDirection} from './context';
+import {findSubgraphs, fitSubgraph, subgraphKey, type SubgraphFit, type SubgraphOption} from './subgraphFocus';
 import {roles, type DiagramRole} from './theme.cjs';
 import styles from './styles.module.css';
 
@@ -56,9 +57,19 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   const [expanded, setExpanded] = useState(false);
   const [panels, setPanels] = useState<DiagramPanel[]>([]);
   const [selectedPanel, setSelectedPanel] = useState<string>();
+  const [subgraphs, setSubgraphs] = useState<SubgraphOption[]>([]);
+  const [selectedSubgraph, setSelectedSubgraph] = useState<string>();
+  const [subgraphFit, setSubgraphFit] = useState<SubgraphFit>();
   const activePanel = panels.find(panel => panel.key === selectedPanel);
+  const activeSubgraph = subgraphs.find(subgraph => subgraph.id === selectedSubgraph && subgraph.panel === activePanel?.key);
   const showingAllPanels = panels.length > 1 && !activePanel;
-  const viewScale = fitScale * view.zoom;
+  const ungroupedSubgraphs = showingAllPanels ? subgraphs.filter(item => !item.panel) : subgraphs;
+  const renderSubgraphOption = (item: SubgraphOption) =>
+    <option key={subgraphKey(item)} value={subgraphKey(item)}>{item.label}</option>;
+  const focus = activeSubgraph ? subgraphFit : undefined;
+  const viewScale = (focus?.scale ?? fitScale) * view.zoom;
+  const focusX = view.x + (focus?.offsetX ?? 0) * view.zoom;
+  const focusY = view.y + (focus?.offsetY ?? 0) * view.zoom;
   const zoomPercent = Math.round(view.zoom * 100);
   const [direction, setDirection] = useState<DiagramDirection>();
   const [authoredDirection, setAuthoredDirection] = useState<DiagramDirection>();
@@ -74,7 +85,7 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   const copyAttempt = useRef(0);
   const caption = `Figure ${number}. ${title}`;
 
-  const openViewer = useCallback((panel?: string, layout?: DiagramDirection) => {
+  const openViewer = useCallback((panel?: string, layout?: DiagramDirection, subgraph?: string) => {
     copyAttempt.current++;
     setReservedHeight(canvas.current?.getBoundingClientRect().height);
     setView({zoom: 1, x: 0, y: 0});
@@ -93,6 +104,7 @@ export default function DiagramFigure({number, title, shareId, legend, children}
     setDirection(layout ?? preferredLayout);
     setAuthoredDirection(undefined);
     setSelectedPanel(panel);
+    setSelectedSubgraph(subgraph);
     setViewerStatus('');
     setManualLink('');
     setExpanded(true);
@@ -103,7 +115,8 @@ export default function DiagramFigure({number, title, shareId, legend, children}
     if (!shareId || params.get('diagram') !== shareId) return;
     const layout = params.get('layout');
     if (!dialog.current?.open) opener.current?.focus({preventScroll: true});
-    openViewer(params.get('panel') || undefined, layout === 'lr' ? 'LR' : layout === 'tb' ? 'TB' : undefined);
+    openViewer(params.get('panel') || undefined, layout === 'lr' ? 'LR' : layout === 'tb' ? 'TB' : undefined,
+      params.get('subgraph') || undefined);
   }, [pathname, search, shareId, openViewer]);
 
   useEffect(() => {
@@ -118,11 +131,23 @@ export default function DiagramFigure({number, title, shareId, legend, children}
     const frame = viewport.current;
     const content = panContent.current;
     if (!expanded || !frame || !content) return;
+    let targets: ReturnType<typeof findSubgraphs> = [];
     const fit = () => {
       const {offsetWidth: width, offsetHeight: height} = content;
       if (width && height && frame.clientWidth && frame.clientHeight) {
         setFitScale(Math.min(frame.clientWidth / width, frame.clientHeight / height));
       }
+      const target = targets.find(item => item.id === selectedSubgraph && item.panel === selectedPanel);
+      const fitted = target && fitSubgraph(frame, content, target.element);
+      setSubgraphFit(previous => previous && fitted
+        && previous.limited === fitted.limited
+        && Math.abs(previous.width - fitted.width) < 0.1
+        && Math.abs(previous.height - fitted.height) < 0.1
+        && Math.abs(previous.offsetX - fitted.offsetX) < 0.1
+        && Math.abs(previous.offsetY - fitted.offsetY) < 0.1
+        && Math.abs(previous.scale - fitted.scale) < 0.001
+        && Math.abs(previous.x - fitted.x) < 0.1
+        && Math.abs(previous.y - fitted.y) < 0.1 ? previous : fitted);
     };
     // Mermaid renders asynchronously. Measure the new diagram once its layout is ready.
     const observer = new ResizeObserver(entries => {
@@ -158,6 +183,11 @@ export default function DiagramFigure({number, title, shareId, legend, children}
       const marker = activeContent?.querySelector<HTMLElement>('[data-diagram-authored-direction]');
       const authored = marker?.dataset.diagramAuthoredDirection;
       setAuthoredDirection(authored === 'LR' || authored === 'TB' ? authored : undefined);
+      targets = findSubgraphs(content);
+      const subgraphOptions = targets.map(({id, label, panel}) => ({id, label, panel}));
+      setSubgraphs(previous => previous.length === subgraphOptions.length && previous.every((item, index) =>
+        subgraphKey(item) === subgraphKey(subgraphOptions[index]) && item.label === subgraphOptions[index].label)
+        ? previous : subgraphOptions);
       fit();
     };
     const diagrams = new MutationObserver(readPanels);
@@ -167,7 +197,7 @@ export default function DiagramFigure({number, title, shareId, legend, children}
       observer.disconnect();
       diagrams.disconnect();
     };
-  }, [expanded, selectedPanel]);
+  }, [expanded, selectedPanel, selectedSubgraph]);
 
   function zoomBy(factor: number) {
     setView(previous => {
@@ -184,9 +214,11 @@ export default function DiagramFigure({number, title, shareId, legend, children}
   function handleClose() {
     copyAttempt.current++;
     setExpanded(false);
+    setSubgraphs([]);
+    setSubgraphFit(undefined);
     const params = new URLSearchParams(search);
     if (!shareId || params.get('diagram') !== shareId) return;
-    for (const key of ['diagram', 'panel', 'layout']) params.delete(key);
+    for (const key of ['diagram', 'panel', 'layout', 'subgraph']) params.delete(key);
     const remaining = params.toString();
     history.replace({pathname, search: remaining ? `?${remaining}` : '', hash: `#${anchor}`});
     opener.current?.closest('figure')?.scrollIntoView();
@@ -215,8 +247,10 @@ export default function DiagramFigure({number, title, shareId, legend, children}
     url.searchParams.set('diagram', shareId);
     url.searchParams.delete('panel');
     url.searchParams.delete('layout');
+    url.searchParams.delete('subgraph');
     if (activePanel?.shareId) url.searchParams.set('panel', activePanel.shareId);
     if (currentDirection) url.searchParams.set('layout', currentDirection.toLowerCase());
+    if (activeSubgraph) url.searchParams.set('subgraph', activeSubgraph.id);
     setViewerStatus('');
     setManualLink('');
     try {
@@ -301,6 +335,7 @@ export default function DiagramFigure({number, title, shareId, legend, children}
                 aria-pressed={activePanel === panel}
                 onClick={() => {
                   setSelectedPanel(panel?.key);
+                  setSelectedSubgraph(undefined);
                   setView({zoom: 1, x: 0, y: 0});
                 }}>
                 {panel?.title ?? 'All diagrams'}
@@ -325,6 +360,27 @@ export default function DiagramFigure({number, title, shareId, legend, children}
                 title="Use this layout when opening this figure full-screen."
                 onClick={saveDefaultLayout}>Set as default</button>}
             </div>}
+            {subgraphs.length > 0 && <label className={`${styles.controlGroup} ${styles.subgraphControl}`}>
+              Zoom to
+              <select value={activeSubgraph ? subgraphKey(activeSubgraph) : ''}
+                onChange={event => {
+                  const target = subgraphs.find(item => subgraphKey(item) === event.target.value);
+                  if (target) setSelectedPanel(target.panel);
+                  setSelectedSubgraph(target?.id);
+                  setView({zoom: 1, x: 0, y: 0});
+                }}>
+                <option value="" disabled={!activeSubgraph}>
+                  {activeSubgraph ? 'Whole diagram' : 'Choose a subgraph'}
+                </option>
+                {ungroupedSubgraphs.map(renderSubgraphOption)}
+                {showingAllPanels && panels.map(panel => {
+                  const options = subgraphs.filter(item => item.panel === panel.key);
+                  return options.length > 0 && <optgroup key={panel.key} label={panel.title}>
+                    {options.map(renderSubgraphOption)}
+                  </optgroup>;
+                })}
+              </select>
+            </label>}
             <div className={styles.controlGroup} role="group" aria-label="Diagram zoom controls">
               <span aria-hidden="true">Zoom</span>
               <div className={styles.controls}>
@@ -336,7 +392,10 @@ export default function DiagramFigure({number, title, shareId, legend, children}
                 <button type="button" className={`${styles.zoomButton} ${styles.zoomLevel}`}
                   aria-label="Reset zoom and fit diagram" title="Reset zoom and fit diagram"
                   aria-description={`Current zoom: ${zoomPercent}%`}
-                  onClick={() => setView({zoom: 1, x: 0, y: 0})}>
+                  onClick={() => {
+                    setSelectedSubgraph(undefined);
+                    setView({zoom: 1, x: 0, y: 0});
+                  }}>
                   {zoomPercent}%
                 </button>
                 <button type="button" className={styles.zoomButton} aria-label="Zoom in"
@@ -396,10 +455,17 @@ export default function DiagramFigure({number, title, shareId, legend, children}
               data-single-panel={!!activePanel || undefined}
               style={{
                 '--diagram-view-scale': viewScale,
-                transform: `translate(${view.x}px, ${view.y}px) scale(${viewScale}) translate(-50%, -50%)`,
+                transform: `translate(${focusX - (focus?.x ?? 0) * viewScale}px, ${focusY - (focus?.y ?? 0) * viewScale}px) scale(${viewScale}) translate(-50%, -50%)`,
               } as CSSProperties}>
               <DiagramDirectionContext.Provider value={direction}>{children}</DiagramDirectionContext.Provider>
             </div>
+            {focus?.limited && <div className={styles.subgraphHighlight} data-subgraph-highlight aria-hidden="true"
+              style={{
+                left: `calc(50% + ${focusX}px)`,
+                top: `calc(50% + ${focusY}px)`,
+                width: focus.width * viewScale,
+                height: focus.height * viewScale,
+              }} />}
           </div>
           <Legend items={legend} />
         </div>}

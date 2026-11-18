@@ -175,6 +175,24 @@
   flex-wrap: wrap;
 }
 
+.subgraphControl {
+  flex-wrap: wrap;
+  justify-content: center;
+  min-width: 0;
+  max-width: 100%;
+}
+
+.subgraphControl select {
+  max-width: min(100%, 16rem);
+  min-height: 2.25rem;
+  padding-inline: 0.4rem;
+  border: 1px solid var(--ifm-color-emphasis-400);
+  border-radius: 2px;
+  background: var(--ifm-background-color);
+  color: var(--ifm-font-color-base);
+  font: inherit;
+}
+
 .headerActions {
   grid-column: 3;
   justify-self: end;
@@ -381,6 +399,14 @@
 
 .viewport[data-dragging] {
   cursor: grabbing;
+}
+
+.subgraphHighlight {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  outline: 2px solid var(--ifm-color-primary);
+  outline-offset: 4px;
+  pointer-events: none;
 }
 
 .panContent {
