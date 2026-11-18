@@ -1,6 +1,6 @@
 ---
 title: Third-party notices
-description: Attribution and licence information for third-party icon assets used on this portfolio.
+description: Attribution and licence information for third-party assets used on this portfolio.
 hide_table_of_contents: true
 ---
 
@@ -19,3 +19,7 @@ The upstream licences apply to the following asset types:
 Read the [complete Font Awesome 6.5.1 licence and copyright notices](pathname:///licenses/font-awesome-6.5.1-LICENSE.txt), preserved from the [upstream release](https://github.com/FortAwesome/Font-Awesome/blob/6.5.1/LICENSE.txt).
 
 These assets retain their upstream licences and are excluded from this portfolio's restrictions on reuse. Their use does not imply endorsement by Fonticons, Inc. Other third-party components retain their respective licences.
+
+## Scalar API Reference
+
+The Search API reference uses Scalar API Reference 1.75.1 under the [MIT licence](pathname:///licenses/scalar-api-reference-1.75.1-LICENSE.txt).

@@ -1327,6 +1327,33 @@
       "organisations": []
     },
     {
+      "id": "implementation-details/api-example",
+      "title": "ApiEndpoint and ApiExample",
+      "path": "/docs/implementation-details/api-example",
+      "source": "docs/implementation-details/api-example.mdx",
+      "description": "Usage and live examples for linking to API operations and displaying OpenAPI requests, responses and code samples.",
+      "type": [
+        "implementation-guide"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering"
+      ],
+      "technologies": [
+        "docusaurus",
+        "markdown",
+        "css"
+      ],
+      "audiences": [
+        "developers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
+    },
+    {
       "id": "case-studies/PaysafeDeveloperCenter",
       "title": "Building the Paysafe Developer Center",
       "path": "/docs/case-studies/paysafedevcenter",

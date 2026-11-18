@@ -1,6 +1,7 @@
 import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
+import {inferApiEndpointVariant} from './plugins/api-endpoints.cjs';
 
 // This file runs in Node.js.
 // Do not use browser APIs or JSX here.
@@ -46,6 +47,7 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
 
   plugins: [
+    './plugins/scalar-browser.cjs',
     './plugins/taxonomy-coverage.cjs',
     './plugins/see-also.cjs',
     [
@@ -95,6 +97,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
+          remarkPlugins: [inferApiEndpointVariant],
         },
 
         blog: {
@@ -184,6 +187,11 @@ const config: Config = {
           to: '/explore',
           position: 'left',
           activeBasePath: '/explore',
+        },
+        {
+          label: 'Search API reference',
+          to: '/search-api',
+          position: 'right',
         },
         {
           label: 'QA report',

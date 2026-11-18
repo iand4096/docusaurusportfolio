@@ -1,0 +1,119 @@
+---
+title: ApiEndpoint and ApiExample
+description: Usage and live examples for linking to API operations and displaying OpenAPI requests, responses and code samples.
+type:
+  - implementation-guide
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - docs-as-code
+  - documentation-engineering
+technologies:
+  - docusaurus
+  - markdown
+  - css
+lifecycle:
+  - current
+tags:
+  - docs-as-code
+  - documentation-engineering
+  - docusaurus
+  - markdown
+  - css
+---
+
+import ApiEndpoint from '@site/src/components/ApiEndpoint';
+import ApiExample from '@site/src/components/ApiExample';
+import CodeBlock from '@theme/CodeBlock';
+
+`ApiEndpoint` links to a specific operation in Scalar. `ApiExample` displays saved requests, responses and code samples inside a Docusaurus guide. Both read the OpenAPI document that powers the [Search API reference](pathname:///search-api).
+
+## Import
+
+Import the components you need into your Docusaurus Markdown or MDX page.
+
+```jsx
+import ApiEndpoint from '@site/src/components/ApiEndpoint';
+import ApiExample from '@site/src/components/ApiExample';
+```
+
+The tables show the authoring source beside the live component. On narrow screens, scroll the table horizontally to compare the two columns.
+
+## Endpoint links
+
+Docusaurus chooses the layout from where you write the component. Inside a sentence, it shows the HTTP method and path inline. On a line of its own, separated from prose by blank lines, it displays a card with the operation summary if the spec provides one. Both layouts open the same Scalar operation.
+
+<table>
+<thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+<tbody>
+<tr>
+<td><CodeBlock language="jsx">{'Use <ApiEndpoint operationId="search" /> to retrieve source passages.'}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+  <p>Use <ApiEndpoint operationId="search" /> to retrieve source passages.</p>
+</td>
+</tr>
+<tr>
+<td><CodeBlock language="jsx">{'<ApiEndpoint operationId="search" />'}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+  <ApiEndpoint operationId="search" />
+</td>
+</tr>
+</tbody>
+</table>
+
+### ApiEndpoint props
+
+| Prop | Default | Usage | Example |
+| --- | --- | --- | --- |
+| `operationId` | Required | The ID of a tagged operation in the generated OpenAPI document. | `"search"` |
+| `variant` | Automatic in MDX | Set `"inline"` or `"standalone"` to override the authoring context. | `"standalone"` |
+
+## Request and response tabs
+
+Pass the OpenAPI operation ID and example name to `ApiExample`. The **Request** tab shows the JSON body and the generated cURL command. Select **200 response** to see the response JSON. Switching tabs hides the request body and command together.
+
+<table>
+<thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+<tbody><tr>
+<td><CodeBlock language="jsx">{'<ApiExample operationId="search" example="taxonomy-filter" />'}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+  <ApiExample operationId="search" example="taxonomy-filter" />
+</td>
+</tr></tbody>
+</table>
+
+## Standalone cURL command
+
+Set `language="curl"` when the reader only needs the command. The component generates it from the operation’s method and path, the configured API URL, and the named JSON request.
+
+<table>
+<thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+<tbody><tr>
+<td><CodeBlock language="jsx">{'<ApiExample operationId="search" example="taxonomy-filter" language="curl" />'}</CodeBlock></td>
+<td style={{minWidth: '32rem', verticalAlign: 'top'}}>
+  <ApiExample operationId="search" example="taxonomy-filter" language="curl" />
+</td>
+</tr></tbody>
+</table>
+
+For a curated snippet such as a Python SDK call, store it on the operation under `x-codeSamples` and pass its language to the component. The component looks for a sample associated with the requested example first, then a sample for that language without an example association.
+
+## ApiExample props
+
+| Prop | Default | Usage | Example |
+| --- | --- | --- | --- |
+| `operationId` | Required | The operation ID in the generated OpenAPI document. | `"search"` |
+| `example` | Required | The key for a named `application/json` request example. The tabbed view looks for the same key in the selected response. | `"taxonomy-filter"` |
+| `status` | `200` | HTTP status for the response tab. | `{422}` when the spec contains that example |
+| `language` | Omitted | Omit for tabs, set to `"curl"` for a generated command, or pass a language present in `x-codeSamples`. | `"curl"` |
+
+## Authoring and maintenance
+
+- Keep operation IDs stable. The components use them to find operations, and Scalar uses them in deep links.
+- Define named examples on the FastAPI operation so Scalar and Docusaurus can display the same payloads. Update the API source when an example needs to change.
+- Run `python knowledge-api/export_openapi.py` to regenerate `static/api/search-openapi.json`. The CI drift check compares that file with the schema generated from the repository.
+- For a response example with a different status, use the same example key in the request and in that response. An unknown operation or missing example fails the site build.
+- The cURL command uses the same API URL as Scalar. With the search API configured, it uses that URL. Otherwise it targets `http://localhost:8000`.
+
+See the [RAG case study](../case-studies/RagSearchCloudArchitecture.md#separate-evidence-retrieval-from-ai-answer-generation) for the endpoint links and tabbed example in context.

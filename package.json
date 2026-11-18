@@ -33,6 +33,7 @@
     "@docusaurus/preset-classic": "3.10.2",
     "@docusaurus/theme-mermaid": "^3.10.2",
     "@mdx-js/react": "^3.0.0",
+    "@scalar/api-reference": "1.75.1",
     "@viz-js/viz": "^3.28.0",
     "clsx": "^2.0.0",
     "docusaurus-plugin-llms": "^0.6.1",
@@ -82,6 +83,6 @@
     ]
   },
   "engines": {
-    "node": ">=20.0"
+    "node": ">=22"
   }
 }
