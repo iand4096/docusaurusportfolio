@@ -1,6 +1,8 @@
 Paysafe
 MadCap
 PythonAnywhere
+PDocs
+TechDocs
 OpenAPI
 Skrill
 TWiki

@@ -16,3 +16,9 @@
 # Google Patents intermittently returns HTTP 503 to Lychee.
 # This exact patent page was manually verified (HTTP 200) on 2026-11-17.
 ^https://patents\.google\.com/patent/US20220121462A1/en$
+
+# Lychee reported a connection refusal for the PythonAnywhere homepage, which was reachable on 2026-11-18.
+^https://www\.pythonanywhere\.com/$
+
+# Lychee received HTTP 403 for this Pinterest Engineering article, which was readable on 2026-11-18.
+^https://medium\.com/pinterest-engineering/adopting-docs-as-code-at-pinterest-4f18ad169c25$

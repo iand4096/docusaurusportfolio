@@ -244,7 +244,6 @@ I worked with engineers from the internal tooling team to build the authoring ex
 
 * **Markdown-based documentation stored and reviewed in Git alongside the code.** Storing documentation in the Codetree monorepo provided stronger change control than the previous wiki-based systems. Related changes to code, tests, examples, and documentation pages could be committed, validated, and reviewed together as a single atomic change. This reduced the risk of inconsistencies between code and documentation, or publishing partially updated documentation. The same architecture also provides a foundation for AI coding agents to make coordinated, reviewable changes across code and documentation.
 
-
 * **A CI/CD-based documentation build and publishing pipeline with automated quality checks**. Documentation changes in the monorepo were incorporated into automated website builds, while checks such as link validation caught issues before publication, preventing broken internal links and improving the reliability of the documentation.
 
 * **An IntelliJ plugin for documentation authoring and live preview**. At release, the plugin supported embedded source-code fragments, LaTeX equations and Graphviz diagrams with hyperlinks. This lowered the barrier for developers to contribute documentation by allowing them to edit and preview complex content directly within their existing development environment, with rendering consistent with the published website. I later extended the diagram support, as described under [Platform evolution](#platform-evolution).
@@ -285,16 +284,13 @@ The platform grew from approximately **700 pages to more than 3,200 pages over t
 
 The project helped establish documentation as a normal part of the engineering workflow. Engineers were able to avoid context switching from their IDE to a separate documentation tool. This reduced friction led to a sustained increase in contributions and corrections.
 
-
 ## Industry context and architectural trade-offs {/* #industry-context-and-architectural-trade-offs */}
 
-The decision to move from wikis to a custom docs-as-code platform reflected a broader shift towards maintaining technical documentation alongside source code. Organizations such as [Google (g3doc)](https://abseil.io/resources/swe-book/html/ch10.html), [Pinterest (PDocs)](https://medium.com/pinterest-engineering/adopting-docs-as-code-at-pinterest-4f18ad169c25) and [Spotify (TechDocs)](https://backstage.io/blog/2020/09/08/announcing-tech-docs/) have adopted similar approaches to improve documentation ownership, discoverability and integration with engineering workflows.
-
+The decision to move from wikis to a custom docs-as-code platform reflected a broader shift towards maintaining technical documentation alongside source code. Organisations such as [Google (`g3doc`)](https://abseil.io/resources/swe-book/html/ch10.html), [Pinterest (PDocs)](https://medium.com/pinterest-engineering/adopting-docs-as-code-at-pinterest-4f18ad169c25) and [Spotify (TechDocs)](https://backstage.io/blog/2020/09/08/announcing-tech-docs/) have adopted similar approaches to improve documentation ownership, discoverability and integration with engineering workflows.
 
 However, docs-as-code introduced trade-offs, particularly around Markdown authoring and pull-request friction. Our IntelliJ integration reduced authoring friction through accurate live previews, while links on every documentation page allowed contributors to make simpler corrections, such as quick typo edits, directly in Bitbucket's browser editor. We also streamlined the review process for documentation-only pull requests. Nevertheless, the full authoring experience required IntelliJ, which discouraged some potential contributors.
 
-In retrospect, further improvements to contribution workflows might have reduced friction, but building a fully featured browser editor would have introduced substantial additional complexity. The key architectural decision was to build on developers' existing tools rather than introduce another authoring environment.
-
+In retrospect, further improvements to contribution workflows might have reduced friction. A full browser editor would have required us to build and maintain a separate authoring environment. We chose to build on developers' existing tools.
 
 ## Lessons learned {/* #lessons-learned */}
 
