@@ -11,6 +11,9 @@ from unittest.mock import patch, Mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_reporting import html_report
+from qa_reporting.links import recurrence_command
+from qa_reporting import model as report_model
 import qa_feedback as feedback
 import qa_recurrence as recurrence
 from test_qa_report_feedback import finding, feedback_record
@@ -59,7 +62,7 @@ class RecurrenceTests(unittest.TestCase):
         self.assertEqual(self.new['recurrence_candidates'][0]['record_id'], 'qa-old')
         self.assertIsNone(self.new['human_resolution'])
         self.assertIsNone(self.new['effective_ai_decision'])
-        self.assertFalse(review.is_history_issue(self.new))
+        self.assertFalse(report_model.is_history_issue(self.new))
 
     def test_candidates_use_passage_overlap_not_category_and_exclude_other_files(self):
         self.new['original'] = 'Source passages'
@@ -108,7 +111,7 @@ class RecurrenceTests(unittest.TestCase):
                 self.assertIsNone(self.new['recurrence_candidates'][0]['comparison'])
                 self.assertFalse(self.cache.exists())
         self.attach()
-        self.assertFalse(review.is_history_issue(self.new))
+        self.assertFalse(report_model.is_history_issue(self.new))
 
     def test_different_or_uncertain_verdict_does_not_link(self):
         for verdict in ('different_complaint', 'uncertain'):
@@ -130,13 +133,13 @@ class RecurrenceTests(unittest.TestCase):
         self.assertEqual(self.new['feedback_match'], 'exact')
         self.assertIsNone(self.new['human_resolution'])
         self.assertIsNone(self.new['effective_ai_decision'])
-        self.assertFalse(review.is_history_issue(self.new))
-        self.assertIn('awaiting human resolution', review.feedback_label(self.new))
+        self.assertFalse(report_model.is_history_issue(self.new))
+        self.assertIn('awaiting human resolution', report_model.feedback_label(self.new))
         with patch.object(feedback, '_source_for_report_finding', return_value=self.source):
             feedback.resolve('qa-new', 'dismissed', 'I checked the prior rebuttal applies.',
                              report=self.report, feedback_path=self.registry)
         self.attach()
-        self.assertTrue(review.is_history_issue(self.new))
+        self.assertTrue(report_model.is_history_issue(self.new))
         self.assertEqual(feedback.feedback_records(self.registry)['records']['qa-old'], before)
         self.new['document_revision']['content_sha256'] = 'b' * 64
         self.attach()
@@ -169,14 +172,14 @@ class RecurrenceTests(unittest.TestCase):
     def test_report_exports_evidence_and_shell_safe_confirmation_commands(self):
         self.new['message'] += ' <script>bad()</script>'
         self.attach()
-        html = review.recurrence_html(self.new, '/tmp/report with spaces.json')
+        html = html_report.recurrence_html(self.new, '/tmp/report with spaces.json')
         self.assertIn('Previous allegation', html)
         self.assertIn('Previous rebuttal', html)
         self.assertIn('Copy confirm link command', html)
         self.assertIn('--decision rejected', html)
         self.assertIn('&lt;script&gt;bad()', html)
         self.assertNotIn('<script>bad()', html)
-        command = review.recurrence_command('link', '/tmp/a $(echo secret).json',
+        command = recurrence_command('link', '/tmp/a $(echo secret).json',
             issue='qa-new', previous='qa-old', decision='confirmed', reason='Human reason')
         import shlex
         args = shlex.split(command)
@@ -225,9 +228,7 @@ class RecurrenceTests(unittest.TestCase):
         self.report.write_text(json.dumps(payload))
         before = self.registry.read_bytes()
         output = self.root / 'rendered'
-        with patch.object(review, 'request_review', side_effect=AssertionError('No network')), \
-             patch.object(review, 'REPORT'), patch.object(review, 'JSON_REPORT'), \
-             patch.object(review, 'MARKDOWN_REPORT'):
+        with patch.object(review, 'request_review', side_effect=AssertionError('No network')):
             review.render_saved_report(self.report, self.registry, output)
         self.assertEqual(self.registry.read_bytes(), before)
         html = (output / 'ai-doc-review.html').read_text()
@@ -321,10 +322,10 @@ assert.equal(sourceFilter.value, ''); assert.equal(rows[2].style.display, '');
             with self.subTest(verdicts=verdicts, confirmed=confirmed, source=source):
                 issue = {'source': source, 'recurrence_candidates': [candidate(v) for v in verdicts],
                          'feedback_link_confirmation': {'decision': 'confirmed'} if confirmed else None}
-                self.assertEqual(review.ai_without_recurrence_concerns(issue), expected)
+                self.assertEqual(html_report.ai_without_recurrence_concerns(issue), expected)
         self.decide('rejected')
         self.attach()
-        self.assertTrue(review.ai_without_recurrence_concerns(self.new))
+        self.assertTrue(html_report.ai_without_recurrence_concerns(self.new))
 
     def test_link_cli_without_api_key(self):
         self.attach()

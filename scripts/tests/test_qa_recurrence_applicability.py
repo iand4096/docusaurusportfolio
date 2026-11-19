@@ -190,8 +190,8 @@ class ApplicabilityTests(unittest.TestCase):
             index=BrokenIndex())
         self.assertIn('Embedding retrieval unavailable', errors[0]['error'])
         self.assertTrue(self.new['recurrence_comparison_errors'])
-        import ai_docs_review as review
-        self.assertFalse(review.ai_without_recurrence_concerns(self.new))
+        from qa_reporting import html_report
+        self.assertFalse(html_report.ai_without_recurrence_concerns(self.new))
 
     def test_semantic_only_saved_proposal_survives_missing_vector_cache(self):
         self.new['original'] = 'An entirely rewritten quotation.'
@@ -229,8 +229,7 @@ class ApplicabilityTests(unittest.TestCase):
             'ci': {'thresholds': {'high': 0, 'medium': 5, 'api_errors': 0}}}
         self.report.write_text(json.dumps(payload))
         before = self.registry.read_bytes()
-        with patch.object(embeddings.ComplaintIndex, 'populate', side_effect=AssertionError('No model loading')), \
-             patch.object(review, 'REPORT'), patch.object(review, 'JSON_REPORT'), patch.object(review, 'MARKDOWN_REPORT'):
+        with patch.object(embeddings.ComplaintIndex, 'populate', side_effect=AssertionError('No model loading')):
             output = self.root / 'rendered'
             review.render_saved_report(self.report, self.registry, output)
         html = (output / 'ai-doc-review.html').read_text()

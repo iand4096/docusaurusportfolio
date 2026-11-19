@@ -97,6 +97,26 @@ class ReviewCacheTests(unittest.TestCase):
         self.assertEqual(first, second)
         self.assertEqual(request.call_count, 2)
 
+    def test_malformed_review_is_reported_and_retried_before_caching_clean_result(self):
+        path = self.root / 'example.md'
+        path.write_text('Text.')
+        responses = [[], {}, {'issues': None}, {'issues': [None]}, {'issues': []}]
+        with patch.object(review, 'PROJECT_ROOT', self.root), patch.object(
+            review, 'request_review', side_effect=responses
+        ) as request:
+            def run():
+                return review.run_per_page_checks([path], [review.GrammarReview()], 'unused')
+
+            for response in responses[:-1]:
+                with self.subTest(response=response):
+                    issues, errors = run()
+                    self.assertEqual(issues, [])
+                    self.assertEqual(len(errors), 1)
+                    self.assertIn('Invalid AI review response', errors[0]['error'])
+            self.assertEqual(run(), ([], []))
+            self.assertEqual(run(), ([], []))
+            self.assertEqual(request.call_count, len(responses))
+
     def test_deterministic_checks_are_never_cached(self):
         check = Mock(source='vale', name='Vale')
         compute = Mock(return_value=[])

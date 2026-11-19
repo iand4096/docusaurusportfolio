@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_reporting import model as report_model
 import qa_feedback as feedback
 from test_qa_report_feedback import finding, feedback_record
 
@@ -46,7 +47,7 @@ class FeedbackMatchingTests(unittest.TestCase):
         self.attach(current)
         self.assertEqual(current['persistent_issue_id'], previous['persistent_issue_id'])
         self.assertEqual(current['feedback_match'], 'exact')
-        self.assertEqual(review.feedback_state(current), 'needs_revalidation')
+        self.assertEqual(report_model.feedback_state(current), 'needs_revalidation')
         self.assertTrue(current['feedback_discussion'])
         self.assertIsNone(current['human_resolution'])
         self.assertIsNone(current['effective_ai_decision'])
@@ -68,7 +69,7 @@ class FeedbackMatchingTests(unittest.TestCase):
                 self.attach(current)
                 self.assertEqual(current['feedback_match'], 'none')
                 self.assertIsNone(current['human_resolution'])
-                self.assertFalse(review.is_history_issue(current))
+                self.assertFalse(report_model.is_history_issue(current))
 
     def test_changed_suggestion_requires_revalidation_even_if_source_is_unchanged(self):
         current = copy.deepcopy(self.old)

@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_reporting import model as report_model
 import qa_feedback as feedback
 
 
@@ -58,10 +59,10 @@ class ReportFeedbackTests(unittest.TestCase):
         records['qa-dismissed'] = feedback_record(issues[6], 'withdrawn', dismissed=True)
         records['qa-static'] = feedback_record(issues[7], 'withdrawn', dismissed=True)
         self.attach(issues, records)
-        counts = review.report_counts(issues)
+        counts = report_model.report_counts(issues)
         self.assertEqual((counts['active'], counts['history'], counts['pending']), (6, 2, 1))
-        self.assertEqual(review.feedback_state(issues[1]), 'challenged')
-        self.assertFalse(review.is_history_issue(issues[1]))
+        self.assertEqual(report_model.feedback_state(issues[1]), 'challenged')
+        self.assertFalse(report_model.is_history_issue(issues[1]))
         self.assertEqual(issues[4]['effective_message'], 'Revised criticism')
         self.assertEqual(issues[4]['message'], 'Original criticism revised')
         self.assertTrue(review.is_ci_threshold_eligible(issues[2]))
@@ -75,7 +76,7 @@ class ReportFeedbackTests(unittest.TestCase):
         issue['document_revision']['content_sha256'] = 'b' * 64
         self.attach([issue], {issue['issue_id']: record})
         self.assertTrue(issue['feedback_stale'])
-        self.assertEqual(review.feedback_state(issue), 'needs_revalidation')
+        self.assertEqual(report_model.feedback_state(issue), 'needs_revalidation')
         self.assertTrue(review.is_ci_threshold_eligible(issue))
         self.assertTrue(issue['feedback_discussion'])
 
@@ -84,8 +85,8 @@ class ReportFeedbackTests(unittest.TestCase):
         record = feedback_record(issue, 'withdrawn')
         record['human_resolution'] = 'accepted'
         self.attach([issue], {issue['issue_id']: record})
-        self.assertEqual(review.feedback_state(issue), 'accepted')
-        self.assertFalse(review.is_history_issue(issue))
+        self.assertEqual(report_model.feedback_state(issue), 'accepted')
+        self.assertFalse(report_model.is_history_issue(issue))
 
     def test_cli_render_needs_no_key_and_uses_saved_ci_thresholds(self):
         issue = finding('cli')
@@ -130,9 +131,7 @@ class ReportFeedbackTests(unittest.TestCase):
         source.write_bytes(original)
         output = self.root / 'rendered'
         with patch.object(review, 'request_review', side_effect=AssertionError('No AI allowed')), \
-             patch.object(review, 'run_per_page_checks', side_effect=AssertionError('No checks allowed')), \
-             patch.object(review, 'REPORT'), patch.object(review, 'JSON_REPORT'), \
-             patch.object(review, 'MARKDOWN_REPORT'):
+             patch.object(review, 'run_per_page_checks', side_effect=AssertionError('No checks allowed')):
             ci = review.render_saved_report(source, self.feedback, output)
         self.assertFalse(ci['passed'])
         self.assertEqual(source.read_bytes(), original)

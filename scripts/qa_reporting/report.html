@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+    <title>Documentation QA report</title>
+    <!-- No automatic redirect: non-JavaScript fetchers can read this response. -->
+    <meta name="description" content="Documentation QA results, complete issue descriptions, source references, and CI status. JavaScript is not required.">
+    <link rel="alternate" type="text/markdown" title="AI-readable QA report" href="${markdown_filename}">
+    <link rel="alternate" type="application/json" title="QA report JSON" href="${json_filename}">
+    <style>
+${stylesheet}    </style>
+</head>
+<body>
+<main>
+    <h1>Documentation QA report</h1>
+    ${example_notice}
+    <p class="portfolio-link">
+        <a href="${return_url}">${return_label}</a>
+    </p>
+    <div class="report-actions">
+        <a href="#possibleLinks">Challenge links (${possible_count} possible · ${linked_count} confirmed)</a>
+        <a id="latestReportLink" href="#">Load latest report</a>
+        <a href="${markdown_filename}">AI-readable Markdown report</a>
+        <a href="${json_filename}">Full report JSON</a>
+        ${snapshot_link}
+    </div>
+    <p>All findings are included in this HTML document, without requiring JavaScript.
+       AI readers can also use the linked Markdown or JSON files when published alongside this page.</p>
+    <p class="subtitle">
+        Report run: ${report_run_at_display}
+        (${report_time_zone})<br>
+        Mode: ${mode} ·
+        Checks: ${filter_label} ·
+        Model: ${model} ·
+        AI policy: ${ai_review_policy_version}
+    </p>
+    ${feedback_timestamp}
+    <div class="cards">
+        <div class="card"><strong>${files_reviewed}</strong><span>files reviewed</span></div>
+        <div class="card"><strong>${issue_count}</strong><span>total issues</span></div>
+        <div class="card"><strong>${count_active}</strong><span>active findings</span></div>
+        <div class="card"><strong>${count_pending}</strong><span>pending challenges</span></div>
+        <div class="card"><strong>${count_needs_revalidation}</strong><span>needs revalidation</span></div>
+        <div class="card"><strong>${count_history}</strong><span>withdrawn / dismissed</span></div>
+        <div class="card"><strong>${high_count}</strong><span>active high</span></div>
+        <div class="card"><strong>${medium_count}</strong><span>active medium</span></div>
+        <div class="card"><strong>${low_count}</strong><span>active low</span></div>
+        <div class="card"><strong>${ci_high_count}</strong><span>CI-eligible high</span></div>
+        <div class="card"><strong>${ci_medium_count}</strong><span>CI-eligible medium</span></div>
+        <div class="card"><strong>${ci_advisory_ai_issue_count}</strong><span>advisory AI</span></div>
+        <div class="card"><strong>${error_count}</strong><span>API/check errors</span></div>
+    </div>
+    <div class="ci-box ${ci_class}">
+        <strong>CI threshold result: ${ci_label}</strong><br>
+        ${failure_text}<br>
+        ${ci_policy}<br>
+        Thresholds apply to CI-eligible findings only: high &gt; ${ci_thresholds_high},
+        medium &gt; ${ci_thresholds_medium},
+        API/check errors &gt; ${ci_thresholds_api_errors}.
+    </div>
+
+    ${recurrence_overview}
+    <p><button type="button" id="showAIWithoutRecurrence">AI findings without recurrence concerns (${ai_clear_count})</button></p>
+    <h2 id="activeFindingsTitle">Active findings</h2>
+    <p>Withdrawn and human-dismissed findings remain in the history below. An AI withdrawal alone
+       does not remove a substantive defect from CI counts; explicit human dismissal is required.</p>
+    <p>For AI findings, select <strong>Challenge AI</strong> to copy a terminal command.
+       Replace the placeholder reason with your rebuttal, then run it locally with
+       <code>DEEPSEEK_API_KEY</code> configured. The published report does not send requests to DeepSeek.</p>
+    <p id="copyStatus" class="copy-status" role="status" aria-live="polite"></p>
+    <div class="filters">
+        <label>
+            Challenge links
+            <select id="feedbackFilter">
+                <option value="">All findings</option>
+                <option value="ai-clear">AI findings without recurrence concerns (${ai_clear_count})</option>
+                <option value="possible">Possible links (${possible_count})</option>
+                <option value="confirmed">Human-confirmed links (${linked_count})</option>
+            </select>
+        </label>
+        <label>
+            Severity
+            <select id="severityFilter">
+                <option value="">All</option>
+                <option value="high">High</option>
+                <option value="medium">Medium</option>
+                <option value="low">Low</option>
+            </select>
+        </label>
+
+    </div>
+    <input type="hidden" id="sourceFilter" value="">
+    ${source_filters}
+    <p id="findingFilterStatus" role="status" aria-live="polite"></p>
+    ${issue_rows}
+    ${history_markup}
+    <h2>API/check errors</h2>
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Check</th>
+                    <th>File</th>
+                    <th>Error</th>
+                </tr>
+            </thead>
+            <tbody>
+                ${error_rows}
+            </tbody>
+        </table>
+    </div>
+</main>
+<script>
+${script}</script>
+${embedded_data}</body>
+</html>

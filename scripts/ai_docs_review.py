@@ -1,24 +1,27 @@
 import argparse
 import hashlib
-import shlex
-import html
 import json
 import os
 import re
 import shutil
 import subprocess
 import sys
-from abc import ABC, abstractmethod
+from abc import ABC
 from calendar import monthrange
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
-from urllib.parse import quote, unquote, urlsplit
+from urllib.parse import unquote, urlsplit
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import requests
 
 from qa_feedback import (decorate_issues, attach_feedback_status, save_findings, resolve as resolve_finding,
                          challenge as challenge_finding, load_report, DEFAULT_FEEDBACK, DEFAULT_FINDINGS)
+
+from qa_policy import apply_ai_severity_policy, evaluate_ci, is_ci_threshold_eligible, make_issue
+from qa_reporting import Report, ReportPaths, write_reports
+from qa_reporting.links import PORTFOLIO_URL, github_repository, github_revision
+from qa_reporting.model import report_counts
 
 API_URL = "https://api.deepseek.com/chat/completions"
 # DeepSeek retired V4-Flash on 10 September 2026. The supported rolling Flash
@@ -34,16 +37,9 @@ REVIEW_CACHE_ENABLED = True
 
 # Resolve the repository from the script location, never the invoking shell's CWD.
 # In the portfolio this module lives at <project>/scripts/ai_docs_review.py.
-# Running a standalone copy from <project>/ai_docs_review.py is also supported.
 SCRIPT_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = SCRIPT_DIR.parent if SCRIPT_DIR.name == "scripts" else SCRIPT_DIR
 ROOT = Path(".")  # All existing QA paths are relative to PROJECT_ROOT after main() starts.
-REPORT = Path("ai-doc-review.html")
-JSON_REPORT = Path("ai-doc-review.json")
-MARKDOWN_REPORT = Path("ai-doc-review.md")
-
-PORTFOLIO_URL = "https://iand4096.github.io/docusaurusportfolio"
-GITHUB_REPOSITORY_FALLBACK = "iand4096/docusaurusportfolio"
 EXCLUDED_DIRS = {
     "node_modules",
     "build",
@@ -495,6 +491,16 @@ def parse_model_json(model_output):
 
     return json.loads(text)
 
+def require_review_issues(response):
+    """Require an explicit list of finding objects, including for clean reviews."""
+    issues = response.get("issues") if isinstance(response, dict) else None
+    if not isinstance(issues, list):
+        raise ValueError("Invalid AI review response: expected an 'issues' array")
+    if any(not isinstance(issue, dict) for issue in issues):
+        raise ValueError("Invalid AI review response: 'issues' must contain only objects")
+    return issues
+
+
 def request_review(system_prompt, user_prompt, api_key):
     """Send a review request, retrying once if the model returns invalid JSON."""
 
@@ -579,42 +585,6 @@ def source_line_text(content, line_number):
         return lines[line_number - 1]
 
     return ""
-
-def apply_ai_severity_policy(issue):
-    """Enforce the ceiling for new and saved AI findings, preserving audit data."""
-    if issue.get('source') == 'ai' and issue.get('severity') == 'high':
-        issue.setdefault('model_reported_severity', 'high')
-        issue['severity'] = 'medium'
-    return issue
-
-
-def make_issue(
-    *,
-    file,
-    line,
-    severity,
-    confidence,
-    issue_type,
-    category,
-    original,
-    message,
-    suggestion,
-    source,
-):
-    """Create one issue using the unified schema."""
-    return {
-        "file": str(file).replace("\\", "/"),
-        "line": int(line),
-        "severity": severity,
-        "confidence": confidence,
-        "type": issue_type,
-        "category": category,
-        "original": original,
-        "message": message,
-        "suggestion": suggestion,
-        "source": source,
-    }
-
 
 def document_genre(path, content):
     """Classify review purpose from raw metadata and stable repository paths."""
@@ -937,10 +907,7 @@ class AIPageCheck(BaseCheck):
             api_key,
         )
 
-        issues = parsed.get("issues", [])
-
-        if not isinstance(issues, list):
-            return []
+        issues = require_review_issues(parsed)
 
         validated = []
         for issue in issues:
@@ -1207,11 +1174,8 @@ Use type "improvement".
             api_key,
         )
 
-        issues = parsed.get("issues", [])
+        issues = require_review_issues(parsed)
         validated = []
-
-        if not isinstance(issues, list):
-            return validated
 
         for issue in issues:
             normalised = normalise_ai_issue(
@@ -1269,7 +1233,7 @@ Use type "improvement".
         )
 
         validated = validate_site_ai_issues(
-            parsed.get("issues", []),
+            require_review_issues(parsed),
             paths,
             contents,
             self.allowed_categories,
@@ -1380,7 +1344,7 @@ Use type "improvement" unless the inconsistency is objectively defective.
         )
 
         validated = validate_site_ai_issues(
-            parsed.get("issues", []),
+            require_review_issues(parsed),
             paths,
             contents,
             self.allowed_categories,
@@ -3123,10 +3087,12 @@ def cached_ai_check(check, sources, scope, compute):
     # Bind all prompts, routing, normalization and verification code. A code edit
     # invalidates existing results even if the policy version was not bumped.
     implementation = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
+    policy_implementation = hashlib.sha256((SCRIPT_DIR / 'qa_policy.py').read_bytes()).hexdigest()
     cache_implementation = hashlib.sha256((SCRIPT_DIR / 'qa_review_cache.py').read_bytes()).hexdigest()
     inputs = {'scope': scope, 'check': check.name, 'sources': sources,
               'model': MODEL, 'api_url': API_URL, 'policy': AI_REVIEW_POLICY_VERSION,
-              'implementation': implementation, 'cache_implementation': cache_implementation,
+              'implementation': implementation, 'policy_implementation': policy_implementation,
+              'cache_implementation': cache_implementation,
               'defects_only': bool(getattr(check, 'defects_only', False))}
     return ReviewCache(PROJECT_ROOT / '.qa/review-cache', enabled=REVIEW_CACHE_ENABLED).run(inputs, compute)
 
@@ -3192,185 +3158,9 @@ def run_site_checks(paths, checks, api_key):
 
     return issues, errors
 # ---------------------------------------------------------------------------
-# CI thresholds
+# Finding relationships and saved-report refresh
 # ---------------------------------------------------------------------------
 
-
-def is_ci_threshold_eligible(issue):
-    """Return True when an issue is allowed to contribute to CI thresholds.
-    Deterministic checks retain their existing severity behaviour. AI findings
-    are intentionally stricter: only high-confidence substantive defects can
-    contribute to the high/medium CI thresholds. Editorial improvements, diagram
-    suggestions and uncertain AI judgements remain report-only.
-    """
-
-    if issue.get("source") != "ai":
-        return True
-    if issue.get("human_resolution") == "dismissed":
-        return False
-
-    return (
-        issue.get("type") == "defect"
-        and issue.get("confidence") == "high"
-    )
-
-def evaluate_ci(issues, errors, fail_high, fail_medium, fail_api_errors):
-    for issue in issues:
-        apply_ai_severity_policy(issue)
-    threshold_eligible = [
-        issue for issue in issues
-        if is_ci_threshold_eligible(issue)
-    ]
-    high_count = sum(
-        1 for issue in threshold_eligible
-        if issue["severity"] == "high"
-    )
-    medium_count = sum(
-        1 for issue in threshold_eligible
-        if issue["severity"] == "medium"
-    )
-    advisory_ai_count = sum(
-        1 for issue in issues
-        if issue.get("source") == "ai" and issue.get("human_resolution") != "dismissed"
-        and not is_ci_threshold_eligible(issue)
-    )
-    api_error_count = len(errors)
-
-    failures = []
-    if high_count > fail_high:
-        failures.append(
-            f"CI-eligible high issues {high_count} > allowed {fail_high}"
-        )
-
-    if medium_count > fail_medium:
-        failures.append(
-            f"CI-eligible medium issues {medium_count} > allowed {fail_medium}"
-        )
-
-    if api_error_count > fail_api_errors:
-        failures.append(
-            f"API/check errors {api_error_count} > allowed {fail_api_errors}"
-        )
-    return {
-        "passed": not failures,
-        "high_count": high_count,
-        "medium_count": medium_count,
-        "threshold_eligible_issue_count": len(threshold_eligible),
-        "advisory_ai_issue_count": advisory_ai_count,
-        "api_error_count": api_error_count,
-        "failures": failures,
-        "policy": (
-            "Deterministic findings use their normal severity. "
-            "AI findings count towards CI only when type=defect and confidence=high, "
-            "unless explicitly dismissed by a human. AI severity is capped at medium. "
-            "AI withdrawal alone does not change CI eligibility."
-        ),
-        "thresholds": {
-            "high": fail_high,
-            "medium": fail_medium,
-            "api_errors": fail_api_errors,
-        },
-    }
-# ---------------------------------------------------------------------------
-# Reporting
-# ---------------------------------------------------------------------------
-
-
-def _run_git(*args):
-    """Return stripped Git command output, or None when Git metadata is unavailable."""
-
-    try:
-        result = subprocess.run(
-            ["git", *args],
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-    except OSError:
-        return None
-    if result.returncode != 0:
-        return None
-
-    value = result.stdout.strip()
-    return value or None
-
-
-def github_repository():
-    """Return the GitHub owner/repository used for report source links."""
-
-    repository = os.environ.get("GITHUB_REPOSITORY", "").strip()
-    if repository:
-        return repository
-    remote = _run_git("remote", "get-url", "origin")
-    if remote:
-        match = re.search(
-            r"(?:github\.com[/:])(?P<repository>[^/\s]+/[^/\s]+?)(?:\.git)?$",
-            remote,
-            re.IGNORECASE,
-        )
-        if match:
-            return match.group("repository")
-
-    return GITHUB_REPOSITORY_FALLBACK
-
-
-def github_revision():
-    """Return the editable GitHub branch used by report source links."""
-
-    return "main"
-
-def github_file_url(file_path, line=None):
-    """Build a GitHub blob URL for a repository-relative file and optional line."""
-
-    if not isinstance(file_path, str):
-        return None
-
-    normalised = file_path.strip().replace("\\", "/")
-    while normalised.startswith("./"):
-        normalised = normalised[2:]
-
-    if not normalised or normalised.startswith("<"):
-        return None
-
-    repository = github_repository().strip("/")
-    revision = github_revision()
-    repository_url = quote(repository, safe="/")
-    revision_url = quote(revision, safe="")
-    file_url = quote(normalised, safe="/")
-    # `?plain=1` keeps GitHub in source-file view, and the fragment must come
-    # after the query string so line anchors work as expected, e.g.
-    # `...?plain=1#L22`.
-    url = f"https://github.com/{repository_url}/blob/{revision_url}/{file_url}?plain=1"
-
-    if isinstance(line, int) and line > 0:
-        url += f"#L{line}"
-
-    return url
-
-def html_file_link(file_path, line=None):
-    """Render a report filename as a GitHub link when it represents a real file."""
-
-    label = html.escape(str(file_path))
-    url = github_file_url(file_path, line=line)
-
-    if url is None:
-        return label
-
-    escaped_url = html.escape(url, quote=True)
-    return f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer">{label}</a>'
-
-def html_line_link(file_path, line):
-    """Render a source line number as a GitHub line link when possible."""
-
-    label = html.escape(str(line))
-    url = github_file_url(file_path, line=line)
-
-    if url is None:
-        return label
-
-    escaped_url = html.escape(url, quote=True)
-    return f'<a href="{escaped_url}" target="_blank" rel="noopener noreferrer">{label}</a>'
 
 def attach_related_findings(issues):
     """Expose overlap without merging allegations or their feedback identities."""
@@ -3384,1235 +3174,6 @@ def attach_related_findings(issues):
                                         if other is not issue and other.get('issue_id')]
 
 
-def sort_issues(issues):
-    severity_order = {"high": 0, "medium": 1, "low": 2}
-    confidence_order = {"high": 0, "medium": 1, "low": 2}
-
-    return sorted(
-        issues,
-        key=lambda issue: (
-            severity_order.get(issue["severity"], 99),
-            confidence_order.get(issue["confidence"], 99),
-            issue["file"],
-            issue["line"],
-            issue["category"],
-        ),
-    )
-
-def feedback_state(issue):
-    if issue.get('source') != 'ai':
-        return 'unreviewed'
-    if issue.get('feedback_needs_revalidation'):
-        return 'needs_revalidation'
-    if issue.get('human_resolution') == 'dismissed':
-        return 'dismissed'
-    if issue.get('feedback_status') == 'challenged':
-        return 'challenged'
-    if issue.get('human_resolution') in {'accepted', 'change_requested'}:
-        return issue['human_resolution']
-    return issue.get('effective_ai_decision') or 'unreviewed'
-
-
-def is_history_issue(issue):
-    return feedback_state(issue) in {'withdrawn', 'dismissed'}
-
-
-def feedback_label(issue):
-    if issue.get('feedback_match') == 'ambiguous':
-        return 'Unreviewed — multiple previous issues match; link not applied'
-    if issue.get('feedback_needs_revalidation'):
-        return 'Needs revalidation — exact claim matched; source or proposed fix changed'
-    if issue.get('feedback_link_confirmation') and feedback_state(issue) == 'unreviewed':
-        return 'Linked — awaiting human resolution'
-    return {
-        'unreviewed': 'Unreviewed', 'challenged': 'Challenged — awaiting decision',
-        'withdrawn': 'Withdrawn by AI — awaiting human resolution',
-        'dismissed': 'Dismissed by human', 'upheld': 'Upheld',
-        'revised': 'Revised', 'needs_evidence': 'Needs evidence',
-        'accepted': 'Accepted by human', 'change_requested': 'Change requested by human',
-    }.get(feedback_state(issue), 'Unreviewed')
-
-
-def report_counts(issues):
-    active = [issue for issue in issues if not is_history_issue(issue)]
-    return {
-        'active': len(active), 'history': len(issues) - len(active),
-        'pending': sum(feedback_state(issue) == 'challenged' for issue in active),
-        'needs_revalidation': sum(feedback_state(issue) == 'needs_revalidation' for issue in active),
-        **{level: sum(issue['severity'] == level for issue in active)
-           for level in ('high', 'medium', 'low')},
-    }
-
-
-def ai_without_recurrence_concerns(issue):
-    """Display-only classification; never changes feedback or CI eligibility."""
-    return (issue.get('source') == 'ai' and not issue.get('feedback_link_confirmation')
-            and not issue.get('recurrence_comparison_errors')
-            and all((candidate.get('comparison') or {}).get('verdict') == 'different_complaint'
-                    for candidate in issue.get('recurrence_candidates', [])))
-
-
-def recurrence_command(command, report_reference, **options):
-    args = ['python3', 'scripts/ai_docs_review.py', command, '--report', str(report_reference)]
-    for name, value in options.items():
-        args.extend(['--' + name.replace('_', '-'), str(value)])
-    return shlex.join(args)
-
-
-def recurrence_html(issue, report_reference, feedback_path=DEFAULT_FEEDBACK):
-    candidates = issue.get('recurrence_candidates', [])
-    linked = issue.get('feedback_link_confirmation')
-    if not candidates and not linked:
-        return ''
-    escape = lambda value: html.escape(str(value))
-
-    def command_control(command, label):
-        return ('<div class="recurrence-action"><details class="recurrence-command">'
-                '<summary>Show command</summary><pre><code class="link-command" data-report-token="' +
-                html.escape(shlex.quote(str(report_reference)), quote=True) + '">' + escape(command) +
-                '</code></pre></details><button type="button" class="copy-link-command">' +
-                escape(label) + '</button></div>')
-
-    parts = ['<details class="feedback-details recurrence-details"><summary>Previous challenges and possible recurrence</summary>']
-    if linked:
-        parts.append('<p><strong>Human-confirmed link.</strong> The previous decision has not been applied automatically.</p>')
-        history = issue.get('feedback_linked_history') or {}
-        candidates = [{'record_id': linked['previous_record_id'],
-                       'previous_finding': history.get('latest_finding') or {},
-                       'previous_discussion': history.get('discussion') or [],
-                       'previous_adjudications': history.get('adjudications') or []}]
-    for candidate in candidates:
-        old = candidate['previous_finding']
-        comparison = candidate.get('comparison')
-        precedent = candidate.get('precedent') or {}
-        previous_decisions = candidate.get('previous_adjudications') or []
-        previous_decision = previous_decisions[-1].get('decision', 'Not adjudicated') if previous_decisions else 'Not adjudicated'
-        if precedent:
-            previous_decision = ((precedent.get('resolution') or {}).get('decision') or
-                                 (precedent.get('adjudication') or {}).get('decision') or 'Not adjudicated')
-        old_sha = (old.get('document_revision') or {}).get('content_sha256')
-        new_sha = (issue.get('document_revision') or {}).get('content_sha256')
-        source_status = 'Unchanged' if old_sha and old_sha == new_sha else 'Changed — review context'
-        verdict = (comparison['verdict'].replace('_', ' ') if comparison else
-                   'Human-confirmed link' if linked else 'Not compared')
-        parts.append('<section class="recurrence-candidate" aria-label="Challenge link comparison">'
-                     '<dl class="recurrence-summary"><dt>AI assessment</dt><dd><strong>AI comparison: ' +
-                     escape(verdict) + '</strong></dd><dt>Previous decision</dt><dd>' +
-                     escape(previous_decision.replace('_', ' ').capitalize()) +
-                     '</dd><dt>Source</dt><dd>' + escape(source_status) + '</dd></dl>')
-        if not linked:
-            parts.append('<div class="recurrence-actions">')
-            from qa_recurrence import reusable
-            if reusable(candidate):
-                command = recurrence_command('reuse', report_reference, issue=issue['issue_id'],
-                    previous=candidate['record_id'], proposal=candidate['proposal_id'],
-                    reason='I verified that the prior decision still applies', feedback_file=feedback_path)
-                parts.append(command_control(command, 'Copy revalidate and reuse command'))
-            actions = [] if candidate.get('requires_revalidation') else [
-                ('confirmed', 'Copy confirm link command'), ('rejected', 'Copy reject link command')]
-            for decision, label in actions:
-                command = recurrence_command('link', report_reference, issue=issue['issue_id'],
-                    previous=candidate['record_id'], proposal=candidate['proposal_id'],
-                    decision=decision, reason='Explain your link decision', feedback_file=feedback_path)
-                parts.append(command_control(command, label))
-            if not comparison:
-                command = recurrence_command('compare', report_reference, feedback_file=feedback_path)
-                parts.append(command_control(command, 'Copy compare command'))
-            parts.append('</div><p class="recurrence-help">Copy a command, edit its reason and run locally. '
-                         'Confirming a link does not dismiss the finding. Take no action to leave unresolved.</p>')
-        parts.append('<details class="recurrence-evidence"><summary>Compare quotations and allegations</summary>')
-        if old.get('original') == issue.get('original'):
-            parts.append('<p><strong>Shared quotation</strong></p><blockquote>' + escape(issue.get('original', '')) + '</blockquote>')
-        else:
-            for label, finding in [('Previous', old), ('Current', issue)]:
-                parts.append('<p><strong>' + label + ' quotation</strong></p><blockquote>' + escape(finding.get('original', '')) + '</blockquote>')
-        for label, finding in [('Previous', old), ('Current', issue)]:
-            parts.append('<p><strong>' + label + ' allegation</strong></p><p>' + escape(finding.get('message', '')) + '</p>')
-        parts.append('</details>')
-        if comparison:
-            for label, field in [('Complaint relationship', 'complaint_relationship'),
-                                 ('Prior decision applicability', 'prior_decision_applicability'),
-                                 ('Document change impact', 'document_change_impact')]:
-                if field in comparison:
-                    parts.append('<p><strong>' + label + ':</strong> ' + escape(comparison[field]) + '</p>')
-            parts.append('<details class="recurrence-reasoning"><summary>AI reasoning and evidence</summary><p>' + escape(comparison['reason']) + '</p>')
-            for label, field in [('Previous finding evidence', 'old_evidence'), ('Current finding evidence', 'new_evidence')]:
-                parts.append('<p><strong>' + label + '</strong></p>')
-                for quote in comparison[field]:
-                    parts.append('<blockquote>' + escape(quote) + '</blockquote>')
-            parts.append('</details>')
-        if precedent:
-            parts.append('<details class="recurrence-precedent"><summary>Exact decision precedent</summary>'
-                         '<p><code>' + escape(precedent.get('precedent_id', '')) + '</code></p>')
-            if precedent.get('legacy'):
-                parts.append('<p>Legacy binding: not eligible for decision reuse.</p>')
-            for label, value in [('Rebuttal', precedent.get('rebuttal')),
-                                 ('AI rationale', (precedent.get('adjudication') or {}).get('reason')),
-                                 ('Human resolution reason', (precedent.get('resolution') or {}).get('reason'))]:
-                if value:
-                    parts.append('<p><strong>' + label + ':</strong> ' + escape(value) + '</p>')
-            for quote in (precedent.get('adjudication') or {}).get('evidence', []):
-                parts.append('<blockquote>' + escape(quote) + '</blockquote>')
-            parts.append('</details>')
-        parts.append('<details class="recurrence-history"><summary>Previous rebuttal and decision history</summary>')
-        parts.append('<p>Previous finding: <code>' + escape(candidate['record_id']) + '</code></p>')
-        if linked:
-            parts.append('<p><strong>Link confirmation reason</strong></p><p>' + escape(linked['reason']) + '</p>')
-        for entry in candidate.get('previous_discussion', []):
-            if entry.get('role') == 'human':
-                parts.append('<p><strong>Previous rebuttal</strong></p><p>' + escape(entry.get('text', '')) + '</p>')
-        for entry in previous_decisions:
-            parts.append('<p><strong>Previous AI decision: ' + escape(entry.get('decision', '')) + '</strong></p><p>' + escape(entry.get('reason', '')) + '</p>')
-        parts.append('</details></section>')
-    for error in issue.get('recurrence_comparison_errors', []):
-        parts.append('<p role="status">Recurrence comparison failed: ' + escape(error['error']) + '</p>')
-    parts.append('</details>')
-    return ''.join(parts)
-
-
-def feedback_html(issue):
-    if issue.get('source') != 'ai':
-        return ''
-    parts = []
-    if issue.get('feedback_needs_revalidation'):
-        parts.append('<p>Previous feedback is linked to this exact claim, but the source or proposed fix has changed. It does not dismiss or revise this occurrence.</p>')
-    for entry in issue.get('feedback_discussion', []):
-        parts.append('<p><strong>' + html.escape(str(entry.get('role', '')).title()) +
-                     '</strong> ' + html.escape(str(entry.get('at', ''))) + '</p><p>' +
-                     html.escape(str(entry.get('text', ''))) + '</p>')
-    for entry in issue.get('feedback_adjudications', []):
-        parts.append('<p><strong>AI decision: ' + html.escape(str(entry.get('decision', ''))) +
-                     '</strong></p><p>' + html.escape(str(entry.get('reason', ''))) + '</p>')
-        parts.extend('<blockquote>' + html.escape(str(quote)) + '</blockquote>'
-                     for quote in entry.get('evidence', []))
-    for entry in issue.get('feedback_resolution_history', []):
-        parts.append('<p><strong>Human resolution: ' + html.escape(str(entry.get('decision', ''))) +
-                     '</strong></p><p>' + html.escape(str(entry.get('reason', ''))) + '</p>')
-    if issue.get('feedback_attempts') and issue['feedback_attempts'][-1].get('result') == 'failed':
-        parts.append('<p>Last adjudication attempt failed. The challenge remains pending; retry from the CLI.</p>')
-    if not parts:
-        return ''
-    return '<details class="feedback-details"><summary>Challenge discussion and evidence</summary>' + ''.join(parts) + '</details>'
-
-
-def issue_table(rows, table_id):
-    headers = ('File', 'Line', 'Severity', 'Confidence', 'Type', 'Category', 'Source',
-               'Original', 'Issue', 'Suggestion')
-    return '<div class="table-wrap"><table id="' + table_id + '"><thead><tr>' + ''.join(
-        '<th>' + heading + '</th>' for heading in headers) + '</tr></thead><tbody>' + ''.join(rows) + '</tbody></table></div>'
-
-
-def generate_json_report(issues, errors, metadata, ci_result):
-    for issue in issues:
-        apply_ai_severity_policy(issue)
-    payload = {
-        "metadata": metadata,
-        "ci": ci_result,
-        "summary": report_counts(issues),
-        "issues": sort_issues(issues),
-        "errors": errors,
-    }
-
-    JSON_REPORT.write_text(
-        json.dumps(payload, indent=2, ensure_ascii=False),
-        encoding="utf-8",
-    )
-
-
-def generate_markdown_report(issues, errors, metadata, ci_result):
-    """Write a complete, JavaScript-free report suitable for LLMs and crawlers.
-
-    Keep detailed findings as paragraphs rather than a wide Markdown table: long
-    messages, multiline quotations and suggestions remain straightforward to parse.
-    """
-    for issue in issues:
-        apply_ai_severity_policy(issue)
-    active = sort_issues([issue for issue in issues if not is_history_issue(issue)])
-    history = sort_issues([issue for issue in issues if is_history_issue(issue)])
-    ordered = active + history
-    counts = report_counts(issues)
-
-    def value(text):
-        # Preserve content while preventing unintended Markdown headings in values.
-        return str(text).replace("\r\n", "\n").replace("\r", "\n").strip()
-
-    def quote_block(text):
-        return "\n".join("> " + line for line in value(text).split("\n"))
-
-    lines = [
-        "# Documentation QA report", "",
-        f"Report run: {metadata['report_run_at_display']} ({metadata['report_time_zone']})", "",
-        f"Mode: {metadata['mode']}",
-        f"Checks: {metadata['filter_label']}",
-        f"Model: {metadata['model']}",
-        f"AI policy: {metadata['ai_review_policy_version']}", "",
-        "## Summary", "",
-        f"- Files reviewed: {metadata['files_reviewed']}",
-        f"- Total issues: {len(ordered)}",
-        f"- Active findings: {counts['active']}",
-        f"- Pending challenges: {counts['pending']}",
-        f"- Needs revalidation: {counts['needs_revalidation']}",
-        f"- Withdrawn / dismissed: {counts['history']}",
-        *[f"- Active {level} severity: {counts[level]}" for level in ("high", "medium", "low")],
-        f"- CI-eligible high: {ci_result['high_count']}",
-        f"- CI-eligible medium: {ci_result['medium_count']}",
-        f"- Advisory AI: {ci_result['advisory_ai_issue_count']}",
-        f"- API/check errors: {len(errors)}",
-        f"- CI result: {'PASS' if ci_result['passed'] else 'FAIL'}", "",
-        "CI policy: " + value(ci_result['policy']),
-        "Failures: " + ("; ".join(ci_result['failures']) if ci_result['failures'] else "None"),
-        "", "## Issues", "",
-    ]
-    if metadata.get('feedback_updated_at'):
-        lines.insert(4, 'Feedback updated: ' + value(metadata['feedback_updated_at']))
-    if not active:
-        lines += ['No active findings.', '']
-    if not ordered:
-        lines += ["No issues found by the selected checks.", ""]
-    for number, issue in enumerate(ordered, 1):
-        if history and number == len(active) + 1:
-            lines += ['## Withdrawn / dismissed', '']
-        lines += [f"### Issue {number}", ""]
-        if issue.get("source") == "ai":
-            issue_id = issue.get("issue_id")
-            if issue_id:
-                lines.append(f"- ID: `{value(issue_id)}`")
-            lines.append(f"- Feedback: {value(feedback_label(issue))}")
-            lines.append(f"- Persistent issue: `{value(issue.get('persistent_issue_id') or 'not linked')}`")
-            lines.append(f"- Occurrence: `{value(issue.get('occurrence_id') or 'unknown')}`")
-        lines += [
-            f"- Document revision: `{issue.get('document_revision', {}).get('content_sha256') or 'unknown'}`",
-            f"- File: `{value(issue['file'])}`",
-            f"- Line: {issue['line']}",
-            f"- Severity: {issue['severity']}",
-            f"- Related findings: {', '.join(issue.get('related_findings', [])) or 'None'}",
-            f"- Confidence: {issue['confidence']}",
-            f"- Type: {issue['type']}",
-            f"- Category: {value(issue['category'])}",
-            f"- Source: {issue['source']}",
-            f"- Source link: {github_file_url(issue['file'], issue['line']) or 'Not available'}",
-            "", "**Original:**", "", quote_block(issue['original']), "",
-            "**Issue:**", "", value(issue.get('effective_message', issue['message'])), "",
-            "**Suggestion:**", "", value(issue.get('effective_suggestion', issue['suggestion'])), "",
-        ]
-        if issue.get('reader_impact'):
-            lines += ['**Reader impact:**', '', value(issue['reader_impact']), '',
-                      '**Rule basis:**', '', value(issue.get('rule_basis', '')), '']
-            for evidence in issue.get('evidence', []):
-                lines += ['**Supporting evidence (' + value(evidence['file']) + '):**', '',
-                          quote_block(evidence['quote']), '']
-        if issue.get('effective_ai_decision') == 'revised':
-            lines += ['**Original criticism:**', '', value(issue['message']), '',
-                      '**Original suggestion:**', '', value(issue['suggestion']), '']
-        if issue.get('feedback_link_confirmation'):
-            lines += ['**Human-confirmed recurrence link:** ' + value(issue['feedback_link_confirmation']['previous_record_id']),
-                      '', 'Previous decisions are not applied automatically.', '']
-            linked_history = issue.get('feedback_linked_history') or {}
-            old = linked_history.get('latest_finding') or {}
-            lines += ['**Linked previous allegation:**', '', value(old.get('message', '')), '']
-            for entry in linked_history.get('discussion') or []:
-                if entry.get('role') == 'human':
-                    lines += ['**Previous rebuttal:**', '', value(entry.get('text', '')), '']
-            for entry in linked_history.get('adjudications') or []:
-                lines += ['**Previous decision:** ' + value(entry.get('decision', '')), '', value(entry.get('reason', '')), '']
-        for candidate in issue.get('recurrence_candidates', []):
-            old = candidate['previous_finding']
-            lines += ['**Possible recurrence:** ' + value(candidate['record_id']), '',
-                      '**Previous quotation:**', '', quote_block(old['original']), '',
-                      '**Previous allegation:**', '', value(old['message']), '',
-                      '**Current allegation:**', '', value(issue['message']), '']
-            precedent = candidate.get('precedent') or {}
-            if precedent:
-                lines += ['**Decision precedent:** ' + value(precedent['precedent_id']), '',
-                          '**Precedent rebuttal:** ' + value(precedent.get('rebuttal') or ''), '',
-                          '**Precedent AI rationale:** ' + value((precedent.get('adjudication') or {}).get('reason', '')), '',
-                          '**Precedent human decision:** ' + value((precedent.get('resolution') or {}).get('decision', '')), '']
-            for entry in candidate.get('previous_discussion', []):
-                if entry.get('role') == 'human':
-                    lines += ['**Previous rebuttal:**', '', value(entry['text']), '']
-            for entry in candidate.get('previous_adjudications', []):
-                lines += ['**Previous decision:** ' + value(entry['decision']), '', value(entry['reason']), '']
-            comparison = candidate.get('comparison')
-            if comparison:
-                lines += ['**AI comparison:** ' + comparison['verdict'], '', value(comparison['reason']), '']
-                for field in ('complaint_relationship', 'prior_decision_applicability', 'document_change_impact'):
-                    if field in comparison:
-                        lines += [f'**{field.replace("_", " ").title()}:** ' + value(comparison[field]), '']
-                for field in ('old_evidence', 'new_evidence'):
-                    for quote in comparison[field]:
-                        lines += [quote_block(quote), '']
-            else:
-                lines += ['Not compared by AI.', '']
-            from qa_recurrence import reusable
-            if reusable(candidate):
-                command = recurrence_command('reuse', metadata.get('review_report_reference') or str(JSON_REPORT),
-                    issue=issue['issue_id'], previous=candidate['record_id'], proposal=candidate['proposal_id'],
-                    reason='I verified that the prior decision still applies',
-                    feedback_file=metadata.get('feedback_file', DEFAULT_FEEDBACK))
-                lines += ['**Human revalidation and decision reuse:**', '', '```bash', command, '```', '']
-            for decision in (() if candidate.get('requires_revalidation') else ('confirmed', 'rejected')):
-                command = recurrence_command('link', metadata.get('review_report_reference') or str(JSON_REPORT),
-                    issue=issue['issue_id'], previous=candidate['record_id'], proposal=candidate['proposal_id'], decision=decision,
-                    reason='Explain your link decision', feedback_file=metadata.get('feedback_file', DEFAULT_FEEDBACK))
-                lines += ['```bash', command, '```', '']
-        for error in issue.get('recurrence_comparison_errors', []):
-            lines += ['**Recurrence comparison failed:** ' + value(error['error']), '']
-        for entry in issue.get('feedback_discussion', []):
-            lines += ['**' + value(entry.get('role', '')).title() + ' discussion:**', '', value(entry.get('text', '')), '']
-        for entry in issue.get('feedback_adjudications', []):
-            lines += ['**AI decision: ' + value(entry.get('decision', '')) + '**', '', value(entry.get('reason', '')), '']
-            for evidence in entry.get('evidence', []):
-                lines += [quote_block(evidence), '']
-        for entry in issue.get('feedback_resolution_history', []):
-            lines += ['**Human resolution: ' + value(entry.get('decision', '')) + '**', '', value(entry.get('reason', '')), '']
-    lines += ["## API/check errors", ""]
-    if not errors:
-        lines += ["No API or check errors.", ""]
-    for number, error in enumerate(errors, 1):
-        lines += [
-            f"### Error {number}", "",
-            f"- Check: {value(error['check'])}",
-            f"- File: {value(error['file'])}",
-            "", value(error['error']), "",
-        ]
-    MARKDOWN_REPORT.write_text("\n".join(lines).rstrip() + "\n", encoding="utf-8")
-
-
-def source_filter_buttons(issues, errors, metadata):
-    """Include executed sources even when they returned no findings."""
-    labels = {'ai': 'AI', 'static': 'Static', 'vale': 'Vale', 'ltex': 'LTeX+',
-              'lychee': 'Lychee', 'remark': 'Remark'}
-    checks = {check.name: check.source for check in build_checks()}
-    selected = metadata.get('checks') or []
-    sources = {checks[name] for name in selected if name in checks}
-    sources.update(issue.get('source') for issue in issues)
-    sources.update(checks.get(error.get('check')) for error in errors)
-    counts = {source: sum(issue.get('source') == source for issue in issues) for source in labels}
-
-    def button(source, label):
-        count = len(issues) if not source else counts[source]
-        descriptions = {
-            '': 'Show findings from all AI and deterministic checks.',
-            'ai': 'DeepSeek reviews language, clarity, structure, repetition and portfolio presentation, and suggests useful diagrams.',
-            'static': 'Repository checks validate local links and assets, accessibility basics and landing-page coverage.',
-            'vale': 'Vale checks prose against the configured writing style, terminology and editorial rules.',
-            'ltex': 'LTeX+ checks spelling and grammar using the configured language and dictionary.',
-            'lychee': 'Lychee checks external links for unreachable URLs and HTTP errors.',
-            'remark': 'Remark checks Markdown and MDX structure against the configured lint rules.',
-        }
-        if source == 'ai' and selected and not set(selected) & {
-                'PortfolioReview', 'RepetitionReview', 'DiagramReview'}:
-            descriptions['ai'] = ('DeepSeek reviews language, structure and consistency for substantive '
-                                  'defects, then verifies each allegation against the source.')
-        title = descriptions[source]
-        return (f'<button type="button" class="source-button source-{source or "all"}" '
-                f'data-source-filter="{source}" aria-pressed="{str(not source).lower()}" '
-                f'title="{html.escape(title, quote=True)}">{label} '
-                f'<span class="source-count">{count}</span></button>')
-
-    parts = [button('', 'All sources')]
-    if 'ai' in sources:
-        parts.append('<span class="source-group-label">AI</span>')
-        parts.append(button('ai', labels['ai']))
-    deterministic = [source for source in ('static', 'vale', 'ltex', 'lychee', 'remark') if source in sources]
-    if deterministic:
-        if 'ai' in sources:
-            parts.append('<span class="source-separator" aria-hidden="true"></span>')
-        parts.append('<span class="source-group-label">Deterministic</span>')
-        parts.extend(button(source, labels[source]) for source in deterministic)
-    return '<div class="source-filters" role="group" aria-label="Filter findings by source">' + ''.join(parts) + '</div>'
-
-
-EXAMPLE_REPORT_THRESHOLD = 5
-
-
-def example_report_notice(issues, metadata):
-    if metadata.get('example_report'):
-        return ('<aside class="example-report-notice" aria-label="Example report notice">'
-                '<strong>Demonstration only — synthetic findings</strong>'
-                '<p>These deliberately flawed examples illustrate the checks and report filters. '
-                'They are not defects found in this portfolio. The CI failure and check error '
-                'below are simulated. Feedback actions are disabled.</p></aside>')
-    if report_counts(issues)['active'] <= EXAMPLE_REPORT_THRESHOLD:
-        return ('<aside class="example-report-notice" aria-label="Example report">'
-                '<p>This report has few active findings. Explore a separate example to see '
-                'how the checks report documentation problems.</p>'
-                '<a class="example-report-link" href="qa-example.html">'
-                'See example QA report with errors</a></aside>')
-    return ''
-
-
-def generate_example_report(directory, metadata, *, actual_report_name=None):
-    """Render a deterministic demonstration, never run checks or touch feedback."""
-    cases = [
-        ('static', 'high', 'links', '[Setup guide](missing-guide.md)',
-         'The local link points to a file that does not exist.', 'Correct the path or restore the missing guide.'),
-        ('static', 'medium', 'accessibility', '![](architecture.png)',
-         'The diagram has no alternative text.', 'Describe the architecture diagram in its alternative text.'),
-        ('ai', 'medium', 'clarity', 'Delete the old index before verifying the replacement.',
-         'The instruction removes the working index before the replacement is verified.',
-         'Verify the replacement first, then retire the old index.'),
-        ('ai', 'low', 'repetition', 'The API returns JSON. Responses from the API use JSON.',
-         'Two adjacent sentences repeat the response format.', 'Keep one statement of the response format.'),
-        ('vale', 'low', 'style', 'Simply leverage the endpoint to get your data.',
-         'The wording uses unnecessary filler and vague terminology.', 'Use the endpoint to retrieve data.'),
-        ('ltex', 'low', 'spelling', 'The documantation describes the endpoint.',
-         'The word “documantation” is misspelled.', 'Use “documentation”.'),
-        ('lychee', 'medium', 'links', '[API reference](https://example.invalid/reference)',
-         'The external API reference cannot be reached.', 'Replace the URL with a working reference.'),
-        ('remark', 'low', 'heading-increment', '# Setup\n\n### Configure the client',
-         'The heading skips a level.', 'Use a level-two heading after the level-one heading.'),
-    ]
-    examples = [make_issue(file='Synthetic example document', line=index,
-        severity=severity, confidence='high', issue_type='defect' if severity != 'low' else 'improvement',
-        category=category, original=original, message=message, suggestion=suggestion, source=source)
-        for index, (source, severity, category, original, message, suggestion) in enumerate(cases, 1)]
-    example_metadata = {**metadata, 'example_report': True, 'files_reviewed': 1,
-        'filter_label': 'Demonstration of all sources', 'model': 'Synthetic examples — no API calls',
-        'checks': [check.name for check in build_checks()]}
-    example_errors = [{'check': 'LycheeCheck', 'file': 'Synthetic example document',
-                      'error': 'Simulated check failure: the external-link service timed out.'}]
-    example_ci = evaluate_ci(examples, example_errors, 0, 0, 0)
-    generate_html_report(examples, example_errors, example_metadata, example_ci,
-                         output_path=Path(directory) / 'qa-example.html',
-                         actual_report_name=actual_report_name)
-
-
-def generate_html_report(issues, errors, metadata, ci_result, *, output_path=None,
-                         actual_report_name=None):
-    if metadata.get('example_report'):
-        return_url = './' + quote(actual_report_name or REPORT.name)
-        return_label = '← Back to actual QA report'
-    else:
-        return_url = PORTFOLIO_URL
-        return_label = '← Back to Portfolio'
-    for issue in issues:
-        apply_ai_severity_policy(issue)
-    issues = sort_issues(issues)
-    counts = report_counts(issues)
-    high_count, medium_count, low_count = (counts[level] for level in ('high', 'medium', 'low'))
-    pinned_report = metadata.get('review_report_reference')
-    pinned_report_json = json.dumps(pinned_report).replace('<', '\u003c')
-    try:
-        local_report = JSON_REPORT.relative_to(PROJECT_ROOT).as_posix()
-    except ValueError:
-        local_report = JSON_REPORT.as_posix()
-    local_report_json = json.dumps(local_report).replace('<', '\u003c')
-    rows = []
-    history_rows = []
-    recurrence_overview_rows = []
-    possible_count = sum(bool(issue.get('recurrence_candidates')) for issue in issues)
-    linked_count = sum(bool(issue.get('feedback_link_confirmation')) for issue in issues)
-    ai_clear_count = sum(ai_without_recurrence_concerns(issue) for issue in issues)
-
-    for number, issue in enumerate(issues, 1):
-        file_link = (html.escape(issue['file']) if metadata.get('example_report') else
-                     html_file_link(issue["file"], line=issue["line"]))
-        line_link = (str(issue['line']) if metadata.get('example_report') else
-                     html_line_link(issue["file"], issue["line"]))
-        issue_id = str(issue.get("issue_id", ""))
-        # Only DeepSeek-originated findings can be challenged by the AI
-        # adjudication command. Keep the command in a data attribute so it is
-        # available without embedding untrusted issue content in JavaScript.
-        challenge_control = (
-            '<button type="button" class="challenge-button" '
-            'data-issue-id="' + html.escape(issue_id, quote=True) + '" '
-            'aria-label="Copy challenge command for finding '
-            + html.escape(issue_id, quote=True) + '">Challenge AI</button>'
-            if issue.get("source") == "ai" and issue_id and not metadata.get("example_report") else ""
-        )
-        file_detail = file_link
-        if issue.get("source") == "ai" and issue_id:
-            file_detail = (
-                '<small><strong>ID:</strong> <code>' + html.escape(issue_id) +
-                '</code></small><br>' + file_link + '<br><small>Status: ' +
-                html.escape(feedback_label(issue)) +
-                '</small><br><small>Persistent issue: <code>' +
-                html.escape(issue.get('persistent_issue_id') or 'not linked') +
-                '</code><br>Occurrence: <code>' + html.escape(issue.get('occurrence_id') or 'unknown') +
-                '</code></small><br>' + challenge_control
-            )
-        recurrence_state = ('possible' if issue.get('recurrence_candidates') else
-                            'confirmed' if issue.get('feedback_link_confirmation') else '')
-        if recurrence_state:
-            candidates = issue.get('recurrence_candidates') or [{
-                'previous_adjudications': (issue.get('feedback_linked_history') or {}).get('adjudications') or [],
-                'comparison': None}]
-            verdict_labels = {'same_complaint': 'Same complaint',
-                              'different_complaint': 'Different complaint', 'uncertain': 'Uncertain'}
-            assessments = []
-            decisions = []
-            for candidate in candidates:
-                comparison = candidate.get('comparison')
-                assessments.append(verdict_labels.get(comparison.get('verdict'), 'Not compared')
-                                   if comparison else 'Human-confirmed link' if recurrence_state == 'confirmed' else 'Not compared')
-                prior = candidate.get('previous_adjudications') or []
-                decisions.append(str(prior[-1].get('decision', 'Not adjudicated')).replace('_', ' ').title()
-                                 if prior else 'Not adjudicated')
-            recurrence_overview_rows.append(
-                '<tr><td>' + file_link + ' · line ' + str(issue['line']) + '</td><td>' +
-                html.escape(', '.join(dict.fromkeys(decisions))) + '</td><td>' +
-                html.escape(', '.join(dict.fromkeys(assessments))) + '</td><td>' +
-                '<a class="review-recurrence" href="#finding-' + str(number) +
-                '">Review comparison</a></td></tr>')
-        message = html.escape(issue.get('effective_message', issue['message']))
-        if issue.get('reader_impact'):
-            message += '<details><summary>Reader impact and supporting evidence</summary><p>' + html.escape(issue['reader_impact']) + '</p><p>' + html.escape(issue.get('rule_basis', '')) + '</p>'
-            for evidence in issue.get('evidence', []):
-                message += '<p>' + html.escape(evidence['file']) + '</p><blockquote>' + html.escape(evidence['quote']) + '</blockquote>'
-            message += '</details>'
-        if issue.get('related_findings'):
-            message += '<p><strong>Related findings:</strong> ' + html.escape(', '.join(issue['related_findings'])) + '</p>'
-        suggestion = html.escape(issue.get('effective_suggestion', issue['suggestion']))
-        if issue.get('effective_ai_decision') == 'revised':
-            message += '<details><summary>Original criticism and suggestion</summary><p>' + html.escape(issue['message']) + '</p><p>' + html.escape(issue['suggestion']) + '</p></details>'
-        message += feedback_html(issue)
-        message += recurrence_html(issue, pinned_report or str(JSON_REPORT), metadata.get('feedback_file', DEFAULT_FEEDBACK))
-        (history_rows if is_history_issue(issue) else rows).append(
-            f"""
-            <tr id="finding-{number}" data-recurrence="{recurrence_state}"
-                data-ai-clear="{'true' if ai_without_recurrence_concerns(issue) else 'false'}"
-                data-severity="{html.escape(issue['severity'])}"
-                data-source="{html.escape(issue['source'])}"
-                data-category="{html.escape(issue['category'])}"
-            >
-                <td>{file_detail}</td>
-                <td>{line_link}<br><small>{html.escape((issue.get("document_revision", {}).get("content_sha256") or "")[:12] or "revision unavailable")}</small></td>
-                <td><span class="badge severity-{html.escape(issue['severity'])}">{html.escape(issue['severity'])}</span></td>
-                <td><span class="badge confidence-{html.escape(issue['confidence'])}">{html.escape(issue['confidence'])}</span></td>
-                <td>{html.escape(issue['type'])}</td>
-                <td>{html.escape(issue['category'])}</td>
-                <td><span class="badge source-{html.escape(issue['source'])}">{html.escape(issue['source'])}</span></td>
-                <td><code>{html.escape(issue['original'])}</code></td>
-                <td>{message}</td>
-                <td>{suggestion}</td>
-            </tr>
-            """
-        )
-    if not rows:
-        rows.append(
-            """
-            <tr>
-                <td colspan="10" class="empty-state">
-                    No active findings.
-                </td>
-            </tr>
-            """
-        )
-
-    history_markup = ('<details class="feedback-history"><summary>Withdrawn / dismissed (' + str(len(history_rows)) + ')</summary>' + issue_table(history_rows, 'historyTable') + '</details>') if history_rows else ''
-    recurrence_overview = (
-        '<section id="possibleLinks" aria-labelledby="possibleLinksTitle">'
-        '<h2 id="possibleLinksTitle">Challenge links</h2><p>' + str(possible_count) +
-        ' findings with possible links · ' + str(linked_count) + ' human-confirmed links.</p>'
-        '<p><button type="button" id="showPossibleLinks">Show only possible links</button> '
-        '<button type="button" id="showAllFindings">Show all findings</button></p>'
-        '<div class="table-wrap recurrence-overview"><table><thead><tr><th>Location</th>'
-        '<th>Previous AI decision</th><th>Assessment</th><th>Action</th></tr></thead><tbody>' +
-        ''.join(recurrence_overview_rows) + '</tbody></table></div></section>'
-    ) if recurrence_overview_rows else (
-        '<section id="possibleLinks"><h2>Challenge links</h2><p>No possible or confirmed links in this report.</p></section>')
-    feedback_timestamp = ('<p>Feedback updated: ' + html.escape(str(metadata['feedback_updated_at'])) + '</p>') if metadata.get('feedback_updated_at') else ''
-    snapshot_link = ('<a href="original-report.json">Original review snapshot</a>'
-                     if metadata.get('original_report_snapshot') == 'original-report.json' else '')
-    error_rows = []
-
-    for error in errors:
-        error_file_link = (html.escape(error['file']) if metadata.get('example_report') else
-                           html_file_link(error["file"]))
-        error_rows.append(
-            f"""
-            <tr>
-                <td>{html.escape(error['check'])}</td>
-                <td>{error_file_link}</td>
-                <td>{html.escape(error['error'])}</td>
-            </tr>
-            """
-        )
-
-    if not error_rows:
-        error_rows.append(
-            """
-            <tr>
-                <td colspan="3" class="empty-state">No API or check errors.</td>
-            </tr>
-            """
-        )
-    ci_class = "ci-pass" if ci_result["passed"] else "ci-fail"
-    ci_label = "PASS" if ci_result["passed"] else "FAIL"
-
-    failure_text = (
-        "; ".join(ci_result["failures"])
-        if ci_result["failures"]
-        else "All configured thresholds are satisfied."
-    )
-    document = f"""<!DOCTYPE html>
-<html lang="en-GB">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Documentation QA report</title>
-    <!-- No automatic redirect: non-JavaScript fetchers can read this response. -->
-    <meta name="description" content="Documentation QA results, complete issue descriptions, source references, and CI status. JavaScript is not required.">
-    <link rel="alternate" type="text/markdown" title="AI-readable QA report" href="{html.escape(MARKDOWN_REPORT.name, quote=True)}">
-    <link rel="alternate" type="application/json" title="QA report JSON" href="{html.escape(JSON_REPORT.name, quote=True)}">
-    <style>
-        :root {{
-            font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-            color-scheme: light dark;
-        }}
-        body {{
-            margin: 0;
-            background: #f5f7fa;
-            color: #111827;
-        }}
-
-        main {{
-            max-width: 1800px;
-            margin: 0 auto;
-            padding: 32px;
-        }}
-
-        h1 {{ margin-bottom: 6px; }}
-        h2 {{ margin-top: 32px; }}
-
-        a {{
-            color: #2563eb;
-            text-decoration: underline;
-            text-underline-offset: 2px;
-        }}
-
-        a:hover {{
-            text-decoration-thickness: 2px;
-        }}
-        .portfolio-link {{
-            margin: 0 0 18px;
-        }}
-
-        .report-actions {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 0 0 18px;
-        }}
-
-        .report-actions a {{
-            display: inline-block;
-            padding: 7px 10px;
-            border: 1px solid #d1d5db;
-            border-radius: 7px;
-            background: #fff;
-            text-decoration: none;
-        }}
-        .report-actions a:hover {{
-            text-decoration: underline;
-        }}
-
-        .subtitle {{
-            margin-top: 0;
-            color: #6b7280;
-        }}
-
-        .cards {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin: 24px 0;
-        }}
-
-        .card {{
-            min-width: 135px;
-            padding: 14px 16px;
-            background: #fff;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-        }}
-        .card strong {{
-            display: block;
-            font-size: 22px;
-        }}
-
-        .card span {{
-            color: #6b7280;
-            font-size: 13px;
-        }}
-
-        .ci-box {{
-            padding: 14px 16px;
-            border-radius: 10px;
-            margin: 18px 0 24px;
-            border: 1px solid;
-        }}
-
-        .ci-pass {{
-            background: #ecfdf5;
-            border-color: #10b981;
-            color: #065f46;
-        }}
-        .ci-fail {{
-            background: #fef2f2;
-            border-color: #ef4444;
-            color: #991b1b;
-        }}
-
-        .filters {{
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            margin-bottom: 14px;
-        }}
-
-        select {{
-            padding: 7px 9px;
-            border-radius: 7px;
-            border: 1px solid #d1d5db;
-        }}
-        .table-wrap {{
-            overflow-x: auto;
-            background: #fff;
-            border: 1px solid #d1d5db;
-            border-radius: 10px;
-        }}
-
-        table {{
-            width: 100%;
-            min-width: 1500px;
-            border-collapse: collapse;
-        }}
-        th, td {{
-            padding: 11px 12px;
-            text-align: left;
-            vertical-align: top;
-            border-bottom: 1px solid #e5e7eb;
-            font-size: 13px;
-            line-height: 1.45;
-        }}
-
-        th {{
-            position: sticky;
-            top: 0;
-            background: #f9fafb;
-            font-size: 12px;
-            text-transform: uppercase;
-            letter-spacing: 0.04em;
-        }}
-        code {{
-            white-space: pre-wrap;
-            overflow-wrap: anywhere;
-            font-size: 12px;
-        }}
-
-        .badge {{
-            display: inline-block;
-            padding: 2px 7px;
-            border-radius: 999px;
-            font-weight: 700;
-            font-size: 11px;
-            text-transform: uppercase;
-        }}
-        .severity-high {{ background: #fee2e2; color: #991b1b; }}
-        .severity-medium {{ background: #fef3c7; color: #92400e; }}
-        .severity-low {{ background: #dbeafe; color: #1e40af; }}
-        .confidence-high {{ background: #dcfce7; color: #166534; }}
-        .confidence-medium {{ background: #fef3c7; color: #92400e; }}
-        .confidence-low {{ background: #f3f4f6; color: #4b5563; }}
-        .example-report-notice {{
-            margin: 18px 0;
-            padding: 16px 20px;
-            border: 1px solid #93c5fd;
-            border-radius: 10px;
-            background: #eff6ff;
-            color: #1e3a8a;
-        }}
-        .example-report-notice p {{ margin: 0 0 10px; }}
-        .example-report-link {{
-            display: inline-block;
-            padding: 9px 15px;
-            border-radius: 7px;
-            background: #1d4ed8;
-            color: #fff;
-            font-weight: 600;
-            text-decoration: none;
-        }}
-        .example-report-link:hover {{ background: #1e40af; }}
-        .example-report-link:focus-visible {{ outline: 3px solid #1e3a8a; outline-offset: 3px; }}
-        .source-filters {{
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 10px;
-            margin: 12px 0;
-        }}
-        .source-button {{
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            min-height: 40px;
-            padding: 7px 13px;
-            border: 2px solid transparent;
-            border-radius: 999px;
-            font: inherit;
-            font-size: 14px;
-            font-weight: 600;
-            cursor: pointer;
-        }}
-        .source-button:hover {{ filter: brightness(0.96); }}
-        .source-button[aria-pressed="true"] {{
-            border-color: currentColor;
-            box-shadow: 0 2px 4px #00000014;
-        }}
-        .source-button:focus-visible {{ outline: 3px solid #334155; outline-offset: 3px; }}
-        .source-all {{ background: #f1f5f9; color: #334155; }}
-        .source-count {{
-            padding: 1px 6px;
-            border-radius: 999px;
-            background: #ffffff90;
-            font-size: 12px;
-        }}
-        .source-group-label {{ font-size: 12px; font-weight: 600; color: #4b5563; }}
-        .source-separator {{ height: 30px; border-left: 1px solid #9ca3af; margin: 0 4px; }}
-        .source-static {{ background: #ede9fe; color: #5b21b6; }}
-        .source-ai {{ background: #e0f2fe; color: #075985; }}
-        .source-vale {{ background: #dcfce7; color: #166534; }}
-        .source-ltex {{ background: #fae8ff; color: #86198f; }}
-        .source-lychee {{ background: #fef3c7; color: #92400e; }}
-        .source-remark {{ background: #e0e7ff; color: #3730a3; }}
-        .challenge-button {{
-            display: inline-block;
-            margin-top: 8px;
-            padding: 5px 9px;
-            border: 1px solid #2563eb;
-            border-radius: 6px;
-            background: #eff6ff;
-            color: #1d4ed8;
-            font: inherit;
-            font-weight: 600;
-            cursor: pointer;
-        }}
-        .challenge-button:hover {{ background: #dbeafe; }}
-        .challenge-button:focus-visible {{ outline: 2px solid #2563eb; outline-offset: 2px; }}
-        .feedback-details, .feedback-history {{ margin: 1rem 0; }}
-        .feedback-details summary, .feedback-history summary {{ cursor: pointer; font-weight: 600; }}
-        .feedback-details p, .feedback-details blockquote {{ white-space: pre-wrap; }}
-        .copy-status {{ margin: 10px 0; font-size: 13px; }}
-        .empty-state {{ text-align: center; padding: 30px; color: #6b7280; }}
-        @media (prefers-color-scheme: dark) {{
-            body {{ background: #111827; color: #f3f4f6; }}
-            .card, .table-wrap {{ background: #1f2937; border-color: #374151; }}
-            .report-actions a {{ background: #1f2937; border-color: #374151; }}
-            th {{ background: #111827; }}
-            th, td {{ border-bottom-color: #374151; }}
-            .subtitle, .card span {{ color: #9ca3af; }}
-        }}
-        .recurrence-candidate {{ padding: 12px 0; border-bottom: 1px solid #d1d5db; }}
-        .recurrence-candidate:last-child {{ border-bottom: 0; }}
-        .recurrence-summary {{ display: grid; grid-template-columns: auto 1fr; gap: 6px 12px; margin: 0 0 12px; }}
-        .recurrence-summary dt {{ color: #6b7280; }}
-        .recurrence-summary dd {{ margin: 0; }}
-        .recurrence-actions {{ display: flex; flex-wrap: wrap; gap: 8px; align-items: start; }}
-        .recurrence-action {{ display: flex; flex-direction: column; gap: 6px; min-width: 0; max-width: 100%; }}
-        .recurrence-action button {{ order: -1; padding: 7px 10px; cursor: pointer; }}
-        .recurrence-command {{ max-width: 360px; }}
-        .recurrence-command summary, .recurrence-help {{ font-size: 12px; }}
-        .recurrence-command pre {{ max-width: 100%; white-space: pre-wrap; overflow-wrap: anywhere; }}
-        .recurrence-candidate > details {{ margin: 10px 0; }}
-        .recurrence-candidate > details > summary {{ font-weight: 500; }}
-        @media (prefers-color-scheme: dark) {{
-            .recurrence-summary dt {{ color: #9ca3af; }}
-            .recurrence-candidate {{ border-color: #374151; }}
-        }}
-        .recurrence-overview table {{ min-width: 0; }}
-        .recurrence-overview th, .recurrence-overview td {{ font-size: 14px; }}
-        #possibleLinks {{ margin: 24px 0; }}
-        #possibleLinks button, #showAIWithoutRecurrence {{ padding: 8px 12px; margin-right: 8px; cursor: pointer; }}
-        tr[id^="finding-"] {{ scroll-margin-top: 16px; }}
-        tr[id^="finding-"]:target {{ outline: 2px solid #2563eb; outline-offset: -2px; }}
-    </style>
-</head>
-<body>
-<main>
-    <h1>Documentation QA report</h1>
-    {example_report_notice(issues, metadata)}
-    <p class="portfolio-link">
-        <a href="{html.escape(return_url, quote=True)}">{return_label}</a>
-    </p>
-    <div class="report-actions">
-        <a href="#possibleLinks">Challenge links ({possible_count} possible · {linked_count} confirmed)</a>
-        <a id="latestReportLink" href="#">Load latest report</a>
-        <a href="{html.escape(MARKDOWN_REPORT.name, quote=True)}">AI-readable Markdown report</a>
-        <a href="{html.escape(JSON_REPORT.name, quote=True)}">Full report JSON</a>
-        {snapshot_link}
-    </div>
-    <p>All findings are included in this HTML document, without requiring JavaScript.
-       AI readers can also use the linked Markdown or JSON files when published alongside this page.</p>
-    <p class="subtitle">
-        Report run: {html.escape(metadata['report_run_at_display'])}
-        ({html.escape(metadata['report_time_zone'])})<br>
-        Mode: {html.escape(metadata['mode'])} ·
-        Checks: {html.escape(metadata['filter_label'])} ·
-        Model: {html.escape(metadata['model'])} ·
-        AI policy: {html.escape(metadata['ai_review_policy_version'])}
-    </p>
-    {feedback_timestamp}
-    <div class="cards">
-        <div class="card"><strong>{metadata['files_reviewed']}</strong><span>files reviewed</span></div>
-        <div class="card"><strong>{len(issues)}</strong><span>total issues</span></div>
-        <div class="card"><strong>{counts['active']}</strong><span>active findings</span></div>
-        <div class="card"><strong>{counts['pending']}</strong><span>pending challenges</span></div>
-        <div class="card"><strong>{counts['needs_revalidation']}</strong><span>needs revalidation</span></div>
-        <div class="card"><strong>{counts['history']}</strong><span>withdrawn / dismissed</span></div>
-        <div class="card"><strong>{high_count}</strong><span>active high</span></div>
-        <div class="card"><strong>{medium_count}</strong><span>active medium</span></div>
-        <div class="card"><strong>{low_count}</strong><span>active low</span></div>
-        <div class="card"><strong>{ci_result['high_count']}</strong><span>CI-eligible high</span></div>
-        <div class="card"><strong>{ci_result['medium_count']}</strong><span>CI-eligible medium</span></div>
-        <div class="card"><strong>{ci_result['advisory_ai_issue_count']}</strong><span>advisory AI</span></div>
-        <div class="card"><strong>{len(errors)}</strong><span>API/check errors</span></div>
-    </div>
-    <div class="ci-box {ci_class}">
-        <strong>CI threshold result: {ci_label}</strong><br>
-        {html.escape(failure_text)}<br>
-        {html.escape(ci_result['policy'])}<br>
-        Thresholds apply to CI-eligible findings only: high &gt; {ci_result['thresholds']['high']},
-        medium &gt; {ci_result['thresholds']['medium']},
-        API/check errors &gt; {ci_result['thresholds']['api_errors']}.
-    </div>
-
-    {recurrence_overview}
-    <p><button type="button" id="showAIWithoutRecurrence">AI findings without recurrence concerns ({ai_clear_count})</button></p>
-    <h2 id="activeFindingsTitle">Active findings</h2>
-    <p>Withdrawn and human-dismissed findings remain in the history below. An AI withdrawal alone
-       does not remove a substantive defect from CI counts; explicit human dismissal is required.</p>
-    <p>For AI findings, select <strong>Challenge AI</strong> to copy a terminal command.
-       Replace the placeholder reason with your rebuttal, then run it locally with
-       <code>DEEPSEEK_API_KEY</code> configured. The published report does not send requests to DeepSeek.</p>
-    <p id="copyStatus" class="copy-status" role="status" aria-live="polite"></p>
-    <div class="filters">
-        <label>
-            Challenge links
-            <select id="feedbackFilter">
-                <option value="">All findings</option>
-                <option value="ai-clear">AI findings without recurrence concerns ({ai_clear_count})</option>
-                <option value="possible">Possible links ({possible_count})</option>
-                <option value="confirmed">Human-confirmed links ({linked_count})</option>
-            </select>
-        </label>
-        <label>
-            Severity
-            <select id="severityFilter">
-                <option value="">All</option>
-                <option value="high">High</option>
-                <option value="medium">Medium</option>
-                <option value="low">Low</option>
-            </select>
-        </label>
-
-    </div>
-    <input type="hidden" id="sourceFilter" value="">
-    {source_filter_buttons(issues, errors, metadata)}
-    <p id="findingFilterStatus" role="status" aria-live="polite"></p>
-    {issue_table(rows, 'issuesTable')}
-    {history_markup}
-    <h2>API/check errors</h2>
-    <div class="table-wrap">
-        <table>
-            <thead>
-                <tr>
-                    <th>Check</th>
-                    <th>File</th>
-                    <th>Error</th>
-                </tr>
-            </thead>
-            <tbody>
-                {''.join(error_rows)}
-            </tbody>
-        </table>
-    </div>
-</main>
-<script>
-    const severityFilter = document.getElementById('severityFilter');
-    const sourceFilter = document.getElementById('sourceFilter');
-    const feedbackFilter = document.getElementById('feedbackFilter');
-    const latestReportLink = document.getElementById('latestReportLink');
-    if (latestReportLink) {{
-        latestReportLink.addEventListener('click', (event) => {{
-            event.preventDefault();
-            const url = new URL(window.location.href);
-            url.searchParams.set('_qa_refresh', Date.now().toString());
-            window.location.assign(url.toString());
-        }});
-    }}
-    function applyFilters() {{
-        const severity = severityFilter.value;
-        const source = sourceFilter.value;
-        const recurrence = feedbackFilter.value;
-        document.querySelectorAll('[data-source-filter]').forEach(button => {{
-            button.setAttribute('aria-pressed', String(button.dataset.sourceFilter === source));
-        }});
-        const rows = document.querySelectorAll('tr[data-severity]');
-        let shown = 0;
-        for (const row of rows) {{
-            const matches = (!severity || row.dataset.severity === severity) &&
-                (!source || row.dataset.source === source) &&
-                (!recurrence || (recurrence === 'ai-clear' ? row.dataset.aiClear === 'true' :
-                    row.dataset.recurrence === recurrence));
-            row.style.display = matches ? '' : 'none';
-            if (matches) shown++;
-        }}
-        document.getElementById('findingFilterStatus').textContent = shown + ' of ' + rows.length +
-            ' findings shown' + (shown === 0 ? '. No findings match these filters.' : '.');
-    }}
-    severityFilter.addEventListener('change', applyFilters);
-    sourceFilter.addEventListener('change', applyFilters);
-    document.querySelectorAll('[data-source-filter]').forEach(button => {{
-        button.addEventListener('click', () => {{
-            sourceFilter.value = button.dataset.sourceFilter;
-            // The AI-only view must not mask deterministic source findings.
-            if (feedbackFilter.value === 'ai-clear' && sourceFilter.value !== 'ai') {{
-                feedbackFilter.value = '';
-            }}
-            applyFilters();
-        }});
-    }});
-    feedbackFilter.addEventListener('change', () => {{
-        if (feedbackFilter.value === 'ai-clear') sourceFilter.value = 'ai';
-        applyFilters();
-    }});
-    function showLinkView(value) {{
-        severityFilter.value = '';
-        sourceFilter.value = '';
-        feedbackFilter.value = value;
-        applyFilters();
-    }}
-    const showAIWithoutRecurrence = document.getElementById('showAIWithoutRecurrence');
-    if (showAIWithoutRecurrence) showAIWithoutRecurrence.addEventListener('click', () => {{
-        showLinkView('ai-clear');
-        sourceFilter.value = 'ai';
-        applyFilters();
-        document.getElementById('activeFindingsTitle').scrollIntoView();
-    }});
-    const showPossibleLinks = document.getElementById('showPossibleLinks');
-    if (showPossibleLinks) showPossibleLinks.addEventListener('click', () => {{
-        showLinkView('possible');
-        document.getElementById('activeFindingsTitle').scrollIntoView();
-    }});
-    const showAllFindings = document.getElementById('showAllFindings');
-    if (showAllFindings) showAllFindings.addEventListener('click', () => showLinkView(''));
-    document.querySelectorAll('.review-recurrence').forEach(link => {{
-        link.addEventListener('click', () => {{
-            showLinkView('');
-            const row = document.getElementById(link.getAttribute('href').slice(1));
-            const details = row.querySelector('.recurrence-details');
-            if (details) details.open = true;
-            const history = row.closest('.feedback-history');
-            if (history) history.open = true;
-        }});
-    }});
-    applyFilters();
-
-    // Keep copied recurrence commands bound to the immutable published report.
-    const publishedReport = (window.location.protocol === 'https:' &&
-        window.location.hostname === 'iand4096.github.io' &&
-        /^\\/docusaurusportfolio\\/qa\\/report-[a-f0-9]{{12,40}}\\.html$/i.test(window.location.pathname))
-        ? window.location.origin + window.location.pathname.replace(/\\.html$/i, '.json') : null;
-    if (!{pinned_report_json} && publishedReport) {{
-        document.querySelectorAll('.link-command').forEach(code => {{
-            code.textContent = code.textContent.replace(code.dataset.reportToken, JSON.stringify(publishedReport));
-        }});
-    }}
-    document.querySelectorAll('.copy-link-command').forEach(button => {{
-        button.addEventListener('click', async () => {{
-            const command = button.previousElementSibling.querySelector('code').textContent;
-            try {{
-                await navigator.clipboard.writeText(command);
-                document.getElementById('copyStatus').textContent = 'Command copied. Edit the reason, run locally, then render the report again.';
-            }} catch (error) {{
-                window.prompt('Copy command and edit the reason:', command);
-            }}
-        }});
-    }});
-
-    // Works on static GitHub Pages without an API key or a server component.
-    // Single quotes around the reason are intentional: replace its contents
-    // with your own explanation, or use --reason-file for complex quotations.
-    document.querySelectorAll('.challenge-button').forEach((button) => {{
-        button.addEventListener('click', async () => {{
-            const issueId = button.dataset.issueId;
-            if (!/^qa-[A-Za-z0-9_-]+$/.test(issueId || '')) return;
-            const reportRef = {pinned_report_json} || ((window.location.protocol === 'https:' &&
-                window.location.hostname === 'iand4096.github.io' &&
-                /^\\/docusaurusportfolio\\/qa\\/report-[a-f0-9]{{12,40}}\\.html$/i.test(window.location.pathname))
-                ? window.location.origin + window.location.pathname.replace(/\\.html$/i, '.json')
-                : {local_report_json});
-            const command = 'python3 scripts/ai_docs_review.py challenge --report ' +
-                JSON.stringify(reportRef) + ' --issue ' + issueId +
-                ' --reason "Explain why you disagree with this finding"';
-            const status = document.getElementById('copyStatus');
-            try {{
-                if (!navigator.clipboard || !navigator.clipboard.writeText) {{
-                    throw new Error('Clipboard API unavailable');
-                }}
-                await navigator.clipboard.writeText(command);
-                status.textContent = 'Challenge command copied for ' + issueId
-                    + '. Edit the reason and run it in your terminal.';
-                const previous = button.textContent;
-                button.textContent = 'Copied!';
-                window.setTimeout(() => {{ button.textContent = previous; }}, 1800);
-            }} catch (error) {{
-                // Non-secure origins and browsers that deny clipboard access:
-                // show the complete command for manual copying instead.
-                window.prompt('Copy this command and edit the reason:', command);
-                status.textContent = 'Challenge command shown for ' + issueId + '.';
-            }}
-        }});
-    }});
-</script>
-</body>
-</html>
-"""
-
-    # Include full structured findings inside the HTML page itself. Escape '<' to
-    # avoid a source quotation containing '</script>' prematurely ending the tag.
-    machine_payload = {
-        "metadata": metadata,
-        "ci": ci_result,
-        "summary": report_counts(issues),
-        "issues": issues,
-        "errors": errors,
-    }
-    embedded_json = json.dumps(machine_payload, ensure_ascii=False).replace("<", "\\u003c")
-    document = document.replace(
-        "</body>",
-        '<script id="qa-report-data" type="application/json">\n'
-        + embedded_json + '\n</script>\n</body>',
-        1,
-    )
-    if metadata.get('example_report'):
-        document = document.replace('<title>Documentation QA report</title>',
-                                    '<title>Example QA report — synthetic findings</title>')
-        document = document.replace('<h1>Documentation QA report</h1>',
-                                    '<h1>Example QA report</h1>')
-        # The example is standalone: never link its synthetic data to the real
-        # report exports or expose actions that could write actual feedback.
-        document = re.sub(r'    <div class="report-actions">.*?</div>', '', document, count=1, flags=re.S)
-        document = re.sub(r'    <link rel="alternate"[^>]*>\n', '', document)
-        document = document.replace('AI readers can also use the linked Markdown or JSON files when published alongside this page.',
-                                    'The embedded JSON contains the same synthetic examples.')
-        document = re.sub(r'    <p>For AI findings, select <strong>Challenge AI</strong>.*?</p>',
-                          '', document, count=1, flags=re.S)
-    destination = Path(output_path) if output_path is not None else REPORT
-    destination.write_text(document, encoding="utf-8")
-    if not metadata.get('example_report') and report_counts(issues)['active'] <= EXAMPLE_REPORT_THRESHOLD:
-        generate_example_report(destination.parent, metadata, actual_report_name=destination.name)
-
-# ---------------------------------------------------------------------------
-# Command-line interface
-# ---------------------------------------------------------------------------
-
-
 def render_saved_report(reference, feedback_path, output_dir, *, compare=False):
     """Render saved findings with current feedback; never execute review checks."""
     payload, reference = load_report(reference)
@@ -4620,12 +3181,9 @@ def render_saved_report(reference, feedback_path, output_dir, *, compare=False):
     raw_snapshot = source_path.read_bytes() if source_path else (
         json.dumps(payload, ensure_ascii=False, indent=2) + '\n').encode('utf-8')
     output_dir = Path(output_dir).resolve()
-    global REPORT, JSON_REPORT, MARKDOWN_REPORT
-    REPORT = output_dir / 'ai-doc-review.html'
-    JSON_REPORT = output_dir / 'ai-doc-review.json'
-    MARKDOWN_REPORT = output_dir / 'ai-doc-review.md'
+    paths = ReportPaths.in_directory(output_dir)
     snapshot_path = output_dir / 'original-report.json'
-    if source_path and source_path.resolve() in {REPORT, JSON_REPORT, MARKDOWN_REPORT}:
+    if source_path and source_path.resolve() in {paths.html, paths.json, paths.markdown}:
         raise ValueError('Choose a different output directory; the original report must not be overwritten')
     if snapshot_path.exists() and snapshot_path.read_bytes() != raw_snapshot:
         raise ValueError('Output directory contains a different original report; choose a new directory')
@@ -4650,11 +3208,10 @@ def render_saved_report(reference, feedback_path, output_dir, *, compare=False):
     output_dir.mkdir(parents=True, exist_ok=True)
     if not snapshot_path.exists():
         snapshot_path.write_bytes(raw_snapshot)
-    generate_html_report(issues, errors, metadata, ci_result)
-    generate_json_report(issues, errors, metadata, ci_result)
-    generate_markdown_report(issues, errors, metadata, ci_result)
+    write_reports(Report(issues, errors, metadata, ci_result), paths,
+                  {check.name: check.source for check in build_checks()})
     counts = report_counts(issues)
-    print(f"Rendered saved report: {REPORT}")
+    print(f"Rendered saved report: {paths.html}")
     print(f"Active: {counts['active']}; pending: {counts['pending']}; withdrawn/dismissed: {counts['history']}")
     print(('Compared possible recurrences; no review checks were rerun.' if compare else
            'No checks or AI calls were run.') + ' Original snapshot: ' + str(snapshot_path))
@@ -4760,7 +3317,6 @@ def main():
     # Local reports belong under .qa; retain root outputs for the existing
     # GitHub Actions deployment workflow, which uploads these root filenames.
     # An explicit --report-dir overrides either default.
-    global REPORT, JSON_REPORT, MARKDOWN_REPORT
     report_dir = args.report_dir if args.report_dir is not None else (
         Path(".") if os.environ.get("GITHUB_ACTIONS", "").lower() == "true" else Path(".qa")
     )
@@ -4768,9 +3324,7 @@ def main():
         report_dir = Path('.qa') / 'feedback-view'
     if not report_dir.is_absolute():
         report_dir = PROJECT_ROOT / report_dir
-    REPORT = report_dir / "ai-doc-review.html"
-    JSON_REPORT = report_dir / "ai-doc-review.json"
-    MARKDOWN_REPORT = report_dir / "ai-doc-review.md"
+    paths = ReportPaths.in_directory(report_dir)
     if args.command not in {"challenge", "resolve", "render", "compare", "link", "reuse"}:
         report_dir.mkdir(parents=True, exist_ok=True)
     _assert_ci_policy_invariants()
@@ -5016,30 +3570,13 @@ def main():
         "github_repository": github_repository(),
         "github_revision": github_revision(),
     }
-    generate_html_report(
-        issues,
-        errors,
-        metadata,
-        ci_result,
-    )
-
-    generate_json_report(
-        issues,
-        errors,
-        metadata,
-        ci_result,
-    )
-    generate_markdown_report(
-        issues,
-        errors,
-        metadata,
-        ci_result,
-    )
+    write_reports(Report(issues, errors, metadata, ci_result), paths,
+                  {check.name: check.source for check in build_checks()})
 
     print()
-    print(f"HTML report: {REPORT.as_posix()}")
-    print(f"JSON report: {JSON_REPORT.as_posix()}")
-    print(f"Markdown report: {MARKDOWN_REPORT.as_posix()}")
+    print(f"HTML report: {paths.html.as_posix()}")
+    print(f"JSON report: {paths.json.as_posix()}")
+    print(f"Markdown report: {paths.markdown.as_posix()}")
     print()
     print(
         "CI thresholds (deterministic findings + high-confidence AI defects only): "

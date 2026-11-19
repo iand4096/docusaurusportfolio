@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_reporting import Report, generate_json_report
 
 PROJECT = Path(__file__).resolve().parents[2]
 
@@ -121,8 +122,7 @@ class LycheePolicyTests(unittest.TestCase):
     def test_json_report_preserves_warning_statuses(self):
         issues = [self.finding(code) for code in [503, 403, 404]]
         target = Path(self.directory.name) / 'report.json'
-        with patch.object(review, 'JSON_REPORT', target):
-            review.generate_json_report(issues, [], {}, self.ci(issues))
+        generate_json_report(Report(issues, [], {}, self.ci(issues)), target)
         report = json.loads(target.read_text())
         self.assertEqual(report['ci']['high_count'], 1)
         self.assertEqual(len(report['issues']), 3)

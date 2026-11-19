@@ -8,6 +8,8 @@ from unittest.mock import patch
 
 sys.path[:0] = [str(Path(__file__).resolve().parents[1])]
 import ai_docs_review as review
+from qa_reporting import Report, ReportPaths
+from qa_reporting.html_report import example_report_notice, generate_example_report, generate_html_report
 from test_qa_report_feedback import finding
 
 
@@ -16,20 +18,19 @@ class ExampleReportTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name)
+        self.check_sources = {check.name: check.source for check in review.build_checks()}
         self.metadata = {'report_run_at_display': '16 November 2026',
             'report_time_zone': 'Europe/London', 'mode': 'per-page',
             'filter_label': 'Full review', 'model': 'test', 'ai_review_policy_version': 'test',
-            'files_reviewed': 1, 'checks': [check.name for check in review.build_checks()]}
+            'files_reviewed': 1, 'checks': list(self.check_sources)}
 
     def render(self, count):
         issues = [finding(str(i)) for i in range(count)]
         ci = review.evaluate_ci(issues, [], 0, 5, 0)
         original_ci = copy.deepcopy(ci)
-        with patch.object(review, 'REPORT', self.root / 'real.html'), \
-             patch.object(review, 'JSON_REPORT', self.root / 'real.json'), \
-             patch.object(review, 'MARKDOWN_REPORT', self.root / 'real.md'), \
-             patch.object(review, 'request_review', side_effect=AssertionError('No API calls')):
-            review.generate_html_report(issues, [], self.metadata, ci)
+        paths = ReportPaths(self.root / 'real.html', self.root / 'real.json', self.root / 'real.md')
+        with patch.object(review, 'request_review', side_effect=AssertionError('No API calls')):
+            generate_html_report(Report(issues, [], self.metadata, ci), paths, self.check_sources)
         self.assertEqual(ci, original_ci)
         return (self.root / 'real.html').read_text()
 
@@ -64,22 +65,24 @@ class ExampleReportTests(unittest.TestCase):
         self.assertNotIn('See example QA report with errors', self.render(6))
 
     def test_example_returns_to_custom_output_filename(self):
-        review.generate_html_report([], [], self.metadata,
-            review.evaluate_ci([], [], 0, 5, 0),
-            output_path=self.root / 'custom report.html')
+        defaults = ReportPaths.in_directory(self.root)
+        paths = ReportPaths(self.root / 'custom report.html', defaults.json, defaults.markdown)
+        generate_html_report(Report([], [], self.metadata, review.evaluate_ci([], [], 0, 5, 0)),
+                             paths, self.check_sources)
         example = (self.root / 'qa-example.html').read_text()
         self.assertIn('href="./custom%20report.html">← Back to actual QA report</a>', example)
 
     def test_standalone_example_returns_to_default_report(self):
-        review.generate_example_report(self.root, self.metadata)
+        paths = ReportPaths.in_directory(self.root)
+        generate_example_report(paths, self.metadata, self.check_sources)
         example = (self.root / 'qa-example.html').read_text()
-        self.assertIn(f'href="./{review.REPORT.name}">← Back to actual QA report</a>', example)
+        self.assertIn(f'href="./{paths.html.name}">← Back to actual QA report</a>', example)
 
     def test_history_does_not_hide_example_offer(self):
         issues = [finding(str(i)) for i in range(8)]
         for issue in issues:
             issue['human_resolution'] = 'dismissed'
-        self.assertIn('See example QA report with errors', review.example_report_notice(issues, {}))
+        self.assertIn('See example QA report with errors', example_report_notice(issues, {}))
 
 
 if __name__ == '__main__':
