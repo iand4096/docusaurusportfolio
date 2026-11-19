@@ -64,6 +64,7 @@ def is_ci_threshold_eligible(issue):
     suggestions and uncertain AI judgements remain report-only.
     """
 
+    # docs:start qa-ci-eligibility
     if issue.get("source") != "ai":
         return True
     if issue.get("human_resolution") == "dismissed":
@@ -73,6 +74,8 @@ def is_ci_threshold_eligible(issue):
         issue.get("type") == "defect"
         and issue.get("confidence") == "high"
     )
+    # docs:end qa-ci-eligibility
+
 
 def evaluate_ci(issues, errors, fail_high: int, fail_medium: int, fail_api_errors: int) -> CIResult:
     for issue in issues:

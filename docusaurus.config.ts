@@ -3,9 +3,12 @@ import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {inferApiEndpointVariant} from './plugins/api-endpoints.cjs';
 import {numberDiagramFigures} from './plugins/diagram-figures.cjs';
+import {remarkSourceSnippets, sourceSnippetPages} from './plugins/source-snippets.cjs';
 
 // This file runs in Node.js.
 // Do not use browser APIs or JSX here.
+
+const baseUrl = '/docusaurusportfolio/';
 
 const config: Config = {
   title: 'Ian Drewett | Technical Writer & Documentation Engineer',
@@ -21,7 +24,7 @@ const config: Config = {
 
   // GitHub Pages deployment
   url: 'https://iand4096.github.io',
-  baseUrl: '/docusaurusportfolio/',
+  baseUrl,
 
   organizationName: 'iand4096',
   projectName: 'docusaurusportfolio',
@@ -48,6 +51,7 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
 
   plugins: [
+    sourceSnippetPages,
     './plugins/scalar-browser.cjs',
     './plugins/taxonomy-coverage.cjs',
     './plugins/see-also.cjs',
@@ -98,7 +102,7 @@ const config: Config = {
       {
         docs: {
           sidebarPath: './sidebars.ts',
-          remarkPlugins: [numberDiagramFigures, inferApiEndpointVariant],
+          remarkPlugins: [numberDiagramFigures, inferApiEndpointVariant, [remarkSourceSnippets, {baseUrl}]],
         },
 
         blog: {

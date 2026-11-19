@@ -2,6 +2,7 @@ import {readdir, readFile, writeFile} from 'node:fs/promises';
 import path from 'node:path';
 import {fileURLToPath} from 'node:url';
 import matter from 'gray-matter';
+import {createSnippetResolver, serializeSourceSnippets} from '../plugins/source-snippets.cjs';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const pageDirectories = ['docs', 'blog', 'src/pages'];
@@ -24,13 +25,14 @@ async function findPages(directory) {
 
 const pages = (await Promise.all(pageDirectories.map(findPages))).flat().sort();
 const sections = [];
+const resolveSnippet = createSnippetResolver();
 for (const page of pages) {
   const {data, content} = matter(await readFile(path.join(root, page), 'utf8'));
   const types = Array.isArray(data.type) ? data.type : [data.type];
   if (types.includes('landing-page')) continue;
 
   const title = data.title ?? path.posix.basename(page, path.posix.extname(page));
-  sections.push(`# ${title}\n\n<!-- Source: ${page} -->\n\n${content.trim()}`);
+  sections.push(`# ${title}\n\n<!-- Source: ${page} -->\n\n${serializeSourceSnippets(content, resolveSnippet).trim()}`);
 }
 
 await writeFile(path.join(root, output), sections.join('\n\n---\n\n') + '\n');

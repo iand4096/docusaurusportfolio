@@ -1,0 +1,76 @@
+.snippet {
+  margin-bottom: var(--ifm-paragraph-margin-bottom);
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: var(--ifm-global-radius);
+  min-width: 0;
+}
+
+.header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.25rem 0.75rem;
+  padding: 0.25rem 0.65rem;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+  background: var(--ifm-color-emphasis-100);
+  border-radius: var(--ifm-global-radius) var(--ifm-global-radius) 0 0;
+}
+
+.filename {
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: transparent;
+  border: 0;
+  padding: 0;
+  overflow-wrap: anywhere;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.action {
+  display: inline-flex;
+  align-items: center;
+  min-height: 2.5rem;
+  padding: 0.25rem 0.625rem;
+  border: 1px solid transparent;
+  border-radius: var(--ifm-global-radius);
+  background: transparent;
+  color: var(--docs-link-color, var(--ifm-link-color));
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.action:hover {
+  border-color: var(--ifm-color-emphasis-300);
+  background: var(--ifm-background-surface-color);
+  text-decoration: none;
+}
+
+.action:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 1px;
+}
+
+.code :global(.theme-code-block) {
+  margin-bottom: 0;
+  border-radius: 0 0 var(--ifm-global-radius) var(--ifm-global-radius);
+  box-shadow: none;
+}
+
+/* The header supplies the copy action for this code block. */
+.code :global(.theme-code-block) button:has(> [class*='copyButtonIcons']) {
+  display: none;
+}
+
+.notice {
+  margin: 0;
+  padding: 0.5rem 0.65rem;
+}

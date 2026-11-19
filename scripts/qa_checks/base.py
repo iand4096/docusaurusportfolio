@@ -36,12 +36,14 @@ class BaseCheck(ABC):
         return []
 
 
+# docs:start qa-check-result
 def execute_check(check: BaseCheck, location: str,
                   run: Callable[[], list[dict[str, Any]]]) -> CheckResult:
     try:
         return CheckResult(issues=run())
     except Exception as error:
         return CheckResult(errors=[{"check": check.name, "file": location, "error": str(error)}])
+# docs:end qa-check-result
 
 
 class FileCheck(BaseCheck):

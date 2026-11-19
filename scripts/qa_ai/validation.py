@@ -10,6 +10,7 @@ SEVERITIES = {"high", "medium", "low"}
 CONFIDENCE_LEVELS = {"high", "medium", "low"}
 ISSUE_TYPES = {"defect", "improvement", "diagram"}
 
+# docs:start qa-response-validation
 def require_review_issues(response):
     """Require an explicit list of finding objects, including for clean reviews."""
     issues = response.get("issues") if isinstance(response, dict) else None
@@ -18,6 +19,7 @@ def require_review_issues(response):
     if any(not isinstance(issue, dict) for issue in issues):
         raise ValueError("Invalid AI review response: 'issues' must contain only objects")
     return issues
+# docs:end qa-response-validation
 
 
 def valid_review_evidence(issue, sources):

@@ -2,6 +2,7 @@ const fs = require('node:fs/promises');
 const path = require('node:path');
 const llms = require('docusaurus-plugin-llms').default;
 const {serializeDiagramFigures} = require('./diagram-figures.cjs');
+const {createSnippetResolver, serializeSourceSnippets} = require('./source-snippets.cjs');
 
 function validateSummary(data) {
   for (const field of ['employer', 'industry', 'projectType', 'summary', 'role',
@@ -82,14 +83,16 @@ module.exports = function caseStudyLLMs(context, options) {
       // Docusaurus runs plugins concurrently. Await this plugin explicitly so
       // we always serialize after its Markdown and llms-full.txt are complete.
       await plugin.postBuild(props);
+      const resolveSnippet = createSnippetResolver(context.siteConfig.baseUrl);
       async function visit(directory) {
         for (const entry of await fs.readdir(directory, {withFileTypes: true})) {
           const filename = path.join(directory, entry.name);
           if (entry.isDirectory()) await visit(filename);
           else if (entry.name.endsWith('.md') || /^llms.*\.txt$/.test(entry.name)) {
             const content = await fs.readFile(filename, 'utf8');
-            if (content.includes('<CaseStudySummary') || content.includes('<DiagramFigure')) {
-              await fs.writeFile(filename, serializeDiagramFigures(serializeSummaries(content)));
+            if (content.includes('<CaseStudySummary') || content.includes('<DiagramFigure') || content.includes('source=')) {
+              await fs.writeFile(filename, serializeSourceSnippets(
+                serializeDiagramFigures(serializeSummaries(content)), resolveSnippet));
             }
           }
         }
