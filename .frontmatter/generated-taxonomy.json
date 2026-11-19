@@ -218,6 +218,14 @@
           "required": false
         },
         {
+          "title": "Docusaurus sidebar properties",
+          "name": "sidebar_custom_props",
+          "type": "fields",
+          "fields": [],
+          "hidden": true,
+          "required": false
+        },
+        {
           "title": "Content Types",
           "name": "type",
           "type": "taxonomy",
@@ -306,6 +314,14 @@
           "title": "Sidebar position",
           "name": "sidebar_position",
           "type": "number",
+          "required": false
+        },
+        {
+          "title": "Docusaurus sidebar properties",
+          "name": "sidebar_custom_props",
+          "type": "fields",
+          "fields": [],
+          "hidden": true,
           "required": false
         },
         {

@@ -729,6 +729,17 @@ def fields_for_content_type(
 ) -> list[dict[str, Any]]:
     dimensions = taxonomy["dimensions"]
     fields = common_frontmatter_fields()
+    if content_type in (None, "case-study"):
+        fields.append(
+            {
+                "title": "Docusaurus sidebar properties",
+                "name": "sidebar_custom_props",
+                "type": "fields",
+                "fields": [],
+                "hidden": True,
+                "required": False,
+            }
+        )
     for dimension_id in ("content_types", "audiences", "topics", "technologies", "lifecycle", "organisations"):
         if effective_limits(dimensions[dimension_id], content_type)[1] == 0:
             continue
