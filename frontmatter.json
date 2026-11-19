@@ -3,6 +3,10 @@
 
   "frontMatter.config.dynamicFilePath": "[[workspace]]/frontmatter.config.cjs",
 
+  "frontMatter.extensibility.scripts": [
+    "[[workspace]]/.frontmatter/ui/taxonomy-review.js"
+  ],
+
   "frontMatter.content.pageFolders": [
     {
       "title": "Documentation",
@@ -15,21 +19,21 @@
       "id": "suggest-taxonomy-deepseek",
       "title": "Review metadata with DeepSeek",
       "script": "./scripts/frontmatter_taxonomy.py",
-      "command": "python",
+      "command": "python3",
       "type": "content"
     },
     {
       "id": "apply-taxonomy-review",
       "title": "Apply reviewed taxonomy metadata",
       "script": "./scripts/frontmatter_taxonomy_apply.py",
-      "command": "python",
+      "command": "python3",
       "type": "content"
     },
     {
       "id": "generate-taxonomy-migration",
       "title": "Generate draft taxonomy migration",
       "script": "./scripts/frontmatter_taxonomy_migration.py",
-      "command": "python",
+      "command": "python3",
       "type": "content"
   }
   ]

@@ -42,10 +42,12 @@ is committed or pushed; `git diff` remains the final human approval surface.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import io
 import json
 import os
 import re
+import shlex
 import sys
 import time
 from datetime import date
@@ -231,6 +233,8 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument("--max-file-chars", type=int, default=120_000)
     parser.add_argument("--max-tokens", type=int, default=8_000)
     parser.add_argument("--output", type=Path, default=DEFAULT_MARKDOWN_REPORT)
+    parser.add_argument("--json-only", action="store_true", help="Save the JSON review only")
+    parser.add_argument("--export-markdown-from", type=Path, help="Render a saved JSON review to --output without calling the model")
     parser.add_argument("--json-output", type=Path, default=DEFAULT_JSON_REPORT)
     parser.add_argument(
         "--introduced-date",
@@ -1649,6 +1653,28 @@ def main() -> int:
     args = parse_args()
     root = args.root.resolve()
 
+    if args.export_markdown_from is not None:
+        if args.paths or args.all or args.changed_base or args.apply or args.apply_from or args.json_only or args.model:
+            print("ERROR: Markdown export is a standalone operation", file=sys.stderr)
+            return 2
+        source = root / args.export_markdown_from
+        output = root / args.output
+        try:
+            if source.resolve() == output.resolve():
+                raise ValueError("Markdown output must differ from the JSON source")
+            artifact = json.loads(source.read_text(encoding="utf-8"))
+            report = render_markdown_report(
+                artifact["results"], artifact["consolidated_proposals"], artifact["model"],
+                artifact.get("errors", []), artifact.get("global_warnings", []),
+            )
+            output.parent.mkdir(parents=True, exist_ok=True)
+            output.write_text(report, encoding="utf-8")
+        except (OSError, ValueError, KeyError, TypeError) as error:
+            print(f"ERROR: Markdown export failed: {error}", file=sys.stderr)
+            return 1
+        print(f"wrote {output}")
+        return 0
+
     # Phase 2: apply an already reviewed JSON artifact. This path is deliberately
     # deterministic: it performs no model calls and therefore needs no API key.
     if args.apply_from is not None:
@@ -1710,8 +1736,20 @@ def main() -> int:
 
     model = args.model or DEFAULT_MODEL
     api_key = os.environ.get("DEEPSEEK_API_KEY")
+    local_env = root / ".env.local"
+    if not api_key and local_env.is_file():
+        try:
+            for line in local_env.read_text(encoding="utf-8-sig").splitlines():
+                name, separator, value = line.strip().removeprefix("export ").partition("=")
+                if separator and name.strip() == "DEEPSEEK_API_KEY":
+                    parts = shlex.split(value, comments=True)
+                    if len(parts) == 1:
+                        api_key = parts[0]
+        except (OSError, ValueError):
+            print("ERROR: could not read DEEPSEEK_API_KEY from .env.local", file=sys.stderr)
+            return 2
     if not api_key:
-        print("ERROR: DEEPSEEK_API_KEY is not set", file=sys.stderr)
+        print("ERROR: set DEEPSEEK_API_KEY in the environment or in .env.local", file=sys.stderr)
         return 2
 
     try:
@@ -1733,7 +1771,10 @@ def main() -> int:
         relative = path.relative_to(root).as_posix()
         print(f"classifying {index}/{len(docs)}: {relative}")
         try:
+            source_sha256 = hashlib.sha256(path.read_bytes()).hexdigest()
             current, body = document_payload(path, root, args.max_file_chars)
+            if hashlib.sha256(path.read_bytes()).hexdigest() != source_sha256:
+                raise ValueError("document changed while preparing the classification; rerun the review")
             user_prompt = make_user_prompt(path, root, taxonomy, current, body)
             raw = request_json(
                 api_key,
@@ -1772,6 +1813,7 @@ def main() -> int:
 
             validated = validate_ai_result(raw, taxonomy, body, current)
             validated["file"] = relative
+            validated["source_sha256"] = source_sha256
             validated["current_metadata"] = current
             results.append(validated)
             for warning in validated.get("warnings", []):
@@ -1784,14 +1826,16 @@ def main() -> int:
     for warning in global_warnings:
         print(f"NOTE: {warning}", file=sys.stderr)
 
-    markdown_report = render_markdown_report(
-        results, proposals, model, errors, global_warnings
-    )
     output = args.output if args.output.is_absolute() else root / args.output
     json_output = args.json_output if args.json_output.is_absolute() else root / args.json_output
-    output.parent.mkdir(parents=True, exist_ok=True)
     json_output.parent.mkdir(parents=True, exist_ok=True)
-    output.write_text(markdown_report, encoding="utf-8")
+    if not args.json_only:
+        output.parent.mkdir(parents=True, exist_ok=True)
+        output.write_text(
+            render_markdown_report(results, proposals, model, errors, global_warnings),
+            encoding="utf-8",
+        )
+        print(f"wrote {output}")
     json_output.write_text(
         json.dumps(
             {
@@ -1809,7 +1853,6 @@ def main() -> int:
         + "\n",
         encoding="utf-8",
     )
-    print(f"wrote {output.relative_to(root).as_posix()}")
     print(f"wrote {json_output.relative_to(root).as_posix()}")
     if not args.apply:
         print(
