@@ -80,7 +80,7 @@ Structured metadata and taxonomy can improve navigation and search in a large do
 
 My work on a much larger docs-as-code portal at a financial institution showed me the need for a shared metadata vocabulary and a way to check that contributors used it consistently. I built the taxonomy for this Docusaurus portfolio to implement those controls on a smaller scale and explore how GenAI could help contributors apply metadata.
 
-The taxonomy uses a *Git-versioned controlled vocabulary* rather than free-form tags. That vocabulary drives document metadata, Docusaurus tags, editor controls, and faceted navigation. Its definitions also appear as tooltips on the first eligible mention of a term in the page text. [Explore the faceted navigation](/explore?view=browse)
+The taxonomy uses a *Git-versioned controlled vocabulary* rather than free-form tags. That vocabulary drives document metadata, Docusaurus tags, editor controls, and faceted navigation. Its definitions also appear as tooltips on the first eligible mention of a technology in the page text. [Explore the faceted navigation](/explore?view=browse)
 
 ## Challenge {/* #challenge */}
 
@@ -90,7 +90,7 @@ I wanted the repository to enforce the metadata model rather than rely on contri
 * One authoritative list of valid values.
 * Authoring tools that use that list.
 * Automatic detection of invalid metadata.
-* Reproducible generation of Docusaurus tags and the taxonomy data used for inline definition tooltips.
+* Reproducible generation of Docusaurus tags and a shared source for technology definitions.
 * Explicit handling of renames, corrections, replacements and deprecations.
 * A way to see the effect of a taxonomy change before applying it.
 
@@ -122,7 +122,7 @@ The system includes:
 * A canonical taxonomy in YAML under Git version control.
 * Controlled dimensions for content type, audience, topic, technology, and lifecycle.
 * Tools for validating taxonomy and document metadata.
-* Generation of Docusaurus tags, editor controls, navigation data, and inline tooltips for taxonomy definitions.
+* Generation of Docusaurus tags, editor controls, and navigation data, with inline technology tooltips drawn directly from the taxonomy.
 * Reviewed taxonomy migrations with preconditions and dry runs.
 * Corpus-wide checks before applying a taxonomy change.
 
@@ -169,7 +169,7 @@ Because this repository is small, I can show the implementation in [full](../imp
 
 The portfolio now has one canonical vocabulary and one supported path for changing it.
 
-Canonical IDs and validation reduce vocabulary drift. The same source drives Docusaurus tags, inline definition tooltips, editor configuration, and navigation. Updating a term definition in the taxonomy keeps the reader-facing explanation in sync. Taxonomy corrections use migrations with dry runs and preconditions, and the tooling identifies which documents need changes before applying a migration.
+Canonical IDs and validation reduce vocabulary drift. The same source drives Docusaurus tags, inline definition tooltips, editor configuration, and navigation. Updating a technology definition in the taxonomy keeps the reader-facing explanation in sync. Taxonomy corrections use migrations with dry runs and preconditions, and the tooling identifies which documents need changes before applying a migration.
 
 The **Docusaurus** technology selected in the editor also appears as a filter in Explore and as a tag at the bottom of this case study. Explore groups technology filters by kind. **Documentation platform (3)** is the group containing Docusaurus, MkDocs and Sphinx. The number beside each platform shows how many pages use that term. Readers can start with the filter to find matching pages or follow the footer tag from a page they’re already reading. Both use the same taxonomy ID, `docusaurus`.
 

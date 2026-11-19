@@ -55,7 +55,7 @@ All AI suggestions require human review before they can affect document metadata
 
 The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is also used to generate:
 
-- Docusaurus tags for navigation and inline definition tooltips on the first eligible mention of a topic, technology, or work organisation in article prose. Readers can open a tooltip by hovering over, focusing, or selecting the term.
+- Docusaurus tags for navigation and inline definition tooltips on the first eligible mention of an active technology in article prose. The site build reads technology definitions directly from the canonical taxonomy YAML. It also reads two selected concepts, faceted navigation and metadata governance, from the glossary. Readers can open a tooltip by hovering over, focusing, or selecting the term.
 - Metadata choices for VS Code Front Matter.
 - The site's taxonomy navigation index, which powers the [Explore page](/explore?view=browse).
 
@@ -71,7 +71,7 @@ The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/t
 
 ### Central taxonomy validation, auditing, and modification tooling {/* #central-taxonomy-validation-auditing-and-modification-tooling */}
 
-`taxonomy.py` validates taxonomy structure and semantics as well as document front matter. It synchronises derived tags, regenerates projections used by navigation and inline definition tooltips, audits the taxonomy for quality issues such as unused metadata, and applies reviewed migration files.
+`taxonomy.py` validates taxonomy structure and semantics as well as document front matter. It synchronises derived tags, regenerates projections used by navigation, audits the taxonomy for quality issues such as unused metadata, and applies reviewed migration files.
 
 It does not call an LLM and is suitable for blocking CI checks.
 
@@ -124,7 +124,7 @@ flowchart TD
     ENGINE["`taxonomy.py migrate preview / apply Migration engine`"]
     DOCS["`docs/**/*.md[x] Governed document metadata`"]
     TAXONOMY["`taxonomy/taxonomy.yml Canonical controlled vocabulary`"]
-    DERIVED["`Derived state docs/tags.yml Front Matter projection Navigation projection for filters and tooltip definitions`"]
+    DERIVED["`Derived state docs/tags.yml Front Matter projection Navigation projection for filters`"]
 
     AI --> REVIEW
     REVIEW -->|"approved classification"| APPLY
@@ -598,7 +598,7 @@ The distinction is clear: the LLM is used where semantic judgement is useful, wh
 
 The canonical taxonomy and validated document metadata generate three main repository projections:
 
-* [`docs/tags.yml`](../tags.yml) — Docusaurus tag definitions. The Docusaurus build also reads term definitions from the generated navigation projection to add inline tooltips;
+* [`docs/tags.yml`](../tags.yml) — Docusaurus tag definitions. The Docusaurus build also reads technology definitions directly from the taxonomy YAML for inline tooltips;
 * [`.frontmatter/generated-taxonomy.json`](../../.frontmatter/generated-taxonomy.json) — allowed metadata values for VS Code Front Matter;
 * [`src/generated/taxonomy-navigation.json`](../../src/generated/taxonomy-navigation.json) — faceted navigation data derived from taxonomy terms and document metadata.
 
@@ -635,7 +635,7 @@ The resulting system:
 * identifies required document metadata rewrites for migrations that affect existing terms;
 * supports controlled vocabulary expansion for genuinely new concepts;
 * supports deprecation of unused vocabulary while preserving an audit trail;
-* generates Docusaurus tags, Front Matter choices, and navigation projections from canonical taxonomy state. The Docusaurus build uses definitions from the navigation projection for inline tooltips;
+* generates Docusaurus tags, Front Matter choices, and navigation projections from canonical taxonomy state. The Docusaurus build reads technology definitions directly from the taxonomy YAML for inline tooltips;
 * provides a VS Code workflow for reviewing and applying AI-assisted metadata;
 * uses the pull-request Git diff as the final human review step.
 
@@ -662,7 +662,7 @@ The core rule remains:
 
 Taxonomy v3 adds optional `organisations` metadata as a whole-page employer classification. Use it only when all work described on the page was performed at one employer. The field remains a YAML list but accepts at most one value. A company mentioned in one example does not qualify the whole page. Career-wide skills and tools overviews, product-vendor references and personal projects leave the field unset.
 
-The vocabulary is AMX, Mastercard, Morgan Stanley and Paysafe. Seven case studies and documentation samples have assignments: one for AMX and two each for Mastercard, Morgan Stanley and Paysafe. Landing pages leave the field unset. These values appear in the generated editor choices, navigation data and public Docusaurus tags. The first eligible mention of an organisation in article text can also show its canonical definition in a tooltip. Browse and AI Search discover non-empty filter groups from the generated dimension definitions, including Work organisation. Search ingestion reads the canonical metadata-field definitions; changes to assignments require a rebuilt index and an updated backend for deployed search.
+The vocabulary is AMX, Mastercard, Morgan Stanley and Paysafe. Seven case studies and documentation samples have assignments: one for AMX and two each for Mastercard, Morgan Stanley and Paysafe. Landing pages leave the field unset. These values appear in the generated editor choices, navigation data and public Docusaurus tags. Browse and AI Search discover non-empty filter groups from the generated dimension definitions, including Work organisation. Search ingestion reads the canonical metadata-field definitions; changes to assignments require a rebuilt index and an updated backend for deployed search.
 
 Organisation assignments are human-controlled. AI classification preserves existing assignments, and the apply step rejects attempts to change them.
 
@@ -724,7 +724,7 @@ Free-form content tags are easy to add but difficult to govern consistently over
 * used stable canonical IDs rather than inconsistent free-text labels;
 * supported content type, audience, topic, technology, and lifecycle dimensions;
 * remained valid across Markdown and MDX documents;
-* generated Docusaurus tags and navigation from the canonical taxonomy, including definitions used by inline tooltips;
+* generated Docusaurus tags and navigation from the canonical taxonomy, with inline technology tooltips drawing definitions from the same source;
 * was convenient to edit through VS Code Front Matter;
 * used AI for semantic classification without making an LLM authoritative;
 * evolved safely when terms were added, corrected, replaced, or deprecated.

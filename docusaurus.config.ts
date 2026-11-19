@@ -2,7 +2,7 @@ import {themes as prismThemes} from 'prism-react-renderer';
 import type {Config} from '@docusaurus/types';
 import type * as Preset from '@docusaurus/preset-classic';
 import {inferApiEndpointVariant} from './plugins/api-endpoints.cjs';
-import {glossaryPreview, remarkTaxonomyTerms} from './plugins/taxonomy-terms.cjs';
+import {taxonomyTooltipPreview, remarkTaxonomyTerms} from './plugins/taxonomy-terms.cjs';
 import {numberDiagramFigures} from './plugins/diagram-figures.cjs';
 import {remarkSourceSnippets, sourceSnippetPages} from './plugins/source-snippets.cjs';
 
@@ -52,7 +52,7 @@ const config: Config = {
   themes: ['@docusaurus/theme-mermaid'],
 
   plugins: [
-    glossaryPreview,
+    taxonomyTooltipPreview,
     sourceSnippetPages,
     './plugins/scalar-browser.cjs',
     './plugins/taxonomy-coverage.cjs',

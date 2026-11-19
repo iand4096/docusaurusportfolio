@@ -2,48 +2,25 @@ const fs = require('node:fs');
 const path = require('node:path');
 const {engines} = require('gray-matter');
 
-const cataloguePath = path.join(__dirname, '../src/generated/taxonomy-navigation.json');
+const taxonomyPath = path.join(__dirname, '../taxonomy/taxonomy.yml');
 const glossaryPath = path.join(__dirname, '../glossary.yml');
-const proseDimensions = ['topics', 'technologies', 'organisations'];
+const tooltipTopics = new Set(['faceted navigation', 'metadata governance']);
 const inlineFormatting = new Set(['emphasis', 'strong', 'delete']);
 
-function addGlossaryTerms(terms) {
-  const entries = engines.yaml.parse(fs.readFileSync(glossaryPath, 'utf8'));
-  if (!Array.isArray(entries)) throw new Error('glossary.yml must contain a list of entries.');
-
-  const isNonEmptyString = value => typeof value === 'string' && value.trim().length > 0;
-  for (const [index, entry] of entries.entries()) {
-    const {term, definition, aliases = []} = entry ?? {};
-    if (!isNonEmptyString(term) || !isNonEmptyString(definition) ||
-        !Array.isArray(aliases) || !aliases.every(isNonEmptyString)) {
-      throw new Error(`glossary.yml entry ${index + 1} needs a term, a definition and an optional list of aliases.`);
-    }
-
-    const id = term.trim().toLowerCase();
-    for (const name of [term, ...aliases]) {
-      const label = name.trim();
-      const key = label.toLowerCase();
-      if (terms.has(key)) {
-        throw new Error(`glossary.yml entry ${index + 1} repeats an existing glossary or taxonomy term: ${label}`);
-      }
-      terms.set(key, {id, label, description: definition.trim()});
-    }
-  }
-}
-
 function remarkTaxonomyTerms() {
-  const {dimensions} = JSON.parse(fs.readFileSync(cataloguePath, 'utf8'));
+  const {dimensions} = engines.yaml.parse(fs.readFileSync(taxonomyPath, 'utf8'));
   const terms = new Map();
-  for (const dimension of proseDimensions) {
-    for (const {label, description} of dimensions[dimension].terms) {
-      if (!description?.trim()) continue;
-      const key = label.toLowerCase();
-      if (!terms.has(key)) {
-        terms.set(key, {id: key, label, description, exactCase: dimension !== 'topics'});
-      }
+  for (const {label, description, governance} of Object.values(dimensions.technologies.terms)) {
+    if (governance?.status !== 'active' || !description?.trim()) continue;
+    const key = label.toLowerCase();
+    if (!terms.has(key)) terms.set(key, {label, description, exactCase: true});
+  }
+  const glossary = engines.yaml.parse(fs.readFileSync(glossaryPath, 'utf8'));
+  for (const {term, definition} of glossary) {
+    if (tooltipTopics.has(term) && !terms.has(term)) {
+      terms.set(term, {label: term, description: definition});
     }
   }
-  addGlossaryTerms(terms);
 
   const labels = [...terms.values()].map(term => term.label).sort((a, b) => b.length - a.length);
   const escapedLabels = labels.map(label => label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
@@ -64,8 +41,8 @@ function remarkTaxonomyTerms() {
           const [text] = match;
           const key = text.toLowerCase();
           const term = terms.get(key);
-          if (!term || seen.has(term.id) || (term.exactCase && text !== term.label)) continue;
-          seen.add(term.id);
+          if (!term || seen.has(key) || (term.exactCase && text !== term.label)) continue;
+          seen.add(key);
 
           if (match.index > start) parts.push({type: 'text', value: child.value.slice(start, match.index)});
           parts.push({
@@ -94,9 +71,9 @@ function remarkTaxonomyTerms() {
 }
 
 /** @returns {import('@docusaurus/types').Plugin} */
-function glossaryPreview({siteDir}) {
+function taxonomyTooltipPreview({siteDir}) {
   return {
-    name: 'glossary-preview',
+    name: 'taxonomy-tooltip-preview',
     configureWebpack() {
       return {
         module: {
@@ -104,7 +81,7 @@ function glossaryPreview({siteDir}) {
             test: /\.mdx?$/,
             include: path.join(siteDir, 'docs') + path.sep,
             enforce: 'pre',
-            use: [{loader: require.resolve('./glossary-dependency.cjs'), options: {glossaryPath}}],
+            use: [{loader: require.resolve('./taxonomy-tooltip-dependency.cjs'), options: {taxonomyPath, glossaryPath}}],
           }],
         },
       };
@@ -112,4 +89,4 @@ function glossaryPreview({siteDir}) {
   };
 }
 
-module.exports = {glossaryPreview, remarkTaxonomyTerms};
+module.exports = {taxonomyTooltipPreview, remarkTaxonomyTerms};
