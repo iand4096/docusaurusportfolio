@@ -60,17 +60,18 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
   "industry": "Payments / Fintech",
   "projectType": "Public developer portal",
   "icon": "code",
-  "summary": "Led a unified Developer Center bringing together Paysafe and Skrill API, SDK and integration documentation in a fast growth environment",
+  "summary": "Led documentation strategy and delivery for Paysafe’s unified Developer Center, a key technology initiative during a period of fast growth*. The portal brought together API, SDK and integration documentation from Optimal Payments and Skrill.",
   "summaryUnderline": "fast growth",
+  "summaryNoteHref": "#context",
   "role": "Documentation strategy, information architecture and team leadership",
   "scope": "Optimal Payments and Skrill developer documentation",
-  "decision": "Flare and Git authoring with incremental publishing into a CMS (TYPO3)",
+  "decision": "Flare and Git authoring with custom incremental publishing to the corporate CMS (TYPO3)",
   "deliverables": "Unified public developer portal, content migration, API Blueprint references, automated publishing and SME review workflow",
   "evidenceTitle": "Delivery evidence and business context",
   "evidence": [
     {
-      "value": "Public Developer Center",
-      "label": "Delivered a unified portal for API, SDK and integration documentation"
+      "value": "Hundreds of pages migrated",
+      "label": "API, SDK and integration documentation from Optimal Payments and Skrill"
     },
     {
       "value": "3",
@@ -79,12 +80,12 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
     },
     {
       "value": "$1bn+",
-      "label": "Company revenue",
+      "label": "Paysafe FY2016 revenue",
       "emphasis": "metric"
     },
     {
-      "value": "21%",
-      "label": "Revenue growth, excluding acquisition and currency effects",
+      "value": "63%*",
+      "label": "FY2016 reported revenue growth",
       "emphasis": "metric",
       "labelStyle": "note"
     }
@@ -95,9 +96,7 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
 
 After Optimal Payments acquired Skrill Group in August 2015 and rebranded as Paysafe, I led the documentation work on a ten-month project to build a new unified Developer Center. The site brought together API and SDK reference documentation, integration guides, and product information for merchants integrating Paysafe's payment methods, replacing documentation previously distributed across the two businesses.
 
-The Developer Center supported a core part of Paysafe’s business model: **enabling merchants and partners to integrate its payment products.**
-
-The project took place during rapid expansion: Paysafe reported 21% revenue growth excluding acquisition and currency effects, with annual revenue exceeding $1 billion in 2016. These figures, recorded in its [2016 Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf), show the scale and pace of the business the Developer Center needed to support.
+Paysafe was growing rapidly while integrating Skrill. In 2016, reported revenue rose 63% year on year to just over US$1 billion. As the group consolidated its payments products, merchants needed a single place to learn how to integrate them. Paysafe’s CEO highlighted the Developer Center’s December launch in the group’s Strategic Report as part of its technology strategy to simplify merchant onboarding. [Paysafe Annual Report 2016, pp. 21 and 23](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf)
 
 I defined the documentation strategy and information architecture, specified the authoring and publishing platform, planned the legacy-content migration, and worked with Paysafe's web development team and an external consultancy on the implementation. I led a team of three technical writers while remaining hands-on, authoring new API and integration documentation.
 
@@ -141,7 +140,7 @@ Flare's XHTML source and Git integration supported an eventual move towards docs
 
 ### Publishing architecture {/* #publishing-architecture */}
 
-Having chosen Flare and Git for authoring, I needed to integrate their output with TYPO3, Paysafe's existing web front end and publishing system for marketing content.
+Having chosen Flare and Git for authoring, I specified the technical requirements for publishing Flare output to TYPO3, Paysafe’s existing web content management system. I agreed the design with Paysafe’s web development team and an external consultancy, who implemented the integration together. I then tested the integration and recommended improvements.
 
 <SemanticLabelGroup>
 
@@ -274,7 +273,7 @@ To make the new workflow sustainable beyond the initial implementation, I traine
 
 ## Impact {/* #impact */}
 
-The first phase of the Developer Center soft-launched in December 2016.
+The first phase launched in December 2016, bringing Optimal Payments and Skrill integration documentation into one public portal. The new workflow let subject-matter experts annotate rendered pages before release and gave the documentation team a repeatable way to publish content and navigation updates to TYPO3 staging.
 
 Paysafe identified the Developer Center as a key achievement supporting its 2016 technology strategy. In its [Annual Report](https://data.fca.org.uk/artefacts/NSM/data-migration/130622071.pdf), the Chief Operating Officer described the portal as enabling merchants and developers to integrate Paysafe products through open APIs and SDKs (p. 29). The Payment Processing review also identified the Developer Center as the foundation for engaging the developer community, supporting integration, and gathering feedback to inform Paysafe's product roadmap (p. 32).
 

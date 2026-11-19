@@ -14,6 +14,7 @@ export type CaseStudySummaryProps = Readonly<{
   icon?: 'tags' | 'magnifying-glass' | 'layer-group' | 'code' | 'cubes' | 'window-maximize';
   summary: string;
   summaryUnderline?: string;
+  summaryNoteHref?: string;
   role: string;
   scope: string;
   decision: string;
@@ -38,10 +39,12 @@ function readPreference(): boolean {
 
 /** Editorial overview. All content is present in server-rendered HTML. */
 export default function CaseStudySummary({
-  employer, industry, projectType, icon, summary, summaryUnderline, role, scope, decision,
+  employer, industry, projectType, icon, summary, summaryUnderline, summaryNoteHref, role, scope, decision,
   decisionLabel = 'Key decision', deliverables, evidenceTitle, evidence, evidenceNote,
 }: CaseStudySummaryProps): ReactNode {
   const underlineStart = summaryUnderline ? summary.indexOf(summaryUnderline) : -1;
+  const underlineEnd = underlineStart + (summaryUnderline?.length ?? 0);
+  const noteHref = underlineStart >= 0 && summary[underlineEnd] === '*' ? summaryNoteHref : undefined;
   const root = useRef<HTMLElement>(null);
   const contentId = useId();
   const [hidden, setHidden] = useState(false);
@@ -121,8 +124,10 @@ export default function CaseStudySummary({
         </ul>
         <p className={styles.summary}>{underlineStart >= 0 && summaryUnderline ? <>
           {summary.slice(0, underlineStart)}
-          <span className={styles.underlined}>{summaryUnderline}</span>
-          {summary.slice(underlineStart + summaryUnderline.length)}
+          {noteHref
+            ? <a className={styles.underlined} href={noteHref} aria-label={`See context for ${summaryUnderline}`}>{summaryUnderline}*</a>
+            : <span className={styles.underlined}>{summaryUnderline}</span>}
+          {summary.slice(underlineEnd + (noteHref ? 1 : 0))}
         </> : summary}</p>
         <dl className={styles.details}>
           {[
