@@ -7,6 +7,8 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_checks import ltex
+from qa_checks.vale import ValeCheck
 
 
 class RouteLinkTests(unittest.TestCase):
@@ -26,9 +28,29 @@ class RouteLinkTests(unittest.TestCase):
                 self.assertTrue(check._local_target_exists(root / 'README.md', 'src/'))
 
 
+class FileCheckExecutionTests(unittest.TestCase):
+    def test_preflight_failure_is_reported_and_following_adapter_still_runs(self):
+        paths = [Path('fixture.md')]
+        ltex_check = ltex.LtexCheck()
+        vale_check = ValeCheck()
+        finding = {'source': 'vale'}
+        with patch.object(ltex_check, 'preflight', side_effect=RuntimeError('LTeX+ unavailable')), \
+             patch.object(ltex_check, 'run_files') as ltex_run, \
+             patch.object(vale_check, 'preflight', return_value='/test/vale'), \
+             patch.object(vale_check, 'run_files', return_value=[finding]) as vale_run:
+            result = review.run_file_checks(paths, [ltex_check, vale_check])
+
+        ltex_run.assert_not_called()
+        vale_run.assert_called_once_with(paths, executable='/test/vale')
+        self.assertEqual(result.issues, [finding])
+        self.assertEqual(result.errors, [
+            {'check': 'LtexCheck', 'file': '<ltex>', 'error': 'LTeX+ unavailable'},
+        ])
+
+
 class LtexContextTests(unittest.TestCase):
     def diagnostic(self, text, token, rule, message='Grammar finding'):
-        return review.normalise_ltex_diagnostic({
+        return ltex.normalise_ltex_diagnostic({
             'line': 1, 'column': text.index(token) + 1, 'severity': 'warning',
             'message': f'{message} [{rule}]',
         }, [], Path('fixture.md'), text)
@@ -73,9 +95,9 @@ class LtexContextTests(unittest.TestCase):
             path = Path(directory) / 'example.md'
             path.write_text('Pass an `items` array.\n')
             output = f'{path}:1:6: warning: Use a [EN_A_VS_AN]\n'
-            self.assertEqual(review.parse_ltex_output(output, [path]), [])
-            self.assertTrue(review.ltex_output_contains_only_ignored_syntax(output, [path]))
-            self.assertFalse(review.ltex_output_contains_only_ignored_syntax('unknown renderer', [path]))
+            self.assertEqual(ltex.parse_ltex_output(output, [path]), [])
+            self.assertTrue(ltex.ltex_output_contains_only_ignored_syntax(output, [path]))
+            self.assertFalse(ltex.ltex_output_contains_only_ignored_syntax('unknown renderer', [path]))
 
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_checks.source import find_source_line
 
 
 CONTENT = """---
@@ -36,8 +37,8 @@ class ProseMetadataTests(unittest.TestCase):
                         'Card description.', 'A visible highlight.',
                         'Using cURL to test endpoints.'):
             self.assertIn(visible, filtered)
-            self.assertEqual(review.find_source_line(CONTENT, visible),
-                             review.find_source_line(filtered, visible))
+            self.assertEqual(find_source_line(CONTENT, visible),
+                             find_source_line(filtered, visible))
         self.assertEqual(len(CONTENT.splitlines()), len(filtered.splitlines()))
 
     def test_crlf_and_documents_without_front_matter(self):

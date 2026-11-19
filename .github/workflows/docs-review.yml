@@ -24,6 +24,7 @@ on:
       - "requirements-doc-review-linux-py312.lock"
       - "scripts/qa_*.py"
       - "scripts/qa_reporting/**"
+      - "scripts/qa_checks/**"
       - "scripts/tests/test_qa_*.py"
 
       # Vale configuration and custom styles must also trigger QA.

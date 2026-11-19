@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_policy import is_ci_threshold_eligible
 from qa_reporting import model as report_model
 import qa_feedback as feedback
 from test_qa_report_feedback import finding, feedback_record
@@ -51,7 +52,7 @@ class FeedbackMatchingTests(unittest.TestCase):
         self.assertTrue(current['feedback_discussion'])
         self.assertIsNone(current['human_resolution'])
         self.assertIsNone(current['effective_ai_decision'])
-        self.assertTrue(review.is_ci_threshold_eligible(current))
+        self.assertTrue(is_ci_threshold_eligible(current))
 
     def test_only_case_and_whitespace_variations_match(self):
         current = copy.deepcopy(self.old)
@@ -83,7 +84,7 @@ class FeedbackMatchingTests(unittest.TestCase):
             'qa-old': self.record, 'qa-duplicate': copy.deepcopy(self.record)})
         self.assertEqual(current['feedback_match'], 'ambiguous')
         self.assertIsNone(current['human_resolution'])
-        self.assertTrue(review.is_ci_threshold_eligible(current))
+        self.assertTrue(is_ci_threshold_eligible(current))
 
     def test_revalidate_new_occurrence_without_ai_and_keep_legacy_history(self):
         previous = self.attach(copy.deepcopy(self.old))

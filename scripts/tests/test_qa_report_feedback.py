@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_policy import is_ci_threshold_eligible
 from qa_reporting import model as report_model
 import qa_feedback as feedback
 
@@ -65,9 +66,9 @@ class ReportFeedbackTests(unittest.TestCase):
         self.assertFalse(report_model.is_history_issue(issues[1]))
         self.assertEqual(issues[4]['effective_message'], 'Revised criticism')
         self.assertEqual(issues[4]['message'], 'Original criticism revised')
-        self.assertTrue(review.is_ci_threshold_eligible(issues[2]))
-        self.assertFalse(review.is_ci_threshold_eligible(issues[6]))
-        self.assertTrue(review.is_ci_threshold_eligible(issues[7]))
+        self.assertTrue(is_ci_threshold_eligible(issues[2]))
+        self.assertFalse(is_ci_threshold_eligible(issues[6]))
+        self.assertTrue(is_ci_threshold_eligible(issues[7]))
         self.assertEqual(review.evaluate_ci(issues, [], 0, 0, 0)['medium_count'], 7)
 
     def test_stale_feedback_cannot_dismiss_changed_source(self):
@@ -77,7 +78,7 @@ class ReportFeedbackTests(unittest.TestCase):
         self.attach([issue], {issue['issue_id']: record})
         self.assertTrue(issue['feedback_stale'])
         self.assertEqual(report_model.feedback_state(issue), 'needs_revalidation')
-        self.assertTrue(review.is_ci_threshold_eligible(issue))
+        self.assertTrue(is_ci_threshold_eligible(issue))
         self.assertTrue(issue['feedback_discussion'])
 
     def test_human_acceptance_keeps_withdrawn_finding_active(self):

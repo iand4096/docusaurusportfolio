@@ -3,10 +3,7 @@ import hashlib
 import json
 import os
 import re
-import shutil
-import subprocess
 import sys
-from abc import ABC
 from calendar import monthrange
 from datetime import datetime, timedelta, timezone
 from pathlib import Path
@@ -18,7 +15,14 @@ import requests
 from qa_feedback import (decorate_issues, attach_feedback_status, save_findings, resolve as resolve_finding,
                          challenge as challenge_finding, load_report, DEFAULT_FEEDBACK, DEFAULT_FINDINGS)
 
-from qa_policy import apply_ai_severity_policy, evaluate_ci, is_ci_threshold_eligible, make_issue
+from qa_checks import source as check_source
+from qa_checks.base import BaseCheck, CheckResult, FileCheck, execute_check
+from qa_checks.ltex import LtexCheck
+from qa_checks.lychee import LycheeCheck
+from qa_checks.remark import RemarkCheck
+from qa_checks.vale import ValeCheck
+from qa_policy import (apply_ai_severity_policy, assert_ci_policy_invariants, evaluate_ci,
+                       make_issue)
 from qa_reporting import Report, ReportPaths, write_reports
 from qa_reporting.links import PORTFOLIO_URL, github_repository, github_revision
 from qa_reporting.model import report_counts
@@ -555,37 +559,6 @@ def request_review(system_prompt, user_prompt, api_key):
     raise last_error
 
 
-def find_source_line(content, original, preferred_line=None):
-    """Return the source line on which an exact quoted fragment starts."""
-
-    positions = []
-    start = 0
-
-    while True:
-        index = content.find(original, start)
-
-        if index == -1:
-            break
-
-        positions.append(content.count("\n", 0, index) + 1)
-        start = index + 1
-
-    if not positions:
-        return None
-    if isinstance(preferred_line, int) and preferred_line > 0:
-        return min(positions, key=lambda line: abs(line - preferred_line))
-
-    return positions[0]
-
-
-def source_line_text(content, line_number):
-    lines = content.splitlines()
-
-    if 1 <= line_number <= len(lines):
-        return lines[line_number - 1]
-
-    return ""
-
 def document_genre(path, content):
     """Classify review purpose from raw metadata and stable repository paths."""
     name = str(path).replace('\\', '/')
@@ -716,7 +689,7 @@ def normalise_ai_issue(issue, content, file_path, allowed_categories, *, genre=N
 
     if not isinstance(reported_line, int):
         reported_line = None
-    actual_line = find_source_line(
+    actual_line = check_source.find_source_line(
         content,
         original,
         preferred_line=reported_line,
@@ -806,19 +779,6 @@ def iter_lines_outside_code_fences(content):
 # Check architecture
 # ---------------------------------------------------------------------------
 
-
-class BaseCheck(ABC):
-    name = "BaseCheck"
-    supports_page = False
-    supports_site = False
-    source = "ai"
-    defects_only = False
-
-    def run_page(self, path, content, api_key):
-        return []
-
-    def run_site(self, paths, contents, api_key):
-        return []
 
 def verify_page_findings(issues, path, content, api_key, defects_only=False):
     if defects_only:
@@ -1391,1253 +1351,6 @@ def validate_site_ai_issues(issues, paths, contents, allowed_categories, *, genr
 
     return validated
 # ---------------------------------------------------------------------------
-# Vale integration
-# ---------------------------------------------------------------------------
-
-
-VALE_SEVERITY_MAP = {
-    "error": "high",
-    "warning": "medium",
-    "suggestion": "low",
-}
-
-
-def normalise_vale_path(raw_path, paths):
-    """Match a Vale result path to one of the files supplied to Vale."""
-
-    if not isinstance(raw_path, str) or not raw_path.strip():
-        return None
-    candidate = raw_path.strip().replace("\\", "/")
-    while candidate.startswith("./"):
-        candidate = candidate[2:]
-
-    aliases = {}
-
-    for path in paths:
-        relative = path.as_posix()
-        aliases[relative] = path
-
-        try:
-            aliases[path.resolve().as_posix()] = path
-        except OSError:
-            pass
-
-    if candidate in aliases:
-        return aliases[candidate]
-    try:
-        resolved = Path(raw_path).resolve().as_posix()
-    except OSError:
-        return None
-
-    return aliases.get(resolved)
-
-
-def vale_original_text(content, alert, line_number):
-    """Extract the text Vale identified, falling back to the whole source line."""
-
-    line_text = source_line_text(content, line_number)
-
-    match = alert.get("Match")
-    if isinstance(match, str) and match.strip():
-        return match
-
-    span = alert.get("Span")
-    if (
-        isinstance(span, list)
-        and len(span) >= 2
-        and isinstance(span[0], int)
-        and isinstance(span[1], int)
-        and span[0] > 0
-        and span[1] >= span[0]
-        and line_text
-    ):
-        start = span[0] - 1
-        end = min(span[1], len(line_text))
-
-        if start < len(line_text):
-            return line_text[start:end]
-
-    return line_text or "<source text unavailable>"
-
-def normalise_vale_alert(alert, path, content):
-    """Convert one Vale JSON alert into the unified report issue schema."""
-
-    if not isinstance(alert, dict):
-        return None
-
-    raw_severity = str(alert.get("Severity", "")).strip().lower()
-    severity = VALE_SEVERITY_MAP.get(raw_severity)
-
-    if severity is None:
-        return None
-
-    line = alert.get("Line")
-    if not isinstance(line, int) or line <= 0:
-        return None
-    check = str(alert.get("Check", "")).strip() or "vale"
-    message = str(alert.get("Message", "")).strip()
-    description = str(alert.get("Description", "")).strip()
-
-    if not message:
-        message = description or f"Vale rule {check} reported an issue."
-
-    if description and description != message:
-        suggestion = description
-    else:
-        suggestion = f"Resolve this text against the Vale rule {check}."
-    return make_issue(
-        file=path.as_posix(),
-        line=line,
-        severity=severity,
-        confidence="high",
-        issue_type="defect" if raw_severity == "error" else "improvement",
-        category=check,
-        original=vale_original_text(content, alert, line),
-        message=message,
-        suggestion=suggestion,
-        source="vale",
-    )
-
-
-def parse_vale_json(output, paths):
-    """Parse Vale --output=JSON output and return unified issues."""
-    if not output.strip():
-        return []
-
-    try:
-        parsed = json.loads(output)
-    except json.JSONDecodeError as error:
-        raise RuntimeError(f"Vale returned invalid JSON: {error}") from error
-
-    if not isinstance(parsed, dict):
-        raise RuntimeError("Vale JSON output must be an object keyed by file path.")
-
-    issues = []
-
-    for raw_path, alerts in parsed.items():
-        path = normalise_vale_path(raw_path, paths)
-
-        if path is None:
-            continue
-        if not isinstance(alerts, list):
-            continue
-
-        content = path.read_text(encoding="utf-8")
-
-        for alert in alerts:
-            issue = normalise_vale_alert(alert, path, content)
-
-            if issue is not None:
-                issues.append(issue)
-
-    return issues
-
-
-def vale_preflight():
-    """Validate the Vale executable and repository configuration before checks run."""
-
-    print("Vale preflight:")
-
-    executable = shutil.which("vale")
-    if executable is None:
-        raise RuntimeError(
-            "Vale executable was not found in PATH. "
-            "Install Vale in the GitHub Actions runner before running this script "
-            "(and verify the install with `vale --version`)."
-        )
-
-    print(f"  Executable: {executable}")
-
-    version_result = subprocess.run(
-        [executable, "--version"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if version_result.returncode != 0:
-        detail = version_result.stderr.strip() or version_result.stdout.strip()
-        raise RuntimeError(
-            "Vale is present but `vale --version` failed"
-            + (f": {detail}" if detail else ".")
-        )
-
-    version = version_result.stdout.strip() or version_result.stderr.strip()
-    version = version.splitlines()[0] if version else "<unknown>"
-    print(f"  Version: {version}")
-
-    config_path = ROOT / ".vale.ini"
-    if not config_path.is_file():
-        raise RuntimeError(
-            f"Vale configuration file was not found: {config_path.resolve()}. "
-            "Commit .vale.ini at the repository root before running Vale in CI."
-        )
-
-    print(f"  Config: {config_path.resolve()}")
-
-    config_result = subprocess.run(
-        [executable, "ls-config"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if config_result.returncode != 0:
-        detail = config_result.stderr.strip() or config_result.stdout.strip()
-        raise RuntimeError(
-            "Vale found .vale.ini, but `vale ls-config` could not load the "
-            "configuration"
-            + (f": {detail}" if detail else ".")
-        )
-
-    print("  Configuration: OK")
-    print()
-
-    return executable
-
-
-class ValeCheck(BaseCheck):
-    """Run Vale once across the selected Markdown/MDX files."""
-    name = "ValeCheck"
-    source = "vale"
-
-    def run_files(self, paths, executable=None):
-        executable = executable or shutil.which("vale")
-
-        if executable is None:
-            raise RuntimeError(
-                "Vale executable was not found in PATH. Run the Vale preflight "
-                "before executing ValeCheck."
-            )
-        command = [
-            executable,
-            "--output=JSON",
-            "--no-exit",
-            *[path.as_posix() for path in paths],
-        ]
-
-        result = subprocess.run(
-            command,
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        if result.returncode != 0:
-            detail = result.stderr.strip() or result.stdout.strip()
-            if detail:
-                raise RuntimeError(
-                    f"Vale exited with code {result.returncode}: {detail}"
-                )
-
-            raise RuntimeError(f"Vale exited with code {result.returncode}.")
-
-        return parse_vale_json(result.stdout, paths)
-# ---------------------------------------------------------------------------
-# LTeX+ grammar/spelling integration
-# ---------------------------------------------------------------------------
-
-
-LTEX_SEVERITY_MAP = {
-    "error": "high",
-    "warning": "medium",
-    "information": "low",
-    "info": "low",
-    "hint": "low",
-}
-
-ANSI_ESCAPE_RE = re.compile(r"\x1b\[[0-?]*[ -/]*[@-~]")
-# lsp-cli-plus/LTeX+ uses a human-readable compiler-style diagnostic stream.
-# Keep several compatible header patterns so minor formatting differences do not
-# silently discard findings. The check is run once for the exact file list.
-LTEX_DIAGNOSTIC_PATTERNS = [
-    re.compile(
-        r"^(?P<path>.+?):(?P<line>\d+):(?P<column>\d+):\s*"
-        r"(?:(?P<severity>error|warning|information|info|hint)\s*:\s*)?"
-        r"(?P<message>.+)$",
-        re.IGNORECASE,
-    ),
-    re.compile(
-        r"^(?P<path>.+?):(?P<line>\d+):(?P<column>\d+)\s+-\s+"
-        r"(?:(?P<severity>error|warning|information|info|hint)\s+-\s+)?"
-        r"(?P<message>.+)$",
-        re.IGNORECASE,
-    ),
-    re.compile(
-        r"^(?P<path>.+?)\((?P<line>\d+),(?P<column>\d+)\):\s*"
-        r"(?:(?P<severity>error|warning|information|info|hint)\s*:\s*)?"
-        r"(?P<message>.+)$",
-        re.IGNORECASE,
-    ),
-]
-
-def strip_ansi(text):
-    """Remove terminal colour/control sequences from CLI output."""
-
-    return ANSI_ESCAPE_RE.sub("", text)
-
-
-def ltex_preflight():
-    """Validate the LTeX+ CLI executable and repository configuration."""
-
-    print("LTeX+ preflight:")
-
-    executable = shutil.which("ltex-cli-plus")
-    if executable is None:
-        raise RuntimeError(
-            "LTeX+ CLI was not found in PATH. Install ltex-ls-plus and expose "
-            "its bin/ltex-cli-plus launcher before running this script."
-        )
-
-    print(f"  Executable: {executable}")
-
-    version_result = subprocess.run(
-        [executable, "--version"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if version_result.returncode != 0:
-        detail = version_result.stderr.strip() or version_result.stdout.strip()
-        raise RuntimeError(
-            "LTeX+ is present but `ltex-cli-plus --version` failed"
-            + (f": {detail}" if detail else ".")
-        )
-
-    version_text = version_result.stdout.strip() or version_result.stderr.strip()
-
-    try:
-        version_data = json.loads(version_text) if version_text else {}
-    except json.JSONDecodeError:
-        version_data = {}
-    if isinstance(version_data, dict):
-        ltex_version = version_data.get("ltex-ls-plus") or version_data.get("ltex-cli-plus")
-        java_version = version_data.get("java")
-
-        if ltex_version:
-            print(f"  Version: {ltex_version}")
-        elif version_text:
-            print(f"  Version: {version_text.splitlines()[0]}")
-        else:
-            print("  Version: <unknown>")
-        if java_version:
-            print(f"  Java: {java_version}")
-    else:
-        print(f"  Version: {version_text.splitlines()[0] if version_text else '<unknown>'}")
-
-    config_path = ROOT / ".ltex.json"
-
-    if not config_path.is_file():
-        raise RuntimeError(
-            f"LTeX+ configuration file was not found: {config_path.resolve()}. "
-            "Commit .ltex.json at the repository root before running LTeX+ in CI."
-        )
-    try:
-        config = json.loads(config_path.read_text(encoding="utf-8"))
-    except json.JSONDecodeError as error:
-        raise RuntimeError(f".ltex.json is not valid JSON: {error}") from error
-
-    if not isinstance(config, dict):
-        raise RuntimeError(".ltex.json must contain a JSON object.")
-
-    print(f"  Config: {config_path.resolve()}")
-    # Surface the configured language in the preflight output when present.
-    ltex_settings = config.get("ltex") if isinstance(config.get("ltex"), dict) else config
-    language = ltex_settings.get("language") if isinstance(ltex_settings, dict) else None
-    if isinstance(language, str) and language.strip():
-        print(f"  Language: {language.strip()}")
-
-    print("  Configuration: OK")
-    print()
-
-    return executable
-
-def parse_ltex_diagnostic_header(line):
-    """Parse one LTeX+/lsp-cli-plus diagnostic header line."""
-
-    clean = strip_ansi(line).rstrip()
-
-    for pattern in LTEX_DIAGNOSTIC_PATTERNS:
-        match = pattern.match(clean)
-        if match:
-            data = match.groupdict()
-            try:
-                data["line"] = int(data["line"])
-                data["column"] = int(data["column"])
-            except (TypeError, ValueError):
-                return None
-            return data
-    return None
-
-
-def ltex_rule_and_message(message):
-    """Extract a trailing LanguageTool rule id when the CLI includes one."""
-
-    text = message.strip()
-
-    # Common diagnostic renderers append the LSP diagnostic code in brackets.
-    match = re.search(r"\s*\[([A-Za-z0-9_.-]+)\]\s*$", text)
-    if match:
-        return match.group(1), text[: match.start()].strip()
-    # Be tolerant of variants such as "(RULE_ID)" at the end of a message.
-    match = re.search(r"\s*\(([A-Z][A-Z0-9_.-]{2,})\)\s*$", text)
-    if match:
-        return match.group(1), text[: match.start()].strip()
-
-    return "ltex", text
-
-
-def ltex_suggestion(block_lines, rule):
-    """Choose a useful quick-fix line from a rendered diagnostic block."""
-
-    candidates = []
-
-    for raw_line in block_lines:
-        line = strip_ansi(raw_line).strip()
-        if not line:
-            continue
-        # lsp-cli-plus can print code actions beneath diagnostics. Prefer an
-        # explicit replacement action and ignore administrative actions such as
-        # adding words to dictionaries or disabling rules.
-        cleaned = re.sub(r"^(?:[-*•]|\d+[.)])\s*", "", line).strip()
-        lowered = cleaned.lower()
-
-        if lowered.startswith("use ") or lowered.startswith("replace "):
-            candidates.append(cleaned)
-
-    if candidates:
-        return candidates[0]
-    if rule != "ltex":
-        return f"Review and correct the text reported by LTeX+ rule {rule}."
-
-    return "Review and correct the grammar or spelling issue reported by LTeX+."
-
-
-def ltex_original_text(content, line_number, column_number):
-    """Return source text for an LTeX+ finding."""
-
-    line_text = source_line_text(content, line_number)
-    if not line_text:
-        return "<source text unavailable>"
-    # The CLI location is 1-based. Without a structured end range, retaining the
-    # full source line is safer than guessing the diagnostic span.
-    return line_text
-
-
-def is_ltex_non_prose_line(content, line_number):
-    """Return True when an LTeX+ diagnostic points at source syntax, not prose.
-    LTeX+ can interpret Docusaurus/MDX source constructs as English text when
-    checking Markdown files. This filter is deliberately narrow: it ignores
-    diagnostics on import/export statements, Docusaurus directive markers, and
-    React/MDX component markup while leaving the surrounding reader-facing prose
-    available to LTeX+.
-    """
-
-    lines = content.splitlines()
-
-    if not 1 <= line_number <= len(lines):
-        return False
-    target_index = line_number - 1
-    stripped = lines[target_index].strip()
-
-    # Empty lines are never reader-facing prose.
-    if not stripped:
-        return True
-
-    # ES module / MDX imports and exports.
-    if re.match(r"^(?:import|export)\b", stripped):
-        return True
-
-    # Docusaurus directives/admonition markers. Only the marker line is ignored;
-    # prose inside the admonition remains eligible for LTeX+ checking.
-    if stripped.startswith(":::"):
-        return True
-    # Closing React/MDX component tags, for example </Tabs>.
-    if re.match(r"^</[A-Z][A-Za-z0-9_.:-]*\s*>$", stripped):
-        return True
-
-    # Self-contained React/MDX component tags on one line.
-    if re.match(r"^<[A-Z][A-Za-z0-9_.:-]*\b.*?/?>\s*$", stripped):
-        return True
-    # Determine whether the diagnostic line sits inside a multiline React/MDX
-    # opening tag, for example:
-    #
-    # <SidebarCardGrid
-    #   metadataKey="skillCard"
-    #   linkLabel="Explore skills →"
-    # />
-    in_jsx_opening_tag = False
-
-    for index, raw_line in enumerate(lines):
-        if index > target_index:
-            break
-
-        current = raw_line.strip()
-        if not in_jsx_opening_tag:
-            if re.match(r"^<[A-Z][A-Za-z0-9_.:-]*\b", current):
-                if index == target_index:
-                    return True
-
-                if ">" not in current:
-                    in_jsx_opening_tag = True
-        else:
-            if index == target_index:
-                return True
-
-            if ">" in current:
-                in_jsx_opening_tag = False
-
-    return False
-
-def normalise_ltex_diagnostic(header, block_lines, path, content):
-    """Convert one LTeX+ diagnostic into the unified report issue schema."""
-
-    line = header.get("line")
-    column = header.get("column")
-
-    if not isinstance(line, int) or line <= 0:
-        return None
-
-    if not isinstance(column, int) or column <= 0:
-        column = 1
-    # LTeX+ can report Docusaurus/MDX source syntax as English prose. Drop only
-    # those diagnostics; reader-facing prose on surrounding lines is unchanged.
-    if is_ltex_non_prose_line(content, line):
-        return None
-    raw_severity = str(header.get("severity") or "").strip().lower()
-    # LTeX+ diagnostics are warning-level by default. If a renderer omits the
-    # severity, keep the finding non-blocking rather than inventing a high level.
-    severity = LTEX_SEVERITY_MAP.get(raw_severity, "low")
-
-    rule, message = ltex_rule_and_message(str(header.get("message") or ""))
-    if is_ltex_context_false_positive(content, line, column, rule, message):
-        return None
-    if not message:
-        message = f"LTeX+ rule {rule} reported a grammar or spelling issue."
-    return make_issue(
-        file=path.as_posix(),
-        line=line,
-        severity=severity,
-        confidence="high",
-        issue_type="defect" if raw_severity == "error" else "improvement",
-        category=rule,
-        original=ltex_original_text(content, line, column),
-        message=message,
-        suggestion=ltex_suggestion(block_lines, rule),
-        source="ltex",
-    )
-
-
-def is_ltex_context_false_positive(content, line, column, rule, message):
-    """Ignore known syntax/proper-name artefacts, not other prose on the line.
-
-    Keep these exceptions tied to both the rule and the diagnostic location.
-    In particular, a table or inline code must not exempt surrounding prose.
-    """
-    text = source_line_text(content, line)
-    offset = column - 1
-
-    def at(pattern):
-        return any(match.start() <= offset < match.end()
-                   for match in re.finditer(pattern, text))
-
-    if rule == "MORFOLOGIK_RULE_EN_GB" and "'Center'" in message:
-        return at(r"\bDeveloper Center\b")
-    if rule == "LICENCE_LICENSE_NOUN_SINGULAR":
-        return at(r"\b(?:SIL Open Font License(?: 1\.1)?|MIT License)\b")
-    if rule == "EN_A_VS_AN":
-        # LTeX replaces code with a dummy token, changing the apparent initial
-        # sound. 'an items array' is correct; do not rewrite it to 'a items'.
-        return at(r"\ban\s+`items`\s+array\b")
-    if rule == "UPPERCASE_SENTENCE_START":
-        for match in re.finditer(r"\[`?(?P<command>npm|pip)\s+[^\]\n]+\]\(", text):
-            if match.start("command") <= offset < match.end("command"):
-                return True
-        return False
-    if rule in {"PHRASE_REPETITION", "OK_OK_COMMA"} and text.lstrip().startswith("|"):
-        # A repeated Yes/No across cells is independent table data. Preserve
-        # genuine repetition within a cell and all other grammar diagnostics.
-        cells = text.strip().strip("|").split("|")
-        if any(re.search(r"\b(Yes|No)\s+\1\b", cell, re.I) for cell in cells):
-            return False
-        boundaries = list(re.finditer(r"\|", text))
-        cell_index = sum(boundary.start() < offset for boundary in boundaries) - 1
-        if 0 <= cell_index < len(cells) - 1:
-            left, right = (cells[cell_index].strip(), cells[cell_index + 1].strip())
-            return left in {"Yes", "No"} and re.match(rf"{left}\b", right) is not None
-    return False
-
-
-def parse_ltex_output(output, paths):
-    """Parse LTeX+ CLI output and return unified issues."""
-    if not output.strip():
-        return []
-
-    rendered_lines = strip_ansi(output).splitlines()
-    issues = []
-    current_header = None
-    current_path = None
-    current_block = []
-
-    def flush():
-        nonlocal current_header, current_path, current_block
-        if current_header is not None and current_path is not None:
-            content = current_path.read_text(encoding="utf-8")
-            issue = normalise_ltex_diagnostic(
-                current_header,
-                current_block,
-                current_path,
-                content,
-            )
-            if issue is not None:
-                issues.append(issue)
-
-        current_header = None
-        current_path = None
-        current_block = []
-    for rendered_line in rendered_lines:
-        header = parse_ltex_diagnostic_header(rendered_line)
-
-        if header is None:
-            if current_header is not None:
-                current_block.append(rendered_line)
-            continue
-
-        flush()
-        path = normalise_vale_path(header.get("path"), paths)
-        if path is None:
-            # Some renderers use file:// URIs. Convert those to local paths.
-            raw_path = str(header.get("path") or "").strip()
-            if raw_path.lower().startswith("file://"):
-                candidate = unquote(urlsplit(raw_path).path)
-                if os.name == "nt" and re.match(r"^/[A-Za-z]:/", candidate):
-                    candidate = candidate[1:]
-                path = normalise_vale_path(candidate, paths)
-        current_header = header
-        current_path = path
-        current_block = []
-
-    flush()
-    return issues
-
-
-def ltex_output_contains_only_ignored_syntax(output, paths):
-    """Tell filtered MDX diagnostics from unparseable CLI output.
-
-    Return True only if at least one LTeX+ diagnostic header was recognised,
-    every header refers to a reviewed file, and every finding is on a line
-    intentionally excluded as syntax or a known contextual false positive. Anything else stays
-    an error instead of being mistakenly considered a clean LTeX+ run.
-    """
-
-    found_diagnostic = False
-
-    for rendered_line in strip_ansi(output).splitlines():
-        header = parse_ltex_diagnostic_header(rendered_line)
-        if header is None:
-            continue
-        found_diagnostic = True
-
-        path = normalise_vale_path(header.get("path"), paths)
-        if path is None:
-            raw_path = str(header.get("path") or "").strip()
-            if raw_path.lower().startswith("file://"):
-                candidate = unquote(urlsplit(raw_path).path)
-                if os.name == "nt" and re.match(r"^/[A-Za-z]:/", candidate):
-                    candidate = candidate[1:]
-                path = normalise_vale_path(candidate, paths)
-
-        # Do not silently discard findings with unknown/unresolvable paths.
-        if path is None:
-            return False
-
-        # An invalid line must not be mistaken for filtered source syntax.
-        line_number = header.get("line")
-        try:
-            content = path.read_text(encoding="utf-8")
-        except (OSError, UnicodeError):
-            return False
-
-        if not isinstance(line_number, int) or not 1 <= line_number <= len(content.splitlines()):
-            return False
-        if normalise_ltex_diagnostic(header, [], path, content) is not None:
-            return False
-
-    return found_diagnostic
-
-
-class LtexCheck(BaseCheck):
-    """Run LTeX+ once across the selected Markdown/MDX files."""
-
-    name = "LtexCheck"
-    source = "ltex"
-
-    def run_files(self, paths, executable=None):
-        executable = executable or shutil.which("ltex-cli-plus")
-        if executable is None:
-            raise RuntimeError(
-                "LTeX+ CLI was not found in PATH. Run the LTeX+ preflight before "
-                "executing LtexCheck."
-            )
-
-        config_path = ROOT / ".ltex.json"
-        if not config_path.is_file():
-            raise RuntimeError(".ltex.json was not found at the repository root.")
-        command = [
-            executable,
-            f"--client-configuration={config_path.as_posix()}",
-            *[path.as_posix() for path in paths],
-        ]
-
-        result = subprocess.run(
-            command,
-            cwd=ROOT,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        # Official LTeX+ CLI exit codes: 0 = no diagnostics, 3 = diagnostics;
-        # 1 = runtime exception, 2 = invalid CLI arguments.
-        if result.returncode not in {0, 3}:
-            detail = result.stderr.strip() or result.stdout.strip()
-            raise RuntimeError(
-                f"LTeX+ exited with code {result.returncode}"
-                + (f": {detail}" if detail else ".")
-            )
-
-        if result.returncode == 0:
-            return []
-        issues = parse_ltex_output(result.stdout, paths)
-        # Exit code 3 can legitimately produce zero reportable findings when
-        # every diagnostic belongs to intentionally ignored MDX source syntax.
-        # Only accept that case if every diagnostic is recognised and resolved.
-        if not issues and ltex_output_contains_only_ignored_syntax(result.stdout, paths):
-            return []
-        # Do not silently report a clean run when LTeX+ explicitly told us that
-        # diagnostics existed but its renderer changed in an incompatible way.
-        if not issues:
-            detail = result.stdout.strip() or result.stderr.strip()
-            if len(detail) > 4000:
-                detail = detail[:4000] + "\n...<truncated>"
-            raise RuntimeError(
-                "LTeX+ reported diagnostics (exit code 3), but the QA script could "
-                "not parse the CLI output. Raw output follows:\n" + detail
-            )
-        return issues
-# ---------------------------------------------------------------------------
-# Remark Markdown/MDX integration
-# ---------------------------------------------------------------------------
-
-
-def find_remark_executable():
-    """Return the local Remark CLI executable, with a PATH fallback."""
-
-    binary_name = "remark.cmd" if os.name == "nt" else "remark"
-    local_binary = ROOT / "node_modules" / ".bin" / binary_name
-
-    if local_binary.is_file():
-        return str(local_binary.resolve())
-    return shutil.which("remark")
-
-
-def find_remark_config():
-    """Return the repository Remark config source, if configured."""
-
-    config_names = [
-        ".remarkrc",
-        ".remarkrc.json",
-        ".remarkrc.yaml",
-        ".remarkrc.yml",
-        ".remarkrc.js",
-        ".remarkrc.cjs",
-        ".remarkrc.mjs",
-    ]
-
-    for name in config_names:
-        path = ROOT / name
-        if path.is_file():
-            return str(path.resolve())
-    package_path = ROOT / "package.json"
-    if package_path.is_file():
-        try:
-            package = json.loads(package_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError):
-            package = None
-
-        if isinstance(package, dict) and "remarkConfig" in package:
-            return f"{package_path.resolve()} (remarkConfig)"
-
-    return None
-
-
-def remark_preflight():
-    """Validate the Remark CLI and repository configuration before checks run."""
-    print("Remark preflight:")
-
-    executable = find_remark_executable()
-
-    if executable is None:
-        raise RuntimeError(
-            "Remark CLI was not found. Install remark-cli in the repository with "
-            "`npm install --save-dev remark-cli` (or run `npm ci` in CI)."
-        )
-
-    print(f"  Executable: {executable}")
-
-    version_result = subprocess.run(
-        [executable, "--version"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if version_result.returncode != 0:
-        detail = version_result.stderr.strip() or version_result.stdout.strip()
-        raise RuntimeError(
-            "Remark is present but `remark --version` failed"
-            + (f": {detail}" if detail else ".")
-        )
-
-    version = version_result.stdout.strip() or version_result.stderr.strip()
-    version = version.splitlines()[0] if version else "<unknown>"
-    print(f"  Version: {version}")
-    config = find_remark_config()
-    if config is None:
-        raise RuntimeError(
-            "No Remark configuration was found. Commit .remarkrc.mjs (recommended "
-            "for this Docusaurus repository) or configure remarkConfig in package.json."
-        )
-
-    print(f"  Config: {config}")
-
-    ignore_path = ROOT / ".remarkignore"
-    if ignore_path.is_file():
-        print(f"  Ignore: {ignore_path.resolve()}")
-    else:
-        print("  Ignore: <none>")
-
-    print()
-    return executable
-
-def parse_remark_json(output, paths):
-    """Convert Remark/vfile JSON messages into the unified issue schema."""
-
-    if not output.strip():
-        return []
-
-    try:
-        parsed = json.loads(output)
-    except json.JSONDecodeError as error:
-        raise RuntimeError(f"Remark returned invalid JSON: {error}") from error
-
-    if not isinstance(parsed, list):
-        raise RuntimeError("Remark JSON output must be an array of files.")
-
-    issues = []
-    for file_result in parsed:
-        if not isinstance(file_result, dict):
-            continue
-
-        raw_path = file_result.get("path")
-        path = normalise_vale_path(raw_path, paths)
-
-        if path is None:
-            continue
-
-        messages = file_result.get("messages", [])
-        if not isinstance(messages, list):
-            continue
-
-        content = path.read_text(encoding="utf-8")
-        for message in messages:
-            if not isinstance(message, dict):
-                continue
-
-            # unified-engine wraps parser errors in "Cannot process file".
-            # Keep the wrapper's fatal status but report the nested cause's
-            # useful location, parser name and diagnostic.
-            diagnostic = message
-            while isinstance(diagnostic.get("cause"), dict):
-                diagnostic = diagnostic["cause"]
-            reason = str(diagnostic.get("reason", "")).strip()
-            outer_reason = str(message.get("reason", "")).strip()
-            if outer_reason and outer_reason != reason:
-                reason = f"{outer_reason}: {reason}" if reason else outer_reason
-            if not reason:
-                continue
-
-            rule_id = str(diagnostic.get("ruleId") or message.get("ruleId") or "remark").strip()
-            message_source = str(diagnostic.get("source") or message.get("source") or "remark").strip()
-
-            line = diagnostic.get("line") or message.get("line")
-            if not isinstance(line, int) or line <= 0:
-                line = 1
-            fatal = message.get("fatal")
-            if fatal is None:
-                fatal = diagnostic.get("fatal")
-            if fatal is True:
-                severity = "high"
-            elif fatal is False:
-                severity = "medium"
-            else:
-                severity = "low"
-
-            actual = diagnostic.get("actual")
-            if isinstance(actual, str) and actual.strip():
-                original = actual.strip()
-            else:
-                original = source_line_text(content, line)
-            if not original:
-                original = "<file-level Remark finding>"
-
-            expected = diagnostic.get("expected")
-            note = diagnostic.get("note")
-            if isinstance(note, str) and note.strip():
-                suggestion = note.strip()
-            elif isinstance(expected, list) and expected:
-                expected_text = ", ".join(str(item) for item in expected)
-                suggestion = f"Update the Markdown/MDX to use one of: {expected_text}."
-            elif fatal is True and message_source != "remark":
-                suggestion = "Correct the syntax at the reported location so the Markdown/MDX parser can process this file."
-            elif fatal is True:
-                suggestion = "Check file availability, access and checker configuration; this is a processing failure rather than a lint-rule violation."
-            else:
-                suggestion = (
-                    f"Correct the Markdown/MDX structure to satisfy Remark rule "
-                    f"`{rule_id}`."
-                )
-            issues.append(
-                make_issue(
-                    file=path.as_posix(),
-                    line=line,
-                    severity=severity,
-                    confidence="high",
-                    issue_type="defect",
-                    category=rule_id,
-                    original=original,
-                    message=f"Remark ({message_source}): {reason}",
-                    suggestion=suggestion,
-                    source="remark",
-                )
-            )
-    return issues
-
-
-class RemarkCheck(BaseCheck):
-    """Run Remark once across the selected Markdown/MDX files."""
-
-    name = "RemarkCheck"
-    source = "remark"
-
-    # A tiny reporter module keeps this integration self-contained and avoids
-    # requiring vfile-reporter-json as an extra project dependency.
-    REPORTER_SOURCE = r'''function diagnostic(message, depth = 0) {
-  return {
-    reason: message.reason || message.message || String(message),
-    line: message.line ?? null,
-    column: message.column ?? null,
-    fatal: message.fatal ?? null,
-    ruleId: message.ruleId ?? null,
-    source: message.source ?? null,
-    actual: message.actual ?? null,
-    expected: message.expected ?? null,
-    note: message.note ?? null,
-    url: message.url ?? null,
-    cause: message.cause && depth < 8 ? diagnostic(message.cause, depth + 1) : null
-  };
-}
-export default function reporter(files) {
-  const list = Array.isArray(files) ? files : [files];
-  return JSON.stringify(list.map((file) => ({
-    path: file.path || '',
-    cwd: file.cwd || '',
-    history: file.history || [],
-    messages: (file.messages || []).map((message) => diagnostic(message))
-  })));
-}
-'''
-    def run_files(self, paths, executable=None):
-        executable = executable or find_remark_executable()
-
-        if executable is None:
-            raise RuntimeError(
-                "Remark CLI was not found. Run the Remark preflight before "
-                "executing RemarkCheck."
-            )
-
-        reporter_path = ROOT / f".remark-python-reporter-{os.getpid()}.mjs"
-
-        try:
-            reporter_path.write_text(self.REPORTER_SOURCE, encoding="utf-8")
-            command = [
-                executable,
-                "--no-color",
-                "--no-stdout",
-                "--quiet",
-                "--silently-ignore",
-                "--report",
-                f"./{reporter_path.name}",
-                "--",
-                *[path.as_posix() for path in paths],
-            ]
-            result = subprocess.run(
-                command,
-                cwd=ROOT,
-                capture_output=True,
-                text=True,
-                check=False,
-            )
-        finally:
-            try:
-                reporter_path.unlink(missing_ok=True)
-            except OSError:
-                pass
-        # unified-engine writes reporter output to stderr. Normal lint warnings
-        # return 0 because this integration intentionally does not use --frail;
-        # CI policy is applied by the unified severity thresholds below.
-        report_text = result.stderr.strip()
-        if report_text:
-            try:
-                issues = parse_remark_json(report_text, paths)
-            except RuntimeError:
-                if result.returncode != 0:
-                    detail = result.stderr.strip() or result.stdout.strip()
-                    raise RuntimeError(
-                        f"Remark exited with code {result.returncode}: {detail}"
-                    )
-                raise
-
-            if issues or result.returncode == 0:
-                return issues
-        if result.returncode != 0:
-            detail = result.stderr.strip() or result.stdout.strip()
-            raise RuntimeError(
-                f"Remark exited with code {result.returncode}"
-                + (f": {detail}" if detail else ".")
-            )
-
-        return []
-# ---------------------------------------------------------------------------
-# Lychee external-link integration
-# ---------------------------------------------------------------------------
-
-
-def lychee_preflight():
-    """Validate that the Lychee executable is available before checks run."""
-
-    print("Lychee preflight:")
-
-    executable = shutil.which("lychee")
-    if executable is None:
-        raise RuntimeError(
-            "Lychee executable was not found in PATH. Install Lychee locally or "
-            "in the GitHub Actions runner before running this script "
-            "(and verify the install with `lychee --version`)."
-        )
-
-    print(f"  Executable: {executable}")
-
-    version_result = subprocess.run(
-        [executable, "--version"],
-        cwd=ROOT,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
-    if version_result.returncode != 0:
-        detail = version_result.stderr.strip() or version_result.stdout.strip()
-        raise RuntimeError(
-            "Lychee is present but `lychee --version` failed"
-            + (f": {detail}" if detail else ".")
-        )
-
-    version = version_result.stdout.strip() or version_result.stderr.strip()
-    version = version.splitlines()[0] if version else "<unknown>"
-    print(f"  Version: {version}")
-    print()
-
-    return executable
-
-def lychee_status_text(status):
-    """Return a readable status from Lychee's JSON status representation."""
-
-    if isinstance(status, dict):
-        text = str(status.get("text", "")).strip()
-        code = status.get("code")
-
-        if text and code is not None:
-            return f"{text} (HTTP {code})"
-        if text:
-            return text
-        if code is not None:
-            return f"HTTP {code}"
-
-        return json.dumps(status, ensure_ascii=False, sort_keys=True)
-    if status is None:
-        return "unknown failure"
-
-    return str(status).strip() or "unknown failure"
-
-
-def lychee_http_status(status):
-    """Read an HTTP status without confusing transport errors with HTTP responses."""
-    if isinstance(status, dict):
-        code = status.get("code")
-        if not isinstance(code, bool) and re.fullmatch(r"[1-5]\d{2}", str(code)):
-            return int(code)
-        text = str(status.get("text", ""))
-    else:
-        text = str(status or "")
-    match = re.search(r"\b(?:HTTP\s+|status(?:\s+code)?\s*[:=]?\s*)([1-5]\d{2})\b", text, re.IGNORECASE)
-    return int(match.group(1)) if match else None
-
-
-def parse_lychee_json(output, paths):
-    """Convert Lychee JSON failures into the unified issue schema."""
-
-    if not output.strip():
-        return []
-
-    try:
-        parsed = json.loads(output)
-    except json.JSONDecodeError as error:
-        raise RuntimeError(f"Lychee returned invalid JSON: {error}") from error
-    if not isinstance(parsed, dict):
-        raise RuntimeError("Lychee JSON output must be an object.")
-
-    error_map = parsed.get("error_map", {})
-
-    # Lychee used the name `fail_map` before 0.18. Supporting it here costs
-    # almost nothing and makes local installations fail more gracefully.
-    if not error_map and isinstance(parsed.get("fail_map"), dict):
-        error_map = parsed["fail_map"]
-    if not isinstance(error_map, dict):
-        raise RuntimeError("Lychee JSON output contains an invalid error_map.")
-
-    issues = []
-
-    for raw_path, failures in error_map.items():
-        path = normalise_vale_path(raw_path, paths)
-
-        if path is None or not isinstance(failures, list):
-            continue
-
-        content = path.read_text(encoding="utf-8")
-
-        for failure in failures:
-            if not isinstance(failure, dict):
-                continue
-            url = str(failure.get("url", "")).strip()
-            if not url:
-                continue
-
-            # The HTTP/HTTPS scheme filters should already guarantee this, but keep
-            # the parser defensive in case a future Lychee version changes filtering.
-            if not re.match(r"^https?://", url, re.IGNORECASE):
-                continue
-
-            line = find_source_line(content, url) or 1
-            raw_status = failure.get("status")
-            status = lychee_status_text(raw_status)
-            code = lychee_http_status(raw_status)
-            severity, issue_type, category = "high", "defect", "external-link"
-            message = f"External link failed Lychee validation: {status}"
-            suggestion = (
-                "Verify the destination, replace or remove the broken URL, "
-                "or add a deliberate exception to .lycheeignore when the "
-                "destination is known to reject automated checks."
-            )
-            # Lychee has already exhausted its configured retries. These statuses
-            # establish a failed check, not that the destination has disappeared.
-            if code == 429 or (code is not None and 500 <= code <= 599):
-                severity, issue_type, category = "low", "improvement", "external-link-temporary"
-                message = f"External link temporarily unavailable after Lychee retries: {status}"
-                suggestion = (
-                    "Recheck the URL later. The server returned a rate-limit or server-error "
-                    "response; this does not establish that the link is broken. "
-                    "If failures persist, review the destination and per-host request limits."
-                )
-            elif code in {401, 403}:
-                severity, issue_type, category = "low", "improvement", "external-link-access"
-                message = f"External link requires review: access restrictions prevented Lychee validation: {status}"
-                suggestion = (
-                    "Open the URL manually and check whether sign-in, permissions or automated-request "
-                    "restrictions prevented validation. Correct the link if unsuitable for readers; "
-                    "otherwise document a narrowly scoped exception after verification."
-                )
-            issues.append(
-                make_issue(
-                    file=path.as_posix(),
-                    line=line,
-                    severity=severity,
-                    confidence="high",
-                    issue_type=issue_type,
-                    category=category,
-                    original=url,
-                    message=message,
-                    suggestion=suggestion,
-                    source="lychee",
-                )
-            )
-    return issues
-
-
-class LycheeCheck(BaseCheck):
-    """Run Lychee once across the selected Markdown/MDX files."""
-
-    name = "LycheeCheck"
-    source = "lychee"
-
-    def run_files(self, paths, executable=None):
-        executable = executable or shutil.which("lychee")
-
-        if executable is None:
-            raise RuntimeError(
-                "Lychee executable was not found in PATH. Run the Lychee preflight "
-                "before executing LycheeCheck."
-            )
-        # Use an absolute root directory. This is required by current Lychee
-        # versions for root-relative links such as /docs/skills.
-        root_dir = str(ROOT.resolve())
-        # Feed the exact file list over stdin instead of relying on shell globs.
-        # This avoids Windows glob/path quoting differences and keeps Lychee's
-        # scope identical to markdown_files(), including EXCLUDED_DIRS.
-        command = [
-            executable,
-            "--root-dir",
-            root_dir,
-            "--scheme",
-            "http",
-            "--scheme",
-            "https",
-            "--format",
-            "json",
-            "--no-progress",
-            "--files-from",
-            "-",
-        ]
-        files_from = "\n".join(path.as_posix() for path in paths) + "\n"
-
-        result = subprocess.run(
-            command,
-            cwd=ROOT,
-            input=files_from,
-            capture_output=True,
-            text=True,
-            check=False,
-        )
-        # Lychee exit code 2 means link-check failures; that is expected input for
-        # the report. Exit codes 1 and 3 indicate runtime/configuration failures.
-        if result.returncode not in {0, 2}:
-            detail = result.stderr.strip() or result.stdout.strip()
-            raise RuntimeError(
-                f"Lychee exited with code {result.returncode}"
-                + (f": {detail}" if detail else ".")
-            )
-
-        return parse_lychee_json(result.stdout, paths)
-# ---------------------------------------------------------------------------
 # Deterministic checks
 # ---------------------------------------------------------------------------
 
@@ -2971,10 +1684,10 @@ def build_checks():
         AccessibilityCheck(),
         LinkCheck(),
         LandingPageCoverageCheck(),
-        LycheeCheck(),
-        RemarkCheck(),
-        ValeCheck(),
-        LtexCheck(),
+        LycheeCheck(ROOT),
+        RemarkCheck(ROOT),
+        ValeCheck(ROOT),
+        LtexCheck(ROOT),
         SiteWideConsistencyReview(),
     ]
 
@@ -3088,75 +1801,57 @@ def cached_ai_check(check, sources, scope, compute):
     # invalidates existing results even if the policy version was not bumped.
     implementation = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
     policy_implementation = hashlib.sha256((SCRIPT_DIR / 'qa_policy.py').read_bytes()).hexdigest()
+    source_implementation = hashlib.sha256(Path(check_source.__file__).read_bytes()).hexdigest()
     cache_implementation = hashlib.sha256((SCRIPT_DIR / 'qa_review_cache.py').read_bytes()).hexdigest()
     inputs = {'scope': scope, 'check': check.name, 'sources': sources,
               'model': MODEL, 'api_url': API_URL, 'policy': AI_REVIEW_POLICY_VERSION,
               'implementation': implementation, 'policy_implementation': policy_implementation,
-              'cache_implementation': cache_implementation,
+              'cache_implementation': cache_implementation, 'source_implementation': source_implementation,
               'defects_only': bool(getattr(check, 'defects_only', False))}
     return ReviewCache(PROJECT_ROOT / '.qa/review-cache', enabled=REVIEW_CACHE_ENABLED).run(inputs, compute)
 
 
-def run_per_page_checks(paths, checks, api_key):
-    issues = []
-    errors = []
+def run_per_page_checks(paths, checks, api_key) -> CheckResult:
+    result = CheckResult()
     runnable_checks = [check for check in checks if check.supports_page]
-
     if not runnable_checks:
-        return issues, errors
+        return result
 
     for file_number, path in enumerate(paths, start=1):
         content = path.read_text(encoding="utf-8")
-
         if not content.strip():
             continue
 
-        print(f"[{file_number}/{len(paths)}] {path.as_posix()}")
+        location = path.as_posix()
+        print(f"[{file_number}/{len(paths)}] {location}")
         for check in runnable_checks:
             print(f"    {check.name}")
-            try:
-                issues.extend(
-                    cached_ai_check(check, {path.as_posix(): content}, 'per-page',
-                                    lambda: check.run_page(path, content, api_key))
-                )
-            except Exception as error:
-                errors.append(
-                    {
-                        "check": check.name,
-                        "file": path.as_posix(),
-                        "error": str(error),
-                    }
-                )
-    return issues, errors
+            result.extend(execute_check(check, location, lambda: cached_ai_check(
+                check, {location: content}, 'per-page',
+                lambda: check.run_page(path, content, api_key))))
+    return result
 
 
-def run_site_checks(paths, checks, api_key):
-    issues = []
-    errors = []
+def run_site_checks(paths, checks, api_key) -> CheckResult:
+    result = CheckResult()
     runnable_checks = [check for check in checks if check.supports_site]
-
-    contents = {
-        path.as_posix(): path.read_text(encoding="utf-8")
-        for path in paths
-    }
+    contents = {path.as_posix(): path.read_text(encoding="utf-8") for path in paths}
 
     for check in runnable_checks:
         print(f"[site] {check.name}")
-        try:
-            issues.extend(
-                cached_ai_check(check, contents, 'site-wide',
-                                lambda: check.run_site(paths, contents, api_key))
-            )
-        except Exception as error:
-            errors.append(
-                {
-                    "check": check.name,
-                    "file": "<site-wide>",
-                    "error": str(error),
-                }
-            )
+        result.extend(execute_check(check, "<site-wide>", lambda: cached_ai_check(
+            check, contents, 'site-wide', lambda: check.run_site(paths, contents, api_key))))
+    return result
 
-    return issues, errors
+
+def run_file_checks(paths, checks) -> CheckResult:
+    result = CheckResult()
+    for check in checks:
+        print(f"[{check.source}] {check.name}")
+        result.extend(check.run(paths))
+    return result
+
+
 # ---------------------------------------------------------------------------
 # Finding relationships and saved-report refresh
 # ---------------------------------------------------------------------------
@@ -3285,26 +1980,6 @@ def parse_args():
 
     return parser.parse_args()
 
-def _assert_ci_policy_invariants():
-    """Fail fast if the AI CI policy is accidentally weakened by a code change."""
-    probes = [
-        ({"source": "ai", "type": "improvement", "confidence": "high"}, False),
-        ({"source": "ai", "type": "diagram", "confidence": "high"}, False),
-        ({"source": "ai", "type": "defect", "confidence": "medium"}, False),
-        ({"source": "ai", "type": "defect", "confidence": "high"}, True),
-        ({"source": "ai", "type": "defect", "confidence": "high", "human_resolution": "dismissed"}, False),
-        ({"source": "ai", "type": "defect", "confidence": "high", "effective_ai_decision": "withdrawn"}, True),
-        ({"source": "vale", "type": "improvement", "confidence": "high"}, True),
-    ]
-    for issue, expected in probes:
-        actual = is_ci_threshold_eligible(issue)
-        if actual != expected:
-            raise RuntimeError(
-                "Internal CI policy self-check failed for "
-                f"{issue!r}: expected {expected}, got {actual}."
-            )
-
-
 def main():
     # The script historically assumes project-relative paths throughout its checks,
     # source references, Git commands, and report generation. Set that base once.
@@ -3327,7 +2002,7 @@ def main():
     paths = ReportPaths.in_directory(report_dir)
     if args.command not in {"challenge", "resolve", "render", "compare", "link", "reuse"}:
         report_dir.mkdir(parents=True, exist_ok=True)
-    _assert_ci_policy_invariants()
+    assert_ci_policy_invariants()
     if args.command == 'reuse':
         if not all([args.report, args.issue, args.previous, args.proposal, args.reason]) or args.decision or args.retry or args.reason_file:
             print('Reuse requires --report, --issue, --previous, --proposal and --reason', file=sys.stderr)
@@ -3443,7 +2118,7 @@ def main():
     mode = resolve_mode_for_filter(mode, filter_name)
     checks = selected_checks(filter_name)
 
-    file_checks = [check for check in checks if hasattr(check, "run_files")]
+    file_checks = [check for check in checks if isinstance(check, FileCheck)]
     scoped_checks = [check for check in checks if check not in file_checks]
     # Only retain implementations that can actually run in the chosen scope.
     if mode == "per-page":
@@ -3462,36 +2137,6 @@ def main():
             print("No checks are available for the selected mode and filter.")
         return 2
 
-    vale_executable = None
-    ltex_executable = None
-    lychee_executable = None
-    remark_executable = None
-    if any(check.source == "vale" for check in file_checks):
-        try:
-            vale_executable = vale_preflight()
-        except RuntimeError as error:
-            print(f"Vale preflight failed: {error}", file=sys.stderr)
-            return 2
-
-    if any(check.source == "ltex" for check in file_checks):
-        try:
-            ltex_executable = ltex_preflight()
-        except RuntimeError as error:
-            print(f"LTeX+ preflight failed: {error}", file=sys.stderr)
-            return 2
-    if any(check.source == "lychee" for check in file_checks):
-        try:
-            lychee_executable = lychee_preflight()
-        except RuntimeError as error:
-            print(f"Lychee preflight failed: {error}", file=sys.stderr)
-            return 2
-    if any(check.source == "remark" for check in file_checks):
-        try:
-            remark_executable = remark_preflight()
-        except RuntimeError as error:
-            print(f"Remark preflight failed: {error}", file=sys.stderr)
-            return 2
-
     if DEEPSEEK_AI_CHECKS_ENABLED and not api_key and any(
         check.source == "ai" for check in checks
     ):
@@ -3507,36 +2152,13 @@ def main():
 
     print()
 
-    issues, errors = [], []
+    result = CheckResult()
     if mode in {"per-page", "all"}:
-        page_issues, page_errors = run_per_page_checks(
-            files, [check for check in scoped_checks if check.supports_page], api_key)
-        issues.extend(page_issues)
-        errors.extend(page_errors)
+        result.extend(run_per_page_checks(files, scoped_checks, api_key))
     if mode in {"site-wide", "all"}:
-        site_issues, site_errors = run_site_checks(
-            files, [check for check in scoped_checks if check.supports_site], api_key)
-        issues.extend(site_issues)
-        errors.extend(site_errors)
-    for check in file_checks:
-        print(f"[{check.source}] {check.name}")
-        try:
-            executable_by_source = {
-                "vale": vale_executable,
-                "ltex": ltex_executable,
-                "lychee": lychee_executable,
-                "remark": remark_executable,
-            }
-            executable = executable_by_source.get(check.source)
-            issues.extend(check.run_files(files, executable=executable))
-        except Exception as error:
-            errors.append(
-                {
-                    "check": check.name,
-                    "file": f"<{check.source}>",
-                    "error": str(error),
-                }
-            )
+        result.extend(run_site_checks(files, scoped_checks, api_key))
+    result.extend(run_file_checks(files, file_checks))
+    issues, errors = result.issues, result.errors
     decorate_issues(issues)
     attach_related_findings(issues)
     attach_feedback_status(issues, args.feedback_file)

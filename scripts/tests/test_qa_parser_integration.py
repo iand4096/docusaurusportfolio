@@ -11,6 +11,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_checks.remark import RemarkCheck
 
 
 PROJECT = Path(__file__).resolve().parents[2]
@@ -34,7 +35,7 @@ class ParserIntegrationTests(unittest.TestCase):
         path.parent.mkdir(parents=True, exist_ok=True)
         path.write_text(content, encoding="utf-8")
         with contextlib.chdir(self.root):
-            return review.RemarkCheck().run_files(
+            return RemarkCheck(self.root).run_files(
                 [path], executable=str(PROJECT / "node_modules/.bin/remark")
             )
 

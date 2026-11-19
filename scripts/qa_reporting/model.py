@@ -1,15 +1,10 @@
 """Typed inputs and shared finding presentation for all report formats."""
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, TypedDict
+from typing import Any
 
+from qa_checks.base import CheckError
 from qa_policy import CIResult, apply_ai_severity_policy
-
-
-class CheckError(TypedDict):
-    check: str
-    file: str
-    error: str
 
 
 @dataclass(frozen=True)

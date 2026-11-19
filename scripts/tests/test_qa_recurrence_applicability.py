@@ -275,8 +275,8 @@ class ApplicabilityTests(unittest.TestCase):
         feedback.attach_feedback_status([self.new], self.registry)
         self.assertEqual(self.new['effective_ai_decision'], 'withdrawn')
         self.assertIsNone(self.new['human_resolution'])
-        import ai_docs_review as review
-        self.assertTrue(review.is_ci_threshold_eligible(self.new))
+        from qa_policy import is_ci_threshold_eligible
+        self.assertTrue(is_ci_threshold_eligible(self.new))
 
 
 if __name__ == '__main__':

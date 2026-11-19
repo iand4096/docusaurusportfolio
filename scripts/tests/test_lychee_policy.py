@@ -9,6 +9,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_checks import lychee
 from qa_reporting import Report, generate_json_report
 
 PROJECT = Path(__file__).resolve().parents[2]
@@ -26,7 +27,7 @@ class LycheePolicyTests(unittest.TestCase):
         return json.dumps({key: {str(self.path): [{'url': self.url, 'status': status}]}})
 
     def finding(self, code, key='error_map'):
-        return review.parse_lychee_json(self.output({
+        return lychee.parse_lychee_json(self.output({
             'code': code, 'text': f'Rejected status code: {code}',
         }, key), [self.path])[0]
 
@@ -77,7 +78,7 @@ class LycheePolicyTests(unittest.TestCase):
         for status in [None, {'text': 'DNS lookup failed'}, {'code': -1},
                        {'code': True}, 'Connection timed out after 503 milliseconds']:
             with self.subTest(status=status):
-                issue = review.parse_lychee_json(self.output(status), [self.path])[0]
+                issue = lychee.parse_lychee_json(self.output(status), [self.path])[0]
                 self.assertEqual(issue['severity'], 'high')
                 self.assertFalse(self.ci([issue])['passed'])
 
@@ -88,7 +89,7 @@ class LycheePolicyTests(unittest.TestCase):
             ({'code': '403', 'text': 'Forbidden'}, 'external-link-access'),
         ]:
             with self.subTest(status=status):
-                issue = review.parse_lychee_json(self.output(status), [self.path])[0]
+                issue = lychee.parse_lychee_json(self.output(status), [self.path])[0]
                 self.assertEqual(issue['category'], category)
                 self.assertEqual(issue['severity'], 'low')
         self.assertEqual(self.finding(503, 'fail_map')['category'], 'external-link-temporary')
@@ -97,21 +98,21 @@ class LycheePolicyTests(unittest.TestCase):
         for output in ['invalid JSON', '[]', '{"error_map": []}']:
             with self.subTest(output=output):
                 with self.assertRaises(RuntimeError):
-                    review.parse_lychee_json(output, [self.path])
+                    lychee.parse_lychee_json(output, [self.path])
 
     def test_lychee_link_failure_exit_is_parsed_but_runtime_failures_raise(self):
         result = subprocess.CompletedProcess([], 2, self.output({'code': 503}), '')
-        with patch.object(review.subprocess, 'run', return_value=result) as run:
-            issues = review.LycheeCheck().run_files([self.path], executable='lychee')
+        with patch.object(lychee.subprocess, 'run', return_value=result) as run:
+            issues = lychee.LycheeCheck().run_files([self.path], executable='lychee')
             self.assertTrue(self.ci(issues)['passed'])
             command = run.call_args.args[0]
             self.assertNotIn('--accept', command)
             self.assertEqual(run.call_args.kwargs['input'], str(self.path) + '\n')
         for code in [1, 3]:
-            with self.subTest(code=code), patch.object(review.subprocess, 'run',
+            with self.subTest(code=code), patch.object(lychee.subprocess, 'run',
                     return_value=subprocess.CompletedProcess([], code, '', 'invalid configuration')):
                 with self.assertRaises(RuntimeError):
-                    review.LycheeCheck().run_files([self.path], executable='lychee')
+                    lychee.LycheeCheck().run_files([self.path], executable='lychee')
 
     def test_retry_configuration_remains_enabled_without_accepting_failures(self):
         config = tomllib.loads((PROJECT / 'lychee.toml').read_text())

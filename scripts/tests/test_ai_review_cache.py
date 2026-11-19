@@ -8,6 +8,7 @@ from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_checks.base import CheckResult
 from qa_review_cache import ReviewCache
 
 
@@ -90,10 +91,10 @@ class ReviewCacheTests(unittest.TestCase):
         with patch.object(review, 'PROJECT_ROOT', self.root), patch.object(review, 'request_review',
                 side_effect=[{'issues': [raw]}, {'assessments': [dict(index=0, supported=True,
                               reason='Source supports the finding.')]}]) as request:
-            first, errors = review.run_per_page_checks([path], [review.GrammarReview()], 'unused')
-            second, errors2 = review.run_per_page_checks([path], [review.GrammarReview()], 'unused')
-        self.assertEqual(errors + errors2, [])
-        self.assertEqual(len(first), 1)
+            first = review.run_per_page_checks([path], [review.GrammarReview()], 'unused')
+            second = review.run_per_page_checks([path], [review.GrammarReview()], 'unused')
+        self.assertEqual(first.errors + second.errors, [])
+        self.assertEqual(len(first.issues), 1)
         self.assertEqual(first, second)
         self.assertEqual(request.call_count, 2)
 
@@ -109,12 +110,12 @@ class ReviewCacheTests(unittest.TestCase):
 
             for response in responses[:-1]:
                 with self.subTest(response=response):
-                    issues, errors = run()
-                    self.assertEqual(issues, [])
-                    self.assertEqual(len(errors), 1)
-                    self.assertIn('Invalid AI review response', errors[0]['error'])
-            self.assertEqual(run(), ([], []))
-            self.assertEqual(run(), ([], []))
+                    result = run()
+                    self.assertEqual(result.issues, [])
+                    self.assertEqual(len(result.errors), 1)
+                    self.assertIn('Invalid AI review response', result.errors[0]['error'])
+            self.assertEqual(run(), CheckResult())
+            self.assertEqual(run(), CheckResult())
             self.assertEqual(request.call_count, len(responses))
 
     def test_deterministic_checks_are_never_cached(self):

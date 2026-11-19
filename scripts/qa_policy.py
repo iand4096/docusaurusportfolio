@@ -131,3 +131,23 @@ def evaluate_ci(issues, errors, fail_high: int, fail_medium: int, fail_api_error
             "api_errors": fail_api_errors,
         },
     }
+
+
+def assert_ci_policy_invariants() -> None:
+    """Fail fast if the AI CI policy is accidentally weakened by a code change."""
+    probes = [
+        ({"source": "ai", "type": "improvement", "confidence": "high"}, False),
+        ({"source": "ai", "type": "diagram", "confidence": "high"}, False),
+        ({"source": "ai", "type": "defect", "confidence": "medium"}, False),
+        ({"source": "ai", "type": "defect", "confidence": "high"}, True),
+        ({"source": "ai", "type": "defect", "confidence": "high", "human_resolution": "dismissed"}, False),
+        ({"source": "ai", "type": "defect", "confidence": "high", "effective_ai_decision": "withdrawn"}, True),
+        ({"source": "vale", "type": "improvement", "confidence": "high"}, True),
+    ]
+    for issue, expected in probes:
+        actual = is_ci_threshold_eligible(issue)
+        if actual != expected:
+            raise RuntimeError(
+                "Internal CI policy self-check failed for "
+                f"{issue!r}: expected {expected}, got {actual}."
+            )
