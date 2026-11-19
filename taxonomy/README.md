@@ -1,6 +1,6 @@
 # Taxonomy governance
 
-This directory holds the portfolio's canonical controlled vocabulary, validation schemas and reviewed vocabulary migrations. It supports document classification, Docusaurus tags, VS Code Front Matter choices, faceted navigation and the knowledge API's search filters.
+This directory holds the portfolio's canonical controlled vocabulary, validation schemas and reviewed vocabulary migrations. It supports document classification, Docusaurus tags, inline definition tooltips in documentation prose, VS Code Front Matter choices, faceted navigation and the knowledge API's search filters.
 
 The [implementation guide](../docs/implementation-details/taxonomy.md) explains the architecture and engineering decisions. This README covers routine maintenance from the repository root.
 
@@ -66,7 +66,7 @@ python scripts/taxonomy.py check --all
 git diff
 ```
 
-`sync` writes derived tags in the selected documents and regenerates all three repository projections. It does not classify prose or repair invalid vocabulary selections. Correct invalid metadata before retrying.
+`sync` writes derived tags in the selected documents and regenerates all three repository projections. The site build reads term definitions from the navigation projection for inline tooltips. It does not classify prose or repair invalid vocabulary selections. Correct invalid metadata before retrying.
 
 | Command | Behaviour |
 | --- | --- |
@@ -74,7 +74,7 @@ git diff
 | `python scripts/taxonomy.py check docs/case-studies/TaxonomyGovernance.md` | Checks generated state and the selected document's metadata. |
 | `python scripts/taxonomy.py check --changed-base origin/main` | Checks documents changed between the Git merge base and HEAD; a canonical taxonomy change expands document validation to the full corpus. Fetch the base reference first. |
 | `python scripts/taxonomy.py check --taxonomy-only` | Checks the taxonomy and generated state without the document metadata validation pass. Navigation projection construction still reads documents. |
-| `python scripts/taxonomy.py sync --all` | Writes document tags and regenerates projections. Accepts explicit paths or `--changed-base` for document selection. |
+| `python scripts/taxonomy.py sync --all` | Writes document tags and regenerates projections, including the data used for inline definition tooltips. Accepts explicit paths or `--changed-base` for document selection. |
 | `python scripts/taxonomy.py generate` | Regenerates projections without synchronising document tags. |
 | `python scripts/taxonomy.py audit-technologies` | Reports active technology kinds and heuristic warnings about organisation-like descriptions. |
 | `python scripts/taxonomy.py audit-unused` | Reports active terms with no direct document references; defaults to AI-managed dimensions. |
@@ -114,7 +114,7 @@ python scripts/taxonomy.py check --all
 git diff
 ```
 
-`--apply-from` makes no model call. It validates the saved classification against the current taxonomy, writes document metadata, synchronises tags and regenerates projections. It fills missing or blank titles/descriptions without replacing usable existing values. It can create absent YAML front matter; malformed existing front matter fails.
+`--apply-from` makes no model call. It validates the saved classification against the current taxonomy, writes document metadata, synchronises tags and regenerates projections, including the data used for inline definition tooltips. It fills missing or blank titles/descriptions without replacing usable existing values. It can create absent YAML front matter; malformed existing front matter fails.
 
 If any selected ID is not an active canonical term, adopt the required vocabulary through a reviewed migration first, then apply the same saved review. Artefacts containing document-level classification errors cannot be applied. `--apply-from` cannot be combined with document-selection arguments, `--model` or `--apply`.
 

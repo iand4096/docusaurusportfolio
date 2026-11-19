@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 
 from pathlib import Path
-import shutil
 import subprocess
 import sys
 
@@ -62,7 +61,7 @@ def main() -> int:
         return 2
 
     try:
-        markdown_report, json_report = taxonomy_review_paths(
+        _, json_report = taxonomy_review_paths(
             root,
             document,
             create_parent=True,
@@ -86,8 +85,7 @@ def main() -> int:
         flush=True,
     )
     print(
-        f"Review artifacts will be saved under: "
-        f"{markdown_report.parent.relative_to(root).as_posix()}",
+        f"Review will be saved to: {json_report.relative_to(root).as_posix()}",
         flush=True,
     )
 
@@ -96,8 +94,7 @@ def main() -> int:
         str(taxonomy_ai),
         "--root",
         str(root),
-        "--output",
-        str(markdown_report),
+        "--json-only",
         "--json-output",
         str(json_report),
         str(relative_document),
@@ -115,49 +112,12 @@ def main() -> int:
         )
         return result.returncode
 
-    missing_reports = [
-        path
-        for path in (markdown_report, json_report)
-        if not path.exists()
-    ]
-    if missing_reports:
-        for path in missing_reports:
-            print(
-                f"ERROR: metadata AI did not produce expected review artifact: {path}",
-                file=sys.stderr,
-            )
+    if not json_report.is_file():
+        print(f"ERROR: metadata AI did not produce expected review artifact: {json_report}", file=sys.stderr)
         return 1
-
-    code_command = shutil.which("code") or shutil.which("code.cmd")
-
-    if not code_command:
-        print(
-            f"ERROR: VS Code command-line tool 'code' was not found.\n"
-            f"Saved Markdown review: {markdown_report}\n"
-            f"Saved JSON review: {json_report}",
-            file=sys.stderr,
-        )
-        return 1
-
-    print("Opening metadata suggestions in VS Code...", flush=True)
-
-    subprocess.run(
-        [
-            code_command,
-            "--reuse-window",
-            "--wait",
-            str(markdown_report),
-        ],
-        cwd=root,
-    )
 
     print(
         f"Saved taxonomy review: "
-        f"{markdown_report.relative_to(root).as_posix()}",
-        flush=True,
-    )
-    print(
-        f"Saved taxonomy review data: "
         f"{json_report.relative_to(root).as_posix()}",
         flush=True,
     )
