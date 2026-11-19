@@ -43,13 +43,21 @@ tags:
 
 import DiagramFigure from '@site/src/components/DiagramFigure';
 
-I designed and implemented a governed taxonomy for a Docusaurus documentation site. The project combined information architecture, docs-as-code automation, editor integration, and AI-assisted classification.
+I designed and implemented a governed taxonomy for a Docusaurus documentation site. The project combined information architecture, docs-as-code automation, editor integration and AI-assisted classification.
 
-My goal was not just to generate tags, but also to build a system in which writers could classify content efficiently while the canonical set of metadata remained consistent, reviewable, and auditable.
+The aim was to automate metadata classification while preventing uncontrolled proliferation of frontmatter values, keeping the taxonomy consistent and auditable.
 
-I implemented the taxonomy schema, validation and migration tooling, AI review workflow, and editor integration to make it easy for writers to select appropriate tags from controlled metadata when tagging their documents. The system validates the proposed taxonomy change before application. Add-only migrations can proceed independently of unrelated document errors; migrations that affect existing terms retain document-impact checks. All AI suggestions are reviewed by a human before they can affect document metadata or the canonical taxonomy.
+The implementation included a taxonomy schema, validation and migration tooling, AI review workflow and editor integration. The editor tooling is built on top of the existing VS Code extension, Front Matter. It allows writers to select appropriate values from controlled metadata. Proposed taxonomy changes are recorded in migration manifests, which provide an audit trail. The migration tooling validates these manifests and their preconditions before applying changes to the canonical taxonomy.
 
-The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is used to generate Docusaurus tags, the metadata choices available to users in VS Code Front Matter, and the site's taxonomy navigation index — see the [Explore page](/explore?view=browse).
+Terminology extensions, i.e. those that add new metadata terms, can proceed directly - subject to PR checks. However, migrations affecting existing terms trigger additional document-impact checks across the whole portfolio.
+
+All AI suggestions require human review before they can affect document metadata or the canonical taxonomy.
+
+The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is also used to generate:
+
+- Docusaurus tags - used for navigation.
+- the metadata choices available for users to select in VS Code Front Matter
+- the site's taxonomy navigation index — see the [Explore page](/explore?view=browse).
 
 ## Design principles {/* #design-principles */}
 

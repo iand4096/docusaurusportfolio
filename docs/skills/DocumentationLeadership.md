@@ -33,11 +33,13 @@ tags:
 
 import CapabilityGrid from '@site/src/components/CapabilityGrid';
 
-I have led documentation teams, platforms and strategy across financial services, payments and enterprise software. My work includes product ownership, developer-portal strategy, docs-as-code adoption and migration programmes.
+I have led documentation teams, platforms and strategy across financial services and payments. My work includes product ownership, developer-portal strategy, docs-as-code adoption and migration programmes.
 
 ## Strategy {/* #strategy */}
 
-At Paysafe, I defined the documentation strategy and publishing approach for the first [Paysafe Developer Center](../case-studies/PaysafeDeveloperCenter.md) following the merger of Skrill and Optimal Payments. At Morgan Stanley, I owned requirements and priorities for a [custom docs-as-code system](../case-studies/ScalingADeveloperDocsPlatform.md) to replace legacy platforms.
+- At Paysafe, I defined the documentation strategy and publishing approach for the first [Paysafe Developer Center](../case-studies/PaysafeDeveloperCenter.md) following the merger of Skrill and Optimal Payments.
+
+- At Morgan Stanley, I owned requirements and priorities for a [custom docs-as-code system](../case-studies/ScalingADeveloperDocsPlatform.md) to replace legacy platforms.
 
 <CapabilityGrid>
 

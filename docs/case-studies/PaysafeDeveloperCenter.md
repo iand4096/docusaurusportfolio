@@ -270,7 +270,7 @@ I developed migration tooling to transform and move hundreds of pages from the C
 
 My team and I migrated API reference material to API Blueprint, a machine-readable API description format similar in purpose to OpenAPI. The Developer Center used these structured definitions to generate parameter tables, code samples, and `curl` examples automatically, reducing manually duplicated content and improving consistency across the rendered API reference.
 
-To make the new workflow sustainable beyond the initial implementation, I trained the three writers in MadCap Flare, Git, REST APIs, CSS, JavaScript, and the architecture of the Developer Center's build and publishing system. During adoption, I supported the team with source-control issues and merge conflicts and reviewed documentation changes for technical accuracy, clarity, and consistency. This combined hands-on support with capability development so that the team could increasingly operate and maintain the documentation platform independently.
+To make the new workflow sustainable beyond the initial implementation, I trained the three writers in MadCap Flare, Git, REST APIs, CSS, JavaScript, and the architecture of the Developer Center's build and publishing system. During adoption, I supported the team with source-control issues and merge conflicts and reviewed documentation changes for technical accuracy and clarity. This combined hands-on support with training and development so that the team could increasingly operate and maintain the documentation platform independently.
 
 ## Impact {/* #impact */}
 
