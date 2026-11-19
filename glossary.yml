@@ -1,0 +1,16 @@
+# yaml-language-server: $schema=./glossary.schema.json
+# Terms and aliases match case-insensitively in documentation prose.
+- term: cache key
+  definition: A value the review pipeline uses to look up a saved result for the same inputs.
+  aliases:
+    - cache keys
+
+- term: deterministic check
+  definition: A check that applies fixed rules and returns the same result for the same inputs.
+  aliases:
+    - deterministic checks
+
+- term: checker errors
+  definition: Failures that prevent a check from completing, such as a missing tool or an invalid AI response.
+  aliases:
+    - checker error
