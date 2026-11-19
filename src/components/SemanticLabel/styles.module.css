@@ -1,6 +1,7 @@
 .root {
   margin: 0 0 var(--ifm-paragraph-margin-bottom);
   min-width: 0;
+  font-size: 1.0625em;
   line-height: 1.6;
   overflow-wrap: anywhere;
 }
@@ -35,7 +36,6 @@
   gap: 0.5rem;
   min-width: 0;
   color: var(--ifm-font-color-base);
-  font-size: var(--portfolio-text-secondary);
   font-weight: 700;
 }
 
@@ -43,6 +43,7 @@
   flex: 0 0 1em;
   width: 1em;
   color: var(--semantic-accent);
+  font-size: 1.125em;
   text-align: center;
 }
 
@@ -61,7 +62,6 @@
 
 .inline > .label {
   display: inline;
-  font-size: inherit;
 }
 
 .inline > .content,
@@ -71,7 +71,7 @@
 
 .row {
   display: grid;
-  grid-template-columns: 8.5rem minmax(0, 1fr);
+  grid-template-columns: 9rem minmax(0, 1fr);
   gap: 1rem;
   margin: 0;
   padding: 0.75rem 0;
