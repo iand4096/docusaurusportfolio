@@ -763,3 +763,13 @@
   --ifm-button-background-color: var(--portfolio-button-hover);
   --ifm-button-border-color: var(--portfolio-button-hover);
 }
+
+.qa-identifiers-table :is(th, td):nth-child(2) {
+  min-width: 5rem;
+  white-space: nowrap;
+}
+
+.qa-identifiers-table td:nth-child(2) code {
+  color: var(--ifm-font-color-base);
+  font-weight: 700;
+}

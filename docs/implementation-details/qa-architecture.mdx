@@ -1,0 +1,122 @@
+---
+title: Documentation QA architecture
+description: Follow a fresh documentation review and a saved-report refresh through the QA pipeline.
+type:
+  - implementation-guide
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - docs-as-code
+  - documentation-engineering
+technologies:
+  - python
+lifecycle:
+  - current
+tags:
+  - docs-as-code
+  - documentation-engineering
+  - python
+---
+
+import DiagramFigure from '@site/src/components/DiagramFigure';
+
+The documentation QA pipeline runs deterministic checks and AI-assisted review, attaches any recorded feedback, and writes HTML, JSON and Markdown reports. The same CLI can refresh a saved report after a feedback decision.
+
+## Pipeline
+
+A fresh review selects the default documentation paths and any explicit `--include-file` inputs. The runner shares loaded text across page and site-wide checks. File tools receive paths and read from disk. After execution, the CLI assigns finding identities, attaches feedback and, when DeepSeek is enabled and credentials are available, can compare possible recurrences.
+
+### Review and report flows
+
+<DiagramFigure {...{
+  "title": "Documentation QA and saved-report refresh",
+  "shareId": "documentation-qa-review-flows",
+  "legend": [
+    {"role": "input", "label": "Review inputs"},
+    {"role": "process", "label": "Pipeline stages"},
+    {"role": "generation", "label": "AI review"},
+    {"role": "storage", "label": "Saved reports"},
+    {"role": "decision", "label": "CI result"}
+  ]
+}}>
+
+<div className="diagram-columns">
+
+<div className="diagram-panel" data-diagram-panel-id="fresh-review">
+
+#### Fresh review
+
+```mermaid
+flowchart TB
+    accTitle: Fresh review
+    accDescr {
+      The CLI plans checks for the selected documents. Deterministic tools and AI review contribute findings or errors.
+      The pipeline attaches feedback, evaluates CI policy, and writes reports for either gate result.
+    }
+    Docs["Selected documents"] --> Plan["Plan checks"]
+    subgraph CHECKS["Run checks"]
+        Tools["Deterministic checks"]
+        AI["AI review and verification"]
+    end
+    Plan --> Tools
+    Plan --> AI
+    Tools --> Feedback["Attach finding IDs and feedback"]
+    AI --> Feedback
+    Feedback --> Gate{"CI pass or fail?"}
+    Gate --> Reports[("HTML, JSON and Markdown")]
+    class Docs input;
+    class Plan,Tools,Feedback process;
+    class AI generation;
+    class Gate decision;
+    class Reports storage;
+    class CHECKS group-process;
+```
+
+</div>
+
+<div className="diagram-panel" data-diagram-panel-id="saved-report-refresh">
+
+#### Saved-report refresh
+
+```mermaid
+flowchart TB
+    accTitle: Saved-report refresh
+    accDescr {
+      The render command loads saved findings and applies current feedback. It recalculates the gate against the original thresholds.
+      It writes a refreshed report alongside a snapshot of the original. The compare command can also assess possible recurrences.
+    }
+    Saved[("Saved report JSON")] --> Refresh["Apply current feedback"]
+    Registry[("Feedback registry")] --> Refresh
+    Refresh --> Gate{"CI pass or fail?"}
+    Gate --> Reports[("Refreshed reports")]
+    Saved --> Snapshot[("Original report snapshot")]
+    class Refresh process;
+    class Gate decision;
+    class Saved,Registry,Reports,Snapshot storage;
+```
+
+</div>
+
+</div>
+
+</DiagramFigure>
+
+For the decision and commands a reader uses after a review, see [Refresh or rerun](qa-read-report.md#refresh-or-rerun).
+
+## Module map
+
+| Module | Responsibility |
+| --- | --- |
+| `scripts/ai_docs_review.py` | CLI, document discovery, check selection, feedback commands and report orchestration. |
+| `scripts/qa_runner.py` and `scripts/qa_checks/` | Execution plan, shared source text, external-tool adapters and typed findings and errors. |
+| `scripts/qa_ai/` and `scripts/qa_review_cache.py` | DeepSeek requests, prompts, genre routing, evidence verification and the cache for completed AI checks. |
+| `scripts/qa_feedback.py` and `scripts/qa_recurrence.py` | Finding and occurrence IDs, feedback history, recurrence comparison and human-approved decision reuse. |
+| `scripts/qa_policy.py` and `scripts/qa_reporting/` | CI eligibility and thresholds, report model and format-specific renderers. |
+
+- [Documentation QA CLI reference](qa-cli-reference.md)
+- [Read a QA report and act on findings](qa-read-report.md)
+- [Add a documentation checker](qa-add-checker.mdx)
+- [Change AI review behaviour](qa-ai-review.mdx)
+- [Change QA reports or CI policy](qa-reports-and-ci.mdx)
+- [Finding identity, feedback and recurrence](qa-feedback.md)

@@ -144,17 +144,7 @@ These guides combine authoring examples with live previews of the components use
 
 ### Documentation QA {/* #documentation-qa */}
 
-The QA pipeline combines:
-
-* **DeepSeek AI** for higher-level editorial and portfolio review.
-* **AccessibilityCheck** for issues such as alt text, vague links and heading structure.
-* **LinkCheck** for checking local Markdown links, image paths, and links to files hosted with the documentation.
-* **Remark** for Markdown/MDX syntax and structure checks.
-* **Vale** for mechanical style-guide and terminology rules.
-* **Lychee** for external link checking.
-* **LTeX+** as a front end for **LanguageTool** for spelling, punctuation and grammar checking.
-
-The checks produce HTML, JSON and Markdown reports through GitHub Actions on pull requests and pushes to the main branch.
+I combined deterministic checks for links, accessibility and style with AI editorial review. The workflow checks AI findings against the source before reporting them. The [Documentation QA guide](../implementation-details/qa-overview.md) explains how to run the checks and follow a finding through review.
 
 ### QA feedback and adjudication {/* #qa-feedback-and-adjudication */}
 
@@ -162,7 +152,7 @@ AI findings can be challenged, revised or dismissed while preserving the origina
 
 ### Reliable report publishing {/* #reliable-report-publishing */}
 
-Deployment publishes matching HTML, JSON and Markdown QA reports under commit-specific filenames. Before publishing, the workflow checks that the reports came from the current run. The `/qa/` page redirects readers to the latest commit-specific report. When QA thresholds are exceeded, the workflow publishes the reports before a final gate marks the run as failed. Readers can still inspect the findings.
+I designed the workflow to publish reports even when findings exceed the QA thresholds, so readers can inspect what failed. Each report is tied to the commit it reviewed.
 
 The implementation includes the portfolio published on GitHub Pages, a [Documentation QA report](pathname:///qa/) for the current site, and the [GitHub repository](https://github.com/iand4096/docusaurusportfolio) containing the source, QA tooling, and deployment workflow.
 

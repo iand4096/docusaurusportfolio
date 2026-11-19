@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "inputHash": "dc5f661473d38001cc82b6b15ab6fca3094b796280faf368f0655f8324e13424",
+  "inputHash": "d2d3d1b7efc9ddce4c5eb57fbb876b01368b36ba2c3a1c0cbda9d165476ce52b",
   "settings": {
     "limit": 3,
     "threshold": 0.3,
@@ -75,7 +75,7 @@
           "id": "tools/OpenAPIandAPITools",
           "title": "OpenAPI and API tools",
           "path": "/docs/openapitools",
-          "score": 0.465952,
+          "score": 0.47965,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Technical validation (technical-validation)",
@@ -86,10 +86,24 @@
           ]
         },
         {
+          "id": "skills/APIDocumentation",
+          "title": "API Documentation and Technical Validation",
+          "path": "/docs/apidocumentation",
+          "score": 0.426082,
+          "reasons": [
+            "Topic: Developer experience (developer-experience)",
+            "Topic: Technical validation (technical-validation)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Documentation managers (documentation-managers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
           "id": "tools/GitContinuousIntegration",
           "title": "Git and Continuous Integration",
           "path": "/docs/gitandci",
-          "score": 0.414678,
+          "score": 0.410975,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
@@ -97,20 +111,6 @@
             "Technology: Git (git)",
             "Technology: GitHub (github)",
             "Technology: GitHub Actions (github-actions)",
-            "Audience: Documentation managers (documentation-managers)",
-            "Audience: Technical writers (technical-writers)"
-          ]
-        },
-        {
-          "id": "skills/APIDocumentation",
-          "title": "API Documentation and Technical Validation",
-          "path": "/docs/apidocumentation",
-          "score": 0.412668,
-          "reasons": [
-            "Topic: Developer experience (developer-experience)",
-            "Topic: Technical validation (technical-validation)",
-            "Technology: Python (python)",
-            "Audience: Developers (developers)",
             "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
@@ -127,7 +127,7 @@
           "id": "docs-samples/PaysafeDeveloperJS",
           "title": "Paysafe.js Developer Guide",
           "path": "/docs/docs-samples/PaysafeDeveloperJS",
-          "score": 1.036589,
+          "score": 1.044341,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Audience: Developers (developers)",
@@ -138,7 +138,7 @@
           "id": "tools/OpenAPIandAPITools",
           "title": "OpenAPI and API tools",
           "path": "/docs/openapitools",
-          "score": 0.445128,
+          "score": 0.455518,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -152,7 +152,7 @@
           "id": "case-studies/DocumentingComplexDeveloperFrameworks",
           "title": "Documenting Complex Enterprise Developer Frameworks",
           "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.415194,
+          "score": 0.428221,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -174,7 +174,7 @@
           "id": "implementation-details/taxonomy",
           "title": "AI-assisted taxonomy governance",
           "path": "/docs/implementation-details/taxonomy",
-          "score": 0.397394,
+          "score": 0.39696,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -211,7 +211,7 @@
           "id": "case-studies/DocumentingComplexDeveloperFrameworks",
           "title": "Documenting Complex Enterprise Developer Frameworks",
           "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.966452,
+          "score": 0.970085,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Information architecture (information-architecture)",
@@ -225,7 +225,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.422248,
+          "score": 0.433147,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Documentation governance (documentation-governance)",
@@ -240,7 +240,7 @@
           "id": "skills/GovernanceDocs",
           "title": "Documentation Governance",
           "path": "/docs/governancedocs",
-          "score": 0.387114,
+          "score": 0.396196,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Information architecture (information-architecture)",
@@ -262,7 +262,7 @@
           "id": "tools/ProgrammingAutomation",
           "title": "Programming and Automation",
           "path": "/docs/programming",
-          "score": 0.491787,
+          "score": 0.488336,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: YAML (yaml)",
@@ -283,7 +283,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.459355,
+          "score": 0.462806,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -355,7 +355,7 @@
           "id": "docs-samples/MasterpassMerchantIntegrationGuide",
           "title": "Masterpass Integration Guide",
           "path": "/docs/docs-samples/MasterpassMerchantIntegrationGuide",
-          "score": 0.96443,
+          "score": 0.964477,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Payments (payments)",
@@ -368,7 +368,7 @@
           "id": "skills/APIDocumentation",
           "title": "API Documentation and Technical Validation",
           "path": "/docs/apidocumentation",
-          "score": 0.445357,
+          "score": 0.44377,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: API security (api-security)",
@@ -664,6 +664,446 @@
         }
       ]
     },
+    "implementation-details/qa-add-checker": {
+      "id": "implementation-details/qa-add-checker",
+      "title": "Add a documentation checker",
+      "path": "/docs/implementation-details/qa-add-checker",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-ai-review",
+          "title": "Change AI review behaviour",
+          "path": "/docs/implementation-details/qa-ai-review",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-cli-reference",
+          "title": "Documentation QA CLI reference",
+          "path": "/docs/implementation-details/qa-cli-reference",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-feedback",
+          "title": "QA finding identity and feedback continuity",
+          "path": "/docs/implementation-details/qa-feedback",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-ai-review": {
+      "id": "implementation-details/qa-ai-review",
+      "title": "Change AI review behaviour",
+      "path": "/docs/implementation-details/qa-ai-review",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-add-checker",
+          "title": "Add a documentation checker",
+          "path": "/docs/implementation-details/qa-add-checker",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-cli-reference",
+          "title": "Documentation QA CLI reference",
+          "path": "/docs/implementation-details/qa-cli-reference",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-feedback",
+          "title": "QA finding identity and feedback continuity",
+          "path": "/docs/implementation-details/qa-feedback",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-architecture": {
+      "id": "implementation-details/qa-architecture",
+      "title": "Documentation QA architecture",
+      "path": "/docs/implementation-details/qa-architecture",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-key-concepts",
+          "title": "Documentation QA key concepts",
+          "path": "/docs/implementation-details/qa-key-concepts",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-overview",
+          "title": "Documentation QA",
+          "path": "/docs/implementation-details/qa-overview",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-run-review",
+          "title": "Run a documentation review",
+          "path": "/docs/implementation-details/qa-run-review",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-cli-reference": {
+      "id": "implementation-details/qa-cli-reference",
+      "title": "Documentation QA CLI reference",
+      "path": "/docs/implementation-details/qa-cli-reference",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-add-checker",
+          "title": "Add a documentation checker",
+          "path": "/docs/implementation-details/qa-add-checker",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-key-concepts",
+          "title": "Documentation QA key concepts",
+          "path": "/docs/implementation-details/qa-key-concepts",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-overview",
+          "title": "Documentation QA",
+          "path": "/docs/implementation-details/qa-overview",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-feedback": {
+      "id": "implementation-details/qa-feedback",
+      "title": "QA finding identity and feedback continuity",
+      "path": "/docs/implementation-details/qa-feedback",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-add-checker",
+          "title": "Add a documentation checker",
+          "path": "/docs/implementation-details/qa-add-checker",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-ai-review",
+          "title": "Change AI review behaviour",
+          "path": "/docs/implementation-details/qa-ai-review",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-cli-reference",
+          "title": "Documentation QA CLI reference",
+          "path": "/docs/implementation-details/qa-cli-reference",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-key-concepts": {
+      "id": "implementation-details/qa-key-concepts",
+      "title": "Documentation QA key concepts",
+      "path": "/docs/implementation-details/qa-key-concepts",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-overview",
+          "title": "Documentation QA",
+          "path": "/docs/implementation-details/qa-overview",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-run-review",
+          "title": "Run a documentation review",
+          "path": "/docs/implementation-details/qa-run-review",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "tools/ProgrammingAutomation",
+          "title": "Programming and Automation",
+          "path": "/docs/programming",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-overview": {
+      "id": "implementation-details/qa-overview",
+      "title": "Documentation QA",
+      "path": "/docs/implementation-details/qa-overview",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-add-checker",
+          "title": "Add a documentation checker",
+          "path": "/docs/implementation-details/qa-add-checker",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-ai-review",
+          "title": "Change AI review behaviour",
+          "path": "/docs/implementation-details/qa-ai-review",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-feedback",
+          "title": "QA finding identity and feedback continuity",
+          "path": "/docs/implementation-details/qa-feedback",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-read-report": {
+      "id": "implementation-details/qa-read-report",
+      "title": "Read a QA report and act on findings",
+      "path": "/docs/implementation-details/qa-read-report",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-add-checker",
+          "title": "Add a documentation checker",
+          "path": "/docs/implementation-details/qa-add-checker",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-ai-review",
+          "title": "Change AI review behaviour",
+          "path": "/docs/implementation-details/qa-ai-review",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-architecture",
+          "title": "Documentation QA architecture",
+          "path": "/docs/implementation-details/qa-architecture",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-reports-and-ci": {
+      "id": "implementation-details/qa-reports-and-ci",
+      "title": "Change QA reports or CI policy",
+      "path": "/docs/implementation-details/qa-reports-and-ci",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-add-checker",
+          "title": "Add a documentation checker",
+          "path": "/docs/implementation-details/qa-add-checker",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-ai-review",
+          "title": "Change AI review behaviour",
+          "path": "/docs/implementation-details/qa-ai-review",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-feedback",
+          "title": "QA finding identity and feedback continuity",
+          "path": "/docs/implementation-details/qa-feedback",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "implementation-details/qa-run-review": {
+      "id": "implementation-details/qa-run-review",
+      "title": "Run a documentation review",
+      "path": "/docs/implementation-details/qa-run-review",
+      "status": null,
+      "links": [
+        {
+          "id": "implementation-details/qa-add-checker",
+          "title": "Add a documentation checker",
+          "path": "/docs/implementation-details/qa-add-checker",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-ai-review",
+          "title": "Change AI review behaviour",
+          "path": "/docs/implementation-details/qa-ai-review",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "implementation-details/qa-architecture",
+          "title": "Documentation QA architecture",
+          "path": "/docs/implementation-details/qa-architecture",
+          "score": 1.04,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Technology: Python (python)",
+            "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
     "implementation-details/semantic-label": {
       "id": "implementation-details/semantic-label",
       "title": "SemanticLabel and SemanticLabelGroup",
@@ -724,7 +1164,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.614764,
+          "score": 0.609912,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -741,7 +1181,7 @@
           "id": "case-studies/TaxonomyGovernance",
           "title": "Governed documentation taxonomy",
           "path": "/docs/case-studies/TaxonomyGovernance",
-          "score": 0.526552,
+          "score": 0.528597,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Documentation governance (documentation-governance)",
@@ -757,7 +1197,7 @@
           "id": "tools/DocusaurusAndMkdocs",
           "title": "Static Site Generators and Docs Platforms",
           "path": "/docs/staticsitedocsplatforms",
-          "score": 0.37658,
+          "score": 0.367877,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Docusaurus (docusaurus)",
@@ -780,7 +1220,7 @@
           "id": "case-studies/DocumentingComplexDeveloperFrameworks",
           "title": "Documenting Complex Enterprise Developer Frameworks",
           "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.928205,
+          "score": 0.97454,
           "reasons": [
             "Topic: Information architecture (information-architecture)",
             "Technology: Kafka (kafka)",
@@ -877,7 +1317,7 @@
           "id": "docs-samples/MDES4Merchants",
           "title": "MDES for Merchants Guide",
           "path": "/docs/docs-samples/MDES4Merchants",
-          "score": 0.441226,
+          "score": 0.440718,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: API security (api-security)",
@@ -903,7 +1343,7 @@
           "id": "tools/ContainersAndCloudNative",
           "title": "Containers and Cloud",
           "path": "/docs/containersandcloud",
-          "score": 0.371939,
+          "score": 0.37145,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Docker (docker)",
@@ -933,7 +1373,7 @@
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.426903,
+          "score": 0.419418,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
@@ -954,7 +1394,7 @@
           "id": "tools/GitContinuousIntegration",
           "title": "Git and Continuous Integration",
           "path": "/docs/gitandci",
-          "score": 0.40203,
+          "score": 0.398434,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
@@ -970,7 +1410,7 @@
           "id": "tools/ContainersAndCloudNative",
           "title": "Containers and Cloud",
           "path": "/docs/containersandcloud",
-          "score": 0.332887,
+          "score": 0.328834,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
@@ -1069,19 +1509,15 @@
           ]
         },
         {
-          "id": "skills/DocumentationEngineering",
-          "title": "Documentation Engineering",
-          "path": "/docs/documentationeng",
-          "score": 0.422742,
+          "id": "case-studies/RagSearchCloudArchitecture",
+          "title": "Designing Cloud-Based RAG search for technical documentation",
+          "path": "/docs/case-studies/RagSearchCloudArchitecture",
+          "score": 0.414141,
           "reasons": [
-            "Topic: Documentation engineering (documentation-engineering)",
+            "Topic: Developer experience (developer-experience)",
             "Topic: Information architecture (information-architecture)",
-            "Technology: Git (git)",
-            "Technology: Graphviz (graphviz)",
             "Technology: Markdown (markdown)",
             "Technology: RAG (rag)",
-            "Technology: Sphinx (sphinx)",
-            "Audience: Documentation managers (documentation-managers)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -1252,7 +1688,7 @@
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.696378,
+          "score": 0.693505,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Documentation engineering (documentation-engineering)",
@@ -1273,7 +1709,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.469133,
+          "score": 0.511589,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Technology: Docusaurus (docusaurus)",
@@ -1289,7 +1725,7 @@
           "id": "case-studies/ScalingADeveloperDocsPlatform",
           "title": "Scaling an Enterprise Developer Docs Platform",
           "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 0.450397,
+          "score": 0.450603,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Documentation engineering (documentation-engineering)",
@@ -1414,7 +1850,7 @@
           "id": "skills/APIDocumentation",
           "title": "API Documentation and Technical Validation",
           "path": "/docs/apidocumentation",
-          "score": 0.694993,
+          "score": 0.693332,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -1434,7 +1870,7 @@
           "id": "docs-samples/MDES4Merchants",
           "title": "MDES for Merchants Guide",
           "path": "/docs/docs-samples/MDES4Merchants",
-          "score": 0.419889,
+          "score": 0.417175,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Technical validation (technical-validation)",
@@ -1448,7 +1884,7 @@
           "id": "case-studies/PaysafeDeveloperCenter",
           "title": "Building the Paysafe Developer Center",
           "path": "/docs/case-studies/paysafedevcenter",
-          "score": 0.353298,
+          "score": 0.353786,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -1470,7 +1906,7 @@
           "id": "tools/Flare",
           "title": "MadCap Flare",
           "path": "/docs/flare",
-          "score": 0.482243,
+          "score": 0.482372,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: C# (csharp)",
@@ -1484,7 +1920,7 @@
           "id": "skills/DocumentationEngineering",
           "title": "Documentation Engineering",
           "path": "/docs/documentationeng",
-          "score": 0.468094,
+          "score": 0.467051,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Graphviz (graphviz)",
@@ -1502,7 +1938,7 @@
           "id": "case-studies/ScalingADeveloperDocsPlatform",
           "title": "Scaling an Enterprise Developer Docs Platform",
           "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 0.460978,
+          "score": 0.461042,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: IntelliJ IDEA (intellij-idea)",

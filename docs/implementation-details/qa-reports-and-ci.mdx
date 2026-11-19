@@ -1,0 +1,57 @@
+---
+title: Change QA reports or CI policy
+description: Modify report output and gate behaviour while preserving saved-report and deployment compatibility.
+type:
+  - implementation-guide
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - docs-as-code
+  - documentation-engineering
+technologies:
+  - python
+lifecycle:
+  - current
+tags:
+  - docs-as-code
+  - documentation-engineering
+  - python
+---
+
+## Choose where the change belongs
+
+| Change | Location |
+| --- | --- |
+| Finding eligibility, severity ceiling or failure calculation | `scripts/qa_policy.py` |
+| Pull request or deployment thresholds | `.github/workflows/docs-review.yml` or `.github/workflows/deploy.yml` |
+| Shared report data and JSON export | `scripts/qa_reporting/model.py` and the package entry point |
+| HTML layout or interactions | `scripts/qa_reporting/html_report.py`, `report.html`, `report.css` or `report.js` |
+| Markdown presentation | `scripts/qa_reporting/markdown.py` |
+
+## Preserve saved-report compatibility
+
+Saved JSON is an input to `render`, `compare` and feedback commands. Preserve the findings, metadata, error and CI threshold fields those commands read. Test older saved reports when changing the schema. The HTML also embeds the structured report, so check that it agrees with the JSON export. If you publish a refreshed view manually, use the versioned report URL as the input so feedback commands retain the original public report reference.
+
+```bash
+python3 scripts/ai_docs_review.py render --report /path/to/saved-report.json --report-dir .qa/feedback-preview
+python3 -m unittest discover -s scripts/tests -p 'test_qa_report_feedback.py'
+python3 -m unittest discover -s scripts/tests -p 'test_qa_example_report.py'
+```
+
+## Gate eligibility and verification
+
+Deterministic findings retain their configured severity. An AI finding counts toward the severity thresholds when it is a high-confidence defect and has no human dismissal. AI severity is capped at medium. An AI withdrawal alone leaves CI eligibility intact. Check errors have a separate threshold.
+
+## Workflow thresholds and publication
+
+| Workflow | High findings allowed | Medium findings allowed | API or check errors allowed |
+| --- | --- | --- | --- |
+| Pull request QA | 0 | 5 | 0 |
+| Site deployment | 0 | 25 | 0 |
+
+Both workflows use `.github/actions/setup-docs-qa/action.yml` for the tooling and dependency setup. See the [CLI reference](qa-cli-reference.md#ci-thresholds) for the script defaults and overrides.
+
+The pull request workflow uploads the report after the check step. Deployment verifies report provenance, publishes the report with the site and then surfaces a failed QA gate. When changing that sequence, test a passing run, a threshold failure and a run with no usable report.
+
+[Documentation QA architecture](qa-architecture.mdx)

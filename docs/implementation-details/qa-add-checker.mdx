@@ -1,0 +1,52 @@
+---
+title: Add a documentation checker
+description: Choose an execution scope and integrate a checker with QA findings, errors and tests.
+type:
+  - implementation-guide
+audiences:
+  - developers
+  - technical-writers
+topics:
+  - docs-as-code
+  - documentation-engineering
+technologies:
+  - python
+lifecycle:
+  - current
+tags:
+  - docs-as-code
+  - documentation-engineering
+  - python
+---
+
+## Choose an execution scope
+
+| Scope | Use it when | Entry point |
+| --- | --- | --- |
+| Page | A check needs one document at a time. | Implement `run_page(path, content, api_key)` on `BaseCheck` and set `supports_page`. |
+| Site-wide | A finding depends on evidence across documents. | Implement `run_site(paths, contents, api_key)` on `BaseCheck` and set `supports_site`. |
+| File batch | An external CLI accepts the selected paths in one invocation. | Extend `FileCheck` and implement `preflight()` and `run_files(paths, executable)`. |
+
+## Implement and register the check
+
+1. Keep tool discovery, invocation and diagnostic parsing together. The LTeX+ adapter in `scripts/qa_checks/ltex.py` is an example with tool-specific exit codes and contextual exceptions.
+2. Use `make_issue()` from `scripts/qa_policy.py` for findings. Include the matching source path, line, severity, confidence, category and evidence text. Return an empty list when the check finishes with zero findings.
+3. Raise an exception when the tool cannot run or its output cannot be interpreted. The execution boundary puts it in `CheckResult.errors` with the check name and location. Other checks can continue.
+4. Register the check in `build_checks()` and add its name to the relevant `FILTER_PRESETS` in `scripts/ai_docs_review.py`. If it introduces a new source identifier, update the HTML source filters and their tests.
+
+## Preserve existing checker behaviour
+
+- The local link checker resolves Docusaurus routes, query strings and fragments, and validates relative links to files and directories.
+- LTeX+ uses the British English dictionary under `.vscode/`. Its contextual rules protect official names, command labels and repeated table-cell values while continuing to check nearby prose. Vale preserves product and component names in heading checks.
+- Lychee retries transient failures. Exhausted HTTP 429 and 5xx responses and HTTP 401 or 403 responses are reported as low-severity findings. Permanent broken links such as 404 or 410 remain high-severity findings. Invalid tool output is a check error.
+
+## Verify the integration
+
+Cover valid findings, a successful empty result and failure output. For a file adapter, test missing tools or invalid configuration and confirm another check can still run. Use a real tool fixture when the diagnostic format depends on the installed version.
+
+```bash
+python3 -m unittest discover -s scripts/tests -p 'test_qa_context_rules.py'
+python3 -m unittest discover -s scripts/tests -p 'test_qa_parser_integration.py'
+```
+
+[Documentation QA architecture](qa-architecture.mdx)
