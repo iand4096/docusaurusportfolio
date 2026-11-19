@@ -68,9 +68,11 @@ git diff
 
 `sync` writes derived tags in the selected documents and regenerates all three repository projections. The site build reads term definitions from the navigation projection for inline tooltips. It does not classify prose or repair invalid vocabulary selections. Correct invalid metadata before retrying.
 
+The glossary check compares every term and alias in `glossary.yml` with taxonomy labels and aliases across all dimensions. It ignores case and extra whitespace and reports both entries when names match. The same check runs in pull request validation.
+
 | Command | Behaviour |
 | --- | --- |
-| `python scripts/taxonomy.py check --all` | Read-only validation of taxonomy structure and semantics, generated state and every document under `docs/`. |
+| `python scripts/taxonomy.py check --all` | Read-only validation of taxonomy structure and semantics, glossary name overlap, generated state and every document under `docs/`. |
 | `python scripts/taxonomy.py check docs/case-studies/TaxonomyGovernance.md` | Checks generated state and the selected document's metadata. |
 | `python scripts/taxonomy.py check --changed-base origin/main` | Checks documents changed between the Git merge base and HEAD; a canonical taxonomy change expands document validation to the full corpus. Fetch the base reference first. |
 | `python scripts/taxonomy.py check --taxonomy-only` | Checks the taxonomy and generated state without the document metadata validation pass. Navigation projection construction still reads documents. |

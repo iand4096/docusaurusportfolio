@@ -71,12 +71,14 @@ import json
 import re
 import subprocess
 import sys
+import unicodedata
 from pathlib import Path
 from typing import Any, Iterable
 
 import jsonschema
 from ruamel.yaml import YAML
 from ruamel.yaml.comments import CommentedMap
+from ruamel.yaml.error import YAMLError
 
 
 TAXONOMY_VERSION = 3
@@ -657,6 +659,39 @@ def load_and_validate_taxonomy(root: Path) -> dict[str, Any]:
     validate_taxonomy_schema(taxonomy, root / SCHEMA_PATH)
     validate_taxonomy_semantics(taxonomy)
     return taxonomy
+
+
+def check_glossary_overlap(root: Path, taxonomy: dict[str, Any]) -> list[str]:
+    glossary_path = root / "glossary.yml"
+    if not glossary_path.is_file():
+        return []
+
+    try:
+        glossary = safe_yaml().load(glossary_path.read_text(encoding="utf-8"))
+        jsonschema.validate(glossary, load_json(root / "glossary.schema.json"))
+    except (OSError, ValueError, jsonschema.ValidationError, YAMLError) as error:
+        return [f"glossary.yml: {error.message if isinstance(error, jsonschema.ValidationError) else error}"]
+
+    def normalise(name: str) -> str:
+        return " ".join(unicodedata.normalize("NFKC", name).split()).casefold()
+
+    taxonomy_names: dict[str, dict[str, str]] = {}
+    for dimension_id, dimension in taxonomy["dimensions"].items():
+        for term_id, term in dimension["terms"].items():
+            for name in [term["label"], *term.get("aliases", [])]:
+                taxonomy_names.setdefault(normalise(name), {}).setdefault(
+                    f"{dimension_id}.{term_id}", name
+                )
+
+    errors = []
+    for entry in glossary:
+        for name in [entry["term"], *entry.get("aliases", [])]:
+            for term_id, taxonomy_name in taxonomy_names.get(normalise(name), {}).items():
+                errors.append(
+                    f"glossary.yml entry {entry['term']!r}: {name!r} matches "
+                    f"{taxonomy_name!r} in taxonomy/taxonomy.yml ({term_id})"
+                )
+    return errors
 
 
 def render_docusaurus_tags(taxonomy: dict[str, Any]) -> str:
@@ -2079,6 +2114,7 @@ def command_check(args: argparse.Namespace) -> int:
     errors: list[str] = []
     try:
         taxonomy = load_and_validate_taxonomy(root)
+        errors.extend(check_glossary_overlap(root, taxonomy))
         errors.extend(check_derived_files(root, taxonomy))
     except (ValidationError, json.JSONDecodeError) as error:
         print(f"ERROR: {error}", file=sys.stderr)
