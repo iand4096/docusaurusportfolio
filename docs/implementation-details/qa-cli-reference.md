@@ -75,7 +75,7 @@ AI review requires `DEEPSEEK_API_KEY`. Set `DEEPSEEK_MODEL` to override the defa
 | `--previous ID` | Previous feedback record ID. |
 | `--proposal TOKEN` | Source-bound proposal token copied from the report. |
 | `--decision VALUE` | Decision for `resolve` or `link`. |
-| `--reason TEXT` | Rebuttal or explanation. Quote multiword text in the shell. |
+| `--reason TEXT` | Rebuttal or explanation. Use shell quotes if the text contains spaces. |
 | `--reason-file PATH` | Reads a challenge rebuttal from a UTF-8 file. |
 | `--retry` | Retries a pending challenge using its recorded rebuttal. |
 

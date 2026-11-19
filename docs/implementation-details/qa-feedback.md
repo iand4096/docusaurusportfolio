@@ -119,8 +119,8 @@ Comparisons are disposable cached recommendations, bound to policy, model,
 source revisions, immutable precedents and discussion history. They never change
 feedback or resolve a finding. HTML, Markdown and JSON expose all classifications.
 
-New findings include a hash-verified source snapshot in `document_revision` so
-uncommitted source remains reconstructable after the working file changes.
+New findings include a hash-verified source snapshot in `document_revision`.
+This snapshot lets reviewers reconstruct the original uncommitted source after the working file changes.
 New challenge and resolution decisions append content-addressed `qap-…` precedents
 containing the exact finding, rebuttal, decision, rationale, evidence and revision.
 They are never updated when `latest_finding` changes. Legacy history is preserved

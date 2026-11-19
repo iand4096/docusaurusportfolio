@@ -40,9 +40,11 @@ Use the default inline appearance for a short statement in the narrative. Give r
 
 <table>
 <thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+
 <tbody>
 <tr>
 <td><CodeBlock language="jsx">{"\u003cSemanticLabel type=\"contribution\">\n  Maintained the integration guide and created sequence diagrams.\n\u003c/SemanticLabel>"}</CodeBlock></td>
+
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 
 <SemanticLabel type="contribution">
@@ -51,14 +53,17 @@ Use the default inline appearance for a short statement in the narrative. Give r
 
 </td>
 </tr>
+
 <tr>
 <td><CodeBlock language="jsx">{"\u003cSemanticLabelGroup>\n  \u003cSemanticLabel type=\"decision\" appearance=\"row\">\n    Use one OpenAPI document for the reference and guide examples.\n  \u003c/SemanticLabel>\n  \u003cSemanticLabel type=\"rationale\" appearance=\"row\">\n    Authors can update the endpoint details in one place.\n  \u003c/SemanticLabel>\n\u003c/SemanticLabelGroup>"}</CodeBlock></td>
+
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 
 <SemanticLabelGroup>
   <SemanticLabel type="decision" appearance="row">
     Use one OpenAPI document for the reference and guide examples.
   </SemanticLabel>
+
   <SemanticLabel type="rationale" appearance="row">
     Authors can update the endpoint details in one place.
   </SemanticLabel>
@@ -66,8 +71,10 @@ Use the default inline appearance for a short statement in the narrative. Give r
 
 </td>
 </tr>
+
 <tr>
 <td><CodeBlock language="jsx">{"\u003cSemanticLabel type=\"outcome\" appearance=\"accent\">\n  Readers can open the API reference independently of the search service.\n\u003c/SemanticLabel>"}</CodeBlock></td>
+
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 
 <SemanticLabel type="outcome" appearance="accent">
@@ -86,7 +93,7 @@ Use the default inline appearance for a short statement in the narrative. Give r
 | `SemanticLabel` | `type` | `"decision"` | Selects the label text, colour and icon. | `"contribution"` |
 | `SemanticLabel` | `appearance` | `"inline"` | Use `"inline"`, `"row"` or `"accent"`. | `"row"` |
 | `SemanticLabel` | `children` | Required | The statement to label. Supports text, emphasis and links. | `Use one OpenAPI document.` |
-| `SemanticLabelGroup` | `children` | Required | Related `SemanticLabel` components with `appearance="row"`. | A decision followed by its rationale. |
+| `SemanticLabelGroup` | `children` | Required | A set of `SemanticLabel` components with `appearance="row"`. | A decision followed by its rationale. |
 
 ## Choosing a label
 

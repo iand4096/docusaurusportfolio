@@ -30,7 +30,7 @@ import CodeBlock from '@theme/CodeBlock';
 
 ## CaseStudySummary
 
-Import the component and place it below the case study title. Supply a literal JSON spread so the site can use the same data for the HTML overview and Markdown export. On narrow screens, scroll the example table horizontally to compare the two columns.
+Import the component and place it below the case study title. Supply a literal JSON spread, so the site can use the same data for the HTML overview and Markdown export. On narrow screens, scroll the example table horizontally to compare the two columns.
 
 ```jsx
 import CaseStudySummary from '@site/src/components/CaseStudySummary';
@@ -38,9 +38,11 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
 
 <table>
 <thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+
 <tbody>
 <tr>
 <td><CodeBlock language="jsx">{"\u003cCaseStudySummary {...{\n  \"employer\": \"Independent project\",\n  \"industry\": \"Developer documentation\",\n  \"projectType\": \"Documentation platform\",\n  \"summary\": \"Built a Docusaurus site with governed metadata and automated review.\",\n  \"role\": \"Documentation engineer\",\n  \"scope\": \"Content taxonomy, navigation and publishing\",\n  \"decision\": \"Use governed metadata to drive navigation and related links.\",\n  \"deliverables\": \"Search, faceted browsing and published QA reports\",\n  \"evidenceTitle\": \"Implementation evidence\",\n  \"evidence\": [\n    {\"value\": \"Faceted browsing\", \"label\": \"Filters use canonical taxonomy terms\"}\n  ]\n}} />"}</CodeBlock></td>
+
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 
 <CaseStudySummary {...{

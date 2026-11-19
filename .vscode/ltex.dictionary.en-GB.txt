@@ -92,3 +92,11 @@ Lockfile-based
 cdnjs
 READMEs
 CaseStudySummary
+ApiEndpoint
+ApiExample
+DiagramFigure
+SemanticLabelGroup
+SidebarCardGrid
+safetensors
+subgraph
+subgraphs

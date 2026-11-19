@@ -9,6 +9,10 @@ exceptions:
   - Azure
   - CLI
   - SemanticLabel
+  - ApiEndpoint
+  - ApiExample
+  - DiagramFigure
+  - Scalar API Reference
   - Font Awesome Free
   - I
   - API

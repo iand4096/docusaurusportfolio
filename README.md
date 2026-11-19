@@ -22,7 +22,7 @@ The published AI search page calls a separate FastAPI backend on Azure Container
 | --- | --- |
 | Portfolio website | [Documentation content](docs/), [pages and components](src/), and [Docusaurus configuration](docusaurus.config.ts). |
 | Taxonomy governance | [Canonical vocabulary](taxonomy/taxonomy.yml), [validation and generation CLI](scripts/taxonomy.py), and [governance case study](docs/case-studies/TaxonomyGovernance.md). |
-| Documentation QA | [Documentation QA guides](docs/implementation-details/qa-overview.md), [CLI](scripts/ai_docs_review.py), and [review workflow](.github/workflows/docs-review.yml). |
+| Documentation QA | [Review guides](docs/implementation-details/qa-overview.md), [CLI](scripts/ai_docs_review.py), and [review workflow](.github/workflows/docs-review.yml). |
 | CI/CD | [Site deployment and QA reports](.github/workflows/deploy.yml) and [pull-request metadata validation](.github/workflows/taxonomy-validation.yml). |
 | Knowledge API and search | [API architecture, setup and security controls](knowledge-api/README.md), [search frontend](src/components/GovernedSearch/GovernedSearchPage.tsx), and [cloud search case study](docs/case-studies/RagSearchCloudArchitecture.md). |
 | Azure infrastructure | [Terraform configuration](infra/azure/main.tf) and [backend image packaging script](scripts/build-azure-image.ps1). |

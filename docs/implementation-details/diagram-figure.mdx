@@ -26,7 +26,7 @@ tags:
 import DiagramFigure from '@site/src/components/DiagramFigure';
 import CodeBlock from '@theme/CodeBlock';
 
-`DiagramFigure` wraps a Mermaid diagram with a caption, a legend and a full-screen viewer. Readers can change the layout, zoom into a subgraph and share a link that opens the same view.
+`DiagramFigure` wraps a Mermaid diagram with a caption, a legend and a full-screen viewer. Readers can change the layout and zoom into a named group of nodes. Shared links open the same view.
 
 ## Import
 
@@ -44,8 +44,10 @@ The table shows the authoring source beside the live component. On narrow screen
 
 <table>
 <thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
+
 <tbody><tr>
 <td><CodeBlock language="mdx">{"\u003cDiagramFigure {...{\n  \"title\": \"Documentation publishing\",\n  \"shareId\": \"documentation-publishing\",\n  \"legend\": [\n    {\"role\": \"input\", \"label\": \"Source documents\"},\n    {\"role\": \"process\", \"label\": \"Build and publication\"}\n  ],\n  \"subgraphNotes\": {\n    \"BUILD\": \"The build checks links before publishing the static site.\"\n  }\n}}>\n\n```mermaid\nflowchart LR\n  accTitle: Documentation publishing\n  accDescr {\n    Source documents enter a build that checks links before the site is published.\n  }\n  Docs[\"Source documents\"] --> Check\n  subgraph BUILD[\"Build and publish\"]\n    Check[\"Check links\"] --> Publish[\"Publish the site\"]\n  end\n  class Docs input;\n  class Check,Publish process;\n```\n\n\u003c/DiagramFigure"}</CodeBlock></td>
+
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 
 <DiagramFigure {...{
@@ -93,7 +95,7 @@ flowchart LR
 ## Authoring and maintenance
 
 - Keep `shareId` stable when changing the caption or figure number. Existing links use it to find the figure.
-- Give each Mermaid diagram an `accTitle` and `accDescr` that describe the flow and its purpose.
+- Use `accTitle` for the diagram title and `accDescr` to describe the flow and its purpose.
 - Assign palette roles with Mermaid `class` statements and use the same roles in the legend.
 - Match each note key to the authored subgraph ID. The example uses `BUILD` in both places.
 

@@ -161,9 +161,9 @@ The index is generated ahead of deployment and packaged with the backend. A cach
 
 I exposed three endpoints through a Python **FastAPI** service. Requests are validated with Pydantic before search filters are checked against the governed taxonomy.
 
-- <ApiEndpoint operationId="taxonomy" /> lists the available filter dimensions and their active terms.
-- <ApiEndpoint operationId="search" /> returns relevant passages with source links, so visitors can search and inspect the original material without calling an LLM.
-- <ApiEndpoint operationId="chat" /> uses retrieved passages as context for **DeepSeek** when a visitor requests an AI-generated answer. It asks DeepSeek to answer from the supplied evidence, cite numbered sources and acknowledge gaps. The interface displays the supporting sources and warns visitors to verify AI-generated answers against the original material. Prompt instructions reduce risk but do not guarantee factual correctness.
+- The taxonomy endpoint (<ApiEndpoint operationId="taxonomy" />) lists filter dimensions and their active terms.
+- The search endpoint (<ApiEndpoint operationId="search" />) returns passages with source links without calling an LLM.
+- For AI-generated answers, the chat endpoint (<ApiEndpoint operationId="chat" />) supplies retrieved passages to **DeepSeek**. It asks DeepSeek to answer from the supplied evidence, cite numbered sources and acknowledge gaps. The interface displays the supporting sources and warns visitors to verify AI-generated answers against the original material. Prompt instructions reduce risk but do not guarantee factual correctness.
 
 The request below uses `taxonomy`, one of the topic terms listed by `/taxonomy`, to filter a keyword search. The response shows the top-ranked passage and a link to its source section.
 

@@ -55,9 +55,9 @@ All AI suggestions require human review before they can affect document metadata
 
 The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is also used to generate:
 
-- Docusaurus tags - used for navigation.
-- the metadata choices available for users to select in VS Code Front Matter
-- the site's taxonomy navigation index — see the [Explore page](/explore?view=browse).
+- Docusaurus tags for navigation.
+- Metadata choices for VS Code Front Matter.
+- The site's taxonomy navigation index, which powers the [Explore page](/explore?view=browse).
 
 ## Design principles {/* #design-principles */}
 

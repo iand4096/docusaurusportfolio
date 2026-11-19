@@ -47,7 +47,7 @@ The response validator accepts an explicit empty list and raises an error for ma
 
 ## Findings, errors and the CI gate
 
-A **finding** describes a problem or improvement a check identified in the documentation. A **check error** means the check could not complete, for example because a tool was missing or the model returned an invalid response. A completed check can return zero findings.
+A **finding** describes a problem or improvement a check identified in the documentation. A **check error** means the check could not complete, for example because a tool was missing. An invalid model response is also a check error. A completed check can return zero findings.
 
 Every checker uses the same core finding fields. The example below shows a broken local link. `original` is the source text, `message` explains the problem, and `suggestion` describes a possible fix. Severity describes impact, while confidence describes how certain the check is.
 
