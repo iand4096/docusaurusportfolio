@@ -1379,6 +1379,37 @@
       "organisations": []
     },
     {
+      "id": "case-studies/DocumentationQa",
+      "title": "Building documentation QA into the publishing workflow",
+      "path": "/docs/case-studies/documentation-qa",
+      "source": "docs/case-studies/DocumentationQa.md",
+      "description": "How I built a documentation review pipeline with source-backed AI findings, human decisions and commit-specific reports.",
+      "type": [
+        "case-study"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering",
+        "documentation-governance"
+      ],
+      "technologies": [
+        "deepseek-api",
+        "docusaurus",
+        "github-actions",
+        "python",
+        "vale"
+      ],
+      "audiences": [
+        "developers",
+        "documentation-managers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
+    },
+    {
       "id": "case-studies/PaysafeDeveloperCenter",
       "title": "Building the Paysafe Developer Center",
       "path": "/docs/case-studies/paysafedevcenter",

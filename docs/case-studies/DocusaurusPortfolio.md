@@ -146,6 +146,8 @@ These guides combine authoring examples with live previews of the components use
 
 I combined deterministic checks for links, accessibility and style with AI editorial review. The workflow checks AI findings against the source before reporting them. The [Documentation QA guide](../implementation-details/qa-overview.md) explains how to run the checks and follow a finding through review.
 
+The [Documentation QA case study](DocumentationQa.md) explains the design choices behind evidence verification, feedback and the CI gate.
+
 ### QA feedback and adjudication {/* #qa-feedback-and-adjudication */}
 
 AI findings can be challenged, revised or dismissed while preserving the original criticism, evidence and review history. When the same AI criticism appears in a later review, the report links it to the earlier discussion. If the document has changed, the previous decision requires revalidation. Saved reports can be refreshed without rerunning checks or making AI calls, and AI withdrawal alone does not remove a finding from CI counts.
