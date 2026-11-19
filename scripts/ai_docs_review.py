@@ -33,19 +33,10 @@ from qa_reporting.model import report_counts
 # Resolve the repository from the script location, never the invoking shell's CWD.
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 ROOT = Path(".")  # Existing QA paths are relative to PROJECT_ROOT after main() starts.
-EXCLUDED_DIRS = {
-    "node_modules",
-    "build",
-    ".docusaurus",
-    ".pytest_cache",  # Generated test-run metadata, not authored documentation.
-    ".git",
-    "static",
-    "taxonomy",
-    ".qa",          # Local generated report output; never review QA reports
-    ".frontmatter", # Generated taxonomy/metadata review work products
-    "qa",           # Review findings and feedback, not portfolio documentation
-    "reports",      # Generated review artifacts, not authored articles
-}
+REVIEW_FILES = ("README.md", "LICENSE.md")
+REVIEW_DIRECTORIES = ("docs", "src/pages", "src/components", "knowledge-api")
+SKIPPED_REVIEW_DIRECTORIES = {"node_modules", "build", "static", "reports", "FAPI"}
+REVIEW_SUFFIXES = {".md", ".mdx"}
 
 DEFAULT_FAIL_HIGH = 0
 DEFAULT_FAIL_MEDIUM = 25
@@ -119,25 +110,34 @@ FILTER_LABELS = {
     "remark": "Remark Markdown/MDX only",
 }
 
-def markdown_files():
-    """Yield Markdown and MDX files that should be reviewed."""
+def markdown_files(extra_paths=()) -> list[Path]:
+    """Select portfolio documentation and explicitly requested repository files."""
+    files = {ROOT / name for name in REVIEW_FILES
+             if (ROOT / name).is_file() and not (ROOT / name).is_symlink()}
+    for directory in REVIEW_DIRECTORIES:
+        base = ROOT / directory
+        if base.resolve() != ROOT.resolve() / directory:
+            continue
+        for current, dirs, names in os.walk(base):
+            dirs[:] = [name for name in dirs if not name.startswith(".")
+                       and name not in SKIPPED_REVIEW_DIRECTORIES]
+            for name in names:
+                path = Path(current) / name
+                if (path.suffix.lower() in REVIEW_SUFFIXES and name != "ai-doc-review.md"
+                        and path.is_file() and not path.is_symlink()):
+                    files.add(path)
 
-    for path in sorted(ROOT.rglob("*")):
-        if not path.is_file():
-            continue
-
-        if path.suffix.lower() not in {".md", ".mdx"}:
-            continue
-        if any(part in EXCLUDED_DIRS for part in path.parts):
-            continue
-        # The report may also be emitted at repository root in GitHub Actions.
-        # Do not feed generated report Markdown back into the review engine.
-        if path.name == "ai-doc-review.md" or (
-            path.name.startswith("report-") and path.parent.name == "qa"
-        ):
-            continue
-
-        yield path
+    for path in extra_paths:
+        resolved = (ROOT / path).resolve()
+        try:
+            relative = resolved.relative_to(ROOT.resolve())
+        except ValueError:
+            raise ValueError(f"Review file must be inside the repository: {path}") from None
+        if (not resolved.is_file() or resolved.suffix.lower() not in REVIEW_SUFFIXES
+                or "FAPI" in relative.parts or resolved.name == "ai-doc-review.md"):
+            raise ValueError(f"Expected a reviewable Markdown or MDX file: {path}")
+        files.add(ROOT / relative)
+    return sorted(files)
 
 
 def _last_sunday(year, month):
@@ -708,6 +708,8 @@ def parse_args():
                         help="Challenge/resolve findings, compare recurrences, confirm/reject links, or render saved reports")
     parser.add_argument("--no-review-cache", action="store_true",
                         help="Bypass review cache reads and writes for a fresh AI review")
+    parser.add_argument("--include-file", type=Path, action="append", default=[],
+                        help="Also review a repository-relative Markdown or MDX file. Repeat as needed.")
     parser.add_argument("--proposal", help="Source-bound proposal token copied from the report")
     parser.add_argument("--previous", help="Previous feedback record ID for link confirmation/rejection")
     parser.add_argument("--issue", help="Stable QA issue ID for challenge mode")
@@ -871,7 +873,11 @@ def main():
     else:
         print("DeepSeek AI checks: DISABLED (hardcoded switch)")
 
-    files = list(markdown_files())
+    try:
+        files = markdown_files(args.include_file)
+    except (ValueError, OSError) as error:
+        print(f"Invalid review scope: {error}", file=sys.stderr)
+        return 2
 
     print(f"Found {len(files)} documentation files.")
 

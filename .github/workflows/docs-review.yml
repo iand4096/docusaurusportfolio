@@ -11,10 +11,15 @@ on:
       - main
     paths:
       - "README.md"
+      - "LICENSE.md"
       - "docs/**/*.md"
       - "docs/**/*.mdx"
       - "src/pages/**/*.md"
       - "src/pages/**/*.mdx"
+      - "src/components/**/*.md"
+      - "src/components/**/*.mdx"
+      - "knowledge-api/**/*.md"
+      - "knowledge-api/**/*.mdx"
       - "scripts/ai_docs_review.py"
       - "scripts/qa_review_cache.py"
       - "scripts/tests/test_ai*.py"

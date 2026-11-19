@@ -74,6 +74,24 @@ class ParserIntegrationTests(unittest.TestCase):
         self.assertNotIn("reports/see-also.md", selected)
         self.assertNotIn("knowledge-api/.pytest_cache/README.md", selected)
 
+    def test_review_scope_includes_drafts_and_requires_opt_in_for_other_documents(self):
+        included = {'README.md', 'LICENSE.md', 'docs/draft.md',
+                    'src/pages/draft.mdx', 'src/components/Example/README.md',
+                    'knowledge-api/examples/example.mdx'}
+        excluded = {'FAPI/Oauth2/README.md', 'notes/private.md',
+                    'knowledge-api/.venv/README.md', 'docs/ai-doc-review.md'}
+        for relative in included | excluded:
+            path = self.root / relative
+            path.parent.mkdir(parents=True, exist_ok=True)
+            path.write_text('# Example\n')
+        (self.root / 'docs/private.md').symlink_to(self.root / 'notes/private.md')
+        self.assertEqual(set(review.markdown_files()), {self.root / name for name in included})
+        self.assertEqual(set(review.markdown_files([Path('notes/private.md'), Path('docs/draft.md')])),
+                         {self.root / name for name in included | {'notes/private.md'}})
+        for path in ('FAPI/Oauth2/README.md', '../outside.md', 'docs/missing.md'):
+            with self.subTest(path=path), self.assertRaises(ValueError):
+                review.markdown_files([Path(path)])
+
     def test_local_preview_link_exclusions_do_not_hide_public_hosts(self):
         patterns = [re.compile(line) for line in (PROJECT / ".lycheeignore").read_text().splitlines()
                     if line.strip() and not line.startswith("#")]
