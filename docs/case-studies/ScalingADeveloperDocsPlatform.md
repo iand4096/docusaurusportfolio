@@ -158,6 +158,16 @@ The platform supported the full documentation lifecycle, from Markdown authoring
 <DiagramFigure {...{
   "title": "Documentation platform workflow",
   "shareId": "documentation-platform-workflow",
+  "nodeNotes": {
+    "A": "Authors wrote Markdown alongside the code in Codetree. The IntelliJ plugin previewed embedded code, equations and diagrams using the same rendering engine as the published site.",
+    "B": "A single pull request could include a code change, its tests, examples and documentation, so reviewers could check them together.",
+    "C": "The automated website build rendered documentation from the monorepo and checked internal links before publication.",
+    "D": "Serving the generated documentation from an attached filesystem shortened container builds by about 15 minutes. Redirects kept legacy URLs working.",
+    "E": "The portal grew from about 700 pages to more than 3,200 over three years. Readers could open a page in Bitbucket’s browser editor to make quick corrections.",
+    "F": "Client-side keyword search returned fast results for known terms. The corporate RAG search handled more complex natural-language queries.",
+    "M": "Conversion tools migrated about 900 pages while preserving heading hierarchy, links, images and complex content. IDE tooling let content owners migrate and validate their own pages.",
+    "P": "Authors could reuse content across pages and embed complete source files or fragments marked by delimiters. Diagrams stayed version-controlled with the documentation."
+  },
   "legend": [
     {
       "role": "interaction",

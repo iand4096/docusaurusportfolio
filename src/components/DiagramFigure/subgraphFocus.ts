@@ -5,27 +5,38 @@ export type SubgraphFit = {
 };
 export type NoteConnector = {left: number; top: number; length: number; vertical: boolean};
 
-export function placeSubgraphNote(frame: DOMRect, target: DOMRect, note: DOMRect, obstacles: DOMRect[]) {
-  const gap = 24;
+export function placeSubgraphNote(
+  frame: DOMRect, target: DOMRect, note: DOMRect, obstacles: DOMRect[],
+  nodeDirection?: 'LR' | 'TB',
+) {
   const inset = 12;
-  const clampedTop = Math.max(frame.top + inset, Math.min(target.top, frame.bottom - note.height - inset));
-  const clampedLeft = Math.max(frame.left + inset, Math.min(target.left, frame.right - note.width - inset));
-  const candidates = [
-    {left: target.right + gap, top: clampedTop, side: 'right'},
-    {left: target.left - note.width - gap, top: clampedTop, side: 'left'},
-    {left: clampedLeft, top: target.bottom + gap, side: 'below'},
-    {left: clampedLeft, top: target.top - note.height - gap, side: 'above'},
-  ] as const;
+  const clampTop = (top: number) => Math.max(frame.top + inset, Math.min(top, frame.bottom - note.height - inset));
+  const clampLeft = (left: number) => Math.max(frame.left + inset, Math.min(left, frame.right - note.width - inset));
+  const sides = nodeDirection === 'LR'
+    ? ['above', 'below', 'right', 'left'] as const
+    : ['right', 'left', 'below', 'above'] as const;
+  const gaps = nodeDirection ? [24, 40, 56, 80] : [24];
+  const candidates = sides.flatMap(side => {
+    const vertical = side === 'above' || side === 'below';
+    const alignments = vertical
+      ? [target.left, (target.left + target.right - note.width) / 2, target.right - note.width].map(clampLeft)
+      : [target.top, (target.top + target.bottom - note.height) / 2, target.bottom - note.height].map(clampTop);
+    const positions = nodeDirection ? [...new Set(alignments)] : alignments.slice(0, 1);
+    return gaps.flatMap(gap => positions.map(position => ({
+      side, gap, vertical,
+      left: vertical ? position : side === 'right' ? target.right + gap : target.left - note.width - gap,
+      top: vertical ? side === 'below' ? target.bottom + gap : target.top - note.height - gap : position,
+    })));
+  });
   const blocked = (left: number, top: number, right: number, bottom: number) =>
     obstacles.some(box => left < box.right + 4 && right > box.left - 4
       && top < box.bottom + 4 && bottom > box.top - 4);
-  for (const {left, top, side} of candidates) {
+  for (const {left, top, side, gap, vertical} of candidates) {
     const right = left + note.width;
     const bottom = top + note.height;
     if (left < frame.left + inset || right > frame.right - inset
       || top < frame.top + inset || bottom > frame.bottom - inset || blocked(left, top, right, bottom)) continue;
 
-    const vertical = side === 'above' || side === 'below';
     const start = vertical ? Math.max(left, target.left) : Math.max(top, target.top);
     const end = vertical ? Math.min(right, target.right) : Math.min(bottom, target.bottom);
     if (start >= end) continue;
@@ -37,7 +48,7 @@ export function placeSubgraphNote(frame: DOMRect, target: DOMRect, note: DOMRect
       vertical,
     };
     const {left: x, top: y} = connector;
-    // A partially visible subgraph must still have an on-canvas attachment point.
+    // A partially visible target must still have an on-canvas attachment point.
     if (x < frame.left || y < frame.top || x + (vertical ? 0 : gap) > frame.right
       || y + (vertical ? gap : 0) > frame.bottom) continue;
     // Ignore the two ends of the leader where it deliberately touches the boxes.
@@ -127,4 +138,36 @@ export function fitSubgraph(frame: HTMLElement, content: HTMLElement, element: S
     offsetX: horizontal ? shift : 0,
     offsetY: horizontal ? 0 : shift,
   };
+}
+
+export type DiagramNotes = Readonly<Record<string, string | Readonly<Record<string, string>>>>;
+
+export function findNodeNotes(content: HTMLElement, notes: DiagramNotes) {
+  const panels = Array.from(content.querySelectorAll<HTMLElement>('.diagram-columns > .diagram-panel'));
+  return Array.from(content.querySelectorAll<SVGGElement>('svg g.node[id]')).flatMap(element => {
+    if (element.closest('[hidden], .cluster')) return [];
+    const svg = element.ownerSVGElement;
+    if (!svg?.closest('[data-diagram-flowchart]')) return [];
+    // Some Mermaid layouts only expose the authored ID inside the generated DOM ID.
+    const id = element.dataset.id ?? element.id.match(/(?:^|-)flowchart-(.+)-\d+$/)?.[1];
+    if (!id) return [];
+    const panel = element.closest<HTMLElement>('.diagram-panel');
+    const panelId = panel && (panel.dataset.diagramPanelId || `panel:${panels.indexOf(panel)}`);
+    const panelNotes = panelId ? notes[panelId] : notes;
+    const text = typeof panelNotes === 'object' ? panelNotes[id] : undefined;
+    if (typeof text !== 'string' || !text.trim()) return [];
+
+    // Mermaid can render members and their cluster box in separate SVG groups.
+    const box = element.getBoundingClientRect();
+    const x = box.left + box.width / 2;
+    const y = box.top + box.height / 2;
+    const insideCluster = Array.from(svg.querySelectorAll('g.cluster')).some(cluster => {
+      const bounds = cluster.getBoundingClientRect();
+      return x > bounds.left && x < bounds.right && y > bounds.top && y < bounds.bottom;
+    });
+    if (insideCluster) return [];
+
+    const label = element.querySelector('.nodeLabel, .label')?.textContent?.replace(/\s+/g, ' ').trim() || id;
+    return [{element, key: JSON.stringify(['node', panelId, id]), title: `About ${label}`, text}];
+  });
 }

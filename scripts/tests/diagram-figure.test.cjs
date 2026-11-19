@@ -56,6 +56,21 @@ test('subgraph notes use an adjacent space only when the diagram leaves it clear
   assert.equal(placeSubgraphNote(frame, partlyVisible, note, [partlyVisible]).connector.left, 180);
 });
 
+test('left-to-right node notes slide above the node and extend the connector as needed', () => {
+  const rect = (left, top, width, height) => ({left, top, width, height, right: left + width, bottom: top + height});
+  const frame = rect(0, 0, 800, 500);
+  const node = rect(300, 230, 100, 50);
+  const note = rect(0, 0, 160, 50);
+  const rightObstacle = rect(435, 158, 45, 48);
+  assert.deepEqual(placeSubgraphNote(frame, node, note, [rightObstacle], 'LR'), {
+    left: 270, top: 156, connector: {left: 350, top: 206, length: 24, vertical: true},
+  });
+  const obstacles = [rect(200, 198, 115, 8), rect(385, 198, 100, 8)];
+  assert.deepEqual(placeSubgraphNote(frame, node, note, obstacles, 'LR'), {
+    left: 300, top: 140, connector: {left: 350, top: 190, length: 40, vertical: true},
+  });
+});
+
 test('subgraph fit uses leading blank space only when it reveals downstream content', () => {
   const rect = (left, top, width, height) => ({left, top, width, height, right: left + width, bottom: top + height});
   const fit = (direction, target, graph) => {

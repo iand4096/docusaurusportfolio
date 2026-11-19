@@ -26,6 +26,7 @@ function Renderer({value}: Props): ReactNode {
   const subgraphIds = Array.from(value.matchAll(/^[ \t]*subgraph[ \t]+([\w-]+)(?=[ \t]*(?:\[|\r?$))/gm),
     match => match[1]).join(' ');
   return <div ref={ref} className={MermaidContainerClassName} style={style}
+    data-diagram-flowchart={flowchartDirection(value) || undefined}
     data-diagram-subgraph-ids={subgraphIds || undefined}
     data-diagram-subgraph-direction={subgraphIds ? flowchartDirection(value) : undefined}
     dangerouslySetInnerHTML={{__html: result.svg}} />;

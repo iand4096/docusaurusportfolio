@@ -1,6 +1,6 @@
 ---
 title: DiagramFigure
-description: Usage and a live example for shareable Mermaid figures with subgraph focus and contextual notes.
+description: Usage and a live example for shareable Mermaid figures with subgraph focus and contextual notes for subgraphs and nodes.
 type:
   - implementation-guide
 audiences:
@@ -36,9 +36,11 @@ Import the component into your Docusaurus Markdown or MDX page.
 import DiagramFigure from '@site/src/components/DiagramFigure';
 ```
 
-## Shareable diagram with a subgraph note
+## Shareable diagram with subgraph and node notes
 
 Open the rendered figure full-screen and choose **Build and publish** from **Zoom to**. **Copy diagram link** captures the selected subgraph and layout. The note appears next to the subgraph when it fits, and narrow screens show it in an expandable section.
+
+Select the info button on **Source documents** to read its node note without changing the view. The note uses `Docs`, the Mermaid node ID. Tap or keyboard-activate the button to open or close the note.
 
 The table shows the authoring source beside the live component. On narrow screens, scroll the table horizontally to compare the two columns.
 
@@ -46,7 +48,7 @@ The table shows the authoring source beside the live component. On narrow screen
 <thead><tr><th scope="col">Raw text</th><th scope="col">Rendered version</th></tr></thead>
 
 <tbody><tr>
-<td><CodeBlock language="mdx">{"\u003cDiagramFigure {...{\n  \"title\": \"Documentation publishing\",\n  \"shareId\": \"documentation-publishing\",\n  \"legend\": [\n    {\"role\": \"input\", \"label\": \"Source documents\"},\n    {\"role\": \"process\", \"label\": \"Build and publication\"}\n  ],\n  \"subgraphNotes\": {\n    \"BUILD\": \"The build checks links before publishing the static site.\"\n  }\n}}>\n\n```mermaid\nflowchart LR\n  accTitle: Documentation publishing\n  accDescr {\n    Source documents enter a build that checks links before the site is published.\n  }\n  Docs[\"Source documents\"] --> Check\n  subgraph BUILD[\"Build and publish\"]\n    Check[\"Check links\"] --> Publish[\"Publish the site\"]\n  end\n  class Docs input;\n  class Check,Publish process;\n```\n\n\u003c/DiagramFigure"}</CodeBlock></td>
+<td><CodeBlock language="mdx">{"\u003cDiagramFigure {...{\n  \"title\": \"Documentation publishing\",\n  \"shareId\": \"documentation-publishing\",\n  \"legend\": [\n    {\"role\": \"input\", \"label\": \"Source documents\"},\n    {\"role\": \"process\", \"label\": \"Build and publication\"}\n  ],\n  \"subgraphNotes\": {\n    \"BUILD\": \"The build checks links before publishing the static site.\"\n  },\n  \"nodeNotes\": {\n    \"Docs\": \"Authors write these pages in Markdown and MDX.\"\n  }\n}}>\n\n```mermaid\nflowchart TB\n  accTitle: Documentation publishing\n  accDescr {\n    Source documents enter a build that checks links before the site is published.\n  }\n  Docs[\"Source documents\"] --> Check\n  subgraph BUILD[\"Build and publish\"]\n    Check[\"Check links\"] --> Publish[\"Publish the site\"]\n  end\n  class Docs input;\n  class Check,Publish process;\n```\n\n\u003c/DiagramFigure"}</CodeBlock></td>
 
 <td style={{minWidth: '32rem', verticalAlign: 'top'}}>
 
@@ -59,11 +61,14 @@ The table shows the authoring source beside the live component. On narrow screen
   ],
   "subgraphNotes": {
     "BUILD": "The build checks links before publishing the static site."
+  },
+  "nodeNotes": {
+    "Docs": "Authors write these pages in Markdown and MDX."
   }
 }}>
 
 ```mermaid
-flowchart LR
+flowchart TB
   accTitle: Documentation publishing
   accDescr {
     Source documents enter a build that checks links before the site is published.
@@ -90,13 +95,14 @@ flowchart LR
 | `shareId` | Omitted | Stable ID for the figure anchor and viewer links. | `"documentation-publishing"` |
 | `legend` | Required | Each entry names a role and can override its default label. The role supplies the colour. | `[{"role": "input", "label": "Source documents"}, {"role": "process", "label": "Build and publication"}]` |
 | `subgraphNotes` | Omitted | Maps Mermaid subgraph IDs to note text. For a multi-panel figure, group notes by panel ID first. | `{"BUILD": "The build checks links before publishing the static site."}` |
-| `children` | Required | Mermaid fence or diagram panels inside the figure. | A `mermaid` fence beginning with `flowchart LR`. |
+| `nodeNotes` | Omitted | Maps Mermaid node IDs outside subgraphs to note text. For a multi-panel figure, group notes by panel ID first. | `{"Docs": "Authors write these pages in Markdown and MDX."}` |
+| `children` | Required | Mermaid fence or diagram panels inside the figure. | A `mermaid` fence beginning with `flowchart TB`. |
 
 ## Authoring and maintenance
 
 - Keep `shareId` stable when changing the caption or figure number. Existing links use it to find the figure.
 - Use `accTitle` for the diagram title and `accDescr` to describe the flow and its purpose.
 - Assign palette roles with Mermaid `class` statements and use the same roles in the legend.
-- Match each note key to the authored subgraph ID. The example uses `BUILD` in both places.
+- Match each note key to the authored Mermaid ID. The example uses `BUILD` for the subgraph and `Docs` for the node labelled **Source documents**.
 
 The [RAG case study](../case-studies/RagSearchCloudArchitecture.md#architecture) uses the viewer with a multi-panel figure. See [Diagramming and Technical Visualisation](../tools/Diagramming.md) for the broader diagramming work.

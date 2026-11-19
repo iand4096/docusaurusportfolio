@@ -358,6 +358,53 @@ async function checkNotePlacementAfterSelection(browser) {
   }
 }
 
+async function checkNodeNotes(browser) {
+  const noteText = 'Authors write these pages in Markdown and MDX.';
+  for (const width of [1440, 390]) {
+    const page = await browser.newPage({viewport: {width, height: 900}, hasTouch: width < 900});
+    try {
+      await page.goto(`${base}/docs/implementation-details/diagram-figure`);
+      await page.getByRole('button', {name: /View full-screen:.*Documentation publishing/}).click();
+      const dialog = page.getByRole('dialog');
+      const marker = dialog.getByRole('button', {name: 'About Source documents'});
+      await marker.waitFor();
+      assert.equal(await dialog.locator('button[aria-expanded]').filter({hasText: 'i'}).count(), 1);
+      const zoom = dialog.getByRole('button', {name: 'Reset zoom and fit diagram'});
+      await dialog.getByRole('button', {name: 'Zoom in'}).click();
+      const zoomBeforeNote = await zoom.innerText();
+      const viewport = dialog.getByRole('region', {name: /Diagram viewport/});
+      const node = dialog.locator('svg g.node[id*="-flowchart-Docs-"]');
+      await viewport.focus();
+      await page.keyboard.press('ArrowRight');
+      await page.keyboard.press('ArrowDown');
+      const measureView = async () => {
+        await page.evaluate(() => new Promise(resolve => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+        return Promise.all([viewport.boundingBox(), node.boundingBox(), marker.boundingBox()]);
+      };
+      const before = await measureView();
+      if (width < 900) {
+        await marker.tap();
+      } else {
+        await marker.focus();
+        await page.keyboard.press('Enter');
+      }
+      const note = dialog.getByText(noteText, {exact: true}).filter({visible: true});
+      await note.waitFor();
+      assert.equal(await marker.getAttribute('aria-expanded'), 'true');
+      assert.equal(await zoom.innerText(), zoomBeforeNote);
+      assert.deepEqual(await measureView(), before, 'Opening a node note preserves the viewport and diagram position');
+      await page.keyboard.press('Escape');
+      await note.waitFor({state: 'hidden'});
+      assert.deepEqual(await measureView(), before, 'Dismissing a node note preserves the viewport and diagram position');
+      assert.equal(await dialog.count(), 1);
+      await page.keyboard.press('Escape');
+      await dialog.waitFor({state: 'hidden'});
+    } finally {
+      await page.close();
+    }
+  }
+}
+
 (async () => {
   if (output) fs.mkdirSync(output, {recursive: true});
   const browser = await chromium.launch({headless: true,
@@ -366,6 +413,7 @@ async function checkNotePlacementAfterSelection(browser) {
       LD_LIBRARY_PATH: process.env.DIAGRAM_BROWSER_LIBRARY_PATH || ''}});
   const report = [];
   try {
+    await checkNodeNotes(browser);
     await checkSharedLinks(browser);
     await checkLayoutDefaults(browser);
     await checkSubgraphZoom(browser);
