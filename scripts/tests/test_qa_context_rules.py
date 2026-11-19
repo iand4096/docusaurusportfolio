@@ -3,12 +3,13 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
 from qa_checks import ltex
 from qa_checks.vale import ValeCheck
+from qa_runner import CheckPlan, run_checks
 
 
 class RouteLinkTests(unittest.TestCase):
@@ -38,7 +39,8 @@ class FileCheckExecutionTests(unittest.TestCase):
              patch.object(ltex_check, 'run_files') as ltex_run, \
              patch.object(vale_check, 'preflight', return_value='/test/vale'), \
              patch.object(vale_check, 'run_files', return_value=[finding]) as vale_run:
-            result = review.run_file_checks(paths, [ltex_check, vale_check])
+            plan = CheckPlan.for_mode('per-page', [ltex_check, vale_check])
+            result = run_checks(paths, plan, None, cached_check=Mock(side_effect=AssertionError('Unexpected cache call')))
 
         ltex_run.assert_not_called()
         vale_run.assert_called_once_with(paths, executable='/test/vale')

@@ -8,6 +8,7 @@ from unittest.mock import patch
 
 sys.path[:0] = [str(Path(__file__).resolve().parents[1])]
 import ai_docs_review as review
+from qa_ai import client
 from qa_reporting import Report, ReportPaths
 from qa_reporting.html_report import example_report_notice, generate_example_report, generate_html_report
 from test_qa_report_feedback import finding
@@ -29,7 +30,7 @@ class ExampleReportTests(unittest.TestCase):
         ci = review.evaluate_ci(issues, [], 0, 5, 0)
         original_ci = copy.deepcopy(ci)
         paths = ReportPaths(self.root / 'real.html', self.root / 'real.json', self.root / 'real.md')
-        with patch.object(review, 'request_review', side_effect=AssertionError('No API calls')):
+        with patch.object(client, 'request_review', side_effect=AssertionError('No API calls')):
             generate_html_report(Report(issues, [], self.metadata, ci), paths, self.check_sources)
         self.assertEqual(ci, original_ci)
         return (self.root / 'real.html').read_text()

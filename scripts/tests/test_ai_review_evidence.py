@@ -6,6 +6,10 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_ai import validation
+from qa_ai import verification
+from qa_ai import checks
+from qa_ai import client
 
 
 class EvidenceTests(unittest.TestCase):
@@ -19,17 +23,17 @@ class EvidenceTests(unittest.TestCase):
                           evidence=[{'file': str(self.path), 'quote': q} for q in self.content.splitlines()])
 
     def test_comparison_requires_two_distinct_verified_passages(self):
-        self.assertTrue(review.valid_review_evidence(self.issue, {str(self.path): self.content}))
+        self.assertTrue(validation.valid_review_evidence(self.issue, {str(self.path): self.content}))
         for evidence in [self.issue['evidence'][:1], self.issue['evidence'][:1] * 2,
                          [*self.issue['evidence'][:1], {'file': str(self.path), 'quote': 'Invented.'}],
                          [{'file': 'missing.md', 'quote': self.content}]]:
             with self.subTest(evidence=evidence):
                 issue = dict(self.issue, evidence=evidence)
-                self.assertFalse(review.valid_review_evidence(issue, {str(self.path): self.content}))
+                self.assertFalse(validation.valid_review_evidence(issue, {str(self.path): self.content}))
 
     def test_runtime_rejects_missing_reader_impact(self):
         issue = dict(self.issue, reader_impact='')
-        self.assertIsNone(review.normalise_ai_issue(issue, self.content, str(self.path),
+        self.assertIsNone(validation.normalise_ai_issue(issue, self.content, str(self.path),
                           {'consistency'}, evidence_sources={str(self.path): self.content}))
 
     def test_verifier_rejects_bad_diagnosis_and_retains_supported_correction(self):
@@ -37,24 +41,24 @@ class EvidenceTests(unittest.TestCase):
         proposals = [dict(self.issue, message='A coordinated verb is a comma splice.'), self.issue]
         response = {'assessments': [dict(index=0, supported=False, reason='No independent clause.'),
                                    dict(index=1, supported=True, reason='Instructions contradict.', medium_justified=True)]}
-        with patch.object(review, 'request_review', return_value=response):
-            result = review.verify_page_findings(proposals, self.path, self.content, 'unused')
+        with patch.object(client, 'request_review', return_value=response):
+            result = verification.verify_page_findings(proposals, self.path, self.content, 'unused')
         self.assertEqual(len(result), 1)
         self.assertEqual(result[0]['severity'], 'medium')
         self.assertEqual(proposals[0]['severity'], 'medium')
 
     def test_medium_requires_separate_justification(self):
         response = {'assessments': [dict(index=0, supported=True, reason='Minor navigation friction.')]}
-        with patch.object(review, 'request_review', return_value=response):
-            result = review.verify_page_findings([self.issue], self.path, self.content, 'unused')
+        with patch.object(client, 'request_review', return_value=response):
+            result = verification.verify_page_findings([self.issue], self.path, self.content, 'unused')
         self.assertEqual(result[0]['severity'], 'low')
 
     def test_incomplete_or_duplicate_verification_is_an_error(self):
         entry = dict(index=0, supported=True, reason='Verified.')
         for response in [{'assessments': []}, {'assessments': [entry, entry]}, {'issues': []}]:
-            with self.subTest(response=response), patch.object(review, 'request_review', return_value=response):
+            with self.subTest(response=response), patch.object(client, 'request_review', return_value=response):
                 with self.assertRaises(ValueError):
-                    review.verify_page_findings([self.issue], self.path, self.content, 'unused')
+                    verification.verify_page_findings([self.issue], self.path, self.content, 'unused')
 
     def test_overlap_keeps_both_feedback_identities(self):
         issues = [dict(self.issue, file=str(self.path), issue_id='qa-one'),
@@ -66,9 +70,9 @@ class EvidenceTests(unittest.TestCase):
 
     def test_page_check_verifies_after_source_validation(self):
         issue = dict(self.issue, category='grammar', evidence=self.issue['evidence'][:1])
-        with patch.object(review, 'request_review', side_effect=[{'issues': [issue]},
+        with patch.object(client, 'request_review', side_effect=[{'issues': [issue]},
                 {'assessments': [dict(index=0, supported=False, reason='Valid coordinated verbs.')]}]) as request:
-            self.assertEqual(review.GrammarReview().run_page(self.path, self.content, 'unused'), [])
+            self.assertEqual(checks.GrammarReview().run_page(self.path, self.content, 'unused'), [])
         self.assertEqual(request.call_count, 2)
 
 

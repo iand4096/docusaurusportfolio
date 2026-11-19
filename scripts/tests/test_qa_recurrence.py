@@ -11,6 +11,7 @@ from unittest.mock import patch, Mock
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_ai import client
 from qa_reporting import html_report
 from qa_reporting.links import recurrence_command
 from qa_reporting import model as report_model
@@ -228,7 +229,7 @@ class RecurrenceTests(unittest.TestCase):
         self.report.write_text(json.dumps(payload))
         before = self.registry.read_bytes()
         output = self.root / 'rendered'
-        with patch.object(review, 'request_review', side_effect=AssertionError('No network')):
+        with patch.object(client, 'request_review', side_effect=AssertionError('No network')):
             review.render_saved_report(self.report, self.registry, output)
         self.assertEqual(self.registry.read_bytes(), before)
         html = (output / 'ai-doc-review.html').read_text()

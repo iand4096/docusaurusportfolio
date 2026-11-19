@@ -10,6 +10,7 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_ai import client
 from qa_policy import is_ci_threshold_eligible
 from qa_reporting import model as report_model
 import qa_feedback as feedback
@@ -131,8 +132,8 @@ class ReportFeedbackTests(unittest.TestCase):
         original = json.dumps(payload, indent=2).encode()
         source.write_bytes(original)
         output = self.root / 'rendered'
-        with patch.object(review, 'request_review', side_effect=AssertionError('No AI allowed')), \
-             patch.object(review, 'run_per_page_checks', side_effect=AssertionError('No checks allowed')):
+        with patch.object(client, 'request_review', side_effect=AssertionError('No AI allowed')), \
+             patch.object(review, 'run_checks', side_effect=AssertionError('No checks allowed')):
             ci = review.render_saved_report(source, self.feedback, output)
         self.assertFalse(ci['passed'])
         self.assertEqual(source.read_bytes(), original)

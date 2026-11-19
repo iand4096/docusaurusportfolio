@@ -8,7 +8,7 @@ from pathlib import Path
 from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
-import ai_docs_review as review
+from qa_ai import client
 from qa_policy import is_ci_threshold_eligible
 from qa_reporting import model as report_model
 import qa_feedback as feedback
@@ -94,7 +94,7 @@ class FeedbackMatchingTests(unittest.TestCase):
         report = Path(self.temp.name) / 'report.json'
         report.write_text(json.dumps({'issues': [current]}))
         with patch.object(feedback, '_source_for_report_finding', return_value='Source passage\nNew context'), \
-             patch.object(review, 'request_review', side_effect=AssertionError('No AI allowed')):
+             patch.object(client, 'request_review', side_effect=AssertionError('No AI allowed')):
             feedback.resolve('qa-current', 'dismissed', 'Reviewed changed context; earlier reasoning still applies.',
                              feedback_path=self.path, report=report)
         # Loading the new report finds the original persistent record.

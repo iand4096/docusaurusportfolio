@@ -1,5 +1,4 @@
 import argparse
-import hashlib
 import json
 import os
 import re
@@ -15,35 +14,25 @@ import requests
 from qa_feedback import (decorate_issues, attach_feedback_status, save_findings, resolve as resolve_finding,
                          challenge as challenge_finding, load_report, DEFAULT_FEEDBACK, DEFAULT_FINDINGS)
 
-from qa_checks import source as check_source
-from qa_checks.base import BaseCheck, CheckResult, FileCheck, execute_check
+from qa_ai import client
+from qa_ai.cache import AI_REVIEW_POLICY_VERSION, AIReviewCache
+from qa_ai.checks import (DiagramReview, GrammarReview, PortfolioReview, RepetitionReview,
+                          SiteWideConsistencyReview, StructureReview)
+from qa_checks.base import BaseCheck
+from qa_checks.source import iter_lines_outside_code_fences
+from qa_runner import CheckPlan, run_checks
 from qa_checks.ltex import LtexCheck
 from qa_checks.lychee import LycheeCheck
 from qa_checks.remark import RemarkCheck
 from qa_checks.vale import ValeCheck
-from qa_policy import (apply_ai_severity_policy, assert_ci_policy_invariants, evaluate_ci,
-                       make_issue)
+from qa_policy import assert_ci_policy_invariants, evaluate_ci, make_issue
 from qa_reporting import Report, ReportPaths, write_reports
 from qa_reporting.links import PORTFOLIO_URL, github_repository, github_revision
 from qa_reporting.model import report_counts
 
-API_URL = "https://api.deepseek.com/chat/completions"
-# DeepSeek retired V4-Flash on 10 September 2026. The supported rolling Flash
-# alias now serves V4.1-Flash. DEEPSEEK_MODEL allows an explicit override if
-# DeepSeek exposes a pinned model identifier in future.
-MODEL = os.environ.get("DEEPSEEK_MODEL", "deepseek-flash")
-AI_REVIEW_POLICY_VERSION = "2026-11-16-substantive-defects-v7"
-# Hardcoded operational switch. Keep this False to disable all DeepSeek-backed
-# checks without changing filter definitions or command-line invocations.
-# Set it back to True when AI review should be re-enabled.
-DEEPSEEK_AI_CHECKS_ENABLED = True
-REVIEW_CACHE_ENABLED = True
-
 # Resolve the repository from the script location, never the invoking shell's CWD.
-# In the portfolio this module lives at <project>/scripts/ai_docs_review.py.
-SCRIPT_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = SCRIPT_DIR.parent if SCRIPT_DIR.name == "scripts" else SCRIPT_DIR
-ROOT = Path(".")  # All existing QA paths are relative to PROJECT_ROOT after main() starts.
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(".")  # Existing QA paths are relative to PROJECT_ROOT after main() starts.
 EXCLUDED_DIRS = {
     "node_modules",
     "build",
@@ -57,10 +46,6 @@ EXCLUDED_DIRS = {
     "qa",           # Review findings and feedback, not portfolio documentation
     "reports",      # Generated review artifacts, not authored articles
 }
-
-SEVERITIES = {"high", "medium", "low"}
-CONFIDENCE_LEVELS = {"high", "medium", "low"}
-ISSUE_TYPES = {"defect", "improvement", "diagram"}
 
 DEFAULT_FAIL_HIGH = 0
 DEFAULT_FAIL_MEDIUM = 25
@@ -133,211 +118,6 @@ FILTER_LABELS = {
     "links": "Local and external links only",
     "remark": "Remark Markdown/MDX only",
 }
-
-COMMON_AI_RULES = r"""
-Use British English. British English does not mandate omitting serial commas.
-Report punctuation consistency only against an explicit supplied style rule or
-verified comparison passages; do not infer a rule from nationality.
-Preserve official product names even when their spelling differs from house style.
-Clear contractions and capability-list fragments are acceptable. Coordinated verbs
-sharing a subject (including an understood subject in a list) are not comma splices.
-A generic but accurate heading is not evidence of a placeholder.
-
-
-This is a defect review, not a copy-editing exercise.
-
-Respect the DOCUMENT GENRE supplied for each file. Genre context is review
-metadata, not source text and must never be quoted as an issue.
-- Case studies and documentation samples may explain the author's contribution,
-  decisions and available evidence. Do not require metrics, public artefacts or
-  confidential details, or turn every paragraph into a problem/outcome statement.
-- Skills and tools overviews are concise capability inventories, not case studies.
-  Named techniques, technologies, responsibilities and short examples are valid.
-  Do not require a problem, stakeholder, outcome, ownership statement or evidence
-  link for every capability. Related software engineering, QA and personal learning
-  experience is legitimate when accurately labelled; do not force a documentation
-  outcome onto it. Evidence may live in a linked case study.
-- Technical READMEs, component guides, implementation guides and operations
-  runbooks serve users and maintainers. Review procedural accuracy, prerequisites,
-  clarity and navigation, not portfolio storytelling, personal ownership or impact.
-  Necessary warnings may be repeated at the point where an operation is performed.
-- Landing pages and the homepage introduce and route readers to other pages.
-  Short summaries and product context are appropriate; do not demand a complete
-  case study inside a navigation card.
-- For other documents, assess their stated purpose without imposing a case-study
-  template. Site-wide comparisons must respect differences between genres.
-All genres remain eligible for genuine language, clarity and consistency defects.
-Useful product context is not a defect merely because it describes the product.
-First-person attribution is appropriate in a personal portfolio, including READMEs.
-Do not rewrite software testing as documentation validation unless the source
-establishes that purpose. Do not invent implementation scope to fill perceived gaps.
-Do not diagnose malformed JSX/HTML from an excerpt or a partial quotation.
-Markup syntax belongs to deterministic parser/build checks, not this prose review.
-
-The supplied documents are editorial review views, not complete raw source.
-Within YAML front matter, only reader-facing prose is retained. Technical fields
-are deliberately replaced by spaces while preserving source positions and the
-opening/closing delimiters. Blank lines and incomplete-looking YAML structures
-inside that block are filtering artefacts, not evidence of unfinished content.
-Review the retained metadata values for prose quality only. Do not report YAML
-syntax, missing metadata, placeholders or unfinished content based on masked
-front matter. The Markdown/MDX body after the closing delimiter is unchanged.
-
-Be conservative. Report only meaningful issues. The expected result for a
-professionally written page is often ZERO issues. Do not manufacture a finding
-merely because you were asked to review the page.
-NEVER report an issue solely because:
-- wording could be shorter, smoother, punchier or more elegant
-- another writer might choose different wording
-- a sentence could be split or combined without materially improving comprehension
-- active voice might be preferable to passive voice
-- a heading could be phrased differently while remaining accurate
-- paragraph or sentence length is merely a stylistic preference
-- information could theoretically be presented as bullets
-- terminology is unusual but clear and internally consistent
-- the prose does not match your preferred writing style
-A stylistic preference is NOT a defect.
-
-Before reporting any issue, verify all three conditions:
-1. There is a concrete problem in the supplied text.
-2. You can explain a material reader impact.
-3. The proposed change is more than a stylistic alternative.
-If any condition is not satisfied, DO NOT report the issue.
-Do not:
-- invent facts, responsibilities, metrics, audiences, outcomes, technical
-  relationships or source text
-- claim technical information is incorrect unless the supplied text itself
-  demonstrates the inconsistency
-- include the artificial line-number prefix in the quoted source text
-
-Every issue must also provide:
-- reader_impact: a concrete consequence, not a preference or restatement
-- evidence: a list of {"file": "supplied file path", "quote": "verbatim passage"}
-- rule_basis: the applicable grammar rule, explicit style rule or structural reason
-For repetition and consistency, include at least two distinct supporting passages.
-Explain why their purposes overlap: topic similarity alone is insufficient.
-Never report a finding whose explanation concedes no problem, whose correction
-repeats the original, or whose suggestion introduces unsupported facts.
-
-Every issue must include exact source text copied verbatim from the supplied
-file in "original". The quoted text must be sufficient to identify the issue.
-Do not paraphrase "original".
-Severity is strict and means impact:
-- high: never permitted for AI-origin findings; use medium at most
-- medium: a substantive problem that materially impairs comprehension or correctness
-- low: a worthwhile non-blocking improvement
-
-Never assign high severity to any finding.
-Do not report heading-capitalisation-only issues; Vale checks heading case.
-Never assign high or medium severity to a purely stylistic improvement.
-Improvements and diagram opportunities should normally be low severity.
-Confidence means certainty that the issue is genuinely present:
-- high: objectively demonstrated by the supplied text
-- medium: well supported but includes editorial judgement
-- low: subjective or weakly supported
-
-Omit low-confidence findings unless they identify a clear concrete risk.
-
-Use issue type:
-- defect: something is objectively or substantively wrong
-- improvement: optional editorial or information-design improvement
-- diagram: optional Mermaid visualisation opportunity
-Return JSON only. Do not include Markdown fences or commentary.
-"""
-
-SUBSTANTIVE_DEFECT_RULES = r"""
-REVIEW INTENT: substantive defects only. This instruction takes priority over
-check-specific invitations to suggest improvements. Return only type "defect".
-Do not report repetition, scannability, portfolio presentation or diagram
-opportunities unless there is a demonstrated substantive failure.
-A finding must establish a wrong instruction, contradiction, missing prerequisite,
-broken reference, genuinely ambiguous meaning or objectively incorrect language.
-Preserve a reasonable conventional reading. Mere potential hesitation, minor
-stylistic inconsistency or a different possible phrasing is insufficient.
-For ambiguity, identify two plausible interpretations and the materially different
-consequences. For consistency, identify the explicit violated rule or conflicting
-instructions; do not infer a rule from nationality or a preferred style.
-Do not require a minimum number of findings. Zero is a successful review.
-
-Negative examples from withdrawn findings:
-- "Wrote the guide, during my first few months at Mastercard, developed the test
-  integration and created diagrams" uses shared-subject coordinated verbs and a
-  comma-delimited parenthetical. Parentheses are optional; do not call it a run-on.
-- A component accepts type="decision" but displays "Decision". A prose colour note
-  naming the display label does not contradict the lowercase API value.
-These are reasoning examples, not blanket exemptions for future changed sources.
-"""
-
-DEFECT_VERIFICATION_CONTRACT = r"""
-First explain the strongest reasonable, conventional reading of the original.
-Try to refute the allegation using the complete source before accepting it.
-For every supported assessment also return:
-- substantive_defect: boolean (false for preferences or speculative harm)
-For substantive_defect=true, additionally return nonempty strings:
-- reasonable_reading: the strongest defensible reading of the original
-- why_reading_fails: source-grounded explanation of why that reading still fails
-- consequence: the concrete failure affecting the reader
-- failure_kind: wrong_instruction, contradiction, missing_prerequisite,
-  broken_reference, ambiguous_meaning or incorrect_language
-For failure_kind=ambiguous_meaning also return interpretations: exactly two
-nonempty strings identifying plausible meanings with materially different outcomes.
-A claim of possible confusion without those meanings is insufficient.
-Do not approve a finding merely because its proposed alternative is also valid.
-"""
-
-PAGE_JSON_CONTRACT = r"""
-Return exactly this structure:
-{
-  "issues": [
-    {
-      "severity": "medium|low",
-      "confidence": "high|medium|low",
-      "type": "defect|improvement|diagram",
-      "category": "CATEGORY_FROM_THIS_CHECK",
-      "line": 12,
-      "original": "exact source text",
-      "reader_impact": "Concrete reader consequence",
-      "evidence": [{"file": "docs/example.mdx", "quote": "exact supporting source text"}],
-      "rule_basis": "Applicable rule or structural reason",
-      "message": "Concise explanation of the problem",
-      "suggestion": "Specific suggested correction or improvement",
-      "source": "ai"
-    }
-  ]
-}
-
-Return {"issues": []} when there are no meaningful findings.
-"""
-SITE_JSON_CONTRACT = r"""
-Return exactly this structure:
-{
-  "issues": [
-    {
-      "file": "docs/example.mdx",
-      "severity": "medium|low",
-      "confidence": "high|medium|low",
-      "type": "defect|improvement|diagram",
-      "category": "CATEGORY_FROM_THIS_CHECK",
-      "line": 12,
-      "original": "exact source text copied from the named file",
-      "reader_impact": "Concrete reader consequence",
-      "evidence": [{"file": "docs/example.mdx", "quote": "exact supporting source text"}],
-      "rule_basis": "Applicable rule or structural reason",
-      "message": "Concise explanation of the site-wide problem",
-      "suggestion": "Specific suggested correction or improvement",
-      "source": "ai"
-    }
-  ]
-}
-The "file" value must exactly match one of the FILE values supplied in the
-user message.
-
-Return {"issues": []} when there are no meaningful findings.
-"""
-# ---------------------------------------------------------------------------
-# Utility functions
-# ---------------------------------------------------------------------------
-
 
 def markdown_files():
     """Yield Markdown and MDX files that should be reviewed."""
@@ -413,943 +193,6 @@ def report_run_metadata():
     }
 
 
-# Only reader-facing front matter belongs in editorial AI input. Taxonomy IDs,
-# routing, flags and other technical settings are checked by deterministic tools.
-AI_PROSE_METADATA_PATHS = {
-    ('title',), ('description',), ('sidebar_label',),
-    ('sidebar_custom_props', 'sampleCard', 'tag'),
-    ('sidebar_custom_props', 'sampleCard', 'description'),
-    ('sidebar_custom_props', 'sampleCard', 'highlights'),
-    ('sidebar_custom_props', 'sampleCard', 'ariaLabel'),
-    ('sidebar_custom_props', 'skillCard', 'tag'),
-    ('sidebar_custom_props', 'skillCard', 'description'),
-    ('sidebar_custom_props', 'skillCard', 'highlights'),
-    ('sidebar_custom_props', 'skillCard', 'ariaLabel'),
-}
-
-
-def ai_review_content(content):
-    """Keep prose metadata and body verbatim, blanking other YAML at source lines."""
-    lines = content.splitlines(keepends=True)
-    if not lines or lines[0].strip() != '---':
-        return content
-    end = next((i for i in range(1, len(lines))
-                if lines[i].strip() in {'---', '...'}), None)
-    if end is None:
-        raise ValueError('Unterminated YAML front matter in AI review input')
-
-    from ruamel.yaml import YAML
-    from ruamel.yaml.nodes import MappingNode, ScalarNode, SequenceNode
-    root = YAML(typ='safe').compose(''.join(lines[1:end]))
-    metadata = ''.join(lines[1:end])
-    # Mask characters rather than whole lines: a flow-style YAML mapping can
-    # put an approved description and a technical identifier on the same line.
-    masked = [char if char in '\r\n' else ' ' for char in metadata]
-
-    def retain(start, stop):
-        masked[start:stop] = metadata[start:stop]
-
-    def visit(node, path=(), ancestors=()):
-        if isinstance(node, MappingNode):
-            for key, value in node.value:
-                next_path = path + (key.value,)
-                if any(allowed[:len(next_path)] == next_path for allowed in AI_PROSE_METADATA_PATHS):
-                    visit(value, next_path, ancestors + (key,))
-        elif path in AI_PROSE_METADATA_PATHS:
-            nodes = node.value if isinstance(node, SequenceNode) else [node]
-            for item in nodes:
-                if isinstance(item, ScalarNode) and item.tag == 'tag:yaml.org,2002:str':
-                    for key in ancestors:
-                        retain(key.start_mark.index, key.end_mark.index)
-                        if metadata[key.end_mark.index:key.end_mark.index + 1] == ':':
-                            retain(key.end_mark.index, key.end_mark.index + 1)
-                    retain(item.start_mark.index, item.end_mark.index)
-
-    visit(root)
-    return lines[0] + ''.join(masked) + lines[end] + ''.join(lines[end + 1:])
-
-
-def add_line_numbers(text):
-    """Add artificial line numbers for the model."""
-
-    return "\n".join(
-        f"{number:5}: {line}"
-        for number, line in enumerate(text.splitlines(), start=1)
-    )
-
-def parse_model_json(model_output):
-    """Parse JSON, tolerating accidental Markdown fences."""
-
-    text = model_output.strip()
-
-    if text.startswith("```"):
-        lines = text.splitlines()
-
-        if lines and lines[0].startswith("```"):
-            lines = lines[1:]
-
-        if lines and lines[-1].strip() == "```":
-            lines = lines[:-1]
-
-        text = "\n".join(lines).strip()
-
-    return json.loads(text)
-
-def require_review_issues(response):
-    """Require an explicit list of finding objects, including for clean reviews."""
-    issues = response.get("issues") if isinstance(response, dict) else None
-    if not isinstance(issues, list):
-        raise ValueError("Invalid AI review response: expected an 'issues' array")
-    if any(not isinstance(issue, dict) for issue in issues):
-        raise ValueError("Invalid AI review response: 'issues' must contain only objects")
-    return issues
-
-
-def request_review(system_prompt, user_prompt, api_key):
-    """Send a review request, retrying once if the model returns invalid JSON."""
-
-    if not DEEPSEEK_AI_CHECKS_ENABLED:
-        raise RuntimeError(
-            "DeepSeek AI checks are disabled by DEEPSEEK_AI_CHECKS_ENABLED = False."
-        )
-    payload = {
-        "model": MODEL,
-        "thinking": {"type": "disabled"},
-        "temperature": 0.0,
-        "response_format": {"type": "json_object"},
-        "messages": [
-            {"role": "system", "content": system_prompt},
-            {"role": "user", "content": user_prompt},
-        ],
-    }
-
-    last_error = None
-    for attempt in range(2):
-        response = requests.post(
-            API_URL,
-            headers={
-                "Authorization": f"Bearer {api_key}",
-                "Content-Type": "application/json",
-            },
-            json=payload,
-            timeout=180,
-        )
-
-        response.raise_for_status()
-        result = response.json()
-        model_output = result["choices"][0]["message"]["content"]
-        try:
-            return parse_model_json(model_output)
-        except json.JSONDecodeError as error:
-            last_error = error
-            if attempt == 0:
-                payload["messages"] = [
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": user_prompt},
-                    {
-                        "role": "user",
-                        "content": (
-                            "Your previous response was not valid JSON. "
-                            "Return the review again as strictly valid JSON only. "
-                            "Ensure all strings are correctly escaped and all "
-                            "commas, quotes, brackets and braces are valid."
-                        ),
-                    },
-                ]
-    raise last_error
-
-
-def document_genre(path, content):
-    """Classify review purpose from raw metadata and stable repository paths."""
-    name = str(path).replace('\\', '/')
-    try:
-        name = Path(path).resolve().relative_to(PROJECT_ROOT.resolve()).as_posix()
-    except ValueError:
-        pass
-    # Operational/support documentation must not inherit the portfolio framing.
-    if name.startswith('knowledge-api/'):
-        return 'operations-guide' if Path(name).stem.upper().startswith('OPERATIONS') else 'technical-readme'
-    if name.startswith('src/components/'):
-        return 'component-guide'
-    if name.startswith('docs/implementation-details/'):
-        return 'implementation-guide'
-    if Path(name).name.lower() in {'readme.md', 'readme.mdx'}:
-        return 'technical-readme'
-    if name == 'src/pages/index.md':
-        return 'homepage'
-    if re.match(r'^docs/(case-studies|docs-samples|skills|tools)/index\.mdx?$', name):
-        return 'landing-page'
-    for directory, genre in [('case-studies', 'case-study'), ('docs-samples', 'documentation-sample'),
-                             ('skills', 'skill-overview'), ('tools', 'tool-overview')]:
-        if name.startswith(f'docs/{directory}/'):
-            return genre
-    # Other locations may declare a genre explicitly. Never rely on model inference.
-    if content.startswith('---\n') or content.startswith('---\r\n'):
-        from ruamel.yaml import YAML
-        lines = content.splitlines()
-        end = next((i for i in range(1, len(lines)) if lines[i].strip() in {'---', '...'}), None)
-        if end is not None:
-            front = YAML(typ='safe').load('\n'.join(lines[1:end])) or {}
-            kinds = front.get('type', []) if isinstance(front, dict) else []
-            if isinstance(kinds, str):
-                kinds = [kinds]
-            for kind, genre in [('landing-page', 'landing-page'), ('implementation-guide', 'implementation-guide'),
-                                ('case-study', 'case-study'), ('skill', 'skill-overview'),
-                                ('tool', 'tool-overview'), ('doc-sample', 'documentation-sample')]:
-                if kind in kinds:
-                    return genre
-    return 'general-document'
-
-
-PORTFOLIO_REVIEW_GENRES = {'case-study', 'documentation-sample'}
-
-
-def genre_context(path, content):
-    return f'DOCUMENT GENRE: {document_genre(path, content)} (review context, not source)'
-
-
-def valid_review_evidence(issue, sources):
-    """Check supporting passages, not just the text selected for correction."""
-    if any(not isinstance(issue.get(k), str) or not issue[k].strip()
-           for k in ('reader_impact', 'rule_basis')):
-        return False
-    evidence = issue.get('evidence')
-    if not isinstance(evidence, list) or not evidence:
-        return False
-    passages = set()
-    for item in evidence:
-        if not isinstance(item, dict):
-            return False
-        path, quote = item.get('file'), item.get('quote')
-        if not isinstance(path, str) or not isinstance(quote, str) or not quote.strip():
-            return False
-        if path not in sources or quote not in sources[path]:
-            return False
-        passages.add((path, quote))
-    if issue.get('category') in {'repetition', 'consistency'} and len(passages) < 2:
-        return False
-    return True
-
-
-def normalise_ai_issue(issue, content, file_path, allowed_categories, *, genre=None, evidence_sources=None):
-    """Validate an AI finding and recalculate its source line."""
-    required_fields = {
-        "severity",
-        "confidence",
-        "type",
-        "category",
-        "line",
-        "original",
-        "message",
-        "suggestion",
-        "source",
-    }
-
-    if not isinstance(issue, dict):
-        return None
-
-    if not required_fields.issubset(issue):
-        return None
-    if evidence_sources is not None and not valid_review_evidence(issue, evidence_sources):
-        return None
-    severity = issue.get("severity")
-    confidence = issue.get("confidence")
-    issue_type = issue.get("type")
-    category = issue.get("category")
-    original = issue.get("original")
-    message = issue.get("message")
-    suggestion = issue.get("suggestion")
-    reported_line = issue.get("line")
-
-    if severity not in SEVERITIES:
-        return None
-
-    if confidence not in CONFIDENCE_LEVELS:
-        return None
-
-    if issue_type not in ISSUE_TYPES:
-        return None
-    if category not in allowed_categories:
-        return None
-    # Do not allow model-selected categories to bypass the genre routing.
-    if category == 'portfolio' and (genre or document_genre(file_path, content)) not in PORTFOLIO_REVIEW_GENRES:
-        return None
-
-    if not isinstance(original, str) or not original.strip():
-        return None
-
-    if original not in content:
-        return None
-
-    if not isinstance(message, str) or not message.strip():
-        return None
-
-    if not isinstance(suggestion, str) or not suggestion.strip():
-        return None
-
-    if not isinstance(reported_line, int):
-        reported_line = None
-    actual_line = check_source.find_source_line(
-        content,
-        original,
-        preferred_line=reported_line,
-    )
-
-    if actual_line is None:
-        return None
-    # Enforce semantic invariants in code instead of trusting model labels.
-    # Optional/editorial AI findings remain visible in the report but cannot
-    # masquerade as high- or medium-severity defects because a model became
-    # more aggressive after a backend update.
-    # Do not let an explicitly non-defect criticism become a CI-blocking defect.
-    if re.search(r"\b(?:rather than a defect|not a defect|purely stylistic)\b", message, re.IGNORECASE):
-        issue_type = 'improvement'
-        if 'consistency' in allowed_categories:
-            category = 'consistency'
-    if issue_type in {"improvement", "diagram"}:
-        severity = "low"
-
-    if confidence == "low":
-        severity = "low"
-    # Source is assigned by the implementation rather than trusted from AI.
-    normalised = make_issue(
-        file=file_path,
-        line=actual_line,
-        severity=severity,
-        confidence=confidence,
-        issue_type=issue_type,
-        category=category,
-        original=original,
-        message=message.strip(),
-        suggestion=suggestion.strip(),
-        source="ai",
-    )
-    for field in ('reader_impact', 'evidence', 'rule_basis'):
-        if field in issue:
-            normalised[field] = issue[field]
-    normalised['model_reported_severity'] = issue['severity']
-    return apply_ai_severity_policy(normalised)
-
-def normalise_model_path(raw_path, known_paths):
-    """Match a model-returned path to an exact supplied file path."""
-
-    if not isinstance(raw_path, str):
-        return None
-
-    candidate = raw_path.strip().replace("\\", "/")
-
-    while candidate.startswith("./"):
-        candidate = candidate[2:]
-
-    aliases = {}
-
-    for path in known_paths:
-        canonical = path.as_posix()
-        aliases[canonical] = canonical
-        if canonical.startswith("./"):
-            aliases[canonical[2:]] = canonical
-
-    return aliases.get(candidate)
-
-
-def iter_lines_outside_code_fences(content):
-    """Yield (line_number, text) while skipping fenced code blocks."""
-
-    in_fence = False
-    fence_marker = None
-
-    for number, line in enumerate(content.splitlines(), start=1):
-        stripped = line.lstrip()
-        match = re.match(r"(```+|~~~+)", stripped)
-
-        if match:
-            marker = match.group(1)
-            if not in_fence:
-                in_fence = True
-                fence_marker = marker[0]
-            elif marker[0] == fence_marker:
-                in_fence = False
-                fence_marker = None
-
-            continue
-
-        if not in_fence:
-            yield number, line
-# ---------------------------------------------------------------------------
-# Check architecture
-# ---------------------------------------------------------------------------
-
-
-def verify_page_findings(issues, path, content, api_key, defects_only=False):
-    if defects_only:
-        issues = [issue for issue in issues if issue.get('type') == 'defect']
-    if not issues:
-        return []
-    response = request_review(
-        COMMON_AI_RULES + """\nAudit proposed findings independently against the source.
-Reject unsupported grammar diagnoses, self-contradictory explanations, unchanged
-corrections, invented facts, stylistic preferences and useful repetition.
-Check reader impact and all cited evidence. Return JSON {"assessments": [
-{"index": 0, "supported": true, "reason": "specific evidence-based explanation", "medium_justified": false}]}.
-Set medium_justified true only for demonstrated correctness or comprehension harm.
-Assess every index exactly once. Do not rewrite findings or trust their confidence.
-Preserve reasonable conventional readings. Reject speculative reader hesitation
-and differences between display labels and API literals that cause no conflict.
-""" + (SUBSTANTIVE_DEFECT_RULES + DEFECT_VERIFICATION_CONTRACT if defects_only else ''),
-        json.dumps({'file': path.as_posix(), 'content': content, 'findings': issues}, ensure_ascii=False),
-        api_key)
-    assessments = response.get('assessments')
-    if not isinstance(assessments, list):
-        raise ValueError('Invalid finding verification response')
-    by_index = {}
-    for entry in assessments:
-        if (not isinstance(entry, dict) or type(entry.get('index')) is not int
-                or entry['index'] not in range(len(issues)) or entry['index'] in by_index
-                or type(entry.get('supported')) is not bool
-                or not isinstance(entry.get('reason'), str) or not entry['reason'].strip()):
-            raise ValueError('Invalid finding verification assessment')
-        by_index[entry['index']] = entry
-    if len(by_index) != len(issues):
-        raise ValueError('Incomplete finding verification')
-    retained = []
-    for i, issue in enumerate(issues):
-        assessment = by_index[i]
-        if not assessment['supported']:
-            continue
-        if defects_only:
-            if type(assessment.get('substantive_defect')) is not bool:
-                raise ValueError('Defect verification requires a substantive_defect boolean')
-            if not assessment['substantive_defect']:
-                continue
-            fields = ('reasonable_reading', 'why_reading_fails', 'consequence')
-            if any(not isinstance(assessment.get(field), str) or not assessment[field].strip() for field in fields):
-                raise ValueError('Defect verification requires source-grounded reasoning')
-            if assessment.get('failure_kind') not in {
-                'wrong_instruction', 'contradiction', 'missing_prerequisite',
-                'broken_reference', 'ambiguous_meaning', 'incorrect_language'}:
-                raise ValueError('Invalid substantive failure kind')
-            if assessment['failure_kind'] == 'ambiguous_meaning':
-                interpretations = assessment.get('interpretations')
-                if (not isinstance(interpretations, list) or len(interpretations) != 2
-                        or any(not isinstance(text, str) or not text.strip() for text in interpretations)
-                        or interpretations[0].strip() == interpretations[1].strip()):
-                    raise ValueError('Ambiguity requires two distinct interpretations')
-        issue = dict(issue, verification=assessment)
-        if issue['severity'] == 'medium' and assessment.get('medium_justified') is not True:
-            issue['severity'] = 'low'
-        retained.append(issue)
-    return retained
-
-
-class AIPageCheck(BaseCheck):
-    supports_page = True
-    allowed_categories = set()
-    prompt = ""
-
-    def run_page(self, path, content, api_key):
-        context = genre_context(path, content)
-        genre = document_genre(path, content)
-        content = ai_review_content(content)
-        system_prompt = (
-            COMMON_AI_RULES
-            + "\n\n"
-            + self.prompt
-            + "\n\n"
-            + (SUBSTANTIVE_DEFECT_RULES if self.defects_only else '')
-            + PAGE_JSON_CONTRACT
-        )
-        parsed = request_review(
-            system_prompt,
-            (
-                f"FILE: {path.as_posix()}\n{context}\n\n"
-                f"{add_line_numbers(content)}"
-            ),
-            api_key,
-        )
-
-        issues = require_review_issues(parsed)
-
-        validated = []
-        for issue in issues:
-            normalised = normalise_ai_issue(
-                issue,
-                content,
-                path.as_posix(),
-                self.allowed_categories,
-                genre=genre,
-                evidence_sources={path.as_posix(): content},
-            )
-
-            if normalised is not None:
-                validated.append(normalised)
-
-        return verify_page_findings(validated, path, content, api_key, self.defects_only)
-
-class GrammarReview(AIPageCheck):
-    name = "GrammarReview"
-    allowed_categories = {
-        "grammar",
-        "clarity",
-        "consistency",
-        "unfinished",
-        "punctuation",
-    }
-    prompt = r"""
-Review sentence-level editorial quality only.
-
-Look for:
-- grammar problems
-- materially awkward or confusing wording
-- incomplete sentences
-- inconsistent terminology within the page
-- unfinished or placeholder content
-- punctuation or hyphenation problems that affect correctness
-Do not perform general spelling checking. Spelling is checked separately.
-Do not change valid British English to American English.
-Do not recommend Oxford -ize spelling.
-Do not flag correctly spelled technical or product terminology merely because it
-is unusual.
-
-Allowed categories:
-grammar, clarity, consistency, unfinished, punctuation
-
-Use type "defect" for genuine language/correctness problems and "improvement"
-only when comprehension is materially improved.
-"""
-
-class StructureReview(AIPageCheck):
-    name = "StructureReview"
-    allowed_categories = {
-        "structure",
-        "scannability",
-        "over-explanation",
-    }
-    prompt = r"""
-Review information structure and scannability only.
-Look for:
-- information in an awkward order
-- a paragraph doing several unrelated jobs
-- important context arriving too late
-- dense paragraphs that materially benefit from division
-- closely related information being unnecessarily separated
-- headings that do not accurately describe their content
-- background explanation that materially obstructs the document's stated purpose
-- important information that is unnecessarily difficult to scan
-Do not add headings merely to create more sections.
-Do not convert short coherent paragraphs to bullets without a clear benefit.
-Do not recast a capability inventory, README or runbook as a case study.
-Keep necessary operational warnings near their procedures even if summarised elsewhere.
-Do not report ordinary grammar or spelling issues.
-
-Allowed categories:
-structure, scannability, over-explanation
-
-These findings will normally use type "improvement".
-"""
-
-class PortfolioReview(AIPageCheck):
-    name = "PortfolioReview"
-    allowed_categories = {"portfolio"}
-    prompt = r"""
-Review this case study or documentation sample for a Principal Technical Writer /
-Documentation Engineer portfolio, respecting its supplied DOCUMENT GENRE.
-This portfolio covers both technical-writing work and documentation-engineering
-work. A valid deliverable does NOT have to be a document, article, guide or other
-piece of authored prose. Senior/principal-level documentation work can legitimately
-produce or improve the systems through which documentation is created, governed,
-tested, published, discovered and maintained.
-Valid portfolio deliverables can therefore include, among other things:
-- documentation portals, developer centres and documentation websites
-- documentation platforms and docs-as-code architectures
-- information architecture, navigation and content-model improvements
-- build, publishing and deployment pipelines
-- CI/CD documentation quality gates, linting and validation systems
-- API-reference generation and OpenAPI-based documentation tooling
-- software, API and integration testing performed to validate documentation against
-  actual product or API behaviour, including examples, requests, responses, error
-  handling, workflows and documented procedures
-- test harnesses, scripts, fixtures or reproducible validation workflows used to
-  verify documentation accuracy and prevent regressions
-- search, discoverability and developer-experience improvements
-- reusable components, templates and documentation design systems
-- migrations between documentation platforms or toolchains
-- content-management, authoring and contributor workflows
-- automation, integrations and maintenance tooling
-- governance, quality, observability or consistency improvements
-Do not assume that personally writing a documentation artefact is inherently more
-important than designing, building, migrating, automating or improving a
-documentation system. Do not penalise a case study merely because its principal
-deliverable is a platform, workflow, architecture, tool or engineering improvement.
-Treat testing the software or API itself as relevant portfolio evidence when the
-purpose is to verify that documentation, examples, procedures or reference material
-match real system behaviour. This is documentation validation, not merely generic QA.
-Consider whether the supplied page effectively communicates, where relevant:
-- what was delivered or materially improved
-- the users or stakeholders served by the work, when that context is necessary to
-  understand its value; these may be documentation readers, developers,
-  documentation contributors, maintainers, engineering teams or internal users
-- what the author personally owned, designed, built, implemented, migrated,
-  structured, automated, authored, tested, validated or otherwise contributed
-- the problem, constraint or opportunity the work addressed
-- what made the work useful, difficult, technically significant or operationally
-  valuable
-- the relationship between the portfolio description and any evidence that is
-  actually available, such as a live site, repository, architecture, workflow,
-  implementation, test or validation approach, generated output or published
-  documentation
-A contribution can be clear even when it is expressed as ownership of scope,
-architecture, implementation, migration, tooling, automation, software/API
-testing used to validate documentation, delivery approach or cross-functional
-technical leadership. Do not require the page to separately state
-that the author "wrote" an artefact when the supplied text already establishes a
-credible documentation-engineering contribution.
-Do not report an issue merely because a conventional technical-writer case study
-might include an audience statement, list of pages written or named prose artefact.
-Only report missing context when its absence materially prevents a portfolio reader
-from understanding the author's contribution, the nature of the deliverable or why
-the work matters.
-Identify places where the page spends substantially more space explaining the
-underlying product or technology than demonstrating the documentation or
-documentation-engineering work.
-
-Do not invent project results, metrics, responsibilities, audiences, business
-impact, design decisions or technical facts.
-
-If information is genuinely absent, describe only the KIND of information that
-could strengthen the page. Do not fabricate the missing content.
-
-Allowed category:
-portfolio
-
-Use type "improvement".
-"""
-
-    def run_page(self, path, content, api_key):
-        if document_genre(path, content) not in PORTFOLIO_REVIEW_GENRES:
-            return []
-        return super().run_page(path, content, api_key)
-
-class DiagramReview(AIPageCheck):
-    name = "DiagramReview"
-    allowed_categories = {"diagram"}
-    prompt = r"""
-Look very sparingly for Mermaid diagram opportunities.
-
-A diagram is appropriate only when the supplied text describes something that
-would be substantially easier to understand visually, such as:
-- a sequence of interactions
-- an API workflow
-- a lifecycle
-- a transformation
-- relationships among several systems or components
-- a decision process
-- a non-obvious hierarchy
-Do not suggest a diagram:
-- merely to make the page more visual
-- for a simple definition or fact
-- for an already-clear list
-- when the diagram would just repeat one or two straightforward sentences
-- when the diagram would require invented technical relationships
-
-Prefer ZERO findings for most short pages.
-Return no more than ONE issue.
-
-Allowed category:
-diagram
-Every finding must use severity "low" and type "diagram".
-The suggestion should name the simplest appropriate Mermaid diagram type and
-briefly describe what it should show. Include Mermaid source only when every
-node and relationship is directly supported by the supplied text.
-"""
-
-
-class RepetitionReview(BaseCheck):
-    name = "RepetitionReview"
-    supports_page = True
-    supports_site = True
-    allowed_categories = {"repetition"}
-    PAGE_PROMPT = r"""
-Review only for unnecessary repetition within this page.
-
-Preserve overview/detail, approach/outcome, prose/diagram, label/explanation,
-standalone capability examples and warnings or checks repeated at the point of use.
-Report only when the passages serve the same reader purpose and removal loses no
-necessary context. Quote BOTH passages in evidence and explain that shared purpose.
-Do not assume a reader consumes the whole page sequentially.
-
-Flag repetition when:
-- two passages communicate substantially the same information
-- a later sentence repeats something the reader has already understood
-- several sentences could be consolidated without losing useful meaning
-- terminology is repeatedly re-explained after it has been established
-Do not flag intentional repetition needed for clarity, repeated product names,
-or passages merely because they concern the same broad subject.
-
-Allowed category:
-repetition
-
-Use type "improvement" unless repetition creates a substantive contradiction.
-"""
-
-    SITE_PROMPT = r"""
-Compare the supplied files only for unnecessary repetition across pages.
-Look for:
-- substantially identical introductions
-- repeated explanations of the same concept
-- repeated descriptions of the author's role
-- repeated publication or repository boilerplate
-- repeated background information
-- repeated definitions that could be explained once elsewhere
-
-Do not flag repetition merely because several case studies use the same product,
-technology or terminology.
-
-Only report repetition when reducing or consolidating it would materially improve
-the portfolio.
-For every issue, choose one file as the primary place where action should be
-taken and quote exact text from that file. Mention the relevant comparison with
-other supplied files in the message.
-
-Allowed category:
-repetition
-
-Use type "improvement".
-"""
-
-    def run_page(self, path, content, api_key):
-        context = genre_context(path, content)
-        genre = document_genre(path, content)
-        content = ai_review_content(content)
-        system_prompt = (
-            COMMON_AI_RULES
-            + "\n\n"
-            + self.PAGE_PROMPT
-            + "\n\n"
-            + (SUBSTANTIVE_DEFECT_RULES if self.defects_only else '')
-            + PAGE_JSON_CONTRACT
-        )
-        parsed = request_review(
-            system_prompt,
-            f"FILE: {path.as_posix()}\n{context}\n\n{add_line_numbers(content)}",
-            api_key,
-        )
-
-        issues = require_review_issues(parsed)
-        validated = []
-
-        for issue in issues:
-            normalised = normalise_ai_issue(
-                issue,
-                content,
-                path.as_posix(),
-                self.allowed_categories,
-                genre=genre,
-                evidence_sources={path.as_posix(): content},
-            )
-            if normalised is not None:
-                validated.append(normalised)
-
-        return verify_page_findings(validated, path, content, api_key, self.defects_only)
-
-    def run_site(self, paths, contents, api_key):
-        contexts = {path: genre_context(path, content) for path, content in contents.items()}
-        genres = {path: document_genre(path, content) for path, content in contents.items()}
-        contents = {path: ai_review_content(content) for path, content in contents.items()}
-        sections = []
-
-        for path in paths:
-            path_string = path.as_posix()
-            content = contents.get(path_string, "")
-
-            if not content.strip():
-                continue
-            sections.append(
-                "\n".join(
-                    [
-                        "=" * 72,
-                        f"FILE: {path_string}",
-                        contexts.get(path_string, genre_context(path, content)),
-                        "=" * 72,
-                        add_line_numbers(content),
-                    ]
-                )
-            )
-
-        if not sections:
-            return []
-        system_prompt = (
-            COMMON_AI_RULES
-            + "\n\n"
-            + self.SITE_PROMPT
-            + "\n\n"
-            + (SUBSTANTIVE_DEFECT_RULES if self.defects_only else '')
-            + SITE_JSON_CONTRACT
-        )
-
-        parsed = request_review(
-            system_prompt,
-            "Compare these files:\n\n" + "\n\n".join(sections),
-            api_key,
-        )
-
-        validated = validate_site_ai_issues(
-            require_review_issues(parsed),
-            paths,
-            contents,
-            self.allowed_categories,
-            genres=genres,
-        )
-        return verify_page_findings(validated, Path("<site-review>"),
-                                    json.dumps(contents, ensure_ascii=False), api_key, self.defects_only)
-
-class SiteWideConsistencyReview(BaseCheck):
-    name = "SiteWideConsistencyReview"
-    supports_site = True
-    allowed_categories = {"consistency", "structure", "portfolio"}
-
-    PROMPT = r"""
-Compare the supplied documentation as one Principal Technical Writer /
-Documentation Engineer portfolio.
-The portfolio may demonstrate both authored documentation and documentation
-engineering. Treat documentation platforms, developer portals, publishing systems,
-information architecture, automation, migrations, tooling, CI/CD quality systems,
-API documentation infrastructure, software/API testing used to validate
-documentation, reproducible documentation test workflows and contributor workflows
-as legitimate portfolio deliverables alongside conventional written documentation.
-Do not assume every case study should name a prose artefact the author personally
-wrote. Evaluate whether each page makes the author's actual contribution and the
-value of the work understandable in the context of that kind of project.
-
-Do not perform grammar, spelling or sentence-level editing.
-Do not report cross-page repetition; that is handled by another check.
-
-Focus on meaningful site-wide inconsistencies involving:
-1. Structural consistency
-- comparable case studies present equivalent information in confusingly
-  different locations
-- one comparable page clearly establishes the author's contribution while
-  another does not
-- comparable information appears under materially inconsistent headings
-- important information is easy to locate on some pages but buried on others
-
-Do not demand identical templates. Some variation is appropriate.
-2. Terminology consistency
-- the same concept is named differently across pages in a way that could confuse
-  readers
-
-Do not report harmless stylistic variation.
-3. Portfolio effectiveness
-- recurring structural patterns make it difficult to compare case studies
-- case studies systematically explain technology more strongly than they
-  demonstrate the documentation or documentation-engineering work
-- documentation-engineering case studies fail to make system ownership,
-  implementation, architecture, automation, migration, documentation validation
-  through software/API testing, or operational impact clear enough to understand the
-  author's contribution
-- information architecture could be consolidated or reorganised across the site
-Do not treat variation between writing-focused and engineering-focused case studies
-as inconsistency by itself. Their evidence and deliverables are expected to differ.
-
-Do not invent missing project information. If a useful field appears absent,
-describe only the kind of information that could strengthen comparable pages.
-
-For every finding, choose one specific file as the primary action location and
-quote exact text from that file. Use the message to explain the comparison with
-other supplied files.
-Allowed categories:
-consistency, structure, portfolio
-
-Use type "improvement" unless the inconsistency is objectively defective.
-"""
-
-    def run_site(self, paths, contents, api_key):
-        contexts = {path: genre_context(path, content) for path, content in contents.items()}
-        genres = {path: document_genre(path, content) for path, content in contents.items()}
-        contents = {path: ai_review_content(content) for path, content in contents.items()}
-        sections = []
-
-        for path in paths:
-            path_string = path.as_posix()
-            content = contents.get(path_string, "")
-
-            if not content.strip():
-                continue
-            sections.append(
-                "\n".join(
-                    [
-                        "=" * 72,
-                        f"FILE: {path_string}",
-                        contexts.get(path_string, genre_context(path, content)),
-                        "=" * 72,
-                        add_line_numbers(content),
-                    ]
-                )
-            )
-
-        if not sections:
-            return []
-        system_prompt = (
-            COMMON_AI_RULES
-            + "\n\n"
-            + self.PROMPT
-            + "\n\n"
-            + (SUBSTANTIVE_DEFECT_RULES if self.defects_only else '')
-            + SITE_JSON_CONTRACT
-        )
-
-        parsed = request_review(
-            system_prompt,
-            "Review these files for consistency, respecting each document's genre:\n\n" + "\n\n".join(sections),
-            api_key,
-        )
-
-        validated = validate_site_ai_issues(
-            require_review_issues(parsed),
-            paths,
-            contents,
-            self.allowed_categories,
-            genres=genres,
-        )
-        return verify_page_findings(validated, Path("<site-review>"),
-                                    json.dumps(contents, ensure_ascii=False), api_key, self.defects_only)
-
-def validate_site_ai_issues(issues, paths, contents, allowed_categories, *, genres=None):
-    """Validate site-wide AI findings against the named source file."""
-
-    if not isinstance(issues, list):
-        return []
-
-    validated = []
-
-    for issue in issues:
-        if not isinstance(issue, dict):
-            continue
-
-        canonical_path = normalise_model_path(
-            issue.get("file"),
-            paths,
-        )
-
-        if canonical_path is None:
-            continue
-        content = contents.get(canonical_path)
-
-        if content is None:
-            continue
-
-        normalised = normalise_ai_issue(
-            issue,
-            content,
-            canonical_path,
-            allowed_categories,
-            genre=(genres or {}).get(canonical_path),
-            evidence_sources=contents,
-        )
-
-        if normalised is not None:
-            validated.append(normalised)
-
-    return validated
 # ---------------------------------------------------------------------------
 # Deterministic checks
 # ---------------------------------------------------------------------------
@@ -1765,7 +608,7 @@ def selected_checks(filter_name):
     allowed = FILTER_PRESETS[filter_name]
     checks = [check for check in build_checks() if check.name in allowed]
 
-    if not DEEPSEEK_AI_CHECKS_ENABLED:
+    if not client.DEEPSEEK_AI_CHECKS_ENABLED:
         checks = [check for check in checks if check.source != "ai"]
 
     for check in checks:
@@ -1791,65 +634,6 @@ def resolve_mode_for_filter(mode, filter_name):
         print(f"{FILTER_LABELS[filter_name]} requires per-page mode; switching to per-page.")
         return "per-page"
     return mode
-
-
-def cached_ai_check(check, sources, scope, compute):
-    if check.source != 'ai':
-        return compute()
-    from qa_review_cache import ReviewCache
-    # Bind all prompts, routing, normalization and verification code. A code edit
-    # invalidates existing results even if the policy version was not bumped.
-    implementation = hashlib.sha256(Path(__file__).read_bytes()).hexdigest()
-    policy_implementation = hashlib.sha256((SCRIPT_DIR / 'qa_policy.py').read_bytes()).hexdigest()
-    source_implementation = hashlib.sha256(Path(check_source.__file__).read_bytes()).hexdigest()
-    cache_implementation = hashlib.sha256((SCRIPT_DIR / 'qa_review_cache.py').read_bytes()).hexdigest()
-    inputs = {'scope': scope, 'check': check.name, 'sources': sources,
-              'model': MODEL, 'api_url': API_URL, 'policy': AI_REVIEW_POLICY_VERSION,
-              'implementation': implementation, 'policy_implementation': policy_implementation,
-              'cache_implementation': cache_implementation, 'source_implementation': source_implementation,
-              'defects_only': bool(getattr(check, 'defects_only', False))}
-    return ReviewCache(PROJECT_ROOT / '.qa/review-cache', enabled=REVIEW_CACHE_ENABLED).run(inputs, compute)
-
-
-def run_per_page_checks(paths, checks, api_key) -> CheckResult:
-    result = CheckResult()
-    runnable_checks = [check for check in checks if check.supports_page]
-    if not runnable_checks:
-        return result
-
-    for file_number, path in enumerate(paths, start=1):
-        content = path.read_text(encoding="utf-8")
-        if not content.strip():
-            continue
-
-        location = path.as_posix()
-        print(f"[{file_number}/{len(paths)}] {location}")
-        for check in runnable_checks:
-            print(f"    {check.name}")
-            result.extend(execute_check(check, location, lambda: cached_ai_check(
-                check, {location: content}, 'per-page',
-                lambda: check.run_page(path, content, api_key))))
-    return result
-
-
-def run_site_checks(paths, checks, api_key) -> CheckResult:
-    result = CheckResult()
-    runnable_checks = [check for check in checks if check.supports_site]
-    contents = {path.as_posix(): path.read_text(encoding="utf-8") for path in paths}
-
-    for check in runnable_checks:
-        print(f"[site] {check.name}")
-        result.extend(execute_check(check, "<site-wide>", lambda: cached_ai_check(
-            check, contents, 'site-wide', lambda: check.run_site(paths, contents, api_key))))
-    return result
-
-
-def run_file_checks(paths, checks) -> CheckResult:
-    result = CheckResult()
-    for check in checks:
-        print(f"[{check.source}] {check.name}")
-        result.extend(check.run(paths))
-    return result
 
 
 # ---------------------------------------------------------------------------
@@ -1893,7 +677,7 @@ def render_saved_report(reference, feedback_path, output_dir, *, compare=False):
     if compare:
         from qa_recurrence import compare_recurrences
         comparison_errors = compare_recurrences(issues, feedback_path=feedback_path,
-            api_key=os.environ.get('DEEPSEEK_API_KEY'), request_review=request_review)
+            api_key=os.environ.get('DEEPSEEK_API_KEY'), request_review=client.request_review)
     ci_result = evaluate_ci(issues, errors, thresholds['high'], thresholds['medium'], thresholds['api_errors'])
     metadata['feedback_updated_at'] = london_now().isoformat(timespec='seconds')
     metadata['review_report_reference'] = str(source_path.resolve()) if source_path else reference
@@ -1987,8 +771,6 @@ def main():
     # any local directory, including the scripts directory itself.
     os.chdir(PROJECT_ROOT)
     args = parse_args()
-    global REVIEW_CACHE_ENABLED
-    REVIEW_CACHE_ENABLED = not args.no_review_cache
     # Local reports belong under .qa; retain root outputs for the existing
     # GitHub Actions deployment workflow, which uploads these root filenames.
     # An explicit --report-dir overrides either default.
@@ -2036,7 +818,7 @@ def main():
             print('Render requires --report with the saved report JSON path or versioned URL', file=sys.stderr)
             return 2
         try:
-            if args.command == 'compare' and (not DEEPSEEK_AI_CHECKS_ENABLED or not os.environ.get('DEEPSEEK_API_KEY')):
+            if args.command == 'compare' and (not client.DEEPSEEK_AI_CHECKS_ENABLED or not os.environ.get('DEEPSEEK_API_KEY')):
                 print('Compare requires enabled DeepSeek checks and DEEPSEEK_API_KEY', file=sys.stderr)
                 return 2
             result = render_saved_report(args.report, args.feedback_file, report_dir,
@@ -2064,7 +846,7 @@ def main():
         if (args.retry and (args.reason is not None or args.reason_file is not None)) or (not args.retry and bool(args.reason) == bool(args.reason_file)):
             print("Provide exactly one of --reason or --reason-file", file=sys.stderr)
             return 2
-        if not DEEPSEEK_AI_CHECKS_ENABLED:
+        if not client.DEEPSEEK_AI_CHECKS_ENABLED:
             print("DeepSeek checks are disabled", file=sys.stderr)
             return 2
         api_key = os.environ.get("DEEPSEEK_API_KEY")
@@ -2075,7 +857,7 @@ def main():
             rebuttal = None if args.retry else (args.reason if args.reason is not None else args.reason_file.read_text(encoding="utf-8"))
             decision = challenge_finding(args.issue, rebuttal, retry=args.retry,
                 findings_path=args.findings_file, feedback_path=args.feedback_file,
-                api_key=api_key, request_review=request_review, report=args.report)
+                api_key=api_key, request_review=client.request_review, report=args.report)
         except (ValueError, OSError, requests.RequestException, KeyError, json.JSONDecodeError) as error:
             print(f"Challenge failed: {error}", file=sys.stderr)
             return 1
@@ -2084,7 +866,7 @@ def main():
         return 0
 
     api_key = os.environ.get("DEEPSEEK_API_KEY")
-    if DEEPSEEK_AI_CHECKS_ENABLED:
+    if client.DEEPSEEK_AI_CHECKS_ENABLED:
         print("DeepSeek AI checks: ENABLED")
     else:
         print("DeepSeek AI checks: DISABLED (hardcoded switch)")
@@ -2116,19 +898,10 @@ def main():
         print("No interactive input available; defaulting --filter to full.")
 
     mode = resolve_mode_for_filter(mode, filter_name)
-    checks = selected_checks(filter_name)
-
-    file_checks = [check for check in checks if isinstance(check, FileCheck)]
-    scoped_checks = [check for check in checks if check not in file_checks]
-    # Only retain implementations that can actually run in the chosen scope.
-    if mode == "per-page":
-        scoped_checks = [check for check in scoped_checks if check.supports_page]
-    elif mode == "site-wide":
-        scoped_checks = [check for check in scoped_checks if check.supports_site]
-
-    checks = scoped_checks + file_checks
+    plan = CheckPlan.for_mode(mode, selected_checks(filter_name))
+    checks = plan.checks
     if not checks:
-        if not DEEPSEEK_AI_CHECKS_ENABLED:
+        if not client.DEEPSEEK_AI_CHECKS_ENABLED:
             print(
                 "No runnable checks remain for this preset because DeepSeek AI checks "
                 "are disabled by the hardcoded switch."
@@ -2137,7 +910,7 @@ def main():
             print("No checks are available for the selected mode and filter.")
         return 2
 
-    if DEEPSEEK_AI_CHECKS_ENABLED and not api_key and any(
+    if client.DEEPSEEK_AI_CHECKS_ENABLED and not api_key and any(
         check.source == "ai" for check in checks
     ):
         print("DEEPSEEK_API_KEY is not set, but the selected review includes AI checks.")
@@ -2152,20 +925,16 @@ def main():
 
     print()
 
-    result = CheckResult()
-    if mode in {"per-page", "all"}:
-        result.extend(run_per_page_checks(files, scoped_checks, api_key))
-    if mode in {"site-wide", "all"}:
-        result.extend(run_site_checks(files, scoped_checks, api_key))
-    result.extend(run_file_checks(files, file_checks))
+    cache = AIReviewCache(PROJECT_ROOT / '.qa/review-cache', enabled=not args.no_review_cache)
+    result = run_checks(files, plan, api_key, cached_check=cache.run)
     issues, errors = result.issues, result.errors
     decorate_issues(issues)
     attach_related_findings(issues)
     attach_feedback_status(issues, args.feedback_file)
-    if DEEPSEEK_AI_CHECKS_ENABLED and api_key:
+    if client.DEEPSEEK_AI_CHECKS_ENABLED and api_key:
         from qa_recurrence import compare_recurrences
         comparison_errors = compare_recurrences(issues, feedback_path=args.feedback_file,
-            api_key=api_key, request_review=request_review)
+            api_key=api_key, request_review=client.request_review)
         if comparison_errors:
             print(f'Recurrence comparison failures: {len(comparison_errors)}; findings remain unresolved.')
     save_findings(issues, args.findings_file)
@@ -2182,9 +951,9 @@ def main():
         "feedback_file": str(args.feedback_file),
         "filter": filter_name,
         "filter_label": FILTER_LABELS[filter_name],
-        "model": MODEL if DEEPSEEK_AI_CHECKS_ENABLED else f"{MODEL} (disabled)",
+        "model": client.MODEL if client.DEEPSEEK_AI_CHECKS_ENABLED else f"{client.MODEL} (disabled)",
         "ai_review_policy_version": AI_REVIEW_POLICY_VERSION,
-        "ai_checks_enabled": DEEPSEEK_AI_CHECKS_ENABLED,
+        "ai_checks_enabled": client.DEEPSEEK_AI_CHECKS_ENABLED,
         "ai_review_intent": "substantive-defects" if filter_name == "full" else "optional-editorial",
         "files_reviewed": len(files),
         "checks": [check.name for check in checks],

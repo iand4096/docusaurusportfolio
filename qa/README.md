@@ -294,9 +294,11 @@ precision and recall improvements still require a labelled model evaluation.
 Successful AI checks, including zero findings and completed verification, are
 cached locally in `.qa/review-cache/`. A cache hit skips both DeepSeek requests.
 Keys include the complete source text and paths, check, scope, model, API endpoint,
-policy and review/cache implementation hashes. Any review-code or prompt change
-invalidates results. Site-wide checks depend on their complete supplied document
-set. Failed checks are not cached. Corrupt entries are recomputed, and unavailable
+policy and an implementation fingerprint computed once per run. The fingerprint
+covers the AI review package and its shared source, policy, check and cache code.
+Prompt or review-code changes invalidate results. Report template changes keep
+cached results reusable. Site-wide checks depend on their complete supplied
+document set. Failed checks are not cached. Corrupt entries are recomputed, and unavailable
 cache writes do not fail a review. Logs show hits and misses.
 
 Use `--no-review-cache` to bypass reads and writes for a deliberately fresh run.

@@ -1,5 +1,6 @@
 """Source text and path matching shared by check adapters."""
 from pathlib import Path
+import re
 
 
 def find_source_line(content, original, preferred_line=None):
@@ -61,3 +62,28 @@ def match_source_path(raw_path, paths):
         return None
 
     return aliases.get(resolved)
+
+
+def iter_lines_outside_code_fences(content):
+    """Yield (line_number, text) while skipping fenced code blocks."""
+
+    in_fence = False
+    fence_marker = None
+
+    for number, line in enumerate(content.splitlines(), start=1):
+        stripped = line.lstrip()
+        match = re.match(r"(```+|~~~+)", stripped)
+
+        if match:
+            marker = match.group(1)
+            if not in_fence:
+                in_fence = True
+                fence_marker = marker[0]
+            elif marker[0] == fence_marker:
+                in_fence = False
+                fence_marker = None
+
+            continue
+
+        if not in_fence:
+            yield number, line

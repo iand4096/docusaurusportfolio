@@ -5,6 +5,11 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_ai import routing
+from qa_ai import validation
+from qa_ai import verification
+from qa_ai import checks
+from qa_ai import client
 
 BODY = 'I built a tool. These instructions explain how to run it.'
 
@@ -34,28 +39,28 @@ class GenreReviewTests(unittest.TestCase):
         }
         for path, expected in cases.items():
             with self.subTest(path=path):
-                self.assertEqual(review.document_genre(path, BODY), expected)
-                self.assertEqual(review.document_genre(review.PROJECT_ROOT / path, BODY), expected)
+                self.assertEqual(routing.document_genre(path, BODY), expected)
+                self.assertEqual(routing.document_genre(review.PROJECT_ROOT / path, BODY), expected)
 
     def test_metadata_fallback_does_not_override_technical_paths(self):
         content = '---\ntype: [case-study]\n---\n' + BODY
-        self.assertEqual(review.document_genre('custom.md', content), 'case-study')
-        self.assertEqual(review.document_genre('knowledge-api/README.md', content), 'technical-readme')
-        self.assertEqual(review.document_genre('custom.md', BODY), 'general-document')
+        self.assertEqual(routing.document_genre('custom.md', content), 'case-study')
+        self.assertEqual(routing.document_genre('knowledge-api/README.md', content), 'technical-readme')
+        self.assertEqual(routing.document_genre('custom.md', BODY), 'general-document')
 
     def test_portfolio_review_skips_non_narrative_pages_without_ai_calls(self):
-        with patch.object(review, 'request_review') as request:
+        with patch.object(client, 'request_review') as request:
             for path in ['docs/skills/example.md', 'docs/tools/example.md',
                          'README.md', 'knowledge-api/OPERATIONS.md',
                          'src/components/example/README.md', 'src/pages/index.md']:
-                self.assertEqual(review.PortfolioReview().run_page(Path(path), BODY, 'unused'), [])
+                self.assertEqual(checks.PortfolioReview().run_page(Path(path), BODY, 'unused'), [])
             request.assert_not_called()
 
     def test_metadata_genre_survives_editorial_masking(self):
         content = '---\ntype: [case-study]\n---\n' + BODY
-        with patch.object(review, 'verify_page_findings', side_effect=lambda issues, *_: issues), \
-             patch.object(review, 'request_review', return_value={'issues': [finding()]}) as request:
-            result = review.PortfolioReview().run_page(Path('custom.md'), content, 'unused')
+        with patch.object(verification, 'verify_page_findings', side_effect=lambda issues, *_: issues), \
+             patch.object(client, 'request_review', return_value={'issues': [finding()]}) as request:
+            result = checks.PortfolioReview().run_page(Path('custom.md'), content, 'unused')
         self.assertEqual(len(result), 1)
         self.assertIn('DOCUMENT GENRE: case-study', request.call_args.args[1])
         self.assertNotIn('type: [case-study]', request.call_args.args[1])
@@ -65,22 +70,22 @@ class GenreReviewTests(unittest.TestCase):
         paths = [Path('knowledge-api/README.md'), Path('docs/case-studies/example.md')]
         issues = [{**finding(), 'file': str(path), 'evidence': [{'file': str(path), 'quote': 'I built a tool.'}]} for path in paths]
         contents = {str(path): BODY for path in paths}
-        result = review.validate_site_ai_issues(issues, paths, contents, {'portfolio'})
+        result = validation.validate_site_ai_issues(issues, paths, contents, {'portfolio'})
         self.assertEqual([issue['file'] for issue in result], ['docs/case-studies/example.md'])
 
     def test_language_defects_are_not_hidden_by_genre(self):
         for path in ['docs/tools/example.md', 'knowledge-api/README.md']:
-            self.assertIsNotNone(review.normalise_ai_issue(finding('grammar'), BODY, path, {'grammar'}))
+            self.assertIsNotNone(validation.normalise_ai_issue(finding('grammar'), BODY, path, {'grammar'}))
 
     def test_every_request_receives_genre_context(self):
         path = Path('docs/tools/example.md')
         contents = {str(path): BODY}
-        with patch.object(review, 'request_review', return_value={'issues': []}) as request:
-            review.GrammarReview().run_page(path, BODY, 'unused')
-            review.StructureReview().run_page(path, BODY, 'unused')
-            review.RepetitionReview().run_page(path, BODY, 'unused')
-            review.RepetitionReview().run_site([path], contents, 'unused')
-            review.SiteWideConsistencyReview().run_site([path], contents, 'unused')
+        with patch.object(client, 'request_review', return_value={'issues': []}) as request:
+            checks.GrammarReview().run_page(path, BODY, 'unused')
+            checks.StructureReview().run_page(path, BODY, 'unused')
+            checks.RepetitionReview().run_page(path, BODY, 'unused')
+            checks.RepetitionReview().run_site([path], contents, 'unused')
+            checks.SiteWideConsistencyReview().run_site([path], contents, 'unused')
         self.assertEqual(request.call_count, 5)
         for call in request.call_args_list:
             self.assertIn('DOCUMENT GENRE: tool-overview', call.args[1])
@@ -91,9 +96,9 @@ class GenreReviewTests(unittest.TestCase):
         contents = {'custom.md': '---\ntype: [case-study]\n---\n' + BODY,
                     'knowledge-api/README.md': BODY}
         issues = [{**finding(), 'file': str(path), 'evidence': [{'file': str(path), 'quote': 'I built a tool.'}]} for path in paths]
-        with patch.object(review, 'verify_page_findings', side_effect=lambda issues, *_: issues), \
-             patch.object(review, 'request_review', return_value={'issues': issues}) as request:
-            result = review.SiteWideConsistencyReview().run_site(paths, contents, 'unused')
+        with patch.object(verification, 'verify_page_findings', side_effect=lambda issues, *_: issues), \
+             patch.object(client, 'request_review', return_value={'issues': issues}) as request:
+            result = checks.SiteWideConsistencyReview().run_site(paths, contents, 'unused')
         self.assertEqual([issue['file'] for issue in result], ['custom.md'])
         self.assertIn('DOCUMENT GENRE: technical-readme', request.call_args.args[1])
         self.assertIn('DOCUMENT GENRE: case-study', request.call_args.args[1])

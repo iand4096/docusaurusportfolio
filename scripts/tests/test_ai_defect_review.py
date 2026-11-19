@@ -5,6 +5,10 @@ from unittest.mock import patch
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import ai_docs_review as review
+from qa_ai import verification
+from qa_ai import prompts
+from qa_ai import client
+from qa_ai.cache import AIReviewCache
 import test_ai_review_evidence as evidence
 
 
@@ -22,8 +26,8 @@ class DefectReviewTests(unittest.TestCase):
             failure_kind='contradiction', medium_justified=True)
 
     def verify(self, assessment, issue=None):
-        with patch.object(review, 'request_review', return_value={'assessments': [assessment]}):
-            return review.verify_page_findings([issue or self.issue], self.path,
+        with patch.object(client, 'request_review', return_value={'assessments': [assessment]}):
+            return verification.verify_page_findings([issue or self.issue], self.path,
                                               self.content, 'unused', True)
 
     def test_default_preserves_deterministic_checks_and_excludes_optional_checks(self):
@@ -64,20 +68,20 @@ class DefectReviewTests(unittest.TestCase):
             'Delete the old copy after verification.']))), 1)
 
     def test_optional_findings_skip_verification_in_default_review(self):
-        with patch.object(review, 'request_review') as request:
-            result = review.verify_page_findings([dict(self.issue, type='improvement')],
+        with patch.object(client, 'request_review') as request:
+            result = verification.verify_page_findings([dict(self.issue, type='improvement')],
                 self.path, self.content, 'unused', True)
         self.assertEqual(result, [])
         request.assert_not_called()
 
     def test_withdrawn_claims_are_reasoning_examples_not_exemptions(self):
-        self.assertIn('comma-delimited parenthetical', review.SUBSTANTIVE_DEFECT_RULES)
-        self.assertIn('display label', review.SUBSTANTIVE_DEFECT_RULES)
-        self.assertIn('not blanket exemptions', review.SUBSTANTIVE_DEFECT_RULES)
+        self.assertIn('comma-delimited parenthetical', prompts.SUBSTANTIVE_DEFECT_RULES)
+        self.assertIn('display label', prompts.SUBSTANTIVE_DEFECT_RULES)
+        self.assertIn('not blanket exemptions', prompts.SUBSTANTIVE_DEFECT_RULES)
 
     def test_full_mode_applies_strict_prompt_and_verification_to_page_checks(self):
         check = next(c for c in review.selected_checks('full') if c.name == 'GrammarReview')
-        with patch.object(review, 'request_review', side_effect=[{'issues': [self.issue]},
+        with patch.object(client, 'request_review', side_effect=[{'issues': [self.issue]},
                 {'assessments': [self.accept]}]) as request:
             result = check.run_page(self.path, self.content, 'unused')
         self.assertEqual(len(result), 1)
@@ -86,12 +90,13 @@ class DefectReviewTests(unittest.TestCase):
 
     def test_review_intent_separates_cache_entries(self):
         import tempfile
-        with tempfile.TemporaryDirectory() as directory, patch.object(review, 'PROJECT_ROOT', Path(directory)):
+        with tempfile.TemporaryDirectory() as directory:
+            cache = AIReviewCache(Path(directory))
             full = next(c for c in review.selected_checks('full') if c.name == 'GrammarReview')
             editorial = next(c for c in review.selected_checks('editorial') if c.name == 'GrammarReview')
             compute = unittest.mock.Mock(return_value=[])
             for check in [full, editorial, full, editorial]:
-                review.cached_ai_check(check, {'example.md': self.content}, 'per-page', compute)
+                cache.run(check, {'example.md': self.content}, 'per-page', compute)
             self.assertEqual(compute.call_count, 2)
 
 
