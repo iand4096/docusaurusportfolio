@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="760" viewBox="0 0 680 760" role="img" aria-labelledby="title desc">
+  <title id="title">Source ranges and the AI review cache</title>
+  <desc id="desc">An AI finding about a missing prerequisite cites lines 42 and 43 of a guide. The cache key is a SHA-256 hash of the supplied source paths and full document text, review scope, check name, defects-only setting, LLM model and API endpoint used, review policy version, implementation fingerprint and cache schema version. When these inputs are unchanged, the pipeline reuses that review and applies the current dismissal. Adding a line changes the key and moves the cited text to lines 43 and 44. A fresh review can raise the same criticism in different words, so the report looks for an earlier decision.</desc>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#526784"/>
+    </marker>
+  </defs>
+  <style>
+    text { font: 17px system-ui, sans-serif; fill: #172033; }
+    .heading { font-size: 22px; font-weight: 700; }
+    .caption { font-size: 16px; fill: #40516a; }
+    .source { font: 16px ui-monospace, monospace; }
+    .number { fill: #546985; }
+    .label { font-size: 16px; font-weight: 700; fill: #234785; }
+  </style>
+
+  <rect width="680" height="760" rx="16" fill="#f4f7fc"/>
+  <rect x="24" y="24" width="632" height="216" rx="12" fill="#fff" stroke="#b5c4d8"/>
+  <text x="44" y="58" class="heading">First review</text>
+  <text x="44" y="84" class="caption">AI finding: “The guide omits a prerequisite.”</text>
+  <rect x="44" y="100" width="592" height="96" rx="8" fill="#f0f4fa"/>
+  <rect x="47" y="129" width="586" height="61" rx="5" fill="#dce9fc"/>
+  <path d="M49 133v53" stroke="#3566ad" stroke-width="3"/>
+  <g class="source">
+    <text x="60" y="121"><tspan class="number">41</tspan><tspan x="100">Create an account.</tspan></text>
+    <text x="60" y="151"><tspan class="number">42</tspan><tspan x="100">Create an API key in Settings.</tspan></text>
+    <text x="60" y="179"><tspan class="number">43</tspan><tspan x="100">Send the request with your key.</tspan></text>
+  </g>
+  <text x="44" y="221" class="label">Cited lines 42–43</text>
+  <text x="212" y="221" class="caption">Reviewer dismisses it. The prerequisite is present.</text>
+
+  <path d="M340 240v20" stroke="#526784" stroke-width="2"/>
+  <rect x="24" y="260" width="632" height="154" rx="12" fill="#fff" stroke="#b5c4d8"/>
+  <text x="44" y="294" class="heading">What goes into the cache key</text>
+  <text x="44" y="321" class="caption">The pipeline hashes these inputs with SHA-256.</text>
+  <text x="44" y="348">Source paths and full document text</text>
+  <text x="44" y="372">Review scope, check name, defects-only mode</text>
+  <text x="44" y="396">LLM Model and API endpoint used</text>
+  <text x="418" y="348">Review policy version</text>
+  <text x="418" y="372">Implementation fingerprint</text>
+  <text x="418" y="396">Cache schema version</text>
+
+  <g fill="none" stroke="#526784" stroke-width="2" marker-end="url(#arrow)">
+    <path d="M340 414v25H176v28"/>
+    <path d="M340 414v25h164v28"/>
+  </g>
+
+  <g transform="translate(0 174)">
+    <rect x="24" y="294" width="304" height="268" rx="12" fill="#fff" stroke="#adc8b9"/>
+    <text x="44" y="328" class="heading">Unchanged inputs</text>
+    <text x="44" y="355" class="label">Cache hit</text>
+    <text x="44" y="392">
+      <tspan x="44">The source and review settings</tspan>
+      <tspan x="44" dy="25">still match the cached review.</tspan>
+    </text>
+    <path d="M44 435h264" stroke="#d6e1eb"/>
+    <text x="44" y="465">
+      <tspan x="44">Reuse findings for lines 42–43</tspan>
+      <tspan x="44" dy="25">and apply the current dismissal.</tspan>
+    </text>
+    <text x="44" y="531" class="caption">No fresh AI review.</text>
+
+    <rect x="352" y="294" width="304" height="268" rx="12" fill="#fff" stroke="#b5c4d8"/>
+    <text x="372" y="328" class="heading">After a source edit</text>
+    <text x="372" y="355" class="label">Cache miss</text>
+    <rect x="372" y="373" width="264" height="81" rx="7" fill="#f0f4fa"/>
+    <rect x="375" y="402" width="258" height="49" rx="4" fill="#dce9fc"/>
+    <path d="M377 405v43" stroke="#3566ad" stroke-width="3"/>
+    <g class="source">
+      <text x="386" y="394"><tspan class="number">42</tspan><tspan x="420">[New line inserted]</tspan></text>
+      <text x="386" y="423"><tspan class="number">43</tspan><tspan x="420">Create an API key …</tspan></text>
+      <text x="386" y="445"><tspan class="number">44</tspan><tspan x="420">Send the request …</tspan></text>
+    </g>
+    <text x="372" y="478" class="caption">Same quotation, lines 43–44.</text>
+    <text x="372" y="504">
+      <tspan x="372">A fresh AI review can rephrase</tspan>
+      <tspan x="372" dy="25">the criticism. The report looks</tspan>
+      <tspan x="372" dy="25">for the earlier decision.</tspan>
+    </text>
+  </g>
+</svg>

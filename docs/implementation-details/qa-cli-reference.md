@@ -32,22 +32,27 @@ Run `python3 scripts/ai_docs_review.py [command] [options]` from the repository 
 
 Without an interactive terminal, or with `--ci`, the review defaults to `per-page` and `full`. In an interactive terminal, omitted mode and preset values are prompted for. The CLI switches scope when a preset requires a different mode.
 
+### Presets that use AI
+
 - `full` runs the deterministic checks and uses AI to look for substantive defects in language and structure. In `site-wide` or `all` mode, it also checks for inconsistencies across documents.
 - `editorial` runs the page-level AI checks for language, structure, portfolio presentation, repetition and diagrams, alongside Vale and LTeX+.
 - `portfolio` uses AI to review how case studies and documentation samples present the author's contribution, decisions and evidence.
 - `repetition` uses AI to flag repeated material that adds little. It checks within pages, across documents, or both, depending on the mode.
 - `mermaid` uses AI to suggest where a Mermaid diagram could clarify the text.
-- `accessibility` checks page markup for issues such as missing image alt text, vague link text and skipped heading levels.
 - `site-wide-consistency` uses AI to compare documents for conflicting terminology, claims or guidance. It switches `per-page` to `site-wide`.
+
+For example, `site-wide-consistency` can flag two related pages that use different names for the same contributor role. [How the AI review compares documents](qa-ai-review.mdx#site-wide-comparison)
+
+AI review requires `DEEPSEEK_API_KEY`. Set `DEEPSEEK_MODEL` to override the default model, `deepseek-flash`.
+
+### Presets that run only deterministic checks
+
+- `accessibility` checks page markup for issues such as missing image alt text, vague link text and skipped heading levels.
 - `vale` checks prose against the repository's style and terminology rules.
 - `ltex` uses LTeX+ to check spelling and grammar in British English.
 - `lychee` uses Lychee to check external HTTP and HTTPS links.
 - `links` checks local routes and file references and uses Lychee to check external links.
 - `remark` checks Markdown and MDX syntax and configured lint rules.
-
-For example, `site-wide-consistency` can flag two related pages that use different names for the same contributor role. [How the AI review compares documents](qa-ai-review.mdx#site-wide-comparison)
-
-AI review requires `DEEPSEEK_API_KEY`. Set `DEEPSEEK_MODEL` to override the default model, `deepseek-flash`.
 
 ## Reports and feedback files
 
