@@ -1,0 +1,19 @@
+schema_version: 2
+id: 2026-11-30-correct-rice-definition
+description: Correct the definition of Morgan Stanley's Risk Calculation Environment.
+change_type: taxonomy-correction
+trigger: taxonomy-review
+governance:
+  date: '2026-11-30'
+  source: human-proposed
+  reason: Align the canonical definition with the portfolio's description of RICE and its financial analytics role.
+preconditions:
+  taxonomy_version: 3
+changes:
+  technologies:
+    update:
+      rice:
+        expect:
+          description: An internal framework for regression testing and data ingestion at Morgan Stanley.
+        set:
+          description: Morgan Stanley's Risk Calculation Environment (RICE), an internal financial analytics framework for pricing, valuation, trading and risk management.

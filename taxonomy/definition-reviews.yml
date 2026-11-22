@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "findings": {
+    "rice-definition-mismatch": {
+      "evidence": [
+        {
+          "context_hash": "sha256:6bc6c5bda69caf85e0d99a32865de3411969bfda3e22fdd5b08ef8a753340a8e",
+          "excerpt": "Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications. **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Originally associated with the Fixed Income business, it is also being adopted for Commodities products and workflows.",
+          "path": "docs/misc/OptimusRICE.md"
+        }
+      ],
+      "finding_type": "acronym_or_function_mismatch",
+      "status": "resolved_taxonomy",
+      "taxonomy_definition_fingerprint": "sha256:4e77c10ca2fbd3cca73cbdde3489c3e84f319a369c7f2b1369591883f4a5a016",
+      "term_id": "rice",
+      "rationale": "The Optimus and RICE reference identifies the acronym and describes the framework's pricing, valuation, trading and risk responsibilities.",
+      "previous_definition_fingerprint": "sha256:3ea1d4b27146ae931353eb4e3d403bcc5fe1dab8e63555c65d3c750665f763d5",
+      "resolution_migration": "taxonomy/migrations/2026-11-30-correct-rice-definition.yml",
+      "review": {
+        "status": "approved",
+        "reviewer": "repository-maintainer",
+        "reviewed_on": "2026-11-30",
+        "reason": "The portfolio maintainer approved the financial analytics definition."
+      }
+    }
+  }
+}

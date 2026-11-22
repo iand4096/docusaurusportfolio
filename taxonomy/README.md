@@ -178,3 +178,56 @@ The [taxonomy-validation workflow](../.github/workflows/taxonomy-validation.yml)
 Saved AI reviews are checked against the current taxonomy and cardinality rules, but do not carry content/taxonomy fingerprints that fully detect stale reviews. Re-review when the source or classification context changes. Document application is not a repository-wide transaction; inspect the working-tree diff after an error. The rollback behaviour described above belongs to the migration engine.
 
 [generate_taxonomy.py](../scripts/generate_taxonomy.py) is initial discovery tooling, and [upgrade_taxonomy.py](../scripts/upgrade_taxonomy.py) supports the historical v1-to-v2 transition. Neither is part of routine maintenance. Do not regenerate the canonical vocabulary with `--force` as a normal update step.
+
+## Semantic tooltip review
+
+Docusaurus reads the reviewed policy and decisions at build time. Unassessed technologies
+use the legacy matcher. Draft policies provide audit guidance and retain legacy
+rendering. An optional nonempty `allowed_pos` list restricts POS evidence in the
+audit when spaCy is enabled. A matching tag leaves the mention eligible for
+review. Missing POS evidence leaves the mention unresolved by the POS check.
+Contextual technology mentions require a current approved
+decision. Explicit markup such as `<TaxonomyTerm id="requests">Requests</TaxonomyTerm>`
+resolves the current canonical definition. Use it in prose outside links and code.
+
+Run an audit after changing a technology or its defining evidence.
+
+```bash
+python scripts/taxonomy_tooltips.py audit --term requests --report reports/taxonomy-tooltip-audit.json
+python scripts/taxonomy_tooltips.py audit --migration taxonomy/migrations/example.yml --report reports/taxonomy-tooltip-audit.json
+python scripts/taxonomy_tooltips.py definitions audit --term rice --report reports/taxonomy-definition-audit.json
+python scripts/taxonomy_tooltips.py check
+```
+
+The JSON report includes the term's `term_basis_hash` for writing a policy and the
+exact candidate fields for recording decisions. Add the reviewed policy first, then
+regenerate the audit so the candidate fingerprints include that policy. Copy each
+reviewed candidate's `term_id`, `term_fingerprint`, `matched_text`, `source_range`
+and `context_hash` into a JSON object keyed by document path, with an array of decisions
+per path. Add `result` (`accept` or `reject`) and a `review` object with
+`status: approved`, `reviewer`, `reviewed_on` (ISO date), and `reason`.
+Run `review --report reports/taxonomy-tooltip-audit.json --approvals <file>` through
+`scripts/taxonomy_tooltips.py`. Include the same `--migration` when approving
+candidate-taxonomy decisions. Re-review all contextual occurrences in an edited
+document because approvals bind to its source hash. Offsets count UTF-8 bytes
+from the beginning of the file.
+
+Treat definition findings as a separate review. The RICE record shows how the portfolio resolved a mismatch between the taxonomy
+and published prose. Record the maintainer's
+disposition and evidence in `definition-reviews.yml`. Approved definition corrections
+use a taxonomy migration. Record the prior definition fingerprint and the migration
+path, then verify against the applied taxonomy using `definitions check`.
+
+The optional audit environment can supply spaCy 3.8.11 with `en_core_web_sm` 3.8.0
+through `--spacy-model`, and Sentence Transformers 6.3.0 with the local
+`all-MiniLM-L6-v2` snapshot at revision
+`1110a243fdf4706b3f48f1d95db1a4f5529b4d41` through `--embedding-dir`.
+Provision the models before the audit. The dedicated GitHub Actions audit can
+explicitly download MiniLM. Its [model card](https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2)
+declares Apache-2.0. Scores are advisory similarities. The deterministic gate
+and normal site build require no model environment.
+
+Full documentation QA includes the tooltip audit as an advisory source.
+Run only that check with `python scripts/ai_docs_review.py --mode per-page --filter tooltip`.
+The QA environment loads the pinned spaCy English model when available and reports
+unavailable model evidence separately from blocking check errors.

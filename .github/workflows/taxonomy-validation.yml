@@ -34,6 +34,22 @@ jobs:
           python -m pip install --upgrade pip
           python -m pip install -r requirements-doc-review.txt
 
+      - name: Set up Node.js for tooltip verification
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install site dependencies
+        run: npm ci
+
+      - name: Verify reviewed semantic tooltips
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: |
+          python scripts/taxonomy_tooltips.py check --base "$BASE_SHA"
+          node --test scripts/tests/taxonomy-tooltips.test.mjs
+
       - name: Validate taxonomy and changed documents
         run: |
           python scripts/taxonomy.py check --changed-base "${{ github.event.pull_request.base.sha }}"

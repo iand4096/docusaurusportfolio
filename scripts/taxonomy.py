@@ -1175,12 +1175,15 @@ def load_front_matter(path: Path) -> tuple[CommentedMap, str]:
     return data, body
 
 
-def write_front_matter(path: Path, front_matter: CommentedMap, body: str) -> None:
+def render_front_matter(front_matter: CommentedMap, body: str) -> str:
     yaml = round_trip_yaml()
     stream = io.StringIO()
     yaml.dump(front_matter, stream)
-    rendered = "---\n" + stream.getvalue() + "---\n" + body
-    path.write_text(rendered, encoding="utf-8")
+    return "---\n" + stream.getvalue() + "---\n" + body
+
+
+def write_front_matter(path: Path, front_matter: CommentedMap, body: str) -> None:
+    path.write_text(render_front_matter(front_matter, body), encoding="utf-8")
 
 
 def value_as_list(value: Any) -> list[str] | None:
@@ -2046,6 +2049,13 @@ def command_migrate(args: argparse.Namespace) -> int:
             print("preview passed; no files changed")
             print("use 'migrate apply <file>' after reviewing the proposed changes")
             return 0
+
+        from taxonomy_tooltips import preflight, taxonomy as tooltip_taxonomy
+
+        try:
+            preflight(root, taxonomy, candidate, changed_docs)
+        except tooltip_taxonomy.ValidationError as error:
+            raise ValidationError(str(error)) from error
 
         if additive:
             # Vocabulary-first workflow: never regenerate navigation until broken

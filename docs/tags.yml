@@ -358,7 +358,8 @@ rest:
   description: An architectural style for designing networked applications.
   label: REST
 rice:
-  description: An internal framework for regression testing and data ingestion at Morgan Stanley.
+  description: Morgan Stanley's Risk Calculation Environment (RICE), an internal financial analytics framework
+    for pricing, valuation, trading and risk management.
   label: RICE
 saq-a:
   description: Self-Assessment Questionnaire A for PCI DSS.

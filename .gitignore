@@ -65,3 +65,8 @@ crash.*.log
 
 # Local FAPI and OAuth experiments
 /FAPI/
+
+# Advisory semantic tooltip audit output.
+.cache/taxonomy-tooltips/
+reports/taxonomy-tooltip-audit.*
+reports/taxonomy-definition-audit.*

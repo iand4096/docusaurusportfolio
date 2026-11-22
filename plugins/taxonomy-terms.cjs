@@ -1,73 +1,69 @@
-const fs = require('node:fs');
 const path = require('node:path');
-const {engines} = require('gray-matter');
+const matcher = require('./taxonomy-tooltip-matching.cjs');
 
-const taxonomyPath = path.join(__dirname, '../taxonomy/taxonomy.yml');
-const glossaryPath = path.join(__dirname, '../glossary.yml');
-const tooltipTopics = new Set(['faceted navigation', 'metadata governance']);
-const inlineFormatting = new Set(['emphasis', 'strong', 'delete']);
+const root = path.resolve(__dirname, '..');
 
-function remarkTaxonomyTerms() {
-  const {dimensions} = engines.yaml.parse(fs.readFileSync(taxonomyPath, 'utf8'));
-  const terms = new Map();
-  for (const {label, description, governance} of Object.values(dimensions.technologies.terms)) {
-    if (governance?.status !== 'active' || !description?.trim()) continue;
-    const key = label.toLowerCase();
-    if (!terms.has(key)) terms.set(key, {label, description, exactCase: true});
-  }
-  const glossary = engines.yaml.parse(fs.readFileSync(glossaryPath, 'utf8'));
-  for (const {term, definition} of glossary) {
-    if (tooltipTopics.has(term) && !terms.has(term)) {
-      terms.set(term, {label: term, description: definition});
-    }
-  }
-
-  const labels = [...terms.values()].map(term => term.label).sort((a, b) => b.length - a.length);
-  const escapedLabels = labels.map(label => label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
-  if (!escapedLabels.length) return;
-  const pattern = new RegExp(`(?<![\\p{L}\\p{N}_])(?:${escapedLabels.join('|')})(?![\\p{L}\\p{N}_])`, 'giu');
-
-  return tree => {
+function remarkTaxonomyTerms({repositoryRoot = root} = {}) {
+  return (tree, file) => {
+    const config = matcher.load(repositoryRoot);
+    const source = String(file.value);
+    const document = path.relative(repositoryRoot, file.path).split(path.sep).join('/');
+    const {mentions, explicit, errors} = matcher.scan(tree, source, config);
+    if (errors.length) file.fail(errors.join('\n'));
+    const decisions = matcher.indexDecisions(config.manifest, document, source);
     const seen = new Set();
+    const selected = new Map();
+    const held = term => term.mode === 'contextual' && config.holds.has(term.id);
 
-    function annotate(node) {
+    for (const {child, term} of explicit) {
+      if (seen.has(term.id) || held(term)) {
+        Object.assign(child, {type: 'text', value: term.label});
+      } else {
+        seen.add(term.id);
+        child.attributes = definition(term);
+      }
+    }
+
+    for (const mention of mentions) {
+      const {term, child} = mention;
+      if (['off', 'explicit'].includes(term.mode) || held(term)) continue;
+      if (term.mode === 'contextual') {
+        const decision = matcher.reviewedDecision(decisions, mention);
+        if (!decision) file.message('Contextual tooltip needs review for ' + term.id, child);
+        if (decision?.result !== 'accept') continue;
+      }
+      if (seen.has(term.id)) continue;
+      seen.add(term.id);
+      if (!selected.has(child)) selected.set(child, []);
+      selected.get(child).push(mention);
+    }
+
+    function rewrite(node) {
+      if (!node.children) return;
       node.children = node.children.flatMap(child => {
-        if (inlineFormatting.has(child.type)) annotate(child);
-        if (child.type !== 'text') return [child];
-
+        const matches = selected.get(child);
+        if (!matches) {
+          rewrite(child);
+          return [child];
+        }
         const parts = [];
         let start = 0;
-        for (const match of child.value.matchAll(pattern)) {
-          const [text] = match;
-          const key = text.toLowerCase();
-          const term = terms.get(key);
-          if (!term || seen.has(key) || (term.exactCase && text !== term.label)) continue;
-          seen.add(key);
-
-          if (match.index > start) parts.push({type: 'text', value: child.value.slice(start, match.index)});
-          parts.push({
-            type: 'mdxJsxTextElement',
-            name: 'TaxonomyTerm',
-            attributes: [{type: 'mdxJsxAttribute', name: 'definition', value: term.description}],
-            children: [{type: 'text', value: text}],
-          });
-          start = match.index + text.length;
+        for (const {index, text, term} of matches) {
+          if (index > start) parts.push({type: 'text', value: child.value.slice(start, index)});
+          parts.push({type: 'mdxJsxTextElement', name: 'TaxonomyTerm',
+            attributes: definition(term), children: [{type: 'text', value: text}]});
+          start = index + text.length;
         }
-        if (!parts.length) return [child];
         if (start < child.value.length) parts.push({type: 'text', value: child.value.slice(start)});
         return parts;
       });
     }
-
-    function visit(node) {
-      if (node.type === 'paragraph') {
-        annotate(node);
-      } else if (node.type === 'root' || node.type === 'blockquote' || node.type === 'list' || node.type === 'listItem') {
-        node.children.forEach(visit);
-      }
-    }
-    visit(tree);
+    rewrite(tree);
   };
+}
+
+function definition(term) {
+  return [{type: 'mdxJsxAttribute', name: 'definition', value: term.description}];
 }
 
 /** @returns {import('@docusaurus/types').Plugin} */
@@ -81,7 +77,7 @@ function taxonomyTooltipPreview({siteDir}) {
             test: /\.mdx?$/,
             include: path.join(siteDir, 'docs') + path.sep,
             enforce: 'pre',
-            use: [{loader: require.resolve('./taxonomy-tooltip-dependency.cjs'), options: {taxonomyPath, glossaryPath}}],
+            use: [{loader: require.resolve('./taxonomy-tooltip-dependency.cjs'), options: {dependencies: Object.values(matcher.paths).map(file => path.join(root, file))}}],
           }],
         },
       };

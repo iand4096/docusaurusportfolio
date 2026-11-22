@@ -40,6 +40,7 @@ def generate_markdown_report(report: Report, paths: ReportPaths) -> None:
         f"- CI-eligible high: {ci_result['high_count']}",
         f"- CI-eligible medium: {ci_result['medium_count']}",
         f"- Advisory AI: {ci_result['advisory_ai_issue_count']}",
+        f"- Tooltip advisories: {sum(issue.get('source') == 'tooltip' for issue in ordered)}",
         f"- API/check errors: {len(errors)}",
         f"- CI result: {'PASS' if ci_result['passed'] else 'FAIL'}", "",
         "CI policy: " + value(ci_result['policy']),
