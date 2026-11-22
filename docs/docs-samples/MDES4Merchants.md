@@ -126,7 +126,7 @@ The guide is no longer available on the live developer site, but a published ver
 
 [View the archived MDES for Merchants Use Case Guide](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/)
 
-The archived version was captured in November 2021, after I left Mastercard in 2019. It closely matches the guide I wrote, although it may contain revisions made after my departure.
+The November 2021 capture shows only minor differences from the guide as it stood when I left Mastercard in 2019.
 
 Mastercard has announced that MDES for Merchants is scheduled for decommissioning on 31 December 2026.
 
