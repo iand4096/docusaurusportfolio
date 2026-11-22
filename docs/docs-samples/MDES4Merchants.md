@@ -9,7 +9,7 @@ sidebar_custom_props:
     description: Developer documentation for integrating Mastercard's Digital Enablement Service
       (MDES) to support secure payment tokenisation in merchant applications.
     highlights:
-      - Wrote the first MDES for Merchants use-case guide
+      - Authored the MDES for Merchants Use Case Guide
       - Built custom cryptographic Python test integrations
     ariaLabel: View the MDES for Merchants documentation sample
 type:
@@ -57,14 +57,12 @@ import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLa
 The MDES for Merchants Use Case Guide explained how merchant developers can use the MDES Digital Enablement API to replace payment card numbers (PANs) with secure payment tokens, reducing the need to store card details.
 
 <SemanticLabel type="contribution">
-  Wrote the first version of the guide in late 2017, during my first few months at Mastercard, developed the test integration and webhook receiver, and created sequence diagrams explaining the API interactions.
+  I wrote the MDES for Merchants Use Case Guide. I built a Python test integration and Flask webhook receiver to validate the API workflows, and created PlantUML sequence diagrams to explain the interactions.
 </SemanticLabel>
 
 This API provides access to Mastercard's Digital Enablement Service (MDES), the tokenisation technology that also supports digital wallets such as **Apple Pay**.
 
 In addition to their security benefits, tokens can often remain valid when the underlying payment card is replaced or reported lost, helping to avoid interruptions to recurring payments.
-
-Other contributors subsequently made minor updates to the published guide.
 
 ## The challenge {/* #the-challenge */}
 
@@ -86,7 +84,7 @@ Other contributors subsequently made minor updates to the published guide.
 
 </SemanticLabelGroup>
 
-At the time, Postman did not support [RSA signatures for OAuth 1.0](https://github.com/postmanlabs/postman-app-support/issues/2302), as required by Mastercard; support was only added in 2020. Field-level encryption and decryption also required custom cryptographic code that Postman did not provide.
+The Postman tooling available at the time did not support the [RSA signatures for OAuth 1.0](https://github.com/postmanlabs/postman-app-support/issues/2302) required by Mastercard. Field-level encryption and decryption also required custom cryptographic code. I therefore built a Python integration to implement these operations and test the API workflows.
 
 I had little previous practical experience of cryptography and had never used cryptographic libraries in Python. The integration used Flask, Requests and open-source cryptography libraries.
 
@@ -106,8 +104,6 @@ Getting the integration to work involved extensive research and trial and error,
 * request-body hashing
 * certificate formats
 
-I spent several weekends investigating and resolving these problems.
-
 The webhook receiver ran on [PythonAnywhere](https://www.pythonanywhere.com/) and received and decrypted asynchronous notifications.
 
 <SemanticLabel type="validation">
@@ -122,9 +118,17 @@ The guide also included practical guidance on bulk-tokenisation rate limits, usi
 
 ### Published guide {/* #published-guide */}
 
-The first version of the **MDES for Merchants Use Case Guide** was published on Mastercard Developers.
+Mastercard Developers published the **MDES for Merchants Use Case Guide**.
 
-The guide is no longer available on the live site, but an [archived version](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/) is available through the Internet Archive. You may need to select the capture dated 1 November 2021.
+The guide is no longer available on the live developer site, but a published version can be viewed through the Internet Archive.
+
+[View the archived MDES for Merchants Use Case Guide](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/)
+
+*Archive note: The Internet Archive captured this version on 1 November 2021, after I left Mastercard in 2019.*
+
+**Product status:** Mastercard has announced that MDES for Merchants will be decommissioned on 31 December 2026 and replaced by Secure Card on File (SCOF), part of Mastercard Checkout Solutions.
+
+[Mastercard's official decommissioning notice](https://developer.mastercard.com/mdes-digital-enablement/documentation/)
 
 ### Internal deliverables {/* #internal-deliverables */}
 
@@ -134,9 +138,11 @@ After completing the guide, I also helped recommend and test an early version of
 
 ## Outcome {/* #outcome */}
 
-The tested workflows informed the integration guidance. The shared test code helped encourage a culture of hands-on API testing that the API's technical complexity had previously hindered.
+The working Python integration enabled me to validate the API workflows independently, identify errors and omissions in the OpenAPI reference, and work with the product owner to resolve them.
 
-The project required me to learn an unfamiliar technical subject, test the API myself and apply what I learned to the developer documentation.
+The resulting guide provided task-oriented integration guidance grounded in tested API behaviour rather than relying solely on the reference documentation.
+
+I also shared the Python integration and webhook receiver with colleagues, giving them reusable tools for testing the API and encouraging a more hands-on approach to technical validation.
 
 ## What I would change {/* #what-i-would-change */}
 
