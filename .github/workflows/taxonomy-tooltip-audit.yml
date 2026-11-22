@@ -30,7 +30,8 @@ jobs:
           cache: pip
           cache-dependency-path: requirements-doc-review-linux-py312.lock
       - run: npm ci
-      - run: python -m pip install --require-hashes --only-binary=:all: -r requirements-doc-review-linux-py312.lock
+      - run: |
+          python -m pip install --require-hashes --only-binary=:all: -r requirements-doc-review-linux-py312.lock
       - name: Cache the optional model
         if: inputs.minilm
         uses: actions/cache@v4

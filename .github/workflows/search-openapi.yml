@@ -27,6 +27,7 @@ jobs:
           cache: pip
           cache-dependency-path: knowledge-api/requirements-openapi-linux-py312.lock
       - name: Install OpenAPI export dependencies
-        run: python -m pip install --require-hashes --only-binary=:all: -r knowledge-api/requirements-openapi-linux-py312.lock
+        run: |
+          python -m pip install --require-hashes --only-binary=:all: -r knowledge-api/requirements-openapi-linux-py312.lock
       - name: Check the published schema for drift
         run: python knowledge-api/export_openapi.py --check
