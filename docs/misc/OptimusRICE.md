@@ -32,30 +32,26 @@ import DiagramFigure from '@site/src/components/DiagramFigure';
 
 ## Overview {/* #overview */}
 
-Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications.
+Morgan Stanley uses RICE and Optimus to run computationally intensive financial applications.
 
-- **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Morgan Stanley describes it as a Fixed Income risk framework and has advertised roles supporting the migration of Commodities products and workflows to it. [RICE engineering overview][rice-overview] · [Commodities Strategist role][commodities-role]
-- **Optimus** is a Scala-based, graph-oriented computation framework built on functional programming principles. It manages computational dependencies and supports automatic parallelisation, asynchronous execution, caching and scenario evaluation. [Scala Days keynote][scala-days] · [Scenario evaluation patent][tweak-patent]
-
-The public Optimus Cirrus repository includes **Data Access Layer (DAL)** code. A public RICE engineering post describes bitemporal object storage as one of the platform’s capabilities. [Optimus Cirrus DAL source][dal-source] · [RICE engineering overview][rice-overview]
+- **RICE (Risk Calculation Environment)** supports trading and risk management in [Fixed Income][rice-overview]. Morgan Stanley has also advertised roles to help move [Commodities products and workflows][commodities-role] onto RICE.
+- **Optimus** runs Scala computations as a graph. The graph lets it [run independent tasks in parallel and reuse results][scala-days]. Developers can also [rerun calculations under different assumptions][tweak-patent].
 
 ## Platform architecture {/* #platform-architecture */}
 
 ### 1. Financial applications and analytics - RICE {/* #1-financial-applications-and-analytics---rice */}
 
-RICE provides a platform for building financial models and applications for pricing, valuation, trading and risk. The platform's development and runtime teams provide services and components used by application developers. [Optimus/RICE pricing role][pricing-role] · [RICE engineering overview][rice-overview]
-
-The ecosystem also includes declarative reactive interfaces for presenting financial data and results. [RICE engineering overview][rice-overview]
+Developers build pricing, valuation and risk applications on RICE. In one [public job description][pricing-role], Morgan Stanley describes a pricing system built on Optimus and RICE to run heavy calculations in parallel. The [RICE engineering overview][rice-overview] also describes reactive user interfaces for displaying financial data and results.
 
 ### 2. Graph computation framework - Optimus {/* #2-graph-computational-framework---optimus */}
 
-Methods annotated with `@node` participate in the Optimus dependency graph. When one node calls another, the graph records the dependency so the runtime can coordinate their execution. The runtime can evaluate independent work in parallel and reuse cached results where applicable. [Scala Days keynote][scala-days] · [Scenario evaluation patent][tweak-patent]
+Optimus builds its dependency graph from methods marked `@node`. When one node calls another, the runtime can tell which result it needs before it can continue. At [Scala Days][scala-days], Morgan Stanley showed how Optimus uses those dependencies to schedule work and cache results.
 
-**Referential transparency** is an important principle: results can be reused safely when a function's inputs and execution context remain unchanged. For scenario analysis, tweaks let nodes be evaluated under alternative assumptions while preserving the underlying immutable objects.
+When a calculation has the same inputs and execution context, the runtime can reuse the result. This is the practical benefit of **referential transparency**. To test a scenario, a developer can temporarily override an input with a *tweak*. The original object keeps its value outside the scenario.
 
 #### 1. Code example
 
-The Scala-style pseudocode below illustrates that behaviour. Morgan Stanley's patent describes a sale with tweakable price and quantity and gives a separate example of a scoped price change using `given`. [Scenario evaluation patent][tweak-patent]
+In this Scala-style pseudocode, a price tweak changes the trade's value from 1,000 to 1,200 inside the `given` block. [Morgan Stanley's patent][tweak-patent] describes a sale with tweakable price and quantity and shows a separate example of a scoped price change using `given`.
 
 ```scala
 @entity
@@ -126,28 +122,26 @@ flowchart TD
 
 ### 3. Data access layer - DAL {/* #3-data-access-layer---dal */}
 
-The platform uses **bitemporal object storage**, which tracks two distinct dimensions. [RICE engineering overview][rice-overview]
+Morgan Stanley publishes [Data Access Layer (DAL) code][dal-source] in the Optimus Cirrus repository. The [RICE engineering overview][rice-overview] describes **bitemporal object storage**, which records two kinds of time.
 
 - **Valid time:** When information is effective in the business domain.
 - **Transaction time:** When information is recorded in the data store.
 
-This distinction lets users reconstruct which facts were effective at a given time and which facts the system knew at that time. [Valid time and transaction time][temporal]
+Together, [valid time and transaction time][temporal] let you ask what was effective on a date and what the system knew about it when a calculation ran.
 
 ### 4. Distributed execution and infrastructure {/* #4-distributed-execution-and-infrastructure */}
 
-At Scala Days 2023, Morgan Stanley described **Optimus Cirrus** as automatically caching and parallelising tasks across thousands of compute nodes with more than a petabyte of aggregate RAM. [Scala Days keynote][scala-days]
+In its [2023 Scala Days talk][scala-days], Morgan Stanley described Optimus Cirrus running across thousands of compute nodes with more than a petabyte of RAM in total.
 
-AWS reported in 2023 that Morgan Stanley used AWS and Azure to run compute-intensive RICE risk calculations. [AWS re:Invent HPC presentation][aws-hpc]
+AWS also reported at [re:Invent 2023][aws-hpc] that Morgan Stanley used AWS and Azure for compute-intensive RICE risk calculations.
 
 ### 5. Developer tooling and compiler infrastructure {/* #5-developer-tooling-and-compiler-infrastructure */}
 
-The ecosystem includes specialised Scala compiler development, asynchronous programming semantics, embedded query languages and developer tooling. [RICE engineering overview][rice-overview] · [Optimus Cirrus source][cirrus]
-
-One related capability is the **Optimus Build Tool (OBT)**, which applies distributed computation and caching techniques to software compilation. Morgan Stanley has demonstrated the approach on a codebase containing approximately 21 million lines of Scala and Java. OBT applies Optimus concepts outside the financial calculation workflow. [Scala Days keynote][scala-days]
+The [RICE engineering overview][rice-overview] describes work on the Scala compiler, asynchronous execution and embedded query languages. The [Optimus Cirrus repository][cirrus] includes the code used to compile the **Optimus Build Tool (OBT)**, which distributes and caches compilation work. Morgan Stanley [demonstrated OBT][scala-days] on approximately 21 million lines of Scala and Java.
 
 ## End-to-end calculation workflow {/* #end-to-end-calculation-workflow */}
 
-This illustrative valuation or risk calculation combines the roles described in public sources. [Optimus/RICE pricing role][pricing-role] · [Optimus Cirrus DAL source][dal-source] · [Scenario evaluation patent][tweak-patent]
+Here’s how the pieces could fit together in a valuation. The example draws on the public descriptions of [Optimus/RICE pricing][pricing-role], [DAL][dal-source] and [scenario evaluation][tweak-patent].
 
 1. A financial application initiates a calculation using a model developed in the RICE environment.
 2. Optimus evaluates the model's dependency graph, coordinating the computations and reusing eligible cached results.
@@ -156,7 +150,7 @@ This illustrative valuation or risk calculation combines the roles described in 
 
 ## Engineering significance {/* #engineering-significance */}
 
-When reproducing a past valuation, use valid time to select the inputs that applied on the valuation date. Use transaction time to see which of those inputs the system had recorded when it ran the calculation. A correction recorded later can change the result for the same valuation date. [Valid time and transaction time][temporal]
+Suppose a price correction comes in on Tuesday and applies to Monday. To reproduce Monday’s original valuation, select prices valid on Monday and use the data the system had when it ran the calculation. To recalculate Monday’s valuation with the correction, keep Monday as the valid date and advance the transaction time to include Tuesday’s update. [Valid time and transaction time][temporal]
 
 ## Public references {/* #public-references */}
 

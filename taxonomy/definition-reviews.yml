@@ -4,8 +4,8 @@
     "rice-definition-mismatch": {
       "evidence": [
         {
-          "context_hash": "sha256:571d27dd38e1cce10a29b242748af7daff9de2f9a768aafb24ef16261cefbc98",
-          "excerpt": "Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications.\n\n- **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Morgan Stanley describes it as a Fixed Income risk framework and has advertised roles supporting the migration of Commodities products and workflows to it.",
+          "context_hash": "sha256:ae3925a06724349ce67b754ea86744efeb230353325e1580808ac1144f6f6fe2",
+          "excerpt": "- **RICE (Risk Calculation Environment)** supports trading and risk management in [Fixed Income][rice-overview]. Morgan Stanley has also advertised roles to help move [Commodities products and workflows][commodities-role] onto RICE.",
           "path": "docs/misc/OptimusRICE.md"
         }
       ],
@@ -26,8 +26,8 @@
     "optimus-definition-mismatch": {
       "evidence": [
         {
-          "context_hash": "sha256:697627564cb3d49497632d2fe8cfcdedb5ddf2433cfdf45f3cf83fe5f33e34fe",
-          "excerpt": "**Optimus** is a Scala-based, graph-oriented computation framework built on functional programming principles. It manages computational dependencies and supports automatic parallelisation, asynchronous execution, caching and scenario evaluation.",
+          "context_hash": "sha256:5427f762487a0da3d0aee30590407b3831ea878e5e31f931694c595f797b3d97",
+          "excerpt": "- **Optimus** runs Scala computations as a graph. The graph lets it [run independent tasks in parallel and reuse results][scala-days]. Developers can also [rerun calculations under different assumptions][tweak-patent].",
           "path": "docs/misc/OptimusRICE.md"
         }
       ],
