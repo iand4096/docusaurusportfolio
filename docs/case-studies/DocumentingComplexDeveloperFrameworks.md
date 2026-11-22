@@ -87,9 +87,9 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
 
 ## Context {/* #context */}
 
-I was the lead and sole technical writer for Morgan Stanley's Optimus and RICE frameworks while also leading development of its [docs-as-code platform](ScalingADeveloperDocsPlatform.md). I wrote for engineers and quantitative analysts building applications on the two Scala-based frameworks. My documentation covered Scala and C++ interoperability, bitemporal data, reactive UI development, automated regression testing and data ingestion.
+I was the lead and sole technical writer for Morgan Stanley's Optimus and RICE frameworks while also leading development of its [docs-as-code platform](ScalingADeveloperDocsPlatform.md). I wrote for engineers and quantitative analysts building financial applications. Their work spanned financial models in RICE and the Scala runtime that evaluated those models at scale. At [Scala Days 2023](https://archives.scaladays.org/2023/seattle-2023/supercharge-your-performance-with-the-optimus-cirrus-platform.html), Morgan Stanley described Optimus Cirrus running across thousands of compute nodes with more than a petabyte of RAM.
 
-The [Optimus and RICE technical reference](../misc/OptimusRICE.md) gives the technical context for that work. It covers RICE's financial analytics, Optimus's computation graph and the Data Access Layer.
+The [Optimus and RICE technical reference](../misc/OptimusRICE.md) explains how Optimus schedules calculations through a dependency graph and how bitemporal storage lets developers reconstruct what the system knew when a valuation ran.
 
 ## Documentation approach {/* #documentation-approach */}
 
