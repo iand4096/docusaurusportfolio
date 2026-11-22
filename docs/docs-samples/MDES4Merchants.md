@@ -134,7 +134,7 @@ Mastercard has announced that MDES for Merchants is scheduled for decommissionin
 
 I shared my Python integration code and Flask webhook receiver with the product owner and other technical writers so they could test the API themselves.
 
-I also helped specify and test the docs-as-code system that later replaced Mastercard's existing documentation CMS.
+I helped define the requirements for Mastercard's replacement docs-as-code system and tested an early version.
 
 ## Outcome {/* #outcome */}
 
