@@ -39,6 +39,11 @@ function load(root, candidate, {strict = false, audit = false} = {}) {
   const technologies = taxonomy.dimensions.technologies.terms;
   const terms = new Map();
   const active = new Map();
+  function register(label, term) {
+    const key = label.toLowerCase();
+    if (terms.has(key)) throw new Error('Conflicting tooltip label ' + label);
+    terms.set(key, term);
+  }
   for (const [id, term] of Object.entries(technologies)) {
     if (term.governance.status !== 'active' || !term.description?.trim()) continue;
     const policy = Object.hasOwn(policies.terms, id) ? policies.terms[id] : undefined;
@@ -48,22 +53,35 @@ function load(root, candidate, {strict = false, audit = false} = {}) {
     const draft = policy?.review?.status === 'draft';
     if (policy && !draft && !currentPolicy && !audit) throw new Error('Invalid tooltip policy approval for ' + id);
     const mode = currentPolicy ? policy.mode : policy && !draft ? 'unreviewed' : 'legacy';
-    const entry = {...term, id, policy, mode, fingerprint: fingerprint([...basis, policy ?? null])};
-    const key = term.label.toLowerCase();
-    if (terms.has(key)) throw new Error('Conflicting technology tooltip label ' + term.label);
-    terms.set(key, entry);
+    const requestedAliases = policy?.enabled_aliases ?? [];
+    const validAliases = Array.isArray(requestedAliases) &&
+      requestedAliases.every(alias => term.aliases?.includes(alias));
+    if (!validAliases) {
+      if (!audit || strict) throw new Error('Enabled tooltip alias is not declared for ' + id);
+    }
+    const enabledAliases = currentPolicy && validAliases ? requestedAliases : [];
+    const entry = {...term, id, policy, mode, enabledAliases, fingerprint: fingerprint([...basis, policy ?? null])};
+    for (const label of [term.label, ...enabledAliases]) register(label, entry);
     active.set(id, entry);
   }
   if (strict) for (const id of Object.keys(policies.terms)) {
     if (!active.has(id)) throw new Error('Tooltip policy references inactive technology ' + id);
   }
 
-  for (const {term, definition} of yaml('glossary')) {
-    if (!['faceted navigation', 'metadata governance'].includes(term)) continue;
-    if (terms.has(term)) throw new Error('Technology label overlaps glossary tooltip ' + term);
-    terms.set(term, {id: 'glossary:' + term, label: term, description: definition, glossary: true});
+  const tooltipTopics = new Set([
+    'faceted navigation', 'metadata governance', 'bitemporal data',
+    'referential transparency', 'webhook', 'field-level encryption',
+    'embedding', 'scale-to-zero', 'hybrid search', 'cryptogram',
+    'controlled vocabulary', 'monorepo', 'ci gate',
+  ]);
+  for (const {term, definition, aliases = []} of yaml('glossary')) {
+    if (!tooltipTopics.has(term.toLowerCase())) continue;
+    for (const label of [term, ...aliases]) {
+      register(label, {id: 'glossary:' + term, label, description: definition, glossary: true});
+    }
   }
-  const labels = [...terms.values()].map(term => term.label).sort((a, b) => b.length - a.length);
+
+  const labels = [...terms.keys()].sort((a, b) => b.length - a.length);
   const escaped = labels.map(label => label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
   const pattern = escaped.length ? new RegExp(
     '(?<![\\p{L}\\p{N}_])(?:' + escaped.join('|') + ')(?![\\p{L}\\p{N}_])', 'giu',
@@ -93,7 +111,8 @@ function scan(tree, source, config) {
           const term = config.active.get(id);
           if (child.attributes.length !== 1 || attribute?.name !== 'id' || !term ||
               term.mode === 'off' || child.children.length !== 1 ||
-              child.children[0].type !== 'text' || child.children[0].value !== term.label) {
+              child.children[0].type !== 'text' ||
+              config.terms.get(child.children[0].value.toLowerCase())?.id !== term.id) {
             errors.push('Invalid explicit TaxonomyTerm at line ' + (child.position?.start.line ?? 0));
           } else {
             explicit.push({child, term});
@@ -104,7 +123,7 @@ function scan(tree, source, config) {
         const safe = Boolean(child.position) && source.slice(offset, child.position.end.offset) === child.value;
         for (const match of child.value.matchAll(config.pattern)) {
           const term = config.terms.get(match[0].toLowerCase());
-          if (!term.glossary && term.label !== match[0]) continue;
+          if (!term) continue;
           const start = offset + match.index;
           const range = safe ? {
             start: Buffer.byteLength(source.slice(0, start)),

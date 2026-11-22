@@ -21,6 +21,8 @@ tags:
 
 The portfolio runs deterministic checks and AI-assisted editorial review. Its reports bring findings, checker failures and human decisions into one view.
 
+Full QA includes a **Tooltip audit** source. It reports mentions that need review, stale decisions and open definition findings. When spaCy is available, the report includes part-of-speech evidence. These findings are advisory and carry no weight in the QA gate. The [separate tooltip approval check](taxonomy.md#tooltip-decisions) validates the decisions used by the build.
+
 - [Understand the key concepts](qa-key-concepts.md) behind checks, findings, feedback and CI.
 - [Run a review](qa-run-review.md) to check local changes or prepare a pull request.
 - [Read a report and act on findings](qa-read-report.md) to investigate a finding, record a decision or refresh a saved report.

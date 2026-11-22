@@ -55,9 +55,21 @@ All AI suggestions require human review before they can affect document metadata
 
 The canonical vocabulary is stored in [`taxonomy/taxonomy.yml`](../../taxonomy/taxonomy.yml) and versioned in Git. It is also used to generate:
 
-- Docusaurus tags for navigation and inline definition tooltips on the first eligible mention of an active technology in article prose. The site build reads technology definitions directly from the canonical taxonomy YAML. It also reads two selected concepts, faceted navigation and metadata governance, from the glossary. Readers can open a tooltip by hovering over, focusing, or selecting the term.
+- Docusaurus tags for navigation and inline tooltips for eligible technology and glossary terms. Readers can open a tooltip by hovering over, focusing, or selecting the term.
 - Metadata choices for VS Code Front Matter.
 - The site's taxonomy navigation index, which powers the [Explore page](/explore?view=browse).
+
+## How tooltip decisions work {/* #tooltip-decisions */}
+
+The build reads technology definitions from the canonical taxonomy and selected concept definitions from the glossary. Matching ignores case and preserves the spelling on the page. The first eligible mention gets the tooltip. A canonical label and its aliases share that one-tooltip limit. Inline code and linked text are excluded.
+
+For technology terms, a reviewed policy can enable individual aliases with `enabled_aliases`. **ACR** can show the Azure Container Registry definition if it appears first. For enabled glossary terms, the aliases in the glossary work the same way. **Embeddings** can show the definition of **embedding**.
+
+Contextual terms use approved occurrence decisions. In the RAG case study, “Requests are validated with Pydantic” refers to incoming API requests and stays plain text. In the MDES guide, the mention of Requests beside Flask names the Python library and gets a tooltip. Authors can also select a specific eligible mention using its canonical ID, for example `<TaxonomyTerm id="requests">Requests</TaxonomyTerm>`.
+
+The tooltip audit can use spaCy to report the part of speech as evidence for review. The build uses the saved decisions and leaves unreviewed or stale contextual matches as plain text. The audit also checks the canonical definition separately, so a correctly identified mention can still lead to a definition review.
+
+See the [maintainer runbook](https://github.com/iand4096/docusaurusportfolio/blob/main/taxonomy/README.md#semantic-tooltip-review) for the audit commands, approval format and migration checks.
 
 ## Design principles {/* #design-principles */}
 

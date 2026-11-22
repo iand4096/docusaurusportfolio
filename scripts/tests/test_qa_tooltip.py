@@ -15,15 +15,15 @@ class TooltipQATests(unittest.TestCase):
         document = file.relative_to(ROOT).as_posix()
         report = scan(ROOT, files=[document])
         mention = next(item for item in report["documents"][document]["candidates"]
-                       if item["term_id"] == "requests")
+                       if item["term_id"] == "requests" and item["matched_text"] == "Requests")
         mention["current_decision"] = None
         with patch("qa_checks.tooltip.scan", return_value=report):
             result = TooltipAuditCheck(ROOT).run([file])
         self.assertEqual(result.errors, [])
         mentions = [issue for issue in result.issues if issue["category"] == "tooltip-mention"]
         self.assertTrue(mentions)
-        self.assertIn("Requests are validated", mentions[0]["original"])
-        self.assertIn("pos_evidence", mentions[0]["tooltip_evidence"])
+        rejected_context = next(issue for issue in mentions if "Requests are validated" in issue["original"])
+        self.assertIn("pos_evidence", rejected_context["tooltip_evidence"])
         self.assertTrue(all(not is_ci_threshold_eligible(issue) for issue in result.issues))
         self.assertTrue(evaluate_ci(result.issues, result.errors, 0, 0, 0)["passed"])
 

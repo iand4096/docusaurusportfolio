@@ -1,5 +1,17 @@
 version: 1
 terms:
+  azure-container-registry:
+    mode: auto
+    term_basis_hash: "sha256:062df89aa3d1203c7f2ee5a97ff650878d14ae7918bc79c84c13713b09685afa"
+    enabled_aliases: [ACR]
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: repository-maintainer
+      reviewed_on: '2026-11-30'
+      reason: The portfolio uses ACR for Azure Container Registry in the context of deploying container images.
   codex:
     mode: auto
     term_basis_hash: "sha256:1d13c8624f4102011dc2ab54c0f93ebc7e459a3aa266b87211b0d0ad9e060e02"

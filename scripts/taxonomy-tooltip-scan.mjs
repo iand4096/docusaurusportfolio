@@ -35,7 +35,10 @@ for (const file of input.files) {
     const occurrence = matching.occurrence(mention);
     const decision = matching.reviewedDecision(decisions, mention);
     if (decision) matched.add(matching.decisionKey(decision));
-    if (input.strict && mention.term.mode === 'contextual' && !decision) {
+    // Require decisions for the configured label and enabled aliases in their registered casing.
+    // Additional case variants can be reviewed without blocking the build.
+    if (input.strict && mention.term.mode === 'contextual' &&
+        (mention.text === mention.term.label || mention.term.enabledAliases.includes(mention.text)) && !decision) {
       errors.push(file + ':' + mention.line + ': contextual tooltip needs review for ' + mention.term.id);
     }
     const eligible = ['legacy', 'auto'].includes(mention.term.mode) ||

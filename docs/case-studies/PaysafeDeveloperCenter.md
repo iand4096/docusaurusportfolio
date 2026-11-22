@@ -261,7 +261,7 @@ flowchart TD
 
 ## Implementation {/* #implementation */}
 
-I built post-build automation that published rendered Flare output to temporary PythonAnywhere review environments and integrated the open-source Hypothesis annotation tool. This allowed reviewers to comment directly on the rendered pages, rather than reviewing source files in isolation, before changes were merged and promoted through the publishing workflow.
+I built post-build automation that published rendered Flare output to temporary PythonAnywhere review environments and integrated the open-source Hypothes.is annotation tool. This allowed reviewers to comment directly on the rendered pages, rather than reviewing source files in isolation, before changes were merged and promoted through the publishing workflow.
 
 I also built the production site's page-level feedback mechanism in JavaScript, with responses passed through a server-side component into JIRA for tracking and follow-up.
 

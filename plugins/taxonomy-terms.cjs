@@ -17,7 +17,7 @@ function remarkTaxonomyTerms({repositoryRoot = root} = {}) {
 
     for (const {child, term} of explicit) {
       if (seen.has(term.id) || held(term)) {
-        Object.assign(child, {type: 'text', value: term.label});
+        Object.assign(child, {type: 'text', value: child.children[0].value});
       } else {
         seen.add(term.id);
         child.attributes = definition(term);

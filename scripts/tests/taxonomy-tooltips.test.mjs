@@ -77,3 +77,50 @@ test('explicit canonical ID resolves the definition and takes precedence', t => 
   assert.throws(() => render(root, source.replace('id="requests"', 'id="unknown"')), /Invalid explicit/);
   assert.throws(() => render(root, '[<TaxonomyTerm id="requests">Requests</TaxonomyTerm>](https://example.org)'), /ineligible/);
 });
+
+test('case-insensitive matching preserves source spelling and contextual approvals', t => {
+  const {root, write} = fixture(t);
+  const source = 'The JIRA workflow uses requests and tokenisation. Then Jira appears again.';
+  assert.deepEqual(render(root, source).map(node => node.children[0].value), ['JIRA', 'tokenisation']);
+
+  const candidate = matching.scan(parser.parse(source), source, matching.load(root))
+    .mentions.find(item => item.term.id === 'requests');
+  assert.equal(candidate.text, 'requests');
+  write('decisions', {version: 1, matching_contract_version: '1',
+    documents: {[document]: {content_hash: matching.hash(source), decisions: [
+      {...matching.occurrence(candidate), review, result: 'accept'},
+    ]}}});
+  assert.deepEqual(render(root, source).map(node => node.children[0].value),
+    ['JIRA', 'requests', 'tokenisation']);
+  assert.equal(render(root, 'Use <TaxonomyTerm id="requests">REQUESTS</TaxonomyTerm>.')[0]
+    .children[0].value, 'REQUESTS');
+});
+
+test('enabled glossary aliases share the definition and per-page quota', t => {
+  const {root} = fixture(t);
+  const nodes = render(root, 'The embeddings support retrieval. An embedding is a vector.');
+  assert.equal(nodes.length, 1);
+  assert.equal(nodes[0].children[0].value, 'embeddings');
+  assert.match(nodes[0].attributes[0].value, /numeric representation/);
+});
+
+test('reviewed taxonomy aliases match case-insensitively and share the canonical quota', t => {
+  const {root, write} = fixture(t);
+  const registry = matching.load(root);
+  const id = 'azure-container-registry';
+  const term = registry.active.get(id);
+  const source = 'Push to acr. Azure Container Registry stores the image.';
+  assert.deepEqual(render(root, source).map(node => node.children[0].value), ['Azure Container Registry']);
+  const policy = {
+    mode: 'auto', review, enabled_aliases: ['ACR'],
+    term_basis_hash: matching.fingerprint([term.label, term.description, term.kind,
+      term.aliases, term.governance.status]),
+  };
+  write('policies', {version: 1, terms: {...registry.policies.terms, [id]: policy}});
+  const nodes = render(root, source);
+  assert.equal(nodes.length, 1);
+  assert.equal(nodes[0].children[0].value, 'acr');
+  assert.equal(nodes[0].attributes[0].value, term.description);
+  write('policies', {version: 1, terms: {[id]: {...policy, enabled_aliases: ['Unlisted']}}});
+  assert.throws(() => matching.load(root), /not declared/);
+});

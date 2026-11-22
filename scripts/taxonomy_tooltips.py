@@ -426,6 +426,8 @@ def main():
             for file, document in report.get("documents", {}).items():
                 for item in document["candidates"]:
                     line = f"- {file}:{item['line']} · {item['label']} · {item.get('proposed_sense', 'unassessed')}"
+                    if item["matched_text"] != item["label"]:
+                        line += f" · matched {item['matched_text']}"
                     if pos := item.get("pos_evidence"):
                         line += f" · POS {pos['observed'] or 'unknown'} ({pos['result']})"
                     sections.append(line)

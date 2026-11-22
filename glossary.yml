@@ -20,3 +20,50 @@
   definition: Failures that prevent a check from completing, such as a missing tool or an invalid AI response.
   aliases:
     - checker error
+
+- term: bitemporal data
+  definition: Data that tracks both when a fact was true in the business and when the system recorded it.
+  aliases:
+    - bitemporal object storage
+
+- term: referential transparency
+  definition: The property that lets you replace an expression with its result without changing the program's behaviour.
+
+- term: webhook
+  definition: An HTTP request a system sends to a configured URL when an event occurs.
+  aliases:
+    - webhooks
+
+- term: field-level encryption
+  definition: Encryption applied to selected fields within a payload.
+
+- term: embedding
+  definition: A numeric representation of content that lets search systems compare items by similarity.
+  aliases:
+    - embeddings
+
+- term: scale-to-zero
+  definition: Reducing a service to zero running instances while idle and starting an instance when work arrives.
+
+- term: hybrid search
+  definition: Search that combines keyword matching with semantic retrieval.
+
+- term: cryptogram
+  definition: A payment security value generated with cryptography to help verify a transaction.
+  aliases:
+    - cryptograms
+
+- term: controlled vocabulary
+  definition: An approved set of terms used to describe and classify content consistently.
+  aliases:
+    - controlled vocabularies
+
+- term: monorepo
+  definition: A single version-controlled repository that holds multiple projects or components.
+  aliases:
+    - monorepos
+
+- term: CI gate
+  definition: A rule that determines whether a continuous integration run passes based on its check results.
+  aliases:
+    - CI gates
