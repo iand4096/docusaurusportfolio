@@ -14,7 +14,6 @@ topics:
   - information-architecture
   - technical-writing
 technologies:
-  - kafka
   - optimus
   - rice
 lifecycle:
@@ -22,7 +21,6 @@ lifecycle:
 tags:
   - documentation-engineering
   - information-architecture
-  - kafka
   - optimus
   - rice
   - technical-writing
@@ -36,10 +34,10 @@ import DiagramFigure from '@site/src/components/DiagramFigure';
 
 Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications.
 
-- **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Morgan Stanley describes it as a Fixed Income risk framework and has advertised roles supporting the migration of Commodities products and workflows to it. [Fixed Income and DAL role][dal-role] · [Commodities Strategist role][commodities-role]
+- **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Morgan Stanley describes it as a Fixed Income risk framework and has advertised roles supporting the migration of Commodities products and workflows to it. [RICE engineering overview][rice-overview] · [Commodities Strategist role][commodities-role]
 - **Optimus** is a Scala-based, graph-oriented computation framework built on functional programming principles. It manages computational dependencies and supports automatic parallelisation, asynchronous execution, caching and scenario evaluation. [Scala Days keynote][scala-days] · [Scenario evaluation patent][tweak-patent]
 
-Within the RICE platform, the **Data Access Layer (DAL)** provides distributed data services, including bitemporal storage and retrieval. [DAL role][dal-role]
+The public Optimus Cirrus repository includes **Data Access Layer (DAL)** code. A public RICE engineering post describes bitemporal object storage as one of the platform’s capabilities. [Optimus Cirrus DAL source][dal-source] · [RICE engineering overview][rice-overview]
 
 ## Platform architecture {/* #platform-architecture */}
 
@@ -47,9 +45,9 @@ These components describe architectural responsibilities, not a strict product h
 
 ### 1. Financial applications and analytics - RICE {/* #1-financial-applications-and-analytics---rice */}
 
-RICE provides a platform for building financial models and applications for pricing, valuation, trading and risk. The platform's development and runtime teams provide services and components used by application developers. [Optimus/RICE pricing role][pricing-role] · [Fixed Income and DAL role][dal-role]
+RICE provides a platform for building financial models and applications for pricing, valuation, trading and risk. The platform's development and runtime teams provide services and components used by application developers. [Optimus/RICE pricing role][pricing-role] · [RICE engineering overview][rice-overview]
 
-The ecosystem also includes declarative reactive interfaces for presenting financial data and results. [Fixed Income and DAL role][dal-role]
+The ecosystem also includes declarative reactive interfaces for presenting financial data and results. [RICE engineering overview][rice-overview]
 
 ### 2. Graph Computational framework - Optimus {/* #2-graph-computational-framework---optimus */}
 
@@ -130,14 +128,12 @@ flowchart TD
 
 ### 3. Data access layer - DAL {/* #3-data-access-layer---dal */}
 
-DAL provides data storage, retrieval and distribution capabilities. A defining feature is **bitemporal object storage**, which tracks two distinct dimensions:
+The platform uses **bitemporal object storage**, which tracks two distinct dimensions. [RICE engineering overview][rice-overview]
 
 - **Valid time:** When information is effective in the business domain.
 - **Transaction time:** When information is recorded in the data store.
 
 This distinction lets users reconstruct which facts were effective at a given time and which facts the system knew at that time. [Valid time and transaction time][temporal]
-
-Morgan Stanley describes DAL as distributed, strongly consistent data infrastructure integrating MongoDB, PostgreSQL, Apache Kafka, and internal and external cloud platforms. It serves applications and large compute grids. [DAL role][dal-role]
 
 ### 4. Distributed execution and infrastructure {/* #4-distributed-execution-and-infrastructure */}
 
@@ -147,13 +143,13 @@ AWS reported in 2023 that Morgan Stanley used AWS and Azure to run compute-inten
 
 ### 5. Developer tooling and compiler infrastructure {/* #5-developer-tooling-and-compiler-infrastructure */}
 
-The ecosystem includes specialised Scala compiler development, asynchronous programming semantics, embedded query languages and developer tooling. [Fixed Income and DAL role][dal-role] · [Optimus Cirrus source][cirrus]
+The ecosystem includes specialised Scala compiler development, asynchronous programming semantics, embedded query languages and developer tooling. [RICE engineering overview][rice-overview] · [Optimus Cirrus source][cirrus]
 
 One related capability is the **Optimus Build Tool (OBT)**, which applies distributed computation and caching techniques to software compilation. Morgan Stanley has demonstrated the approach on a codebase containing approximately 21 million lines of Scala and Java. OBT applies Optimus concepts outside the financial calculation workflow. [Scala Days keynote][scala-days]
 
 ## End-to-end calculation workflow {/* #end-to-end-calculation-workflow */}
 
-This illustrative valuation or risk calculation combines the roles described in public sources. [Optimus/RICE pricing role][pricing-role] · [DAL role][dal-role] · [Scenario evaluation patent][tweak-patent]
+This illustrative valuation or risk calculation combines the roles described in public sources. [Optimus/RICE pricing role][pricing-role] · [Optimus Cirrus DAL source][dal-source] · [Scenario evaluation patent][tweak-patent]
 
 1. A financial application initiates a calculation using a model developed in the RICE environment.
 2. Optimus evaluates the model's dependency graph, coordinating the computations and reusing eligible cached results.
@@ -164,9 +160,9 @@ The sequence illustrates how Optimus and DAL can provide complementary computati
 
 ## Engineering significance {/* #engineering-significance */}
 
-Taken together, the public descriptions suggest that the architecture separates financial modelling from execution and data access. This separation can reduce the need for application teams to implement dependency scheduling, result reuse and history queries themselves. [Fixed Income and DAL role][dal-role] · [Scenario evaluation patent][tweak-patent]
+Taken together, the public descriptions suggest that the architecture separates financial modelling from execution and data access. This separation can reduce the need for application teams to implement dependency scheduling, result reuse and history queries themselves. [RICE engineering overview][rice-overview] · [Scenario evaluation patent][tweak-patent]
 
-Developers must understand **calculation dependencies and execution contexts** to reason about caching and scenario behaviour. They must also distinguish **business-effective history from system-recorded history** when reproducing a past valuation or explaining a risk result. At deployment scale, distributed computation and strongly consistent data access introduce additional operational and integration concerns.
+Developers must understand **calculation dependencies and execution contexts** to reason about caching and scenario behaviour. They must also distinguish **business-effective history from system-recorded history** when reproducing a past valuation or explaining a risk result. At deployment scale, distributed computation and data access introduce additional operational and integration concerns.
 
 ## Public references {/* #public-references */}
 
@@ -194,8 +190,8 @@ Developers must understand **calculation dependencies and execution contexts** t
    Public evidence of Commodities products and workflows being migrated to the RICE platform.  
    https://ms.wd5.myworkdayjobs.com/en-US/External/job/Commodities-Strategist_JR041944
 
-7. [Morgan Stanley — Institutional Securities Technology developer role][dal-role]\
-   Describes RICE's Fixed Income role, platform capabilities, and DAL integrations.
+7. [Peter Fraenkel — RICE engineering overview][rice-overview]\
+   Describes RICE's Fixed Income role and platform capabilities. Morgan Stanley also publishes [DAL source code][dal-source] in the Optimus Cirrus repository.
 
 8. [AWS re:Invent 2023 — Confidently run your production HPC workloads on AWS][aws-hpc]\
    Reports the use of AWS and Azure for RICE risk calculations.
@@ -204,10 +200,19 @@ Developers must understand **calculation dependencies and execution contexts** t
    Defines valid time and transaction time for bitemporal data.
 
 [cirrus]: https://github.com/morganstanley/optimus-cirrus
+
 [scala-days]: https://archives.scaladays.org/2023/seattle-2023/supercharge-your-performance-with-the-optimus-cirrus-platform.html
+
 [tweak-patent]: https://patents.google.com/patent/US20220121462A1/en
+
 [pricing-role]: https://en.wizbii.com/company/morgan-staney/job/scala-developer-7
+
 [commodities-role]: https://ms.wd5.myworkdayjobs.com/en-US/External/job/Commodities-Strategist_JR041944
-[dal-role]: https://sg.linkedin.com/jobs/view/associate-vp-developer-institutional-securities-technology-at-morgan-stanley-3907166911
+
+[rice-overview]: https://www.linkedin.com/posts/peter-fraenkel-3849493_hiring-activity-6877297325576904704-bYFO
+
+[dal-source]: https://github.com/morganstanley/optimus-cirrus/tree/main/optimus/platform/projects/dal_core
+
 [aws-hpc]: https://d1.awsstatic.com/events/Summits/reinvent2023/CMP213_Confidently-run-your-production-HPC-workloads-on-AWS.pdf
+
 [temporal]: https://www2.cs.arizona.edu/~rts/pubs/TRmerged.pdf

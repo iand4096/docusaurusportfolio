@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "inputHash": "92d5dc1c806bc015e9b583829f13d19abddd020d336ae9b8ca9cf9b476326bb3",
+  "inputHash": "883fe399a545d489478d0f007c474bb913b0acd3b89f8cc5c724e7ec9da3ad40",
   "settings": {
     "limit": 3,
     "threshold": 0.3,
@@ -114,7 +114,7 @@
           "id": "tools/OpenAPIandAPITools",
           "title": "OpenAPI and API tools",
           "path": "/docs/openapitools",
-          "score": 0.391829,
+          "score": 0.383175,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -1297,7 +1297,6 @@
           "score": 0.977352,
           "reasons": [
             "Topic: Information architecture (information-architecture)",
-            "Technology: Kafka (kafka)",
             "Technology: Optimus (optimus)",
             "Technology: RICE (rice)",
             "Audience: Developers (developers)",
