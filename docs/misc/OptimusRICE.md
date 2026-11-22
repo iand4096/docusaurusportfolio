@@ -41,21 +41,19 @@ The public Optimus Cirrus repository includes **Data Access Layer (DAL)** code. 
 
 ## Platform architecture {/* #platform-architecture */}
 
-These components describe architectural responsibilities, not a strict product hierarchy. Infrastructure and tooling cut across them.
-
 ### 1. Financial applications and analytics - RICE {/* #1-financial-applications-and-analytics---rice */}
 
 RICE provides a platform for building financial models and applications for pricing, valuation, trading and risk. The platform's development and runtime teams provide services and components used by application developers. [Optimus/RICE pricing role][pricing-role] · [RICE engineering overview][rice-overview]
 
 The ecosystem also includes declarative reactive interfaces for presenting financial data and results. [RICE engineering overview][rice-overview]
 
-### 2. Graph Computational framework - Optimus {/* #2-graph-computational-framework---optimus */}
+### 2. Graph computation framework - Optimus {/* #2-graph-computational-framework---optimus */}
 
-Optimus uses a dependency-driven computation graph. Methods annotated with `@node` participate in that graph, allowing the runtime to manage dependencies and coordinate execution. Its model supports asynchronous evaluation, automatic parallelisation, memoization and caching. [Scala Days keynote][scala-days] · [Scenario evaluation patent][tweak-patent]
-
-Optimus builds a dependency graph from computations defined using `@node`. A node can invoke other nodes, which may themselves have further dependencies, creating a graph of interconnected calculations.
+Methods annotated with `@node` participate in the Optimus dependency graph. When one node calls another, the graph records the dependency so the runtime can coordinate their execution. The runtime can evaluate independent work in parallel and reuse cached results where applicable. [Scala Days keynote][scala-days] · [Scenario evaluation patent][tweak-patent]
 
 **Referential transparency** is an important principle: results can be reused safely when a function's inputs and execution context remain unchanged. For scenario analysis, tweaks let nodes be evaluated under alternative assumptions while preserving the underlying immutable objects.
+
+#### 1. Code example
 
 The Scala-style pseudocode below illustrates that behaviour. Morgan Stanley's patent describes a sale with tweakable price and quantity and gives a separate example of a scoped price change using `given`. [Scenario evaluation patent][tweak-patent]
 
@@ -79,7 +77,7 @@ given(trade.price := 120.0) {
 trade.marketValue  // 1000 (original value)
 ```
 
-The diagram illustrates the dependencies in the example:
+#### 2. Dependency diagram
 
 <DiagramFigure {...{
   "title": "Calculation dependencies and price tweaks",
@@ -156,13 +154,9 @@ This illustrative valuation or risk calculation combines the roles described in 
 3. The application and its computations obtain required financial information through DAL services, including historical data where appropriate.
 4. Results are returned for use by financial applications, analytical services or user interfaces, with distributed compute and data infrastructure supporting the workload.
 
-The sequence illustrates how Optimus and DAL can provide complementary computation and data services for financial applications.
-
 ## Engineering significance {/* #engineering-significance */}
 
-Taken together, the public descriptions suggest that the architecture separates financial modelling from execution and data access. This separation can reduce the need for application teams to implement dependency scheduling, result reuse and history queries themselves. [RICE engineering overview][rice-overview] · [Scenario evaluation patent][tweak-patent]
-
-Developers must understand **calculation dependencies and execution contexts** to reason about caching and scenario behaviour. They must also distinguish **business-effective history from system-recorded history** when reproducing a past valuation or explaining a risk result. At deployment scale, distributed computation and data access introduce additional operational and integration concerns.
+When reproducing a past valuation, use valid time to select the inputs that applied on the valuation date. Use transaction time to see which of those inputs the system had recorded when it ran the calculation. A correction recorded later can change the result for the same valuation date. [Valid time and transaction time][temporal]
 
 ## Public references {/* #public-references */}
 
