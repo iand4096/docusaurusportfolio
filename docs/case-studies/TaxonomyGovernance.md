@@ -140,7 +140,7 @@ Writers can classify a page manually using the same vocabulary. Here, the **Tech
 
 <p>
   <a href={frontMatterTechnologies}>
-    <img src={frontMatterTechnologies} width={500} alt="Front Matter CMS Technologies picker showing available terms and the selected values docusaurus, git and yaml." />
+    <img src={frontMatterTechnologies} width={500} alt="Front Matter CMS Technologies picker showing available terms and the selected values Docusaurus, Git and YAML." />
   </a>
 </p>
 
@@ -149,6 +149,7 @@ In the same sidebar, **Review metadata with DeepSeek** suggests classifications 
 <p>
   <a href={frontMatterActions} style={{display: 'inline-block', position: 'relative', maxWidth: '100%'}}>
     <img src={frontMatterActions} width={500} style={{display: 'block'}} alt="Front Matter CMS Actions panel with the three custom taxonomy buttons outlined: review metadata with DeepSeek, apply reviewed taxonomy metadata and generate a draft taxonomy migration." />
+
     <span aria-hidden="true" style={{position: 'absolute', inset: '86.4% 4.3% 0.2% 2.3%', border: '2px solid #ffcf40', borderRadius: 4, pointerEvents: 'none'}} />
   </a>
 </p>
@@ -158,7 +159,9 @@ The **Taxonomy review** panel separates suggested additions using existing terms
 <p>
   <a href={taxonomyReview} style={{display: 'inline-block', position: 'relative', maxWidth: '100%'}}>
     <img src={taxonomyReview} width={640} style={{display: 'block'}} alt="Taxonomy review panel with a green outline around the VS Code and DeepSeek LLM API additions and a gold outline around the proposed Front Matter CMS term and its evidence." />
+
     <span aria-hidden="true" style={{position: 'absolute', inset: '35.7% 3.1% 60% 4.4%', border: '2px solid #59dc9d', borderRadius: 4, pointerEvents: 'none'}} />
+
     <span aria-hidden="true" style={{position: 'absolute', inset: '62.1% 2.2% 8% 3.5%', border: '2px solid #ffcf40', borderRadius: 4, pointerEvents: 'none'}} />
   </a>
 </p>
@@ -176,6 +179,7 @@ The **Docusaurus** technology selected in the editor also appears as a filter in
 <p style={{marginBottom: '1.75rem'}}>
   <a href={docusaurusExploreFilter} style={{display: 'inline-block', position: 'relative', maxWidth: '100%'}}>
     <img src={docusaurusExploreFilter} width={420} style={{display: 'block'}} alt="Docusaurus selected and outlined in the Explore documentation platform filter." />
+
     <span aria-hidden="true" style={{position: 'absolute', inset: '32% 48.5% 35% 0', border: '2px solid #c76000', borderRadius: 999, pointerEvents: 'none'}} />
   </a>
 </p>
@@ -183,6 +187,7 @@ The **Docusaurus** technology selected in the editor also appears as a filter in
 <p>
   <a href={docusaurusFooterTags} style={{display: 'inline-block', position: 'relative', maxWidth: '100%'}}>
     <img src={docusaurusFooterTags} width={640} style={{display: 'block'}} alt="Docusaurus outlined among the tags in the case study footer." />
+
     <span aria-hidden="true" style={{position: 'absolute', inset: '51% 83.2% 8% 2%', border: '2px solid #c76000', borderRadius: 6, pointerEvents: 'none'}} />
   </a>
 </p>

@@ -237,7 +237,7 @@ To export a Markdown report from saved JSON, run this from the repository root. 
   --output .frontmatter/taxonomy-reviews/case-studies/TaxonomyGovernance.review.md
 ```
 
-In the Front Matter sidebar, expand **Taxonomy review** and select **Refresh review** after running **Review metadata with DeepSeek**. The panel shows proposed additions and removals, the reasoning for each changed field, and evidence for proposed vocabulary terms. Expand **Full review report** to see the complete proposed metadata, reasoning and validation notes. New reviews record a hash of the saved document so the panel can flag subsequent edits. Use the existing **Apply reviewed taxonomy metadata** and **Generate draft taxonomy migration** buttons in Actions to act on a review.
+In the Front Matter sidebar, expand **Taxonomy review** and select **Refresh review** after running **Review metadata with DeepSeek**. The panel shows proposed additions and removals, the reasoning for each changed field, and evidence for proposed vocabulary terms. Expand **Full review report** to see the complete proposed metadata, reasoning and validation notes. New reviews record a hash of the saved document, so the panel can flag subsequent edits. Use the existing **Apply reviewed taxonomy metadata** and **Generate draft taxonomy migration** buttons in Actions to act on a review.
 
 ### Front Matter features versus repository authority {/* #front-matter-features-versus-repository-authority */}
 
@@ -626,18 +626,18 @@ The earlier scripts were useful during discovery and migration, but the steady-s
 
 ## Outcomes {/* #outcomes */}
 
-The resulting system:
+The resulting system does the following.
 
-* maintains a single canonical controlled taxonomy;
-* restricts taxonomy changes to reviewable YAML migration files;
-* separates AI semantic classification from the authority to change canonical repository state;
-* rejects stale migrations when the current taxonomy state no longer matches the migration's expected preconditions;
-* identifies required document metadata rewrites for migrations that affect existing terms;
-* supports controlled vocabulary expansion for genuinely new concepts;
-* supports deprecation of unused vocabulary while preserving an audit trail;
-* generates Docusaurus tags, Front Matter choices, and navigation projections from canonical taxonomy state. The Docusaurus build reads technology definitions directly from the taxonomy YAML for inline tooltips;
-* provides a VS Code workflow for reviewing and applying AI-assisted metadata;
-* uses the pull-request Git diff as the final human review step.
+* Maintains a single canonical controlled taxonomy.
+* Restricts taxonomy changes to reviewable YAML migration files.
+* Separates AI semantic classification from the authority to change canonical repository state.
+* Rejects stale migrations when the current taxonomy state no longer matches the migration's expected preconditions.
+* Identifies required document metadata rewrites for migrations that affect existing terms.
+* Supports controlled vocabulary expansion for genuinely new concepts.
+* Supports deprecation of unused vocabulary while preserving an audit trail.
+* Generates Docusaurus tags, Front Matter choices, and navigation projections from canonical taxonomy state. The Docusaurus build reads technology definitions directly from the taxonomy YAML for inline tooltips.
+* Provides a VS Code workflow for reviewing and applying AI-assisted metadata.
+* Uses the pull-request Git diff as the final human review step.
 
 In the historical correction-migration example, five vocabulary changes were validated against 26 portfolio documents, and no document rewrites were required because the canonical IDs did not change. The current add-only migration path does not scan unrelated documents.
 
@@ -719,12 +719,12 @@ Documentation metadata helps with:
 
 ### Original motivation {/* #problem */}
 
-Free-form content tags are easy to add but difficult to govern consistently over time. As the portfolio expanded, I wanted metadata that:
+Free-form content tags are easy to add but difficult to govern consistently over time. As the portfolio expanded, I set these goals for the metadata.
 
-* used stable canonical IDs rather than inconsistent free-text labels;
-* supported content type, audience, topic, technology, and lifecycle dimensions;
-* remained valid across Markdown and MDX documents;
-* generated Docusaurus tags and navigation from the canonical taxonomy, with inline technology tooltips drawing definitions from the same source;
-* was convenient to edit through VS Code Front Matter;
-* used AI for semantic classification without making an LLM authoritative;
-* evolved safely when terms were added, corrected, replaced, or deprecated.
+* Use stable canonical IDs.
+* Support content type, audience, topic, technology, and lifecycle dimensions.
+* Remain valid across Markdown and MDX documents.
+* Generate Docusaurus tags and navigation from the canonical taxonomy, with inline technology tooltips drawing definitions from the same source.
+* Make metadata easy to edit through VS Code Front Matter.
+* Use AI for semantic classification without making an LLM authoritative.
+* Evolve safely as terms are added, corrected, replaced, or deprecated.

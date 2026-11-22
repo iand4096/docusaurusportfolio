@@ -169,22 +169,18 @@ Developers must understand **calculation dependencies and execution contexts** t
    Functional programming, parallelisation, caching, distributed computation and OBT.  
    https://archives.scaladays.org/2023/madrid-2023/keynote3.html
 
-3. **Morgan Stanley — Institutional Securities Technology, RICE and DAL Engineering**  
-   RICE architecture, bitemporal storage, reactive UIs, DAL responsibilities, data technologies and cloud integration.  
-   https://sg.linkedin.com/jobs/view/associate-vp-developer-institutional-securities-technology-at-morgan-stanley-3907166911
-
-4. **Morgan Stanley — Simulated Change of Immutable Objects During Execution Runtime**  
+3. **Morgan Stanley — Simulated Change of Immutable Objects During Execution Runtime**\
    Patent describing referentially transparent nodes, tweaks, scenario-based evaluation and caching.  
    https://patents.google.com/patent/US20220121462A1/en
 
-5. **University of Cambridge — Functional Languages and Financial Models (2014)**  
+4. **University of Cambridge — Functional Languages and Financial Models (2014)**\
    Graph programming, functional financial models, Scala and risk infrastructure.  
    https://www.cst.cam.ac.uk/seminars/list/55917
 
-6. **Morgan Stanley — Scala Developer, Interest Rate Derivatives**  
+5. **Morgan Stanley — Scala Developer, Interest Rate Derivatives**\
    Public description of valuation systems built on the Optimus/RICE platform.  
    https://en.wizbii.com/company/morgan-staney/job/scala-developer-7
 
-7. **Morgan Stanley — Commodities Strategist**  
+6. **Morgan Stanley — Commodities Strategist**\
    Public evidence of Commodities products and workflows being migrated to the RICE platform.  
    https://ms.wd5.myworkdayjobs.com/en-US/External/job/Commodities-Strategist_JR041944
