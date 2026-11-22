@@ -82,7 +82,7 @@ import docusaurusFooterTags from './img/DocusaurusFooterTags.png';
 
 Structured metadata and taxonomy can improve navigation and search in a large documentation repository. They also support content ownership, documentation lifecycle management, publishing automation and a consistent vocabulary for better alignment across an organisation.
 
-My work on a much larger docs-as-code portal at a financial institution showed me the need for a shared metadata vocabulary and a way to check that contributors used it consistently. I built the taxonomy for this Docusaurus portfolio to implement those controls on a smaller scale and explore how GenAI could help contributors apply metadata.
+My work on a large doc-as-code portal at a financial institution showed me the need for a shared metadata vocabulary and a way to check that contributors used it consistently. I built the taxonomy for this Docusaurus portfolio to implement those controls on a smaller scale and explore how GenAI could help contributors apply metadata.
 
 The taxonomy uses a *Git-versioned controlled vocabulary* rather than free-form tags. That vocabulary drives document metadata, Docusaurus tags, editor controls, and faceted navigation. Its definitions also appear as tooltips on the first eligible mention of a technology in the page text. [Explore the faceted navigation](/explore?view=browse)
 
@@ -90,8 +90,8 @@ The taxonomy uses a *Git-versioned controlled vocabulary* rather than free-form 
 
 I wanted the repository to enforce the metadata model rather than rely on contributors to remember conventions. This required:
 
-* Stable IDs for canonical taxonomy concepts.
-* One authoritative list of valid values.
+* Stable IDs for taxonomy terms, such as `api-documentation` for the topic labelled “API documentation”.
+* One authoritative list of valid values. For example, `taxonomy.yml` lists `api-documentation` as an allowed value for `topics`.
 * Authoring tools that use that list.
 * Automatic detection of invalid metadata.
 * Reproducible generation of Docusaurus tags and a shared source for technology definitions.
@@ -112,12 +112,12 @@ A central set of tools is used to validate IDs and cardinality, check migration 
 
 The design uses these constraints:
 
-* *One source of truth.* Docusaurus, the authoring environment, and navigation use views generated from the same taxonomy.
-* *Dry runs before applying changes.* The tooling checks taxonomy changes against the documentation corpus before changing files.
-* *Explicit migrations.* Vocabulary changes have their own reviewable records.
-* *Deprecation rather than automatic deletion.* The taxonomy retains old IDs and replacement relationships.
-* *Human review for semantic changes.* Automation can suggest a change but cannot silently redefine the vocabulary.
-* *Controlled authoring.* Writers select governed values without needing to know how the taxonomy works internally.
+* **One source of truth.** Docusaurus, the authoring environment, and navigation use views generated from the same taxonomy.
+* **Dry runs before applying changes.** The tooling checks taxonomy changes against the documentation corpus before changing files.
+* **Explicit migrations.** Vocabulary changes have their own reviewable records.
+* **Deprecation rather than automatic deletion.** The taxonomy retains old IDs and replacement relationships.
+* **Human review for semantic changes.** Automation can suggest a change but cannot silently redefine the vocabulary.
+* **Controlled authoring.** Writers select governed values without needing to know how the taxonomy works internally.
 
 ## Implementation {/* #implementation */}
 
