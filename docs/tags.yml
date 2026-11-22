@@ -78,6 +78,10 @@ codepen:
 codetreedocs:
   description: A custom internal docs-as-code platform.
   label: Codetreedocs
+codex:
+  description: An OpenAI coding agent for software development tasks such as implementing changes, debugging
+    and reviewing code.
+  label: Codex
 confluence:
   description: A collaboration and documentation platform.
   label: Confluence

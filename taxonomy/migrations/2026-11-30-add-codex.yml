@@ -1,0 +1,18 @@
+schema_version: 2
+id: 2026-11-30-add-codex
+description: Add Codex to the technology vocabulary.
+change_type: vocabulary-expansion
+trigger: content-driven
+governance:
+  date: '2026-11-30'
+  source: human-proposed
+  reason: The AI and Documentation page describes using Codex in personal projects.
+preconditions:
+  taxonomy_version: 3
+changes:
+  technologies:
+    add:
+      codex:
+        label: Codex
+        description: An OpenAI coding agent for software development tasks such as implementing changes, debugging and reviewing code.
+        kind: ai-ml-tool

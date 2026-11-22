@@ -466,6 +466,12 @@
           "kind": "documentation-platform"
         },
         {
+          "id": "codex",
+          "label": "Codex",
+          "description": "An OpenAI coding agent for software development tasks such as implementing changes, debugging and reviewing code.",
+          "kind": "ai-ml-tool"
+        },
+        {
           "id": "confluence",
           "label": "Confluence",
           "description": "A collaboration and documentation platform.",
@@ -1220,6 +1226,7 @@
         "spec-driven-development",
         "jira",
         "claude",
+        "codex",
         "github-copilot",
         "amp",
         "agentic-ai",
@@ -1393,6 +1400,8 @@
         "documentation-governance"
       ],
       "technologies": [
+        "codex",
+        "agentic-ai",
         "deepseek-api",
         "docusaurus",
         "github-actions",
@@ -1620,6 +1629,8 @@
         "developer-experience"
       ],
       "technologies": [
+        "codex",
+        "agentic-ai",
         "rag",
         "docker",
         "terraform",
@@ -1967,6 +1978,8 @@
         "technical-validation"
       ],
       "technologies": [
+        "codex",
+        "agentic-ai",
         "docusaurus",
         "react",
         "mdx",
@@ -2041,6 +2054,8 @@
         "taxonomy"
       ],
       "technologies": [
+        "codex",
+        "agentic-ai",
         "docusaurus",
         "yaml",
         "git"

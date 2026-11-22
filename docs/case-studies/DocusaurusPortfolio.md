@@ -24,6 +24,8 @@ topics:
   - developer-experience
   - technical-validation
 technologies:
+  - codex
+  - agentic-ai
   - docusaurus
   - react
   - mdx
@@ -43,6 +45,8 @@ technologies:
 lifecycle:
   - current
 tags:
+  - agentic-ai
+  - codex
   - deepseek-api
   - developer-experience
   - docs-as-code
@@ -105,6 +109,8 @@ I built this portfolio with Docusaurus to publish my documentation samples and d
 * Combine AI review with deterministic checks such as Markdown linting, accessibility, style and link checks.
 
 ## Approach {/* #approach */}
+
+I used Codex as an agentic coding assistant while building and extending the portfolio site.
 
 Docusaurus provides the documentation framework. I used Markdown and MDX for content, and wrote React components for landing-page cards, capability grids and document controls.
 

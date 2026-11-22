@@ -24,6 +24,8 @@ topics:
   - documentation-engineering
   - documentation-governance
 technologies:
+  - codex
+  - agentic-ai
   - deepseek-api
   - docusaurus
   - github-actions
@@ -32,6 +34,8 @@ technologies:
 lifecycle:
   - current
 tags:
+  - agentic-ai
+  - codex
   - deepseek-api
   - docs-as-code
   - documentation-engineering
@@ -87,6 +91,8 @@ When a document and the review settings are unchanged, the cache key (see diagra
 ![The cache key hashes the source paths and full text, review scope, check name, defects-only setting, model, API endpoint, review policy version, implementation fingerprint and cache schema version. An unchanged key lets the pipeline reuse the review and apply the current dismissal. Inserting a line changes the key and moves the cited text from lines 42–43 to 43–44, so a fresh review can raise the same issue again.](/img/qa-review-cache-ranges.svg)
 
 ## Implementation {/* #implementation */}
+
+I used Codex as an agentic coding assistant while building and refining the documentation QA pipeline.
 
 The Python CLI selects the documents and checks for each run. Adapters translate tool output into shared findings and record checker errors separately. One report model produces HTML for human inspection and JSON and Markdown for AI review. The CLI can also regenerate the report from the findings and checker errors saved in JSON. It applies the latest reviewer decisions and recalculates the counts used to decide whether the CI gate passes. For example, if a reviewer dismisses a finding that counted towards the gate, the refreshed report shows the dismissal and excludes that finding from the gate count without rerunning any checks. [Pipeline and report flows](../implementation-details/qa-architecture.mdx)
 

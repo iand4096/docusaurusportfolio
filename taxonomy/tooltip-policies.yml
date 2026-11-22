@@ -1,5 +1,16 @@
 version: 1
 terms:
+  codex:
+    mode: auto
+    term_basis_hash: "sha256:1d13c8624f4102011dc2ab54c0f93ebc7e459a3aa266b87211b0d0ad9e060e02"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: repository-maintainer
+      reviewed_on: '2026-11-30'
+      reason: The only eligible portfolio mention names the coding agent in a discussion of AI-assisted development.
   requests:
     mode: contextual
     term_basis_hash: "sha256:ceb435488e3146f670a009aaaf783a8e51172069e0c44d7d5bf7f8c29d7fae1a"

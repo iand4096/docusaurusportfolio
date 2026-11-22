@@ -68,6 +68,7 @@
         "claude",
         "codepen",
         "codetreedocs",
+        "codex",
         "confluence",
         "cors",
         "csharp",
@@ -924,6 +925,7 @@
     "claude",
     "codepen",
     "codetreedocs",
+    "codex",
     "confluence",
     "cors",
     "csharp",
@@ -1375,6 +1377,7 @@
       "agentic-ai",
       "amp",
       "claude",
+      "codex",
       "deepseek-api",
       "github-copilot",
       "whisper"

@@ -1,7 +1,7 @@
 {
   "documents": {
     "docs/case-studies/RagSearchCloudArchitecture.md": {
-      "content_hash": "sha256:e1011351638d97563ce50f215953bcdb4fd10f55150a977db3f56f6a18bcba34",
+      "content_hash": "sha256:85655a9034ad84dd329df49f123c00a6ae763ef0871dce94be044fa64edc8df5",
       "decisions": [
         {
           "context_hash": "sha256:7ad8dce689ccf16b890cbe63fa7b5d6652cdbc2046ef6481ea7a3227825927a3",
@@ -14,8 +14,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 6440,
-            "start": 6432
+            "end": 6597,
+            "start": 6589
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -54,7 +54,7 @@
     "embedding_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
     "spacy_pipeline": "3.8.0"
   },
-  "policy_hash": "sha256:e97c13d90703d9d2f276e815a818c7015ef7ac6bb8e7850d1ec8ee0a678ee2ff",
-  "taxonomy_hash": "sha256:6cf0c6a1b329129d17e1cc2889ca572f52bcafb7e09bf56bed6ae7ac759971dc",
+  "policy_hash": "sha256:3f138824d4aaa8e371b62b354d66ad318645684f6d75e9f2b67b7515f24f54b3",
+  "taxonomy_hash": "sha256:503f851c4bef6d3d27e4d38c63e8b1255ebe2e1a7dc1cb1b0e9f0ac50bab194e",
   "version": 1
 }

@@ -32,6 +32,7 @@ technologies:
   - spec-driven-development
   - jira
   - claude
+  - codex
   - github-copilot
   - amp
   - agentic-ai
@@ -48,6 +49,7 @@ tags:
   - agentic-ai
   - amp
   - claude
+  - codex
   - developer-experience
   - docs-as-code
   - documentation-engineering
@@ -70,7 +72,7 @@ I created **SKILL.md** guidance for developers using AI coding agents to generat
 
 ## AI-assisted development {/* #ai-assisted-development */}
 
-I have used agentic coding assistants including **Amp, Claude, and GitHub Copilot** while extending the documentation platform. Examples include adding PlantUML support, fixing problems with documentation link checking, and creating tooling for tasks such as content migration. For larger changes, I generally work from a written specification: I define the requirements in Markdown first and then use AI to help generate or modify the implementation. Finally, I test the resulting code extensively before accepting it.
+I have used agentic coding assistants including **Amp, Claude, and GitHub Copilot** while extending the documentation platform. Examples include adding PlantUML support, fixing problems with documentation link checking, and creating tooling for tasks such as content migration. I have also used **Codex** in my personal projects. For larger changes, I generally work from a written specification: I define the requirements in Markdown first and then use AI to help generate or modify the implementation. Finally, I test the resulting code extensively before accepting it.
 
 ## Retrieval and RAG {/* #retrieval-and-rag */}
 

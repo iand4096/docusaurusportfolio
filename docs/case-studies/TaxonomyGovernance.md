@@ -24,12 +24,16 @@ topics:
   - documentation-engineering
   - taxonomy
 technologies:
+  - codex
+  - agentic-ai
   - docusaurus
   - yaml
   - git
 lifecycle:
   - current
 tags:
+  - agentic-ai
+  - codex
   - docs-as-code
   - documentation-engineering
   - documentation-governance
@@ -116,6 +120,8 @@ The design uses these constraints:
 * *Controlled authoring.* Writers select governed values without needing to know how the taxonomy works internally.
 
 ## Implementation {/* #implementation */}
+
+I used Codex as an agentic coding assistant while building the taxonomy tooling and its editor integration.
 
 The system includes:
 

@@ -25,6 +25,8 @@ topics:
   - taxonomy
   - developer-experience
 technologies:
+  - codex
+  - agentic-ai
   - rag
   - docker
   - terraform
@@ -55,6 +57,7 @@ technologies:
 lifecycle:
   - current
 tags:
+  - agentic-ai
   - azure-application-insights
   - azure-container-apps
   - azure-container-registry
@@ -62,6 +65,7 @@ tags:
   - azure-managed-identity
   - azure-monitor
   - bm25
+  - codex
   - cors
   - deepseek-api
   - developer-experience
@@ -140,6 +144,8 @@ I wanted to test whether document metadata could control which passages a RAG sy
 The cloud deployment needed to control running costs, keep provider credentials out of the frontend and limit paid AI requests.
 
 ## My approach
+
+I used Codex as an agentic coding assistant while building the search API and portfolio search interface.
 
 ### Treat metadata as part of the retrieval architecture
 
