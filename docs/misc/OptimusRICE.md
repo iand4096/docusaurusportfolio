@@ -32,10 +32,7 @@ import DiagramFigure from '@site/src/components/DiagramFigure';
 
 ## Overview {/* #overview */}
 
-Morgan Stanley uses RICE and Optimus to run computationally intensive financial applications.
-
-- **RICE (Risk Calculation Environment)** supports trading and risk management in [Fixed Income][rice-overview]. Morgan Stanley has also advertised roles to help move [Commodities products and workflows][commodities-role] onto RICE.
-- **Optimus** runs Scala computations as a graph. The graph lets it [run independent tasks in parallel and reuse results][scala-days]. Developers can also [rerun calculations under different assumptions][tweak-patent].
+Morgan Stanley uses RICE and Optimus to run financial applications. **RICE (Risk Calculation Environment)** provides the analytics environment for pricing and risk. **Optimus** is the Scala computation framework that runs calculations at scale.
 
 ## Platform architecture {/* #platform-architecture */}
 
@@ -43,9 +40,11 @@ Morgan Stanley uses RICE and Optimus to run computationally intensive financial 
 
 Developers build pricing, valuation and risk applications on RICE. In one [public job description][pricing-role], Morgan Stanley describes a pricing system built on Optimus and RICE to run heavy calculations in parallel. The [RICE engineering overview][rice-overview] also describes reactive user interfaces for displaying financial data and results.
 
+RICE supports trading and risk management in [Fixed Income][rice-overview]. Morgan Stanley has also advertised roles to help move [Commodities products and workflows][commodities-role] onto RICE.
+
 ### 2. Graph computation framework - Optimus {/* #2-graph-computational-framework---optimus */}
 
-Optimus builds its dependency graph from methods marked `@node`. When one node calls another, the runtime can tell which result it needs before it can continue. At [Scala Days][scala-days], Morgan Stanley showed how Optimus uses those dependencies to schedule work and cache results.
+Optimus builds its dependency graph from methods marked `@node`. When one node calls another, the runtime can tell which result it needs before it can continue. At [Scala Days][scala-days], Morgan Stanley showed how Optimus uses those dependencies to run independent tasks in parallel and cache results.
 
 When a calculation has the same inputs and execution context, the runtime can reuse the result. This is the practical benefit of **referential transparency**. To test a scenario, a developer can temporarily override an input with a *tweak*. The original object keeps its value outside the scenario.
 

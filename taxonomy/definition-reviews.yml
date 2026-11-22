@@ -4,8 +4,8 @@
     "rice-definition-mismatch": {
       "evidence": [
         {
-          "context_hash": "sha256:ae3925a06724349ce67b754ea86744efeb230353325e1580808ac1144f6f6fe2",
-          "excerpt": "- **RICE (Risk Calculation Environment)** supports trading and risk management in [Fixed Income][rice-overview]. Morgan Stanley has also advertised roles to help move [Commodities products and workflows][commodities-role] onto RICE.",
+          "context_hash": "sha256:0f040b2be2a8894746d52d58d4da5d81066736381e9bf9ad55192afb68721a3a",
+          "excerpt": "Morgan Stanley uses RICE and Optimus to run financial applications. **RICE (Risk Calculation Environment)** provides the analytics environment for pricing and risk. **Optimus** is the Scala computation framework that runs calculations at scale.",
           "path": "docs/misc/OptimusRICE.md"
         }
       ],
@@ -26,8 +26,8 @@
     "optimus-definition-mismatch": {
       "evidence": [
         {
-          "context_hash": "sha256:5427f762487a0da3d0aee30590407b3831ea878e5e31f931694c595f797b3d97",
-          "excerpt": "- **Optimus** runs Scala computations as a graph. The graph lets it [run independent tasks in parallel and reuse results][scala-days]. Developers can also [rerun calculations under different assumptions][tweak-patent].",
+          "context_hash": "sha256:c617b06cad455f40280d7c0368ee8dfe448110cb35e95d488c97b1dbaf2e1670",
+          "excerpt": "Optimus builds its dependency graph from methods marked `@node`. When one node calls another, the runtime can tell which result it needs before it can continue. At [Scala Days][scala-days], Morgan Stanley showed how Optimus uses those dependencies to run independent tasks in parallel and cache results.",
           "path": "docs/misc/OptimusRICE.md"
         }
       ],
