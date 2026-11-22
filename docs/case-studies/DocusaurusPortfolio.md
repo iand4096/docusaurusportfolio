@@ -130,11 +130,13 @@ A generated taxonomy catalogue supplies the custom React interface. The [taxonom
 
 The Search tab connects the static site to a FastAPI service on Azure Container Apps. Readers can use keyword, semantic or hybrid retrieval, inspect source passages, and optionally request AI answers with source links. Governed metadata filters constrain retrieval. The [cloud search case study](RagSearchCloudArchitecture.md) explains the indexing, infrastructure and request controls.
 
-### Generated Search API reference {/* #search-api-reference */}
+### Documentation features for the Search API {/* #documentation-features-to-support-the-search-api */}
 
-The [Search API reference](pathname:///search-api) documents the endpoints, schemas and examples for the portfolio’s search service. FastAPI generates the OpenAPI contract from its route definitions, Pydantic models and named examples. The export script calls `app.openapi()` and writes the result to `static/api/search-openapi.json`, which is committed to the repository.
+#### Generated Search API reference {/* #search-api-reference */}
 
-Docusaurus publishes that JSON as a static asset. Scalar loads it in the browser to render the reference, so readers can browse the contract even when the search service is unavailable. The [API documentation components](../implementation-details/api-example.mdx) use the same snapshot for operation links and inline examples.
+FastAPI generates the OpenAPI contract for the portfolio’s search service from its route definitions, Pydantic models and named examples. The export script calls `app.openapi()` and writes the contract to `static/api/search-openapi.json`. I commit that snapshot to the repository.
+
+Docusaurus publishes the snapshot as a static asset. Scalar loads it in the browser to render the [Search API reference](pathname:///search-api), where readers can browse endpoints, schemas and examples even when the search service is unavailable. The [API documentation components](../implementation-details/api-example.mdx) use the same snapshot for operation links and inline examples.
 
 After changing a route, model or example, regenerate the snapshot from the repository root and commit it with the source change. On Linux, use Python 3.12 and the dependencies pinned in `knowledge-api/requirements-openapi-linux-py312.lock`, which is the environment used by GitHub Actions.
 
@@ -144,21 +146,25 @@ python knowledge-api/export_openapi.py
 
 GitHub Actions runs the exporter with `--check` to compare the committed snapshot with the schema FastAPI generates. The check fails if the snapshot is missing or differs from the generated schema.
 
-### Code sample inserts {/* #code-sample-inserts */}
+#### API request and response examples
+
+`ApiExample` uses an OpenAPI operation ID and example name to display the saved request and response payloads and generate a cURL command. The [taxonomy-filtered search example](RagSearchCloudArchitecture.md#separate-evidence-retrieval-from-ai-answer-generation) shows the request and response tabs inline.
+
+### Portfolio-wide documentation features
+
+#### Repository code excerpts {/* #code-sample-inserts */}
 
 I built a Docusaurus plugin that inserts excerpts directly from repository files. An empty fenced code block with `source=path#name` points to a region marked by `docs:start` and `docs:end` comments. During the build, the plugin reads that region and renders it with **Copy code** and **View source** controls. **View source** opens the file on the portfolio site at the excerpt’s first line. The [QA check adapter example](../implementation-details/qa-key-concepts.md#check-adapters-and-shared-results) shows this in use.
 
-For API examples, `ApiExample` uses an OpenAPI operation ID and example name to display the saved request and response payloads and generate a cURL command. The [taxonomy-filtered search example](RagSearchCloudArchitecture.md#separate-evidence-retrieval-from-ai-answer-generation) shows the request and response tabs inline.
-
-### Related-content recommendations {/* #related-content-recommendations */}
+#### Related-content recommendations {/* #related-content-recommendations */}
 
 A custom Docusaurus plugin generates up to three **See also** links from governed metadata during development and builds, without calling an AI service. Relevance rules favour distinctive shared topics and technologies, and authors can exclude destinations or disable recommendations per page. A generated review report explains the selections; CI checks that committed recommendations remain current.
 
-### Machine-readable publishing {/* #machine-readable-publishing */}
+#### Machine-readable publishing {/* #machine-readable-publishing */}
 
 Production builds generate `llms.txt`, `llms-full.txt` and individual Markdown exports that retain governed taxonomy fields. Documentation pages expose **Copy page as Markdown** and **View Markdown** controls. Copying includes a manual fallback when clipboard access is unavailable.
 
-### Reusable documentation components {/* #reusable-presentation */}
+#### Reusable documentation components {/* #reusable-presentation */}
 
 These guides combine authoring examples with live previews of the components used across this portfolio.
 
