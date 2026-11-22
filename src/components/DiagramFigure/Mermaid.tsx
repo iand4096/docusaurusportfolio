@@ -27,7 +27,7 @@ function Renderer({value}: Props): ReactNode {
     match => match[1]).join(' ');
   return <div ref={ref} className={MermaidContainerClassName} style={style}
     data-diagram-subgraph-ids={subgraphIds || undefined}
-    data-diagram-subgraph-direction={subgraphIds ? flowchartDirection(value) : undefined}
+    data-diagram-subgraph-direction={flowchartDirection(value)}
     dangerouslySetInnerHTML={{__html: result.svg}} />;
 }
 

@@ -23,7 +23,7 @@
       ]
     },
     "docs/case-studies/RagSearchCloudArchitecture.md": {
-      "content_hash": "sha256:d8d5e0c50e377d9c7b804788ba45b601f1b6cadaa79110486331e2f58206d72d",
+      "content_hash": "sha256:ae06ffdc466454f16bb0c1375799f8fb0c6932b22f048661989f91f2cfe9fbb4",
       "decisions": [
         {
           "context_hash": "sha256:505614ecea2acfbadafc960fcbee197230ce40edc82610833f63498de0dd2c7e",
@@ -87,8 +87,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 11173,
-            "start": 11165
+            "end": 13462,
+            "start": 13454
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"

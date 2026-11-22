@@ -14,7 +14,7 @@ const focusModule = new Module(focusFilename, module);
 focusModule._compile(ts.transpileModule(fs.readFileSync(focusFilename, 'utf8'), {
   compilerOptions: {module: ts.ModuleKind.CommonJS},
 }).outputText, focusFilename);
-const {fitSubgraph, placeSubgraphNote} = focusModule.exports;
+const {findSubgraphs, fitSubgraph, placeSubgraphNote} = focusModule.exports;
 
 const filename = path.resolve(__dirname, '../../src/components/DiagramFigure/index.tsx');
 const loaded = new Module(filename, module);
@@ -37,6 +37,28 @@ loaded._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
   compilerOptions: {module: ts.ModuleKind.CommonJS, jsx: ts.JsxEmit.ReactJSX, esModuleInterop: true},
 }).outputText, filename);
 const Figure = loaded.exports.default;
+
+test('focus options include authored nodes with notes alongside subgraphs', () => {
+  const element = (id, label, top) => ({
+    id,
+    getBoundingClientRect: () => ({left: 0, top}),
+    querySelector: () => ({textContent: label, innerText: label}),
+  });
+  const cluster = element('mermaid-PACKAGE', 'Packaging', 0);
+  const node = element('mermaid-flowchart-ACA-3', 'Azure Container Apps\nFastAPI service', 10);
+  const other = element('flowchart-Other-4', 'Without a note', 20);
+  const renderer = {
+    dataset: {diagramSubgraphIds: 'PACKAGE', diagramSubgraphDirection: 'TB'},
+    closest: () => null,
+    querySelectorAll: selector => selector.includes('cluster') ? [cluster] : [node, other],
+  };
+  const content = {querySelectorAll: selector => selector.startsWith('.diagram-columns') ? [] : [renderer]};
+  const options = findSubgraphs(content, () => ['ACA']);
+  assert.deepEqual(options.map(({id, label, node}) => ({id, label, node})), [
+    {id: 'PACKAGE', label: 'Packaging', node: false},
+    {id: 'ACA', label: 'Azure Container Apps', node: true},
+  ]);
+});
 
 test('subgraph notes use an adjacent space only when the diagram leaves it clear', () => {
   const rect = (left, top, width, height) => ({left, top, width, height, right: left + width, bottom: top + height});

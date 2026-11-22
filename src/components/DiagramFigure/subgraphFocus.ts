@@ -1,4 +1,4 @@
-export type SubgraphOption = {id: string; panel?: string; label: string};
+export type SubgraphOption = {id: string; panel?: string; label: string; node?: boolean};
 export type SubgraphFit = {
   scale: number; x: number; y: number; width: number; height: number; limited: boolean;
   offsetX: number; offsetY: number; frameWidth: number; frameHeight: number;
@@ -55,24 +55,35 @@ export function subgraphKey({id, panel}: SubgraphOption): string {
   return JSON.stringify([panel, id]);
 }
 
-export function findSubgraphs(content: HTMLElement) {
+export function findSubgraphs(content: HTMLElement, nodesForPanel?: (panel?: string) => readonly string[]) {
   const panels = Array.from(content.querySelectorAll<HTMLElement>('.diagram-columns > .diagram-panel'));
-  const renderers = content.querySelectorAll<HTMLElement>('[data-diagram-subgraph-ids]');
+  const renderers = content.querySelectorAll<HTMLElement>('[data-diagram-subgraph-direction]');
   return Array.from(renderers).flatMap(renderer => {
     if (renderer.closest('[hidden]')) return [];
     const ids = (renderer.dataset.diagramSubgraphIds?.split(' ') ?? []).sort((a, b) => b.length - a.length);
     const panel = renderer.closest<HTMLElement>('.diagram-panel');
     const panelKey = panel ? panel.dataset.diagramPanelId || `panel:${panels.indexOf(panel)}` : undefined;
     const horizontal = renderer.dataset.diagramSubgraphDirection === 'LR';
+    const notedNodes = nodesForPanel?.(panelKey) ?? [];
     const targets = Array.from(renderer.querySelectorAll<SVGGElement>('svg g.cluster[id]')).flatMap(element => {
       // Mermaid can prefix rendered cluster IDs. Match the longest authored suffix.
       const id = ids.find(candidate => element.id === candidate)
         ?? ids.find(candidate => element.id.endsWith(`-${candidate}`));
       if (!id) return [];
       const {left, top} = element.getBoundingClientRect();
-      return [{id, element, panel: panelKey, left, top,
+      return [{id, element, panel: panelKey, left, top, node: false,
         label: element.querySelector('.cluster-label')?.textContent?.replace(/\s+/g, ' ').trim() || id}];
     });
+    if (notedNodes.length) {
+      for (const element of renderer.querySelectorAll<SVGGElement>('svg g.node[id]')) {
+        // Mermaid gives flowchart vertices IDs such as flowchart-Browser-3.
+        const id = element.id.match(/(?:^|-)flowchart-(.+)-\d+$/)?.[1];
+        if (!id || !notedNodes.includes(id)) continue;
+        const {left, top} = element.getBoundingClientRect();
+        const label = element.querySelector<HTMLElement>('.nodeLabel')?.innerText?.split('\n')[0]?.trim() || id;
+        targets.push({id, element, panel: panelKey, left, top, node: true, label});
+      }
+    }
     return targets.sort((a, b) => horizontal
       ? a.left - b.left || a.top - b.top
       : a.top - b.top || a.left - b.left);

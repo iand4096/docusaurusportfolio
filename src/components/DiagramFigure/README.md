@@ -59,6 +59,10 @@ subgraph and connects it with a dashed line. The note hides when there is no
 clear position and returns when space opens up. On narrow screens, notes
 appear in an expandable panel.
 
+Use `nodeNotes` for individual flowchart nodes. Key each note by the authored
+node ID, and nest notes under the panel ID for a multi-panel figure. Nodes
+with notes appear alongside subgraphs in **Zoom to**.
+
 Keep the visible figure caption and give every Mermaid diagram its own
 `accTitle` and `accDescr`, as shown above. Reuse the figure title for a single
 diagram or the panel heading for each diagram in a multi-panel figure. Describe

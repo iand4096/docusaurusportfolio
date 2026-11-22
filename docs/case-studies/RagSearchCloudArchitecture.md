@@ -174,6 +174,27 @@ The diagrams show how the pipeline builds the index and how the API uses it to a
 <DiagramFigure {...{
   "title": "Documentation indexing and search",
   "shareId": "documentation-indexing-and-search",
+  "nodeNotes": {
+    "indexing-before-deployment": {
+      "Docs": "The index starts with the portfolio’s Markdown and MDX files. Their front matter supplies fields such as audience, topic and lifecycle.",
+      "Validate": "The build checks document metadata against the taxonomy before indexing. An invalid term or missing required field can stop the build.",
+      "Chunk": "The indexer splits text at heading and paragraph boundaries. Each passage keeps its document metadata and a link to its source.",
+      "Records": "The build saves passage text, titles and headings in chunk records. The API uses those fields to rank keyword matches with BM25.",
+      "Embed": "MiniLM turns each passage, including its title and heading, into a vector for semantic comparison.",
+      "Vector": "FAISS stores the passage vectors in the same order as the chunk records. A vector match can therefore be traced back to the text and source link."
+    },
+    "search-and-answer-generation": {
+      "UI": "The reader enters a query and can choose the search mode, filters and whether to ask for an AI answer.",
+      "API": "FastAPI validates the query and requested result count. Rate limits and capacity limits control how much work the public API accepts.",
+      "Facets": "The API checks filter values against the taxonomy and uses them to determine which passages are eligible. It excludes archived content by default.",
+      "Retrieve": "BM25 ranks term matches. Semantic search compares the query vector with passage vectors. Hybrid search combines the two rankings.",
+      "Rank": "The API returns up to the requested number of eligible passages. Each result includes its text and a link to the original page or section.",
+      "Choice": "The reader chooses whether to view source passages or ask the API to generate an answer using retrieved evidence.",
+      "Sources": "The search endpoint returns the matching passages and their links without calling DeepSeek.",
+      "LLM": "The chat endpoint retrieves passages and sends them to DeepSeek with instructions to cite the numbered sources and acknowledge gaps.",
+      "Answer": "The interface shows the generated answer with its supporting sources so the reader can check the claims against the original documentation."
+    }
+  },
   "legend": [
     {
       "role": "input",
@@ -295,6 +316,13 @@ I use **Terraform with the AzureRM provider** to provision the Azure resource gr
   "subgraphNotes": {
     "PACKAGE": "The versioned Docker image bundles FastAPI with a prebuilt search index. Azure Container Apps pulls it from the private registry using managed identity.",
     "FRONTEND": "GitHub Actions builds the static Docusaurus site for GitHub Pages. The visitor’s browser calls the Azure API directly for search and optional AI answers."
+  },
+  "nodeNotes": {
+    "Terraform": "Provisions the registry, Container App and Log Analytics workspace. It also assigns the managed identity the registry-scoped AcrPull role.",
+    "Browser": "Loads the static site from GitHub Pages, then calls the Azure API directly to search passages or request a cited answer.",
+    "ACA": "Pulls the private image with its managed identity and runs FastAPI with the bundled search index. It scales to zero when idle.",
+    "DeepSeek": "Receives retrieved passages only when a reader chooses an AI answer and generation is enabled. FastAPI calls it using a server-side key.",
+    "Logs": "Collects platform and container console logs. These logs helped measure how long the image pull took during a cold start."
   },
   "legend": [
     {

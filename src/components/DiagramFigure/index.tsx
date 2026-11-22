@@ -8,10 +8,12 @@ import {roles, type DiagramRole} from './theme.cjs';
 import styles from './styles.module.css';
 
 export type LegendItem = Readonly<{role: DiagramRole; label?: string}>;
+type DiagramNotes = Readonly<Record<string, string | Readonly<Record<string, string>>>>;
 export type DiagramFigureProps = Readonly<{
   title: string;
   shareId?: string;
-  subgraphNotes?: Readonly<Record<string, string | Readonly<Record<string, string>>>>;
+  subgraphNotes?: DiagramNotes;
+  nodeNotes?: DiagramNotes;
   legend: readonly LegendItem[];
   children: ReactNode;
 }>;
@@ -21,6 +23,11 @@ type DiagramView = {zoom: number; x: number; y: number};
 type NotePlacement = {key: string; left: number; top: number; connector: NoteConnector};
 
 const fullScreenHint = 'Double-click the diagram to open or close full-screen.';
+
+function notesForPanel(notes: DiagramNotes | undefined, panel?: string) {
+  const selection = panel ? notes?.[panel] : notes;
+  return typeof selection === 'object' ? selection : undefined;
+}
 
 function isDiagramTarget(target: EventTarget | null): target is Element {
   return target instanceof Element && !!target.closest('svg') && !target.closest('a, button');
@@ -42,7 +49,7 @@ function Legend({items}: {items: readonly LegendItem[]}): ReactNode {
 
 /** One titled figure may contain a single Mermaid diagram or several panels. */
 export default function DiagramFigure({
-  title, shareId, subgraphNotes, legend, children, figurePosition,
+  title, shareId, subgraphNotes, nodeNotes, legend, children, figurePosition,
 }: DiagramFigureProps & {figurePosition?: string}): ReactNode {
   const id = useId();
   const anchor = shareId ? `diagram-${shareId}` : undefined;
@@ -68,9 +75,9 @@ export default function DiagramFigure({
   const [subgraphFit, setSubgraphFit] = useState<SubgraphFit & {key: string; element: SVGGElement}>();
   const activePanel = panels.find(panel => panel.key === selectedPanel);
   const activeSubgraph = subgraphs.find(subgraph => subgraph.id === selectedSubgraph && subgraph.panel === activePanel?.key);
-  const notes = activePanel ? subgraphNotes?.[activePanel.key] : subgraphNotes;
+  const notes = notesForPanel(activeSubgraph?.node ? nodeNotes : subgraphNotes, activePanel?.key);
   const activeSubgraphKey = activeSubgraph && subgraphKey(activeSubgraph);
-  const noteText = activeSubgraph && typeof notes === 'object' ? notes[activeSubgraph.id] : undefined;
+  const noteText = activeSubgraph && notes?.[activeSubgraph.id];
   const activeNote = activeSubgraph && activeSubgraphKey && typeof noteText === 'string' && noteText.trim()
     ? {key: activeSubgraphKey, title: `About ${activeSubgraph.label}`, text: noteText} : undefined;
   const showingAllPanels = panels.length > 1 && !activePanel;
@@ -131,7 +138,7 @@ export default function DiagramFigure({
     const layout = params.get('layout');
     if (!dialog.current?.open) opener.current?.focus({preventScroll: true});
     openViewer(params.get('panel') || undefined, layout === 'lr' ? 'LR' : layout === 'tb' ? 'TB' : undefined,
-      params.get('subgraph') || undefined);
+      params.get('node') || params.get('subgraph') || undefined);
   }, [pathname, search, shareId, openViewer]);
 
   useEffect(() => {
@@ -256,8 +263,9 @@ export default function DiagramFigure({
       const marker = activeContent?.querySelector<HTMLElement>('[data-diagram-authored-direction]');
       const authored = marker?.dataset.diagramAuthoredDirection;
       setAuthoredDirection(authored === 'LR' || authored === 'TB' ? authored : undefined);
-      targets = findSubgraphs(content);
-      const subgraphOptions = targets.map(({id, label, panel}) => ({id, label, panel}));
+      targets = findSubgraphs(content, panel => Object.entries(notesForPanel(nodeNotes, panel) ?? {})
+        .filter(([, note]) => typeof note === 'string' && note.trim()).map(([id]) => id));
+      const subgraphOptions = targets.map(({id, label, panel, node}) => ({id, label, panel, node}));
       setSubgraphs(previous => previous.length === subgraphOptions.length && previous.every((item, index) =>
         subgraphKey(item) === subgraphKey(subgraphOptions[index]) && item.label === subgraphOptions[index].label)
         ? previous : subgraphOptions);
@@ -270,7 +278,7 @@ export default function DiagramFigure({
       observer.disconnect();
       diagrams.disconnect();
     };
-  }, [expanded, selectedPanel, selectedSubgraph]);
+  }, [expanded, selectedPanel, selectedSubgraph, nodeNotes]);
 
   function zoomBy(factor: number) {
     setView(previous => {
@@ -291,7 +299,7 @@ export default function DiagramFigure({
     setSubgraphFit(undefined);
     const params = new URLSearchParams(search);
     if (!shareId || params.get('diagram') !== shareId) return;
-    for (const key of ['diagram', 'panel', 'layout', 'subgraph']) params.delete(key);
+    for (const key of ['diagram', 'panel', 'layout', 'subgraph', 'node']) params.delete(key);
     const remaining = params.toString();
     history.replace({pathname, search: remaining ? `?${remaining}` : '', hash: `#${anchor}`});
     opener.current?.closest('figure')?.scrollIntoView();
@@ -321,9 +329,10 @@ export default function DiagramFigure({
     url.searchParams.delete('panel');
     url.searchParams.delete('layout');
     url.searchParams.delete('subgraph');
+    url.searchParams.delete('node');
     if (activePanel?.shareId) url.searchParams.set('panel', activePanel.shareId);
     if (currentDirection) url.searchParams.set('layout', currentDirection.toLowerCase());
-    if (activeSubgraph) url.searchParams.set('subgraph', activeSubgraph.id);
+    if (activeSubgraph) url.searchParams.set(activeSubgraph.node ? 'node' : 'subgraph', activeSubgraph.id);
     setViewerStatus('');
     setManualLink('');
     try {
@@ -443,7 +452,7 @@ export default function DiagramFigure({
                   setView({zoom: 1, x: 0, y: 0});
                 }}>
                 <option value="" disabled={!activeSubgraph}>
-                  {activeSubgraph ? 'Whole diagram' : 'Choose a subgraph'}
+                  {activeSubgraph ? 'Whole diagram' : nodeNotes ? 'Choose a node or subgraph' : 'Choose a subgraph'}
                 </option>
                 {ungroupedSubgraphs.map(renderSubgraphOption)}
                 {showingAllPanels && panels.map(panel => {
@@ -481,6 +490,7 @@ export default function DiagramFigure({
           </div>
         </div>
         {expanded && <div className={styles.expanded} data-subgraph-note={!!activeNote || undefined}
+          data-node-note={!!activeNote && activeSubgraph?.node || undefined}
           data-note-placement={notePosition ? 'floating' : undefined}>
           {activeNote && <details className={`${styles.subgraphNote} ${styles.mobileNote}`}
             key={activeNote.key}>
