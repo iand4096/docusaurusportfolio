@@ -24,7 +24,9 @@ for (const file of input.files) {
   }
   const source = input.overrides?.[file] ?? fs.readFileSync(absolute, 'utf8');
   if (Buffer.byteLength(source) > 2_000_000) throw new Error('Tooltip document exceeds size limit: ' + file);
-  const {mentions, errors: markupErrors} = matching.scan(parser.parse(source), source, config);
+  const {data: frontMatter} = matter(source);
+  const {mentions, errors: markupErrors} = matching.scan(
+    parser.parse(source), source, config, frontMatter.taxonomy_tooltip_exclude);
   errors.push(...markupErrors.map(error => file + ': ' + error));
   const decisions = matching.indexDecisions(config.manifest, file, source);
   const matched = new Set();
@@ -57,7 +59,7 @@ for (const file of input.files) {
     }
   }
   documents[file] = {content_hash: matching.hash(source),
-    technologies: matter(source).data.technologies ?? [], candidates, stale_decisions: staleDecisions};
+    technologies: frontMatter.technologies ?? [], candidates, stale_decisions: staleDecisions};
 }
 for (const file of Object.keys(config.manifest.documents)) {
   if (input.strict && !input.files.includes(file)) errors.push('Unknown tooltip decision document ' + file);

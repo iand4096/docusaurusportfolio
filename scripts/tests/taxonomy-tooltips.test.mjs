@@ -8,6 +8,7 @@ import parse from 'remark-parse';
 import mdx from 'remark-mdx';
 import gfm from 'remark-gfm';
 import frontmatter from 'remark-frontmatter';
+import matter from 'gray-matter';
 import matching from '../../plugins/taxonomy-tooltip-matching.cjs';
 import {remarkTaxonomyTerms} from '../../plugins/taxonomy-terms.cjs';
 
@@ -35,6 +36,7 @@ function render(root, source) {
   const tree = parser.parse(source);
   remarkTaxonomyTerms({repositoryRoot: root})(tree, {
     value: source, path: path.join(root, document),
+    data: {frontMatter: matter(source).data},
     fail: message => { throw new Error(message); },
     message: () => {},
   });
@@ -46,6 +48,14 @@ function render(root, source) {
   visit(tree);
   return tooltips;
 }
+
+test('page exclusions suppress only the listed automatic tooltips', t => {
+  const {root} = fixture(t);
+  const prose = 'Optimus and RICE use Kafka.';
+  const source = '---\ntaxonomy_tooltip_exclude: [optimus, rice]\n---\n\n' + prose;
+  assert.deepEqual(render(root, source).map(node => node.children[0].value), ['Kafka']);
+  assert.deepEqual(render(root, prose).map(node => node.children[0].value), ['Optimus', 'RICE', 'Kafka']);
+});
 
 test('a rejection leaves the quota available for the first approved library mention', t => {
   const {root, write} = fixture(t);

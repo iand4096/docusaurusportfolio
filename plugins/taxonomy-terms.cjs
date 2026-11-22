@@ -8,7 +8,8 @@ function remarkTaxonomyTerms({repositoryRoot = root} = {}) {
     const config = matcher.load(repositoryRoot);
     const source = String(file.value);
     const document = path.relative(repositoryRoot, file.path).split(path.sep).join('/');
-    const {mentions, explicit, errors} = matcher.scan(tree, source, config);
+    const {mentions, explicit, errors} = matcher.scan(
+      tree, source, config, file.data?.frontMatter?.taxonomy_tooltip_exclude);
     if (errors.length) file.fail(errors.join('\n'));
     const decisions = matcher.indexDecisions(config.manifest, document, source);
     const seen = new Set();

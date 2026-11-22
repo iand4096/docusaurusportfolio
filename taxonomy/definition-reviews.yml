@@ -4,8 +4,8 @@
     "rice-definition-mismatch": {
       "evidence": [
         {
-          "context_hash": "sha256:6bc6c5bda69caf85e0d99a32865de3411969bfda3e22fdd5b08ef8a753340a8e",
-          "excerpt": "Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications. **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Originally associated with the Fixed Income business, it is also being adopted for Commodities products and workflows.",
+          "context_hash": "sha256:571d27dd38e1cce10a29b242748af7daff9de2f9a768aafb24ef16261cefbc98",
+          "excerpt": "Morgan Stanley's RICE (**RIsk Calculation Environment**) and Optimus support computationally intensive financial applications.\n\n- **RICE** provides the financial analytics environment for pricing, valuation, trading and risk management. Morgan Stanley describes it as a Fixed Income risk framework and has advertised roles supporting the migration of Commodities products and workflows to it.",
           "path": "docs/misc/OptimusRICE.md"
         }
       ],
@@ -26,8 +26,8 @@
     "optimus-definition-mismatch": {
       "evidence": [
         {
-          "context_hash": "sha256:16fd977827038bf9406da5a6d938430f972b49eae1e8ff5a3063cfcbc909a9bf",
-          "excerpt": "**Optimus** is a Scala-based, graph-oriented computation framework built on functional programming principles. It manages computational dependencies and supports automatic parallelisation, asynchronous execution, caching and scenario evaluation. It uses a **Data Access Layer (DAL)** that supplies distributed data services, including bitemporal storage and retrieval.",
+          "context_hash": "sha256:697627564cb3d49497632d2fe8cfcdedb5ddf2433cfdf45f3cf83fe5f33e34fe",
+          "excerpt": "**Optimus** is a Scala-based, graph-oriented computation framework built on functional programming principles. It manages computational dependencies and supports automatic parallelisation, asynchronous execution, caching and scenario evaluation.",
           "path": "docs/misc/OptimusRICE.md"
         }
       ],

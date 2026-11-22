@@ -93,7 +93,8 @@ function load(root, candidate, {strict = false, audit = false} = {}) {
     taxonomyHash: fingerprint(taxonomy), policyHash: hash(read('policies'))};
 }
 
-function scan(tree, source, config) {
+function scan(tree, source, config, excludedTerms = []) {
+  const excluded = new Set(excludedTerms);
   const mentions = [];
   const explicit = [];
   const headings = [];
@@ -123,7 +124,7 @@ function scan(tree, source, config) {
         const safe = Boolean(child.position) && source.slice(offset, child.position.end.offset) === child.value;
         for (const match of child.value.matchAll(config.pattern)) {
           const term = config.terms.get(match[0].toLowerCase());
-          if (!term) continue;
+          if (!term || excluded.has(term.id)) continue;
           const start = offset + match.index;
           const range = safe ? {
             start: Buffer.byteLength(source.slice(0, start)),

@@ -89,6 +89,8 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
 
 Alongside leading the development of Morgan Stanley's new [custom docs-as-code platform](ScalingADeveloperDocsPlatform.md), I served as the lead and sole technical writer for the Optimus and RICE frameworks.
 
+The [Optimus and RICE technical reference](../misc/OptimusRICE.md) explains how the frameworks work together, including Optimus's computation graph, the Data Access Layer, and RICE's financial analytics.
+
 I produced developer documentation for engineers and quantitative analysts building applications with these sophisticated Scala-based systems. The documentation covered Scala and C++ interoperability, bitemporal data, reactive UI development, automated regression testing and data ingestion.
 
 ## Documentation approach {/* #documentation-approach */}

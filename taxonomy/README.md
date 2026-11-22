@@ -192,8 +192,10 @@ Contextual technology mentions require a current approved
 decision. Explicit markup such as `<TaxonomyTerm id="requests">Requests</TaxonomyTerm>`
 resolves the current canonical definition. Use it in prose outside links and code.
 
-Matching ignores case and preserves the spelling in the source. A taxonomy
-alias can trigger a tooltip when an approved term policy lists it in
+Matching ignores case and preserves the spelling in the source. A page can
+list canonical term IDs in its `taxonomy_tooltip_exclude` front matter
+to skip automatic tooltips for those terms. Explicit markup still works.
+A taxonomy alias can trigger a tooltip when an approved term policy lists it in
 `enabled_aliases`. Enabled glossary entries use the aliases in `glossary.yml`.
 A label and its aliases share one definition and one tooltip per page. The
 matcher rejects conflicting labels and aliases.
