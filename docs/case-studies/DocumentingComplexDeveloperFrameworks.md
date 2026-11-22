@@ -93,7 +93,7 @@ The [Optimus and RICE technical reference](../misc/OptimusRICE.md) explains how 
 
 ## Documentation approach {/* #documentation-approach */}
 
-To understand undocumented framework behaviour, I reverse-engineered functionality by reading source code and tracing execution paths through the monorepo. I compared what I found in the source code with legacy documentation, where present, and used the gaps and inconsistencies to prepare questions for subject-matter experts. I drafted API documentation outlines for technical review before developing the full content. Where possible, I compiled and ran the Scala examples to check that they worked as documented.
+When framework behaviour was undocumented, I read the source and traced execution paths through the monorepo to work out how the code worked. I compared what I found in the source code with legacy documentation, where present, and used the gaps and inconsistencies to prepare questions for subject-matter experts. I drafted API documentation outlines for technical review before developing the full content. Where possible, I compiled and ran the Scala examples to check that they worked as documented.
 
 ## Sample technical documentation delivered {/* #sample-technical-documentation-delivered */}
 

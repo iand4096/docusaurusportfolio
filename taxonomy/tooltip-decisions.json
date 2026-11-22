@@ -23,10 +23,10 @@
       ]
     },
     "docs/case-studies/RagSearchCloudArchitecture.md": {
-      "content_hash": "sha256:d47cea8c6172bc025a6777e8bf30a1dbab589f0b7dd0231200556d34309052cf",
+      "content_hash": "sha256:d8d5e0c50e377d9c7b804788ba45b601f1b6cadaa79110486331e2f58206d72d",
       "decisions": [
         {
-          "context_hash": "sha256:126d4b211676e6c830883d1936c093bc2a0d6a3c41a11a61b7ce0a33385190cf",
+          "context_hash": "sha256:505614ecea2acfbadafc960fcbee197230ce40edc82610833f63498de0dd2c7e",
           "matched_text": "requests",
           "result": "reject",
           "review": {
@@ -36,14 +36,14 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 4675,
-            "start": 4667
+            "end": 4679,
+            "start": 4671
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
         },
         {
-          "context_hash": "sha256:1f9c401aad13251dd732b596e41797ee70f43f1819d787ca0cdba0c585b6f93e",
+          "context_hash": "sha256:c4f794c7ff9d23601d9fe84d9cca2b7362e63b3a1af444e9a37a2fbb58c7adb8",
           "matched_text": "requests",
           "result": "reject",
           "review": {
@@ -53,8 +53,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 6136,
-            "start": 6128
+            "end": 6223,
+            "start": 6215
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -70,14 +70,14 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 6439,
-            "start": 6431
+            "end": 6449,
+            "start": 6441
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
         },
         {
-          "context_hash": "sha256:5b7b95d64b80d34cd2318f381554f0989faf70a2f2be81e0903a8e337be6d4cf",
+          "context_hash": "sha256:89ef82746b4662bb3bb50deaa61cb21da585defcffc6d64bc2df88fb9653d1d3",
           "matched_text": "requests",
           "result": "reject",
           "review": {
@@ -87,25 +87,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 11214,
-            "start": 11206
-          },
-          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
-          "term_id": "requests"
-        },
-        {
-          "context_hash": "sha256:0594bd3b88f552ab5f9654783658bac84945996f4348c731c929ac32e7abb8da",
-          "matched_text": "requests",
-          "result": "reject",
-          "review": {
-            "reason": "This refers to calls to a publicly accessible API.",
-            "reviewed_on": "2026-11-22",
-            "reviewer": "portfolio-tooltip-review",
-            "status": "approved"
-          },
-          "source_range": {
-            "end": 16702,
-            "start": 16694
+            "end": 11173,
+            "start": 11165
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"

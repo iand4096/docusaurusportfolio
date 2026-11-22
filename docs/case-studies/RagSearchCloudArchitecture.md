@@ -123,27 +123,27 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
 
 I designed and deployed a **cloud-based retrieval-augmented generation (RAG)** application to test how documentation governance can improve the way people find technical information. Visitors can search my portfolio using keywords, semantic similarity or hybrid retrieval, then inspect the original passages or request an AI-generated answer grounded in those passages.
 
-The idea grew out of my experience integrating RAG search into a large docs-as-code developer portal I managed at an investment bank. I saw an opportunity to use document metadata, such as whether an API was current or deprecated, to control which content was retrieved. This could, for example, reduce the risk of developers inadvertently integrating with deprecated APIs.
+The idea grew out of my experience integrating RAG search into a large docs-as-code developer portal at an investment bank. I saw an opportunity to use document metadata, such as whether an API was current or deprecated, to control which content was retrieved. This could, for example, reduce the risk of developers inadvertently integrating with deprecated APIs.
 
 [Try the portfolio search](https://iand4096.github.io/docusaurusportfolio/ai-search).
 
 ## The challenge
 
-Conventional keyword search works well when readers know the terminology, but it can miss relevant material described in different words. Semantic search can find related passages even when they use different terminology, yet similarity alone does not establish whether a document belongs to the right topic, audience or lifecycle state.
+Conventional keyword search works well when readers know the terminology, but it can miss relevant material described in different words. Semantic search can find related passages even when they use different terminology. However, similarity alone does not establish whether a document belongs to the right topic, audience or lifecycle state.
 
 I wanted to test whether document metadata could control which passages a RAG system retrieved. The application also needed to preserve links to the source documentation and support conventional search without relying on an LLM.
 
-The cloud deployment needed to control running costs, keep provider credentials out of the frontend and limit paid AI requests.
+Finally, the cloud deployment needed to control running costs, keep provider credentials out of the frontend and limit paid AI requests.
 
 ## My approach
 
 I used Codex as an agentic coding assistant while building the search API and portfolio search interface.
 
-### Treat metadata as part of the retrieval architecture
+### Filter search results by document metadata {/* #treat-metadata-as-part-of-the-retrieval-architecture */}
 
-I used the portfolio's Markdown and MDX documents as the knowledge source. The ingestion pipeline validates their taxonomy before indexing, extracts frontmatter and headings, and creates heading-aware, paragraph-aligned passages of up to 1,500 characters. Each indexed passage retains its title, source location and governed facets: **content type, audience, topic, technology and lifecycle**.
+The ingestion pipeline checks the portfolio's Markdown and MDX metadata against the taxonomy before indexing. It uses headings and paragraph breaks to divide the text into passages of up to 1,500 characters. Each passage keeps its title, source location and the values readers can filter by: **content type, audience, topic, technology and lifecycle**.
 
-The API validates the selected facets against the canonical taxonomy and uses them to filter retrieval results. Filters can be combined across dimensions, and archived content is excluded unless the visitor explicitly includes it.
+Readers choose the filters. They can combine a topic and an audience to find API documentation for developers. The API validates the selections against the taxonomy and returns passages that match. It excludes archived content unless readers choose to include it.
 
 ### Combine lexical and semantic retrieval
 
@@ -153,7 +153,7 @@ I implemented three search modes with different strengths:
 - **Semantic search:** `sentence-transformers/all-MiniLM-L6-v2` generates embeddings, searched through a FAISS vector index to find related concepts expressed in different words.
 - **Hybrid search:** Reciprocal Rank Fusion (RRF) combines BM25 and semantic rankings without assuming their raw scores are directly comparable.
 
-The index is generated ahead of deployment and packaged with the backend. A cached index snapshot supports subsequent requests without reloading the retrieval model each time. The public interface defaults to hybrid search and displays ranked evidence with links back to its source documentation.
+I build the index before deployment and package it with the API. Each API process caches the loaded index and embedding model and reuses them for subsequent requests. The search interface defaults to hybrid search and links each ranked passage to its source.
 
 ### Separate evidence retrieval from AI answer generation
 
@@ -169,7 +169,7 @@ The request below uses `taxonomy`, one of the topic terms listed by `/taxonomy`,
 
 ### Indexing and query flow {/* #architecture */}
 
-The diagram shows the implemented indexing and query paths. **Taxonomy selection is manual at query time**, not an automatic query-classification stage.
+The diagrams show how the pipeline builds the index and how the API uses it to answer a query.
 
 <DiagramFigure {...{
   "title": "Documentation indexing and search",
@@ -283,11 +283,11 @@ The retrieval step uses the prebuilt BM25 chunk records and FAISS vector index p
 
 ### Deployment on Azure {/* #cloud-architecture-docker-terraform-and-azure */}
 
-I separated the static frontend from the Python service. **Docusaurus is built by GitHub Actions and published to GitHub Pages**; visitors’ browsers send HTTPS requests directly to **FastAPI on Azure Container Apps**. The portfolio remains a static site; retrieval and AI generation run in the Azure-hosted API. CORS explicitly permits the GitHub Pages origin.
+I separated the static frontend from the Python service. **GitHub Actions builds the Docusaurus site and publishes it to GitHub Pages**. Visitors’ browsers send HTTPS requests directly to **FastAPI on Azure Container Apps**. The portfolio remains a static site; retrieval and AI generation run in the Azure-hosted API. CORS explicitly permits the GitHub Pages origin.
 
 **Docker** packages the FastAPI application, its Python dependencies, the embedding model and the prebuilt search-index artifacts. A PowerShell build script then publishes version-tagged images to a private **Azure Container Registry (ACR)**. Index generation happens before deployment, not when each container starts. Docker Compose provides a separate local development path.
 
-I use **Terraform with the AzureRM provider** to provision the Azure resource group, ACR, Container Apps environment and application, **Log Analytics** workspace, and a **user-assigned managed identity**. The identity receives scoped `AcrPull` permission; this allows the Container App to retrieve the private image without an ACR administrator password. After publishing an image, I update its tag in Terraform, review `terraform plan` and run `terraform apply` to deploy a new Container Apps revision.
+I use **Terraform with the AzureRM provider** to provision the Azure resource group, ACR, Container Apps environment and application, **Log Analytics** workspace, and a **user-assigned managed identity**. I grant the managed identity the `AcrPull` role on the registry. The Container App uses that identity to pull the private image without an ACR administrator password. Once an image is published, I update its tag in Terraform, review `terraform plan` and run `terraform apply` to deploy a new Container Apps revision.
 
 <DiagramFigure {...{
   "title": "Azure deployment architecture",
@@ -381,33 +381,31 @@ flowchart TB
 
 </DiagramFigure>
 
-The Container App uses the **Consumption** workload profile with **one vCPU, 2 GB memory and zero-to-one replicas**. Scale-to-zero limits idle compute costs, at the expense of first-request latency. Azure Container Apps holds the DeepSeek API key as a secret and injects it into FastAPI through an environment-variable reference; the key is not embedded in the browser application or managed as a Terraform secret value.
+#### Cost and Abuse controls
+
+The Container App uses the **Consumption** workload profile with **one vCPU, 2 GB memory and zero-to-one replicas**. I use scale-to-zero to limit idle compute costs. The first request after an idle period takes longer because the app has to start a replica. I store the DeepSeek API key as an Azure Container Apps secret and set its value outside Terraform. FastAPI reads the key from an environment variable that references the secret. The key stays on the server.
 
 As this is a publicly accessible server, I added per-client rate limits, input bounds, concurrency controls and a feature flag for paid generation. These controls reduce abuse but are **not equivalent to authentication, document-level authorisation or a durable spending quota**. The existing Log Analytics integration provides platform and console logs; distributed tracing and application performance dashboards are future work.
 
 ## Deliverables
 
-- A [public governed RAG search interface](https://iand4096.github.io/docusaurusportfolio/ai-search) with keyword, semantic and hybrid retrieval, manually selected taxonomy filters, source links and an AI-answer option.
-- [Search API reference](pathname:///search-api).
-- A documentation ingestion and indexing pipeline that produces passage metadata, FAISS vectors and a source manifest after taxonomy validation.
-- A FastAPI retrieval and generation API, with validation and controls for public requests.
-- Versioned Docker image builds and Terraform-managed Azure infrastructure, including private registry access through managed identity and operational logs.
-- Rate-limiter unit tests and deployment checks covering API behaviour, revision state, logs and browser access.
+- [Try the live portfolio search](https://iand4096.github.io/docusaurusportfolio/ai-search) to compare search modes, apply filters or request an AI answer.
+- [Explore the Search API reference](pathname:///search-api) for endpoint definitions and example calls.
 
 ## Outcome
 
-The portfolio now exposes a working, source-linked RAG search interface through GitHub Pages, backed by a separately deployed, containerised Azure API. Direct search tests returned indexed passages, and the abuse-protection tests passed for rate-limit expiry, independent endpoint limits and forwarded-header handling.
+I verified that search returned indexed passages with source links and tested the AI answer workflow. Tests also passed for rate-limit expiry, independent endpoint limits and forwarded-header handling. I haven’t measured retrieval relevance, response time or answer accuracy against a representative set of questions.
 
-Two deployment issues provided useful operational evidence. A GitHub Pages request initially failed its CORS preflight because the API allowed only localhost origins; after I added the published site's origin, the same `OPTIONS /search` check returned **HTTP 200** with the expected CORS header. Azure system logs also showed an image pull taking **62.22 seconds** after scale-to-zero, demonstrating how image pulls contributed to first-request latency before the application started.
+The browser’s CORS preflight failed because the API allowed only localhost origins. After I added the GitHub Pages origin, the same `OPTIONS /search` request returned **HTTP 200** with the expected CORS header.
 
-The application is deployed and its core retrieval and generation workflows have been tested. However, I have not yet measured retrieval relevance, search time or answer accuracy against a representative evaluation set.
+Azure logged a **62.22-second** image pull after scale-to-zero. That pull accounted for part of the first request’s delay.
 
 ## What I would change
 
-- **Infer taxonomy filters from search queries.** This is the part of the original idea I have not yet implemented. I want to test whether a user's question can be mapped reliably to the approved taxonomy, with suggested filters shown for confirmation or adjustment. I would evaluate both retrieval relevance and the risk of incorrectly excluding relevant documents.
+- **Can the search suggest useful filters?** I’d map questions to taxonomy terms and let readers confirm or adjust the suggestions. I’d measure whether the filters improve relevance and how often they hide useful documents.
 
-- **Introduce RAG evaluation.** Build a labelled set of representative questions and expected source passages; measure retrieval using metrics such as Recall@k and MRR, and review AI answers for groundedness and citation accuracy. I could then compare chunking strategies, embedding models and retrieval parameters against the same questions.
+- **Which retrieval settings work best?** I’d build a labelled set of questions and expected source passages. I’d compare chunk sizes, embedding models and search settings using recall at a fixed result count and mean reciprocal rank, then check whether the AI answers use and cite the right passages.
 
-- **Add application observability.** Instrument the FastAPI request lifecycle and RAG stages (model initialisation, query embedding, BM25, FAISS, ranking and DeepSeek generation) with **OpenTelemetry** traces and metrics. Export telemetry to **Azure Application Insights / Azure Monitor** alongside the existing Log Analytics logs, using sampling and avoiding sensitive queries, evidence text and credentials. Track request latency, errors, rate-limit responses and external dependency time; evaluate **Grafana** later if a dedicated dashboard adds value. This is planned instrumentation, not a currently deployed monitoring stack.
+- **Where does the API spend its time?** I’d use **OpenTelemetry** to trace model startup, retrieval and DeepSeek generation, then export sampled telemetry to **Azure Application Insights / Azure Monitor**. I’d track latency, errors and rate-limit responses while keeping query text, evidence and credentials out of the telemetry. I’d consider **Grafana** if the existing dashboards leave a gap.
 
-- **Improve cold-start performance and operational safeguards.** Separate lightweight liveness checks from retrieval readiness and reduce the CPU-serving image size. If public usage grows, replace the in-memory abuse counters with a durable quota mechanism and add more explicit provider-usage monitoring.
+- **Can I shorten cold starts and keep spending predictable?** I’d reduce the CPU image size and separate the lightweight liveness check from retrieval readiness. If public usage grows, I’d add a durable quota and monitor provider usage.
