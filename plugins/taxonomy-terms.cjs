@@ -27,7 +27,7 @@ function remarkTaxonomyTerms({repositoryRoot = root} = {}) {
 
     for (const mention of mentions) {
       const {term, child} = mention;
-      if (['off', 'explicit'].includes(term.mode) || held(term)) continue;
+      if (mention.excluded || ['off', 'explicit'].includes(term.mode) || held(term)) continue;
       if (term.mode === 'contextual') {
         const decision = matcher.reviewedDecision(decisions, mention);
         if (!decision) file.message('Contextual tooltip needs review for ' + term.id, child);

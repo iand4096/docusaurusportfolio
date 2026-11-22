@@ -82,7 +82,7 @@ def definition_findings(report):
         pattern = re.compile(r"\b" + re.escape(label) + r"\s*\(\s*\**([A-Za-z][A-Za-z -]{3,90})\**\s*\)")
         records = {}
         for file, document in report["documents"].items():
-            for occurrence in document["candidates"]:
+            for occurrence in document["candidates"] + document.get("excluded_evidence", []):
                 if occurrence["term_id"] != term_id:
                     continue
                 context = occurrence["context"]

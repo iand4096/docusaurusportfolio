@@ -124,7 +124,7 @@ function scan(tree, source, config, excludedTerms = []) {
         const safe = Boolean(child.position) && source.slice(offset, child.position.end.offset) === child.value;
         for (const match of child.value.matchAll(config.pattern)) {
           const term = config.terms.get(match[0].toLowerCase());
-          if (!term || excluded.has(term.id)) continue;
+          if (!term) continue;
           const start = offset + match.index;
           const range = safe ? {
             start: Buffer.byteLength(source.slice(0, start)),
@@ -134,7 +134,8 @@ function scan(tree, source, config, excludedTerms = []) {
             normalise(source.slice(sourcePosition.start.offset, start) + '[[' + match[0] + ']]' +
               source.slice(start + match[0].length, sourcePosition.end.offset)) : null;
           mentions.push({child, term, index: match.index, text: match[0], range, context, markedContext,
-            contextHash, headings: [...headings], line: (child.position?.start.line ?? 0)});
+            contextHash, headings: [...headings], line: (child.position?.start.line ?? 0),
+            excluded: excluded.has(term.id)});
         }
       }
     }

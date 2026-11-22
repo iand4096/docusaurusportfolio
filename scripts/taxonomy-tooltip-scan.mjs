@@ -32,8 +32,13 @@ for (const file of input.files) {
   const matched = new Set();
   const first = new Set();
   const candidates = [];
+  const excludedEvidence = [];
   for (const mention of mentions) {
     if (mention.term.glossary) continue;
+    if (mention.excluded) {
+      excludedEvidence.push({term_id: mention.term.id, context: mention.context});
+      continue;
+    }
     const occurrence = matching.occurrence(mention);
     const decision = matching.reviewedDecision(decisions, mention);
     if (decision) matched.add(matching.decisionKey(decision));
@@ -59,7 +64,8 @@ for (const file of input.files) {
     }
   }
   documents[file] = {content_hash: matching.hash(source),
-    technologies: frontMatter.technologies ?? [], candidates, stale_decisions: staleDecisions};
+    technologies: frontMatter.technologies ?? [], candidates, excluded_evidence: excludedEvidence,
+    stale_decisions: staleDecisions};
 }
 for (const file of Object.keys(config.manifest.documents)) {
   if (input.strict && !input.files.includes(file)) errors.push('Unknown tooltip decision document ' + file);
