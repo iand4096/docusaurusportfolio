@@ -57,7 +57,7 @@ import SemanticLabel, {SemanticLabelGroup} from '@site/src/components/SemanticLa
 The MDES for Merchants Use Case Guide explained how merchant developers can use the MDES Digital Enablement API to replace payment card numbers (PANs) with secure payment tokens, reducing the need to store card details.
 
 <SemanticLabel type="contribution">
-  I wrote the MDES for Merchants Use Case Guide. I built a Python test integration and Flask webhook receiver to validate the API workflows, and created PlantUML sequence diagrams to explain the interactions.
+  I wrote the original MDES for Merchants Use Case Guide. I also built a Python test integration and webhook receiver to validate the API, and created the sequence diagrams.
 </SemanticLabel>
 
 This API provides access to Mastercard's Digital Enablement Service (MDES), the tokenisation technology that also supports digital wallets such as **Apple Pay**.
@@ -68,9 +68,11 @@ In addition to their security benefits, tokens can often remain valid when the u
 
 - Explain an unfamiliar and technically complex tokenisation workflow to developers.
 - Identify and resolve errors and omissions in the supporting Digital Enablement API reference.
-- Work with Mastercard's custom CMS integration, which had reliability problems affecting both authoring and publishing. It also had poor code-block formatting, limited preview capabilities and inadequate support for content reuse.
+- The existing CMS made it difficult to format code examples, preview changes and reuse content across pages. Publishing was also unreliable.
 
 ## My approach {/* #my-approach */}
+
+I created a standard Mastercard Developers account and tested the API using its public sandbox and synthetic data. No real cardholder data or production transactions were involved.
 
 <SemanticLabelGroup>
 
@@ -124,25 +126,21 @@ The guide is no longer available on the live developer site, but a published ver
 
 [View the archived MDES for Merchants Use Case Guide](https://web.archive.org/web/20211101102056/https://developer.mastercard.com/mdes-digital-enablement/documentation/use-cases/mdes-for-merchants-use-cases/)
 
-*Archive note: The Internet Archive captured this version on 1 November 2021, after I left Mastercard in 2019.*
+The archived version was captured in November 2021, after I left Mastercard in 2019. It closely matches the guide I wrote, although it may contain revisions made after my departure.
 
-**Product status:** Mastercard has announced that MDES for Merchants will be decommissioned on 31 December 2026 and replaced by Secure Card on File (SCOF), part of Mastercard Checkout Solutions.
-
-[Mastercard's official decommissioning notice](https://developer.mastercard.com/mdes-digital-enablement/documentation/)
+Mastercard has announced that MDES for Merchants is scheduled for decommissioning on 31 December 2026.
 
 ### Internal deliverables {/* #internal-deliverables */}
 
 I shared my Python integration code and Flask webhook receiver with the product owner and other technical writers so they could test the API themselves.
 
-After completing the guide, I also helped recommend and test an early version of Mastercard's replacement docs-as-code authoring system. Mastercard subsequently adopted docs-as-code for its Developer Center.
+I also helped specify and test the docs-as-code system that later replaced Mastercard's existing documentation CMS.
 
 ## Outcome {/* #outcome */}
 
-The working Python integration enabled me to validate the API workflows independently, identify errors and omissions in the OpenAPI reference, and work with the product owner to resolve them.
+Testing the API exposed discrepancies between its behaviour and the OpenAPI reference, which I worked with the product owner to resolve.
 
-The resulting guide provided task-oriented integration guidance grounded in tested API behaviour rather than relying solely on the reference documentation.
-
-I also shared the Python integration and webhook receiver with colleagues, giving them reusable tools for testing the API and encouraging a more hands-on approach to technical validation.
+I also shared the Python integration and webhook receiver with colleagues so they could test the API themselves.
 
 ## What I would change {/* #what-i-would-change */}
 
