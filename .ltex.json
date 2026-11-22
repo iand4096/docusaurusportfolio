@@ -13,7 +13,9 @@
     "dictionary": {
       "en-GB": [
         "READMEs",
-        "CaseStudySummary"
+        "CaseStudySummary",
+        "spaCy",
+        "Fraenkel"
       ]
     }
   }

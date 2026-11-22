@@ -1,8 +1,64 @@
 {
   "documents": {
+    "docs/case-studies/DocumentationQa.md": {
+      "content_hash": "sha256:35413a5fd3d62c252bf1286373e2eb882d46b01fb2678a87980ac524d78dee5e",
+      "decisions": [
+        {
+          "context_hash": "sha256:047c7b382233b90bc14fe16399e9af1543896d80b3c75f4815555111f3de299b",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to calls to a language model.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 5095,
+            "start": 5087
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        }
+      ]
+    },
     "docs/case-studies/RagSearchCloudArchitecture.md": {
       "content_hash": "sha256:d47cea8c6172bc025a6777e8bf30a1dbab589f0b7dd0231200556d34309052cf",
       "decisions": [
+        {
+          "context_hash": "sha256:126d4b211676e6c830883d1936c093bc2a0d6a3c41a11a61b7ce0a33385190cf",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to requests that incur AI provider charges.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 4675,
+            "start": 4667
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        },
+        {
+          "context_hash": "sha256:1f9c401aad13251dd732b596e41797ee70f43f1819d787ca0cdba0c585b6f93e",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to repeated requests handled by the search backend.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 6136,
+            "start": 6128
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        },
         {
           "context_hash": "sha256:7ad8dce689ccf16b890cbe63fa7b5d6652cdbc2046ef6481ea7a3227825927a3",
           "matched_text": "Requests",
@@ -16,6 +72,79 @@
           "source_range": {
             "end": 6439,
             "start": 6431
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        },
+        {
+          "context_hash": "sha256:5b7b95d64b80d34cd2318f381554f0989faf70a2f2be81e0903a8e337be6d4cf",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to HTTPS calls from a browser to FastAPI.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 11214,
+            "start": 11206
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        },
+        {
+          "context_hash": "sha256:0594bd3b88f552ab5f9654783658bac84945996f4348c731c929ac32e7abb8da",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to calls to a publicly accessible API.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 16702,
+            "start": 16694
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        }
+      ]
+    },
+    "docs/case-studies/ScalingADeveloperDocsPlatform.md": {
+      "content_hash": "sha256:2b60473287b9dd94bae8f9cee2464291582201065c7120fcbc8ce1398b0b59af",
+      "decisions": [
+        {
+          "context_hash": "sha256:e6c10dfa411133587720d96b782d16e65492c9d897c67e48f47964f02a1fa749",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to pull requests for documentation changes.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 15732,
+            "start": 15724
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        },
+        {
+          "context_hash": "sha256:4aa2e2ede141431dabe36668e21d50e462045914988a3d7ed066c1e1f9578ea3",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to pull requests that trigger documentation checks.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 16526,
+            "start": 16518
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -44,6 +173,72 @@
         }
       ]
     },
+    "docs/docs-samples/PaysafeDeveloperJS.md": {
+      "content_hash": "sha256:a8c57af8fc81d76359bee41da0ec2b403b6376e34d0c25c2ca924ef225ac2738",
+      "decisions": [
+        {
+          "context_hash": "sha256:8a7fd8063bac25adf028c33c9c42f01d8060e5769faca0c5deba2c44bd3cf9cc",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to server-side payment API calls.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 2502,
+            "start": 2494
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        }
+      ]
+    },
+    "docs/implementation-details/api-example.mdx": {
+      "content_hash": "sha256:f91bb88bafdd7ae30be38f0afbbd88e914952f2a0c1cde0653cf2d31235527c8",
+      "decisions": [
+        {
+          "context_hash": "sha256:1a4d7415b4e4256915026a10f8c66304cffcc994170330c3637a9380e568fea0",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to saved API request examples.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 719,
+            "start": 711
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        }
+      ]
+    },
+    "docs/implementation-details/qa-ai-review.mdx": {
+      "content_hash": "sha256:ea373a2a8f9ecdf266897431fb2bc34e8fbb6b16bd0504ec9a30c09f557cf9cb",
+      "decisions": [
+        {
+          "context_hash": "sha256:29c8ef0db025f5e13f60924fa0dd95ec4f2090bbf297bd9e9feecdbb9842a35a",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to calls to the DeepSeek API.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 4071,
+            "start": 4063
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        }
+      ]
+    },
     "docs/implementation-details/taxonomy.md": {
       "content_hash": "sha256:f3b8c47b6bbc0f69bda5dc26af0f778c16e79993d7a02e4656e3c5150e8b6174",
       "decisions": [
@@ -66,6 +261,23 @@
         },
         {
           "context_hash": "sha256:acc4a4a0f801b8ca62c65d1fba6f4fd0bca9b7d42ff41adf25417d86827c7d66",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to incoming API calls in the explanation of the nearby example.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 3371,
+            "start": 3363
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        },
+        {
+          "context_hash": "sha256:acc4a4a0f801b8ca62c65d1fba6f4fd0bca9b7d42ff41adf25417d86827c7d66",
           "matched_text": "Requests",
           "result": "accept",
           "review": {
@@ -82,6 +294,50 @@
           "term_id": "requests"
         }
       ]
+    },
+    "docs/skills/DocumentationEngineering.md": {
+      "content_hash": "sha256:739783d99189d1a2ce89a58b471a814ad2cf176d1ada170dde683a0cebec5566",
+      "decisions": [
+        {
+          "context_hash": "sha256:2a2e1ad687df41465ed3253721f05a767b2da14001df2b74f9c101257690720e",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to pull requests checked before merge.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 6651,
+            "start": 6643
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        }
+      ]
+    },
+    "docs/tools/GitContinuousIntegration.md": {
+      "content_hash": "sha256:b356094db2f3dc4837e8dcae37ac0e3ab8aae45789829796104d1ba90e124305",
+      "decisions": [
+        {
+          "context_hash": "sha256:d8573561da8c2a1f1af4d1ecc941da3230fd222df2d773ec6f0b75804571722f",
+          "matched_text": "requests",
+          "result": "reject",
+          "review": {
+            "reason": "This refers to pull requests containing broken documentation links.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-tooltip-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 2089,
+            "start": 2081
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        }
+      ]
     }
   },
   "matching_contract_version": "1",
@@ -93,7 +349,7 @@
     "classifier_version": "1",
     "embedding_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
   },
-  "policy_hash": "sha256:21d13654134477b4cca9c27ab0ab1c97cfb82279fbd3f086e71ecbb9e05a4d67",
+  "policy_hash": "sha256:28a4a45fa386894ec64e8dbdb539e04165a43515697faf844fc12dc67cc242b6",
   "taxonomy_hash": "sha256:25318506092e04811b664ef9a58db6ea97f27f4644507ead10a58fb7c7b14c68",
   "version": 1
 }
