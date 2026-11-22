@@ -50,20 +50,14 @@ technologies:
   - python
   - https
   - cors
-  - opentelemetry
-  - azure-application-insights
-  - azure-monitor
-  - grafana
 lifecycle:
   - current
 tags:
   - agentic-ai
-  - azure-application-insights
   - azure-container-apps
   - azure-container-registry
   - azure-log-analytics
   - azure-managed-identity
-  - azure-monitor
   - bm25
   - codex
   - cors
@@ -77,13 +71,11 @@ tags:
   - fastapi
   - github-actions
   - github-pages
-  - grafana
   - https
   - information-architecture
   - markdown
   - mdx
   - mermaid
-  - opentelemetry
   - pydantic
   - python
   - rag

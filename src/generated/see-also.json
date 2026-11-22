@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "inputHash": "aec0486efff6d24344b47b7c276d51fd0a58cdadca7da109279764d83ce0b3d5",
+  "inputHash": "67f7697b7e44a3cb897a4ff4b3ae787f31320c69801f85612e05d6ed9e315ced",
   "settings": {
     "limit": 3,
     "threshold": 0.3,
@@ -234,7 +234,7 @@
           "id": "implementation-details/taxonomy",
           "title": "AI-assisted taxonomy governance",
           "path": "/docs/implementation-details/taxonomy",
-          "score": 0.392829,
+          "score": 0.394753,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -251,7 +251,7 @@
           "id": "case-studies/TaxonomyGovernance",
           "title": "Governed documentation taxonomy",
           "path": "/docs/case-studies/TaxonomyGovernance",
-          "score": 0.378169,
+          "score": 0.37951,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -1393,7 +1393,7 @@
           "id": "docs-samples/MDES4Merchants",
           "title": "MDES for Merchants Guide",
           "path": "/docs/docs-samples/MDES4Merchants",
-          "score": 0.440704,
+          "score": 0.444526,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: API security (api-security)",

@@ -40,7 +40,6 @@ technologies:
   - requests
   - flask
   - jetty
-  - owasp
   - postman
   - insomnia
   - curl
@@ -65,7 +64,6 @@ tags:
   - oauth
   - openapi
   - openssl
-  - owasp
   - pki
   - postman
   - python

@@ -1,0 +1,20 @@
+schema_version: 2
+id: 2026-11-22-add-technical-explanation
+description: Distinguish conceptual and architectural explanations from task-oriented implementation
+  guides.
+change_type: vocabulary-expansion
+trigger: taxonomy-review
+governance:
+  date: '2026-11-22'
+  source: ai-proposed
+  reason: Distinguish conceptual and architectural explanations from task-oriented implementation
+    guides.
+preconditions:
+  taxonomy_version: 3
+changes:
+  content_types:
+    add:
+      technical-explanation:
+        label: Technical explanation
+        description: Content that explains how a technical system, architecture or concept works and
+          why its parts behave or fit together as they do.

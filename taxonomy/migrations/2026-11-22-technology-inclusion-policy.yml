@@ -1,0 +1,21 @@
+schema_version: 2
+id: 2026-11-22-technology-inclusion-policy
+description: Require substantive coverage for technology metadata.
+change_type: policy-change
+trigger: policy-driven
+governance:
+  date: '2026-11-22'
+  source: ai-proposed
+  reason: Require substantive coverage for technology metadata.
+preconditions:
+  taxonomy_version: 3
+changes:
+  technologies:
+    configuration:
+      expect:
+        description: Technologies, standards, tools, platforms, technical methods and techniques materially
+          used, documented or demonstrated.
+      set:
+        description: Technologies, standards, tools, platforms and technical techniques substantially
+          used, implemented, tested or explained in the content. Incidental mentions and speculative
+          future technologies qualify only if the page substantively examines them.

@@ -2,7 +2,7 @@
 title: Documentation QA CLI reference
 description: Command-line options for running QA, rendering reports and managing feedback.
 type:
-  - implementation-guide
+  - reference-material
 audiences:
   - developers
   - technical-writers

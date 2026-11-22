@@ -6,6 +6,10 @@ governance:
   ai_proposals_require_pr_review: true
   default_review: annual
 technology_kinds:
+  observability-monitoring:
+    label: Observability and monitoring
+    description: A framework, service, or tool for collecting, querying, or visualising telemetry to
+      monitor and understand system behaviour.
   data-format:
     label: Data format
     description: A structured data serialisation or interchange format such as JSON, YAML, XML, or
@@ -193,11 +197,21 @@ dimensions:
           review: annual
       reference-material:
         label: Reference material
-        description: Reference material to complement other content
+        description: Information organised for lookup, such as command references, configuration
+          options, API specifications, technical definitions and reusable examples.
         governance:
           status: active
           introduced: '2026-11-02'
           source: human-proposed
+          review: annual
+      technical-explanation:
+        label: Technical explanation
+        description: Content that explains how a technical system, architecture or concept works and
+          why its parts behave or fit together as they do.
+        governance:
+          status: active
+          introduced: '2026-11-22'
+          source: ai-proposed
           review: annual
   audiences:
     description: Audiences for whom the content is materially relevant.
@@ -211,7 +225,7 @@ dimensions:
     terms:
       end-users:
         label: End users
-        description: Software application users
+        description: People who use an application's features to complete their own tasks.
         governance:
           status: active
           introduced: '2026-08-31'
@@ -219,7 +233,8 @@ dimensions:
           review: annual
       developers:
         label: Developers
-        description: Software developers who consume APIs, SDKs, and developer documentation.
+        description: Software engineers and technical integrators who build, extend, integrate, test
+          or maintain applications, APIs, SDKs and developer tooling.
         governance:
           status: active
           introduced: '2026-08-14'
@@ -271,8 +286,9 @@ dimensions:
           review: annual
       api-security:
         label: API security
-        description: Security mechanisms and practices for APIs, including authentication,
-          encryption, and webhooks.
+        description: Security controls for APIs, including authentication, authorisation, request
+          signing, transport security, encryption, credential management and secure webhook
+          verification.
         governance:
           status: active
           introduced: '2026-08-14'
@@ -289,8 +305,8 @@ dimensions:
           review: annual
       docs-as-code:
         label: Docs-as-code
-        description: Approach of treating documentation as code, using version control, CI/CD, and
-          automation.
+        description: Managing documentation in version control and applying software development
+          practices for collaboration, review, testing and publishing.
         governance:
           status: active
           introduced: '2026-08-14'
@@ -298,8 +314,8 @@ dimensions:
           review: annual
       documentation-engineering:
         label: Documentation engineering
-        description: Application of software engineering techniques to documentation creation and
-          maintenance.
+        description: Designing, building and maintaining the software, integrations and automation
+          that support documentation authoring, validation, publishing and discovery.
         governance:
           status: active
           introduced: '2026-08-14'
@@ -333,7 +349,8 @@ dimensions:
           review: annual
       technical-validation:
         label: Technical validation
-        description: Testing and validation of technical content and integrations.
+        description: Verifying documented behaviour, procedures, specifications and examples against
+          working systems, source code or executable tests.
         governance:
           status: active
           introduced: '2026-08-14'
@@ -341,7 +358,8 @@ dimensions:
           review: annual
       technical-writing:
         label: Technical writing
-        description: The practice of creating technical documentation and content.
+        description: Planning, researching, writing and revising technical explanations, procedures,
+          guides and references for their intended readers.
         governance:
           status: active
           introduced: '2026-08-14'
@@ -384,8 +402,9 @@ dimensions:
           source: human-proposed
           review: annual
   technologies:
-    description: Technologies, standards, tools, platforms, technical methods and techniques
-      materially used, documented or demonstrated.
+    description: Technologies, standards, tools, platforms and technical techniques substantially
+      used, implemented, tested or explained in the content. Incidental mentions and speculative
+      future technologies qualify only if the page substantively examines them.
     metadata_field: technologies
     required: false
     multiple: true
@@ -424,8 +443,9 @@ dimensions:
           review: annual
       agentic-ai:
         label: Agentic AI
-        description: AI systems that can act autonomously.
-        kind: ai-ml-tool
+        description: An AI approach in which systems plan and execute multistep tasks, use tools and
+          respond to intermediate results, with varying degrees of autonomy and human oversight.
+        kind: technical-technique
         governance:
           status: active
           introduced: '2026-08-14'
@@ -442,7 +462,8 @@ dimensions:
           review: annual
       amx-composer:
         label: AMX Composer
-        description: A content management application for digital signage.
+        description: An AMX digital signage application for creating, scheduling and publishing
+          multimedia content to networked displays.
         kind: software-platform
         governance:
           status: active
@@ -484,7 +505,8 @@ dimensions:
           review: annual
       brightspot-cms:
         label: Brightspot CMS
-        description: A content management system.
+        description: A content management platform for creating, managing and publishing structured
+          digital content across websites and other channels.
         kind: cms-wiki
         governance:
           status: active
@@ -506,7 +528,8 @@ dimensions:
           review: annual
       c4-model:
         label: C4 model
-        description: A modelling methodology for software architecture.
+        description: A software architecture modelling approach with progressively detailed system
+          context, container, component and code views.
         kind: modelling-methodology
         governance:
           status: active
@@ -515,7 +538,8 @@ dimensions:
           review: annual
       catia:
         label: CATIA
-        description: A CAD software.
+        description: A Dassault Systèmes CAD and engineering platform for designing complex
+          mechanical products and 3D assemblies.
         kind: engineering-design-tool
         governance:
           status: active
@@ -542,7 +566,9 @@ dimensions:
           review: annual
       codetreedocs:
         label: Codetreedocs
-        description: A custom internal docs-as-code platform.
+        description: Morgan Stanley's internal Scala-based documentation platform supports Git-based
+          authoring, IntelliJ previews, automated publishing and discovery across the Codetree
+          monorepo.
         kind: documentation-platform
         governance:
           status: active
@@ -593,7 +619,9 @@ dimensions:
           review: annual
       deepseek-api:
         label: DeepSeek LLM API
-        description: An AI API used for documentation quality checks.
+        description: An API for DeepSeek language models that supports text generation and
+          reasoning. This portfolio uses it for documentation quality review, metadata suggestions
+          and retrieval-grounded answers.
         kind: ai-ml-tool
         governance:
           status: active
@@ -602,8 +630,9 @@ dimensions:
           review: annual
       digital-enablement-api:
         label: Digital Enablement API
-        description: Mastercard API for tokenisation.
-        kind: api-tool
+        description: Mastercard API for tokenising payment cards and managing payment tokens through
+          Mastercard Digital Enablement Service (MDES).
+        kind: payment-technology
         governance:
           status: active
           introduced: '2026-08-14'
@@ -638,7 +667,8 @@ dimensions:
           review: annual
       finos-calm:
         label: FINOS CALM
-        description: An architecture-as-code standard.
+        description: Common Architecture Language Model (CALM), a FINOS specification for
+          representing software architecture in a structured, machine-readable format.
         kind: standard-specification
         governance:
           status: active
@@ -719,7 +749,8 @@ dimensions:
           review: annual
       graphviz:
         label: Graphviz
-        description: A graph visualisation software.
+        description: A graph visualisation toolkit that generates diagrams from graph descriptions,
+          commonly written in the DOT language.
         kind: diagramming-visualisation
         governance:
           status: active
@@ -839,8 +870,9 @@ dimensions:
           review: annual
       jsx:
         label: JSX
-        description: A syntax extension for JavaScript used with React.
-        kind: programming-language
+        description: A JavaScript syntax extension for expressing markup and component trees in
+          JavaScript code.
+        kind: markup-content-language
         governance:
           status: active
           introduced: '2026-08-14'
@@ -848,7 +880,9 @@ dimensions:
           review: annual
       jwt:
         label: JWT
-        description: JSON Web Token, a standard for secure token-based authentication.
+        description: JSON Web Token (JWT), a compact format for transmitting claims between parties.
+          A JWT can be digitally signed or protected with a message authentication code, and can
+          also be encrypted.
         kind: standard-specification
         governance:
           status: active
@@ -911,8 +945,9 @@ dimensions:
           review: annual
       masterpass:
         label: Masterpass
-        description: A digital wallet service by Mastercard.
-        kind: software-platform
+        description: Mastercard's digital wallet and checkout service, which let consumers pay
+          participating merchants with stored payment credentials.
+        kind: payment-technology
         governance:
           status: active
           introduced: '2026-08-14'
@@ -920,7 +955,8 @@ dimensions:
           review: annual
       mcp:
         label: MCP
-        description: Model Context Protocol.
+        description: Model Context Protocol (MCP), an open protocol that standardises how AI
+          applications connect to external tools and data sources.
         kind: protocol
         governance:
           status: active
@@ -929,8 +965,9 @@ dimensions:
           review: annual
       mdes:
         label: MDES
-        description: Mastercard Digital Enablement Service.
-        kind: software-platform
+        description: Mastercard Digital Enablement Service, a platform for digitising payment
+          credentials, managing payment tokens and supporting token-based transactions.
+        kind: payment-technology
         governance:
           status: active
           introduced: '2026-08-14'
@@ -1005,7 +1042,8 @@ dimensions:
           review: annual
       ocr:
         label: OCR
-        description: Optical Character Recognition.
+        description: Optical character recognition (OCR) converts text in images or scanned
+          documents into machine-readable text.
         kind: technical-technique
         governance:
           status: active
@@ -1047,13 +1085,16 @@ dimensions:
         description: Open Web Application Security Project.
         kind: standard-specification
         governance:
-          status: active
+          status: deprecated
           introduced: '2026-08-14'
           source: initial-taxonomy
           review: annual
+          deprecation_reason: OWASP names an organisation. Use a specific publication or tool when
+            the content identifies one.
       paysafe-js:
         label: Paysafe.js
-        description: A JavaScript library for payment integration.
+        description: A JavaScript payment integration library that uses Paysafe-hosted fields to
+          collect sensitive payment data and return tokens to merchant applications.
         kind: library
         governance:
           status: active
@@ -1071,7 +1112,8 @@ dimensions:
           review: annual
       pki:
         label: PKI
-        description: Public Key Infrastructure.
+        description: Public key infrastructure (PKI) uses certificates, cryptographic keys, policies
+          and trust relationships to establish digital identities and secure communications.
         kind: security-cryptography
         governance:
           status: active
@@ -1126,7 +1168,8 @@ dimensions:
           review: annual
       rag:
         label: RAG
-        description: Retrieval-Augmented Generation.
+        description: Retrieval-Augmented Generation (RAG) retrieves relevant information from
+          external sources and supplies it as context to a language model when generating an answer.
         kind: technical-technique
         governance:
           status: active
@@ -1181,7 +1224,8 @@ dimensions:
           review: annual
       spec-driven-development:
         label: Spec-driven development
-        description: A development approach using specifications.
+        description: A development approach in which explicit specifications guide implementation,
+          testing and verification.
         kind: technical-technique
         governance:
           status: active
@@ -1388,8 +1432,9 @@ dimensions:
           review: annual
       optimus:
         label: Optimus
-        description: A Scala-based framework for building reactive user interfaces and data
-          processing applications.
+        description: Morgan Stanley's Scala-based computation framework uses dependency graphs,
+          caching and automatic parallelisation for large-scale financial calculations and scenario
+          analysis. It integrates with distributed data services, including bitemporal storage.
         kind: framework
         aliases:
           - Optimus Cirrus
@@ -1411,7 +1456,7 @@ dimensions:
       azure-application-insights:
         label: Azure Application Insights
         description: An application performance management service in Azure.
-        kind: cloud-hosting-platform
+        kind: observability-monitoring
         governance:
           status: active
           introduced: '2026-11-11'
@@ -1440,7 +1485,7 @@ dimensions:
       azure-log-analytics:
         label: Azure Log Analytics
         description: A log analytics service in Azure Monitor.
-        kind: cloud-hosting-platform
+        kind: observability-monitoring
         governance:
           status: active
           introduced: '2026-11-11'
@@ -1458,7 +1503,7 @@ dimensions:
       azure-monitor:
         label: Azure Monitor
         description: A comprehensive monitoring service in Azure.
-        kind: cloud-hosting-platform
+        kind: observability-monitoring
         governance:
           status: active
           introduced: '2026-11-11'
@@ -1475,8 +1520,9 @@ dimensions:
           review: annual
       cors:
         label: CORS
-        description: Cross-Origin Resource Sharing, a mechanism for allowing web requests from
-          different origins.
+        description: Cross-Origin Resource Sharing (CORS), an HTTP-header mechanism that lets
+          servers specify which cross-origin browser scripts may access their responses.
+          Authentication and authorisation require separate controls.
         kind: standard-specification
         governance:
           status: active
@@ -1504,7 +1550,7 @@ dimensions:
       grafana:
         label: Grafana
         description: An open-source analytics and monitoring platform.
-        kind: data-analysis-tool
+        kind: observability-monitoring
         governance:
           status: active
           introduced: '2026-11-11'
@@ -1512,8 +1558,9 @@ dimensions:
           review: annual
       opentelemetry:
         label: OpenTelemetry
-        description: An observability framework for cloud-native software.
-        kind: technical-technique
+        description: An open-source observability framework for instrumenting applications and
+          collecting, processing and exporting traces, metrics and logs.
+        kind: observability-monitoring
         governance:
           status: active
           introduced: '2026-11-11'
@@ -1564,7 +1611,7 @@ dimensions:
         kind: ai-ml-tool
         governance:
           status: active
-          introduced: '2026-11-30'
+          introduced: '2026-11-22'
           source: human-proposed
           review: annual
   lifecycle:
@@ -1579,7 +1626,8 @@ dimensions:
     terms:
       current:
         label: Current
-        description: Content that represents current practice, capability or portfolio material.
+        description: Content maintained as part of the active portfolio, including retrospective
+          case studies describing completed work.
         governance:
           status: active
           introduced: '2026-08-14'
@@ -1587,7 +1635,8 @@ dimensions:
           review: annual
       historical:
         label: Historical
-        description: Content intentionally retained as a historical example or past project.
+        description: Content retained to document a superseded product, technology, version or
+          practice. Use it as a record of how things worked at the time.
         governance:
           status: active
           introduced: '2026-08-14'
@@ -1595,8 +1644,8 @@ dimensions:
           review: annual
       archived:
         label: Archived
-        description: Content retained for record purposes but no longer treated as active portfolio
-          material.
+        description: Content retained for the record after active maintenance and promotion in the
+          portfolio have ended.
         governance:
           status: active
           introduced: '2026-08-14'

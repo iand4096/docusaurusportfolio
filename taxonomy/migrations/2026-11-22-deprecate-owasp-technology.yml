@@ -1,0 +1,19 @@
+schema_version: 2
+id: 2026-11-22-deprecate-owasp-technology
+description: Retire the generic OWASP technology term because it names an organisation and the portfolio
+  does not identify a specific OWASP publication.
+change_type: vocabulary-contraction
+trigger: taxonomy-review
+governance:
+  date: '2026-11-22'
+  source: ai-proposed
+  reason: Retire the generic OWASP technology term because it names an organisation and the portfolio
+    does not identify a specific OWASP publication.
+preconditions:
+  taxonomy_version: 3
+changes:
+  technologies:
+    deprecate:
+      owasp:
+        reason: OWASP names an organisation. Use a specific publication or tool when the content identifies
+          one.

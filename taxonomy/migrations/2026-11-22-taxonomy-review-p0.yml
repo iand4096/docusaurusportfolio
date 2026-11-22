@@ -1,0 +1,91 @@
+schema_version: 2
+id: 2026-11-22-taxonomy-review-p0
+description: Correct taxonomy definitions and payment technology classifications.
+change_type: taxonomy-correction
+trigger: taxonomy-review
+governance:
+  date: '2026-11-22'
+  source: ai-proposed
+  reason: Correct taxonomy definitions and payment technology classifications.
+preconditions:
+  taxonomy_version: 3
+changes:
+  technologies:
+    update:
+      optimus:
+        expect:
+          description: A Scala-based framework for building reactive user interfaces and data processing
+            applications.
+        set:
+          description: Morgan Stanley's Scala-based computation framework uses dependency graphs,
+            caching and automatic parallelisation for large-scale financial calculations and scenario
+            analysis. It integrates with distributed data services, including bitemporal storage.
+      digital-enablement-api:
+        expect:
+          description: Mastercard API for tokenisation.
+          kind: api-tool
+        set:
+          description: Mastercard API for tokenising payment cards and managing payment tokens through
+            Mastercard Digital Enablement Service (MDES).
+          kind: payment-technology
+      mdes:
+        expect:
+          description: Mastercard Digital Enablement Service.
+          kind: software-platform
+        set:
+          description: Mastercard Digital Enablement Service, a platform for digitising payment credentials,
+            managing payment tokens and supporting token-based transactions.
+          kind: payment-technology
+      masterpass:
+        expect:
+          description: A digital wallet service by Mastercard.
+          kind: software-platform
+        set:
+          description: Mastercard's digital wallet and checkout service, which let consumers pay participating
+            merchants with stored payment credentials.
+          kind: payment-technology
+      deepseek-api:
+        expect:
+          description: An AI API used for documentation quality checks.
+        set:
+          description: An API for DeepSeek language models that supports text generation and reasoning.
+            This portfolio uses it for documentation quality review, metadata suggestions and retrieval-grounded
+            answers.
+  content_types:
+    update:
+      reference-material:
+        expect:
+          description: Reference material to complement other content
+        set:
+          description: Information organised for lookup, such as command references, configuration
+            options, API specifications, technical definitions and reusable examples.
+  topics:
+    update:
+      api-security:
+        expect:
+          description: Security mechanisms and practices for APIs, including authentication, encryption,
+            and webhooks.
+        set:
+          description: Security controls for APIs, including authentication, authorisation, request
+            signing, transport security, encryption, credential management and secure webhook verification.
+  lifecycle:
+    update:
+      current:
+        expect:
+          description: Content that represents current practice, capability or portfolio material.
+        set:
+          description: Content maintained as part of the active portfolio, including retrospective
+            case studies describing completed work.
+      historical:
+        expect:
+          description: Content intentionally retained as a historical example or past project.
+        set:
+          description: Content retained to document a superseded product, technology, version or practice.
+            Use it as a record of how things worked at the time.
+      archived:
+        expect:
+          description: Content retained for record purposes but no longer treated as active portfolio
+            material.
+        set:
+          description: Content retained for the record after active maintenance and promotion in the
+            portfolio have ended.

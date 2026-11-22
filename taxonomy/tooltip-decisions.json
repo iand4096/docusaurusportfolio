@@ -1,7 +1,7 @@
 {
   "documents": {
     "docs/case-studies/RagSearchCloudArchitecture.md": {
-      "content_hash": "sha256:85655a9034ad84dd329df49f123c00a6ae763ef0871dce94be044fa64edc8df5",
+      "content_hash": "sha256:d47cea8c6172bc025a6777e8bf30a1dbab589f0b7dd0231200556d34309052cf",
       "decisions": [
         {
           "context_hash": "sha256:7ad8dce689ccf16b890cbe63fa7b5d6652cdbc2046ef6481ea7a3227825927a3",
@@ -9,13 +9,13 @@
           "result": "reject",
           "review": {
             "reason": "The occurrence refers to incoming API requests.",
-            "reviewed_on": "2026-11-30",
-            "reviewer": "repository-maintainer",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-taxonomy-review",
             "status": "approved"
           },
           "source_range": {
-            "end": 6597,
-            "start": 6589
+            "end": 6439,
+            "start": 6431
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -43,18 +43,57 @@
           "term_id": "requests"
         }
       ]
+    },
+    "docs/implementation-details/taxonomy.md": {
+      "content_hash": "sha256:f3b8c47b6bbc0f69bda5dc26af0f778c16e79993d7a02e4656e3c5150e8b6174",
+      "decisions": [
+        {
+          "context_hash": "sha256:acc4a4a0f801b8ca62c65d1fba6f4fd0bca9b7d42ff41adf25417d86827c7d66",
+          "matched_text": "Requests",
+          "result": "reject",
+          "review": {
+            "reason": "The quoted sentence refers to incoming API requests.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-taxonomy-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 3308,
+            "start": 3300
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        },
+        {
+          "context_hash": "sha256:acc4a4a0f801b8ca62c65d1fba6f4fd0bca9b7d42ff41adf25417d86827c7d66",
+          "matched_text": "Requests",
+          "result": "accept",
+          "review": {
+            "reason": "The example identifies Requests as a Python library used alongside Flask.",
+            "reviewed_on": "2026-11-22",
+            "reviewer": "portfolio-taxonomy-review",
+            "status": "approved"
+          },
+          "source_range": {
+            "end": 3436,
+            "start": 3428
+          },
+          "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
+          "term_id": "requests"
+        }
+      ]
     }
   },
   "matching_contract_version": "1",
   "model": {
     "availability": [
+      "spaCy model not configured",
       "MiniLM snapshot not configured"
     ],
     "classifier_version": "1",
-    "embedding_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
-    "spacy_pipeline": "3.8.0"
+    "embedding_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
   },
-  "policy_hash": "sha256:3f138824d4aaa8e371b62b354d66ad318645684f6d75e9f2b67b7515f24f54b3",
-  "taxonomy_hash": "sha256:503f851c4bef6d3d27e4d38c63e8b1255ebe2e1a7dc1cb1b0e9f0ac50bab194e",
+  "policy_hash": "sha256:21d13654134477b4cca9c27ab0ab1c97cfb82279fbd3f086e71ecbb9e05a4d67",
+  "taxonomy_hash": "sha256:25318506092e04811b664ef9a58db6ea97f27f4644507ead10a58fb7c7b14c68",
   "version": 1
 }

@@ -15,12 +15,34 @@
       "term_id": "rice",
       "rationale": "The Optimus and RICE reference identifies the acronym and describes the framework's pricing, valuation, trading and risk responsibilities.",
       "previous_definition_fingerprint": "sha256:3ea1d4b27146ae931353eb4e3d403bcc5fe1dab8e63555c65d3c750665f763d5",
-      "resolution_migration": "taxonomy/migrations/2026-11-30-correct-rice-definition.yml",
+      "resolution_migration": "taxonomy/migrations/2026-11-22-correct-rice-definition.yml",
       "review": {
         "status": "approved",
         "reviewer": "repository-maintainer",
-        "reviewed_on": "2026-11-30",
+        "reviewed_on": "2026-11-22",
         "reason": "The portfolio maintainer approved the financial analytics definition."
+      }
+    },
+    "optimus-definition-mismatch": {
+      "evidence": [
+        {
+          "context_hash": "sha256:16fd977827038bf9406da5a6d938430f972b49eae1e8ff5a3063cfcbc909a9bf",
+          "excerpt": "**Optimus** is a Scala-based, graph-oriented computation framework built on functional programming principles. It manages computational dependencies and supports automatic parallelisation, asynchronous execution, caching and scenario evaluation. It uses a **Data Access Layer (DAL)** that supplies distributed data services, including bitemporal storage and retrieval.",
+          "path": "docs/misc/OptimusRICE.md"
+        }
+      ],
+      "finding_type": "acronym_or_function_mismatch",
+      "status": "resolved_taxonomy",
+      "taxonomy_definition_fingerprint": "sha256:7d8bed7400f03bf7dd99988802c6145236900be3e1a1412cad82b8483afd0ac6",
+      "term_id": "optimus",
+      "rationale": "The Optimus and RICE reference documents graph-based computation, scenario evaluation and distributed data services.",
+      "previous_definition_fingerprint": "sha256:f90ee953ab613e1b2df97f60edda234d8e8abfba14a66018c473e13ae2a6ac1c",
+      "resolution_migration": "taxonomy/migrations/2026-11-22-taxonomy-review-p0.yml",
+      "review": {
+        "status": "approved",
+        "reviewer": "portfolio-taxonomy-review",
+        "reviewed_on": "2026-11-22",
+        "reason": "The revised definition reflects the framework responsibilities documented in the portfolio."
       }
     }
   }

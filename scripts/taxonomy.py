@@ -58,7 +58,7 @@ command never mutates taxonomy.yml. Use --strict to make candidates fail CI.
 `migrate apply` writes the approved migration. Add-only changes update the
 canonical vocabulary without requiring unrelated documents to validate.
 Contractions and replacements retain strict document-wide validation.
-`migrate status` reports manifests; it does not claim to track applied IDs.
+`migrate status` validates and reports manifests without tracking applied IDs.
 """
 
 from __future__ import annotations
@@ -72,6 +72,7 @@ import re
 import subprocess
 import sys
 import unicodedata
+from datetime import date, datetime, timezone
 from pathlib import Path
 from typing import Any, Iterable
 
@@ -1550,13 +1551,11 @@ def validate_migration_preconditions(
             )
 
 
-def validate_migration_semantics(
-    taxonomy: dict[str, Any],
-    migration: dict[str, Any],
-    migration_path: Path,
-) -> None:
+def validate_migration_identity(migration: dict[str, Any], migration_path: Path) -> None:
     migration_id = migration["id"]
     governance_date = migration["governance"]["date"]
+    if date.fromisoformat(governance_date) > datetime.now(timezone.utc).date():
+        raise ValidationError(f"migration governance date {governance_date!r} is in the future (UTC)")
     if not migration_id.startswith(governance_date + "-"):
         raise ValidationError(
             f"migration ID {migration_id!r} must begin with governance date {governance_date!r}"
@@ -1565,6 +1564,14 @@ def validate_migration_semantics(
         raise ValidationError(
             f"migration filename {migration_path.name!r} must match migration ID {migration_id!r}"
         )
+
+
+def validate_migration_semantics(
+    taxonomy: dict[str, Any],
+    migration: dict[str, Any],
+    migration_path: Path,
+) -> None:
+    validate_migration_identity(migration, migration_path)
 
     if migration.get("schema_version") == 2:
         change_type = migration["change_type"]
@@ -1945,10 +1952,12 @@ def command_migration_status(args: argparse.Namespace) -> int:
         manifests = sorted((root / MIGRATIONS_PATH).glob("*.yml"))
         print(f"canonical taxonomy: valid ({TAXONOMY_PATH})")
         print(f"migration manifests: {len(manifests)}")
+        invalid = False
         for path in manifests:
             try:
                 migration = load_yaml(path)
                 validate_migration_schema(migration, root / MIGRATION_SCHEMA_PATH)
+                validate_migration_identity(migration, path)
                 adds = [(d, term) for d, operations in migration.get("changes", {}).items()
                         for term in operations.get("add", {})]
                 if adds:
@@ -1959,10 +1968,11 @@ def command_migration_status(args: argparse.Namespace) -> int:
                     note = "manifest valid; application not tracked"
                 print(f"  {path.name}: {note}")
             except (ValidationError, OSError, KeyError, TypeError, ValueError) as exc:
+                invalid = True
                 print(f"  {path.name}: INVALID ({exc})")
         print("Applied migration IDs are not tracked by this repository.")
         print("Run 'check --all' separately for document and generated-file health.")
-        return 0
+        return int(invalid)
     except (ValidationError, OSError, json.JSONDecodeError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         return 1

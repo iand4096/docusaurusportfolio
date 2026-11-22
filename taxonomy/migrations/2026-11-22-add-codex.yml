@@ -1,10 +1,10 @@
 schema_version: 2
-id: 2026-11-30-add-codex
+id: 2026-11-22-add-codex
 description: Add Codex to the technology vocabulary.
 change_type: vocabulary-expansion
 trigger: content-driven
 governance:
-  date: '2026-11-30'
+  date: '2026-11-22'
   source: human-proposed
   reason: The AI and Documentation page describes using Codex in personal projects.
 preconditions:

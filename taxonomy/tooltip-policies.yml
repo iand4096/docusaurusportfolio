@@ -47,3 +47,300 @@ terms:
       reviewer: repository-maintainer
       reviewed_on: '2026-11-30'
       reason: Reviewed eligible RICE mentions in the portfolio. They refer to Morgan Stanley's financial analytics framework.
+  deepseek-api:
+    mode: auto
+    term_basis_hash: "sha256:ba9b3d1fdfaca170b9895041dda3754af7b2384e4eb689b16ec46446a11102e1"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  digital-enablement-api:
+    mode: auto
+    term_basis_hash: "sha256:2078f8d0d52b29f5d0243fd4c0d3037d56c9683cda2a31b9c49822a3c19c1e2a"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  masterpass:
+    mode: auto
+    term_basis_hash: "sha256:14e629ba0f2d42d0703975474e58085f18c129dd6ecfb8c1d0024def45cf36c7"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  mdes:
+    mode: auto
+    term_basis_hash: "sha256:00dc4d1fc24a78e64ba6a27bf20a1cd51392505f5b8f34a0abbba7e19dbffd2f"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  optimus:
+    mode: auto
+    term_basis_hash: "sha256:305bfb26e8cf444c064b97afeb0f26bd48fc6327e2f296bc6c3b611f0ec6f085"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  agentic-ai:
+    mode: auto
+    term_basis_hash: "sha256:58c1ccb825d921e633f6262df96b7bda684179a3b4ccf4a189a338cab6ee4746"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  codetreedocs:
+    mode: auto
+    term_basis_hash: "sha256:b4f1ef8c14237b93409b05c801e473e59bf4a5e1989c275882f2d6f819403817"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  cors:
+    mode: auto
+    term_basis_hash: "sha256:c9db00a2a33a887bb570a068828a9a0d04807f1c11a8d63cb029b35381795432"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  jwt:
+    mode: auto
+    term_basis_hash: "sha256:5838e01c5d7baa7e0d397473f29ece74fff65afc6d1361b0ba03c10c1668da81"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  mcp:
+    mode: auto
+    term_basis_hash: "sha256:3421ad15656437c6b59a10ba8a1386fffc7d3220369d9f91d31d52935868772d"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  rag:
+    mode: auto
+    term_basis_hash: "sha256:dcb0d1a75458277ca620aab634f33c67201148ab6f5a04b710b1f9eb752bcf12"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  amx-composer:
+    mode: auto
+    term_basis_hash: "sha256:9fc9214a7bf837377205e84e93d7d36592294bb5039b1de8ca4411dc1d37367f"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  azure-application-insights:
+    mode: auto
+    term_basis_hash: "sha256:2b1775e29e66a085725daed4a15e8c7661254edc69e291de2ebac31e6617cb30"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  azure-log-analytics:
+    mode: auto
+    term_basis_hash: "sha256:82fc1d093f8f0c16e8b0b48f48ffa7fbb23e66012dbd571e7d676ff767d73f30"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  azure-monitor:
+    mode: auto
+    term_basis_hash: "sha256:cd160bf1a966925c99dc2e95f84b68e5f6649d7c42d0ca203c25061558ede85c"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  brightspot-cms:
+    mode: auto
+    term_basis_hash: "sha256:9726e3c72f90321a130985f1097fa9bda3e1f7eb89b7be143ecae36e21a4644a"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  c4-model:
+    mode: auto
+    term_basis_hash: "sha256:8fc5ad31e0d21e579bbdfe9f9679e3dbe92fcc8bcc5fdef9dc3b07399515bc12"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  catia:
+    mode: auto
+    term_basis_hash: "sha256:b6ba5314c8fa0d49d085a1e645f6b2567e6f1cfb1a45c905c3e1dacaa3a9492f"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  finos-calm:
+    mode: auto
+    term_basis_hash: "sha256:bd7ee43d5134d1a0d2b859a1e0431bdc48d4e4ab36e0c3be2784c4873095e5cd"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  grafana:
+    mode: auto
+    term_basis_hash: "sha256:d0e8642af570d18863584c54286d6b9f266f1eec4484de65762b40562af3a7d2"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  graphviz:
+    mode: auto
+    term_basis_hash: "sha256:e4c5671336123158210013d97177a25350661b4ec062e5682a2410452c878689"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  jsx:
+    mode: auto
+    term_basis_hash: "sha256:6d9f3c5dffe25115577a7362180c611d9e1e82c7919cc26181676b06d741f3a3"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  ocr:
+    mode: auto
+    term_basis_hash: "sha256:65b0ca3ce4567ac4641ab256159775e05d42e578468c46a76898d5314541236a"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  opentelemetry:
+    mode: auto
+    term_basis_hash: "sha256:2d3a605fa8518390f43bbbab5c3363b6c012b186fc6f4ab774d0c7529c5bd9af"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  paysafe-js:
+    mode: auto
+    term_basis_hash: "sha256:7037920c3f2f3eac8fe90a171afae4f190afb7f5ef122493149f2d1ddc92d0a2"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  pki:
+    mode: auto
+    term_basis_hash: "sha256:c4f8c9a30e70d0dafd055703ac3047abeb0040215efd3c4bb8e9187f10c3b6da"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.
+  spec-driven-development:
+    mode: auto
+    term_basis_hash: "sha256:3d106176f85cfc0894cd5e2283f0074821f8ef8540f4ad77c442e14b4990fa27"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: portfolio-taxonomy-review
+      reviewed_on: '2026-11-22'
+      reason: Eligible portfolio mentions refer to the canonical technology.

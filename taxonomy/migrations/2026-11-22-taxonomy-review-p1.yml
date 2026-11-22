@@ -1,0 +1,96 @@
+schema_version: 2
+id: 2026-11-22-taxonomy-review-p1
+description: Clarify core technology, audience and documentation topic definitions.
+change_type: taxonomy-correction
+trigger: taxonomy-review
+governance:
+  date: '2026-11-22'
+  source: ai-proposed
+  reason: Clarify core technology, audience and documentation topic definitions.
+preconditions:
+  taxonomy_version: 3
+changes:
+  technologies:
+    update:
+      rag:
+        expect:
+          description: Retrieval-Augmented Generation.
+        set:
+          description: Retrieval-Augmented Generation (RAG) retrieves relevant information from external
+            sources and supplies it as context to a language model when generating an answer.
+      mcp:
+        expect:
+          description: Model Context Protocol.
+        set:
+          description: Model Context Protocol (MCP), an open protocol that standardises how AI applications
+            connect to external tools and data sources.
+      agentic-ai:
+        expect:
+          description: AI systems that can act autonomously.
+          kind: ai-ml-tool
+        set:
+          description: An AI approach in which systems plan and execute multistep tasks, use tools
+            and respond to intermediate results, with varying degrees of autonomy and human oversight.
+          kind: technical-technique
+      cors:
+        expect:
+          description: Cross-Origin Resource Sharing, a mechanism for allowing web requests from different
+            origins.
+        set:
+          description: Cross-Origin Resource Sharing (CORS), an HTTP-header mechanism that lets servers
+            specify which cross-origin browser scripts may access their responses. Authentication
+            and authorisation require separate controls.
+      jwt:
+        expect:
+          description: JSON Web Token, a standard for secure token-based authentication.
+        set:
+          description: JSON Web Token (JWT), a compact format for transmitting claims between parties.
+            A JWT can be digitally signed or protected with a message authentication code, and can
+            also be encrypted.
+      codetreedocs:
+        expect:
+          description: A custom internal docs-as-code platform.
+        set:
+          description: Morgan Stanley's internal Scala-based documentation platform supports Git-based
+            authoring, IntelliJ previews, automated publishing and discovery across the Codetree monorepo.
+  audiences:
+    update:
+      end-users:
+        expect:
+          description: Software application users
+        set:
+          description: People who use an application's features to complete their own tasks.
+      developers:
+        expect:
+          description: Software developers who consume APIs, SDKs, and developer documentation.
+        set:
+          description: Software engineers and technical integrators who build, extend, integrate,
+            test or maintain applications, APIs, SDKs and developer tooling.
+  topics:
+    update:
+      technical-writing:
+        expect:
+          description: The practice of creating technical documentation and content.
+        set:
+          description: Planning, researching, writing and revising technical explanations, procedures,
+            guides and references for their intended readers.
+      docs-as-code:
+        expect:
+          description: Approach of treating documentation as code, using version control, CI/CD, and
+            automation.
+        set:
+          description: Managing documentation in version control and applying software development
+            practices for collaboration, review, testing and publishing.
+      documentation-engineering:
+        expect:
+          description: Application of software engineering techniques to documentation creation and
+            maintenance.
+        set:
+          description: Designing, building and maintaining the software, integrations and automation
+            that support documentation authoring, validation, publishing and discovery.
+      technical-validation:
+        expect:
+          description: Testing and validation of technical content and integrations.
+        set:
+          description: Verifying documented behaviour, procedures, specifications and examples against
+            working systems, source code or executable tests.

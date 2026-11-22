@@ -1,0 +1,110 @@
+schema_version: 2
+id: 2026-11-22-taxonomy-review-p2
+description: Refine technology kinds and expand sparse or circular definitions.
+change_type: taxonomy-correction
+trigger: taxonomy-review
+governance:
+  date: '2026-11-22'
+  source: ai-proposed
+  reason: Refine technology kinds and expand sparse or circular definitions.
+preconditions:
+  taxonomy_version: 3
+changes:
+  technologies:
+    update:
+      jsx:
+        expect:
+          description: A syntax extension for JavaScript used with React.
+          kind: programming-language
+        set:
+          description: A JavaScript syntax extension for expressing markup and component trees in
+            JavaScript code.
+          kind: markup-content-language
+      opentelemetry:
+        expect:
+          description: An observability framework for cloud-native software.
+          kind: technical-technique
+        set:
+          description: An open-source observability framework for instrumenting applications and collecting,
+            processing and exporting traces, metrics and logs.
+          kind: observability-monitoring
+      azure-monitor:
+        expect:
+          kind: cloud-hosting-platform
+        set:
+          kind: observability-monitoring
+      azure-application-insights:
+        expect:
+          kind: cloud-hosting-platform
+        set:
+          kind: observability-monitoring
+      azure-log-analytics:
+        expect:
+          kind: cloud-hosting-platform
+        set:
+          kind: observability-monitoring
+      grafana:
+        expect:
+          kind: data-analysis-tool
+        set:
+          kind: observability-monitoring
+      spec-driven-development:
+        expect:
+          description: A development approach using specifications.
+        set:
+          description: A development approach in which explicit specifications guide implementation,
+            testing and verification.
+      ocr:
+        expect:
+          description: Optical Character Recognition.
+        set:
+          description: Optical character recognition (OCR) converts text in images or scanned documents
+            into machine-readable text.
+      pki:
+        expect:
+          description: Public Key Infrastructure.
+        set:
+          description: Public key infrastructure (PKI) uses certificates, cryptographic keys, policies
+            and trust relationships to establish digital identities and secure communications.
+      finos-calm:
+        expect:
+          description: An architecture-as-code standard.
+        set:
+          description: Common Architecture Language Model (CALM), a FINOS specification for representing
+            software architecture in a structured, machine-readable format.
+      c4-model:
+        expect:
+          description: A modelling methodology for software architecture.
+        set:
+          description: A software architecture modelling approach with progressively detailed system
+            context, container, component and code views.
+      graphviz:
+        expect:
+          description: A graph visualisation software.
+        set:
+          description: A graph visualisation toolkit that generates diagrams from graph descriptions,
+            commonly written in the DOT language.
+      brightspot-cms:
+        expect:
+          description: A content management system.
+        set:
+          description: A content management platform for creating, managing and publishing structured
+            digital content across websites and other channels.
+      catia:
+        expect:
+          description: A CAD software.
+        set:
+          description: A Dassault Systèmes CAD and engineering platform for designing complex mechanical
+            products and 3D assemblies.
+      amx-composer:
+        expect:
+          description: A content management application for digital signage.
+        set:
+          description: An AMX digital signage application for creating, scheduling and publishing
+            multimedia content to networked displays.
+      paysafe-js:
+        expect:
+          description: A JavaScript library for payment integration.
+        set:
+          description: A JavaScript payment integration library that uses Paysafe-hosted fields to
+            collect sensitive payment data and return tokens to merchant applications.

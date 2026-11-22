@@ -81,7 +81,7 @@ The glossary check compares every term and alias in `glossary.yml` with taxonomy
 | `python scripts/taxonomy.py audit-technologies` | Reports active technology kinds and heuristic warnings about organisation-like descriptions. |
 | `python scripts/taxonomy.py audit-unused` | Reports active terms with no direct document references; defaults to AI-managed dimensions. |
 | `python scripts/taxonomy.py audit-unused --dimension technologies` | Restricts the reference audit to the named dimension; repeat `--dimension` for multiple dimensions. |
-| `python scripts/taxonomy.py migrate status` | Lists migration manifests and canonical taxonomy health. It does not track an applied-migration ledger. |
+| `python scripts/taxonomy.py migrate status` | Validates YAML migration manifests and canonical taxonomy health. Returns a nonzero exit code for invalid manifests, including future UTC dates and mismatches between filenames, IDs and governance dates. |
 
 Audits are read-only. Both audit commands accept `--strict` to return exit code 1 when their findings are present. An unused term is a review candidate, not an instruction to delete it. Corpus-wide selection covers `docs/**/*.md` and `docs/**/*.mdx`, not blog posts or repository READMEs.
 
@@ -123,6 +123,8 @@ If any selected ID is not an active canonical term, adopt the required vocabular
 Targeted `--apply` remains a compatibility path that performs a fresh classification and immediate application. Prefer saved review followed by `--apply-from`. The combination `--all --apply` is rejected.
 
 ## Vocabulary changes and migrations
+
+Write definitions that identify the term, distinguish it from related terms and give reviewers a consistent basis for classification. Expand unfamiliar acronyms and explain what the technology does. Add portfolio-specific detail when it clarifies the term's role. For technology metadata, require substantial use, implementation, testing or explanation in the document.
 
 Create and review a YAML manifest under `taxonomy/migrations/` using the [migration schema](taxonomy-migration.schema.json) and existing manifests as structural references. Existing manifests describe historical changes; do not replay them as routine maintenance.
 

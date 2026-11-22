@@ -2,7 +2,7 @@
 title: Documentation QA key concepts
 description: How checks, evidence, feedback, caching and CI decisions fit together.
 type:
-  - implementation-guide
+  - technical-explanation
 audiences:
   - developers
   - technical-writers

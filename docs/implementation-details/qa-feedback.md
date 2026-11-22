@@ -2,7 +2,7 @@
 title: QA finding identity and feedback continuity
 description: Understand how QA preserves finding identities, review decisions and recurrence evidence.
 type:
-  - implementation-guide
+  - technical-explanation
 audiences:
   - developers
   - technical-writers
