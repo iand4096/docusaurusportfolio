@@ -65,6 +65,8 @@ def is_ci_threshold_eligible(issue):
     """
 
     # docs:start qa-ci-eligibility
+    if issue.get("source") == "tooltip":
+        return False
     if issue.get("source") != "ai":
         return True
     if issue.get("human_resolution") == "dismissed":
@@ -123,7 +125,7 @@ def evaluate_ci(issues, errors, fail_high: int, fail_medium: int, fail_api_error
         "api_error_count": api_error_count,
         "failures": failures,
         "policy": (
-            "Deterministic findings use their normal severity. "
+            "Deterministic findings use their normal severity. Tooltip audit findings are advisory. "
             "AI findings count towards CI only when type=defect and confidence=high, "
             "unless explicitly dismissed by a human. AI severity is capped at medium. "
             "AI withdrawal alone does not change CI eligibility."
@@ -145,6 +147,7 @@ def assert_ci_policy_invariants() -> None:
         ({"source": "ai", "type": "defect", "confidence": "high"}, True),
         ({"source": "ai", "type": "defect", "confidence": "high", "human_resolution": "dismissed"}, False),
         ({"source": "ai", "type": "defect", "confidence": "high", "effective_ai_decision": "withdrawn"}, True),
+        ({"source": "tooltip", "type": "defect", "confidence": "high"}, False),
         ({"source": "vale", "type": "improvement", "confidence": "high"}, True),
     ]
     for issue, expected in probes:

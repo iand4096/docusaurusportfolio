@@ -1,0 +1,58 @@
+name: Semantic tooltip audit
+
+on:
+  workflow_dispatch:
+    inputs:
+      term:
+        description: Technology ID to audit (blank for the corpus)
+        type: string
+      minilm:
+        description: Download the pinned MiniLM snapshot for advisory evidence
+        type: boolean
+        default: false
+
+permissions:
+  contents: read
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-doc-review-linux-py312.lock
+      - run: npm ci
+      - run: python -m pip install --require-hashes --only-binary=:all: -r requirements-doc-review-linux-py312.lock
+      - name: Cache the optional model
+        if: inputs.minilm
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/huggingface/hub
+          key: tooltip-minilm-1110a243fdf4706b3f48f1d95db1a4f5529b4d41
+      - name: Generate advisory report
+        env:
+          AUDIT_TERM: ${{ inputs.term }}
+          USE_MINILM: ${{ inputs.minilm }}
+        run: |
+          args=(audit --report reports/taxonomy-tooltip-audit.json)
+          if [[ -n "$AUDIT_TERM" ]]; then args+=(--term "$AUDIT_TERM"); fi
+          if [[ "$USE_MINILM" == true ]]; then
+            if snapshot=$(python -c 'from huggingface_hub import snapshot_download; print(snapshot_download("sentence-transformers/all-MiniLM-L6-v2", revision="1110a243fdf4706b3f48f1d95db1a4f5529b4d41", allow_patterns=["*.json", "*.safetensors", "*.txt"]))'); then
+              args+=(--embedding-dir "$snapshot")
+            else
+              echo "::warning::MiniLM unavailable. Generating deterministic evidence."
+            fi
+          fi
+          python scripts/taxonomy_tooltips.py "${args[@]}"
+      - uses: actions/upload-artifact@v4
+        with:
+          name: semantic-tooltip-audit
+          path: reports/taxonomy-tooltip-audit.*

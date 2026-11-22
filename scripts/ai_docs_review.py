@@ -25,6 +25,7 @@ from qa_checks.ltex import LtexCheck
 from qa_checks.lychee import LycheeCheck
 from qa_checks.remark import RemarkCheck
 from qa_checks.vale import ValeCheck
+from qa_checks.tooltip import TooltipAuditCheck
 from qa_policy import assert_ci_policy_invariants, evaluate_ci, make_issue
 from qa_reporting import Report, ReportPaths, write_reports
 from qa_reporting.links import PORTFOLIO_URL, github_repository, github_revision
@@ -50,6 +51,7 @@ FILTER_PRESETS = {
         "LandingPageCoverageCheck",
         "LycheeCheck",
         "RemarkCheck",
+        "TooltipAuditCheck",
         "ValeCheck",
         "LtexCheck",
         "SiteWideConsistencyReview",
@@ -91,6 +93,7 @@ FILTER_PRESETS = {
         "LinkCheck",
         "LycheeCheck",
     },
+    "tooltip": {"TooltipAuditCheck"},
     "remark": {
         "RemarkCheck",
     },
@@ -107,6 +110,7 @@ FILTER_LABELS = {
     "ltex": "LTeX+ grammar/spelling only",
     "lychee": "Lychee external links only",
     "links": "Local and external links only",
+    "tooltip": "Semantic tooltip audit",
     "remark": "Remark Markdown/MDX only",
 }
 
@@ -529,6 +533,7 @@ def build_checks():
         LandingPageCoverageCheck(),
         LycheeCheck(ROOT),
         RemarkCheck(ROOT),
+        TooltipAuditCheck(ROOT),
         ValeCheck(ROOT),
         LtexCheck(ROOT),
         SiteWideConsistencyReview(),
@@ -574,6 +579,7 @@ def choose_filter():
     print(" 10. LTeX+ grammar/spelling only")
     print(" 11. Lychee external links only")
     print(" 12. Local and external links only")
+    print(" 13. Semantic tooltip audit")
     print()
     choices = {
         "1": "full",
@@ -588,6 +594,7 @@ def choose_filter():
         "10": "ltex",
         "11": "lychee",
         "12": "links",
+        "13": "tooltip",
     }
     while True:
         try:
@@ -602,7 +609,7 @@ def choose_filter():
         if choice in choices:
             return choices[choice]
 
-        print("Please enter a number from 1 to 12.")
+        print("Please enter a number from 1 to 13.")
 
 def selected_checks(filter_name):
     allowed = FILTER_PRESETS[filter_name]

@@ -1,0 +1,173 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "findings": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "term_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "taxonomy_definition_fingerprint": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "finding_type": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "evidence": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "excerpt": {
+                  "type": "string",
+                  "minLength": 1,
+                  "pattern": "\\S"
+                },
+                "context_hash": {
+                  "type": "string",
+                  "pattern": "^sha256:[0-9a-f]{64}$"
+                }
+              },
+              "required": [
+                "path",
+                "excerpt",
+                "context_hash"
+              ],
+              "additionalProperties": false
+            },
+            "minItems": 1
+          },
+          "status": {
+            "enum": [
+              "needs_review",
+              "confirmed_inconsistent",
+              "resolved_taxonomy",
+              "resolved_documentation",
+              "distinct_concepts",
+              "false_alarm"
+            ]
+          },
+          "rationale": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "review": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "const": "approved"
+              },
+              "reviewer": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "reviewed_on": {
+                "type": "string",
+                "format": "date"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "status",
+              "reviewer",
+              "reviewed_on",
+              "reason"
+            ],
+            "additionalProperties": false
+          },
+          "resolution_migration": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          },
+          "superseded_evidence": {
+            "type": "object",
+            "properties": {
+              "path": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "excerpt": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "context_hash": {
+                "type": "string",
+                "pattern": "^sha256:[0-9a-f]{64}$"
+              }
+            },
+            "required": [
+              "path",
+              "excerpt",
+              "context_hash"
+            ],
+            "additionalProperties": false
+          },
+          "related_term_id": {
+            "type": "string",
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "previous_definition_fingerprint": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          }
+        },
+        "required": [
+          "term_id",
+          "taxonomy_definition_fingerprint",
+          "finding_type",
+          "evidence",
+          "status",
+          "rationale"
+        ],
+        "additionalProperties": false,
+        "allOf": [
+          {
+            "if": {
+              "properties": {
+                "status": {
+                  "not": {
+                    "const": "needs_review"
+                  }
+                }
+              }
+            },
+            "then": {
+              "required": [
+                "review"
+              ]
+            }
+          }
+        ]
+      }
+    }
+  },
+  "required": [
+    "version",
+    "findings"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

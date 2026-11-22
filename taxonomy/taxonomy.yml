@@ -1400,8 +1400,8 @@ dimensions:
           review: annual
       rice:
         label: RICE
-        description: An internal framework for regression testing and data ingestion at Morgan
-          Stanley.
+        description: Morgan Stanley's Risk Calculation Environment (RICE), an internal financial
+          analytics framework for pricing, valuation, trading and risk management.
         kind: framework
         governance:
           status: active

@@ -1,0 +1,143 @@
+{
+  "type": "object",
+  "properties": {
+    "version": {
+      "const": 1
+    },
+    "terms": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "enum": [
+              "auto",
+              "contextual",
+              "explicit",
+              "off"
+            ]
+          },
+          "term_basis_hash": {
+            "type": "string",
+            "pattern": "^sha256:[0-9a-f]{64}$"
+          },
+          "competing_senses": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 0
+          },
+          "positive_examples": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 0
+          },
+          "negative_examples": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "minLength": 1,
+              "pattern": "\\S"
+            },
+            "minItems": 0
+          },
+          "review": {
+            "type": "object",
+            "properties": {
+              "status": {
+                "enum": [
+                  "approved",
+                  "draft"
+                ]
+              },
+              "reviewer": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              },
+              "reviewed_on": {
+                "type": "string",
+                "format": "date"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "pattern": "\\S"
+              }
+            },
+            "required": [
+              "status",
+              "reason"
+            ],
+            "additionalProperties": false,
+            "allOf": [
+              {
+                "if": {
+                  "properties": {
+                    "status": {
+                      "const": "approved"
+                    }
+                  }
+                },
+                "then": {
+                  "required": [
+                    "reviewer",
+                    "reviewed_on"
+                  ]
+                }
+              }
+            ]
+          },
+          "allowed_pos": {
+            "type": "array",
+            "minItems": 1,
+            "uniqueItems": true,
+            "items": {
+              "enum": [
+                "ADJ",
+                "ADP",
+                "ADV",
+                "AUX",
+                "CCONJ",
+                "DET",
+                "INTJ",
+                "NOUN",
+                "NUM",
+                "PART",
+                "PRON",
+                "PROPN",
+                "PUNCT",
+                "SCONJ",
+                "SYM",
+                "VERB",
+                "X"
+              ]
+            }
+          }
+        },
+        "required": [
+          "mode",
+          "term_basis_hash",
+          "competing_senses",
+          "positive_examples",
+          "negative_examples",
+          "review"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "version",
+    "terms"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema"
+}

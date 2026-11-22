@@ -27,6 +27,13 @@ runs:
         python -m pip install --upgrade pip
         python -m pip install --require-hashes --only-binary=:all: -r requirements-doc-review-linux-py312.lock
 
+    - name: Install advisory tooltip POS model
+      shell: bash
+      run: |
+        if ! python -m pip install --require-hashes --only-binary=:all: --no-deps -r requirements-tooltip-spacy-linux-py312.lock; then
+          echo "::warning::spaCy setup unavailable. Tooltip QA will report missing POS evidence."
+        fi
+
     - name: Test documentation QA and feedback safeguards
       shell: bash
       run: python -m unittest discover -s scripts/tests -p 'test_*.py'

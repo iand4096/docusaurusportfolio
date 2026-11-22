@@ -195,7 +195,7 @@ def issue_table(rows, table_id):
 def source_filter_buttons(issues, errors, metadata, checks: Mapping[str, str]):
     """Include executed sources even when they returned no findings."""
     labels = {'ai': 'AI', 'static': 'Static', 'vale': 'Vale', 'ltex': 'LTeX+',
-              'lychee': 'Lychee', 'remark': 'Remark'}
+              'lychee': 'Lychee', 'remark': 'Remark', 'tooltip': 'Tooltip audit'}
     selected = metadata.get('checks') or []
     sources = {checks[name] for name in selected if name in checks}
     sources.update(issue.get('source') for issue in issues)
@@ -211,6 +211,7 @@ def source_filter_buttons(issues, errors, metadata, checks: Mapping[str, str]):
             'vale': 'Vale checks prose against the configured writing style, terminology and editorial rules.',
             'ltex': 'LTeX+ checks spelling and grammar using the configured language and dictionary.',
             'lychee': 'Lychee checks external links for unreachable URLs and HTTP errors.',
+            'tooltip': 'Advisory review of tooltip mentions and canonical definitions.',
             'remark': 'Remark checks Markdown and MDX structure against the configured lint rules.',
         }
         if source == 'ai' and selected and not set(selected) & {
@@ -233,6 +234,8 @@ def source_filter_buttons(issues, errors, metadata, checks: Mapping[str, str]):
             parts.append('<span class="source-separator" aria-hidden="true"></span>')
         parts.append('<span class="source-group-label">Deterministic</span>')
         parts.extend(button(source, labels[source]) for source in deterministic)
+    if 'tooltip' in sources:
+        parts.append(button('tooltip', labels['tooltip']))
     return '<div class="source-filters" role="group" aria-label="Filter findings by source">' + ''.join(parts) + '</div>'
 
 
@@ -496,6 +499,7 @@ def generate_html_report(report: Report, paths: ReportPaths, check_sources: Mapp
         ci_high_count=ci_result['high_count'],
         ci_medium_count=ci_result['medium_count'],
         ci_advisory_ai_issue_count=ci_result['advisory_ai_issue_count'],
+        tooltip_issue_count=sum(issue.get('source') == 'tooltip' for issue in issues),
         error_count=len(errors),
         ci_class=ci_class,
         ci_label=ci_label,

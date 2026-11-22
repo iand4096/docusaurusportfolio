@@ -1,0 +1,26 @@
+version: 1
+terms:
+  requests:
+    mode: contextual
+    term_basis_hash: "sha256:ceb435488e3146f670a009aaaf783a8e51172069e0c44d7d5bf7f8c29d7fae1a"
+    allowed_pos: [PROPN]
+    competing_senses:
+      - incoming HTTP requests
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: repository-maintainer
+      reviewed_on: '2026-11-30'
+      reason: Use occurrence review for Requests. POS tagging provides advisory evidence for the library and ordinary HTTP request senses.
+  rice:
+    mode: auto
+    term_basis_hash: "sha256:fcec278923bde7cb4cec43c0d13b519473ad54cafc09e6e3e65fed963054099b"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: repository-maintainer
+      reviewed_on: '2026-11-30'
+      reason: Reviewed eligible RICE mentions in the portfolio. They refer to Morgan Stanley's financial analytics framework.
