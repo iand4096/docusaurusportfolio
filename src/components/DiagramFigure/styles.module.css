@@ -569,19 +569,28 @@
   height: 32px;
   padding: 0;
   transform: translate(-50%, -50%) scale(var(--diagram-note-zoom, 1));
-  border: 1px solid var(--ifm-color-primary);
+  border: 0;
   border-radius: 50%;
-  background: var(--ifm-background-surface-color);
+  background: transparent;
   color: var(--ifm-font-color-base);
   font-family: inherit;
-  font-size: 1rem;
-  font-weight: bold;
-  line-height: 1;
   cursor: pointer;
 }
 
-.noteMarker:hover,
-.noteMarker[aria-expanded='true'] {
+.noteMarker > span {
+  display: grid;
+  place-items: center;
+  width: 16px;
+  height: 16px;
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 50%;
+  background: var(--ifm-background-surface-color);
+  font-size: 0.5rem;
+  font-weight: bold;
+  line-height: 1;
+}
+
+.noteMarker:is(:hover, [aria-expanded='true']) > span {
   background: var(--ifm-color-primary);
   color: var(--ifm-background-surface-color);
 }

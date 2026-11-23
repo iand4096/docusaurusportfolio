@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useId, useRef, useState, type CSSProperties, type ReactNode} from 'react';
+import React, {useCallback, useEffect, useId, useLayoutEffect, useRef, useState, type CSSProperties, type ReactNode} from 'react';
 import {useHistory, useLocation} from '@docusaurus/router';
 import Heading from '@theme/Heading';
 import {DiagramDirectionContext, DiagramFigureContext, type DiagramDirection} from './context';
@@ -148,7 +148,8 @@ export default function DiagramFigure({
     if (expanded && !dialog.current?.open) dialog.current?.showModal();
   }, [expanded]);
 
-  useEffect(() => {
+  // Measure before paint so the fallback panel does not flash before the floating note.
+  useLayoutEffect(() => {
     const frame = viewport.current;
     const content = panContent.current;
     const note = desktopNote.current;
