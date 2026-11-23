@@ -26,11 +26,11 @@ import PhilosophyOverview from './PhilosophyOverview';
 
 # Philosophy
 
-I see technical writing and knowledge management as parts of the same job: helping people find reliable information, use it and keep it accurate. My responsibility extends across the knowledge lifecycle, from initial investigation through publication and ongoing maintenance.
+Technical writing and knowledge management are two sides of the same coin. Both help people find reliable information, use it and keep it accurate. My responsibility extends across the knowledge lifecycle, from initial investigation through publication and ongoing maintenance.
 
 <PhilosophyOverview />
 
-## Start with empathy for the reader
+## Have empathy for the reader {/* #start-with-empathy-for-the-reader */}
 
 Empathy starts with understanding what readers are trying to accomplish, what they already know and where they might get stuck. Good documentation respects their time by making prerequisites clear, explaining how to recognise success and helping them recover when things go wrong.
 
@@ -74,11 +74,9 @@ The outcome of a check also needs to be clear. A checker that fails to run is di
 
 [Documentation QA case study](../case-studies/DocumentationQa.md)
 
-## Govern knowledge so people can find and trust it
+## Govern knowledge so people can find and trust it <span className="badge" style={{backgroundColor: 'transparent', border: '1px solid currentColor', borderRadius: '0.375rem', color: 'var(--ifm-color-primary)', fontSize: '0.75rem', letterSpacing: 'normal', padding: '0.2em 0.5em', verticalAlign: 'middle'}}>NEW</span> {/* #govern-knowledge-so-people-can-find-and-trust-it */}
 
-I use structure where it improves discovery and maintenance. Controlled vocabularies help readers find relevant content and give maintainers a consistent way to manage its lifecycle. Contributors need to understand the available terms and have a way to propose additions.
-
-Changing a term’s meaning can affect authoring, navigation and retrieval, so I treat changes to established terms as reviewable migrations. For AI-assisted search, I want readers to be able to inspect the source passages behind a result. Lifecycle filters help keep obsolete guidance out of normal results.
+My recent work on metadata and AI search has made governance a more explicit part of my documentation practice. I use consistent labels to help readers find current guidance and maintainers know what to review or retire. Writers should be able to propose changes, and readers should be able to verify AI answers against their sources. Tools should make the rules easy to follow, and every check should earn the time it takes.
 
 - [Taxonomy governance case study](/docs/case-studies/TaxonomyGovernance)
 - [RAG search case study](/docs/case-studies/RagSearchCloudArchitecture)

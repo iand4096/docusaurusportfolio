@@ -121,10 +121,11 @@ export default function Home(): React.ReactElement {
               from Scala frameworks and payment APIs to developer portals and
               team leadership. I also design governed content structures and
               validation tools that make technical knowledge easier to maintain,
-              retrieve and trace to its sources.</p>
-            <p><Link to="/docs/case-studies/philosophy" className={styles.textLink}>
-              Read my documentation and knowledge management philosophy →
-            </Link></p>
+              retrieve and trace to its sources.{' '}
+              <Link to="/docs/case-studies/philosophy" className={`${styles.philosophyLink} ${styles.accentLink}`}>
+                Read my documentation and knowledge management philosophy →
+              </Link>
+            </p>
             <p>Explore my <Link to="/docs/apidocumentation">API documentation</Link>,{' '}
               <Link to="/docs/documentationeng">documentation engineering</Link>,{' '}
               <Link to="/docs/case-studies/TaxonomyGovernance">knowledge governance</Link> and{' '}
@@ -135,7 +136,7 @@ export default function Home(): React.ReactElement {
             <p>I’m interested in roles involving technical writing, documentation
               engineering, knowledge architecture, content governance and AI
               knowledge systems, as well as contract work and consultancy.</p>
-            <Link to={linkedin} className={styles.textLink}>Contact me on LinkedIn ↗</Link>
+            <Link to={linkedin} className={`${styles.textLink} ${styles.accentLink}`}>Contact me on LinkedIn ↗</Link>
           </div>
         </section>
       </main>

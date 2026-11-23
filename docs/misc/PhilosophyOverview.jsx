@@ -8,7 +8,7 @@ export default function PhilosophyOverview() {
         title: 'Writing for readers',
         icon: 'book-open',
         summary: <ul>
-          <li><a href="#start-with-empathy-for-the-reader">Start with reader empathy</a></li>
+          <li><a href="#start-with-empathy-for-the-reader">Have empathy for the reader</a></li>
           <li><a href="#verify-what-the-software-actually-does">Verify software behaviour</a></li>
           <li><a href="#use-evidence-to-inform-decisions">Use evidence to inform decisions</a></li>
         </ul>,

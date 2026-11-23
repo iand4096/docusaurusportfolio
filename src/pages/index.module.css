@@ -59,6 +59,17 @@
 .about { padding: 50px 0 60px; display: grid; grid-template-columns: minmax(0, 1.7fr) minmax(0, 1fr); gap: 60px; }
 .about p { font-size: var(--portfolio-text-body); color: var(--portfolio-muted); }
 .about p a { text-decoration: underline; text-underline-offset: 3px; }
+.philosophyLink { color: var(--docs-link-color); font-weight: 650; }
+.accentLink::before {
+  content: '';
+  display: inline-block;
+  width: 3px;
+  height: 0.8em;
+  margin-inline: 0.25em 0.45em;
+  background: var(--portfolio-accent);
+  vertical-align: -0.02em;
+}
+.philosophyLink:hover { color: var(--docs-link-hover-color); }
 .contact { padding-left: 28px; border-left: 1px solid var(--portfolio-line); }
 .contact h3 { font-size: 1.35rem; }
 
