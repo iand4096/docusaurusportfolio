@@ -168,6 +168,13 @@ export function fitSubgraph(frame: HTMLElement, content: HTMLElement, element: S
 }
 
 export type DiagramNotes = Readonly<Record<string, string | Readonly<Record<string, string>>>>;
+export type NoteTarget = {element: SVGGElement; key: string; title: string; text: string; subgraph?: true};
+
+export function diagramNote(notes: DiagramNotes | undefined, panel: string | undefined, id: string) {
+  const entries = panel ? notes?.[panel] : notes;
+  const text = typeof entries === 'object' ? entries[id] : undefined;
+  return typeof text === 'string' && text.trim() ? text : undefined;
+}
 
 export function nodeOutline(element: SVGGElement): NodeOutline {
   const shape = element.querySelector('.label-container');
@@ -190,13 +197,31 @@ export function nodeOutline(element: SVGGElement): NodeOutline {
   });
 }
 
-export function nodeNoteAnchor(element: SVGGElement, frame: HTMLElement, zoom: number) {
+export function noteMarkerAnchor({element, subgraph}: NoteTarget, frame: HTMLElement, zoom: number) {
   const bounds = frame.getBoundingClientRect();
   const originX = bounds.left + frame.clientLeft;
   const originY = bounds.top + frame.clientTop;
   const node = element.getBoundingClientRect();
   if (node.right <= bounds.left || node.left >= bounds.right
     || node.bottom <= bounds.top || node.top >= bounds.bottom) return;
+
+  const radius = 16 * zoom;
+  const fits = (left: number, top: number) => left >= radius && left <= frame.clientWidth - radius
+    && top >= radius && top <= frame.clientHeight - radius;
+  if (subgraph) {
+    const left = node.left - originX;
+    const right = node.right - originX;
+    const top = node.top - originY;
+    const bottom = node.bottom - originY;
+    const edgeX = Math.min(right, frame.clientWidth - radius);
+    const edgeY = Math.max(top, radius);
+    const corners = [[right, top], [left, top], [right, bottom], [left, bottom]];
+    const edgePoints = [[edgeX, top], [right, edgeY], [left, edgeY], [edgeX, bottom]];
+    for (const [x, y] of [...corners, ...edgePoints]) {
+      if (x >= left && x <= right && y >= top && y <= bottom && fits(x, y)) return {left: x, top: y};
+    }
+    return;
+  }
 
   const outline = element.querySelector('rect.label-container') ? [] : nodeOutline(element).flat();
   if (!outline.length) {
@@ -207,7 +232,6 @@ export function nodeNoteAnchor(element: SVGGElement, frame: HTMLElement, zoom: n
   }
 
   // Keep the whole marker visible while its centre touches the outline.
-  const radius = 16 * zoom;
   const directions = [[0.8, -0.6], [0, -1], [-0.8, -0.6], [1, 0], [-1, 0], [0.8, 0.6], [-0.8, 0.6], [0, 1]];
   for (const [x, y] of directions) {
     const edge = outline.reduce((best, point) => (
@@ -215,12 +239,11 @@ export function nodeNoteAnchor(element: SVGGElement, frame: HTMLElement, zoom: n
     ));
     const left = edge.x - originX;
     const top = edge.y - originY;
-    if (left >= radius && left <= frame.clientWidth - radius
-      && top >= radius && top <= frame.clientHeight - radius) return {left, top};
+    if (fits(left, top)) return {left, top};
   }
 }
 
-export function findNodeNotes(content: HTMLElement, notes: DiagramNotes) {
+export function findNodeNotes(content: HTMLElement, notes: DiagramNotes): NoteTarget[] {
   const panels = Array.from(content.querySelectorAll<HTMLElement>('.diagram-columns > .diagram-panel'));
   return Array.from(content.querySelectorAll<SVGGElement>('svg g.node[id]')).flatMap(element => {
     if (element.closest('[hidden], .cluster')) return [];
@@ -230,10 +253,9 @@ export function findNodeNotes(content: HTMLElement, notes: DiagramNotes) {
     const id = element.dataset.id ?? element.id.match(/(?:^|-)flowchart-(.+)-\d+$/)?.[1];
     if (!id) return [];
     const panel = element.closest<HTMLElement>('.diagram-panel');
-    const panelId = panel && (panel.dataset.diagramPanelId || `panel:${panels.indexOf(panel)}`);
-    const panelNotes = panelId ? notes[panelId] : notes;
-    const text = typeof panelNotes === 'object' ? panelNotes[id] : undefined;
-    if (typeof text !== 'string' || !text.trim()) return [];
+    const panelId = panel ? panel.dataset.diagramPanelId || `panel:${panels.indexOf(panel)}` : undefined;
+    const text = diagramNote(notes, panelId, id);
+    if (!text) return [];
 
     // Mermaid can render members and their cluster box in separate SVG groups.
     const box = element.getBoundingClientRect();

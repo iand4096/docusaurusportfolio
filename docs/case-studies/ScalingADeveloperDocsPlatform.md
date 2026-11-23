@@ -299,7 +299,7 @@ The decision to move from wikis to a custom docs-as-code platform reflected a br
 
 However, docs-as-code introduced trade-offs, particularly around Markdown authoring and pull-request friction. Our IntelliJ integration reduced authoring friction through accurate live previews, while links on every documentation page allowed contributors to make simpler corrections, such as quick typo edits, directly in Bitbucket's browser editor. We also streamlined the review process for documentation-only pull requests. Nevertheless, the full authoring experience required IntelliJ, which discouraged some potential contributors.
 
-In retrospect, further improvements to contribution workflows might have reduced friction. A full browser editor would have required us to build and maintain a separate authoring environment. We chose to build on developers' existing tools.
+For occasional contributors, the ideal workflow would have been a full browser editor with the same authoring and live preview capabilities as our IntelliJ integration. Building and maintaining a separate authoring environment would have added work, so we chose to build on the tools developers already used.
 
 ## Lessons learned {/* #lessons-learned */}
 

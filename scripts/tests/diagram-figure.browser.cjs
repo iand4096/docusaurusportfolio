@@ -358,7 +358,7 @@ async function checkNotePlacementAfterSelection(browser) {
   }
 }
 
-async function checkNodeNotes(browser) {
+async function checkNoteMarkers(browser) {
   const noteText = 'Authors write these pages in Markdown and MDX.';
   for (const width of [1440, 390]) {
     const page = await browser.newPage({viewport: {width, height: 900}, hasTouch: width < 900});
@@ -368,7 +368,6 @@ async function checkNodeNotes(browser) {
       const dialog = page.getByRole('dialog');
       const marker = dialog.getByRole('button', {name: 'About Source documents'});
       await marker.waitFor();
-      assert.equal(await dialog.locator('button[aria-expanded]').filter({hasText: 'i'}).count(), 1);
       const zoom = dialog.getByRole('button', {name: 'Reset zoom and fit diagram'});
       await dialog.getByRole('button', {name: 'Zoom out'}).click();
       const zoomBeforeNote = await zoom.innerText();
@@ -397,6 +396,21 @@ async function checkNodeNotes(browser) {
       await note.waitFor({state: 'hidden'});
       assert.deepEqual(await measureView(), before, 'Dismissing a node note preserves the viewport and diagram position');
       assert.equal(await dialog.count(), 1);
+      const subgraphMarker = dialog.getByRole('button', {name: 'About Build and publish'});
+      if (width < 900) {
+        await subgraphMarker.tap();
+      } else {
+        await subgraphMarker.focus();
+        await page.keyboard.press('Enter');
+      }
+      const subgraphNote = dialog.getByText('The build checks links before publishing the static site.',
+        {exact: true}).filter({visible: true});
+      await subgraphNote.waitFor();
+      assert.equal(await subgraphMarker.getAttribute('aria-expanded'), 'true');
+      assert.deepEqual(await measureView(), before, 'Opening a subgraph note preserves the viewport and diagram position');
+      await page.keyboard.press('Escape');
+      await subgraphNote.waitFor({state: 'hidden'});
+      assert.equal(await subgraphMarker.getAttribute('aria-expanded'), 'false');
       await page.keyboard.press('Escape');
       await dialog.waitFor({state: 'hidden'});
     } finally {
@@ -413,7 +427,7 @@ async function checkNodeNotes(browser) {
       LD_LIBRARY_PATH: process.env.DIAGRAM_BROWSER_LIBRARY_PATH || ''}});
   const report = [];
   try {
-    await checkNodeNotes(browser);
+    await checkNoteMarkers(browser);
     await checkSharedLinks(browser);
     await checkLayoutDefaults(browser);
     await checkSubgraphZoom(browser);

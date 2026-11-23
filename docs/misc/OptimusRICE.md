@@ -34,23 +34,25 @@ import DiagramFigure from '@site/src/components/DiagramFigure';
 
 Morgan Stanley uses RICE and Optimus to run financial applications. **RICE (Risk Calculation Environment)** provides the analytics environment for pricing and risk. **Optimus** is the Scala computation framework that runs calculations at scale.
 
+This technical reference draws on publicly available material. The code and valuation examples are illustrative. See [Public references](#public-references) for the sources.
+
 ## Platform architecture {/* #platform-architecture */}
 
 ### 1. Financial applications and analytics - RICE {/* #1-financial-applications-and-analytics---rice */}
 
-Developers build pricing, valuation and risk applications on RICE. In one [public job description][pricing-role], Morgan Stanley describes a pricing system built on Optimus and RICE to run heavy calculations in parallel. The [RICE engineering overview][rice-overview] also describes reactive user interfaces for displaying financial data and results.
+Developers build pricing, valuation and risk applications on RICE. Optimus runs independent calculations in parallel, and reactive interfaces display financial data and results.
 
-RICE supports trading and risk management in [Fixed Income][rice-overview]. Morgan Stanley has also advertised roles to help move [Commodities products and workflows][commodities-role] onto RICE.
+RICE supports trading and risk management in Fixed Income.
 
 ### 2. Graph computation framework - Optimus {/* #2-graph-computational-framework---optimus */}
 
-Optimus builds its dependency graph from methods marked `@node`. When one node calls another, the runtime can tell which result it needs before it can continue. At [Scala Days][scala-days], Morgan Stanley showed how Optimus uses those dependencies to run independent tasks in parallel and cache results.
+Optimus builds its dependency graph from methods marked `@node`. When one node calls another, the runtime can tell which result it needs before it can continue. Optimus uses those dependencies to run independent tasks in parallel and cache results. [Scala Days 2023][scala-days]
 
 When a calculation has the same inputs and execution context, the runtime can reuse the result. This is the practical benefit of **referential transparency**. To test a scenario, a developer can temporarily override an input with a *tweak*. The original object keeps its value outside the scenario.
 
 #### 1. Code example
 
-In this Scala-style pseudocode, a price tweak changes the trade's value from 1,000 to 1,200 inside the `given` block. [Morgan Stanley's patent][tweak-patent] describes a sale with tweakable price and quantity and shows a separate example of a scoped price change using `given`.
+In this Scala-style pseudocode, a price tweak changes the trade's value from 1,000 to 1,200 inside the `given` block.
 
 ```scala
 @entity
@@ -121,7 +123,7 @@ flowchart TD
 
 ### 3. Data access layer - DAL {/* #3-data-access-layer---dal */}
 
-Morgan Stanley publishes [Data Access Layer (DAL) code][dal-source] in the Optimus Cirrus repository. The [RICE engineering overview][rice-overview] describes **bitemporal object storage**, which records two kinds of time.
+**Bitemporal object storage** records two kinds of time.
 
 - **Valid time:** When information is effective in the business domain.
 - **Transaction time:** When information is recorded in the data store.
@@ -136,11 +138,11 @@ AWS also reported at [re:Invent 2023][aws-hpc] that Morgan Stanley used AWS and 
 
 ### 5. Developer tooling and compiler infrastructure {/* #5-developer-tooling-and-compiler-infrastructure */}
 
-The [RICE engineering overview][rice-overview] describes work on the Scala compiler, asynchronous execution and embedded query languages. The [Optimus Cirrus repository][cirrus] includes the code used to compile the **Optimus Build Tool (OBT)**, which distributes and caches compilation work. Morgan Stanley [demonstrated OBT][scala-days] on approximately 21 million lines of Scala and Java.
+The **Optimus Build Tool (OBT)** distributes compilation work and caches build results. Morgan Stanley demonstrated OBT on approximately 21 million lines of Scala and Java at [Scala Days 2023][scala-days].
 
 ## End-to-end calculation workflow {/* #end-to-end-calculation-workflow */}
 
-Here’s how the pieces could fit together in a valuation. The example draws on the public descriptions of [Optimus/RICE pricing][pricing-role], [DAL][dal-source] and [scenario evaluation][tweak-patent].
+This illustrative valuation shows how the pieces can fit together.
 
 1. A financial application initiates a calculation using a model developed in the RICE environment.
 2. Optimus evaluates the model's dependency graph, coordinating the computations and reusing eligible cached results.
@@ -153,38 +155,36 @@ Suppose a price correction comes in on Tuesday and applies to Monday. To reprodu
 
 ## Public references {/* #public-references */}
 
-1. **Morgan Stanley — Optimus Cirrus GitHub Repository**  
-   Public source code, project scope, licensing and technical presentations.  
-   https://github.com/morganstanley/optimus-cirrus
+1. [Morgan Stanley — Optimus Cirrus GitHub repository][cirrus]\
+   Includes the [Data Access Layer (DAL) source code][dal-source] and the code used to compile the Optimus Build Tool.
 
 2. **Scala Days 2023 — Supercharge Your Performance with the Optimus Cirrus Platform**  
    Functional programming, parallelisation, caching, distributed computation and OBT.  
    https://archives.scaladays.org/2023/seattle-2023/supercharge-your-performance-with-the-optimus-cirrus-platform.html
 
-3. **Morgan Stanley — Simulated Change of Immutable Objects During Execution Runtime**\
-   Patent describing referentially transparent nodes, tweaks, scenario-based evaluation and caching.  
-   https://patents.google.com/patent/US20220121462A1/en
+3. [Morgan Stanley — Simulated Change of Immutable Objects During Execution Runtime][tweak-patent]\
+   Describes referentially transparent nodes, scenario evaluation and caching. Its examples include a sale with tweakable price and quantity and a scoped price change using `given`.
 
 4. **University of Cambridge — Functional Languages and Financial Models (2014)**\
    Graph programming, functional financial models, Scala and risk infrastructure.  
    https://www.cst.cam.ac.uk/seminars/list/55917
 
-5. **Morgan Stanley — Scala Developer, Interest Rate Derivatives**\
-   Public description of valuation systems built on the Optimus/RICE platform.  
-   https://en.wizbii.com/company/morgan-staney/job/scala-developer-7
+5. [Morgan Stanley — Scala Developer, Interest Rate Derivatives][pricing-role]\
+   Describes a pricing system built on Optimus and RICE to run computationally intensive calculations in parallel.
 
-6. **Morgan Stanley — Commodities Strategist**\
-   Public evidence of Commodities products and workflows being migrated to the RICE platform.  
-   https://ms.wd5.myworkdayjobs.com/en-US/External/job/Commodities-Strategist_JR041944
+6. [Morgan Stanley — Commodities Strategist][commodities-role]\
+   Describes work to move Commodities products and workflows onto RICE.
 
 7. [Peter Fraenkel — RICE engineering overview][rice-overview]\
-   Describes RICE's Fixed Income role and platform capabilities. Morgan Stanley also publishes [DAL source code][dal-source] in the Optimus Cirrus repository.
+   Describes RICE’s Fixed Income role, reactive user interfaces and bitemporal object storage, along with work on the Scala compiler, asynchronous execution and embedded query languages.
 
 8. [AWS re:Invent 2023 — Confidently run your production HPC workloads on AWS][aws-hpc]\
    Reports the use of AWS and Azure for RICE risk calculations.
 
 9. [Jensen and Snodgrass — Bitemporal Interval][temporal]\
    Defines valid time and transaction time for bitemporal data.
+
+**Valuation example.** The workflow combines public descriptions of [Optimus and RICE pricing][pricing-role], [data access][dal-source] and [scenario evaluation][tweak-patent].
 
 [cirrus]: https://github.com/morganstanley/optimus-cirrus
 

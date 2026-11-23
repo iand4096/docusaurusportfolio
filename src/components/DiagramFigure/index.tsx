@@ -2,8 +2,8 @@ import React, {useCallback, useEffect, useId, useRef, useState, type CSSProperti
 import {useHistory, useLocation} from '@docusaurus/router';
 import Heading from '@theme/Heading';
 import {DiagramDirectionContext, DiagramFigureContext, type DiagramDirection} from './context';
-import {findNodeNotes, findSubgraphs, fitSubgraph, nodeNoteAnchor, nodeOutline, placeSubgraphNote, subgraphKey,
-  type DiagramNotes, type NoteConnector, type SubgraphFit, type SubgraphOption} from './subgraphFocus';
+import {diagramNote, findNodeNotes, findSubgraphs, fitSubgraph, noteMarkerAnchor, nodeOutline, placeSubgraphNote, subgraphKey,
+  type DiagramNotes, type NoteConnector, type NoteTarget, type SubgraphFit, type SubgraphOption} from './subgraphFocus';
 import {roles, type DiagramRole} from './theme.cjs';
 import styles from './styles.module.css';
 
@@ -67,18 +67,17 @@ export default function DiagramFigure({
   const [subgraphs, setSubgraphs] = useState<SubgraphOption[]>([]);
   const [selectedSubgraph, setSelectedSubgraph] = useState<string>();
   const [subgraphFit, setSubgraphFit] = useState<SubgraphFit & {key: string; element: SVGGElement}>();
-  const [nodeTargets, setNodeTargets] = useState<ReturnType<typeof findNodeNotes>>([]);
-  const [selectedNode, setSelectedNode] = useState<string>();
-  const [nodeMarkers, setNodeMarkers] = useState<Array<{key: string; left: number; top: number}>>([]);
-  const activeNode = nodeTargets.find(node => node.key === selectedNode);
+  const [noteTargets, setNoteTargets] = useState<NoteTarget[]>([]);
+  const [selectedNoteMarker, setSelectedNoteMarker] = useState<string>();
+  const [noteMarkers, setNoteMarkers] = useState<Array<{key: string; left: number; top: number}>>([]);
+  const activeMarkerNote = noteTargets.find(node => node.key === selectedNoteMarker);
   const activePanel = panels.find(panel => panel.key === selectedPanel);
   const activeSubgraph = subgraphs.find(subgraph => subgraph.id === selectedSubgraph && subgraph.panel === activePanel?.key);
-  const notes = activePanel ? subgraphNotes?.[activePanel.key] : subgraphNotes;
   const activeSubgraphKey = activeSubgraph && subgraphKey(activeSubgraph);
-  const noteText = activeSubgraph && typeof notes === 'object' ? notes[activeSubgraph.id] : undefined;
-  const subgraphNote = activeSubgraph && activeSubgraphKey && typeof noteText === 'string' && noteText.trim()
+  const noteText = activeSubgraph && diagramNote(subgraphNotes, activeSubgraph.panel, activeSubgraph.id);
+  const subgraphNote = activeSubgraph && activeSubgraphKey && noteText
     ? {key: activeSubgraphKey, title: `About ${activeSubgraph.label}`, text: noteText} : undefined;
-  const activeNote = activeNode ?? subgraphNote;
+  const activeNote = activeMarkerNote ?? subgraphNote;
   const showingAllPanels = panels.length > 1 && !activePanel;
   const ungroupedSubgraphs = showingAllPanels ? subgraphs.filter(item => !item.panel) : subgraphs;
   const renderSubgraphOption = (item: SubgraphOption) =>
@@ -126,7 +125,7 @@ export default function DiagramFigure({
     setAuthoredDirection(undefined);
     setSelectedPanel(panel);
     setSelectedSubgraph(subgraph);
-    setSelectedNode(undefined);
+    setSelectedNoteMarker(undefined);
     setViewerStatus('');
     setManualLink('');
     setExpanded(true);
@@ -153,12 +152,12 @@ export default function DiagramFigure({
     const frame = viewport.current;
     const content = panContent.current;
     const note = desktopNote.current;
-    const target = activeNode?.element ?? focus?.element;
+    const target = activeMarkerNote?.element ?? focus?.element;
     if (!expanded || !noteKey || !target || !frame || !content || !note) return;
 
     const positionNote = () => {
       const noteBounds = note.getBoundingClientRect();
-      if (!noteBounds.width || (!activeNode && focus
+      if (!noteBounds.width || (!activeMarkerNote && focus
         && (focus.frameWidth !== frame.clientWidth || focus.frameHeight !== frame.clientHeight))) return;
       const renderedDirection = target.closest<HTMLElement>('[data-diagram-subgraph-direction]')
         ?.dataset.diagramSubgraphDirection ?? target.closest<HTMLElement>('[data-diagram-flowchart]')?.dataset.diagramFlowchart;
@@ -172,11 +171,12 @@ export default function DiagramFigure({
         return;
       }
       const obstacles = Array.from(content.querySelectorAll('g.node, g.cluster, g.edgePaths path, g.edgeLabels .edgeLabel'))
-        .filter(element => !activeNode || element !== target)
+        .filter(element => !activeMarkerNote || activeMarkerNote.subgraph || element !== target)
         .map(element => element.getBoundingClientRect())
         .filter(box => box.width || box.height);
+      const isNode = activeMarkerNote && !activeMarkerNote.subgraph;
       const spot = placeSubgraphNote(bounds, targetBounds, noteBounds, obstacles,
-        activeNode ? currentDirection : undefined, activeNode ? nodeOutline(target) : undefined, view.zoom);
+        isNode ? currentDirection : undefined, isNode ? nodeOutline(target) : undefined, view.zoom);
       const parent = note.parentElement?.getBoundingClientRect();
       if (!spot || !parent) {
         setNotePlacement(undefined);
@@ -206,15 +206,15 @@ export default function DiagramFigure({
       observer.disconnect();
       window.removeEventListener('resize', positionNote);
     };
-  }, [expanded, noteKey, activeNode, focus, focusX, focusY, viewScale, view.zoom, currentDirection]);
+  }, [expanded, noteKey, activeMarkerNote, focus, focusX, focusY, viewScale, view.zoom, currentDirection]);
 
   useEffect(() => {
     const frame = viewport.current;
-    if (!expanded || !frame || !nodeTargets.length) return;
+    if (!expanded || !frame || !noteTargets.length) return;
     const positionMarkers = () => {
-      setNodeMarkers(nodeTargets.flatMap(({key, element}) => {
-        const anchor = nodeNoteAnchor(element, frame, view.zoom);
-        return anchor ? [{key, ...anchor}] : [];
+      setNoteMarkers(noteTargets.flatMap(target => {
+        const anchor = noteMarkerAnchor(target, frame, view.zoom);
+        return anchor ? [{key: target.key, ...anchor}] : [];
       }));
     };
     const observer = new ResizeObserver(positionMarkers);
@@ -222,7 +222,7 @@ export default function DiagramFigure({
     if (panContent.current) observer.observe(panContent.current);
     positionMarkers();
     return () => observer.disconnect();
-  }, [expanded, nodeTargets, focus, focusX, focusY, viewScale, view.zoom]);
+  }, [expanded, noteTargets, focus, focusX, focusY, viewScale, view.zoom]);
 
   useEffect(() => {
     const frame = viewport.current;
@@ -284,7 +284,15 @@ export default function DiagramFigure({
       const authored = marker?.dataset.diagramAuthoredDirection;
       setAuthoredDirection(authored === 'LR' || authored === 'TB' ? authored : undefined);
       targets = findSubgraphs(content);
-      if (nodeNotes) setNodeTargets(findNodeNotes(content, nodeNotes));
+      const subgraphNoteTargets = targets.flatMap((target): NoteTarget[] => {
+        const {id, panel, label, element} = target;
+        const text = diagramNote(subgraphNotes, panel, id);
+        return text ? [{element, key: JSON.stringify(['subgraph', panel, id]), title: `About ${label}`,
+          text, subgraph: true}] : [];
+      });
+      if (nodeNotes || subgraphNotes) {
+        setNoteTargets([...subgraphNoteTargets, ...(nodeNotes ? findNodeNotes(content, nodeNotes) : [])]);
+      }
       const subgraphOptions = targets.map(({id, label, panel}) => ({id, label, panel}));
       setSubgraphs(previous => previous.length === subgraphOptions.length && previous.every((item, index) =>
         subgraphKey(item) === subgraphKey(subgraphOptions[index]) && item.label === subgraphOptions[index].label)
@@ -298,7 +306,7 @@ export default function DiagramFigure({
       observer.disconnect();
       diagrams.disconnect();
     };
-  }, [expanded, selectedPanel, selectedSubgraph, nodeNotes]);
+  }, [expanded, selectedPanel, selectedSubgraph, nodeNotes, subgraphNotes]);
 
   function zoomBy(factor: number) {
     setView(previous => {
@@ -308,9 +316,9 @@ export default function DiagramFigure({
     });
   }
 
-  function closeNodeNote() {
+  function closeMarkerNote() {
     viewport.current?.querySelector<HTMLButtonElement>('button[aria-expanded="true"]')?.focus({preventScroll: true});
-    setSelectedNode(undefined);
+    setSelectedNoteMarker(undefined);
   }
 
   function closeViewer() {
@@ -321,8 +329,8 @@ export default function DiagramFigure({
     copyAttempt.current++;
     setExpanded(false);
     setSubgraphs([]);
-    setNodeTargets([]);
-    setNodeMarkers([]);
+    setNoteTargets([]);
+    setNoteMarkers([]);
     setSubgraphFit(undefined);
     const params = new URLSearchParams(search);
     if (!shareId || params.get('diagram') !== shareId) return;
@@ -417,8 +425,8 @@ export default function DiagramFigure({
         aria-labelledby={`${id}-expanded-caption`}
         onCancel={event => {
           event.preventDefault();
-          if (activeNode) {
-            closeNodeNote();
+          if (activeMarkerNote) {
+            closeMarkerNote();
             return;
           }
           closeViewer();
@@ -448,7 +456,7 @@ export default function DiagramFigure({
                 onClick={() => {
                   setSelectedPanel(panel?.key);
                   setSelectedSubgraph(undefined);
-                  setSelectedNode(undefined);
+                  setSelectedNoteMarker(undefined);
                   setView({zoom: 1, x: 0, y: 0});
                 }}>
                 {panel?.title ?? 'All diagrams'}
@@ -480,7 +488,7 @@ export default function DiagramFigure({
                   const target = subgraphs.find(item => subgraphKey(item) === event.target.value);
                   if (target) setSelectedPanel(target.panel);
                   setSelectedSubgraph(target?.id);
-                  setSelectedNode(undefined);
+                  setSelectedNoteMarker(undefined);
                   setView({zoom: 1, x: 0, y: 0});
                 }}>
                 <option value="" disabled={!activeSubgraph}>
@@ -508,7 +516,7 @@ export default function DiagramFigure({
                   aria-description={`Current zoom: ${zoomPercent}%`}
                   onClick={() => {
                     setSelectedSubgraph(undefined);
-                  setSelectedNode(undefined);
+                  setSelectedNoteMarker(undefined);
                     setView({zoom: 1, x: 0, y: 0});
                   }}>
                   {zoomPercent}%
@@ -524,18 +532,18 @@ export default function DiagramFigure({
         </div>
         {expanded && <div className={styles.expanded} data-subgraph-note={!!subgraphNote || undefined}
           data-note-placement={notePosition ? 'floating' : undefined}>
-          {nodeNotes && <p className="sr-only" role="status">{activeNode && `${activeNode.title}. ${activeNode.text}`}</p>}
+          {(nodeNotes || subgraphNotes) && <p className="sr-only" role="status">{activeMarkerNote && `${activeMarkerNote.title}. ${activeMarkerNote.text}`}</p>}
           {subgraphNote && <details className={`${styles.subgraphNote} ${styles.mobileNote}`}
             key={subgraphNote.key} aria-hidden={activeNote !== subgraphNote || undefined}
             style={activeNote !== subgraphNote ? {visibility: 'hidden'} : undefined}>
             <summary className={styles.noteTitle}>{subgraphNote.title}</summary>
             <p>{subgraphNote.text}</p>
           </details>}
-          {activeNode && <aside className={`${styles.subgraphNote} ${styles.nodeNoteOverlay}`}
-            aria-label={activeNode.title}>
-            <button type="button" className={styles.dismissNodeNote} aria-label="Dismiss node note"
-              onClick={closeNodeNote}>×</button>
-            <p>{activeNode.text}</p>
+          {activeMarkerNote && <aside className={`${styles.subgraphNote} ${styles.markerNoteOverlay}`}
+            aria-label={activeMarkerNote.title}>
+            <button type="button" className={styles.dismissMarkerNote} aria-label="Dismiss diagram note"
+              onClick={closeMarkerNote}>×</button>
+            <p>{activeMarkerNote.text}</p>
           </aside>}
           <div ref={viewport} className={styles.viewport} data-dragging={dragging || undefined}
             style={{'--diagram-note-zoom': view.zoom} as CSSProperties}
@@ -589,12 +597,12 @@ export default function DiagramFigure({
               } as CSSProperties}>
               <DiagramDirectionContext.Provider value={direction}>{children}</DiagramDirectionContext.Provider>
             </div>
-            {nodeMarkers.map(({key, left, top}) => {
-              const node = nodeTargets.find(item => item.key === key);
-              return node && <button key={key} type="button" className={styles.nodeNoteMarker}
-                style={{left, top}} aria-label={node.title} aria-expanded={selectedNode === key}
-                title={node.title} onClick={() => {
-                  setSelectedNode(selectedNode === key ? undefined : key);
+            {noteMarkers.map(({key, left, top}) => {
+              const target = noteTargets.find(item => item.key === key);
+              return target && <button key={key} type="button" className={styles.noteMarker}
+                style={{left, top}} aria-label={target.title} aria-expanded={selectedNoteMarker === key}
+                title={target.title} onClick={() => {
+                  setSelectedNoteMarker(selectedNoteMarker === key ? undefined : key);
                 }}>
                 <span aria-hidden="true">i</span>
               </button>;
@@ -620,7 +628,7 @@ export default function DiagramFigure({
               '--note-left': `${notePosition.left}px`,
               '--note-top': `${notePosition.top}px`,
             } as CSSProperties : undefined}>
-            {!activeNode && <p className={styles.noteTitle}>{activeNote.title}</p>}
+            {!activeMarkerNote && <p className={styles.noteTitle}>{activeNote.title}</p>}
             <p>{activeNote.text}</p>
           </aside>}
           <Legend items={legend} />

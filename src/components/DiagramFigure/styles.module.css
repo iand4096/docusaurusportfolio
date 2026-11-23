@@ -560,7 +560,7 @@
   overflow-y: auto;
 }
 
-.nodeNoteMarker {
+.noteMarker {
   position: absolute;
   z-index: 1;
   display: grid;
@@ -580,13 +580,13 @@
   cursor: pointer;
 }
 
-.nodeNoteMarker:hover,
-.nodeNoteMarker[aria-expanded='true'] {
+.noteMarker:hover,
+.noteMarker[aria-expanded='true'] {
   background: var(--ifm-color-primary);
   color: var(--ifm-background-surface-color);
 }
 
-.nodeNoteOverlay {
+.markerNoteOverlay {
   position: absolute;
   z-index: 3;
   inset: auto 0.5rem 0.5rem;
@@ -595,7 +595,7 @@
   overflow: auto;
 }
 
-.dismissNodeNote {
+.dismissMarkerNote {
   float: right;
   margin-inline-start: 0.75rem;
   min-width: 2rem;
@@ -608,7 +608,7 @@
 }
 
 @media (min-width: 900px) {
-  .expanded[data-note-placement='floating'] > .nodeNoteOverlay {
+  .expanded[data-note-placement='floating'] > .markerNoteOverlay {
     display: none;
   }
 }
