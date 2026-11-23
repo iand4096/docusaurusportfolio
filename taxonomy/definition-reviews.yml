@@ -26,8 +26,8 @@
     "optimus-definition-mismatch": {
       "evidence": [
         {
-          "context_hash": "sha256:c617b06cad455f40280d7c0368ee8dfe448110cb35e95d488c97b1dbaf2e1670",
-          "excerpt": "Optimus builds its dependency graph from methods marked `@node`. When one node calls another, the runtime can tell which result it needs before it can continue. At [Scala Days][scala-days], Morgan Stanley showed how Optimus uses those dependencies to run independent tasks in parallel and cache results.",
+          "context_hash": "sha256:1a9313574cf4d2bb6f0779ec5e3e352acc592c304a5285a16d5f831321a6a73b",
+          "excerpt": "Optimus builds its dependency graph from methods marked `@node`. When one node calls another, the runtime can tell which result it needs before it can continue. Optimus uses those dependencies to run independent tasks in parallel and cache results. [Scala Days 2023][scala-days]",
           "path": "docs/misc/OptimusRICE.md"
         }
       ],

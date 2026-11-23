@@ -970,7 +970,7 @@
         {
           "id": "sphinx",
           "label": "Sphinx",
-          "description": "A documentation generator.",
+          "description": "A tool that builds documentation websites and PDFs from reStructuredText or MyST Markdown. It can generate Python API references from docstrings.",
           "kind": "documentation-platform"
         },
         {

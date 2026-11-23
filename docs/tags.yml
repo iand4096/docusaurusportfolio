@@ -403,7 +403,8 @@ spec-driven-development:
     verification.
   label: Spec-driven development
 sphinx:
-  description: A documentation generator.
+  description: A tool that builds documentation websites and PDFs from reStructuredText or MyST Markdown.
+    It can generate Python API references from docstrings.
   label: Sphinx
 svg:
   description: An XML-based vector graphics format for describing scalable two-dimensional graphics.

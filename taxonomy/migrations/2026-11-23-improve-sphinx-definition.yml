@@ -1,0 +1,19 @@
+schema_version: 2
+id: 2026-11-23-improve-sphinx-definition
+description: Improve the Sphinx documentation generator definition.
+change_type: taxonomy-correction
+trigger: taxonomy-review
+governance:
+  date: '2026-11-23'
+  source: human-proposed
+  reason: Identify the source formats, outputs and API reference capability described in the official Sphinx documentation.
+preconditions:
+  taxonomy_version: 3
+changes:
+  technologies:
+    update:
+      sphinx:
+        expect:
+          description: A documentation generator.
+        set:
+          description: A tool that builds documentation websites and PDFs from reStructuredText or MyST Markdown. It can generate Python API references from docstrings.

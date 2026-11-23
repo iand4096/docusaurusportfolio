@@ -1,5 +1,16 @@
 version: 1
 terms:
+  sphinx:
+    mode: auto
+    term_basis_hash: "sha256:b12aceb07ffa52944ec0ae8c6bd2c6c393be93b0a073923da4881a747438e650"
+    competing_senses: []
+    positive_examples: []
+    negative_examples: []
+    review:
+      status: approved
+      reviewer: Codex
+      reviewed_on: '2026-11-23'
+      reason: The eligible portfolio mentions name Sphinx as a documentation platform, including as the source platform in a migration.
   azure-container-registry:
     mode: auto
     term_basis_hash: "sha256:062df89aa3d1203c7f2ee5a97ff650878d14ae7918bc79c84c13713b09685afa"

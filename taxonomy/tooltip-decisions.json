@@ -96,7 +96,7 @@
       ]
     },
     "docs/case-studies/ScalingADeveloperDocsPlatform.md": {
-      "content_hash": "sha256:2b60473287b9dd94bae8f9cee2464291582201065c7120fcbc8ce1398b0b59af",
+      "content_hash": "sha256:746b966f9264f2f13d6b936220ba2c91c8715fe4418235d3db005b01f2a1d48e",
       "decisions": [
         {
           "context_hash": "sha256:e6c10dfa411133587720d96b782d16e65492c9d897c67e48f47964f02a1fa749",
@@ -109,8 +109,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 15732,
-            "start": 15724
+            "start": 17059,
+            "end": 17067
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -126,8 +126,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 16526,
-            "start": 16518
+            "start": 17921,
+            "end": 17929
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
