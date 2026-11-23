@@ -53,6 +53,7 @@ import DiagramFigure from '@site/src/components/DiagramFigure';
   "employer": "Independent project",
   "industry": "Documentation engineering",
   "projectType": "Documentation QA",
+  "icon": "clipboard-check",
   "summary": "I built a QA pipeline for this portfolio that checks documentation before publication and gives reviewers the evidence behind each AI finding.",
   "role": "Designed and implemented the review pipeline and CI policy",
   "scope": "Local reviews, pull request checks and report publication",
