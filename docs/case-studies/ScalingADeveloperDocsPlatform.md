@@ -163,7 +163,7 @@ The platform supported the full documentation lifecycle, from Markdown authoring
     "B": "A single pull request could include a code change, its tests, examples and documentation, so reviewers could check them together.",
     "C": "The automated website build rendered documentation from the monorepo and checked internal links before publication.",
     "D": "Serving the generated documentation from an attached filesystem shortened container builds by about 15 minutes. Redirects kept legacy URLs working.",
-    "E": "The portal grew from about 700 pages to more than 3,200 over three years. Readers could click an Edit this page link to open the page in Bitbucket's browser editor to make quick corrections.",
+    "E": "The portal grew from about 700 pages to more than 3,200 over three years. Readers could click Edit this page to open the source in the repository’s web editor and make quick corrections.",
     "F": "Client-side keyword search returned fast results for known terms. The corporate RAG search handled more complex natural-language queries.",
     "M": "Conversion tools migrated about 900 pages while preserving heading hierarchy, links, images and complex content. IDE tooling let content owners migrate and validate their own pages.",
     "P": "Authors could reuse content across pages and embed complete source files or fragments marked by delimiters. Diagrams stayed version-controlled with the documentation."
@@ -297,7 +297,7 @@ The project helped establish documentation as a normal part of the engineering w
 
 The decision to move from wikis to a custom docs-as-code platform reflected a broader shift towards maintaining technical documentation alongside source code. Organisations such as [Google (`g3doc`)](https://abseil.io/resources/swe-book/html/ch10.html), [Pinterest (PDocs)](https://medium.com/pinterest-engineering/adopting-docs-as-code-at-pinterest-4f18ad169c25) and [Spotify (TechDocs)](https://backstage.io/blog/2020/09/08/announcing-tech-docs/) have adopted similar approaches to improve documentation ownership, discoverability and integration with engineering workflows.
 
-However, docs-as-code introduced trade-offs, particularly around Markdown authoring and pull-request friction. Our IntelliJ integration made authoring easier with accurate live previews. For quick fixes such as typos, contributors could use the **Edit this page** link on every documentation page to open it in Bitbucket’s browser editor. Any changes made there required editing raw Markdown. We also streamlined the review process for documentation-only pull requests. Nevertheless, the full authoring experience required IntelliJ, which discouraged some potential contributors.
+However, docs-as-code introduced trade-offs, particularly around Markdown authoring and pull-request friction. Our IntelliJ integration made authoring easier with accurate live previews. For quick fixes such as typos, contributors could click **Edit this page** to open the source in the repository’s web editor. There, they edited the raw Markdown directly. We also streamlined the review process for documentation-only pull requests. Nevertheless, the full authoring experience required IntelliJ, which discouraged some potential contributors.
 
 For occasional contributors, the ideal workflow would have been a full browser editor with the same authoring and live preview capabilities as our IntelliJ integration. Building and maintaining a separate authoring environment would have added work, so we chose to build on the tools developers already used.
 
