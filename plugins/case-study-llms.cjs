@@ -1,8 +1,7 @@
-const fs = require('node:fs/promises');
-const path = require('node:path');
 const llms = require('docusaurus-plugin-llms').default;
 const {serializeDiagramFigures} = require('./diagram-figures.cjs');
 const {createSnippetResolver, serializeSourceSnippets} = require('./source-snippets.cjs');
+const {processMarkdownExports} = require('./markdown-exports.cjs');
 
 function validateSummary(data) {
   for (const field of ['employer', 'industry', 'projectType', 'summary', 'role',
@@ -73,31 +72,32 @@ function serializeSummaries(content) {
 }
 
 module.exports = function caseStudyLLMs(context, options) {
+  let docs = [];
   const plugin = llms(context, {
     ...options,
-    preserveComponents: [...new Set([...(options.preserveComponents || []), 'CaseStudySummary', 'DiagramFigure'])],
+    preserveComponents: [...new Set([
+      ...(options.preserveComponents || []), 'CaseStudySummary', 'DiagramFigure', 'ApiExample', 'ApiEndpoint',
+    ])],
   });
   return {
     ...plugin,
+    allContentLoaded({allContent}) {
+      docs = Object.values(allContent['docusaurus-plugin-content-docs'] || {})
+        .flatMap(content => content.loadedVersions.flatMap(version => version.docs));
+    },
     async postBuild(props) {
       // Docusaurus runs plugins concurrently. Await this plugin explicitly so
       // we always serialize after its Markdown and llms-full.txt are complete.
       await plugin.postBuild(props);
       const resolveSnippet = createSnippetResolver(context.siteConfig.baseUrl);
-      async function visit(directory) {
-        for (const entry of await fs.readdir(directory, {withFileTypes: true})) {
-          const filename = path.join(directory, entry.name);
-          if (entry.isDirectory()) await visit(filename);
-          else if (entry.name.endsWith('.md') || /^llms.*\.txt$/.test(entry.name)) {
-            const content = await fs.readFile(filename, 'utf8');
-            if (content.includes('<CaseStudySummary') || content.includes('<DiagramFigure') || content.includes('source=')) {
-              await fs.writeFile(filename, serializeSourceSnippets(
-                serializeDiagramFigures(serializeSummaries(content)), resolveSnippet));
-            }
-          }
-        }
-      }
-      await visit(props.outDir);
+      await processMarkdownExports({
+        siteConfig: context.siteConfig,
+        siteDir: context.siteDir,
+        outDir: props.outDir,
+        docs,
+        fullFilename: options.llmsFullTxtFilename || 'llms-full.txt',
+        serialize: content => serializeSourceSnippets(serializeDiagramFigures(serializeSummaries(content)), resolveSnippet),
+      });
     },
   };
 };
