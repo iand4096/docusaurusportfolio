@@ -68,7 +68,10 @@ In addition to their security benefits, tokens can often remain valid when the u
 
 - Explain an unfamiliar and technically complex tokenisation workflow to developers.
 - Identify and resolve errors and omissions in the supporting Digital Enablement API reference.
-- The existing CMS made it difficult to format code examples, preview changes and reuse content across pages. Publishing was also unreliable.
+
+<SemanticLabel type="constraint" appearance="row">
+  Brightspot, the marketing-focused CMS used for web documentation at the time, made structured authoring, content reuse and technical review difficult. While creating the MDES guide, I found it hard to format code examples and preview changes. Version control and publishing were unreliable.
+</SemanticLabel>
 
 ## My approach {/* #my-approach */}
 
