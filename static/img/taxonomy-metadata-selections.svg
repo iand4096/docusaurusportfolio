@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="204" viewBox="0 0 440 204" role="img" aria-labelledby="title description">
+  <title id="title">Taxonomy rules in the metadata panel</title>
+  <desc id="description">The taxonomy supplies allowed values and selection limits to the metadata panel. This case study has one of one content types selected, two of three audiences, and four of five topics.</desc>
+  <style>
+    text { font: 16px system-ui, sans-serif; fill: #172033; }
+    .label { font-weight: 650; }
+    .count { fill: #40516a; }
+    .selected { fill: #3566ad; }
+    .available { fill: #fff; stroke: #8498b3; }
+  </style>
+  <rect width="440" height="204" rx="12" fill="#f4f7fc"/>
+  <rect x="14" y="14" width="188" height="55" rx="8" fill="#fff" stroke="#b5c4d8"/>
+  <text x="26" y="36" class="label">Taxonomy</text>
+  <text x="26" y="56">Values and limits</text>
+  <path d="M209 41h21m-5-5 5 5-5 5" fill="none" stroke="#526784" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="238" y="14" width="188" height="55" rx="8" fill="#e3edfc" stroke="#b5c4d8"/>
+  <text x="250" y="36" class="label">Metadata panel</text>
+  <text x="250" y="56">Enforces the limits</text>
+
+  <rect x="14" y="81" width="412" height="109" rx="8" fill="#fff" stroke="#b5c4d8"/>
+  <path d="M26 117h388m-388 36h388" stroke="#dce4ef"/>
+  <g class="label">
+    <text x="26" y="105">Content type</text>
+    <text x="26" y="141">Audience</text>
+    <text x="26" y="177">Topic</text>
+  </g>
+  <g class="selected">
+    <rect x="166" y="93" width="18" height="14" rx="3"/>
+    <rect x="166" y="129" width="18" height="14" rx="3"/>
+    <rect x="190" y="129" width="18" height="14" rx="3"/>
+    <rect x="166" y="165" width="18" height="14" rx="3"/>
+    <rect x="190" y="165" width="18" height="14" rx="3"/>
+    <rect x="214" y="165" width="18" height="14" rx="3"/>
+    <rect x="238" y="165" width="18" height="14" rx="3"/>
+  </g>
+  <g class="available">
+    <rect x="214" y="129" width="18" height="14" rx="3"/>
+    <rect x="262" y="165" width="18" height="14" rx="3"/>
+  </g>
+  <g class="count">
+    <text x="297" y="105">1 of 1 · At limit</text>
+    <text x="297" y="141">2 of 3 · 1 left</text>
+    <text x="297" y="177">4 of 5 · 1 left</text>
+  </g>
+</svg>

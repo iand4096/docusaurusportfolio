@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="440" height="248" viewBox="0 0 440 248" role="img" aria-labelledby="title description">
+  <title id="title">Outputs of the canonical taxonomy</title>
+  <desc id="description">The canonical YAML taxonomy supplies IDs, labels and definitions for Docusaurus tags, inline definition tooltips, Front Matter CMS configuration and Explore navigation.</desc>
+  <style>
+    text { font: 16px system-ui, sans-serif; fill: #172033; }
+    .label { font-weight: 650; }
+    .detail { font-size: 14px; fill: #40516a; }
+  </style>
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M0 0 10 5 0 10Z" fill="#526784"/>
+    </marker>
+  </defs>
+
+  <rect width="440" height="248" rx="12" fill="#f4f7fc"/>
+  <rect x="14" y="86" width="174" height="76" rx="8" fill="#e3edfc" stroke="#b5c4d8"/>
+  <text x="26" y="111" class="label">Canonical taxonomy</text>
+  <text x="26" y="132" class="detail">YAML vocabulary</text>
+  <text x="26" y="150" class="detail">IDs, labels, definitions</text>
+
+  <g fill="none" stroke="#526784" stroke-width="2">
+    <path d="M188 124h12m0-86v172"/>
+    <path d="M200 38h23" marker-end="url(#arrow)"/>
+    <path d="M200 95h23" marker-end="url(#arrow)"/>
+    <path d="M200 153h23" marker-end="url(#arrow)"/>
+    <path d="M200 210h23" marker-end="url(#arrow)"/>
+  </g>
+
+  <g fill="#fff" stroke="#b5c4d8">
+    <rect x="224" y="14" width="202" height="48" rx="8"/>
+    <rect x="224" y="71" width="202" height="48" rx="8"/>
+    <rect x="224" y="129" width="202" height="48" rx="8"/>
+    <rect x="224" y="186" width="202" height="48" rx="8"/>
+  </g>
+  <text x="236" y="35" class="label">Docusaurus tags</text>
+  <text x="236" y="53" class="detail">Labels and descriptions</text>
+  <text x="236" y="92" class="label">Tooltip definitions</text>
+  <text x="236" y="110" class="detail">Inline in documentation</text>
+  <text x="236" y="150" class="label">Editor configuration</text>
+  <text x="236" y="168" class="detail">Allowed values and limits</text>
+  <text x="236" y="207" class="label">Explore navigation</text>
+  <text x="236" y="225" class="detail">Filters and term groups</text>
+</svg>

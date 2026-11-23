@@ -134,7 +134,9 @@ The system includes:
 
 ### Metadata authoring in VS Code
 
-The Front Matter CMS extension uses the generated editor configuration to present the allowed values and selection limits. In the metadata panel for this case study, the content type field is already at its limit of one, while the audience and topic fields still allow more selections.
+The Front Matter CMS extension uses the generated editor configuration to show the allowed metadata values and enforce the selection constraints defined in the taxonomy. For example, in the metadata panel for this case study, the content type field is already at its limit of one, while the audience and topic fields still allow more selections.
+
+![The taxonomy supplies allowed values and limits to the metadata panel. This case study has one of one content types, two of three audiences, and four of five topics selected.](/img/taxonomy-metadata-selections.svg)
 
 <p>
   <a href={frontMatterMetadata}>
@@ -179,6 +181,8 @@ Because this repository is small, I can show the implementation in [full](../imp
 The portfolio now has one canonical vocabulary and one supported path for changing it.
 
 Canonical IDs and validation reduce vocabulary drift. The same source drives Docusaurus tags, inline definition tooltips, editor configuration, and navigation. Updating a technology definition in the taxonomy keeps the reader-facing explanation in sync. Taxonomy corrections use migrations with dry runs and preconditions, and the tooling identifies which documents need changes before applying a migration.
+
+![The canonical YAML taxonomy feeds Docusaurus tags, inline definition tooltips, Front Matter CMS configuration, and Explore navigation.](/img/taxonomy-generated-outputs.svg)
 
 The **Docusaurus** technology selected in the editor also appears as a filter in Explore and as a tag at the bottom of this case study. Explore groups technology filters by kind. **Documentation platform (3)** is the group containing Docusaurus, MkDocs and Sphinx. The number beside each platform shows how many pages use that term. Readers can start with the filter to find matching pages or follow the footer tag from a page they’re already reading. Both use the same taxonomy ID, `docusaurus`.
 
