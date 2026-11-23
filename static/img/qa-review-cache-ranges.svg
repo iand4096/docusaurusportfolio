@@ -35,11 +35,11 @@
   <text x="44" y="294" class="heading">What goes into the cache key</text>
   <text x="44" y="321" class="caption">The pipeline hashes these inputs with SHA-256.</text>
   <text x="44" y="348">Source paths and full document text</text>
-  <text x="44" y="372">Review scope, check name, defects-only mode</text>
-  <text x="44" y="396">LLM Model and API endpoint used</text>
-  <text x="418" y="348">Review policy version</text>
-  <text x="418" y="372">Implementation fingerprint</text>
-  <text x="418" y="396">Cache schema version</text>
+  <text x="44" y="372">Scope, check name, defects-only mode</text>
+  <text x="44" y="396">LLM model and API endpoint</text>
+  <text x="408" y="348">Review policy version</text>
+  <text x="408" y="372">Implementation fingerprint</text>
+  <text x="408" y="396">Cache schema version</text>
 
   <g fill="none" stroke="#526784" stroke-width="2" marker-end="url(#arrow)">
     <path d="M340 414v25H176v28"/>
