@@ -22,33 +22,13 @@ tags:
   - technical-writing
 ---
 
-import CapabilityCard from '@site/src/components/CapabilityCard';
+import PhilosophyOverview from './PhilosophyOverview';
 
 # Philosophy
 
 I see technical writing and knowledge management as parts of the same job: helping people find reliable information, use it and keep it accurate. My responsibility extends across the knowledge lifecycle, from initial investigation through publication and ongoing maintenance.
 
-<CapabilityCard autoColumns heading="h2" items={[
-  {
-    title: 'Writing for readers',
-    icon: 'book-open',
-    summary: <ul>
-      <li><a href="#start-with-empathy-for-the-reader">Start with reader empathy</a></li>
-      <li><a href="#verify-what-the-software-actually-does">Verify software behaviour</a></li>
-      <li><a href="#use-evidence-to-inform-decisions">Use evidence to inform decisions</a></li>
-    </ul>,
-  },
-  {
-    title: 'Designing knowledge systems',
-    icon: 'gears',
-    summary: <ul>
-      <li><a href="#make-good-contributions-easy">Make contributions easy</a></li>
-      <li><a href="#maintain-one-authoritative-source-for-each-fact">Maintain an authoritative source</a></li>
-      <li><a href="#build-quality-checks-into-the-workflow">Build in quality checks</a></li>
-      <li><a href="#govern-knowledge-so-people-can-find-and-trust-it">Govern knowledge</a></li>
-    </ul>,
-  },
-]} />
+<PhilosophyOverview />
 
 ## Start with empathy for the reader
 
@@ -62,7 +42,7 @@ The harder documentation is to correct, the longer known problems are likely to 
 
 I want engineers to update documentation alongside code in familiar tools, while giving writers accessible ways to preview and review changes.
 
-[Morgan Stanley’s docs-as-code workflow](/docs/case-studies/scalingdeveloperdocs#documentation-platform-workflow)
+[Morgan Stanley’s docs-as-code workflow](../case-studies/ScalingADeveloperDocsPlatform.md#documentation-platform-workflow)
 
 ## Maintain one authoritative source for each fact
 
@@ -84,15 +64,15 @@ I want documentation priorities to reflect evidence, but analysis also has a cos
 
 Generative AI can make data exploration and analysis more practical. I validate the results before using them to guide decisions.
 
-[Using analytics to prioritise content migration](/docs/case-studies/scalingdeveloperdocs#design-priorities)
+[Using analytics to prioritise content migration](../case-studies/ScalingADeveloperDocsPlatform.md#design-priorities)
 
 ## Build quality checks into the workflow
 
 I want quality checks to reach contributors in time for them to fix problems before publication. Repeatable checks should be automated, with results specific enough to act on.
 
-The outcome of a check also needs to be clear. A checker that fails to run is different from one that runs successfully and finds no issues. Editorial findings need supporting evidence so reviewers can assess their validity.
+The outcome of a check also needs to be clear. A checker that fails to run is different from one that runs successfully and finds no issues. Reviewers need supporting evidence to assess whether editorial findings are valid.
 
-[Documentation QA case study](/docs/case-studies/documentation-qa)
+[Documentation QA case study](../case-studies/DocumentationQa.md)
 
 ## Govern knowledge so people can find and trust it
 

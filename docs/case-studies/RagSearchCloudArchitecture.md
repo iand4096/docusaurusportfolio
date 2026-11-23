@@ -409,7 +409,7 @@ flowchart TB
 
 </DiagramFigure>
 
-#### Cost and Abuse controls
+#### Cost and abuse controls
 
 The Container App uses the **Consumption** workload profile with **one vCPU, 2 GB memory and zero-to-one replicas**. I use scale-to-zero to limit idle compute costs. The first request after an idle period takes longer because the app has to start a replica. I store the DeepSeek API key as an Azure Container Apps secret and set its value outside Terraform. FastAPI reads the key from an environment variable that references the secret. The key stays on the server.
 
@@ -434,6 +434,6 @@ Azure logged a **62.22-second** image pull after scale-to-zero. That pull accoun
 
 - **Which retrieval settings work best?** I’d build a labelled set of questions and expected source passages. I’d compare chunk sizes, embedding models and search settings using recall at a fixed result count and mean reciprocal rank, then check whether the AI answers use and cite the right passages.
 
-- **Where does the API spend its time?** I’d use **OpenTelemetry** to trace model startup, retrieval and DeepSeek generation, then export sampled telemetry to **Azure Application Insights / Azure Monitor**. I’d track latency, errors and rate-limit responses while keeping query text, evidence and credentials out of the telemetry. I’d consider **Grafana** if the existing dashboards leave a gap.
+- **Where does the API spend its time?** I’d use **OpenTelemetry** to trace model startup, retrieval and DeepSeek generation, then export sampled telemetry to **Azure Application Insights / Azure Monitor**. The telemetry would track latency, errors and rate-limit responses while excluding query text, evidence and credentials. If the existing dashboards leave a gap, I’d consider **Grafana**.
 
 - **Can I shorten cold starts and keep spending predictable?** I’d reduce the CPU image size and separate the lightweight liveness check from retrieval readiness. If public usage grows, I’d add a durable quota and monitor provider usage.

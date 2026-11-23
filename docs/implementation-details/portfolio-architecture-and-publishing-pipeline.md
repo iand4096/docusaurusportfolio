@@ -38,7 +38,7 @@ The [Docusaurus Portfolio case study](../case-studies/DocusaurusPortfolio.md) de
 
 ## System architecture
 
-Docusaurus builds the site from Markdown and MDX, governed frontmatter, and repository files. The browser reads the generated catalogue for local browsing and loads the committed OpenAPI snapshot for the API reference. Only the cloud search features send search requests to the API on Azure Container Apps.
+Docusaurus builds the site from Markdown and MDX, governed frontmatter, and repository files. The browser reads the generated catalogue for local browsing and loads the committed OpenAPI snapshot for the API reference. Only the cloud search features call the API on Azure Container Apps.
 
 <DiagramFigure {...{
   "title": "Portfolio build and search architecture",
