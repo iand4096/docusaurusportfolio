@@ -1,7 +1,7 @@
 {
   "documents": {
     "docs/case-studies/DocumentationQa.md": {
-      "content_hash": "sha256:35413a5fd3d62c252bf1286373e2eb882d46b01fb2678a87980ac524d78dee5e",
+      "content_hash": "sha256:ea652193fade05d397ccac5bcdc58a3339064c4a2218ad79cd2d802a1e87cb44",
       "decisions": [
         {
           "context_hash": "sha256:047c7b382233b90bc14fe16399e9af1543896d80b3c75f4815555111f3de299b",
@@ -14,8 +14,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 5095,
-            "start": 5087
+            "end": 5124,
+            "start": 5116
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -23,7 +23,7 @@
       ]
     },
     "docs/case-studies/RagSearchCloudArchitecture.md": {
-      "content_hash": "sha256:ae06ffdc466454f16bb0c1375799f8fb0c6932b22f048661989f91f2cfe9fbb4",
+      "content_hash": "sha256:01051384c6f9b6a21132ebb028fb932472bab039a1af788f18101d9b7cf87076",
       "decisions": [
         {
           "context_hash": "sha256:505614ecea2acfbadafc960fcbee197230ce40edc82610833f63498de0dd2c7e",
@@ -109,8 +109,8 @@
             "status": "approved"
           },
           "source_range": {
-            "start": 17059,
-            "end": 17067
+            "end": 17067,
+            "start": 17059
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -126,8 +126,8 @@
             "status": "approved"
           },
           "source_range": {
-            "start": 17921,
-            "end": 17929
+            "end": 17929,
+            "start": 17921
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -135,7 +135,7 @@
       ]
     },
     "docs/docs-samples/MDES4Merchants.md": {
-      "content_hash": "sha256:b234987d26b9711e6413e3e1472955e4a11a7026ccb79564f333b1d185893677",
+      "content_hash": "sha256:8ef4173d83b24c77f5244604d3b25b99e5748f548fcbf8ec3dd8c4a0d4609e84",
       "decisions": [
         {
           "context_hash": "sha256:5ecf0fb1d05453a33c666a1a52594f80bb10093f8c9bb65fbe37e1472a0040ad",
@@ -148,8 +148,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 3514,
-            "start": 3506
+            "end": 3734,
+            "start": 3726
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -332,7 +332,7 @@
     "classifier_version": "1",
     "embedding_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
   },
-  "policy_hash": "sha256:28a4a45fa386894ec64e8dbdb539e04165a43515697faf844fc12dc67cc242b6",
-  "taxonomy_hash": "sha256:25318506092e04811b664ef9a58db6ea97f27f4644507ead10a58fb7c7b14c68",
+  "policy_hash": "sha256:df896d0929baf97ffb7f46a2839a0faa2eb9357f07e9ee36e3f75c09e03837b1",
+  "taxonomy_hash": "sha256:c9466474f9968c3a489034a7b43b2d989b5f2eb236130df0a77c684eb75ace10",
   "version": 1
 }
