@@ -565,8 +565,8 @@
   z-index: 1;
   display: grid;
   place-items: center;
-  width: 32px;
-  height: 32px;
+  width: 34px;
+  height: 34px;
   padding: 0;
   transform: translate(-50%, -50%) scale(var(--diagram-note-zoom, 1));
   border: 0;
@@ -580,12 +580,12 @@
 .noteMarker > span {
   display: grid;
   place-items: center;
-  width: 16px;
-  height: 16px;
+  width: 33.28px;
+  height: 33.28px;
   border: 1px solid var(--ifm-color-primary);
   border-radius: 50%;
   background: var(--ifm-background-surface-color);
-  font-size: 0.5rem;
+  font-size: 1.04rem;
   font-weight: bold;
   line-height: 1;
 }
