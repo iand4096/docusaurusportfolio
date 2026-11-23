@@ -337,13 +337,6 @@
     visibility: visible;
   }
 
-  .expanded[data-node-note]:not([data-note-placement]) > .desktopNote {
-    inset: auto 0.75rem 0.75rem auto;
-    max-height: 30dvh;
-    overflow: auto;
-    visibility: visible;
-  }
-
   .noteConnector {
     display: block;
     position: absolute;
@@ -565,4 +558,57 @@
   width: 100%;
   max-height: 25vh;
   overflow-y: auto;
+}
+
+.nodeNoteMarker {
+  position: absolute;
+  z-index: 1;
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  transform: translate(-50%, -50%) scale(var(--diagram-note-zoom, 1));
+  border: 1px solid var(--ifm-color-primary);
+  border-radius: 50%;
+  background: var(--ifm-background-surface-color);
+  color: var(--ifm-font-color-base);
+  font-family: inherit;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.nodeNoteMarker:hover,
+.nodeNoteMarker[aria-expanded='true'] {
+  background: var(--ifm-color-primary);
+  color: var(--ifm-background-surface-color);
+}
+
+.nodeNoteOverlay {
+  position: absolute;
+  z-index: 3;
+  inset: auto 0.5rem 0.5rem;
+  max-width: 32rem;
+  max-height: 35dvh;
+  overflow: auto;
+}
+
+.dismissNodeNote {
+  float: right;
+  margin-inline-start: 0.75rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+@media (min-width: 900px) {
+  .expanded[data-note-placement='floating'] > .nodeNoteOverlay {
+    display: none;
+  }
 }

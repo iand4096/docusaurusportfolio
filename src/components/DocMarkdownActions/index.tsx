@@ -57,7 +57,7 @@ export default function DocMarkdownActions({permalink}: {permalink: string}): Re
 
   return (
     <div className={styles.actions}>
-      <div className={styles.buttons} role="group" aria-label="Markdown page actions">
+      <div className={styles.buttons} data-markdown-page-actions role="group" aria-label="Markdown page actions">
         <button ref={copyButton} type="button" className={styles.control}
           disabled={busy} onClick={copyMarkdown}>
           {busy ? 'Loading Markdown…' : 'Copy page as Markdown'}

@@ -14,7 +14,7 @@ const focusModule = new Module(focusFilename, module);
 focusModule._compile(ts.transpileModule(fs.readFileSync(focusFilename, 'utf8'), {
   compilerOptions: {module: ts.ModuleKind.CommonJS},
 }).outputText, focusFilename);
-const {findSubgraphs, fitSubgraph, placeSubgraphNote} = focusModule.exports;
+const {fitSubgraph, placeSubgraphNote} = focusModule.exports;
 
 const filename = path.resolve(__dirname, '../../src/components/DiagramFigure/index.tsx');
 const loaded = new Module(filename, module);
@@ -38,28 +38,6 @@ loaded._compile(ts.transpileModule(fs.readFileSync(filename, 'utf8'), {
 }).outputText, filename);
 const Figure = loaded.exports.default;
 
-test('focus options include authored nodes with notes alongside subgraphs', () => {
-  const element = (id, label, top) => ({
-    id,
-    getBoundingClientRect: () => ({left: 0, top}),
-    querySelector: () => ({textContent: label, innerText: label}),
-  });
-  const cluster = element('mermaid-PACKAGE', 'Packaging', 0);
-  const node = element('mermaid-flowchart-ACA-3', 'Azure Container Apps\nFastAPI service', 10);
-  const other = element('flowchart-Other-4', 'Without a note', 20);
-  const renderer = {
-    dataset: {diagramSubgraphIds: 'PACKAGE', diagramSubgraphDirection: 'TB'},
-    closest: () => null,
-    querySelectorAll: selector => selector.includes('cluster') ? [cluster] : [node, other],
-  };
-  const content = {querySelectorAll: selector => selector.startsWith('.diagram-columns') ? [] : [renderer]};
-  const options = findSubgraphs(content, () => ['ACA']);
-  assert.deepEqual(options.map(({id, label, node}) => ({id, label, node})), [
-    {id: 'PACKAGE', label: 'Packaging', node: false},
-    {id: 'ACA', label: 'Azure Container Apps', node: true},
-  ]);
-});
-
 test('subgraph notes use an adjacent space only when the diagram leaves it clear', () => {
   const rect = (left, top, width, height) => ({left, top, width, height, right: left + width, bottom: top + height});
   const frame = rect(0, 0, 800, 500);
@@ -68,6 +46,11 @@ test('subgraph notes use an adjacent space only when the diagram leaves it clear
   assert.deepEqual(placeSubgraphNote(frame, target, note, [target]), {
     left: 504, top: 120, connector: {left: 480, top: 180, length: 24, vertical: false},
   });
+  for (const zoom of [0.25, 0.5, 2, 4]) {
+    const placement = placeSubgraphNote(frame, target, note, [target], undefined, undefined, zoom);
+    assert.equal(placement.connector.length, 24 * zoom);
+    assert.equal(placement.connector.left + placement.connector.length, placement.left);
+  }
   assert.deepEqual(placeSubgraphNote(frame, target, note, [target, rect(490, 180, 1, 0)]), {
     left: 76, top: 120, connector: {left: 276, top: 180, length: 24, vertical: false},
   });
@@ -76,6 +59,27 @@ test('subgraph notes use an adjacent space only when the diagram leaves it clear
   assert.equal(placeSubgraphNote(frame, clipped, note, [clipped]), undefined);
   const partlyVisible = rect(-100, 120, 280, 260);
   assert.equal(placeSubgraphNote(frame, partlyVisible, note, [partlyVisible]).connector.left, 180);
+});
+
+test('left-to-right node notes slide above the node and extend the connector as needed', () => {
+  const rect = (left, top, width, height) => ({left, top, width, height, right: left + width, bottom: top + height});
+  const frame = rect(0, 0, 800, 500);
+  const node = rect(300, 230, 100, 50);
+  const note = rect(0, 0, 160, 50);
+  const rightObstacle = rect(435, 158, 45, 48);
+  assert.deepEqual(placeSubgraphNote(frame, node, note, [rightObstacle], 'LR'), {
+    left: 270, top: 156, connector: {left: 350, top: 206, length: 24, vertical: true},
+  });
+  const obstacles = [rect(200, 198, 115, 8), rect(385, 198, 100, 8)];
+  assert.deepEqual(placeSubgraphNote(frame, node, note, obstacles, 'LR'), {
+    left: 300, top: 140, connector: {left: 350, top: 190, length: 40, vertical: true},
+  });
+
+  const diamond = [[{x: 350, y: 230}, {x: 400, y: 255}, {x: 350, y: 280},
+    {x: 300, y: 255}, {x: 350, y: 230}]];
+  assert.deepEqual(placeSubgraphNote(frame, node, rect(0, 0, 60, 50), [], 'LR', diamond), {
+    left: 300, top: 156, connector: {left: 330, top: 206, length: 34, vertical: true},
+  });
 });
 
 test('subgraph fit uses leading blank space only when it reveals downstream content', () => {

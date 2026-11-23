@@ -1,0 +1,77 @@
+.navigation {
+  position: sticky;
+  top: calc(var(--ifm-navbar-height) + 1rem);
+  margin-block-start: var(--heading-nav-offset, 0px);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100dvh - var(--ifm-navbar-height) - 2rem);
+}
+
+.toggle {
+  display: flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  min-height: 40px;
+  padding: 0.25rem 0.55rem;
+  margin-bottom: 0.35rem;
+  border: 1px solid var(--ifm-toc-border-color);
+  border-radius: var(--ifm-global-radius);
+  text-align: start;
+  font-weight: 600;
+}
+
+.toggle:hover {
+  background-color: var(--ifm-hover-overlay);
+}
+
+.chevron {
+  flex-shrink: 0;
+  width: 0.45rem;
+  height: 0.45rem;
+  border-top: 2px solid currentColor;
+  border-right: 2px solid currentColor;
+  transform: rotate(-135deg);
+}
+
+.navigation[data-collapsed] .toggle {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+.navigation[data-collapsed] .chevron {
+  transform: rotate(45deg);
+}
+
+.headings {
+  min-height: 0;
+  overflow: auto;
+}
+
+.headings > .items {
+  position: static;
+  max-height: none;
+  overflow: visible;
+}
+
+@media (min-width: 997px) {
+  /* Docusaurus puts the heading navigation in the last column, after the article. */
+  :global(.row)[data-heading-nav-collapsed] > :global(.col):nth-last-child(2) {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  :global(.row)[data-heading-nav-collapsed] > :global(.col):last-child {
+    flex: 0 0 auto;
+    width: calc(2.25rem + var(--ifm-spacing-horizontal));
+    max-width: none;
+    padding-inline-start: 0;
+  }
+}
+
+@media (max-width: 996px) {
+  .navigation {
+    display: none;
+  }
+}

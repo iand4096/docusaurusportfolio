@@ -1,49 +1,87 @@
-export type SubgraphOption = {id: string; panel?: string; label: string; node?: boolean};
+export type SubgraphOption = {id: string; panel?: string; label: string};
 export type SubgraphFit = {
   scale: number; x: number; y: number; width: number; height: number; limited: boolean;
   offsetX: number; offsetY: number; frameWidth: number; frameHeight: number;
 };
 export type NoteConnector = {left: number; top: number; length: number; vertical: boolean};
+type OutlinePoint = {x: number; y: number};
+type NodeOutline = OutlinePoint[][];
 
-export function placeSubgraphNote(frame: DOMRect, target: DOMRect, note: DOMRect, obstacles: DOMRect[]) {
-  const gap = 24;
+function findOutlineEdge(outline: NodeOutline, cross: number, from: number, vertical: boolean) {
+  let edge: number | undefined;
+  for (const points of outline) {
+    for (let index = 1; index < points.length; index++) {
+      const a = points[index - 1];
+      const b = points[index];
+      const start = vertical ? a.x : a.y;
+      const end = vertical ? b.x : b.y;
+      if (start === end || cross < Math.min(start, end) || cross > Math.max(start, end)) continue;
+      const fraction = (cross - start) / (end - start);
+      const along = vertical ? a.y + (b.y - a.y) * fraction : a.x + (b.x - a.x) * fraction;
+      if (edge === undefined || Math.abs(along - from) < Math.abs(edge - from)) edge = along;
+    }
+  }
+  return edge;
+}
+
+export function placeSubgraphNote(
+  frame: DOMRect, target: DOMRect, note: DOMRect, obstacles: DOMRect[],
+  nodeDirection?: 'LR' | 'TB', outline?: NodeOutline, zoom = 1,
+) {
   const inset = 12;
-  const clampedTop = Math.max(frame.top + inset, Math.min(target.top, frame.bottom - note.height - inset));
-  const clampedLeft = Math.max(frame.left + inset, Math.min(target.left, frame.right - note.width - inset));
-  const candidates = [
-    {left: target.right + gap, top: clampedTop, side: 'right'},
-    {left: target.left - note.width - gap, top: clampedTop, side: 'left'},
-    {left: clampedLeft, top: target.bottom + gap, side: 'below'},
-    {left: clampedLeft, top: target.top - note.height - gap, side: 'above'},
-  ] as const;
-  const blocked = (left: number, top: number, right: number, bottom: number) =>
-    obstacles.some(box => left < box.right + 4 && right > box.left - 4
-      && top < box.bottom + 4 && bottom > box.top - 4);
-  for (const {left, top, side} of candidates) {
+  const clampTop = (top: number) => Math.max(frame.top + inset, Math.min(top, frame.bottom - note.height - inset));
+  const clampLeft = (left: number) => Math.max(frame.left + inset, Math.min(left, frame.right - note.width - inset));
+  const sides = nodeDirection === 'LR'
+    ? ['above', 'below', 'right', 'left'] as const
+    : ['right', 'left', 'below', 'above'] as const;
+  const gaps = (nodeDirection ? [24, 40, 56, 80] : [24]).map(gap => gap * zoom);
+  const candidates = sides.flatMap(side => {
+    const vertical = side === 'above' || side === 'below';
+    const alignments = vertical
+      ? [target.left, (target.left + target.right - note.width) / 2, target.right - note.width].map(clampLeft)
+      : [target.top, (target.top + target.bottom - note.height) / 2, target.bottom - note.height].map(clampTop);
+    const positions = nodeDirection ? [...new Set(alignments)] : alignments.slice(0, 1);
+    return gaps.flatMap(gap => positions.map(position => ({
+      side, vertical,
+      left: vertical ? position : side === 'right' ? target.right + gap : target.left - note.width - gap,
+      top: vertical ? side === 'below' ? target.bottom + gap : target.top - note.height - gap : position,
+    })));
+  });
+  const blocked = (left: number, top: number, right: number, bottom: number, padding = 4) =>
+    obstacles.some(box => left < box.right + padding && right > box.left - padding
+      && top < box.bottom + padding && bottom > box.top - padding);
+  for (const {left, top, side, vertical} of candidates) {
     const right = left + note.width;
     const bottom = top + note.height;
     if (left < frame.left + inset || right > frame.right - inset
       || top < frame.top + inset || bottom > frame.bottom - inset || blocked(left, top, right, bottom)) continue;
 
-    const vertical = side === 'above' || side === 'below';
     const start = vertical ? Math.max(left, target.left) : Math.max(top, target.top);
     const end = vertical ? Math.min(right, target.right) : Math.min(bottom, target.bottom);
     if (start >= end) continue;
     const mid = (start + end) / 2;
+    const noteEdge = side === 'left' ? right : side === 'right' ? left : side === 'above' ? bottom : top;
+    const boxEdge = side === 'left' ? target.left : side === 'right' ? target.right
+      : side === 'above' ? target.top : target.bottom;
+    const targetEdge = outline?.length ? findOutlineEdge(outline, mid, noteEdge, vertical) : boxEdge;
+    if (targetEdge === undefined) continue;
+    const lineStart = Math.min(noteEdge, targetEdge);
+    const length = Math.abs(noteEdge - targetEdge);
     const connector: NoteConnector = {
-      left: vertical ? mid : side === 'left' ? right : target.right,
-      top: vertical ? side === 'above' ? bottom : target.bottom : mid,
-      length: gap,
+      left: vertical ? mid : lineStart,
+      top: vertical ? lineStart : mid,
+      length,
       vertical,
     };
     const {left: x, top: y} = connector;
-    // A partially visible subgraph must still have an on-canvas attachment point.
-    if (x < frame.left || y < frame.top || x + (vertical ? 0 : gap) > frame.right
-      || y + (vertical ? gap : 0) > frame.bottom) continue;
+    // A partially visible target must still have an on-canvas attachment point.
+    if (x < frame.left || y < frame.top || x + (vertical ? 0 : length) > frame.right
+      || y + (vertical ? length : 0) > frame.bottom) continue;
     // Ignore the two ends of the leader where it deliberately touches the boxes.
+    const endClearance = 5 * zoom;
     const leaderBlocked = vertical
-      ? blocked(x, y + 5, x, y + gap - 5)
-      : blocked(x + 5, y, x + gap - 5, y);
+      ? blocked(x, y + endClearance, x, y + length - endClearance, 4 * zoom)
+      : blocked(x + endClearance, y, x + length - endClearance, y, 4 * zoom);
     if (!leaderBlocked) return {left, top, connector};
   }
   return undefined;
@@ -55,35 +93,24 @@ export function subgraphKey({id, panel}: SubgraphOption): string {
   return JSON.stringify([panel, id]);
 }
 
-export function findSubgraphs(content: HTMLElement, nodesForPanel?: (panel?: string) => readonly string[]) {
+export function findSubgraphs(content: HTMLElement) {
   const panels = Array.from(content.querySelectorAll<HTMLElement>('.diagram-columns > .diagram-panel'));
-  const renderers = content.querySelectorAll<HTMLElement>('[data-diagram-subgraph-direction]');
+  const renderers = content.querySelectorAll<HTMLElement>('[data-diagram-subgraph-ids]');
   return Array.from(renderers).flatMap(renderer => {
     if (renderer.closest('[hidden]')) return [];
     const ids = (renderer.dataset.diagramSubgraphIds?.split(' ') ?? []).sort((a, b) => b.length - a.length);
     const panel = renderer.closest<HTMLElement>('.diagram-panel');
     const panelKey = panel ? panel.dataset.diagramPanelId || `panel:${panels.indexOf(panel)}` : undefined;
     const horizontal = renderer.dataset.diagramSubgraphDirection === 'LR';
-    const notedNodes = nodesForPanel?.(panelKey) ?? [];
     const targets = Array.from(renderer.querySelectorAll<SVGGElement>('svg g.cluster[id]')).flatMap(element => {
       // Mermaid can prefix rendered cluster IDs. Match the longest authored suffix.
       const id = ids.find(candidate => element.id === candidate)
         ?? ids.find(candidate => element.id.endsWith(`-${candidate}`));
       if (!id) return [];
       const {left, top} = element.getBoundingClientRect();
-      return [{id, element, panel: panelKey, left, top, node: false,
+      return [{id, element, panel: panelKey, left, top,
         label: element.querySelector('.cluster-label')?.textContent?.replace(/\s+/g, ' ').trim() || id}];
     });
-    if (notedNodes.length) {
-      for (const element of renderer.querySelectorAll<SVGGElement>('svg g.node[id]')) {
-        // Mermaid gives flowchart vertices IDs such as flowchart-Browser-3.
-        const id = element.id.match(/(?:^|-)flowchart-(.+)-\d+$/)?.[1];
-        if (!id || !notedNodes.includes(id)) continue;
-        const {left, top} = element.getBoundingClientRect();
-        const label = element.querySelector<HTMLElement>('.nodeLabel')?.innerText?.split('\n')[0]?.trim() || id;
-        targets.push({id, element, panel: panelKey, left, top, node: true, label});
-      }
-    }
     return targets.sort((a, b) => horizontal
       ? a.left - b.left || a.top - b.top
       : a.top - b.top || a.left - b.left);
@@ -138,4 +165,87 @@ export function fitSubgraph(frame: HTMLElement, content: HTMLElement, element: S
     offsetX: horizontal ? shift : 0,
     offsetY: horizontal ? 0 : shift,
   };
+}
+
+export type DiagramNotes = Readonly<Record<string, string | Readonly<Record<string, string>>>>;
+
+export function nodeOutline(element: SVGGElement): NodeOutline {
+  const shape = element.querySelector('.label-container');
+  const geometry = shape instanceof SVGGeometryElement ? [shape]
+    : Array.from(shape?.querySelectorAll('path, polygon, rect, circle, ellipse') ?? [])
+      .filter((part): part is SVGGeometryElement => part instanceof SVGGeometryElement && !part.closest('.label'));
+  return geometry.flatMap(part => {
+    const matrix = part.getScreenCTM();
+    if (!matrix) return [];
+    if (part instanceof SVGPolygonElement && part.points.length) {
+      const points = Array.from(part.points, point => point.matrixTransform(matrix));
+      return [[...points, points[0]]];
+    }
+    const length = part.getTotalLength();
+    if (!length) return [];
+    // Sample in SVG units, then transform to the panned and zoomed viewport.
+    const segments = Math.min(96, Math.max(16, Math.ceil(length / 4)));
+    return [Array.from({length: segments + 1}, (_, index) =>
+      part.getPointAtLength(length * index / segments).matrixTransform(matrix))];
+  });
+}
+
+export function nodeNoteAnchor(element: SVGGElement, frame: HTMLElement, zoom: number) {
+  const bounds = frame.getBoundingClientRect();
+  const originX = bounds.left + frame.clientLeft;
+  const originY = bounds.top + frame.clientTop;
+  const node = element.getBoundingClientRect();
+  if (node.right <= bounds.left || node.left >= bounds.right
+    || node.bottom <= bounds.top || node.top >= bounds.bottom) return;
+
+  const outline = element.querySelector('rect.label-container') ? [] : nodeOutline(element).flat();
+  if (!outline.length) {
+    const left = node.right - originX;
+    const top = node.top - originY;
+    if (left >= 0 && left < frame.clientWidth && top >= 0 && top < frame.clientHeight) return {left, top};
+    return;
+  }
+
+  // Keep the whole marker visible while its centre touches the outline.
+  const radius = 16 * zoom;
+  const directions = [[0.8, -0.6], [0, -1], [-0.8, -0.6], [1, 0], [-1, 0], [0.8, 0.6], [-0.8, 0.6], [0, 1]];
+  for (const [x, y] of directions) {
+    const edge = outline.reduce((best, point) => (
+      point.x * x + point.y * y > best.x * x + best.y * y ? point : best
+    ));
+    const left = edge.x - originX;
+    const top = edge.y - originY;
+    if (left >= radius && left <= frame.clientWidth - radius
+      && top >= radius && top <= frame.clientHeight - radius) return {left, top};
+  }
+}
+
+export function findNodeNotes(content: HTMLElement, notes: DiagramNotes) {
+  const panels = Array.from(content.querySelectorAll<HTMLElement>('.diagram-columns > .diagram-panel'));
+  return Array.from(content.querySelectorAll<SVGGElement>('svg g.node[id]')).flatMap(element => {
+    if (element.closest('[hidden], .cluster')) return [];
+    const svg = element.ownerSVGElement;
+    if (!svg?.closest('[data-diagram-flowchart]')) return [];
+    // Some Mermaid layouts only expose the authored ID inside the generated DOM ID.
+    const id = element.dataset.id ?? element.id.match(/(?:^|-)flowchart-(.+)-\d+$/)?.[1];
+    if (!id) return [];
+    const panel = element.closest<HTMLElement>('.diagram-panel');
+    const panelId = panel && (panel.dataset.diagramPanelId || `panel:${panels.indexOf(panel)}`);
+    const panelNotes = panelId ? notes[panelId] : notes;
+    const text = typeof panelNotes === 'object' ? panelNotes[id] : undefined;
+    if (typeof text !== 'string' || !text.trim()) return [];
+
+    // Mermaid can render members and their cluster box in separate SVG groups.
+    const box = element.getBoundingClientRect();
+    const x = box.left + box.width / 2;
+    const y = box.top + box.height / 2;
+    const insideCluster = Array.from(svg.querySelectorAll('g.cluster')).some(cluster => {
+      const bounds = cluster.getBoundingClientRect();
+      return x > bounds.left && x < bounds.right && y > bounds.top && y < bounds.bottom;
+    });
+    if (insideCluster) return [];
+
+    const label = element.querySelector('.nodeLabel, .label')?.textContent?.replace(/\s+/g, ' ').trim() || id;
+    return [{element, key: JSON.stringify(['node', panelId, id]), title: `About ${label}`, text}];
+  });
 }
