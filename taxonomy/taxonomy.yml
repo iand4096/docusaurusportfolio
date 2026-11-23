@@ -213,6 +213,15 @@ dimensions:
           introduced: '2026-11-22'
           source: ai-proposed
           review: annual
+      essay:
+        label: Essay
+        description: A page that develops a professional viewpoint or explains the principles and
+          judgement behind an approach to work.
+        governance:
+          status: active
+          introduced: '2026-11-23'
+          source: ai-proposed
+          review: annual
   audiences:
     description: Audiences for whom the content is materially relevant.
     metadata_field: audiences

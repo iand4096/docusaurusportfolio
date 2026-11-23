@@ -70,6 +70,10 @@ const config: Config = {
       {
         redirects: [
           {
+            from: '/documentation-philosophy',
+            to: '/docs/case-studies/philosophy',
+          },
+          {
             from: '/docs/AMXInspiredSignageComposer',
             to: '/docs/docs-samples/AMXInspiredSignageComposer',
           },

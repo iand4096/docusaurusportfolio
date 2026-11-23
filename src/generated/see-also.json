@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "inputHash": "974c581e58e26113559cb3368b26c66c1a6325977ca544d4722d71f759653359",
+  "inputHash": "a9cbcdd1f0b9cd432bc2e87da98abdabde297e5342194828dd97b93b6a568697",
   "settings": {
     "limit": 3,
     "threshold": 0.3,
@@ -26,7 +26,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.916175,
+          "score": 0.917133,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Technology: Agentic AI (agentic-ai)",
@@ -59,7 +59,7 @@
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.657223,
+          "score": 0.656266,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Agentic AI (agentic-ai)",
@@ -86,7 +86,7 @@
           "id": "case-studies/ScalingADeveloperDocsPlatform",
           "title": "Scaling an Enterprise Developer Docs Platform",
           "path": "/docs/case-studies/scalingdeveloperdocs",
-          "score": 1.001983,
+          "score": 0.994634,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Information architecture (information-architecture)",
@@ -114,7 +114,7 @@
           "id": "tools/OpenAPIandAPITools",
           "title": "OpenAPI and API tools",
           "path": "/docs/openapitools",
-          "score": 0.383175,
+          "score": 0.393025,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -135,7 +135,7 @@
           "id": "tools/OpenAPIandAPITools",
           "title": "OpenAPI and API tools",
           "path": "/docs/openapitools",
-          "score": 0.482575,
+          "score": 0.483448,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Technical validation (technical-validation)",
@@ -149,7 +149,7 @@
           "id": "skills/APIDocumentation",
           "title": "API Documentation and Technical Validation",
           "path": "/docs/apidocumentation",
-          "score": 0.42507,
+          "score": 0.425943,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Technical validation (technical-validation)",
@@ -163,7 +163,7 @@
           "id": "tools/GitContinuousIntegration",
           "title": "Git and Continuous Integration",
           "path": "/docs/gitandci",
-          "score": 0.389302,
+          "score": 0.389033,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
@@ -187,7 +187,7 @@
           "id": "docs-samples/PaysafeDeveloperJS",
           "title": "Paysafe.js Developer Guide",
           "path": "/docs/docs-samples/PaysafeDeveloperJS",
-          "score": 1.045143,
+          "score": 1.052481,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Audience: Developers (developers)",
@@ -198,7 +198,7 @@
           "id": "tools/OpenAPIandAPITools",
           "title": "OpenAPI and API tools",
           "path": "/docs/openapitools",
-          "score": 0.456593,
+          "score": 0.466428,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -212,7 +212,7 @@
           "id": "case-studies/DocumentingComplexDeveloperFrameworks",
           "title": "Documenting Complex Enterprise Developer Frameworks",
           "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.42957,
+          "score": 0.429863,
           "reasons": [
             "Topic: API documentation (api-documentation)",
             "Topic: Developer experience (developer-experience)",
@@ -234,7 +234,7 @@
           "id": "implementation-details/taxonomy",
           "title": "AI-assisted taxonomy governance",
           "path": "/docs/implementation-details/taxonomy",
-          "score": 0.394427,
+          "score": 0.397001,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -251,7 +251,7 @@
           "id": "case-studies/TaxonomyGovernance",
           "title": "Governed documentation taxonomy",
           "path": "/docs/case-studies/TaxonomyGovernance",
-          "score": 0.379509,
+          "score": 0.382084,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -273,7 +273,7 @@
           "id": "case-studies/DocumentingComplexDeveloperFrameworks",
           "title": "Documenting Complex Enterprise Developer Frameworks",
           "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.99776,
+          "score": 0.990715,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Information architecture (information-architecture)",
@@ -287,7 +287,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.446198,
+          "score": 0.446491,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Documentation governance (documentation-governance)",
@@ -303,7 +303,7 @@
           "id": "skills/GovernanceDocs",
           "title": "Documentation Governance",
           "path": "/docs/governancedocs",
-          "score": 0.387397,
+          "score": 0.385194,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Information architecture (information-architecture)",
@@ -325,7 +325,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.695366,
+          "score": 0.695525,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -339,7 +339,7 @@
           "id": "case-studies/DocumentationQa",
           "title": "Building documentation QA into the publishing workflow",
           "path": "/docs/case-studies/documentation-qa",
-          "score": 0.375885,
+          "score": 0.37575,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Documentation governance (documentation-governance)",
@@ -354,7 +354,7 @@
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.357721,
+          "score": 0.357561,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Agentic AI (agentic-ai)",
@@ -772,7 +772,7 @@
           "id": "tools/DocusaurusAndMkdocs",
           "title": "Static Site Generators and Docs Platforms",
           "path": "/docs/staticsitedocsplatforms",
-          "score": 0.593591,
+          "score": 0.592372,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Docusaurus (docusaurus)",
@@ -1300,7 +1300,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.553876,
+          "score": 0.554036,
           "reasons": [
             "Topic: Documentation governance (documentation-governance)",
             "Topic: Taxonomy (taxonomy)",
@@ -1333,7 +1333,7 @@
           "id": "tools/DocusaurusAndMkdocs",
           "title": "Static Site Generators and Docs Platforms",
           "path": "/docs/staticsitedocsplatforms",
-          "score": 0.409917,
+          "score": 0.409757,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Docusaurus (docusaurus)",
@@ -1356,7 +1356,7 @@
           "id": "case-studies/DocumentingComplexDeveloperFrameworks",
           "title": "Documenting Complex Enterprise Developer Frameworks",
           "path": "/docs/case-studies/documenting-enterprise-developer-frameworks",
-          "score": 0.979951,
+          "score": 0.975648,
           "reasons": [
             "Topic: Information architecture (information-architecture)",
             "Technology: Optimus (optimus)",
@@ -1386,6 +1386,47 @@
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Information architecture (information-architecture)",
             "Audience: Developers (developers)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        }
+      ]
+    },
+    "misc/documentation-philosophy": {
+      "id": "misc/documentation-philosophy",
+      "title": "Philosophy",
+      "path": "/docs/case-studies/philosophy",
+      "status": null,
+      "links": [
+        {
+          "id": "misc/OptimusRICE",
+          "title": "Optimus and RICE",
+          "path": "/docs/misc/OptimusRICE",
+          "score": 0.42,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Topic: Information architecture (information-architecture)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "skills/InformationArchitecture",
+          "title": "Information Architecture",
+          "path": "/docs/informationarch",
+          "score": 0.42,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Topic: Information architecture (information-architecture)",
+            "Audience: Technical writers (technical-writers)"
+          ]
+        },
+        {
+          "id": "tools/Diagramming",
+          "title": "Diagramming and Technical Visualisation",
+          "path": "/docs/diagramsandvisuals",
+          "score": 0.42,
+          "reasons": [
+            "Topic: Documentation engineering (documentation-engineering)",
+            "Topic: Information architecture (information-architecture)",
             "Audience: Technical writers (technical-writers)"
           ]
         }
@@ -1480,7 +1521,7 @@
           "id": "tools/ContainersAndCloudNative",
           "title": "Containers and Cloud",
           "path": "/docs/containersandcloud",
-          "score": 0.371401,
+          "score": 0.37138,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Technology: Docker (docker)",
@@ -1510,7 +1551,7 @@
           "id": "case-studies/DocusaurusPortfolio",
           "title": "Docusaurus Portfolio",
           "path": "/docs/case-studies/DocusaurusPortfolio",
-          "score": 0.384465,
+          "score": 0.3971,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
@@ -1531,7 +1572,7 @@
           "id": "tools/GitContinuousIntegration",
           "title": "Git and Continuous Integration",
           "path": "/docs/gitandci",
-          "score": 0.370812,
+          "score": 0.383447,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
@@ -1547,7 +1588,7 @@
           "id": "implementation-details/portfolio-architecture-and-publishing-pipeline",
           "title": "Portfolio architecture and publishing pipeline",
           "path": "/docs/implementation-details/portfolio-architecture-and-publishing-pipeline",
-          "score": 0.340717,
+          "score": 0.353353,
           "reasons": [
             "Topic: Documentation engineering (documentation-engineering)",
             "Topic: Technical validation (technical-validation)",
@@ -1654,7 +1695,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.417031,
+          "score": 0.416629,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Topic: Information architecture (information-architecture)",
@@ -1675,7 +1716,7 @@
           "id": "skills/AIandDocumentation",
           "title": "AI & Documentation",
           "path": "/docs/aianddocs",
-          "score": 0.82,
+          "score": 0.835974,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Technology: Agentic AI (agentic-ai)",
@@ -1688,7 +1729,7 @@
           "id": "skills/GovernanceDocs",
           "title": "Documentation Governance",
           "path": "/docs/governancedocs",
-          "score": 0.716897,
+          "score": 0.700922,
           "reasons": [
             "Topic: Information architecture (information-architecture)",
             "Technology: Whisper (whisper)",
@@ -1851,7 +1892,7 @@
           "id": "case-studies/RagSearchCloudArchitecture",
           "title": "Designing Cloud-Based RAG search for technical documentation",
           "path": "/docs/case-studies/RagSearchCloudArchitecture",
-          "score": 0.463507,
+          "score": 0.465914,
           "reasons": [
             "Topic: Developer experience (developer-experience)",
             "Technology: Docusaurus (docusaurus)",

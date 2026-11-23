@@ -224,6 +224,11 @@
           "description": "A page describing documentation I created with a link to it or description of where to find the content."
         },
         {
+          "id": "essay",
+          "label": "Essay",
+          "description": "A page that develops a professional viewpoint or explains the principles and judgement behind an approach to work."
+        },
+        {
           "id": "implementation-guide",
           "label": "Implementation Guide",
           "description": "Step-by-step guidance for implementing, configuring, integrating, or adopting a technical solution."
@@ -2326,6 +2331,29 @@
       "organisations": [
         "paysafe"
       ]
+    },
+    {
+      "id": "misc/documentation-philosophy",
+      "title": "Philosophy",
+      "path": "/docs/case-studies/philosophy",
+      "source": "docs/misc/documentation-philosophy.md",
+      "description": "How I write for readers, make it easier to contribute, and keep technical knowledge accurate, discoverable and maintainable.",
+      "type": [
+        "essay"
+      ],
+      "topics": [
+        "documentation-engineering",
+        "information-architecture",
+        "technical-writing"
+      ],
+      "technologies": [],
+      "audiences": [
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
     },
     {
       "id": "implementation-details/portfolio-architecture-and-publishing-pipeline",

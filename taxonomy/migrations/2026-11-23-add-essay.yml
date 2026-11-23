@@ -1,0 +1,17 @@
+schema_version: 2
+id: 2026-11-23-add-essay
+description: Add an editorial content type for Philosophy and similar pages.
+change_type: vocabulary-expansion
+trigger: content-driven
+governance:
+  date: '2026-11-23'
+  source: ai-proposed
+  reason: Classify Philosophy by its purpose so readers can find it through topic filters in Explore.
+preconditions:
+  taxonomy_version: 3
+changes:
+  content_types:
+    add:
+      essay:
+        label: Essay
+        description: A page that develops a professional viewpoint or explains the principles and judgement behind an approach to work.

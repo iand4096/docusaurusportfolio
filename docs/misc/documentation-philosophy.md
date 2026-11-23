@@ -1,7 +1,25 @@
 ---
 title: Philosophy
-description: How I write for readers, make it easier to contribute, and keep technical knowledge accurate, discoverable and maintainable.
+slug: /case-studies/philosophy
+pagination_prev:
+pagination_next:
+description: How I write for readers, make it easier to contribute, and keep technical knowledge
+  accurate, discoverable and maintainable.
 hide_table_of_contents: true
+type:
+  - essay
+audiences:
+  - technical-writers
+topics:
+  - documentation-engineering
+  - information-architecture
+  - technical-writing
+lifecycle:
+  - current
+tags:
+  - documentation-engineering
+  - information-architecture
+  - technical-writing
 ---
 
 import CapabilityCard from '@site/src/components/CapabilityCard';

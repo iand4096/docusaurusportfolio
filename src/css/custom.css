@@ -98,6 +98,22 @@
 }
 
 .theme-doc-sidebar-container { border-color: var(--portfolio-line) !important; }
+
+.sidebar-philosophy {
+  margin-block-end: 0.75rem;
+}
+
+.sidebar-philosophy > .menu__link {
+  background-color: var(--ifm-background-surface-color);
+  border-inline-start: 3px solid var(--portfolio-accent);
+  color: var(--portfolio-ink);
+  font-weight: 650;
+}
+
+.sidebar-philosophy > .menu__link:is(:hover, :focus-visible, .menu__link--active) {
+  background-color: var(--ifm-menu-color-background-active);
+}
+
 .theme-doc-markdown h1 { letter-spacing: -0.04em; line-height: 1.15; }
 .theme-doc-markdown h2,.theme-doc-markdown h3 { letter-spacing: -0.025em; }
 .footer--dark {
