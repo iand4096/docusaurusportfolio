@@ -96,10 +96,10 @@
       ]
     },
     "docs/case-studies/ScalingADeveloperDocsPlatform.md": {
-      "content_hash": "sha256:746b966f9264f2f13d6b936220ba2c91c8715fe4418235d3db005b01f2a1d48e",
+      "content_hash": "sha256:25664b4279000ebbf1bfcfb83dcfa13bcddc4b45306f6677454826d7b54f4c6b",
       "decisions": [
         {
-          "context_hash": "sha256:e6c10dfa411133587720d96b782d16e65492c9d897c67e48f47964f02a1fa749",
+          "context_hash": "sha256:27bff71bab0e27b52a5da34835649674cdcfa8ec4a009eba0ad8711866a4e689",
           "matched_text": "requests",
           "result": "reject",
           "review": {
@@ -109,8 +109,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 17067,
-            "start": 17059
+            "end": 17143,
+            "start": 17135
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -126,8 +126,8 @@
             "status": "approved"
           },
           "source_range": {
-            "end": 17929,
-            "start": 17921
+            "end": 18005,
+            "start": 17997
           },
           "term_fingerprint": "sha256:409bcf0eca2186f15938c1b2b89e2406e807b6e7e3184d4ce540e002639d56c6",
           "term_id": "requests"
@@ -326,11 +326,11 @@
   "matching_contract_version": "1",
   "model": {
     "availability": [
-      "spaCy model not configured",
       "MiniLM snapshot not configured"
     ],
     "classifier_version": "1",
-    "embedding_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+    "embedding_revision": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+    "spacy_pipeline": "3.8.0"
   },
   "policy_hash": "sha256:df896d0929baf97ffb7f46a2839a0faa2eb9357f07e9ee36e3f75c09e03837b1",
   "taxonomy_hash": "sha256:c9466474f9968c3a489034a7b43b2d989b5f2eb236130df0a77c684eb75ace10",
