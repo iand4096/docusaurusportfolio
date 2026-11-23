@@ -5,7 +5,7 @@
 
 .grid > ul {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(var(--capability-desktop-columns, 3), minmax(0, 1fr));
   column-gap: var(--capability-column-gap, 2rem);
   row-gap: var(--capability-row-gap, 1.25rem);
   align-items: var(--capability-align-items, normal);

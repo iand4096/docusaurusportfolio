@@ -163,6 +163,8 @@ Omit `detail` for a static card and `icon` for a card without an icon. The homep
 | Prop | Default | Usage |
 | --- | --- | --- |
 | `items` | `[]` | Array of card objects. An empty array renders an empty list. |
+| `autoColumns` | `false` | Match desktop columns to the number of cards, up to three. |
+| `heading` | `'h3'` | Heading element for card titles. Choose the level that fits the surrounding page. |
 
 ### Card fields
 
@@ -173,7 +175,7 @@ Omit `detail` for a static card and `icon` for a card without an icon. The homep
 | `icon` | Optional Font Awesome solid icon name without `fa-`, such as `'gears'`. Requires the site's Font Awesome stylesheet. Icons are decorative and hidden from assistive technology. |
 | `detail` | Optional content inside a native `details` disclosure labelled “More detail”. |
 
-Strings in card fields do not parse Markdown: `**bold**` appears literally. JSX content can be supplied where React accepts it, but keep summary and detail content suitable for their paragraph wrappers.
+Strings in card fields appear as plain text. JSX summaries can include lists and links. Keep detail content suitable for a paragraph.
 
 ## Responsive layout
 

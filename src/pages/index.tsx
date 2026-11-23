@@ -122,6 +122,9 @@ export default function Home(): React.ReactElement {
               team leadership. I also design governed content structures and
               validation tools that make technical knowledge easier to maintain,
               retrieve and trace to its sources.</p>
+            <p><Link to="/documentation-philosophy" className={styles.textLink}>
+              Read my documentation and knowledge management philosophy →
+            </Link></p>
             <p>Explore my <Link to="/docs/apidocumentation">API documentation</Link>,{' '}
               <Link to="/docs/documentationeng">documentation engineering</Link>,{' '}
               <Link to="/docs/case-studies/TaxonomyGovernance">knowledge governance</Link> and{' '}

@@ -2,9 +2,14 @@ import React from 'react';
 import layout from '../capability-layout.module.css';
 import styles from './styles.module.css';
 
-export default function CapabilityCard({items = []}) {
+export default function CapabilityCard({items = [], autoColumns = false, heading: Heading = 'h3'}) {
+  const columns = Math.max(1, Math.min(items.length, 3));
+
   return (
-    <div className={`${layout.grid} ${styles.cards}`}>
+    <div
+      className={`${layout.grid} ${styles.cards}`}
+      style={autoColumns ? {'--capability-desktop-columns': columns} : undefined}
+    >
       <ul>
         {items.map(({title, summary, detail, icon}) => (
           <li key={title} className={styles.card}>
@@ -14,8 +19,8 @@ export default function CapabilityCard({items = []}) {
                 aria-hidden="true"
               />
             )}
-            <h3 className={styles.title}>{title}</h3>
-            <p className={styles.description}>{summary}</p>
+            <Heading className={styles.title}>{title}</Heading>
+            <div className={styles.description}>{summary}</div>
             {detail && (
               <details className={styles.details}>
                 <summary aria-label={`More detail about ${title}`}>
