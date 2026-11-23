@@ -70,13 +70,29 @@ class OrganisationTaxonomyTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             (root / "docs").mkdir()
-            source = ROOT / "docs/case-studies/DocusaurusPortfolio.md"
             path = root / "docs/example.md"
-            original = source.read_text()
+            original = """---
+title: Example documentation project
+type:
+  - case-study
+audiences:
+  - technical-writers
+topics:
+  - technical-writing
+lifecycle:
+  - current
+tags:
+  - technical-writing
+---
+
+I wrote the installation guide for AMX.
+
+The guide covered setup and verification.
+"""
             path.write_text(original)
             entry = {"file": "docs/example.md", "expect": [], "organisations": ["amx"],
                      "scope": "whole-page-single-employer",
-                     "evidence": {"amx": "I built this portfolio with Docusaurus"}}
+                     "evidence": {"amx": "I wrote the installation guide for AMX."}}
             manifest = {"version": 1, "taxonomy_version": 3, "documents": [entry]}
             changes = plan(root, manifest, self.taxonomy)
             self.assertEqual(path.read_text(), original)

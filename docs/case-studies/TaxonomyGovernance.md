@@ -186,9 +186,9 @@ Canonical IDs and validation reduce vocabulary drift. The same source drives Doc
 
 The **Docusaurus** technology selected in the editor also appears as a filter in Explore and as a tag at the bottom of this case study. Explore groups technology filters by kind. **Documentation platform (3)** is the group containing Docusaurus, MkDocs and Sphinx. The number beside each platform shows how many pages use that term. Readers can start with the filter to find matching pages or follow the footer tag from a page they’re already reading. Both use the same taxonomy ID, `docusaurus`.
 
-<p style={{marginBottom: '1.75rem'}}>
+<p style={{marginBottom: '0.75rem'}}>
   <a href={docusaurusExploreFilter} style={{display: 'inline-block', position: 'relative', maxWidth: '100%'}}>
-    <img src={docusaurusExploreFilter} width={420} style={{display: 'block'}} alt="Docusaurus selected and outlined in the Explore documentation platform filter." />
+    <img src={docusaurusExploreFilter} width={300} style={{display: 'block'}} alt="Docusaurus selected and outlined in the Explore documentation platform filter." />
 
     <span aria-hidden="true" style={{position: 'absolute', inset: '32% 48.5% 35% 0', border: '2px solid #c76000', borderRadius: 999, pointerEvents: 'none'}} />
   </a>
@@ -196,7 +196,7 @@ The **Docusaurus** technology selected in the editor also appears as a filter in
 
 <p>
   <a href={docusaurusFooterTags} style={{display: 'inline-block', position: 'relative', maxWidth: '100%'}}>
-    <img src={docusaurusFooterTags} width={640} style={{display: 'block'}} alt="Docusaurus outlined among the tags in the case study footer." />
+    <img src={docusaurusFooterTags} width={800} style={{display: 'block'}} alt="Docusaurus outlined among the tags in the case study footer." />
 
     <span aria-hidden="true" style={{position: 'absolute', inset: '51% 83.2% 8% 2%', border: '2px solid #c76000', borderRadius: 6, pointerEvents: 'none'}} />
   </a>
