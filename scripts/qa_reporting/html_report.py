@@ -372,6 +372,14 @@ def generate_html_report(report: Report, paths: ReportPaths, check_sources: Mapp
                 '<a class="review-recurrence" href="#finding-' + str(number) +
                 '">Review comparison</a></td></tr>')
         message = html.escape(issue.get('effective_message', issue['message']))
+        if issue['category'] == 'tooltip-mention':
+            evidence = issue.get('tooltip_evidence') or {}
+            matched_text = evidence.get('matched_text')
+            term_id = evidence.get('term_id')
+            if matched_text and term_id:
+                label = evidence.get('label') or term_id
+                message += (f'<p>Matched <q>{html.escape(matched_text)}</q> · '
+                            f'Tooltip <q>{html.escape(label)}</q> (<code>{html.escape(term_id)}</code>)</p>')
         if issue.get('reader_impact'):
             message += '<details><summary>Reader impact and supporting evidence</summary><p>' + html.escape(issue['reader_impact']) + '</p><p>' + html.escape(issue.get('rule_basis', '')) + '</p>'
             for evidence in issue.get('evidence', []):

@@ -65,6 +65,17 @@ class ExampleReportTests(unittest.TestCase):
         self.assertIn('See example QA report with errors', self.render(5))
         self.assertNotIn('See example QA report with errors', self.render(6))
 
+    def test_tooltip_occurrence_displays_match_and_canonical_term(self):
+        issue = finding('tooltip')
+        issue.update(source='tooltip', category='tooltip-mention', tooltip_evidence={
+            'matched_text': 'requests <example>', 'label': 'Requests', 'term_id': 'requests',
+        })
+        paths = ReportPaths.in_directory(self.root)
+        ci = review.evaluate_ci([issue], [], 0, 5, 0)
+        generate_html_report(Report([issue], [], self.metadata, ci), paths, self.check_sources)
+        self.assertIn('Matched <q>requests &lt;example&gt;</q> · '
+                      'Tooltip <q>Requests</q> (<code>requests</code>)', paths.html.read_text())
+
     def test_example_returns_to_custom_output_filename(self):
         defaults = ReportPaths.in_directory(self.root)
         paths = ReportPaths(self.root / 'custom report.html', defaults.json, defaults.markdown)
