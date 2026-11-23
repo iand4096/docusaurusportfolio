@@ -87,6 +87,16 @@
 
 .navbar__title { color: var(--ifm-color-primary); letter-spacing: -0.04em; font-size: 1.3rem; }
 .navbar__link { font-size: var(--portfolio-text-secondary); font-weight: 550; }
+
+.navbar__items > .navbar-portfolio-engineering {
+  font-weight: 400;
+  white-space: nowrap;
+}
+
+.navbar__items > .navbar-portfolio-engineering:not(:hover, :focus-visible, .navbar__link--active) {
+  color: var(--portfolio-muted);
+}
+
 .theme-doc-sidebar-container { border-color: var(--portfolio-line) !important; }
 .theme-doc-markdown h1 { letter-spacing: -0.04em; line-height: 1.15; }
 .theme-doc-markdown h2,.theme-doc-markdown h3 { letter-spacing: -0.025em; }

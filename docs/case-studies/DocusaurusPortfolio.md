@@ -100,96 +100,58 @@ import CaseStudySummary from '@site/src/components/CaseStudySummary';
 
 ## Context {/* #context */}
 
-I built this portfolio with Docusaurus to publish my documentation samples and demonstrate the tooling behind them. It includes search, automated content recommendations and a Python documentation QA pipeline.
+I built this portfolio to publish my writing samples and demonstrate the engineering that keeps a documentation site usable as it grows. I designed, implemented and documented the platform, using Codex as a coding assistant.
 
 ## Challenge {/* #challenge */}
 
-* Build a portfolio site using Docusaurus, React/JSX, TypeScript and GitHub Actions.
-* Integrate an LLM API into an automated QA workflow.
-* Combine AI review with deterministic checks such as Markdown linting, accessibility, style and link checks.
+Readers needed to find relevant material across case studies, writing samples and technical guides. As the sole maintainer, I needed to keep metadata consistent, catch editorial and technical defects during review, and keep examples and reference material in sync with their sources. Core browsing and reference pages also had to remain usable during a search service outage.
 
-## Approach {/* #approach */}
+## Approach and design decisions {/* #approach */}
 
-I used Codex as an agentic coding assistant while building and extending the portfolio site.
+- **Keep core discovery static.** I used governed frontmatter as a shared input for browsing and recommendations. Full-text and semantic retrieval run through a separate cloud API.
+- **Publish from maintained sources.** Docusaurus pulls code excerpts from the repository and publishes a versioned OpenAPI snapshot. Readers can inspect the API contract even when the service is unavailable.
+- **Make quality checks auditable.** I combined deterministic checks with AI editorial review, verified AI findings against the source and made report publication independent of the QA thresholds.
 
-Docusaurus provides the documentation framework. I used Markdown and MDX for content, and wrote React components for landing-page cards, capability grids and document controls.
+## Implementation overview {/* #implementation */}
 
-GitHub Actions automate deployment and documentation QA.
+<span id="local-search-and-faceted-browsing" />
 
-For quality assurance, I wrote a Python script that combines AI review with deterministic checks such as link checking. The script validates the AI findings against the source to guard against hallucination, and generates a report containing the identified issues and suggested improvements.
+<span id="cloud-backed-search" />
 
-## Implementation {/* #implementation */}
+<span id="related-content-recommendations" />
 
-### Local search and faceted browsing {/* #local-search-and-faceted-browsing */}
+**Content discovery.** The [Explore page](/explore?view=browse) searches catalogue metadata locally and lets readers refine results with governed filters. The same taxonomy drives related-page suggestions. A [cloud search service](RagSearchCloudArchitecture.md) provides keyword, semantic and hybrid retrieval with source passages and optional AI answers. The [taxonomy governance case study](TaxonomyGovernance.md) explains how the vocabulary is maintained.
 
-The [Explore page](/explore?view=browse) combines relevance-ranked local search with filters for content type, audience, topic, technology and lifecycle. Search supports prefix matching and conservative typo tolerance, while facet counts help readers refine their selection. It searches titles, descriptions and metadata in the generated catalogue; article-body search is provided separately by the cloud API.
+<span id="documentation-features-to-support-the-search-api" />
 
-A generated taxonomy catalogue supplies the custom React interface. The [taxonomy case study](TaxonomyGovernance.md) explains the AI-assisted taxonomy generation and governance.
+<span id="search-api-reference" />
 
-### Cloud-backed search {/* #cloud-backed-search */}
+<span id="api-request-and-response-examples" />
 
-The Search tab connects the static site to a FastAPI service on Azure Container Apps. Readers can use keyword, semantic or hybrid retrieval, inspect source passages, and optionally request AI answers with source links. Governed metadata filters constrain retrieval. The [cloud search case study](RagSearchCloudArchitecture.md) explains the indexing, infrastructure and request controls.
+<span id="portfolio-wide-documentation-features" />
 
-### Documentation features for the Search API {/* #documentation-features-to-support-the-search-api */}
+<span id="code-sample-inserts" />
 
-#### Generated Search API reference {/* #search-api-reference */}
+<span id="machine-readable-publishing" />
 
-FastAPI generates the OpenAPI contract for the portfolio’s search service from its route definitions, Pydantic models and named examples. The export script calls `app.openapi()` and writes the contract to `static/api/search-openapi.json`. I commit that snapshot to the repository.
+<span id="reusable-presentation" />
 
-Docusaurus publishes the snapshot as a static asset. Scalar loads it in the browser to render the [Search API reference](pathname:///search-api), where readers can browse endpoints, schemas and examples even when the search service is unavailable. The [API documentation components](../implementation-details/api-example.mdx) use the same snapshot for operation links and inline examples.
+**Documentation publishing.** Repository-backed excerpts keep code examples tied to their source. The build publishes Markdown exports and the static [Search API reference](pathname:///search-api). Reusable React components support [inline API examples](../implementation-details/api-example.mdx), [project summaries](../implementation-details/case-study-summary-and-sidebar-card-grid.mdx) and [interactive diagrams](../implementation-details/diagram-figure.mdx).
 
-After changing a route, model or example, regenerate the snapshot from the repository root and commit it with the source change. On Linux, use Python 3.12 and the dependencies pinned in `knowledge-api/requirements-openapi-linux-py312.lock`, which is the environment used by GitHub Actions.
+<span id="documentation-qa" />
 
-```bash
-python knowledge-api/export_openapi.py
-```
+<span id="qa-feedback-and-adjudication" />
 
-GitHub Actions runs the exporter with `--check` to compare the committed snapshot with the schema FastAPI generates. The check fails if the snapshot is missing or differs from the generated schema.
+<span id="reliable-report-publishing" />
 
-#### API request and response examples
-
-`ApiExample` uses an OpenAPI operation ID and example name to display the saved request and response payloads and generate a cURL command. The [taxonomy-filtered search example](RagSearchCloudArchitecture.md#separate-evidence-retrieval-from-ai-answer-generation) shows the request and response tabs inline.
-
-### Portfolio-wide documentation features
-
-#### Repository code excerpts {/* #code-sample-inserts */}
-
-I built a Docusaurus plugin that inserts excerpts directly from repository files. An empty fenced code block with `source=path#name` points to a region marked by `docs:start` and `docs:end` comments. During the build, the plugin reads that region and renders it with **Copy code** and **View source** controls. **View source** opens the file on the portfolio site at the excerpt’s first line. The [QA check adapter example](../implementation-details/qa-key-concepts.md#check-adapters-and-shared-results) shows this in use.
-
-#### Related-content recommendations {/* #related-content-recommendations */}
-
-A custom Docusaurus plugin generates up to three **See also** links from governed metadata during development and builds, without calling an AI service. Relevance rules favour distinctive shared topics and technologies, and authors can exclude destinations or disable recommendations per page. A generated review report explains the selections; CI checks that committed recommendations remain current.
-
-#### Machine-readable publishing {/* #machine-readable-publishing */}
-
-Production builds generate `llms.txt`, `llms-full.txt` and individual Markdown exports that retain governed taxonomy fields. Documentation pages expose **Copy page as Markdown** and **View Markdown** controls. Copying includes a manual fallback when clipboard access is unavailable.
-
-#### Reusable documentation components {/* #reusable-presentation */}
-
-These guides combine authoring examples with live previews of the components used across this portfolio.
-
-- [CapabilityGrid and CapabilityCard](../implementation-details/capability-grid.mdx) display responsive grids, checklists and expandable cards.
-- [SemanticLabel and SemanticLabelGroup](../implementation-details/semantic-label.mdx) identify decisions, rationale, contributions and outcomes in the prose.
-- [CaseStudySummary and SidebarCardGrid](../implementation-details/case-study-summary-and-sidebar-card-grid.mdx) present project overviews and build landing-page cards from sidebar and frontmatter metadata.
-- [DiagramFigure](../implementation-details/diagram-figure.mdx) adds automatic numbering, full-screen viewing and shareable links to Mermaid subgraphs.
-- [ApiEndpoint and ApiExample](../implementation-details/api-example.mdx) use the same OpenAPI spec to link to Scalar operations and display request, response and cURL examples.
-
-### Documentation QA {/* #documentation-qa */}
-
-I combined deterministic checks for links, accessibility and style with AI editorial review. The workflow checks AI findings against the source before reporting them. The [Documentation QA guide](../implementation-details/qa-overview.md) explains how to run the checks and follow a finding through review.
-
-The [Documentation QA case study](DocumentationQa.md) explains the design choices behind evidence verification, feedback and the CI gate.
-
-### QA feedback and adjudication {/* #qa-feedback-and-adjudication */}
-
-AI findings can be challenged, revised or dismissed while preserving the original criticism, evidence and review history. When the same AI criticism appears in a later review, the report links it to the earlier discussion. If the document has changed, the previous decision requires revalidation. Saved reports can be refreshed without rerunning checks or making AI calls, and AI withdrawal alone does not remove a finding from CI counts.
-
-### Reliable report publishing {/* #reliable-report-publishing */}
-
-I designed the workflow to publish reports even when findings exceed the QA thresholds, so readers can inspect what failed. Each report is tied to the commit it reviewed.
-
-The implementation includes the portfolio published on GitHub Pages, a [Documentation QA report](pathname:///qa/) for the current site, and the [GitHub repository](https://github.com/iand4096/docusaurusportfolio) containing the source, QA tooling, and deployment workflow.
+**Quality assurance.** GitHub Actions runs checks for links, accessibility and style alongside evidence-validated AI editorial review. The deployment workflow publishes the report before enforcing the QA thresholds. The [Documentation QA case study](DocumentationQa.md) covers evidence verification, feedback and gating.
 
 ## Impact {/* #impact */}
 
-Readers can browse by metadata, search source passages and follow related-page links. Each deployment also publishes a QA report with findings and recorded review decisions.
+- Readers can [browse by topic or technology](/explore?view=browse), then [search for source passages](/explore?view=ai-search) when they need the text behind a result.
+- Authors can reuse [excerpts from checked-in code](../implementation-details/qa-key-concepts.md#check-adapters-and-shared-results). API maintainers can detect contract drift through the [schema validation workflow](https://github.com/iand4096/docusaurusportfolio/blob/main/.github/workflows/search-openapi.yml).
+- Reviewers can inspect findings, source evidence and recorded review decisions in the [published QA report](pathname:///qa/). Reports identify the revision they reviewed and remain available when findings exceed the QA thresholds.
+
+## Technical implementation {/* #technical-implementation */}
+
+The [Portfolio architecture and publishing pipeline](../implementation-details/portfolio-architecture-and-publishing-pipeline.md) traces the build from source files to GitHub Pages and documents how to update the generated outputs.

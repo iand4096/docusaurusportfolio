@@ -196,6 +196,13 @@ const config: Config = {
           activeBasePath: '/explore',
         },
         {
+          type: 'docSidebar',
+          sidebarId: 'technicalDocumentationSidebar',
+          label: 'Portfolio Engineering',
+          position: 'right',
+          className: 'navbar-portfolio-engineering',
+        },
+        {
           label: 'Search API reference',
           to: '/search-api',
           position: 'right',

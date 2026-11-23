@@ -2328,6 +2328,55 @@
       ]
     },
     {
+      "id": "implementation-details/portfolio-architecture-and-publishing-pipeline",
+      "title": "Portfolio architecture and publishing pipeline",
+      "path": "/docs/implementation-details/portfolio-architecture-and-publishing-pipeline",
+      "source": "docs/implementation-details/portfolio-architecture-and-publishing-pipeline.md",
+      "description": "How Docusaurus, repository generators and GitHub Actions build, validate and publish the portfolio.",
+      "type": [
+        "implementation-guide"
+      ],
+      "topics": [
+        "docs-as-code",
+        "documentation-engineering",
+        "technical-validation"
+      ],
+      "technologies": [
+        "docusaurus",
+        "github-actions",
+        "github-pages",
+        "markdown",
+        "mdx",
+        "mermaid"
+      ],
+      "audiences": [
+        "developers",
+        "documentation-managers",
+        "technical-writers"
+      ],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
+    },
+    {
+      "id": "implementation-details/index",
+      "title": "Portfolio Engineering",
+      "path": "/docs/implementation-details",
+      "source": "docs/implementation-details/index.md",
+      "description": "Implementation guides and references for the portfolio's build, discovery, quality checks and authoring components.",
+      "type": [
+        "landing-page"
+      ],
+      "topics": [],
+      "technologies": [],
+      "audiences": [],
+      "lifecycle": [
+        "current"
+      ],
+      "organisations": []
+    },
+    {
       "id": "tools/ProgrammingAutomation",
       "title": "Programming and Automation",
       "path": "/docs/programming",

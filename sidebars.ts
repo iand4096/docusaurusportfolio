@@ -1,23 +1,50 @@
 import type {SidebarsConfig} from '@docusaurus/plugin-content-docs';
 
 const sidebars: SidebarsConfig = {
-  documentationQaSidebar: [
-    'implementation-details/qa-overview',
-    'implementation-details/qa-key-concepts',
-    'implementation-details/qa-run-review',
-    'implementation-details/qa-read-report',
-    'implementation-details/qa-cli-reference',
-    'implementation-details/qa-architecture',
+  technicalDocumentationSidebar: [
+    'implementation-details/index',
+    'implementation-details/portfolio-architecture-and-publishing-pipeline',
     {
       type: 'category',
-      label: 'Maintainer guides',
+      label: 'Taxonomy and discovery',
       items: [
-        'implementation-details/qa-add-checker',
-        'implementation-details/qa-ai-review',
-        'implementation-details/qa-reports-and-ci',
-        'implementation-details/qa-feedback',
+        'implementation-details/taxonomy',
       ],
     },
+    {
+      type: 'category',
+      label: 'Documentation QA',
+      link: {type: 'doc', id: 'implementation-details/qa-overview'},
+      items: [
+        'implementation-details/qa-key-concepts',
+        'implementation-details/qa-run-review',
+        'implementation-details/qa-read-report',
+        'implementation-details/qa-cli-reference',
+        'implementation-details/qa-architecture',
+        {
+          type: 'category',
+          label: 'Maintainer guides',
+          items: [
+            'implementation-details/qa-add-checker',
+            'implementation-details/qa-ai-review',
+            'implementation-details/qa-reports-and-ci',
+            'implementation-details/qa-feedback',
+          ],
+        },
+      ],
+    },
+    {
+      type: 'category',
+      label: 'Authoring components',
+      items: [
+        'implementation-details/api-example',
+        'implementation-details/diagram-figure',
+        'implementation-details/capability-grid',
+        'implementation-details/case-study-summary-and-sidebar-card-grid',
+        'implementation-details/semantic-label',
+      ],
+    },
+    {type: 'link', label: 'Search API reference', href: '/search-api'},
   ],
 
   caseStudiesSidebar: [
