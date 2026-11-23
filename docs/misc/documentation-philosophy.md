@@ -22,7 +22,7 @@ tags:
   - technical-writing
 ---
 
-import PhilosophyOverview from './PhilosophyOverview';
+import PhilosophyOverview, {New} from './PhilosophyOverview';
 
 # Philosophy
 
@@ -74,7 +74,7 @@ The outcome of a check also needs to be clear. A checker that fails to run is di
 
 [Documentation QA case study](../case-studies/DocumentationQa.md)
 
-## Govern knowledge so people can find and trust it <span className="badge" style={{backgroundColor: 'transparent', border: '1px solid currentColor', borderRadius: '0.375rem', color: 'var(--ifm-color-primary)', fontSize: '0.75rem', letterSpacing: 'normal', padding: '0.2em 0.5em', verticalAlign: 'middle'}}>NEW</span> {/* #govern-knowledge-so-people-can-find-and-trust-it */}
+## Govern knowledge so people can find and trust it<New /> {/* #govern-knowledge-so-people-can-find-and-trust-it */}
 
 My recent work on metadata and AI search has made governance a more explicit part of my documentation practice. I use consistent labels to help readers find current guidance and maintainers know what to review or retire. Writers should be able to propose changes, and readers should be able to verify AI answers against their sources. Tools should make the rules easy to follow, and every check should earn the time it takes.
 

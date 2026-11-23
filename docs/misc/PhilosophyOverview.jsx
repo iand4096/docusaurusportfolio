@@ -1,6 +1,22 @@
 import React from 'react';
 import CapabilityCard from '@site/src/components/CapabilityCard';
 
+export function New() {
+  return (
+    <span className="badge" style={{
+      backgroundColor: 'transparent',
+      border: '1px solid currentColor',
+      borderRadius: '0.375rem',
+      color: 'var(--ifm-color-primary)',
+      fontSize: '0.75rem',
+      letterSpacing: 'normal',
+      marginInlineStart: '0.5em',
+      padding: '0.2em 0.5em',
+      verticalAlign: 'middle',
+    }}>NEW</span>
+  );
+}
+
 export default function PhilosophyOverview() {
   return (
     <CapabilityCard autoColumns heading="h2" items={[
