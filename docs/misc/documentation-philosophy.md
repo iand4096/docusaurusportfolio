@@ -54,13 +54,13 @@ That doesn't mean eliminating useful repetition. A prerequisite may belong in se
 
 ## Verify what the software actually does
 
-Specifications and existing documentation are starting points for investigation. For important workflows, I want to run examples, observe results and understand failure cases before explaining the behaviour. Discrepancies between the specification and implementation need investigation.
+Specifications and existing documentation are starting points. For important workflows, I run examples, observe the results and investigate failure cases before documenting the behaviour. If the specification and implementation differ, I investigate the discrepancy.
 
 [Testing the Mastercard MDES integration](/docs/docs-samples/MDES4Merchants)
 
 ## Use evidence to inform decisions
 
-I want documentation priorities to reflect evidence, but analysis also has a cost. The effort involved should be proportionate to the decision it supports.
+I use evidence to set documentation priorities and scale the analysis to the decision at hand.
 
 Generative AI can make data exploration and analysis more practical. I validate the results before using them to guide decisions.
 
@@ -68,7 +68,7 @@ Generative AI can make data exploration and analysis more practical. I validate 
 
 ## Build quality checks into the workflow
 
-I want quality checks to reach contributors in time for them to fix problems before publication. Repeatable checks should be automated, with results specific enough to act on.
+I build quality checks into the workflow so contributors get feedback while they can still act on it. Repeatable checks should be automated, with results specific enough to act on.
 
 The outcome of a check also needs to be clear. A checker that fails to run is different from one that runs successfully and finds no issues. Reviewers need supporting evidence to assess whether editorial findings are valid.
 
