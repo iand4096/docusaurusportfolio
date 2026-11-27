@@ -32,7 +32,7 @@ Technical writing and knowledge management are two sides of the same coin. Both 
 
 ## Have empathy for the reader {/* #start-with-empathy-for-the-reader */}
 
-Empathy starts with understanding what readers are trying to accomplish, what they already know and where they might get stuck. Good documentation respects their time by making prerequisites clear, explaining how to recognise success and helping them recover when things go wrong.
+Empathy starts with knowing your audience. Understand what readers are trying to accomplish, what they already know and where they might get stuck. Good documentation respects their time by making prerequisites clear, explaining how to recognise success and helping them recover when things go wrong.
 
 [Mastercard’s MDES merchant guide](/docs/docs-samples/MDES4Merchants)
 
@@ -76,7 +76,7 @@ The outcome of a check also needs to be clear. A checker that fails to run is di
 
 ## Govern knowledge so people can find and trust it<New /> {/* #govern-knowledge-so-people-can-find-and-trust-it */}
 
-My recent work on metadata and AI search has made governance a more explicit part of my documentation practice. I use consistent labels to help readers find current guidance and maintainers know what to review or retire. Writers should be able to propose changes, and readers should be able to verify AI answers against their sources. Tools should make the rules easy to follow, and every check should earn the time it takes.
+My recent work on metadata and AI search has made governance a more explicit part of my documentation practice. I use consistent labels to help readers find current guidance and ensure maintainers know what to review or retire. Writers should be able to propose changes, and readers should be able to verify AI answers against their sources. Tools should make the rules easy to follow, and every check should earn the time it takes.
 
 - [Taxonomy governance case study](/docs/case-studies/TaxonomyGovernance)
 - [RAG search case study](/docs/case-studies/RagSearchCloudArchitecture)
